@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/mcoupontitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="天猫XXXX店铺 优惠劵"
+        android:textSize="16dp"
+        android:textColor="#333333"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"/>
+    <ListView
+        android:id="@+id/mcouponlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:divider="@null">
+
+    </ListView>
+    <TextView
+        android:id="@+id/mclose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f23030"
+        android:text="关闭"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textSize="18dp"
+
+        android:textColor="#fff"/>
+</LinearLayout>

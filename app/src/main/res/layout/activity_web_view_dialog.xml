@@ -1,0 +1,154 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/llayout"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="@drawable/text_view_border"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingBottom="10dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/domain_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="看比价"
+                android:textColor="#ff7d41"
+                android:textSize="17dp" />
+                <View 
+                android:id="@+id/henggang1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ff7d41"/>
+            </LinearLayout>
+            <LinearLayout 
+                android:id="@+id/mhistorybox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                android:id="@+id/history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="查历史价"
+                android:textColor="#333333"
+                android:textSize="17dp" />
+                <View 
+                android:id="@+id/henggang2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffffff"/>
+            </LinearLayout>
+        </LinearLayout>
+		    <com.bbk.view.MyWebView
+		        android:id="@+id/mwebview"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"/>
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/history_price_chart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:visibility="gone"
+            android:paddingRight="10dp"
+            android:background="#FFFFFF" />
+
+        <ScrollView
+            android:id="@+id/mscroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <com.bbk.view.MyListView
+                    android:id="@+id/mlistview1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"
+                    android:listSelector="#f3f3f3" >
+                </com.bbk.view.MyListView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#f3f3f3" />
+
+                <LinearLayout
+                    android:id="@+id/wantdomain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/other_mall" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:text="还想逛的商城"
+                        android:textColor="#666666"
+                        android:textSize="17dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/henggang"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#f3f3f3" />
+
+                <com.bbk.view.MyListView
+                    android:id="@+id/mlistview2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"
+                    android:listSelector="#f3f3f3" >
+                </com.bbk.view.MyListView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp" >
+
+        <ImageView
+            android:id="@+id/mclose"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/close" />
+    </LinearLayout>
+
+</LinearLayout>

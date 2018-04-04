@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+		<View 
+        android:id="@+id/search_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#F9F9F9" >
+
+        <ImageButton
+            android:id="@+id/topbar_goback_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_arrow_left_blue"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/topbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:singleLine="true"
+            android:text="比价搜索"
+            android:textColor="#2D2D2D"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#F9F9F9" >
+
+        <RelativeLayout
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_fragment_search_layout" >
+
+            <ImageView
+                android:id="@+id/search_img"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:padding="9dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/icon_search_in_edit" />
+
+            <ImageView
+                android:id="@+id/search_clean_img_btn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/icon_clean"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/search_voice_img_btn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/icon_voice" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_marginLeft="-5dp"
+                android:id="@+id/stype_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/search_img"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/stype_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="全球购"
+                    android:textColor="#808080"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/stype_img"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginLeft="6dp"
+                    android:src="@mipmap/icon_arrow_down_gray" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/search_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toLeftOf="@id/search_clean_img_btn"
+                android:layout_toRightOf="@id/search_img"
+                android:background="@null"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="输入商品名，查看全部报价"
+                android:imeOptions="actionSearch"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:singleLine="true"
+                android:textColor="#808080"
+                android:textColorHint="#808080"
+                android:textCursorDrawable="@drawable/text_cursor_color"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <ListView 
+        android:visibility="gone"
+        android:id="@+id/mlistView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ></ListView>
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </FrameLayout>
+
+</LinearLayout>

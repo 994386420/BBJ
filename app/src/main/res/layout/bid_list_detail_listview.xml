@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/bj_04"/>
+
+        <TextView
+            android:id="@+id/mtimebefor"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_height="wrap_content"
+            android:text="距结束" />
+
+        <com.bbk.view.RushBuyCountDownTimerView
+            android:id="@+id/mtime"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+             />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/mtypetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="待审核"
+            android:textColor="#b40000" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f3f3f3" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/item_img"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/default_img" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/item_img"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="2"
+                android:text="Apple iPhone 5s 16G 金色Apple iPhone 5s 16G 金色 Apple iPhone 5s 16G 金色 "
+                android:textColor="#111111"
+                android:textSize="14dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="RMB"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="发镖价"
+                        android:textColor="#b40000"
+                        android:textSize="11dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_weight="1"
+                    android:text="5456"
+                    android:textColor="#b40000"
+                    android:textSize="25dp" />
+
+                <TextView
+                    android:id="@+id/mcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="x1"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mbidnum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="接镖 0 人" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f3f3f3" />
+    <LinearLayout
+        android:id="@+id/mpricebox"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#333333"
+            android:textSize="15dp"
+            android:text="成交总价"/>
+        <TextView
+            android:id="@+id/mendprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥49"
+            android:textSize="15dp"
+            android:textColor="#b40000"/>
+
+    </LinearLayout>
+    <View
+        android:id="@+id/mhenggang"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f3f3f3" />
+
+    <LinearLayout
+        android:id="@+id/mtextbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/mtext1"
+            android:layout_width="85dp"
+            android:gravity="center"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:background="@drawable/bid_list_detail_text"
+            android:layout_height="wrap_content"
+            android:text="取消发镖"/>
+        <TextView
+            android:id="@+id/mtext2"
+            android:layout_width="85dp"
+            android:gravity="center"
+            android:paddingTop="3dp"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="3dp"
+            android:background="@drawable/bid_list_detail_text"
+            android:layout_height="wrap_content"
+            android:text="修改"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#f3f3f3"/>
+</LinearLayout>

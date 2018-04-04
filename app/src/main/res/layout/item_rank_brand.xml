@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/result_item"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:background="@drawable/bg_item" >
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/item_img"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:src="@mipmap/default_img" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/item_img" >
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="2"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:text="苹果(Apple)"
+            android:textColor="#464646"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#CCCCCC"
+        android:layout_alignParentBottom="true" />
+    
+    <RelativeLayout
+        android:layout_marginLeft="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/rank_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/activity_rank_paihang1" />
+
+        <TextView
+            android:id="@+id/rank_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@+id/rank_img"
+            android:text="1"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="3dp"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

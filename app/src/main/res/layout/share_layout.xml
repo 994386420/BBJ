@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:layout_marginTop="10dp">
+			 <RelativeLayout
+                android:id="@+id/share_weixin1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/share_weixin_img1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:scaleType="centerInside"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/fenxiang_01" />
+
+                <TextView
+                    android:id="@+id/share_weixin_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/share_weixin_img1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="微信好友"
+                    android:textColor="#A9A9A9"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+           
+            <RelativeLayout
+                android:id="@+id/share_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/share_weixin_img"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/fenxiang_02" />
+
+                <TextView
+                    android:id="@+id/share_weixin_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/share_weixin_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="朋友圈"
+                    android:textColor="#A9A9A9"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/share_weibo"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/share_weibo_img"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/fenxiang_03" />
+
+                <TextView
+                    android:id="@+id/share_weibo_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/share_weibo_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="新浪微博"
+                    android:textColor="#A9A9A9"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+             <RelativeLayout
+                android:id="@+id/share_qq"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/share_qq_img"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/fenxiang_04" />
+
+                <TextView
+                    android:id="@+id/share_qq_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/share_qq_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="腾讯QQ"
+                    android:textColor="#A9A9A9"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+            
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout
+                android:id="@+id/mcopyurl"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                 >
+
+                <ImageView
+                    android:id="@+id/mcopyurlimg"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:scaleType="centerInside"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/fenxiang_06" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mcopyurlimg"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:text="复制链接"
+                    android:textColor="#A9A9A9"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+				<ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:scaleType="centerInside"
+                    android:layout_centerHorizontal="true"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                 >
+				<ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:scaleType="centerInside"
+                    android:layout_centerHorizontal="true"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                >
+				<ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_share_img"
+                    android:scaleType="centerInside"
+                    android:layout_centerHorizontal="true"
+                    />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/cannel_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:layout_below="@id/share_qq"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_share_cannel"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#464646"
+        android:textSize="14sp" />
+
+</LinearLayout>

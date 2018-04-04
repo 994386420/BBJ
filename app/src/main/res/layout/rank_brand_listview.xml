@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    >
+        <RelativeLayout
+        	android:id="@+id/rank"
+    	   	android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp" >
+
+            <ImageView
+                android:id="@+id/third"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:src="@mipmap/top02" />
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/third"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="3dp"
+                android:text="4"
+                android:textColor="#FFFFFF"
+                android:textSize="12dp" />
+            </RelativeLayout>
+		<TextView 
+		    android:id="@+id/brand"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerVertical="true"
+		    android:layout_marginLeft="6dp"
+		    android:text="sfadfsadfa"
+		    android:layout_toRightOf="@id/rank"/>
+		<ImageView
+		    android:layout_width="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:layout_centerVertical="true"
+		    android:layout_height="20dp"
+		    android:scaleType="centerInside"
+		    android:src="@mipmap/enter01"/>
+</RelativeLayout>

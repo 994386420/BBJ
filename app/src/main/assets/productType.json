@@ -1,0 +1,6527 @@
+[
+    {
+        "productTypeCh": "手机",
+        "addtion": "01",
+        "productType": "shouji"
+    },
+    {
+        "productTypeCh": "手机配件",
+        "addtion": "0101",
+        "productType": "shoujipeijian"
+    },
+    {
+        "productTypeCh": "蓝牙耳机",
+        "addtion": "010102",
+        "productType": "shouji_shoujipeijian_lanyaerji"
+    },
+    {
+        "productTypeCh": "充电器/数据线",
+        "addtion": "010103",
+        "productType": "shouji_shoujipeijian_chongdianqiheshujuxian"
+    },
+    {
+        "productTypeCh": "车载",
+        "addtion": "010108",
+        "productType": "shouji_shoujipeijian_chezaipeijian"
+    },
+    {
+        "productTypeCh": "iPhone配件",
+        "addtion": "010109",
+        "productType": "shouji_shoujipeijian_iphonepeijian"
+    },
+    {
+        "productTypeCh": "有线耳机",
+        "addtion": "010113",
+        "productType": "shouji_shoujipeijian_youxianerji"
+    },
+    {
+        "productTypeCh": "手机饰品",
+        "addtion": "010106",
+        "productType": "shouji_shoujipeijian_shoujishipin"
+    },
+    {
+        "productTypeCh": "贴膜",
+        "addtion": "010114",
+        "productType": "shouji_shoujipeijian_tiemo"
+    },
+    {
+        "productTypeCh": "保护套",
+        "addtion": "010107",
+        "productType": "shouji_shoujipeijian_baohutao"
+    },
+    {
+        "productTypeCh": "手机存储卡",
+        "addtion": "010105",
+        "productType": "shouji_shoujipeijian_cunchuka"
+    },
+    {
+        "productTypeCh": "创意配件",
+        "addtion": "010115",
+        "productType": "shouji_shoujipeijian_chuangyipeijian"
+    },
+    {
+        "productTypeCh": "便携无线音响",
+        "addtion": "010116",
+        "productType": "shouji_shoujipeijian_bianxiewuxianyin"
+    },
+    {
+        "productTypeCh": "电池配件",
+        "addtion": "010111",
+        "productType": "shouji_shoujipeijian_dianchi"
+    },
+    {
+        "productTypeCh": "手机通讯",
+        "addtion": "0103",
+        "productType": "shoujitongxun"
+    },
+    {
+        "productTypeCh": "手机",
+        "addtion": "010301",
+        "productType": "shouji_shoujitongxun_shouji"
+    },
+    {
+        "productTypeCh": "对讲机",
+        "addtion": "010302",
+        "productType": "shouji_shoujitongxun_duijiangji"
+    },
+    {
+        "productTypeCh": "摄像",
+        "addtion": "06",
+        "productType": "shexiang"
+    },
+    {
+        "productTypeCh": "摄影/摄像",
+        "addtion": "0602",
+        "productType": "sheyingshexiang"
+    },
+    {
+        "productTypeCh": "摄像机",
+        "addtion": "060201",
+        "productType": "shexiang_sheyingshexiang_shexiangji"
+    },
+    {
+        "productTypeCh": "镜头",
+        "addtion": "060203",
+        "productType": "shexiang_sheyingshexiang_jingtou"
+    },
+    {
+        "productTypeCh": "户外器材",
+        "addtion": "060204",
+        "productType": "shexiang_sheyingshexiang_huwaiqicai"
+    },
+    {
+        "productTypeCh": "影棚器材",
+        "addtion": "060205",
+        "productType": "shexiang_sheyingshexiang_yingpengqicai"
+    },
+    {
+        "productTypeCh": "数码相机",
+        "addtion": "060202",
+        "productType": "shexiang_sheyingshexiang_shumaxiangji"
+    },
+    {
+        "productTypeCh": "单电/微单相机",
+        "addtion": "060206",
+        "productType": "shexiang_sheyingshexiang_dandianweidanxiangji"
+    },
+    {
+        "productTypeCh": "单反相机",
+        "addtion": "060207",
+        "productType": "shexiang_sheyingshexiang_danfanxiangji"
+    },
+    {
+        "productTypeCh": "拍立得",
+        "addtion": "060208",
+        "productType": "shexiang_sheyingshexiang_pailide"
+    },
+    {
+        "productTypeCh": "运动相机",
+        "addtion": "060209",
+        "productType": "shexiang_sheyingshexiang_yundongxiangji"
+    },
+    {
+        "productTypeCh": "数码",
+        "addtion": "07",
+        "productType": "shuma"
+    },
+    {
+        "productTypeCh": "数码配件",
+        "addtion": "0704",
+        "productType": "shumapeijian"
+    },
+    {
+        "productTypeCh": "数码存储卡",
+        "addtion": "070401",
+        "productType": "shuma_shumapeijian_cunchuka"
+    },
+    {
+        "productTypeCh": "读卡器",
+        "addtion": "070402",
+        "productType": "shuma_shumapeijian_dukaqi"
+    },
+    {
+        "productTypeCh": "滤镜",
+        "addtion": "070403",
+        "productType": "shuma_shumapeijian_lvjing"
+    },
+    {
+        "productTypeCh": "数码相机包",
+        "addtion": "070405",
+        "productType": "shuma_shumapeijian_xiangjibao"
+    },
+    {
+        "productTypeCh": "相机清洁",
+        "addtion": "070407",
+        "productType": "shuma_shumapeijian_xiangjiqingjie"
+    },
+    {
+        "productTypeCh": "相机贴膜",
+        "addtion": "070408",
+        "productType": "shuma_shumapeijian_xiangjitiemo"
+    },
+    {
+        "productTypeCh": "机身附件",
+        "addtion": "070409",
+        "productType": "shuma_shumapeijian_jishenfujian"
+    },
+    {
+        "productTypeCh": "镜头附件",
+        "addtion": "070410",
+        "productType": "shuma_shumapeijian_jingtoufujian"
+    },
+    {
+        "productTypeCh": "电池/充电器",
+        "addtion": "070411",
+        "productType": "shuma_shumapeijian_dianchichongdianqi"
+    },
+    {
+        "productTypeCh": "移动电源",
+        "addtion": "070412",
+        "productType": "shuma_shumapeijian_yidongdianyuan"
+    },
+    {
+        "productTypeCh": "闪光灯/手柄",
+        "addtion": "070404",
+        "productType": "shuma_shumapeijian_shanguangdengheshoubing"
+    },
+    {
+        "productTypeCh": "三脚架/云台",
+        "addtion": "070406",
+        "productType": "shuma_shumapeijian_sanjiaojiaheyuntaiu"
+    },
+    {
+        "productTypeCh": "时尚影音",
+        "addtion": "0705",
+        "productType": "shishangyingyin"
+    },
+    {
+        "productTypeCh": "耳机耳麦",
+        "addtion": "070501",
+        "productType": "shuma_shishangyingyin_erjiermai"
+    },
+    {
+        "productTypeCh": "麦克风",
+        "addtion": "070502",
+        "productType": "shuma_shishangyingyin_maikefeng"
+    },
+    {
+        "productTypeCh": "mp3/mp4",
+        "addtion": "070503",
+        "productType": "shuma_shishangyingyin_mp3mp4"
+    },
+    {
+        "productTypeCh": "数码相框",
+        "addtion": "070504",
+        "productType": "shuma_shishangyingyin_shumaxiangkuang"
+    },
+    {
+        "productTypeCh": "音箱",
+        "addtion": "070505",
+        "productType": "shuma_shishangyingyin_yinxiang"
+    },
+    {
+        "productTypeCh": "电子教育",
+        "addtion": "070507",
+        "productType": "shuma_shishangyingyin_dianzijiaoyu"
+    },
+    {
+        "productTypeCh": "高清播放器",
+        "addtion": "070511",
+        "productType": "shuma_shishangyingyin_gaoqingbofangqi"
+    },
+    {
+        "productTypeCh": "智能设备",
+        "addtion": "070508",
+        "productType": "shuma_shishangyingyin_zhinengshebei"
+    },
+    {
+        "productTypeCh": "MP3/MP4配件",
+        "addtion": "070510",
+        "productType": "shuma_shishangyingyin_mp3mp4peijian"
+    },
+    {
+        "productTypeCh": "苹果配件",
+        "addtion": "070506",
+        "productType": "shuma_shishangyingyin_pingguopeijian"
+    },
+    {
+        "productTypeCh": "专业音频",
+        "addtion": "070509",
+        "productType": "shuma_shishangyingyin_zhuanyeyinpin"
+    },
+    {
+        "productTypeCh": "智能设备",
+        "addtion": "0706",
+        "productType": "zhinengshebei"
+    },
+    {
+        "productTypeCh": "智能手环",
+        "addtion": "070601",
+        "productType": "shuma_zhinengshebei_zhinengshouhuan"
+    },
+    {
+        "productTypeCh": "智能手表",
+        "addtion": "070602",
+        "productType": "shuma_zhinengshebei_zhinengshoubiao"
+    },
+    {
+        "productTypeCh": "智能眼镜",
+        "addtion": "070603",
+        "productType": "shuma_zhinengshebei_zhinengyanjing"
+    },
+    {
+        "productTypeCh": "运动跟踪器",
+        "addtion": "070604",
+        "productType": "shuma_zhinengshebei_yundonggenzongqi"
+    },
+    {
+        "productTypeCh": "健康监测",
+        "addtion": "070605",
+        "productType": "shuma_zhinengshebei_jiankangjiance"
+    },
+    {
+        "productTypeCh": "智能配饰",
+        "addtion": "070606",
+        "productType": "shuma_zhinengshebei_zhinengpeishi"
+    },
+    {
+        "productTypeCh": "数码智能家居",
+        "addtion": "070607",
+        "productType": "shuma_zhinengshebei_zhinengjiaju"
+    },
+    {
+        "productTypeCh": "体感车",
+        "addtion": "070608",
+        "productType": "shuma_zhinengshebei_tiganche"
+    },
+    {
+        "productTypeCh": "电子教育",
+        "addtion": "0707",
+        "productType": "dianzijiaoyu"
+    },
+    {
+        "productTypeCh": "电子词典",
+        "addtion": "070701",
+        "productType": "shuma_dianzijiaoyu_dianzicidian"
+    },
+    {
+        "productTypeCh": "电纸书",
+        "addtion": "070702",
+        "productType": "shuma_dianzijiaoyu_dianzhishu"
+    },
+    {
+        "productTypeCh": "录音笔",
+        "addtion": "070703",
+        "productType": "shuma_dianzijiaoyu_luyinbi"
+    },
+    {
+        "productTypeCh": "复读机",
+        "addtion": "070704",
+        "productType": "shuma_dianzijiaoyu_fuduji"
+    },
+    {
+        "productTypeCh": "点读机/笔",
+        "addtion": "070705",
+        "productType": "shuma_dianzijiaoyu_diandujihebi"
+    },
+    {
+        "productTypeCh": "学生平板",
+        "addtion": "070706",
+        "productType": "shuma_dianzijiaoyu_xueshengpingban"
+    },
+    {
+        "productTypeCh": "早教机",
+        "addtion": "070707",
+        "productType": "shuma_dianzijiaoyu_zaojiaoji"
+    },
+    {
+        "productTypeCh": "电脑",
+        "addtion": "02",
+        "productType": "diannao"
+    },
+    {
+        "productTypeCh": "电脑整机",
+        "addtion": "0201",
+        "productType": "diannaozhengtiji"
+    },
+    {
+        "productTypeCh": "笔记本",
+        "addtion": "020101",
+        "productType": "diannao_diannaozhengtiji_bijiben"
+    },
+    {
+        "productTypeCh": "超极本",
+        "addtion": "020102",
+        "productType": "diannao_diannaozhengtiji_chaojiben"
+    },
+    {
+        "productTypeCh": "平板电脑",
+        "addtion": "020103",
+        "productType": "diannao_diannaozhengtiji_pingban"
+    },
+    {
+        "productTypeCh": "台式机",
+        "addtion": "020106",
+        "productType": "diannao_diannaozhengtiji_taishiji"
+    },
+    {
+        "productTypeCh": "游戏本",
+        "addtion": "020107",
+        "productType": "diannao_diannaozhengtiji_youxiben"
+    },
+    {
+        "productTypeCh": "平板电脑配件",
+        "addtion": "020108",
+        "productType": "diannao_diannaozhengtiji_pingbandiannaopeijian"
+    },
+    {
+        "productTypeCh": "服务器/工作站",
+        "addtion": "020104",
+        "productType": "diannao_diannaozhengtiji_fuwuqihegongzuozhan"
+    },
+    {
+        "productTypeCh": "笔记本配件",
+        "addtion": "020105",
+        "productType": "diannao_diannaozhengtiji_bijibenpeijian"
+    },
+    {
+        "productTypeCh": "电脑配件",
+        "addtion": "0202",
+        "productType": "diannaopeijian"
+    },
+    {
+        "productTypeCh": "CPU",
+        "addtion": "020201",
+        "productType": "diannao_diannaopeijian_cpu"
+    },
+    {
+        "productTypeCh": "主板",
+        "addtion": "020202",
+        "productType": "diannao_diannaopeijian_zhuban"
+    },
+    {
+        "productTypeCh": "显卡",
+        "addtion": "020203",
+        "productType": "diannao_diannaopeijian_xianka"
+    },
+    {
+        "productTypeCh": "硬盘",
+        "addtion": "020204",
+        "productType": "diannao_diannaopeijian_yingpan"
+    },
+    {
+        "productTypeCh": "内存",
+        "addtion": "020206",
+        "productType": "diannao_diannaopeijian_neicun"
+    },
+    {
+        "productTypeCh": "机箱",
+        "addtion": "020207",
+        "productType": "diannao_diannaopeijian_jixiang"
+    },
+    {
+        "productTypeCh": "电源",
+        "addtion": "020208",
+        "productType": "diannao_diannaopeijian_dianyuan"
+    },
+    {
+        "productTypeCh": "显示器",
+        "addtion": "020209",
+        "productType": "diannao_diannaopeijian_xianshiqi"
+    },
+    {
+        "productTypeCh": "刻录机/光驱",
+        "addtion": "020210",
+        "productType": "diannao_diannaopeijian_guangquhekeluji"
+    },
+    {
+        "productTypeCh": "声卡/扩展卡",
+        "addtion": "020211",
+        "productType": "diannao_diannaopeijian_shengkahekuozhanka"
+    },
+    {
+        "productTypeCh": "电脑散热器",
+        "addtion": "020212",
+        "productType": "diannao_diannaopeijian_sanreqi"
+    },
+    {
+        "productTypeCh": "SSD固态硬盘",
+        "addtion": "020205",
+        "productType": "diannao_diannaopeijian_gutaiyingpan"
+    },
+    {
+        "productTypeCh": "装机配件",
+        "addtion": "020213",
+        "productType": "diannao_diannaopeijian_zhuangjipeijian"
+    },
+    {
+        "productTypeCh": "组装电脑",
+        "addtion": "020214",
+        "productType": "diannao_diannaopeijian_zuzhuangdiannao"
+    },
+    {
+        "productTypeCh": "外设产品",
+        "addtion": "0203",
+        "productType": "waishechanpin"
+    },
+    {
+        "productTypeCh": "移动硬盘",
+        "addtion": "020301",
+        "productType": "diannao_waishechanpin_yidongyingpan"
+    },
+    {
+        "productTypeCh": "U盘",
+        "addtion": "020302",
+        "productType": "diannao_waishechanpin_upan"
+    },
+    {
+        "productTypeCh": "鼠标",
+        "addtion": "020304",
+        "productType": "diannao_waishechanpin_shubiao"
+    },
+    {
+        "productTypeCh": "键盘",
+        "addtion": "020305",
+        "productType": "diannao_waishechanpin_jianpan"
+    },
+    {
+        "productTypeCh": "鼠标垫",
+        "addtion": "020306",
+        "productType": "diannao_waishechanpin_shubiaodian"
+    },
+    {
+        "productTypeCh": "摄像头",
+        "addtion": "020307",
+        "productType": "diannao_waishechanpin_shexiangtou"
+    },
+    {
+        "productTypeCh": "手写板",
+        "addtion": "020308",
+        "productType": "diannao_waishechanpin_shouxieban"
+    },
+    {
+        "productTypeCh": "外置盒",
+        "addtion": "020309",
+        "productType": "diannao_waishechanpin_waizhihe"
+    },
+    {
+        "productTypeCh": "线缆",
+        "addtion": "020311",
+        "productType": "diannao_waishechanpin_xianlan"
+    },
+    {
+        "productTypeCh": "UPS电源",
+        "addtion": "020312",
+        "productType": "diannao_waishechanpin_upsdianyuan"
+    },
+    {
+        "productTypeCh": "电脑工具",
+        "addtion": "020313",
+        "productType": "diannao_waishechanpin_diannaogongju"
+    },
+    {
+        "productTypeCh": "游戏设备",
+        "addtion": "020314",
+        "productType": "diannao_waishechanpin_youxishebei"
+    },
+    {
+        "productTypeCh": "电脑清洁",
+        "addtion": "020316",
+        "productType": "diannao_waishechanpin_diannaoqingjie"
+    },
+    {
+        "productTypeCh": "网络产品",
+        "addtion": "0204",
+        "productType": "wangluochanpin"
+    },
+    {
+        "productTypeCh": "路由器",
+        "addtion": "020401",
+        "productType": "diannao_wangluochanpin_luyouqi"
+    },
+    {
+        "productTypeCh": "网卡",
+        "addtion": "020402",
+        "productType": "diannao_wangluochanpin_wangka"
+    },
+    {
+        "productTypeCh": "交换机",
+        "addtion": "020403",
+        "productType": "diannao_wangluochanpin_jiaohuanji"
+    },
+    {
+        "productTypeCh": "网络存储",
+        "addtion": "020404",
+        "productType": "diannao_wangluochanpin_wangluocunchu"
+    },
+    {
+        "productTypeCh": "网络盒子",
+        "addtion": "020406",
+        "productType": "diannao_wangluochanpin_wangluohezi"
+    },
+    {
+        "productTypeCh": "网络配件",
+        "addtion": "020407",
+        "productType": "diannao_wangluochanpin_wangluopeijian"
+    },
+    {
+        "productTypeCh": "服务产品",
+        "addtion": "0207",
+        "productType": "fuwuchanpin"
+    },
+    {
+        "productTypeCh": "上门服务",
+        "addtion": "020701",
+        "productType": "diannao_fuwuchanpin_shangmenfuwu"
+    },
+    {
+        "productTypeCh": "远程服务",
+        "addtion": "020702",
+        "productType": "diannao_fuwuchanpin_yuanchengfuwu"
+    },
+    {
+        "productTypeCh": "电脑软件",
+        "addtion": "020703",
+        "productType": "diannao_fuwuchanpin_diannaoruanjian"
+    },
+    {
+        "productTypeCh": "办公",
+        "addtion": "08",
+        "productType": "bangong"
+    },
+    {
+        "productTypeCh": "办公打印",
+        "addtion": "0805",
+        "productType": "bangongdayin"
+    },
+    {
+        "productTypeCh": "打印机",
+        "addtion": "080501",
+        "productType": "bangong_bangongdayin_dayinji"
+    },
+    {
+        "productTypeCh": "一体机",
+        "addtion": "080502",
+        "productType": "bangong_bangongdayin_yitiji"
+    },
+    {
+        "productTypeCh": "投影机",
+        "addtion": "080503",
+        "productType": "bangong_bangongdayin_touyingji"
+    },
+    {
+        "productTypeCh": "投影配件",
+        "addtion": "080504",
+        "productType": "bangong_bangongdayin_touyingpeijian"
+    },
+    {
+        "productTypeCh": "传真机",
+        "addtion": "080505",
+        "productType": "bangong_bangongdayin_chuanzhenji"
+    },
+    {
+        "productTypeCh": "复合机",
+        "addtion": "080506",
+        "productType": "bangong_bangongdayin_fuheji"
+    },
+    {
+        "productTypeCh": "扫描仪",
+        "addtion": "080508",
+        "productType": "bangong_bangongdayin_saomiaoyi"
+    },
+    {
+        "productTypeCh": "墨盒",
+        "addtion": "080509",
+        "productType": "bangong_bangongdayin_mohe"
+    },
+    {
+        "productTypeCh": "硒鼓",
+        "addtion": "080510",
+        "productType": "bangong_bangongdayin_xigu"
+    },
+    {
+        "productTypeCh": "墨粉",
+        "addtion": "080511",
+        "productType": "bangong_bangongdayin_mofen"
+    },
+    {
+        "productTypeCh": "色带",
+        "addtion": "080512",
+        "productType": "bangong_bangongdayin_sedai"
+    },
+    {
+        "productTypeCh": "办公文仪",
+        "addtion": "0806",
+        "productType": "bangongwenyi"
+    },
+    {
+        "productTypeCh": "办公文具",
+        "addtion": "080601",
+        "productType": "bangong_bangongwenyi_bangongwenju"
+    },
+    {
+        "productTypeCh": "文件管理",
+        "addtion": "080602",
+        "productType": "bangong_bangongwenyi_wenjianguanli"
+    },
+    {
+        "productTypeCh": "笔类",
+        "addtion": "080603",
+        "productType": "bangong_bangongwenyi_bilei"
+    },
+    {
+        "productTypeCh": "纸类",
+        "addtion": "080604",
+        "productType": "bangong_bangongwenyi_zhilei"
+    },
+    {
+        "productTypeCh": "本册/便签",
+        "addtion": "080605",
+        "productType": "bangong_bangongwenyi_bencehebianqian"
+    },
+    {
+        "productTypeCh": "学生文具",
+        "addtion": "080606",
+        "productType": "bangong_bangongwenyi_xueshengwenju"
+    },
+    {
+        "productTypeCh": "财务用品",
+        "addtion": "080607",
+        "productType": "bangong_bangongwenyi_caiwuyongpin"
+    },
+    {
+        "productTypeCh": "计算器",
+        "addtion": "080608",
+        "productType": "bangong_bangongwenyi_jisuanqi"
+    },
+    {
+        "productTypeCh": "激光笔",
+        "addtion": "080609",
+        "productType": "bangong_bangongwenyi_jiguangbi"
+    },
+    {
+        "productTypeCh": "白板/封装",
+        "addtion": "080610",
+        "productType": "bangong_bangongwenyi_baibanhefengzhuang"
+    },
+    {
+        "productTypeCh": "考勤机",
+        "addtion": "080611",
+        "productType": "bangong_bangongwenyi_kaoqinji"
+    },
+    {
+        "productTypeCh": "刻录碟片/附件",
+        "addtion": "080612",
+        "productType": "bangong_bangongwenyi_keludiepianhefujian"
+    },
+    {
+        "productTypeCh": "点钞机",
+        "addtion": "080613",
+        "productType": "bangong_bangongwenyi_dianchaoji"
+    },
+    {
+        "productTypeCh": "支付设备/POS机",
+        "addtion": "080614",
+        "productType": "bangong_bangongwenyi_zhifushebei"
+    },
+    {
+        "productTypeCh": "安防监控",
+        "addtion": "080615",
+        "productType": "bangong_bangongwenyi_anfangjiankong"
+    },
+    {
+        "productTypeCh": "呼叫/会议设备",
+        "addtion": "080616",
+        "productType": "bangong_bangongwenyi_huiyishebei"
+    },
+    {
+        "productTypeCh": "保险柜",
+        "addtion": "080617",
+        "productType": "bangong_bangongwenyi_baoxiangui"
+    },
+    {
+        "productTypeCh": "办公家具",
+        "addtion": "080618",
+        "productType": "bangong_bangongwenyi_bangongjiaju"
+    },
+    {
+        "productTypeCh": "酒水",
+        "addtion": "04",
+        "productType": "jiushui"
+    },
+    {
+        "productTypeCh": "酒类",
+        "addtion": "0401",
+        "productType": "jiulei"
+    },
+    {
+        "productTypeCh": "啤酒",
+        "addtion": "040104",
+        "productType": "jiushui_jiulei_pijiu"
+    },
+    {
+        "productTypeCh": "葡萄酒",
+        "addtion": "040105",
+        "productType": "jiushui_jiulei_putaojiu"
+    },
+    {
+        "productTypeCh": "洋酒",
+        "addtion": "040106",
+        "productType": "jiushui_jiulei_yangjiu"
+    },
+    {
+        "productTypeCh": "黄酒/养生酒",
+        "addtion": "040102",
+        "productType": "jiushui_jiulei_huangjiuyangshengjiu"
+    },
+    {
+        "productTypeCh": "收藏酒/陈年老酒",
+        "addtion": "040103",
+        "productType": "jiushui_jiulei_shoucangjiuchennianlaojiu"
+    },
+    {
+        "productTypeCh": "饮料",
+        "addtion": "0409",
+        "productType": "yinliao"
+    },
+    {
+        "productTypeCh": "饮用水",
+        "addtion": "040901",
+        "productType": "jiushui_yinliao_yinyongshui"
+    },
+    {
+        "productTypeCh": "饮料",
+        "addtion": "040902",
+        "productType": "jiushui_yinliao_yinliao"
+    },
+    {
+        "productTypeCh": "牛奶乳品",
+        "addtion": "040903",
+        "productType": "jiushui_yinliao_niunairupin"
+    },
+    {
+        "productTypeCh": "食品",
+        "addtion": "09",
+        "productType": "shipin"
+    },
+    {
+        "productTypeCh": "茶叶",
+        "addtion": "0902",
+        "productType": "chaye"
+    },
+    {
+        "productTypeCh": "白茶",
+        "addtion": "090201",
+        "productType": "shipin_chaye_baicha"
+    },
+    {
+        "productTypeCh": "黑茶",
+        "addtion": "090202",
+        "productType": "shipin_chaye_heicha"
+    },
+    {
+        "productTypeCh": "红茶",
+        "addtion": "090203",
+        "productType": "shipin_chaye_hongcha"
+    },
+    {
+        "productTypeCh": "花草茶",
+        "addtion": "090204",
+        "productType": "shipin_chaye_huacaocha"
+    },
+    {
+        "productTypeCh": "花果茶",
+        "addtion": "090205",
+        "productType": "shipin_chaye_huaguocha"
+    },
+    {
+        "productTypeCh": "龙井",
+        "addtion": "090206",
+        "productType": "shipin_chaye_longjing"
+    },
+    {
+        "productTypeCh": "绿茶",
+        "addtion": "090207",
+        "productType": "shipin_chaye_lvcha"
+    },
+    {
+        "productTypeCh": "普洱",
+        "addtion": "090208",
+        "productType": "shipin_chaye_puer"
+    },
+    {
+        "productTypeCh": "铁观音",
+        "addtion": "090209",
+        "productType": "shipin_chaye_tieguanying"
+    },
+    {
+        "productTypeCh": "乌龙茶",
+        "addtion": "090210",
+        "productType": "shipin_chaye_wulongcha"
+    },
+    {
+        "productTypeCh": "养生茶",
+        "addtion": "090211",
+        "productType": "shipin_chaye_yangshengcha"
+    },
+    {
+        "productTypeCh": "进口食品",
+        "addtion": "0903",
+        "productType": "jinkoushipin"
+    },
+    {
+        "productTypeCh": "进口饼干蛋糕",
+        "addtion": "090301",
+        "productType": "shipin_jinkoushipin_binggandangao"
+    },
+    {
+        "productTypeCh": "进口糖果/巧克力",
+        "addtion": "090302",
+        "productType": "shipin_jinkoushipin_tangguoqiaokeli"
+    },
+    {
+        "productTypeCh": "进口休闲零食",
+        "addtion": "090303",
+        "productType": "shipin_jinkoushipin_xiuxianshipin"
+    },
+    {
+        "productTypeCh": "冲调饮品",
+        "addtion": "090304",
+        "productType": "shipin_jinkoushipin_chongtiaoyinpin"
+    },
+    {
+        "productTypeCh": "粮油调味",
+        "addtion": "090305",
+        "productType": "shipin_jinkoushipin_liangyoutiaowei"
+    },
+    {
+        "productTypeCh": "牛奶",
+        "addtion": "090306",
+        "productType": "shipin_jinkoushipin_niunai"
+    },
+    {
+        "productTypeCh": "休闲食品",
+        "addtion": "0904",
+        "productType": "xiuxianshipin"
+    },
+    {
+        "productTypeCh": "休闲零食",
+        "addtion": "090401",
+        "productType": "shipin_xiuxianshipin_xiuxianlingshi"
+    },
+    {
+        "productTypeCh": "坚果炒货",
+        "addtion": "090402",
+        "productType": "shipin_xiuxianshipin_jianguochaohuo"
+    },
+    {
+        "productTypeCh": "肉干肉脯",
+        "addtion": "090403",
+        "productType": "shipin_xiuxianshipin_rouganroufu"
+    },
+    {
+        "productTypeCh": "蜜饯果干",
+        "addtion": "090404",
+        "productType": "shipin_xiuxianshipin_mijianguogan"
+    },
+    {
+        "productTypeCh": "糖果/巧克力",
+        "addtion": "090405",
+        "productType": "shipin_xiuxianshipin_tangguoqiaokeli"
+    },
+    {
+        "productTypeCh": "休闲饼干蛋糕",
+        "addtion": "090406",
+        "productType": "shipin_xiuxianshipin_binggandangao"
+    },
+    {
+        "productTypeCh": "无糖食品",
+        "addtion": "090407",
+        "productType": "shipin_xiuxianshipin_wutangshipin"
+    },
+    {
+        "productTypeCh": "粮油调味",
+        "addtion": "0905",
+        "productType": "liangyoutiaowei"
+    },
+    {
+        "productTypeCh": "米面杂粮",
+        "addtion": "090501",
+        "productType": "shipin_liangyoutiaowei_mimianzaliang"
+    },
+    {
+        "productTypeCh": "食用油",
+        "addtion": "090502",
+        "productType": "shipin_liangyoutiaowei_shiyongyou"
+    },
+    {
+        "productTypeCh": "调味品",
+        "addtion": "090503",
+        "productType": "shipin_liangyoutiaowei_tiaoweipin"
+    },
+    {
+        "productTypeCh": "南北干货",
+        "addtion": "090504",
+        "productType": "shipin_liangyoutiaowei_nanbeiganhuo"
+    },
+    {
+        "productTypeCh": "方便食品",
+        "addtion": "090505",
+        "productType": "shipin_liangyoutiaowei_fangbianshipin"
+    },
+    {
+        "productTypeCh": "有机食品",
+        "addtion": "090506",
+        "productType": "shipin_liangyoutiaowei_youjishipin"
+    },
+    {
+        "productTypeCh": "饮料冲调",
+        "addtion": "0906",
+        "productType": "yinliaochongtiao"
+    },
+    {
+        "productTypeCh": "咖啡/奶茶",
+        "addtion": "090604",
+        "productType": "shipin_yinliaochongtiao_kafeinaicha"
+    },
+    {
+        "productTypeCh": "冲饮谷物",
+        "addtion": "090605",
+        "productType": "shipin_yinliaochongtiao_chongyinguwu"
+    },
+    {
+        "productTypeCh": "蜂蜜/柚子茶",
+        "addtion": "090606",
+        "productType": "shipin_yinliaochongtiao_fengmiyouzicha"
+    },
+    {
+        "productTypeCh": "冲调成人奶粉",
+        "addtion": "090607",
+        "productType": "shipin_yinliaochongtiao_chengrennaifen"
+    },
+    {
+        "productTypeCh": "地方特产",
+        "addtion": "0907",
+        "productType": "difangtechan"
+    },
+    {
+        "productTypeCh": "新疆特产",
+        "addtion": "090702",
+        "productType": "shipin_difangtechan_xinjiang"
+    },
+    {
+        "productTypeCh": "北京特产",
+        "addtion": "090703",
+        "productType": "shipin_difangtechan_beijing"
+    },
+    {
+        "productTypeCh": "山西特产",
+        "addtion": "090704",
+        "productType": "shipin_difangtechan_shanxi"
+    },
+    {
+        "productTypeCh": "内蒙古",
+        "addtion": "090705",
+        "productType": "shipin_difangtechan_neimenggu"
+    },
+    {
+        "productTypeCh": "福建",
+        "addtion": "090706",
+        "productType": "shipin_difangtechan_fujian"
+    },
+    {
+        "productTypeCh": "湖南",
+        "addtion": "090707",
+        "productType": "shipin_difangtechan_hunan"
+    },
+    {
+        "productTypeCh": "四川特产",
+        "addtion": "090708",
+        "productType": "shipin_difangtechan_sichuan"
+    },
+    {
+        "productTypeCh": "云南特产",
+        "addtion": "090709",
+        "productType": "shipin_difangtechan_yunnan"
+    },
+    {
+        "productTypeCh": "东北特产",
+        "addtion": "090710",
+        "productType": "shipin_difangtechan_dongbei"
+    },
+    {
+        "productTypeCh": "生鲜食品",
+        "addtion": "0908",
+        "productType": "shengxianshipin"
+    },
+    {
+        "productTypeCh": "产地直供",
+        "addtion": "090801",
+        "productType": "shipin_shengxianshipin_chandizhixiao"
+    },
+    {
+        "productTypeCh": "环球美食",
+        "addtion": "090802",
+        "productType": "shipin_shengxianshipin_huanqiumeishi"
+    },
+    {
+        "productTypeCh": "水果/蔬菜",
+        "addtion": "090803",
+        "productType": "shipin_shengxianshipin_shuiguoshucai"
+    },
+    {
+        "productTypeCh": "海鲜水产",
+        "addtion": "090804",
+        "productType": "shipin_shengxianshipin_haixianshuichan"
+    },
+    {
+        "productTypeCh": "肉禽蛋奶",
+        "addtion": "090805",
+        "productType": "shipin_shengxianshipin_rouqindannai"
+    },
+    {
+        "productTypeCh": "熟食腊味",
+        "addtion": "090806",
+        "productType": "shipin_shengxianshipin_shushilawei"
+    },
+    {
+        "productTypeCh": "美妆",
+        "addtion": "05",
+        "productType": "meizhuang"
+    },
+    {
+        "productTypeCh": "香水彩妆",
+        "addtion": "0501",
+        "productType": "xiangshuicaizhuang"
+    },
+    {
+        "productTypeCh": "香水",
+        "addtion": "050101",
+        "productType": "meizhuang_xiangshuicaizhuang_xiangshui"
+    },
+    {
+        "productTypeCh": "底妆",
+        "addtion": "050102",
+        "productType": "meizhuang_xiangshuicaizhuang_dizhuang"
+    },
+    {
+        "productTypeCh": "眼妆",
+        "addtion": "050103",
+        "productType": "meizhuang_xiangshuicaizhuang_yanzhuang"
+    },
+    {
+        "productTypeCh": "唇妆",
+        "addtion": "050104",
+        "productType": "meizhuang_xiangshuicaizhuang_chunzhuang"
+    },
+    {
+        "productTypeCh": "美甲",
+        "addtion": "050105",
+        "productType": "meizhuang_xiangshuicaizhuang_meijia"
+    },
+    {
+        "productTypeCh": "彩妆套装",
+        "addtion": "050106",
+        "productType": "meizhuang_xiangshuicaizhuang_taozhuang"
+    },
+    {
+        "productTypeCh": "腮红",
+        "addtion": "050107",
+        "productType": "meizhuang_xiangshuicaizhuang_saihong"
+    },
+    {
+        "productTypeCh": "美容工具",
+        "addtion": "050108",
+        "productType": "meizhuang_xiangshuicaizhuang_meironggongju"
+    },
+    {
+        "productTypeCh": "洗发",
+        "addtion": "050201",
+        "productType": "meizhuang_xifahufa_xifa"
+    },
+    {
+        "productTypeCh": "护发",
+        "addtion": "050202",
+        "productType": "meizhuang_xifahufa_hufa"
+    },
+    {
+        "productTypeCh": "洗发护发套装",
+        "addtion": "050203",
+        "productType": "meizhuang_xifahufa_taozhuang"
+    },
+    {
+        "productTypeCh": "造型",
+        "addtion": "050204",
+        "productType": "meizhuang_xifahufa_zaoxing"
+    },
+    {
+        "productTypeCh": "烫染",
+        "addtion": "050205",
+        "productType": "meizhuang_xifahufa_tangran"
+    },
+    {
+        "productTypeCh": "洗发护发",
+        "addtion": "0502",
+        "productType": "xifahufa"
+    },
+    {
+        "productTypeCh": "假发",
+        "addtion": "050206",
+        "productType": "meizhuang_xifahufa_jiafa"
+    },
+    {
+        "productTypeCh": "面部清洁",
+        "addtion": "050301",
+        "productType": "meizhuang_mianbuhufu_mianbuqingjie"
+    },
+    {
+        "productTypeCh": "面膜",
+        "addtion": "050303",
+        "productType": "meizhuang_mianbuhufu_mianmo"
+    },
+    {
+        "productTypeCh": "面部护肤",
+        "addtion": "0503",
+        "productType": "mianbuhufu"
+    },
+    {
+        "productTypeCh": "面部护理",
+        "addtion": "050302",
+        "productType": "meizhuang_mianbuhufu_mianbuhuli"
+    },
+    {
+        "productTypeCh": "面部护理套装",
+        "addtion": "050304",
+        "productType": "meizhuang_mianbuhufu_taozhuang"
+    },
+    {
+        "productTypeCh": "身体护肤",
+        "addtion": "0504",
+        "productType": "shentihufu"
+    },
+    {
+        "productTypeCh": "沐浴",
+        "addtion": "050401",
+        "productType": "meizhuang_shentihufu_muyu"
+    },
+    {
+        "productTypeCh": "润肤",
+        "addtion": "050402",
+        "productType": "meizhuang_shentihufu_runfu"
+    },
+    {
+        "productTypeCh": "颈部",
+        "addtion": "050403",
+        "productType": "meizhuang_shentihufu_jingbu"
+    },
+    {
+        "productTypeCh": "手足",
+        "addtion": "050404",
+        "productType": "meizhuang_shentihufu_shouzu"
+    },
+    {
+        "productTypeCh": "纤体塑型",
+        "addtion": "050405",
+        "productType": "meizhuang_shentihufu_xiantisuxing"
+    },
+    {
+        "productTypeCh": "美胸",
+        "addtion": "050406",
+        "productType": "meizhuang_shentihufu_meixiong"
+    },
+    {
+        "productTypeCh": "身体护肤套装",
+        "addtion": "050407",
+        "productType": "meizhuang_shentihufu_taozhuang"
+    },
+    {
+        "productTypeCh": "个护",
+        "addtion": "10",
+        "productType": "gehu"
+    },
+    {
+        "productTypeCh": "口腔护理",
+        "addtion": "1005",
+        "productType": "kouqianghuli"
+    },
+    {
+        "productTypeCh": "牙膏/牙粉",
+        "addtion": "100501",
+        "productType": "gehu_kouqianghuli_yagaoyafen"
+    },
+    {
+        "productTypeCh": "牙刷/牙线",
+        "addtion": "100502",
+        "productType": "gehu_kouqianghuli_yashuayaxian"
+    },
+    {
+        "productTypeCh": "漱口水",
+        "addtion": "100503",
+        "productType": "gehu_kouqianghuli_shukooushui"
+    },
+    {
+        "productTypeCh": "口腔护理套装",
+        "addtion": "100504",
+        "productType": "gehu_kouqianghuli_taozhuang"
+    },
+    {
+        "productTypeCh": "女性护理",
+        "addtion": "1006",
+        "productType": "nvxinghuli"
+    },
+    {
+        "productTypeCh": "卫生巾",
+        "addtion": "100601",
+        "productType": "gehu_nvxinghuli_weishengjin"
+    },
+    {
+        "productTypeCh": "卫生护垫",
+        "addtion": "100602",
+        "productType": "gehu_nvxinghuli_weishenghudian"
+    },
+    {
+        "productTypeCh": "私密护理",
+        "addtion": "100603",
+        "productType": "gehu_nvxinghuli_simihuli"
+    },
+    {
+        "productTypeCh": "脱毛膏",
+        "addtion": "100604",
+        "productType": "gehu_nvxinghuli_tuomaogao"
+    },
+    {
+        "productTypeCh": "家电",
+        "addtion": "03",
+        "productType": "jiayongdianqi"
+    },
+    {
+        "productTypeCh": "大家电",
+        "addtion": "0301",
+        "productType": "dajiadian"
+    },
+    {
+        "productTypeCh": "冰箱",
+        "addtion": "030101",
+        "productType": "jiayongdianqi_dajiadian_bingxiang"
+    },
+    {
+        "productTypeCh": "空调",
+        "addtion": "030102",
+        "productType": "jiayongdianqi_dajiadian_kongtiao"
+    },
+    {
+        "productTypeCh": "电视",
+        "addtion": "030103",
+        "productType": "jiayongdianqi_dajiadian_dianshi"
+    },
+    {
+        "productTypeCh": "洗衣机",
+        "addtion": "030105",
+        "productType": "jiayongdianqi_dajiadian_xiyiji"
+    },
+    {
+        "productTypeCh": "家庭影院",
+        "addtion": "030106",
+        "productType": "jiayongdianqi_dajiadian_jiatingyingyin"
+    },
+    {
+        "productTypeCh": "DVD",
+        "addtion": "030107",
+        "productType": "jiayongdianqi_dajiadian_dvd"
+    },
+    {
+        "productTypeCh": "迷你音响",
+        "addtion": "030108",
+        "productType": "jiayongdianqi_dajiadian_miniyinxiang"
+    },
+    {
+        "productTypeCh": "烟机/灶具",
+        "addtion": "030109",
+        "productType": "jiayongdianqi_dajiadian_yanjihezaoju"
+    },
+    {
+        "productTypeCh": "热水器",
+        "addtion": "030110",
+        "productType": "jiayongdianqi_dajiadian_reshuiqi"
+    },
+    {
+        "productTypeCh": "消毒柜/洗碗机",
+        "addtion": "030111",
+        "productType": "jiayongdianqi_dajiadian_xiaoduguihexiwanji"
+    },
+    {
+        "productTypeCh": "酒柜/冰吧/冷柜",
+        "addtion": "030112",
+        "productType": "jiayongdianqi_dajiadian_jiuguibingbalenggui"
+    },
+    {
+        "productTypeCh": "家电配件",
+        "addtion": "030113",
+        "productType": "jiayongdianqi_dajiadian_jiadianpeijian"
+    },
+    {
+        "productTypeCh": "生活电器",
+        "addtion": "0302",
+        "productType": "shenghuodianqi"
+    },
+    {
+        "productTypeCh": "电风扇",
+        "addtion": "030201",
+        "productType": "jiayongdianqi_shenghuodianqi_dianfengshan"
+    },
+    {
+        "productTypeCh": "冷风扇",
+        "addtion": "030202",
+        "productType": "jiayongdianqi_shenghuodianqi_lengfengshan"
+    },
+    {
+        "productTypeCh": "净化器",
+        "addtion": "030203",
+        "productType": "jiayongdianqi_shenghuodianqi_jinghuaqi"
+    },
+    {
+        "productTypeCh": "饮水机",
+        "addtion": "030204",
+        "productType": "jiayongdianqi_shenghuodianqi_yingshuiji"
+    },
+    {
+        "productTypeCh": "净水设备",
+        "addtion": "030205",
+        "productType": "jiayongdianqi_shenghuodianqi_jingshuishebie"
+    },
+    {
+        "productTypeCh": "吸尘器",
+        "addtion": "030207",
+        "productType": "jiayongdianqi_shenghuodianqi_xichenqi"
+    },
+    {
+        "productTypeCh": "电话机",
+        "addtion": "030208",
+        "productType": "jiayongdianqi_shenghuodianqi_dianhuaji"
+    },
+    {
+        "productTypeCh": "收录/音机",
+        "addtion": "030210",
+        "productType": "jiayongdianqi_shenghuodianqi_shouluyinji"
+    },
+    {
+        "productTypeCh": "加湿器",
+        "addtion": "030212",
+        "productType": "jiayongdianqi_shenghuodianqi_jiashiqi"
+    },
+    {
+        "productTypeCh": "除湿/干衣机",
+        "addtion": "030213",
+        "productType": "jiayongdianqi_shenghuodianqi_ganxiji"
+    },
+    {
+        "productTypeCh": "取暖电器",
+        "addtion": "030214",
+        "productType": "jiayongdianqi_shenghuodianqi_qunuandianqi"
+    },
+    {
+        "productTypeCh": "挂烫机/熨斗",
+        "addtion": "030206",
+        "productType": "jiayongdianqi_shenghuodianqi_guatangjiyundou"
+    },
+    {
+        "productTypeCh": "厨房电器",
+        "addtion": "0303",
+        "productType": "chufangdianqi"
+    },
+    {
+        "productTypeCh": "料理/榨汁机",
+        "addtion": "030301",
+        "productType": "jiayongdianqi_chufangdianqi_liaolihezhazhiji"
+    },
+    {
+        "productTypeCh": "豆浆机",
+        "addtion": "030302",
+        "productType": "jiayongdianqi_chufangdianqi_doujiangji"
+    },
+    {
+        "productTypeCh": "电饭煲",
+        "addtion": "030303",
+        "productType": "jiayongdianqi_chufangdianqi_dianfanbao"
+    },
+    {
+        "productTypeCh": "电压力锅",
+        "addtion": "030304",
+        "productType": "jiayongdianqi_chufangdianqi_dianyaliguo"
+    },
+    {
+        "productTypeCh": "面包机",
+        "addtion": "030305",
+        "productType": "jiayongdianqi_chufangdianqi_mianbaoji"
+    },
+    {
+        "productTypeCh": "咖啡机",
+        "addtion": "030306",
+        "productType": "jiayongdianqi_chufangdianqi_kafeiji"
+    },
+    {
+        "productTypeCh": "微波炉",
+        "addtion": "030307",
+        "productType": "jiayongdianqi_chufangdianqi_weibolu"
+    },
+    {
+        "productTypeCh": "电烤箱",
+        "addtion": "030308",
+        "productType": "jiayongdianqi_chufangdianqi_diankaoxiang"
+    },
+    {
+        "productTypeCh": "电磁炉",
+        "addtion": "030309",
+        "productType": "jiayongdianqi_chufangdianqi_diancilu"
+    },
+    {
+        "productTypeCh": "电饼铛/烧烤盘",
+        "addtion": "030310",
+        "productType": "jiayongdianqi_chufangdianqi_dianbingdangheshaokaopan"
+    },
+    {
+        "productTypeCh": "煮蛋器",
+        "addtion": "030311",
+        "productType": "jiayongdianqi_chufangdianqi_zhudanqi"
+    },
+    {
+        "productTypeCh": "酸奶机",
+        "addtion": "030312",
+        "productType": "jiayongdianqi_chufangdianqi_suannaiji"
+    },
+    {
+        "productTypeCh": "电炖锅",
+        "addtion": "030313",
+        "productType": "jiayongdianqi_chufangdianqi_diandunguo"
+    },
+    {
+        "productTypeCh": "电水壶/热水瓶",
+        "addtion": "030314",
+        "productType": "jiayongdianqi_chufangdianqi_dianshuihuhereshuiping"
+    },
+    {
+        "productTypeCh": "多用途锅",
+        "addtion": "030315",
+        "productType": "jiayongdianqi_chufangdianqi_duoyongtuguo"
+    },
+    {
+        "productTypeCh": "果蔬解毒机",
+        "addtion": "030316",
+        "productType": "jiayongdianqi_chufangdianqi_guoshujieduji"
+    },
+    {
+        "productTypeCh": "个护健康",
+        "addtion": "0304",
+        "productType": "gehujiankang"
+    },
+    {
+        "productTypeCh": "剃须刀",
+        "addtion": "030401",
+        "productType": "jiayongdianqi_gehujiankang_tixudao"
+    },
+    {
+        "productTypeCh": "剃毛器/脱毛器",
+        "addtion": "030402",
+        "productType": "jiayongdianqi_gehujiankang_tuomaoqi"
+    },
+    {
+        "productTypeCh": "口腔护理",
+        "addtion": "030403",
+        "productType": "jiayongdianqi_gehujiankang_kouqianghuli"
+    },
+    {
+        "productTypeCh": "电吹风",
+        "addtion": "030404",
+        "productType": "jiayongdianqi_gehujiankang_dianchuifeng"
+    },
+    {
+        "productTypeCh": "美容器",
+        "addtion": "030405",
+        "productType": "jiayongdianqi_gehujiankang_meirongqi"
+    },
+    {
+        "productTypeCh": "美发器",
+        "addtion": "030406",
+        "productType": "jiayongdianqi_gehujiankang_meifaqi"
+    },
+    {
+        "productTypeCh": "按摩椅",
+        "addtion": "030407",
+        "productType": "jiayongdianqi_gehujiankang_anmoyi"
+    },
+    {
+        "productTypeCh": "按摩器",
+        "addtion": "030408",
+        "productType": "jiayongdianqi_gehujiankang_anmoqi"
+    },
+    {
+        "productTypeCh": "足浴盆",
+        "addtion": "030409",
+        "productType": "jiayongdianqi_gehujiankang_zuyupen"
+    },
+    {
+        "productTypeCh": "血压计",
+        "addtion": "030410",
+        "productType": "jiayongdianqi_gehujiankang_xueyaji"
+    },
+    {
+        "productTypeCh": "健康秤/厨房秤",
+        "addtion": "030411",
+        "productType": "jiayongdianqi_gehujiankang_jiankangchenghechufangcheng"
+    },
+    {
+        "productTypeCh": "血糖仪",
+        "addtion": "030412",
+        "productType": "jiayongdianqi_gehujiankang_xuetangyi"
+    },
+    {
+        "productTypeCh": "体温计",
+        "addtion": "030413",
+        "productType": "jiayongdianqi_gehujiankang_tiwenji"
+    },
+    {
+        "productTypeCh": "计步器/脂肪检测仪",
+        "addtion": "030414",
+        "productType": "jiayongdianqi_gehujiankang_jibuqihezhifangjianceyi"
+    },
+    {
+        "productTypeCh": "五金家装",
+        "addtion": "0305",
+        "productType": "wujinjiazhuang"
+    },
+    {
+        "productTypeCh": "仪器仪表",
+        "addtion": "030503",
+        "productType": "jiayongdianqi_wujinjiazhuang_yiqiyibiao"
+    },
+    {
+        "productTypeCh": "浴霸/排气扇",
+        "addtion": "030504",
+        "productType": "jiayongdianqi_wujinjiazhuang_yubahepaiqishan"
+    },
+    {
+        "productTypeCh": "灯具",
+        "addtion": "030505",
+        "productType": "jiayongdianqi_wujinjiazhuang_dengju"
+    },
+    {
+        "productTypeCh": "水槽",
+        "addtion": "030508",
+        "productType": "jiayongdianqi_wujinjiazhuang_shuicao"
+    },
+    {
+        "productTypeCh": "龙头",
+        "addtion": "030509",
+        "productType": "jiayongdianqi_wujinjiazhuang_longtou"
+    },
+    {
+        "productTypeCh": "家具五金",
+        "addtion": "030512",
+        "productType": "jiayongdianqi_wujinjiazhuang_jiajuwujin"
+    },
+    {
+        "productTypeCh": "门铃",
+        "addtion": "030513",
+        "productType": "jiayongdianqi_wujinjiazhuang_menling"
+    },
+    {
+        "productTypeCh": "电气开关",
+        "addtion": "030514",
+        "productType": "jiayongdianqi_wujinjiazhuang_dianqikaiguan"
+    },
+    {
+        "productTypeCh": "电工电料",
+        "addtion": "030516",
+        "productType": "jiayongdianqi_wujinjiazhuang_diangongdianliao"
+    },
+    {
+        "productTypeCh": "监控安防",
+        "addtion": "030517",
+        "productType": "jiayongdianqi_wujinjiazhuang_jiankonganfang"
+    },
+    {
+        "productTypeCh": "家装",
+        "addtion": "12",
+        "productType": "jiajujiazhuang"
+    },
+    {
+        "productTypeCh": "家纺",
+        "addtion": "1201",
+        "productType": "jiafang"
+    },
+    {
+        "productTypeCh": "床品套件",
+        "addtion": "120101",
+        "productType": "jiajujiazhuang_jiafang_chuangpintaojian"
+    },
+    {
+        "productTypeCh": "被子",
+        "addtion": "120102",
+        "productType": "jiajujiazhuang_jiafang_beizi"
+    },
+    {
+        "productTypeCh": "枕芯",
+        "addtion": "120103",
+        "productType": "jiajujiazhuang_jiafang_zhenxin"
+    },
+    {
+        "productTypeCh": "床单被罩",
+        "addtion": "120104",
+        "productType": "jiajujiazhuang_jiafang_chuangdanbeizhao"
+    },
+    {
+        "productTypeCh": "毯子",
+        "addtion": "120105",
+        "productType": "jiajujiazhuang_jiafang_tanzi"
+    },
+    {
+        "productTypeCh": "床垫/床褥",
+        "addtion": "120106",
+        "productType": "jiajujiazhuang_jiafang_chuangdianchuangru"
+    },
+    {
+        "productTypeCh": "蚊帐",
+        "addtion": "120107",
+        "productType": "jiajujiazhuang_jiafang_wenzhang"
+    },
+    {
+        "productTypeCh": "抱枕靠垫",
+        "addtion": "120108",
+        "productType": "jiajujiazhuang_jiafang_baozhenkaodian"
+    },
+    {
+        "productTypeCh": "毛巾浴巾",
+        "addtion": "120109",
+        "productType": "jiajujiazhuang_jiafang_maojinyujin"
+    },
+    {
+        "productTypeCh": "电热毯",
+        "addtion": "120110",
+        "productType": "jiajujiazhuang_jiafang_dianretan"
+    },
+    {
+        "productTypeCh": "窗帘/窗纱",
+        "addtion": "120111",
+        "productType": "jiajujiazhuang_jiafang_chuanglianchuangsha"
+    },
+    {
+        "productTypeCh": "布艺软饰",
+        "addtion": "120112",
+        "productType": "jiajujiazhuang_jiafang_buyiruanshi"
+    },
+    {
+        "productTypeCh": "凉席",
+        "addtion": "120113",
+        "productType": "jiajujiazhuang_jiafang_liangxi"
+    },
+    {
+        "productTypeCh": "灯具",
+        "addtion": "1202",
+        "productType": "dengju"
+    },
+    {
+        "productTypeCh": "灯具台灯",
+        "addtion": "120201",
+        "productType": "jiajujiazhuang_dengju_taideng"
+    },
+    {
+        "productTypeCh": "节能灯",
+        "addtion": "120202",
+        "productType": "jiajujiazhuang_dengju_jienengdeng"
+    },
+    {
+        "productTypeCh": "装饰灯",
+        "addtion": "120203",
+        "productType": "jiajujiazhuang_dengju_zhuangshideng"
+    },
+    {
+        "productTypeCh": "落地灯",
+        "addtion": "120204",
+        "productType": "jiajujiazhuang_dengju_luodideng"
+    },
+    {
+        "productTypeCh": "应急灯/手电",
+        "addtion": "120205",
+        "productType": "jiajujiazhuang_dengju_yingjidengshoudian"
+    },
+    {
+        "productTypeCh": "LED灯",
+        "addtion": "120206",
+        "productType": "jiajujiazhuang_dengju_leddeng"
+    },
+    {
+        "productTypeCh": "吸顶灯",
+        "addtion": "120207",
+        "productType": "jiajujiazhuang_dengju_xidingdeng"
+    },
+    {
+        "productTypeCh": "筒灯射灯",
+        "addtion": "120209",
+        "productType": "jiajujiazhuang_dengju_tongdengshedeng"
+    },
+    {
+        "productTypeCh": "吊灯",
+        "addtion": "120210",
+        "productType": "jiajujiazhuang_dengju_diaodeng"
+    },
+    {
+        "productTypeCh": "氛围照明灯",
+        "addtion": "120211",
+        "productType": "jiajujiazhuang_dengju_fenweizhaoming"
+    },
+    {
+        "productTypeCh": "生活日用",
+        "addtion": "1203",
+        "productType": "shenghuoriyong"
+    },
+    {
+        "productTypeCh": "雨伞雨具",
+        "addtion": "120302",
+        "productType": "jiajujiazhuang_shenghuoriyong_yusanyuju"
+    },
+    {
+        "productTypeCh": "浴室用品",
+        "addtion": "120303",
+        "productType": "jiajujiazhuang_shenghuoriyong_yushiyongpin"
+    },
+    {
+        "productTypeCh": "缝纫/针织用品",
+        "addtion": "120304",
+        "productType": "jiajujiazhuang_shenghuoriyong_fengrenzhenzhiyongpin"
+    },
+    {
+        "productTypeCh": "洗晒/熨烫",
+        "addtion": "120305",
+        "productType": "jiajujiazhuang_shenghuoriyong_xishaiyuntang"
+    },
+    {
+        "productTypeCh": "净化除味",
+        "addtion": "120306",
+        "productType": "jiajujiazhuang_shenghuoriyong_jinghuachuwei"
+    },
+    {
+        "productTypeCh": "家装软饰",
+        "addtion": "1204",
+        "productType": "jiazhuangruanshi"
+    },
+    {
+        "productTypeCh": "桌布/罩件",
+        "addtion": "120401",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_zhuobuzhaojian"
+    },
+    {
+        "productTypeCh": "地毯地垫",
+        "addtion": "120402",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_ditandidian"
+    },
+    {
+        "productTypeCh": "沙发垫套/椅垫",
+        "addtion": "120403",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_shafadiantaoyidian"
+    },
+    {
+        "productTypeCh": "相框/照片墙",
+        "addtion": "120404",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_xiangkuangzhaopianqiang"
+    },
+    {
+        "productTypeCh": "装饰字画",
+        "addtion": "120405",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_zhuangshizihua"
+    },
+    {
+        "productTypeCh": "节庆饰品",
+        "addtion": "120406",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_jieqingshipin"
+    },
+    {
+        "productTypeCh": "手工/十字绣",
+        "addtion": "120407",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_shougongshizixiu"
+    },
+    {
+        "productTypeCh": "装饰摆件",
+        "addtion": "120408",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_zhuangshibaijian"
+    },
+    {
+        "productTypeCh": "保暖防护",
+        "addtion": "120409",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_baonuanfanghu"
+    },
+    {
+        "productTypeCh": "帘艺隔断",
+        "addtion": "120410",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_lianyigeduan"
+    },
+    {
+        "productTypeCh": "墙贴/装饰贴",
+        "addtion": "120411",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_qiangtiezhuangshitie"
+    },
+    {
+        "productTypeCh": "花瓶花艺",
+        "addtion": "120413",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_huapinghuayi"
+    },
+    {
+        "productTypeCh": "香薰蜡烛",
+        "addtion": "120414",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_xiangxunlazhu"
+    },
+    {
+        "productTypeCh": "创意家居",
+        "addtion": "120415",
+        "productType": "jiajujiazhuang_jiazhuangruanshi_chuangyijiaju"
+    },
+    {
+        "productTypeCh": "清洁用品",
+        "addtion": "1205",
+        "productType": "qingjieyongpin"
+    },
+    {
+        "productTypeCh": "纸品湿巾",
+        "addtion": "120501",
+        "productType": "jiajujiazhuang_qingjieyongpin_zhipinshijin"
+    },
+    {
+        "productTypeCh": "衣物清洁",
+        "addtion": "120502",
+        "productType": "jiajujiazhuang_qingjieyongpin_yiwuqingjie"
+    },
+    {
+        "productTypeCh": "清洁工具",
+        "addtion": "120503",
+        "productType": "jiajujiazhuang_qingjieyongpin_qingjiegongju"
+    },
+    {
+        "productTypeCh": "驱虫用品",
+        "addtion": "120504",
+        "productType": "jiajujiazhuang_qingjieyongpin_quchongyongpin"
+    },
+    {
+        "productTypeCh": "家庭清洁",
+        "addtion": "120505",
+        "productType": "jiajujiazhuang_qingjieyongpin_jiatingqingjie"
+    },
+    {
+        "productTypeCh": "皮具护理",
+        "addtion": "120506",
+        "productType": "jiajujiazhuang_qingjieyongpin_pijuhuli"
+    },
+    {
+        "productTypeCh": "家具",
+        "addtion": "13",
+        "productType": "jiaju"
+    },
+    {
+        "productTypeCh": "卧室家具",
+        "addtion": "1301",
+        "productType": "woshijiaju"
+    },
+    {
+        "productTypeCh": "床",
+        "addtion": "130101",
+        "productType": "jiaju_woshijiaju_chuang"
+    },
+    {
+        "productTypeCh": "床垫",
+        "addtion": "130102",
+        "productType": "jiaju_woshijiaju_chuangdian"
+    },
+    {
+        "productTypeCh": "床头柜",
+        "addtion": "130103",
+        "productType": "jiaju_woshijiaju_chuangtouju"
+    },
+    {
+        "productTypeCh": "简易衣柜",
+        "addtion": "130104",
+        "productType": "jiaju_woshijiaju_jianyiyiju"
+    },
+    {
+        "productTypeCh": "斗柜",
+        "addtion": "130105",
+        "productType": "jiaju_woshijiaju_douju"
+    },
+    {
+        "productTypeCh": "梳妆台/凳",
+        "addtion": "130106",
+        "productType": "jiaju_woshijiaju_shuzhuangtaideng"
+    },
+    {
+        "productTypeCh": "穿衣镜",
+        "addtion": "130107",
+        "productType": "jiaju_woshijiaju_chuanyijing"
+    },
+    {
+        "productTypeCh": "衣柜",
+        "addtion": "130108",
+        "productType": "jiaju_woshijiaju_yiju"
+    },
+    {
+        "productTypeCh": "客厅家具",
+        "addtion": "1302",
+        "productType": "ketingjiaju"
+    },
+    {
+        "productTypeCh": "沙发",
+        "addtion": "130201",
+        "productType": "jiaju_ketingjiaju_shafa"
+    },
+    {
+        "productTypeCh": "沙发床",
+        "addtion": "130202",
+        "productType": "jiaju_ketingjiaju_shafachuang"
+    },
+    {
+        "productTypeCh": "边桌/茶几",
+        "addtion": "130203",
+        "productType": "jiaju_ketingjiaju_bianzhuochaji"
+    },
+    {
+        "productTypeCh": "电视柜",
+        "addtion": "130204",
+        "productType": "jiaju_ketingjiaju_dianshiju"
+    },
+    {
+        "productTypeCh": "屏风",
+        "addtion": "130205",
+        "productType": "jiaju_ketingjiaju_pingfeng"
+    },
+    {
+        "productTypeCh": "壁炉",
+        "addtion": "130206",
+        "productType": "jiaju_ketingjiaju_bilu"
+    },
+    {
+        "productTypeCh": "鞋柜",
+        "addtion": "130207",
+        "productType": "jiaju_ketingjiaju_xieju"
+    },
+    {
+        "productTypeCh": "休闲椅/凳",
+        "addtion": "130208",
+        "productType": "jiaju_ketingjiaju_xiuxianyideng"
+    },
+    {
+        "productTypeCh": "餐厅家具",
+        "addtion": "1303",
+        "productType": "cantingjiaju"
+    },
+    {
+        "productTypeCh": "餐桌",
+        "addtion": "130301",
+        "productType": "jiaju_cantingjiaju_canzhuo"
+    },
+    {
+        "productTypeCh": "餐边柜",
+        "addtion": "130302",
+        "productType": "jiaju_cantingjiaju_canbianju"
+    },
+    {
+        "productTypeCh": "酒柜",
+        "addtion": "130303",
+        "productType": "jiaju_cantingjiaju_jiuju"
+    },
+    {
+        "productTypeCh": "餐椅/吧台椅",
+        "addtion": "130304",
+        "productType": "jiaju_cantingjiaju_canyibataiyi"
+    },
+    {
+        "productTypeCh": "书房家具",
+        "addtion": "1304",
+        "productType": "shufangjiaju"
+    },
+    {
+        "productTypeCh": "书柜/书架",
+        "addtion": "130401",
+        "productType": "jiaju_shufangjiaju_shujushujia"
+    },
+    {
+        "productTypeCh": "电脑椅",
+        "addtion": "130402",
+        "productType": "jiaju_shufangjiaju_diannaoyi"
+    },
+    {
+        "productTypeCh": "书桌",
+        "addtion": "130403",
+        "productType": "jiaju_shufangjiaju_shuzhuo"
+    },
+    {
+        "productTypeCh": "儿童学习桌/椅",
+        "addtion": "130404",
+        "productType": "jiaju_shufangjiaju_ertongxuexizhuoyi"
+    },
+    {
+        "productTypeCh": "电脑桌",
+        "addtion": "130405",
+        "productType": "jiaju_shufangjiaju_diannaozhuo"
+    },
+    {
+        "productTypeCh": "储物家具",
+        "addtion": "1305",
+        "productType": "chuwujiaju"
+    },
+    {
+        "productTypeCh": "鞋架/衣帽架",
+        "addtion": "130501",
+        "productType": "jiaju_chuwujiaju_xiejiayimaojia"
+    },
+    {
+        "productTypeCh": "储物/收纳用品",
+        "addtion": "130502",
+        "productType": "jiaju_chuwujiaju_chuwushounayongpin"
+    },
+    {
+        "productTypeCh": "墙面搁架",
+        "addtion": "130503",
+        "productType": "jiaju_chuwujiaju_qiangmiangejia"
+    },
+    {
+        "productTypeCh": "层架/置物架",
+        "addtion": "130504",
+        "productType": "jiaju_chuwujiaju_cengjiazhiwujia"
+    },
+    {
+        "productTypeCh": "阳台/户外",
+        "addtion": "1306",
+        "productType": "yangtaihuwai"
+    },
+    {
+        "productTypeCh": "花架/装饰架",
+        "addtion": "130602",
+        "productType": "jiaju_yangtaihuwai_huajiazhuangshijia"
+    },
+    {
+        "productTypeCh": "家用梯",
+        "addtion": "130603",
+        "productType": "jiaju_yangtaihuwai_jiayongti"
+    },
+    {
+        "productTypeCh": "户外家具",
+        "addtion": "130604",
+        "productType": "jiaju_yangtaihuwai_huwaijiaju"
+    },
+    {
+        "productTypeCh": "折叠床",
+        "addtion": "130605",
+        "productType": "jiaju_yangtaihuwai_zhediechuang"
+    },
+    {
+        "productTypeCh": "商业办公",
+        "addtion": "1307",
+        "productType": "shangyebangong"
+    },
+    {
+        "productTypeCh": "酒店家具",
+        "addtion": "130701",
+        "productType": "jiaju_shangyebangong_jiudianjiaju"
+    },
+    {
+        "productTypeCh": "餐饮娱乐家具",
+        "addtion": "130702",
+        "productType": "jiaju_shangyebangong_canyinyulejiaju"
+    },
+    {
+        "productTypeCh": "商业办公家具",
+        "addtion": "130703",
+        "productType": "jiaju_shangyebangong_bangongjiaju"
+    },
+    {
+        "productTypeCh": "建材",
+        "addtion": "14",
+        "productType": "jiazhuangjiancai"
+    },
+    {
+        "productTypeCh": "灯饰照明",
+        "addtion": "1401",
+        "productType": "dengshizhaoming"
+    },
+    {
+        "productTypeCh": "室外/庭院灯",
+        "addtion": "140111",
+        "productType": "jiazhuangjiancai_dengshizhaoming_shiwaitingyuandeng"
+    },
+    {
+        "productTypeCh": "厨房卫浴",
+        "addtion": "1402",
+        "productType": "chufangweiyu"
+    },
+    {
+        "productTypeCh": "卫浴淋浴花洒",
+        "addtion": "140201",
+        "productType": "jiazhuangjiancai_chufangweiyu_linyuhuasa"
+    },
+    {
+        "productTypeCh": "厨卫五金/挂件",
+        "addtion": "140202",
+        "productType": "jiazhuangjiancai_chufangweiyu_chuweiwujinguajian"
+    },
+    {
+        "productTypeCh": "厨房龙头",
+        "addtion": "140203",
+        "productType": "jiazhuangjiancai_chufangweiyu_longtou"
+    },
+    {
+        "productTypeCh": "马桶/智能马桶盖",
+        "addtion": "140204",
+        "productType": "jiazhuangjiancai_chufangweiyu_matongzhinengmatonggai"
+    },
+    {
+        "productTypeCh": "浴室柜",
+        "addtion": "140205",
+        "productType": "jiazhuangjiancai_chufangweiyu_yushiju"
+    },
+    {
+        "productTypeCh": "浴缸",
+        "addtion": "140206",
+        "productType": "jiazhuangjiancai_chufangweiyu_yugang"
+    },
+    {
+        "productTypeCh": "卫浴水槽",
+        "addtion": "140207",
+        "productType": "jiazhuangjiancai_chufangweiyu_shuicao"
+    },
+    {
+        "productTypeCh": "净水软水",
+        "addtion": "140208",
+        "productType": "jiazhuangjiancai_chufangweiyu_jingshuiruanshui"
+    },
+    {
+        "productTypeCh": "橱柜",
+        "addtion": "140209",
+        "productType": "jiazhuangjiancai_chufangweiyu_chuju"
+    },
+    {
+        "productTypeCh": "陶瓷件组套",
+        "addtion": "140210",
+        "productType": "jiazhuangjiancai_chufangweiyu_taocijianzutao"
+    },
+    {
+        "productTypeCh": "沐浴桶",
+        "addtion": "140211",
+        "productType": "jiazhuangjiancai_chufangweiyu_muyutong"
+    },
+    {
+        "productTypeCh": "淋浴房",
+        "addtion": "140213",
+        "productType": "jiazhuangjiancai_chufangweiyu_linyufang"
+    },
+    {
+        "productTypeCh": "五金工具",
+        "addtion": "1403",
+        "productType": "wujingongju"
+    },
+    {
+        "productTypeCh": "手动工具",
+        "addtion": "140303",
+        "productType": "jiazhuangjiancai_wujingongju_shoudonggongju"
+    },
+    {
+        "productTypeCh": "电动工具",
+        "addtion": "140304",
+        "productType": "jiazhuangjiancai_wujingongju_diandonggongju"
+    },
+    {
+        "productTypeCh": "测量工具",
+        "addtion": "140305",
+        "productType": "jiazhuangjiancai_wujingongju_celianggongju"
+    },
+    {
+        "productTypeCh": "劳防用品",
+        "addtion": "140306",
+        "productType": "jiazhuangjiancai_wujingongju_laofangyongpin"
+    },
+    {
+        "productTypeCh": "工具箱/包/车",
+        "addtion": "140307",
+        "productType": "jiazhuangjiancai_wujingongju_gongjuxiangbaoche"
+    },
+    {
+        "productTypeCh": "电工电料",
+        "addtion": "1404",
+        "productType": "diangongdianliao"
+    },
+    {
+        "productTypeCh": "开关插座",
+        "addtion": "140401",
+        "productType": "jiazhuangjiancai_diangongdianliao_kaiguanchazuo"
+    },
+    {
+        "productTypeCh": "配电箱/断路器",
+        "addtion": "140403",
+        "productType": "jiazhuangjiancai_diangongdianliao_peidianxiangduanluqi"
+    },
+    {
+        "productTypeCh": "电线/电缆",
+        "addtion": "140404",
+        "productType": "jiazhuangjiancai_diangongdianliao_dianxiandianlan"
+    },
+    {
+        "productTypeCh": "电料配件",
+        "addtion": "140405",
+        "productType": "jiazhuangjiancai_diangongdianliao_dianliaopeijian"
+    },
+    {
+        "productTypeCh": "接线板/排插",
+        "addtion": "140406",
+        "productType": "jiazhuangjiancai_diangongdianliao_jiexianbanpaicha"
+    },
+    {
+        "productTypeCh": "墙地面材料",
+        "addtion": "1405",
+        "productType": "qiangdimiancailiao"
+    },
+    {
+        "productTypeCh": "油漆/涂料",
+        "addtion": "140501",
+        "productType": "jiazhuangjiancai_qiangdimiancailiao_youqituliao"
+    },
+    {
+        "productTypeCh": "壁纸",
+        "addtion": "140502",
+        "productType": "jiazhuangjiancai_qiangdimiancailiao_bizhi"
+    },
+    {
+        "productTypeCh": "瓷砖",
+        "addtion": "140503",
+        "productType": "jiazhuangjiancai_qiangdimiancailiao_cizhuan"
+    },
+    {
+        "productTypeCh": "地板",
+        "addtion": "140504",
+        "productType": "jiazhuangjiancai_qiangdimiancailiao_diban"
+    },
+    {
+        "productTypeCh": "木材/板材",
+        "addtion": "140505",
+        "productType": "jiazhuangjiancai_qiangdimiancailiao_mucaibancai"
+    },
+    {
+        "productTypeCh": "管材管件",
+        "addtion": "140506",
+        "productType": "jiazhuangjiancai_qiangdimiancailiao_guancaiguanjian"
+    },
+    {
+        "productTypeCh": "涂刷辅料/胶类",
+        "addtion": "140507",
+        "productType": "jiazhuangjiancai_qiangdimiancailiao_tushuafuliaojiaolei"
+    },
+    {
+        "productTypeCh": "装饰材料",
+        "addtion": "1406",
+        "productType": "zhuangshicailiao"
+    },
+    {
+        "productTypeCh": "吊顶",
+        "addtion": "140601",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_diaoding"
+    },
+    {
+        "productTypeCh": "散热器",
+        "addtion": "140602",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_sanreqi"
+    },
+    {
+        "productTypeCh": "门",
+        "addtion": "140603",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_men"
+    },
+    {
+        "productTypeCh": "窗",
+        "addtion": "140604",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_chuang"
+    },
+    {
+        "productTypeCh": "移门壁柜",
+        "addtion": "140605",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_yimenbiju"
+    },
+    {
+        "productTypeCh": "园艺休闲",
+        "addtion": "140606",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_yuanyixiuxian"
+    },
+    {
+        "productTypeCh": "浴霸/换气扇",
+        "addtion": "140607",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_yubahuanqishan"
+    },
+    {
+        "productTypeCh": "壁炉/壁挂炉/地暖",
+        "addtion": "140608",
+        "productType": "jiazhuangjiancai_zhuangshicailiao_bilubigualudinuan"
+    },
+    {
+        "productTypeCh": "装修服务",
+        "addtion": "1407",
+        "productType": "zhuangxiufuwu"
+    },
+    {
+        "productTypeCh": "装修设计",
+        "addtion": "140701",
+        "productType": "jiazhuangjiancai_zhuangxiufuwu_zhuangxiusheji"
+    },
+    {
+        "productTypeCh": "装修施工",
+        "addtion": "140702",
+        "productType": "jiazhuangjiancai_zhuangxiufuwu_zhuangxiushigong"
+    },
+    {
+        "productTypeCh": "工程监理",
+        "addtion": "140703",
+        "productType": "jiazhuangjiancai_zhuangxiufuwu_gongchengjianli"
+    },
+    {
+        "productTypeCh": "水电改造",
+        "addtion": "140704",
+        "productType": "jiazhuangjiancai_zhuangxiufuwu_shuidiangaizao"
+    },
+    {
+        "productTypeCh": "局部改造",
+        "addtion": "140705",
+        "productType": "jiazhuangjiancai_zhuangxiufuwu_jubugaizao"
+    },
+    {
+        "productTypeCh": "安装服务",
+        "addtion": "140706",
+        "productType": "jiazhuangjiancai_zhuangxiufuwu_anzhuangfuwu"
+    },
+    {
+        "productTypeCh": "厨具",
+        "addtion": "15",
+        "productType": "chuju"
+    },
+    {
+        "productTypeCh": "烹饪锅具",
+        "addtion": "1501",
+        "productType": "pengrenguoju"
+    },
+    {
+        "productTypeCh": "炒锅",
+        "addtion": "150101",
+        "productType": "chuju_pengrenguoju_chaoguo"
+    },
+    {
+        "productTypeCh": "煎锅",
+        "addtion": "150102",
+        "productType": "chuju_pengrenguoju_jianguo"
+    },
+    {
+        "productTypeCh": "压力锅",
+        "addtion": "150103",
+        "productType": "chuju_pengrenguoju_yaliguo"
+    },
+    {
+        "productTypeCh": "蒸锅",
+        "addtion": "150104",
+        "productType": "chuju_pengrenguoju_zhengguo"
+    },
+    {
+        "productTypeCh": "汤锅",
+        "addtion": "150105",
+        "productType": "chuju_pengrenguoju_tangguo"
+    },
+    {
+        "productTypeCh": "奶锅",
+        "addtion": "150106",
+        "productType": "chuju_pengrenguoju_naiguo"
+    },
+    {
+        "productTypeCh": "锅具套装",
+        "addtion": "150107",
+        "productType": "chuju_pengrenguoju_guojutaozhuang"
+    },
+    {
+        "productTypeCh": "煲类",
+        "addtion": "150108",
+        "productType": "chuju_pengrenguoju_baolei"
+    },
+    {
+        "productTypeCh": "水壶",
+        "addtion": "150109",
+        "productType": "chuju_pengrenguoju_shuihu"
+    },
+    {
+        "productTypeCh": "火锅",
+        "addtion": "150110",
+        "productType": "chuju_pengrenguoju_huoguo"
+    },
+    {
+        "productTypeCh": "刀剪菜板",
+        "addtion": "1502",
+        "productType": "daojiancaiban"
+    },
+    {
+        "productTypeCh": "菜刀",
+        "addtion": "150201",
+        "productType": "chuju_daojiancaiban_caidao"
+    },
+    {
+        "productTypeCh": "剪刀",
+        "addtion": "150202",
+        "productType": "chuju_daojiancaiban_jiandao"
+    },
+    {
+        "productTypeCh": "刀具套装",
+        "addtion": "150203",
+        "productType": "chuju_daojiancaiban_daojutaozhuang"
+    },
+    {
+        "productTypeCh": "砧板",
+        "addtion": "150204",
+        "productType": "chuju_daojiancaiban_zhenban"
+    },
+    {
+        "productTypeCh": "瓜果刀/刨",
+        "addtion": "150205",
+        "productType": "chuju_daojiancaiban_guaguodaobao"
+    },
+    {
+        "productTypeCh": "多功能刀",
+        "addtion": "150206",
+        "productType": "chuju_daojiancaiban_duogongnengdao"
+    },
+    {
+        "productTypeCh": "厨房配件",
+        "addtion": "1503",
+        "productType": "chufangpeijian"
+    },
+    {
+        "productTypeCh": "保鲜盒",
+        "addtion": "150301",
+        "productType": "chuju_chufangpeijian_baoxianhe"
+    },
+    {
+        "productTypeCh": "烘焙/烧烤",
+        "addtion": "150302",
+        "productType": "chuju_chufangpeijian_hongbeishaokao"
+    },
+    {
+        "productTypeCh": "饭盒/提锅",
+        "addtion": "150303",
+        "productType": "chuju_chufangpeijian_fanhetiguo"
+    },
+    {
+        "productTypeCh": "储物/置物架",
+        "addtion": "150304",
+        "productType": "chuju_chufangpeijian_chuwuzhiwujia"
+    },
+    {
+        "productTypeCh": "厨房DIY/小工具",
+        "addtion": "150305",
+        "productType": "chuju_chufangpeijian_chufangdiyxiaogongju"
+    },
+    {
+        "productTypeCh": "水具酒具",
+        "addtion": "1504",
+        "productType": "shuijujiuju"
+    },
+    {
+        "productTypeCh": "塑料杯",
+        "addtion": "150401",
+        "productType": "chuju_shuijujiuju_suliaobei"
+    },
+    {
+        "productTypeCh": "运动水壶",
+        "addtion": "150402",
+        "productType": "chuju_shuijujiuju_yundongshuihu"
+    },
+    {
+        "productTypeCh": "玻璃杯",
+        "addtion": "150403",
+        "productType": "chuju_shuijujiuju_bolibei"
+    },
+    {
+        "productTypeCh": "陶瓷/马克杯",
+        "addtion": "150404",
+        "productType": "chuju_shuijujiuju_taocimakebei"
+    },
+    {
+        "productTypeCh": "保温杯",
+        "addtion": "150405",
+        "productType": "chuju_shuijujiuju_baowenbei"
+    },
+    {
+        "productTypeCh": "保温壶",
+        "addtion": "150406??????????????",
+        "productType": "chuju_shuijujiuju_baowenhu"
+    },
+    {
+        "productTypeCh": "酒杯/酒具",
+        "addtion": "150407",
+        "productType": "chuju_shuijujiuju_jiubeijiuju"
+    },
+    {
+        "productTypeCh": "杯具套装",
+        "addtion": "150408",
+        "productType": "chuju_shuijujiuju_beijutaozhuang"
+    },
+    {
+        "productTypeCh": "餐具",
+        "addtion": "1505",
+        "productType": "canju"
+    },
+    {
+        "productTypeCh": "餐具套装",
+        "addtion": "150501",
+        "productType": "chuju_canju_canjutaozhuang"
+    },
+    {
+        "productTypeCh": "碗/碟/盘",
+        "addtion": "150502",
+        "productType": "chuju_canju_wandiepan"
+    },
+    {
+        "productTypeCh": "筷勺/刀叉",
+        "addtion": "150503",
+        "productType": "chuju_canju_kuaishaodaocha"
+    },
+    {
+        "productTypeCh": "餐具一次性用品",
+        "addtion": "150504",
+        "productType": "chuju_canju_yicixingyongpin"
+    },
+    {
+        "productTypeCh": "果盘/果篮",
+        "addtion": "150505",
+        "productType": "chuju_canju_guopanguolan"
+    },
+    {
+        "productTypeCh": "茶具/咖啡具",
+        "addtion": "1506",
+        "productType": "chajukafeiju"
+    },
+    {
+        "productTypeCh": "整套茶具",
+        "addtion": "150601",
+        "productType": "chuju_chajukafeiju_zhengtaochaju"
+    },
+    {
+        "productTypeCh": "茶杯",
+        "addtion": "150602",
+        "productType": "chuju_chajukafeiju_chabei"
+    },
+    {
+        "productTypeCh": "茶壶",
+        "addtion": "150603",
+        "productType": "chuju_chajukafeiju_chahu"
+    },
+    {
+        "productTypeCh": "茶盘茶托",
+        "addtion": "150604",
+        "productType": "chuju_chajukafeiju_chapanchatuo"
+    },
+    {
+        "productTypeCh": "茶叶罐",
+        "addtion": "150605",
+        "productType": "chuju_chajukafeiju_chayeguan"
+    },
+    {
+        "productTypeCh": "茶具配件",
+        "addtion": "150606",
+        "productType": "chuju_chajukafeiju_chajupeijian"
+    },
+    {
+        "productTypeCh": "茶宠摆件",
+        "addtion": "150607",
+        "productType": "chuju_chajukafeiju_chachongbaijian"
+    },
+    {
+        "productTypeCh": "咖啡具",
+        "addtion": "150608",
+        "productType": "chuju_chajukafeiju_kafeiju"
+    },
+    {
+        "productTypeCh": "拖鞋",
+        "addtion": "120114",
+        "productType": "jiajujiazhuang_jiafang_tuoxie"
+    },
+    {
+        "productTypeCh": "生活日用",
+        "addtion": "120307",
+        "productType": "jiajujiazhuang_shenghuoriyong_shenghuoriyong"
+    },
+    {
+        "productTypeCh": "儿童家具",
+        "addtion": "1309",
+        "productType": "ertongjiaju"
+    },
+    {
+        "productTypeCh": "儿童桌椅",
+        "addtion": "130901",
+        "productType": "jiaju_ertongjiaju_ertongzhuoyi"
+    },
+    {
+        "productTypeCh": "儿童床",
+        "addtion": "130902",
+        "productType": "jiaju_ertongjiaju_ertongchuang"
+    },
+    {
+        "productTypeCh": "儿童成套家具",
+        "addtion": "130903",
+        "productType": "jiaju_ertongjiaju_ertongchengtaojiaju"
+    },
+    {
+        "productTypeCh": "婴童寝品",
+        "addtion": "120116",
+        "productType": "jiajujiazhuang_jiafang_yingtongqinpin"
+    },
+    {
+        "productTypeCh": "母婴",
+        "addtion": "17",
+        "productType": "muying"
+    },
+    {
+        "productTypeCh": "奶粉",
+        "addtion": "1701",
+        "productType": "naifen"
+    },
+    {
+        "productTypeCh": "婴幼奶粉",
+        "addtion": "170101",
+        "productType": "muying_naifen_yingyounaifen"
+    },
+    {
+        "productTypeCh": "成人奶粉",
+        "addtion": "170102",
+        "productType": "muying_naifen_chengrennaifen"
+    },
+    {
+        "productTypeCh": "营养辅食",
+        "addtion": "1702",
+        "productType": "yingyangfushi"
+    },
+    {
+        "productTypeCh": "益生菌/初乳",
+        "addtion": "170201",
+        "productType": "muying_yingyangfushi_yishengjunchuru"
+    },
+    {
+        "productTypeCh": "米粉/菜粉",
+        "addtion": "170202",
+        "productType": "muying_yingyangfushi_mifencaifen"
+    },
+    {
+        "productTypeCh": "果泥/果汁",
+        "addtion": "170203",
+        "productType": "muying_yingyangfushi_guoniguozhi"
+    },
+    {
+        "productTypeCh": "DHA",
+        "addtion": "170204",
+        "productType": "muying_yingyangfushi_dha"
+    },
+    {
+        "productTypeCh": "宝宝零食",
+        "addtion": "170205",
+        "productType": "muying_yingyangfushi_baobaolingshi"
+    },
+    {
+        "productTypeCh": "钙铁锌/维生素",
+        "addtion": "170206",
+        "productType": "muying_yingyangfushi_gaitiexinweishengsu"
+    },
+    {
+        "productTypeCh": "清火/开胃",
+        "addtion": "170207",
+        "productType": "muying_yingyangfushi_qinghuokaiwei"
+    },
+    {
+        "productTypeCh": "面条/粥",
+        "addtion": "170208",
+        "productType": "muying_yingyangfushi_miantiaozhou"
+    },
+    {
+        "productTypeCh": "尿裤湿巾",
+        "addtion": "1703",
+        "productType": "niaokushijin"
+    },
+    {
+        "productTypeCh": "婴儿尿裤",
+        "addtion": "170301",
+        "productType": "muying_niaokushijin_yingerniaoku"
+    },
+    {
+        "productTypeCh": "拉拉裤",
+        "addtion": "170302",
+        "productType": "muying_niaokushijin_lalaku"
+    },
+    {
+        "productTypeCh": "湿巾",
+        "addtion": "170303",
+        "productType": "muying_niaokushijin_shijin"
+    },
+    {
+        "productTypeCh": "成人尿裤",
+        "addtion": "170304",
+        "productType": "muying_niaokushijin_chengrenniaoku"
+    },
+    {
+        "productTypeCh": "喂养用品",
+        "addtion": "1704",
+        "productType": "weiyangyongpin"
+    },
+    {
+        "productTypeCh": "奶瓶奶嘴",
+        "addtion": "170401",
+        "productType": "muying_weiyangyongpin_naipingnaizui"
+    },
+    {
+        "productTypeCh": "吸奶器",
+        "addtion": "170402",
+        "productType": "muying_weiyangyongpin_xinaiqi"
+    },
+    {
+        "productTypeCh": "暖奶消毒",
+        "addtion": "170403",
+        "productType": "muying_weiyangyongpin_nuannaixiaodu"
+    },
+    {
+        "productTypeCh": "碗盘叉勺",
+        "addtion": "170404",
+        "productType": "muying_weiyangyongpin_wanpanchashao"
+    },
+    {
+        "productTypeCh": "水壶/水杯",
+        "addtion": "170405",
+        "productType": "muying_weiyangyongpin_shuihushuibei"
+    },
+    {
+        "productTypeCh": "牙胶安抚",
+        "addtion": "170406",
+        "productType": "muying_weiyangyongpin_yajiaoanfu"
+    },
+    {
+        "productTypeCh": "辅食料理机",
+        "addtion": "170407",
+        "productType": "muying_weiyangyongpin_fushiliaoliji"
+    },
+    {
+        "productTypeCh": "洗护用品",
+        "addtion": "1705",
+        "productType": "xihuyongpin"
+    },
+    {
+        "productTypeCh": "宝宝护肤",
+        "addtion": "170501",
+        "productType": "muying_xihuyongpin_baobaohufu"
+    },
+    {
+        "productTypeCh": "宝宝洗浴",
+        "addtion": "170502",
+        "productType": "muying_xihuyongpin_baobaoxiyu"
+    },
+    {
+        "productTypeCh": "奶瓶清洗",
+        "addtion": "170503",
+        "productType": "muying_xihuyongpin_naipingqingxi"
+    },
+    {
+        "productTypeCh": "驱蚊防蚊",
+        "addtion": "170504",
+        "productType": "muying_xihuyongpin_quwenfangwen"
+    },
+    {
+        "productTypeCh": "理发器",
+        "addtion": "170505",
+        "productType": "muying_xihuyongpin_lifaqi"
+    },
+    {
+        "productTypeCh": "洗衣液/皂",
+        "addtion": "170506",
+        "productType": "muying_xihuyongpin_xiyiyezao"
+    },
+    {
+        "productTypeCh": "日常护理",
+        "addtion": "170507",
+        "productType": "muying_xihuyongpin_richanghuli"
+    },
+    {
+        "productTypeCh": "座便器",
+        "addtion": "170508",
+        "productType": "muying_xihuyongpin_zuobianqi"
+    },
+    {
+        "productTypeCh": "童车童床",
+        "addtion": "1706",
+        "productType": "tongchetongchuang"
+    },
+    {
+        "productTypeCh": "婴儿推车",
+        "addtion": "170601",
+        "productType": "muying_tongchetongchuang_yingertuiche"
+    },
+    {
+        "productTypeCh": "餐椅摇椅",
+        "addtion": "170602",
+        "productType": "muying_tongchetongchuang_canyiyaoyi"
+    },
+    {
+        "productTypeCh": "婴儿床",
+        "addtion": "170603",
+        "productType": "muying_tongchetongchuang_yingerchuang"
+    },
+    {
+        "productTypeCh": "学步车",
+        "addtion": "170604",
+        "productType": "muying_tongchetongchuang_xuebuche"
+    },
+    {
+        "productTypeCh": "三轮车",
+        "addtion": "170605",
+        "productType": "muying_tongchetongchuang_sanlunche"
+    },
+    {
+        "productTypeCh": "自行车",
+        "addtion": "170606",
+        "productType": "muying_tongchetongchuang_zixingche"
+    },
+    {
+        "productTypeCh": "儿童电动车",
+        "addtion": "170607",
+        "productType": "muying_tongchetongchuang_diandongche"
+    },
+    {
+        "productTypeCh": "扭扭车",
+        "addtion": "170608",
+        "productType": "muying_tongchetongchuang_niuniuche"
+    },
+    {
+        "productTypeCh": "滑板车",
+        "addtion": "170609",
+        "productType": "muying_tongchetongchuang_huabanche"
+    },
+    {
+        "productTypeCh": "寝居服饰",
+        "addtion": "1707",
+        "productType": "qinjufushi"
+    },
+    {
+        "productTypeCh": "婴儿外出服",
+        "addtion": "170701",
+        "productType": "muying_qinjufushi_yingerwaichufu"
+    },
+    {
+        "productTypeCh": "婴儿内衣",
+        "addtion": "170702",
+        "productType": "muying_qinjufushi_yingerneiyi"
+    },
+    {
+        "productTypeCh": "婴儿礼盒",
+        "addtion": "170703",
+        "productType": "muying_qinjufushi_yingerlihe"
+    },
+    {
+        "productTypeCh": "婴儿鞋帽袜",
+        "addtion": "170704",
+        "productType": "muying_qinjufushi_yingerxiemaowa"
+    },
+    {
+        "productTypeCh": "安全防护",
+        "addtion": "170705",
+        "productType": "muying_qinjufushi_anquanfanghu"
+    },
+    {
+        "productTypeCh": "家居床品",
+        "addtion": "170706",
+        "productType": "muying_qinjufushi_jiajuchuangpin"
+    },
+    {
+        "productTypeCh": "妈妈专区",
+        "addtion": "1708",
+        "productType": "mamazhuanqu"
+    },
+    {
+        "productTypeCh": "妈咪包/背婴带",
+        "addtion": "170801",
+        "productType": "muying_mamazhuanqu_mamibaobeiyingdai"
+    },
+    {
+        "productTypeCh": "产后塑身",
+        "addtion": "170802",
+        "productType": "muying_mamazhuanqu_chanhousushen"
+    },
+    {
+        "productTypeCh": "文胸/内裤",
+        "addtion": "170803",
+        "productType": "muying_mamazhuanqu_wenxiongneiku"
+    },
+    {
+        "productTypeCh": "防辐射服",
+        "addtion": "170804",
+        "productType": "muying_mamazhuanqu_fangfushefu"
+    },
+    {
+        "productTypeCh": "孕妇装",
+        "addtion": "170805",
+        "productType": "muying_mamazhuanqu_yunfuzhuang"
+    },
+    {
+        "productTypeCh": "孕期营养",
+        "addtion": "170806",
+        "productType": "muying_mamazhuanqu_yunqiyingyang"
+    },
+    {
+        "productTypeCh": "孕妈美容",
+        "addtion": "170807",
+        "productType": "muying_mamazhuanqu_yunmameirong"
+    },
+    {
+        "productTypeCh": "待产/新生",
+        "addtion": "170808",
+        "productType": "muying_mamazhuanqu_daichanxinsheng"
+    },
+    {
+        "productTypeCh": "月子装",
+        "addtion": "170809",
+        "productType": "muying_mamazhuanqu_yuezizhuang"
+    },
+    {
+        "productTypeCh": "童装童鞋",
+        "addtion": "1709",
+        "productType": "tongzhuangtongxie"
+    },
+    {
+        "productTypeCh": "童装套装",
+        "addtion": "170901",
+        "productType": "muying_tongzhuangtongxie_taozhuang"
+    },
+    {
+        "productTypeCh": "上衣",
+        "addtion": "170902",
+        "productType": "muying_tongzhuangtongxie_shangyi"
+    },
+    {
+        "productTypeCh": "裤子",
+        "addtion": "170903",
+        "productType": "muying_tongzhuangtongxie_kuzi"
+    },
+    {
+        "productTypeCh": "裙子",
+        "addtion": "170904",
+        "productType": "muying_tongzhuangtongxie_qunzi"
+    },
+    {
+        "productTypeCh": "内衣/家居服",
+        "addtion": "170905",
+        "productType": "muying_tongzhuangtongxie_neiyijiajufu"
+    },
+    {
+        "productTypeCh": "童装羽绒服/棉服",
+        "addtion": "170906",
+        "productType": "muying_tongzhuangtongxie_yurongfumianfu"
+    },
+    {
+        "productTypeCh": "亲子装",
+        "addtion": "170907",
+        "productType": "muying_tongzhuangtongxie_qinzizhuang"
+    },
+    {
+        "productTypeCh": "儿童配饰",
+        "addtion": "170908",
+        "productType": "muying_tongzhuangtongxie_ertongpeishi"
+    },
+    {
+        "productTypeCh": "礼服/演出服",
+        "addtion": "170909",
+        "productType": "muying_tongzhuangtongxie_lifuyanchufu"
+    },
+    {
+        "productTypeCh": "运动鞋",
+        "addtion": "170910",
+        "productType": "muying_tongzhuangtongxie_yundongxie"
+    },
+    {
+        "productTypeCh": "皮鞋/帆布鞋",
+        "addtion": "170911",
+        "productType": "muying_tongzhuangtongxie_pixiefanbuxie"
+    },
+    {
+        "productTypeCh": "靴子",
+        "addtion": "170912",
+        "productType": "muying_tongzhuangtongxie_xuezi"
+    },
+    {
+        "productTypeCh": "儿童凉鞋",
+        "addtion": "170913",
+        "productType": "muying_tongzhuangtongxie_liangxie"
+    },
+    {
+        "productTypeCh": "童装功能鞋",
+        "addtion": "170914",
+        "productType": "muying_tongzhuangtongxie_gongnengxie"
+    },
+    {
+        "productTypeCh": "户外/运动服",
+        "addtion": "170915",
+        "productType": "muying_tongzhuangtongxie_huwaiyundongfu"
+    },
+    {
+        "productTypeCh": "安全座椅",
+        "addtion": "1710",
+        "productType": "anquanzuoyi"
+    },
+    {
+        "productTypeCh": "提篮式",
+        "addtion": "171001",
+        "productType": "muying_anquanzuoyi_tilanshi"
+    },
+    {
+        "productTypeCh": "儿童安全座椅",
+        "addtion": "171002",
+        "productType": "muying_anquanzuoyi_anquanzuoyi"
+    },
+    {
+        "productTypeCh": "增高垫",
+        "addtion": "171003",
+        "productType": "muying_anquanzuoyi_zenggaodian"
+    },
+    {
+        "productTypeCh": "礼盒套装",
+        "addtion": "170509",
+        "productType": "muying_xihuyongpin_lihetaozhuang"
+    },
+    {
+        "productTypeCh": "出行用品",
+        "addtion": "170611",
+        "productType": "muying_tongchetongchuang_chuxingyongpin"
+    },
+    {
+        "productTypeCh": "户外",
+        "addtion": "16",
+        "productType": "yundonghuwai"
+    },
+    {
+        "productTypeCh": "运动鞋包",
+        "addtion": "1601",
+        "productType": "yundongxiebao"
+    },
+    {
+        "productTypeCh": "板鞋",
+        "addtion": "160102",
+        "productType": "yundonghuwai_yundongxiebao_banxie"
+    },
+    {
+        "productTypeCh": "专项运动鞋",
+        "addtion": "160104",
+        "productType": "yundonghuwai_yundongxiebao_zhuanxiangyundongxie"
+    },
+    {
+        "productTypeCh": "跑步鞋",
+        "addtion": "160105",
+        "productType": "yundonghuwai_yundongxiebao_paobuxie"
+    },
+    {
+        "productTypeCh": "篮球鞋",
+        "addtion": "160106",
+        "productType": "yundonghuwai_yundongxiebao_lanqiuxie"
+    },
+    {
+        "productTypeCh": "足球鞋",
+        "addtion": "160107",
+        "productType": "yundonghuwai_yundongxiebao_zuqiuxie"
+    },
+    {
+        "productTypeCh": "训练鞋",
+        "addtion": "160108",
+        "productType": "yundonghuwai_yundongxiebao_xunlianxie"
+    },
+    {
+        "productTypeCh": "乒羽网鞋",
+        "addtion": "160109",
+        "productType": "yundonghuwai_yundongxiebao_pingyuwangxie"
+    },
+    {
+        "productTypeCh": "运动包",
+        "addtion": "160111",
+        "productType": "yundonghuwai_yundongxiebao_yundongbao"
+    },
+    {
+        "productTypeCh": "运动服饰",
+        "addtion": "1602",
+        "productType": "yundongfushi"
+    },
+    {
+        "productTypeCh": "运动配饰",
+        "addtion": "160201",
+        "productType": "yundonghuwai_yundongfushi_yundongpeishi"
+    },
+    {
+        "productTypeCh": "毛衫/线衫",
+        "addtion": "160203",
+        "productType": "yundonghuwai_yundongfushi_maoshanxianshan"
+    },
+    {
+        "productTypeCh": "乒羽网服",
+        "addtion": "160204",
+        "productType": "yundonghuwai_yundongfushi_pingyuwangfu"
+    },
+    {
+        "productTypeCh": "训练服",
+        "addtion": "160205",
+        "productType": "yundonghuwai_yundongfushi_xunlianfu"
+    },
+    {
+        "productTypeCh": "运动背心",
+        "addtion": "160206",
+        "productType": "yundonghuwai_yundongfushi_yundongbeixin"
+    },
+    {
+        "productTypeCh": "夹克/风衣",
+        "addtion": "160208",
+        "productType": "yundonghuwai_yundongfushi_jiakefengyi"
+    },
+    {
+        "productTypeCh": "运动棉服",
+        "addtion": "160210",
+        "productType": "yundonghuwai_yundongfushi_mianfu"
+    },
+    {
+        "productTypeCh": "运动裤",
+        "addtion": "160211",
+        "productType": "yundonghuwai_yundongfushi_yundongku"
+    },
+    {
+        "productTypeCh": "运动套装",
+        "addtion": "160212",
+        "productType": "yundonghuwai_yundongfushi_taozhuang"
+    },
+    {
+        "productTypeCh": "骑行运动",
+        "addtion": "1603",
+        "productType": "qixingyundong"
+    },
+    {
+        "productTypeCh": "折叠车",
+        "addtion": "160301",
+        "productType": "yundonghuwai_qixingyundong_zhedieche"
+    },
+    {
+        "productTypeCh": "山地车/公路车",
+        "addtion": "160302",
+        "productType": "yundonghuwai_qixingyundong_shandichegongluche"
+    },
+    {
+        "productTypeCh": "电动车",
+        "addtion": "160303",
+        "productType": "yundonghuwai_qixingyundong_diandongche"
+    },
+    {
+        "productTypeCh": "骑行服",
+        "addtion": "160305",
+        "productType": "yundonghuwai_qixingyundong_qixingfu"
+    },
+    {
+        "productTypeCh": "骑行装备",
+        "addtion": "160306",
+        "productType": "yundonghuwai_qixingyundong_qixingzhuangbei"
+    },
+    {
+        "productTypeCh": "垂钓用品",
+        "addtion": "1604",
+        "productType": "chuidiaoyongpin"
+    },
+    {
+        "productTypeCh": "鱼竿鱼线",
+        "addtion": "160401",
+        "productType": "yundonghuwai_chuidiaoyongpin_yuganyuxian"
+    },
+    {
+        "productTypeCh": "浮漂鱼饵",
+        "addtion": "160402",
+        "productType": "yundonghuwai_chuidiaoyongpin_fupiaoyuer"
+    },
+    {
+        "productTypeCh": "钓鱼桌椅",
+        "addtion": "160403",
+        "productType": "yundonghuwai_chuidiaoyongpin_diaoyuzhuoyi"
+    },
+    {
+        "productTypeCh": "钓鱼配件",
+        "addtion": "160404",
+        "productType": "yundonghuwai_chuidiaoyongpin_diaoyupeijian"
+    },
+    {
+        "productTypeCh": "钓箱鱼包",
+        "addtion": "160405",
+        "productType": "yundonghuwai_chuidiaoyongpin_diaoxiangyubao"
+    },
+    {
+        "productTypeCh": "游泳用品",
+        "addtion": "1605",
+        "productType": "youyongyongpin"
+    },
+    {
+        "productTypeCh": "泳镜",
+        "addtion": "160501",
+        "productType": "yundonghuwai_youyongyongpin_yongjing"
+    },
+    {
+        "productTypeCh": "泳帽",
+        "addtion": "160502",
+        "productType": "yundonghuwai_youyongyongpin_yongmao"
+    },
+    {
+        "productTypeCh": "游泳包防水包",
+        "addtion": "160503",
+        "productType": "yundonghuwai_youyongyongpin_youyongbaofangshuibao"
+    },
+    {
+        "productTypeCh": "女士泳衣",
+        "addtion": "160504",
+        "productType": "yundonghuwai_youyongyongpin_nvshiyongyi"
+    },
+    {
+        "productTypeCh": "男士泳衣",
+        "addtion": "160505",
+        "productType": "yundonghuwai_youyongyongpin_nanshiyongyi"
+    },
+    {
+        "productTypeCh": "比基尼",
+        "addtion": "160506",
+        "productType": "yundonghuwai_youyongyongpin_bijini"
+    },
+    {
+        "productTypeCh": "户外鞋服",
+        "addtion": "1606",
+        "productType": "huwaixiefu"
+    },
+    {
+        "productTypeCh": "冲锋衣裤",
+        "addtion": "160601",
+        "productType": "yundonghuwai_huwaixiefu_chongfengyiku"
+    },
+    {
+        "productTypeCh": "速干衣裤",
+        "addtion": "160602",
+        "productType": "yundonghuwai_huwaixiefu_suganyiku"
+    },
+    {
+        "productTypeCh": "滑雪服",
+        "addtion": "160603",
+        "productType": "yundonghuwai_huwaixiefu_huaxuefu"
+    },
+    {
+        "productTypeCh": "抓绒衣裤",
+        "addtion": "160606",
+        "productType": "yundonghuwai_huwaixiefu_zhuarongyiku"
+    },
+    {
+        "productTypeCh": "软壳衣裤",
+        "addtion": "160607",
+        "productType": "yundonghuwai_huwaixiefu_ruanqiaoyiku"
+    },
+    {
+        "productTypeCh": "功能内衣",
+        "addtion": "160610",
+        "productType": "yundonghuwai_huwaixiefu_gongnengneiyi"
+    },
+    {
+        "productTypeCh": "军迷服饰",
+        "addtion": "160611",
+        "productType": "yundonghuwai_huwaixiefu_junmifushi"
+    },
+    {
+        "productTypeCh": "登山鞋",
+        "addtion": "160612",
+        "productType": "yundonghuwai_huwaixiefu_dengshanxie"
+    },
+    {
+        "productTypeCh": "户外雪地靴",
+        "addtion": "160613",
+        "productType": "yundonghuwai_huwaixiefu_xuedixue"
+    },
+    {
+        "productTypeCh": "徒步鞋",
+        "addtion": "160614",
+        "productType": "yundonghuwai_huwaixiefu_tubuxie"
+    },
+    {
+        "productTypeCh": "越野跑鞋",
+        "addtion": "160615",
+        "productType": "yundonghuwai_huwaixiefu_yueyepaoxie"
+    },
+    {
+        "productTypeCh": "溯溪鞋",
+        "addtion": "160618",
+        "productType": "yundonghuwai_huwaixiefu_suxixie"
+    },
+    {
+        "productTypeCh": "沙滩/凉拖",
+        "addtion": "160619",
+        "productType": "yundonghuwai_huwaixiefu_shatanliangtuo"
+    },
+    {
+        "productTypeCh": "户外袜",
+        "addtion": "160620",
+        "productType": "yundonghuwai_huwaixiefu_huwaiwa"
+    },
+    {
+        "productTypeCh": "户外装备",
+        "addtion": "1607",
+        "productType": "huwaizhuangbei"
+    },
+    {
+        "productTypeCh": "帐篷/垫子",
+        "addtion": "160701",
+        "productType": "yundonghuwai_huwaizhuangbei_zhangpengdianzi"
+    },
+    {
+        "productTypeCh": "睡袋/吊床",
+        "addtion": "160702",
+        "productType": "yundonghuwai_huwaizhuangbei_shuidaidiaochuang"
+    },
+    {
+        "productTypeCh": "登山攀岩",
+        "addtion": "160703",
+        "productType": "yundonghuwai_huwaizhuangbei_dengshanpanyan"
+    },
+    {
+        "productTypeCh": "背包",
+        "addtion": "160704",
+        "productType": "yundonghuwai_huwaizhuangbei_beibao"
+    },
+    {
+        "productTypeCh": "户外配饰",
+        "addtion": "160705",
+        "productType": "yundonghuwai_huwaizhuangbei_huwaipeishi"
+    },
+    {
+        "productTypeCh": "户外照明",
+        "addtion": "160706",
+        "productType": "yundonghuwai_huwaizhuangbei_huwaizhaoming"
+    },
+    {
+        "productTypeCh": "户外仪表",
+        "addtion": "160707",
+        "productType": "yundonghuwai_huwaizhuangbei_huwaiyibiao"
+    },
+    {
+        "productTypeCh": "户外工具",
+        "addtion": "160708",
+        "productType": "yundonghuwai_huwaizhuangbei_huwaigongju"
+    },
+    {
+        "productTypeCh": "望远镜",
+        "addtion": "160709",
+        "productType": "yundonghuwai_huwaizhuangbei_wangyuanjing"
+    },
+    {
+        "productTypeCh": "旅游用品",
+        "addtion": "160710",
+        "productType": "yundonghuwai_huwaizhuangbei_lvyouyongpin"
+    },
+    {
+        "productTypeCh": "便携桌椅床",
+        "addtion": "160711",
+        "productType": "yundonghuwai_huwaizhuangbei_bianxiezhuoyichuang"
+    },
+    {
+        "productTypeCh": "野餐烧烤",
+        "addtion": "160712",
+        "productType": "yundonghuwai_huwaizhuangbei_yecanshaokao"
+    },
+    {
+        "productTypeCh": "军迷用品",
+        "addtion": "160713",
+        "productType": "yundonghuwai_huwaizhuangbei_junmiyongpin"
+    },
+    {
+        "productTypeCh": "救援装备",
+        "addtion": "160714",
+        "productType": "yundonghuwai_huwaizhuangbei_jiuyuanzhuangbei"
+    },
+    {
+        "productTypeCh": "滑雪装备",
+        "addtion": "160715",
+        "productType": "yundonghuwai_huwaizhuangbei_huaxuezhuangbei"
+    },
+    {
+        "productTypeCh": "极限户外",
+        "addtion": "160716",
+        "productType": "yundonghuwai_huwaizhuangbei_jixianhuwai"
+    },
+    {
+        "productTypeCh": "冲浪潜水",
+        "addtion": "160717",
+        "productType": "yundonghuwai_huwaizhuangbei_chonglangqianshui"
+    },
+    {
+        "productTypeCh": "健身训练",
+        "addtion": "1608",
+        "productType": "jianshenxunlian"
+    },
+    {
+        "productTypeCh": "综合训练器",
+        "addtion": "160801",
+        "productType": "yundonghuwai_jianshenxunlian_zonghexunlianqi"
+    },
+    {
+        "productTypeCh": "哑铃",
+        "addtion": "160803",
+        "productType": "yundonghuwai_jianshenxunlian_yaling"
+    },
+    {
+        "productTypeCh": "仰卧板/收腹机",
+        "addtion": "160804",
+        "productType": "yundonghuwai_jianshenxunlian_yangwobanshoufuji"
+    },
+    {
+        "productTypeCh": "武术搏击",
+        "addtion": "160807",
+        "productType": "yundonghuwai_jianshenxunlian_wushuboji"
+    },
+    {
+        "productTypeCh": "健身车/动感单车",
+        "addtion": "160808",
+        "productType": "yundonghuwai_jianshenxunlian_jianshenchedonggandanche"
+    },
+    {
+        "productTypeCh": "跑步机",
+        "addtion": "160809",
+        "productType": "yundonghuwai_jianshenxunlian_paobuji"
+    },
+    {
+        "productTypeCh": "运动护具",
+        "addtion": "160810",
+        "productType": "yundonghuwai_jianshenxunlian_yundonghuju"
+    },
+    {
+        "productTypeCh": "纤体瑜伽",
+        "addtion": "1609",
+        "productType": "xiantiyujia"
+    },
+    {
+        "productTypeCh": "瑜伽垫",
+        "addtion": "160901",
+        "productType": "yundonghuwai_xiantiyujia_yujiadian"
+    },
+    {
+        "productTypeCh": "瑜伽服",
+        "addtion": "160902",
+        "productType": "yundonghuwai_xiantiyujia_yujiafu"
+    },
+    {
+        "productTypeCh": "瑜伽配件",
+        "addtion": "160903",
+        "productType": "yundonghuwai_xiantiyujia_yujiapeijian"
+    },
+    {
+        "productTypeCh": "瑜伽套装",
+        "addtion": "160904",
+        "productType": "yundonghuwai_xiantiyujia_yujiataozhuang"
+    },
+    {
+        "productTypeCh": "舞蹈鞋服",
+        "addtion": "160905",
+        "productType": "yundonghuwai_xiantiyujia_wudaoxiefu"
+    },
+    {
+        "productTypeCh": "体育用品",
+        "addtion": "1610",
+        "productType": "tiyuyongpin"
+    },
+    {
+        "productTypeCh": "羽毛球",
+        "addtion": "161001",
+        "productType": "yundonghuwai_tiyuyongpin_yumaoqiu"
+    },
+    {
+        "productTypeCh": "乒乓球",
+        "addtion": "161002",
+        "productType": "yundonghuwai_tiyuyongpin_pingpangqiu"
+    },
+    {
+        "productTypeCh": "篮球",
+        "addtion": "161003",
+        "productType": "yundonghuwai_tiyuyongpin_lanqiu"
+    },
+    {
+        "productTypeCh": "足球",
+        "addtion": "161004",
+        "productType": "yundonghuwai_tiyuyongpin_zuqiu"
+    },
+    {
+        "productTypeCh": "网球",
+        "addtion": "161005",
+        "productType": "yundonghuwai_tiyuyongpin_wangqiu"
+    },
+    {
+        "productTypeCh": "排球",
+        "addtion": "161006",
+        "productType": "yundonghuwai_tiyuyongpin_paiqiu"
+    },
+    {
+        "productTypeCh": "高尔夫",
+        "addtion": "161007",
+        "productType": "yundonghuwai_tiyuyongpin_gaoerfu"
+    },
+    {
+        "productTypeCh": "台球",
+        "addtion": "161008",
+        "productType": "yundonghuwai_tiyuyongpin_taiqiu"
+    },
+    {
+        "productTypeCh": "棋牌麻将",
+        "addtion": "161009",
+        "productType": "yundonghuwai_tiyuyongpin_qipaimajiang"
+    },
+    {
+        "productTypeCh": "轮滑滑板",
+        "addtion": "161010",
+        "productType": "yundonghuwai_tiyuyongpin_lunhuahuaban"
+    },
+    {
+        "productTypeCh": "运动裙",
+        "addtion": "160213",
+        "productType": "yundonghuwai_yundongfushi_yundongqun"
+    },
+    {
+        "productTypeCh": "情侣泳衣",
+        "addtion": "160508",
+        "productType": "yundonghuwai_youyongyongpin_qinglvyongyi"
+    },
+    {
+        "productTypeCh": "亲子泳衣",
+        "addtion": "160509",
+        "productType": "yundonghuwai_youyongyongpin_qinziyongyi"
+    },
+    {
+        "productTypeCh": "沙滩裤",
+        "addtion": "160510",
+        "productType": "yundonghuwai_youyongyongpin_shatanku"
+    },
+    {
+        "productTypeCh": "儿童泳衣/裤",
+        "addtion": "160511",
+        "productType": "yundonghuwai_youyongyongpin_ertongyongyiku"
+    },
+    {
+        "productTypeCh": "汽车",
+        "addtion": "18",
+        "productType": "qicheyongpin"
+    },
+    {
+        "productTypeCh": "维修保养",
+        "addtion": "1801",
+        "productType": "weixiubaoyang"
+    },
+    {
+        "productTypeCh": "润滑油",
+        "addtion": "180101",
+        "productType": "qicheyongpin_weixiubaoyang_runhuayou"
+    },
+    {
+        "productTypeCh": "添加剂",
+        "addtion": "180102",
+        "productType": "qicheyongpin_weixiubaoyang_tianjiaji"
+    },
+    {
+        "productTypeCh": "防冻液",
+        "addtion": "180103",
+        "productType": "qicheyongpin_weixiubaoyang_fangdongye"
+    },
+    {
+        "productTypeCh": "滤清器",
+        "addtion": "180104",
+        "productType": "qicheyongpin_weixiubaoyang_lvqingqi"
+    },
+    {
+        "productTypeCh": "火花塞",
+        "addtion": "180105",
+        "productType": "qicheyongpin_weixiubaoyang_huohuasai"
+    },
+    {
+        "productTypeCh": "雨刷",
+        "addtion": "180106",
+        "productType": "qicheyongpin_weixiubaoyang_yushua"
+    },
+    {
+        "productTypeCh": "车灯",
+        "addtion": "180107",
+        "productType": "qicheyongpin_weixiubaoyang_chedeng"
+    },
+    {
+        "productTypeCh": "后视镜",
+        "addtion": "180108",
+        "productType": "qicheyongpin_weixiubaoyang_houshijing"
+    },
+    {
+        "productTypeCh": "轮胎",
+        "addtion": "180109",
+        "productType": "qicheyongpin_weixiubaoyang_luntai"
+    },
+    {
+        "productTypeCh": "轮毂",
+        "addtion": "180110",
+        "productType": "qicheyongpin_weixiubaoyang_lungu"
+    },
+    {
+        "productTypeCh": "刹车片/盘",
+        "addtion": "180111",
+        "productType": "qicheyongpin_weixiubaoyang_chachepianpan"
+    },
+    {
+        "productTypeCh": "喇叭/皮带",
+        "addtion": "180112",
+        "productType": "qicheyongpin_weixiubaoyang_labapidai"
+    },
+    {
+        "productTypeCh": "蓄电池",
+        "addtion": "180113",
+        "productType": "qicheyongpin_weixiubaoyang_xudianchi"
+    },
+    {
+        "productTypeCh": "底盘装甲/护板",
+        "addtion": "180114",
+        "productType": "qicheyongpin_weixiubaoyang_dipanzhuangjiahuban"
+    },
+    {
+        "productTypeCh": "汽车贴膜",
+        "addtion": "180115",
+        "productType": "qicheyongpin_weixiubaoyang_tiemo"
+    },
+    {
+        "productTypeCh": "汽修工具",
+        "addtion": "180116",
+        "productType": "qicheyongpin_weixiubaoyang_qixiugongju"
+    },
+    {
+        "productTypeCh": "车载电器",
+        "addtion": "1802",
+        "productType": "chezaidianqi"
+    },
+    {
+        "productTypeCh": "导航仪",
+        "addtion": "180201",
+        "productType": "qicheyongpin_chezaidianqi_daohangyi"
+    },
+    {
+        "productTypeCh": "安全预警仪",
+        "addtion": "180202",
+        "productType": "qicheyongpin_chezaidianqi_anquanyujingyi"
+    },
+    {
+        "productTypeCh": "行车记录仪",
+        "addtion": "180203",
+        "productType": "qicheyongpin_chezaidianqi_xingchejiluyi"
+    },
+    {
+        "productTypeCh": "倒车雷达",
+        "addtion": "180204",
+        "productType": "qicheyongpin_chezaidianqi_daocheleida"
+    },
+    {
+        "productTypeCh": "蓝牙设备",
+        "addtion": "180205",
+        "productType": "qicheyongpin_chezaidianqi_lanyashebei"
+    },
+    {
+        "productTypeCh": "时尚影音",
+        "addtion": "180206",
+        "productType": "qicheyongpin_chezaidianqi_shishangyingyin"
+    },
+    {
+        "productTypeCh": "车载净化器",
+        "addtion": "180207",
+        "productType": "qicheyongpin_chezaidianqi_jinghuaqi"
+    },
+    {
+        "productTypeCh": "车载电源",
+        "addtion": "180208",
+        "productType": "qicheyongpin_chezaidianqi_dianyuan"
+    },
+    {
+        "productTypeCh": "车载冰箱",
+        "addtion": "180209",
+        "productType": "qicheyongpin_chezaidianqi_bingxiang"
+    },
+    {
+        "productTypeCh": "车载吸尘器",
+        "addtion": "180210",
+        "productType": "qicheyongpin_chezaidianqi_xichenqi"
+    },
+    {
+        "productTypeCh": "美容清洗",
+        "addtion": "1803",
+        "productType": "meirongqingxi"
+    },
+    {
+        "productTypeCh": "车蜡",
+        "addtion": "180301",
+        "productType": "qicheyongpin_meirongqingxi_chela"
+    },
+    {
+        "productTypeCh": "补漆笔",
+        "addtion": "180302",
+        "productType": "qicheyongpin_meirongqingxi_buqibi"
+    },
+    {
+        "productTypeCh": "玻璃水",
+        "addtion": "180303",
+        "productType": "qicheyongpin_meirongqingxi_bolishui"
+    },
+    {
+        "productTypeCh": "清洁剂",
+        "addtion": "180304",
+        "productType": "qicheyongpin_meirongqingxi_qingjieji"
+    },
+    {
+        "productTypeCh": "洗车工具",
+        "addtion": "180305",
+        "productType": "qicheyongpin_meirongqingxi_xichegongju"
+    },
+    {
+        "productTypeCh": "洗车配件",
+        "addtion": "180306",
+        "productType": "qicheyongpin_meirongqingxi_xichepeijian"
+    },
+    {
+        "productTypeCh": "汽车装饰",
+        "addtion": "1804",
+        "productType": "qichezhuangshi"
+    },
+    {
+        "productTypeCh": "脚垫",
+        "addtion": "180401",
+        "productType": "qicheyongpin_qichezhuangshi_jiaodian"
+    },
+    {
+        "productTypeCh": "座垫",
+        "addtion": "180402",
+        "productType": "qicheyongpin_qichezhuangshi_zuodian"
+    },
+    {
+        "productTypeCh": "座套",
+        "addtion": "180403",
+        "productType": "qicheyongpin_qichezhuangshi_zuotao"
+    },
+    {
+        "productTypeCh": "后备箱垫",
+        "addtion": "180404",
+        "productType": "qicheyongpin_qichezhuangshi_houbeixiangdian"
+    },
+    {
+        "productTypeCh": "头枕腰靠",
+        "addtion": "180405",
+        "productType": "qicheyongpin_qichezhuangshi_touzhenyaokao"
+    },
+    {
+        "productTypeCh": "车载香水",
+        "addtion": "180406",
+        "productType": "qicheyongpin_qichezhuangshi_xiangshui"
+    },
+    {
+        "productTypeCh": "空气净化",
+        "addtion": "180407",
+        "productType": "qicheyongpin_qichezhuangshi_kongqijinghua"
+    },
+    {
+        "productTypeCh": "车内饰品",
+        "addtion": "180408",
+        "productType": "qicheyongpin_qichezhuangshi_cheneishipin"
+    },
+    {
+        "productTypeCh": "功能小件",
+        "addtion": "180409",
+        "productType": "qicheyongpin_qichezhuangshi_gongnengxiaojian"
+    },
+    {
+        "productTypeCh": "车身装饰件",
+        "addtion": "180410",
+        "productType": "qicheyongpin_qichezhuangshi_cheshenzhuangshijian"
+    },
+    {
+        "productTypeCh": "车衣",
+        "addtion": "180411",
+        "productType": "qicheyongpin_qichezhuangshi_cheyi"
+    },
+    {
+        "productTypeCh": "安全自驾",
+        "addtion": "1805",
+        "productType": "anquanzijia"
+    },
+    {
+        "productTypeCh": "安全座椅",
+        "addtion": "180501",
+        "productType": "qicheyongpin_anquanzijia_anquanzuoyi"
+    },
+    {
+        "productTypeCh": "胎压充气",
+        "addtion": "180502",
+        "productType": "qicheyongpin_anquanzijia_taiyachongqi"
+    },
+    {
+        "productTypeCh": "防盗设备",
+        "addtion": "180503",
+        "productType": "qicheyongpin_anquanzijia_fangdaoshebei"
+    },
+    {
+        "productTypeCh": "应急救援",
+        "addtion": "180504",
+        "productType": "qicheyongpin_anquanzijia_yingjijiuyuan"
+    },
+    {
+        "productTypeCh": "保温箱",
+        "addtion": "180505",
+        "productType": "qicheyongpin_anquanzijia_baowenxiang"
+    },
+    {
+        "productTypeCh": "储物箱",
+        "addtion": "180506",
+        "productType": "qicheyongpin_anquanzijia_chuwuxiang"
+    },
+    {
+        "productTypeCh": "自驾野营",
+        "addtion": "180507",
+        "productType": "qicheyongpin_anquanzijia_zijiayeying"
+    },
+    {
+        "productTypeCh": "摩托车装备",
+        "addtion": "180508",
+        "productType": "qicheyongpin_anquanzijia_motuochezhuangbei"
+    },
+    {
+        "productTypeCh": "玩具/乐器",
+        "addtion": "19",
+        "productType": "wanjuyueqi"
+    },
+    {
+        "productTypeCh": "适用年龄",
+        "addtion": "1901",
+        "productType": "shiyongnianling"
+    },
+    {
+        "productTypeCh": "0-6个月",
+        "addtion": "190101",
+        "productType": "wanjuyueqi_shiyongnianling_06geyue"
+    },
+    {
+        "productTypeCh": "6-12个月",
+        "addtion": "190102",
+        "productType": "wanjuyueqi_shiyongnianling_612geyue"
+    },
+    {
+        "productTypeCh": "1-3岁",
+        "addtion": "190103",
+        "productType": "wanjuyueqi_shiyongnianling_13sui"
+    },
+    {
+        "productTypeCh": "3-6岁",
+        "addtion": "190104",
+        "productType": "wanjuyueqi_shiyongnianling_36sui"
+    },
+    {
+        "productTypeCh": "6-14岁",
+        "addtion": "190105",
+        "productType": "wanjuyueqi_shiyongnianling_614sui"
+    },
+    {
+        "productTypeCh": "14岁以上",
+        "addtion": "190106",
+        "productType": "wanjuyueqi_shiyongnianling_14suiyishang"
+    },
+    {
+        "productTypeCh": "遥控/电动",
+        "addtion": "1902",
+        "productType": "yaokongdiandong"
+    },
+    {
+        "productTypeCh": "遥控车",
+        "addtion": "190201",
+        "productType": "wanjuyueqi_yaokongdiandong_yaokongche"
+    },
+    {
+        "productTypeCh": "遥控飞机",
+        "addtion": "190202",
+        "productType": "wanjuyueqi_yaokongdiandong_yaokongfeiji"
+    },
+    {
+        "productTypeCh": "遥控船",
+        "addtion": "190203",
+        "productType": "wanjuyueqi_yaokongdiandong_yaokongchuan"
+    },
+    {
+        "productTypeCh": "机器人/电动",
+        "addtion": "190204",
+        "productType": "wanjuyueqi_yaokongdiandong_jiqirendiandong"
+    },
+    {
+        "productTypeCh": "轨道/助力",
+        "addtion": "190205",
+        "productType": "wanjuyueqi_yaokongdiandong_guidaozhuli"
+    },
+    {
+        "productTypeCh": "毛绒布艺",
+        "addtion": "1903",
+        "productType": "maorongbuyi"
+    },
+    {
+        "productTypeCh": "毛绒/布艺",
+        "addtion": "190301",
+        "productType": "wanjuyueqi_maorongbuyi_maorongbuyi"
+    },
+    {
+        "productTypeCh": "娃娃玩具",
+        "addtion": "1904",
+        "productType": "wawawanju"
+    },
+    {
+        "productTypeCh": "芭比娃娃",
+        "addtion": "190401",
+        "productType": "wanjuyueqi_wawawanju_babiwawa"
+    },
+    {
+        "productTypeCh": "卡通娃娃",
+        "addtion": "190402",
+        "productType": "wanjuyueqi_wawawanju_katongwawa"
+    },
+    {
+        "productTypeCh": "智能娃娃",
+        "addtion": "190403",
+        "productType": "wanjuyueqi_wawawanju_zhinengwawa"
+    },
+    {
+        "productTypeCh": "模型玩具",
+        "addtion": "1905",
+        "productType": "moxingwanju"
+    },
+    {
+        "productTypeCh": "仿真模型",
+        "addtion": "190501",
+        "productType": "wanjuyueqi_moxingwanju_fangzhenmoxing"
+    },
+    {
+        "productTypeCh": "收藏爱好",
+        "addtion": "190503",
+        "productType": "wanjuyueqi_moxingwanju_shouzangaihao"
+    },
+    {
+        "productTypeCh": "健身玩具",
+        "addtion": "1906",
+        "productType": "jianshenwanju"
+    },
+    {
+        "productTypeCh": "炫舞毯",
+        "addtion": "190601",
+        "productType": "wanjuyueqi_jianshenwanju_xuanwutan"
+    },
+    {
+        "productTypeCh": "爬行垫/毯",
+        "addtion": "190602",
+        "productType": "wanjuyueqi_jianshenwanju_paxingdiantan"
+    },
+    {
+        "productTypeCh": "户外玩具",
+        "addtion": "190603",
+        "productType": "wanjuyueqi_jianshenwanju_huwaiwanju"
+    },
+    {
+        "productTypeCh": "戏水玩具",
+        "addtion": "190604",
+        "productType": "wanjuyueqi_jianshenwanju_xishuiwanju"
+    },
+    {
+        "productTypeCh": "动漫玩具",
+        "addtion": "1907",
+        "productType": "dongmanwanju"
+    },
+    {
+        "productTypeCh": "电影周边",
+        "addtion": "190701",
+        "productType": "wanjuyueqi_dongmanwanju_dianyingzhoubian"
+    },
+    {
+        "productTypeCh": "卡通周边",
+        "addtion": "190702",
+        "productType": "wanjuyueqi_dongmanwanju_katongzhoubian"
+    },
+    {
+        "productTypeCh": "网游周边",
+        "addtion": "190703",
+        "productType": "wanjuyueqi_dongmanwanju_wangyouzhoubian"
+    },
+    {
+        "productTypeCh": "益智玩具",
+        "addtion": "1908",
+        "productType": "yizhiwanju"
+    },
+    {
+        "productTypeCh": "摇铃/床铃",
+        "addtion": "190801",
+        "productType": "wanjuyueqi_yizhiwanju_yaolingchuangling"
+    },
+    {
+        "productTypeCh": "健身架",
+        "addtion": "190802",
+        "productType": "wanjuyueqi_yizhiwanju_jianshenjia"
+    },
+    {
+        "productTypeCh": "早教启智",
+        "addtion": "190803",
+        "productType": "wanjuyueqi_yizhiwanju_zaojiaoqizhi"
+    },
+    {
+        "productTypeCh": "拖拉玩具",
+        "addtion": "190804",
+        "productType": "wanjuyueqi_yizhiwanju_tuolawanju"
+    },
+    {
+        "productTypeCh": "积木拼插",
+        "addtion": "1909",
+        "productType": "jimupincha"
+    },
+    {
+        "productTypeCh": "积木",
+        "addtion": "190901",
+        "productType": "wanjuyueqi_jimupincha_jimu"
+    },
+    {
+        "productTypeCh": "拼图",
+        "addtion": "190902",
+        "productType": "wanjuyueqi_jimupincha_pintu"
+    },
+    {
+        "productTypeCh": "磁力棒",
+        "addtion": "190903",
+        "productType": "wanjuyueqi_jimupincha_cilibang"
+    },
+    {
+        "productTypeCh": "立体拼插",
+        "addtion": "190904",
+        "productType": "wanjuyueqi_jimupincha_litipincha"
+    },
+    {
+        "productTypeCh": "DIY玩具",
+        "addtion": "1910",
+        "productType": "wanju"
+    },
+    {
+        "productTypeCh": "手工彩泥",
+        "addtion": "191001",
+        "productType": "wanjuyueqi_wanju_shougongcaini"
+    },
+    {
+        "productTypeCh": "绘画工具",
+        "addtion": "191002",
+        "productType": "wanjuyueqi_wanju_huihuagongju"
+    },
+    {
+        "productTypeCh": "情景玩具",
+        "addtion": "191003",
+        "productType": "wanjuyueqi_wanju_qingjingwanju"
+    },
+    {
+        "productTypeCh": "创意减压",
+        "addtion": "1911",
+        "productType": "chuangyijianya"
+    },
+    {
+        "productTypeCh": "减压玩具",
+        "addtion": "191101",
+        "productType": "wanjuyueqi_chuangyijianya_jianyawanju"
+    },
+    {
+        "productTypeCh": "创意玩具",
+        "addtion": "191102",
+        "productType": "wanjuyueqi_chuangyijianya_chuangyiwanju"
+    },
+    {
+        "productTypeCh": "乐器相关",
+        "addtion": "1912",
+        "productType": "yueqixiangguan"
+    },
+    {
+        "productTypeCh": "钢琴",
+        "addtion": "191201",
+        "productType": "wanjuyueqi_yueqixiangguan_gangqin"
+    },
+    {
+        "productTypeCh": "电子琴",
+        "addtion": "191202",
+        "productType": "wanjuyueqi_yueqixiangguan_dianziqin"
+    },
+    {
+        "productTypeCh": "手风琴",
+        "addtion": "191203",
+        "productType": "wanjuyueqi_yueqixiangguan_shoufengqin"
+    },
+    {
+        "productTypeCh": "吉他/贝斯",
+        "addtion": "191204",
+        "productType": "wanjuyueqi_yueqixiangguan_jitabeisi"
+    },
+    {
+        "productTypeCh": "民族管弦乐器",
+        "addtion": "191205",
+        "productType": "wanjuyueqi_yueqixiangguan_minzuguanxianyueqi"
+    },
+    {
+        "productTypeCh": "西洋管弦乐",
+        "addtion": "191206",
+        "productType": "wanjuyueqi_yueqixiangguan_xiyangguanxianyue"
+    },
+    {
+        "productTypeCh": "口琴/口风琴/竖笛",
+        "addtion": "191207",
+        "productType": "wanjuyueqi_yueqixiangguan_kouqinkoufengqinshudi"
+    },
+    {
+        "productTypeCh": "西洋打击乐器",
+        "addtion": "191208",
+        "productType": "wanjuyueqi_yueqixiangguan_xiyangdajiyueqi"
+    },
+    {
+        "productTypeCh": "各式乐器配件",
+        "addtion": "191209",
+        "productType": "wanjuyueqi_yueqixiangguan_geshiyueqipeijian"
+    },
+    {
+        "productTypeCh": "电脑音乐",
+        "addtion": "191210",
+        "productType": "wanjuyueqi_yueqixiangguan_diannaoyinyue"
+    },
+    {
+        "productTypeCh": "工艺礼品乐器",
+        "addtion": "191211",
+        "productType": "wanjuyueqi_yueqixiangguan_gongyilipinyueqi"
+    },
+    {
+        "productTypeCh": "鞋靴",
+        "addtion": "20",
+        "productType": "xiexue"
+    },
+    {
+        "productTypeCh": "流行男鞋",
+        "addtion": "2001",
+        "productType": "liuxingnanxie"
+    },
+    {
+        "productTypeCh": "商务休闲鞋",
+        "addtion": "200101",
+        "productType": "xiexue_liuxingnanxie_shangwuxiuxianxie"
+    },
+    {
+        "productTypeCh": "正装鞋",
+        "addtion": "200102",
+        "productType": "xiexue_liuxingnanxie_zhengzhuangxie"
+    },
+    {
+        "productTypeCh": "男式休闲鞋",
+        "addtion": "200103",
+        "productType": "xiexue_liuxingnanxie_xiuxianxie"
+    },
+    {
+        "productTypeCh": "凉鞋/沙滩鞋",
+        "addtion": "200104",
+        "productType": "xiexue_liuxingnanxie_liangxieshatanxie"
+    },
+    {
+        "productTypeCh": "男靴",
+        "addtion": "200105",
+        "productType": "xiexue_liuxingnanxie_nanxue"
+    },
+    {
+        "productTypeCh": "功能鞋",
+        "addtion": "200106",
+        "productType": "xiexue_liuxingnanxie_gongnengxie"
+    },
+    {
+        "productTypeCh": "流行拖鞋/人字拖",
+        "addtion": "200107",
+        "productType": "xiexue_liuxingnanxie_tuoxierenzituo"
+    },
+    {
+        "productTypeCh": "流行雨鞋/雨靴",
+        "addtion": "200108",
+        "productType": "xiexue_liuxingnanxie_yuxieyuxue"
+    },
+    {
+        "productTypeCh": "传统布鞋",
+        "addtion": "200109",
+        "productType": "xiexue_liuxingnanxie_chuantongbuxie"
+    },
+    {
+        "productTypeCh": "流行鞋配件",
+        "addtion": "200110",
+        "productType": "xiexue_liuxingnanxie_xiepeijian"
+    },
+    {
+        "productTypeCh": "流行帆布鞋",
+        "addtion": "200111",
+        "productType": "xiexue_liuxingnanxie_fanbuxie"
+    },
+    {
+        "productTypeCh": "增高鞋",
+        "addtion": "200112",
+        "productType": "xiexue_liuxingnanxie_zenggaoxie"
+    },
+    {
+        "productTypeCh": "工装鞋",
+        "addtion": "200113",
+        "productType": "xiexue_liuxingnanxie_gongzhuangxie"
+    },
+    {
+        "productTypeCh": "定制鞋",
+        "addtion": "200114",
+        "productType": "xiexue_liuxingnanxie_dingzhixie"
+    },
+    {
+        "productTypeCh": "时尚女鞋",
+        "addtion": "2002",
+        "productType": "shishangnvxie"
+    },
+    {
+        "productTypeCh": "高跟鞋",
+        "addtion": "200201",
+        "productType": "xiexue_shishangnvxie_gaogenxie"
+    },
+    {
+        "productTypeCh": "单鞋",
+        "addtion": "200202",
+        "productType": "xiexue_shishangnvxie_danxie"
+    },
+    {
+        "productTypeCh": "女式休闲鞋",
+        "addtion": "200203",
+        "productType": "xiexue_shishangnvxie_xiuxianxie"
+    },
+    {
+        "productTypeCh": "凉鞋",
+        "addtion": "200204",
+        "productType": "xiexue_shishangnvxie_liangxie"
+    },
+    {
+        "productTypeCh": "女靴",
+        "addtion": "200205",
+        "productType": "xiexue_shishangnvxie_nvxue"
+    },
+    {
+        "productTypeCh": "雪地靴",
+        "addtion": "200206",
+        "productType": "xiexue_shishangnvxie_xuedixue"
+    },
+    {
+        "productTypeCh": "拖鞋/人字拖",
+        "addtion": "200207",
+        "productType": "xiexue_shishangnvxie_tuoxierenzituo"
+    },
+    {
+        "productTypeCh": "踝靴",
+        "addtion": "200208",
+        "productType": "xiexue_shishangnvxie_huaixue"
+    },
+    {
+        "productTypeCh": "筒靴",
+        "addtion": "200209",
+        "productType": "xiexue_shishangnvxie_tongxue"
+    },
+    {
+        "productTypeCh": "帆布鞋",
+        "addtion": "200210",
+        "productType": "xiexue_shishangnvxie_fanbuxie"
+    },
+    {
+        "productTypeCh": "时尚雨鞋/雨靴",
+        "addtion": "200211",
+        "productType": "xiexue_shishangnvxie_yuxieyuxue"
+    },
+    {
+        "productTypeCh": "妈妈鞋",
+        "addtion": "200212",
+        "productType": "xiexue_shishangnvxie_mamaxie"
+    },
+    {
+        "productTypeCh": "时尚鞋配件",
+        "addtion": "200213",
+        "productType": "xiexue_shishangnvxie_xiepeijian"
+    },
+    {
+        "productTypeCh": "特色鞋",
+        "addtion": "200214",
+        "productType": "xiexue_shishangnvxie_tesexie"
+    },
+    {
+        "productTypeCh": "鱼嘴鞋",
+        "addtion": "200215",
+        "productType": "xiexue_shishangnvxie_yuzuixie"
+    },
+    {
+        "productTypeCh": "布鞋/绣花鞋",
+        "addtion": "200216",
+        "productType": "xiexue_shishangnvxie_buxiexiuhuaxie"
+    },
+    {
+        "productTypeCh": "马丁靴",
+        "addtion": "200217",
+        "productType": "xiexue_shishangnvxie_madingxue"
+    },
+    {
+        "productTypeCh": "坡跟鞋",
+        "addtion": "200218",
+        "productType": "xiexue_shishangnvxie_pogenxie"
+    },
+    {
+        "productTypeCh": "松糕鞋",
+        "addtion": "200219",
+        "productType": "xiexue_shishangnvxie_songgaoxie"
+    },
+    {
+        "productTypeCh": "内增高",
+        "addtion": "200220",
+        "productType": "xiexue_shishangnvxie_neizenggao"
+    },
+    {
+        "productTypeCh": "防水台",
+        "addtion": "200221",
+        "productType": "xiexue_shishangnvxie_fangshuitai"
+    },
+    {
+        "productTypeCh": "箱包",
+        "addtion": "21",
+        "productType": "lipinxiangbao"
+    },
+    {
+        "productTypeCh": "潮流女包",
+        "addtion": "2101",
+        "productType": "chaoliunvbao"
+    },
+    {
+        "productTypeCh": "潮流钱包",
+        "addtion": "210101",
+        "productType": "lipinxiangbao_chaoliunvbao_qianbao"
+    },
+    {
+        "productTypeCh": "手拿包/晚宴包",
+        "addtion": "210102",
+        "productType": "lipinxiangbao_chaoliunvbao_shounabaowanyanbao"
+    },
+    {
+        "productTypeCh": "单肩包",
+        "addtion": "210103",
+        "productType": "lipinxiangbao_chaoliunvbao_danjianbao"
+    },
+    {
+        "productTypeCh": "潮流双肩包",
+        "addtion": "210104",
+        "productType": "lipinxiangbao_chaoliunvbao_shuangjianbao"
+    },
+    {
+        "productTypeCh": "手提包",
+        "addtion": "210105",
+        "productType": "lipinxiangbao_chaoliunvbao_shoutibao"
+    },
+    {
+        "productTypeCh": "斜挎包",
+        "addtion": "210106",
+        "productType": "lipinxiangbao_chaoliunvbao_xiekuabao"
+    },
+    {
+        "productTypeCh": "潮流钥匙包",
+        "addtion": "210107",
+        "productType": "lipinxiangbao_chaoliunvbao_yaochibao"
+    },
+    {
+        "productTypeCh": "卡包/零钱包",
+        "addtion": "210108",
+        "productType": "lipinxiangbao_chaoliunvbao_kabaolingqianbao"
+    },
+    {
+        "productTypeCh": "精品男包",
+        "addtion": "2102",
+        "productType": "jingpinnanbao"
+    },
+    {
+        "productTypeCh": "钱包/卡包",
+        "addtion": "210201",
+        "productType": "lipinxiangbao_jingpinnanbao_qianbaokabao"
+    },
+    {
+        "productTypeCh": "男士手包",
+        "addtion": "210202",
+        "productType": "lipinxiangbao_jingpinnanbao_nanshishoubao"
+    },
+    {
+        "productTypeCh": "商务公文包",
+        "addtion": "210203",
+        "productType": "lipinxiangbao_jingpinnanbao_shangwugongwenbao"
+    },
+    {
+        "productTypeCh": "双肩包",
+        "addtion": "210204",
+        "productType": "lipinxiangbao_jingpinnanbao_shuangjianbao"
+    },
+    {
+        "productTypeCh": "单肩/斜挎包",
+        "addtion": "210205",
+        "productType": "lipinxiangbao_jingpinnanbao_danjianxiekuabao"
+    },
+    {
+        "productTypeCh": "钥匙包",
+        "addtion": "210206",
+        "productType": "lipinxiangbao_jingpinnanbao_yaochibao"
+    },
+    {
+        "productTypeCh": "功能箱包",
+        "addtion": "2103",
+        "productType": "gongnengxiangbao"
+    },
+    {
+        "productTypeCh": "电脑包",
+        "addtion": "210301",
+        "productType": "lipinxiangbao_gongnengxiangbao_diannaobao"
+    },
+    {
+        "productTypeCh": "拉杆箱/拉杆包",
+        "addtion": "210302",
+        "productType": "lipinxiangbao_gongnengxiangbao_laganxianglaganbao"
+    },
+    {
+        "productTypeCh": "旅行包",
+        "addtion": "210303",
+        "productType": "lipinxiangbao_gongnengxiangbao_lvxingbao"
+    },
+    {
+        "productTypeCh": "旅行配件",
+        "addtion": "210304",
+        "productType": "lipinxiangbao_gongnengxiangbao_lvxingpeijian"
+    },
+    {
+        "productTypeCh": "休闲运动包",
+        "addtion": "210305",
+        "productType": "lipinxiangbao_gongnengxiangbao_xiuxianyundongbao"
+    },
+    {
+        "productTypeCh": "登山包",
+        "addtion": "210306",
+        "productType": "lipinxiangbao_gongnengxiangbao_dengshanbao"
+    },
+    {
+        "productTypeCh": "妈咪包",
+        "addtion": "210307",
+        "productType": "lipinxiangbao_gongnengxiangbao_mamibao"
+    },
+    {
+        "productTypeCh": "书包",
+        "addtion": "210308",
+        "productType": "lipinxiangbao_gongnengxiangbao_shubao"
+    },
+    {
+        "productTypeCh": "相机包",
+        "addtion": "210309",
+        "productType": "lipinxiangbao_gongnengxiangbao_xiangjibao"
+    },
+    {
+        "productTypeCh": "腰包/胸包",
+        "addtion": "210310",
+        "productType": "lipinxiangbao_gongnengxiangbao_yaobaoxiongbao"
+    },
+    {
+        "productTypeCh": "礼品",
+        "addtion": "2104",
+        "productType": "lipin"
+    },
+    {
+        "productTypeCh": "火机烟具",
+        "addtion": "210401",
+        "productType": "lipinxiangbao_lipin_huojiyanju"
+    },
+    {
+        "productTypeCh": "礼品文具",
+        "addtion": "210402",
+        "productType": "lipinxiangbao_lipin_lipinwenju"
+    },
+    {
+        "productTypeCh": "军刀军具",
+        "addtion": "210403",
+        "productType": "lipinxiangbao_lipin_jundaojunju"
+    },
+    {
+        "productTypeCh": "收藏品",
+        "addtion": "210404",
+        "productType": "lipinxiangbao_lipin_shouzangpin"
+    },
+    {
+        "productTypeCh": "工艺礼品",
+        "addtion": "210405",
+        "productType": "lipinxiangbao_lipin_gongyilipin"
+    },
+    {
+        "productTypeCh": "创意礼品",
+        "addtion": "210406",
+        "productType": "lipinxiangbao_lipin_chuangyilipin"
+    },
+    {
+        "productTypeCh": "礼盒礼券",
+        "addtion": "210407",
+        "productType": "lipinxiangbao_lipin_liheliquan"
+    },
+    {
+        "productTypeCh": "鲜花绿植",
+        "addtion": "210408",
+        "productType": "lipinxiangbao_lipin_xianhualvzhi"
+    },
+    {
+        "productTypeCh": "婚庆用品",
+        "addtion": "210409",
+        "productType": "lipinxiangbao_lipin_hunqingyongpin"
+    },
+    {
+        "productTypeCh": "美妆礼品",
+        "addtion": "210411",
+        "productType": "lipinxiangbao_lipin_meizhuanglipin"
+    },
+    {
+        "productTypeCh": "地方礼品",
+        "addtion": "210412",
+        "productType": "lipinxiangbao_lipin_difanglipin"
+    },
+    {
+        "productTypeCh": "古董把玩",
+        "addtion": "210413",
+        "productType": "lipinxiangbao_lipin_gudongbawan"
+    },
+    {
+        "productTypeCh": "奢侈品",
+        "addtion": "2105",
+        "productType": "shechipin"
+    },
+    {
+        "productTypeCh": "箱包",
+        "addtion": "210501",
+        "productType": "lipinxiangbao_shechipin_xiangbao"
+    },
+    {
+        "productTypeCh": "钱包",
+        "addtion": "210502",
+        "productType": "lipinxiangbao_shechipin_qianbao"
+    },
+    {
+        "productTypeCh": "服饰",
+        "addtion": "210503",
+        "productType": "lipinxiangbao_shechipin_fushi"
+    },
+    {
+        "productTypeCh": "腰带",
+        "addtion": "210504",
+        "productType": "lipinxiangbao_shechipin_yaodai"
+    },
+    {
+        "productTypeCh": "太阳镜/眼镜框",
+        "addtion": "210505",
+        "productType": "lipinxiangbao_shechipin_taiyangjingyanjingkuang"
+    },
+    {
+        "productTypeCh": "配件",
+        "addtion": "210506",
+        "productType": "lipinxiangbao_shechipin_peijian"
+    },
+    {
+        "productTypeCh": "鞋靴",
+        "addtion": "210507",
+        "productType": "lipinxiangbao_shechipin_xiexue"
+    },
+    {
+        "productTypeCh": "饰品",
+        "addtion": "210508",
+        "productType": "lipinxiangbao_shechipin_shipin"
+    },
+    {
+        "productTypeCh": "高档化妆品",
+        "addtion": "210510",
+        "productType": "lipinxiangbao_shechipin_gaodanghuazhuangpin"
+    },
+    {
+        "productTypeCh": "婚庆",
+        "addtion": "2106",
+        "productType": "hunqing"
+    },
+    {
+        "productTypeCh": "婚嫁首饰",
+        "addtion": "210601",
+        "productType": "lipinxiangbao_hunqing_hunjiashoushi"
+    },
+    {
+        "productTypeCh": "婚纱摄影",
+        "addtion": "210602",
+        "productType": "lipinxiangbao_hunqing_hunshasheying"
+    },
+    {
+        "productTypeCh": "婚纱礼服",
+        "addtion": "210603",
+        "productType": "lipinxiangbao_hunqing_hunshalifu"
+    },
+    {
+        "productTypeCh": "婚庆服务",
+        "addtion": "210604",
+        "productType": "lipinxiangbao_hunqing_hunqingfuwu"
+    },
+    {
+        "productTypeCh": "婚庆礼品/用品",
+        "addtion": "210605",
+        "productType": "lipinxiangbao_hunqing_hunqinglipinyongpin"
+    },
+    {
+        "productTypeCh": "婚宴",
+        "addtion": "210606",
+        "productType": "lipinxiangbao_hunqing_hunyan"
+    },
+    {
+        "productTypeCh": "钟表",
+        "addtion": "22",
+        "productType": "zhongbiao"
+    },
+    {
+        "productTypeCh": "瑞士名表",
+        "addtion": "2201",
+        "productType": "ruishishoubiao"
+    },
+    {
+        "productTypeCh": "钟类",
+        "addtion": "2207",
+        "productType": "zhonglei"
+    },
+    {
+        "productTypeCh": "营养保健",
+        "addtion": "23",
+        "productType": "yingyangbaojian"
+    },
+    {
+        "productTypeCh": "营养健康",
+        "addtion": "2301",
+        "productType": "yingyangjiankang"
+    },
+    {
+        "productTypeCh": "美容养颜",
+        "addtion": "230101",
+        "productType": "yingyangbaojian_yingyangjiankang_meirongyangyan"
+    },
+    {
+        "productTypeCh": "调节免疫",
+        "addtion": "230102",
+        "productType": "yingyangbaojian_yingyangjiankang_diaojiemianyi"
+    },
+    {
+        "productTypeCh": "骨骼健康",
+        "addtion": "230103",
+        "productType": "yingyangbaojian_yingyangjiankang_gugejiankang"
+    },
+    {
+        "productTypeCh": "调节三高",
+        "addtion": "230104",
+        "productType": "yingyangbaojian_yingyangjiankang_diaojiesangao"
+    },
+    {
+        "productTypeCh": "明目益智",
+        "addtion": "230105",
+        "productType": "yingyangbaojian_yingyangjiankang_mingmuyizhi"
+    },
+    {
+        "productTypeCh": "肠胃养护",
+        "addtion": "230106",
+        "productType": "yingyangbaojian_yingyangjiankang_changweiyanghu"
+    },
+    {
+        "productTypeCh": "肝肾养护",
+        "addtion": "230107",
+        "productType": "yingyangbaojian_yingyangjiankang_ganshenyanghu"
+    },
+    {
+        "productTypeCh": "改善睡眠",
+        "addtion": "230108",
+        "productType": "yingyangbaojian_yingyangjiankang_gaishanshuimian"
+    },
+    {
+        "productTypeCh": "缓解疲劳",
+        "addtion": "230109",
+        "productType": "yingyangbaojian_yingyangjiankang_huanjiepilao"
+    },
+    {
+        "productTypeCh": "美体塑身",
+        "addtion": "230110",
+        "productType": "yingyangbaojian_yingyangjiankang_meitisushen"
+    },
+    {
+        "productTypeCh": "抗氧化",
+        "addtion": "230111",
+        "productType": "yingyangbaojian_yingyangjiankang_kangyanghua"
+    },
+    {
+        "productTypeCh": "耐缺氧",
+        "addtion": "230112",
+        "productType": "yingyangbaojian_yingyangjiankang_naiqueyang"
+    },
+    {
+        "productTypeCh": "防辐射",
+        "addtion": "230113",
+        "productType": "yingyangbaojian_yingyangjiankang_fangfushe"
+    },
+    {
+        "productTypeCh": "改善发育",
+        "addtion": "230114",
+        "productType": "yingyangbaojian_yingyangjiankang_gaishanfayu"
+    },
+    {
+        "productTypeCh": "改善贫血",
+        "addtion": "230115",
+        "productType": "yingyangbaojian_yingyangjiankang_gaishanpinxue"
+    },
+    {
+        "productTypeCh": "养眼护眼",
+        "addtion": "230116",
+        "productType": "yingyangbaojian_yingyangjiankang_yangyanhuyan"
+    },
+    {
+        "productTypeCh": "清咽利喉",
+        "addtion": "230117",
+        "productType": "yingyangbaojian_yingyangjiankang_qingyanlihou"
+    },
+    {
+        "productTypeCh": "营养成分",
+        "addtion": "2302",
+        "productType": "yingyangchengfen"
+    },
+    {
+        "productTypeCh": "左旋肉碱",
+        "addtion": "230201",
+        "productType": "yingyangbaojian_yingyangchengfen_zuoxuanroujian"
+    },
+    {
+        "productTypeCh": "蛋白质",
+        "addtion": "230202",
+        "productType": "yingyangbaojian_yingyangchengfen_danbaizhi"
+    },
+    {
+        "productTypeCh": "维生素/矿物质",
+        "addtion": "230203",
+        "productType": "yingyangbaojian_yingyangchengfen_weishengsukuangwuzhi"
+    },
+    {
+        "productTypeCh": "胶原蛋白",
+        "addtion": "230204",
+        "productType": "yingyangbaojian_yingyangchengfen_jiaoyuandanbai"
+    },
+    {
+        "productTypeCh": "叶酸",
+        "addtion": "230205",
+        "productType": "yingyangbaojian_yingyangchengfen_yesuan"
+    },
+    {
+        "productTypeCh": "膳食纤维",
+        "addtion": "230206",
+        "productType": "yingyangbaojian_yingyangchengfen_shanshixianwei"
+    },
+    {
+        "productTypeCh": "传统滋补",
+        "addtion": "2303",
+        "productType": "chuantongzibu"
+    },
+    {
+        "productTypeCh": "冬虫夏草",
+        "addtion": "230301",
+        "productType": "yingyangbaojian_chuantongzibu_dongchongxiacao"
+    },
+    {
+        "productTypeCh": "参类",
+        "addtion": "230302",
+        "productType": "yingyangbaojian_chuantongzibu_canlei"
+    },
+    {
+        "productTypeCh": "燕窝",
+        "addtion": "230303",
+        "productType": "yingyangbaojian_chuantongzibu_yanwo"
+    },
+    {
+        "productTypeCh": "阿胶",
+        "addtion": "230304",
+        "productType": "yingyangbaojian_chuantongzibu_ajiao"
+    },
+    {
+        "productTypeCh": "海参",
+        "addtion": "230305",
+        "productType": "yingyangbaojian_chuantongzibu_haican"
+    },
+    {
+        "productTypeCh": "养生茶饮",
+        "addtion": "230306",
+        "productType": "yingyangbaojian_chuantongzibu_yangshengchayin"
+    },
+    {
+        "productTypeCh": "鹿茸",
+        "addtion": "230307",
+        "productType": "yingyangbaojian_chuantongzibu_lurong"
+    },
+    {
+        "productTypeCh": "灵芝",
+        "addtion": "230308",
+        "productType": "yingyangbaojian_chuantongzibu_lingzhi"
+    },
+    {
+        "productTypeCh": "药食同源",
+        "addtion": "230309",
+        "productType": "yingyangbaojian_chuantongzibu_yaoshitongyuan"
+    },
+    {
+        "productTypeCh": "蜂产品",
+        "addtion": "230310",
+        "productType": "yingyangbaojian_chuantongzibu_fengchanpin"
+    },
+    {
+        "productTypeCh": "成人用品",
+        "addtion": "2304",
+        "productType": "chengrenyongpin"
+    },
+    {
+        "productTypeCh": "安全避孕",
+        "addtion": "230401",
+        "productType": "yingyangbaojian_chengrenyongpin_anquanbiyun"
+    },
+    {
+        "productTypeCh": "验孕测孕",
+        "addtion": "230402",
+        "productType": "yingyangbaojian_chengrenyongpin_yanyunceyun"
+    },
+    {
+        "productTypeCh": "人体润滑",
+        "addtion": "230403",
+        "productType": "yingyangbaojian_chengrenyongpin_rentirunhua"
+    },
+    {
+        "productTypeCh": "情爱玩具",
+        "addtion": "230404",
+        "productType": "yingyangbaojian_chengrenyongpin_qingaiwanju"
+    },
+    {
+        "productTypeCh": "保健器械",
+        "addtion": "2305",
+        "productType": "baojianqixie"
+    },
+    {
+        "productTypeCh": "血糖用品",
+        "addtion": "230501",
+        "productType": "yingyangbaojian_baojianqixie_xuetangyongpin"
+    },
+    {
+        "productTypeCh": "呼吸制氧",
+        "addtion": "230502",
+        "productType": "yingyangbaojian_baojianqixie_huxizhiyang"
+    },
+    {
+        "productTypeCh": "血压仪器",
+        "addtion": "230503",
+        "productType": "yingyangbaojian_baojianqixie_xueyayiqi"
+    },
+    {
+        "productTypeCh": "养生器械",
+        "addtion": "230504",
+        "productType": "yingyangbaojian_baojianqixie_yangshengqixie"
+    },
+    {
+        "productTypeCh": "中医保健",
+        "addtion": "230505",
+        "productType": "yingyangbaojian_baojianqixie_zhongyibaojian"
+    },
+    {
+        "productTypeCh": "康复辅助",
+        "addtion": "230506",
+        "productType": "yingyangbaojian_baojianqixie_kangfufuzhu"
+    },
+    {
+        "productTypeCh": "家庭护理",
+        "addtion": "230507",
+        "productType": "yingyangbaojian_baojianqixie_jiatinghuli"
+    },
+    {
+        "productTypeCh": "急救卫生",
+        "addtion": "2306",
+        "productType": "jijiuweisheng"
+    },
+    {
+        "productTypeCh": "跌打损伤",
+        "addtion": "230601",
+        "productType": "yingyangbaojian_jijiuweisheng_diedasunshang"
+    },
+    {
+        "productTypeCh": "防裂抗冻",
+        "addtion": "230602",
+        "productType": "yingyangbaojian_jijiuweisheng_fangliekangdong"
+    },
+    {
+        "productTypeCh": "眼部保健",
+        "addtion": "230604",
+        "productType": "yingyangbaojian_jijiuweisheng_yanbubaojian"
+    },
+    {
+        "productTypeCh": "鼻炎健康",
+        "addtion": "230605",
+        "productType": "yingyangbaojian_jijiuweisheng_biyanjiankang"
+    },
+    {
+        "productTypeCh": "服饰",
+        "addtion": "24",
+        "productType": "fushineiyi"
+    },
+    {
+        "productTypeCh": "女装",
+        "addtion": "2401",
+        "productType": "nvzhuang"
+    },
+    {
+        "productTypeCh": "女装T恤",
+        "addtion": "240101",
+        "productType": "fushineiyi_nvzhuang_txu"
+    },
+    {
+        "productTypeCh": "女装衬衫",
+        "addtion": "240102",
+        "productType": "fushineiyi_nvzhuang_chenshan"
+    },
+    {
+        "productTypeCh": "女装针织衫",
+        "addtion": "240103",
+        "productType": "fushineiyi_nvzhuang_zhenzhishan"
+    },
+    {
+        "productTypeCh": "雪纺衫",
+        "addtion": "240104",
+        "productType": "fushineiyi_nvzhuang_xuefangshan"
+    },
+    {
+        "productTypeCh": "女式卫衣",
+        "addtion": "240105",
+        "productType": "fushineiyi_nvzhuang_weiyi"
+    },
+    {
+        "productTypeCh": "马甲",
+        "addtion": "240106",
+        "productType": "fushineiyi_nvzhuang_majia"
+    },
+    {
+        "productTypeCh": "连衣裙",
+        "addtion": "240107",
+        "productType": "fushineiyi_nvzhuang_lianyiqun"
+    },
+    {
+        "productTypeCh": "半身裙",
+        "addtion": "240108",
+        "productType": "fushineiyi_nvzhuang_banshenqun"
+    },
+    {
+        "productTypeCh": "女装牛仔裤",
+        "addtion": "240109",
+        "productType": "fushineiyi_nvzhuang_niuziku"
+    },
+    {
+        "productTypeCh": "女装休闲裤",
+        "addtion": "240110",
+        "productType": "fushineiyi_nvzhuang_xiuxianku"
+    },
+    {
+        "productTypeCh": "打底裤",
+        "addtion": "240111",
+        "productType": "fushineiyi_nvzhuang_dadiku"
+    },
+    {
+        "productTypeCh": "正装裤",
+        "addtion": "240112",
+        "productType": "fushineiyi_nvzhuang_zhengzhuangku"
+    },
+    {
+        "productTypeCh": "小西装",
+        "addtion": "240113",
+        "productType": "fushineiyi_nvzhuang_xiaoxizhuang"
+    },
+    {
+        "productTypeCh": "短外套",
+        "addtion": "240114",
+        "productType": "fushineiyi_nvzhuang_duanwaitao"
+    },
+    {
+        "productTypeCh": "女装风衣",
+        "addtion": "240115",
+        "productType": "fushineiyi_nvzhuang_fengyi"
+    },
+    {
+        "productTypeCh": "女毛呢大衣",
+        "addtion": "240116",
+        "productType": "fushineiyi_nvzhuang_maonidayi"
+    },
+    {
+        "productTypeCh": "女装皮衣",
+        "addtion": "240117",
+        "productType": "fushineiyi_nvzhuang_piyi"
+    },
+    {
+        "productTypeCh": "女装棉服",
+        "addtion": "240118",
+        "productType": "fushineiyi_nvzhuang_mianfu"
+    },
+    {
+        "productTypeCh": "女装/羽绒服",
+        "addtion": "240119",
+        "productType": "fushineiyi_nvzhuang_yurongfu"
+    },
+    {
+        "productTypeCh": "大码女装",
+        "addtion": "240120",
+        "productType": "fushineiyi_nvzhuang_damanvzhuang"
+    },
+    {
+        "productTypeCh": "中老年女装",
+        "addtion": "240121",
+        "productType": "fushineiyi_nvzhuang_zhonglaoniannvzhuang"
+    },
+    {
+        "productTypeCh": "婚纱",
+        "addtion": "240122",
+        "productType": "fushineiyi_nvzhuang_hunsha"
+    },
+    {
+        "productTypeCh": "女装/打底衫",
+        "addtion": "240123",
+        "productType": "fushineiyi_nvzhuang_dadishan"
+    },
+    {
+        "productTypeCh": "旗袍/唐装",
+        "addtion": "240124",
+        "productType": "fushineiyi_nvzhuang_qipaotangzhuang"
+    },
+    {
+        "productTypeCh": "女装加绒裤",
+        "addtion": "240125",
+        "productType": "fushineiyi_nvzhuang_jiarongku"
+    },
+    {
+        "productTypeCh": "吊带/背心",
+        "addtion": "240126",
+        "productType": "fushineiyi_nvzhuang_diaodaibeixin"
+    },
+    {
+        "productTypeCh": "女装羊绒衫",
+        "addtion": "240127",
+        "productType": "fushineiyi_nvzhuang_yangrongshan"
+    },
+    {
+        "productTypeCh": "女装短裤",
+        "addtion": "240128",
+        "productType": "fushineiyi_nvzhuang_duanku"
+    },
+    {
+        "productTypeCh": "皮草",
+        "addtion": "240129",
+        "productType": "fushineiyi_nvzhuang_picao"
+    },
+    {
+        "productTypeCh": "礼服",
+        "addtion": "240130",
+        "productType": "fushineiyi_nvzhuang_lifu"
+    },
+    {
+        "productTypeCh": "女装羊毛衫",
+        "addtion": "240131",
+        "productType": "fushineiyi_nvzhuang_yangmaoshan"
+    },
+    {
+        "productTypeCh": "女装设计师/潮牌",
+        "addtion": "240132",
+        "productType": "fushineiyi_nvzhuang_shejishichaopai"
+    },
+    {
+        "productTypeCh": "男装",
+        "addtion": "2402",
+        "productType": "nanzhuang"
+    },
+    {
+        "productTypeCh": "男装衬衫",
+        "addtion": "240201",
+        "productType": "fushineiyi_nanzhuang_chenshan"
+    },
+    {
+        "productTypeCh": "男装T恤",
+        "addtion": "240202",
+        "productType": "fushineiyi_nanzhuang_txu"
+    },
+    {
+        "productTypeCh": "POLO衫",
+        "addtion": "240203",
+        "productType": "fushineiyi_nanzhuang_poloshan"
+    },
+    {
+        "productTypeCh": "男装针织衫",
+        "addtion": "240204",
+        "productType": "fushineiyi_nanzhuang_zhenzhishan"
+    },
+    {
+        "productTypeCh": "男装羊绒衫",
+        "addtion": "240205",
+        "productType": "fushineiyi_nanzhuang_yangrongshan"
+    },
+    {
+        "productTypeCh": "男式卫衣",
+        "addtion": "240206",
+        "productType": "fushineiyi_nanzhuang_weiyi"
+    },
+    {
+        "productTypeCh": "马甲/背心",
+        "addtion": "240207",
+        "productType": "fushineiyi_nanzhuang_majiabeixin"
+    },
+    {
+        "productTypeCh": "夹克",
+        "addtion": "240208",
+        "productType": "fushineiyi_nanzhuang_jiake"
+    },
+    {
+        "productTypeCh": "男装风衣",
+        "addtion": "240209",
+        "productType": "fushineiyi_nanzhuang_fengyi"
+    },
+    {
+        "productTypeCh": "男毛呢大衣",
+        "addtion": "240210",
+        "productType": "fushineiyi_nanzhuang_maonidayi"
+    },
+    {
+        "productTypeCh": "男装皮衣",
+        "addtion": "240211",
+        "productType": "fushineiyi_nanzhuang_piyi"
+    },
+    {
+        "productTypeCh": "西服",
+        "addtion": "240212",
+        "productType": "fushineiyi_nanzhuang_xifu"
+    },
+    {
+        "productTypeCh": "男装棉服",
+        "addtion": "240213",
+        "productType": "fushineiyi_nanzhuang_mianfu"
+    },
+    {
+        "productTypeCh": "男装羽绒服",
+        "addtion": "240214",
+        "productType": "fushineiyi_nanzhuang_yurongfu"
+    },
+    {
+        "productTypeCh": "男装牛仔裤",
+        "addtion": "240215",
+        "productType": "fushineiyi_nanzhuang_niuziku"
+    },
+    {
+        "productTypeCh": "男装休闲裤",
+        "addtion": "240216",
+        "productType": "fushineiyi_nanzhuang_xiuxianku"
+    },
+    {
+        "productTypeCh": "西裤",
+        "addtion": "240217",
+        "productType": "fushineiyi_nanzhuang_xiku"
+    },
+    {
+        "productTypeCh": "西服套装",
+        "addtion": "240218",
+        "productType": "fushineiyi_nanzhuang_xifutaozhuang"
+    },
+    {
+        "productTypeCh": "大码男装",
+        "addtion": "240219",
+        "productType": "fushineiyi_nanzhuang_damananzhuang"
+    },
+    {
+        "productTypeCh": "中老年男装",
+        "addtion": "240220",
+        "productType": "fushineiyi_nanzhuang_zhonglaoniannanzhuang"
+    },
+    {
+        "productTypeCh": "唐装/中山装",
+        "addtion": "240221",
+        "productType": "fushineiyi_nanzhuang_tangzhuangzhongshanzhuang"
+    },
+    {
+        "productTypeCh": "男工装",
+        "addtion": "240222",
+        "productType": "fushineiyi_nanzhuang_gongzhuang"
+    },
+    {
+        "productTypeCh": "男装加绒裤",
+        "addtion": "240223",
+        "productType": "fushineiyi_nanzhuang_jiarongku"
+    },
+    {
+        "productTypeCh": "卫裤/运动裤",
+        "addtion": "240224",
+        "productType": "fushineiyi_nanzhuang_weikuyundongku"
+    },
+    {
+        "productTypeCh": "男装短裤",
+        "addtion": "240225",
+        "productType": "fushineiyi_nanzhuang_duanku"
+    },
+    {
+        "productTypeCh": "男装设计师/潮牌",
+        "addtion": "240226",
+        "productType": "fushineiyi_nanzhuang_shejishichaopai"
+    },
+    {
+        "productTypeCh": "男装羊毛衫",
+        "addtion": "240227",
+        "productType": "fushineiyi_nanzhuang_yangmaoshan"
+    },
+    {
+        "productTypeCh": "内衣",
+        "addtion": "2403",
+        "productType": "neiyi"
+    },
+    {
+        "productTypeCh": "文胸",
+        "addtion": "240301",
+        "productType": "fushineiyi_neiyi_wenxiong"
+    },
+    {
+        "productTypeCh": "女式内裤",
+        "addtion": "240302",
+        "productType": "fushineiyi_neiyi_nvshineiku"
+    },
+    {
+        "productTypeCh": "男式内裤",
+        "addtion": "240303",
+        "productType": "fushineiyi_neiyi_nanshineiku"
+    },
+    {
+        "productTypeCh": "睡衣/家居服",
+        "addtion": "240304",
+        "productType": "fushineiyi_neiyi_shuiyijiajufu"
+    },
+    {
+        "productTypeCh": "塑身美体",
+        "addtion": "240305",
+        "productType": "fushineiyi_neiyi_sushenmeiti"
+    },
+    {
+        "productTypeCh": "抹胸",
+        "addtion": "240308",
+        "productType": "fushineiyi_neiyi_moxiong"
+    },
+    {
+        "productTypeCh": "连裤袜/丝袜",
+        "addtion": "240309",
+        "productType": "fushineiyi_neiyi_liankuwasiwa"
+    },
+    {
+        "productTypeCh": "美腿袜",
+        "addtion": "240310",
+        "productType": "fushineiyi_neiyi_meituiwa"
+    },
+    {
+        "productTypeCh": "商务男袜",
+        "addtion": "240311",
+        "productType": "fushineiyi_neiyi_shangwunanwa"
+    },
+    {
+        "productTypeCh": "保暖内衣",
+        "addtion": "240312",
+        "productType": "fushineiyi_neiyi_baonuanneiyi"
+    },
+    {
+        "productTypeCh": "文胸套装",
+        "addtion": "240314",
+        "productType": "fushineiyi_neiyi_wenxiongtaozhuang"
+    },
+    {
+        "productTypeCh": "少女文胸",
+        "addtion": "240315",
+        "productType": "fushineiyi_neiyi_shaonvwenxiong"
+    },
+    {
+        "productTypeCh": "休闲棉袜",
+        "addtion": "240316",
+        "productType": "fushineiyi_neiyi_xiuxianmianwa"
+    },
+    {
+        "productTypeCh": "大码内衣",
+        "addtion": "240317",
+        "productType": "fushineiyi_neiyi_damaneiyi"
+    },
+    {
+        "productTypeCh": "内衣配件",
+        "addtion": "240318",
+        "productType": "fushineiyi_neiyi_neiyipeijian"
+    },
+    {
+        "productTypeCh": "打底裤袜",
+        "addtion": "240319",
+        "productType": "fushineiyi_neiyi_dadikuwa"
+    },
+    {
+        "productTypeCh": "秋衣秋裤",
+        "addtion": "240321",
+        "productType": "fushineiyi_neiyi_qiuyiqiuku"
+    },
+    {
+        "productTypeCh": "情趣内衣",
+        "addtion": "240322",
+        "productType": "fushineiyi_neiyi_qingquneiyi"
+    },
+    {
+        "productTypeCh": "服饰配件",
+        "addtion": "2404",
+        "productType": "fushipeijian"
+    },
+    {
+        "productTypeCh": "太阳镜",
+        "addtion": "240401",
+        "productType": "fushineiyi_fushipeijian_taiyangjing"
+    },
+    {
+        "productTypeCh": "光学镜架/镜片",
+        "addtion": "240402",
+        "productType": "fushineiyi_fushipeijian_guangxuejingjiajingpian"
+    },
+    {
+        "productTypeCh": "围巾/手套/帽子套装",
+        "addtion": "240403",
+        "productType": "fushineiyi_fushipeijian_weijinshoutaomaozitaozhuang"
+    },
+    {
+        "productTypeCh": "袖扣",
+        "addtion": "240404",
+        "productType": "fushineiyi_fushipeijian_xiukou"
+    },
+    {
+        "productTypeCh": "老花镜",
+        "addtion": "240408",
+        "productType": "fushineiyi_fushipeijian_laohuajing"
+    },
+    {
+        "productTypeCh": "装饰眼镜",
+        "addtion": "240409",
+        "productType": "fushineiyi_fushipeijian_zhuangshiyanjing"
+    },
+    {
+        "productTypeCh": "防辐射眼镜",
+        "addtion": "240410",
+        "productType": "fushineiyi_fushipeijian_fangfusheyanjing"
+    },
+    {
+        "productTypeCh": "游泳镜",
+        "addtion": "240411",
+        "productType": "fushineiyi_fushipeijian_youyongjing"
+    },
+    {
+        "productTypeCh": "女士丝巾/围巾/披肩",
+        "addtion": "240412",
+        "productType": "fushineiyi_fushipeijian_nvshisijinweijinpijian"
+    },
+    {
+        "productTypeCh": "男士腰带/礼盒",
+        "addtion": "240420",
+        "productType": "fushineiyi_fushipeijian_nanshiyaodailihe"
+    },
+    {
+        "productTypeCh": "女士腰带/礼盒",
+        "addtion": "240421",
+        "productType": "fushineiyi_fushipeijian_nvshiyaodailihe"
+    },
+    {
+        "productTypeCh": "钥匙扣",
+        "addtion": "240422",
+        "productType": "fushineiyi_fushipeijian_yaochikou"
+    },
+    {
+        "productTypeCh": "口罩",
+        "addtion": "240424",
+        "productType": "fushineiyi_fushipeijian_kouzhao"
+    },
+    {
+        "productTypeCh": "耳罩/耳包",
+        "addtion": "240425",
+        "productType": "fushineiyi_fushipeijian_erzhaoerbao"
+    },
+    {
+        "productTypeCh": "假领",
+        "addtion": "240426",
+        "productType": "fushineiyi_fushipeijian_jialing"
+    },
+    {
+        "productTypeCh": "毛线/布面料",
+        "addtion": "240427",
+        "productType": "fushineiyi_fushipeijian_maoxianbumianliao"
+    },
+    {
+        "productTypeCh": "领带/领结/领带夹",
+        "addtion": "240428",
+        "productType": "fushineiyi_fushipeijian_lingdailingjielingdaijia"
+    },
+    {
+        "productTypeCh": "珠宝",
+        "addtion": "25",
+        "productType": "zhubaoshoushi"
+    },
+    {
+        "productTypeCh": "时尚饰品",
+        "addtion": "2501",
+        "productType": "shishangshipin"
+    },
+    {
+        "productTypeCh": "项链",
+        "addtion": "250101",
+        "productType": "zhubaoshoushi_shishangshipin_xianglian"
+    },
+    {
+        "productTypeCh": "手链/脚链",
+        "addtion": "250102",
+        "productType": "zhubaoshoushi_shishangshipin_shoulianjiaolian"
+    },
+    {
+        "productTypeCh": "戒指",
+        "addtion": "250103",
+        "productType": "zhubaoshoushi_shishangshipin_jiezhi"
+    },
+    {
+        "productTypeCh": "时尚耳饰",
+        "addtion": "250104",
+        "productType": "zhubaoshoushi_shishangshipin_ershi"
+    },
+    {
+        "productTypeCh": "头饰",
+        "addtion": "250105",
+        "productType": "zhubaoshoushi_shishangshipin_toushi"
+    },
+    {
+        "productTypeCh": "时尚胸针",
+        "addtion": "250106",
+        "productType": "zhubaoshoushi_shishangshipin_xiongzhen"
+    },
+    {
+        "productTypeCh": "婚庆饰品",
+        "addtion": "250107",
+        "productType": "zhubaoshoushi_shishangshipin_hunqingshipin"
+    },
+    {
+        "productTypeCh": "饰品配件",
+        "addtion": "250108",
+        "productType": "zhubaoshoushi_shishangshipin_shipinpeijian"
+    },
+    {
+        "productTypeCh": "纯金K金饰品",
+        "addtion": "2502",
+        "productType": "chunjinjinshipin"
+    },
+    {
+        "productTypeCh": "金吊坠/项链",
+        "addtion": "250201",
+        "productType": "zhubaoshoushi_chunjinjinshipin_diaozhuixianglian"
+    },
+    {
+        "productTypeCh": "金手镯/手链/脚链",
+        "addtion": "250202",
+        "productType": "zhubaoshoushi_chunjinjinshipin_shouzhuoshoulianjiaolian"
+    },
+    {
+        "productTypeCh": "金戒指",
+        "addtion": "250203",
+        "productType": "zhubaoshoushi_chunjinjinshipin_jiezhi"
+    },
+    {
+        "productTypeCh": "纯金耳饰",
+        "addtion": "250204",
+        "productType": "zhubaoshoushi_chunjinjinshipin_ershi"
+    },
+    {
+        "productTypeCh": "金银投资",
+        "addtion": "2503",
+        "productType": "jinyintouzi"
+    },
+    {
+        "productTypeCh": "工艺金",
+        "addtion": "250301",
+        "productType": "zhubaoshoushi_jinyintouzi_gongyijin"
+    },
+    {
+        "productTypeCh": "工艺银",
+        "addtion": "250302",
+        "productType": "zhubaoshoushi_jinyintouzi_gongyiyin"
+    },
+    {
+        "productTypeCh": "银饰",
+        "addtion": "2504",
+        "productType": "yinshi"
+    },
+    {
+        "productTypeCh": "银吊坠/项链",
+        "addtion": "250401",
+        "productType": "zhubaoshoushi_yinshi_diaozhuixianglian"
+    },
+    {
+        "productTypeCh": "银手镯/手链/脚链",
+        "addtion": "250402",
+        "productType": "zhubaoshoushi_yinshi_shouzhuoshoulianjiaolian"
+    },
+    {
+        "productTypeCh": "戒指/耳饰",
+        "addtion": "250403",
+        "productType": "zhubaoshoushi_yinshi_jiezhiershi"
+    },
+    {
+        "productTypeCh": "宝宝银饰",
+        "addtion": "250404",
+        "productType": "zhubaoshoushi_yinshi_baobaoyinshi"
+    },
+    {
+        "productTypeCh": "千足银手镯",
+        "addtion": "250405",
+        "productType": "zhubaoshoushi_yinshi_qianzuyinshouzhuo"
+    },
+    {
+        "productTypeCh": "钻石",
+        "addtion": "2505",
+        "productType": "zuanshi"
+    },
+    {
+        "productTypeCh": "裸钻",
+        "addtion": "250501",
+        "productType": "zhubaoshoushi_zuanshi_luozuan"
+    },
+    {
+        "productTypeCh": "钻石戒指",
+        "addtion": "250502",
+        "productType": "zhubaoshoushi_zuanshi_jiezhi"
+    },
+    {
+        "productTypeCh": "钻石项链/吊坠",
+        "addtion": "250503",
+        "productType": "zhubaoshoushi_zuanshi_xiangliandiaozhui"
+    },
+    {
+        "productTypeCh": "钻石耳饰",
+        "addtion": "250504",
+        "productType": "zhubaoshoushi_zuanshi_ershi"
+    },
+    {
+        "productTypeCh": "钻石手镯/手链",
+        "addtion": "250505",
+        "productType": "zhubaoshoushi_zuanshi_shouzhuoshoulian"
+    },
+    {
+        "productTypeCh": "翡翠玉石",
+        "addtion": "2506",
+        "productType": "feicuiyushi"
+    },
+    {
+        "productTypeCh": "翡翠项链/吊坠",
+        "addtion": "250601",
+        "productType": "zhubaoshoushi_feicuiyushi_xiangliandiaozhui"
+    },
+    {
+        "productTypeCh": "手镯/手串",
+        "addtion": "250602",
+        "productType": "zhubaoshoushi_feicuiyushi_shouzhuoshouchuan"
+    },
+    {
+        "productTypeCh": "翡翠戒指",
+        "addtion": "250603",
+        "productType": "zhubaoshoushi_feicuiyushi_jiezhi"
+    },
+    {
+        "productTypeCh": "翡翠耳饰",
+        "addtion": "250604",
+        "productType": "zhubaoshoushi_feicuiyushi_ershi"
+    },
+    {
+        "productTypeCh": "翡翠挂件/摆件/把件",
+        "addtion": "250605",
+        "productType": "zhubaoshoushi_feicuiyushi_guajianbaijianbajian"
+    },
+    {
+        "productTypeCh": "高值收藏",
+        "addtion": "250606",
+        "productType": "zhubaoshoushi_feicuiyushi_gaozhishouzang"
+    },
+    {
+        "productTypeCh": "水晶玛瑙",
+        "addtion": "2507",
+        "productType": "shuijingmanao"
+    },
+    {
+        "productTypeCh": "水晶项链/吊坠",
+        "addtion": "250701",
+        "productType": "zhubaoshoushi_shuijingmanao_xiangliandiaozhui"
+    },
+    {
+        "productTypeCh": "水晶耳饰",
+        "addtion": "250702",
+        "productType": "zhubaoshoushi_shuijingmanao_ershi"
+    },
+    {
+        "productTypeCh": "水晶玛瑙手镯/手链/脚链",
+        "addtion": "250703",
+        "productType": "zhubaoshoushi_shuijingmanao_shouzhuoshoulianjiaolian"
+    },
+    {
+        "productTypeCh": "水晶玛瑙戒指",
+        "addtion": "250704",
+        "productType": "zhubaoshoushi_shuijingmanao_jiezhi"
+    },
+    {
+        "productTypeCh": "头饰/胸针",
+        "addtion": "250705",
+        "productType": "zhubaoshoushi_shuijingmanao_toushixiongzhen"
+    },
+    {
+        "productTypeCh": "摆件/挂件",
+        "addtion": "250706",
+        "productType": "zhubaoshoushi_shuijingmanao_baijianguajian"
+    },
+    {
+        "productTypeCh": "彩宝",
+        "addtion": "2508",
+        "productType": "caibao"
+    },
+    {
+        "productTypeCh": "彩宝项链/吊坠",
+        "addtion": "250801",
+        "productType": "zhubaoshoushi_caibao_xiangliandiaozhui"
+    },
+    {
+        "productTypeCh": "宝石耳饰",
+        "addtion": "250802",
+        "productType": "zhubaoshoushi_caibao_ershi"
+    },
+    {
+        "productTypeCh": "彩宝手镯/手链",
+        "addtion": "250803",
+        "productType": "zhubaoshoushi_caibao_shouzhuoshoulian"
+    },
+    {
+        "productTypeCh": "彩宝戒指",
+        "addtion": "250804",
+        "productType": "zhubaoshoushi_caibao_jiezhi"
+    },
+    {
+        "productTypeCh": "铂金",
+        "addtion": "2509",
+        "productType": "bojin"
+    },
+    {
+        "productTypeCh": "项链/吊坠",
+        "addtion": "250901",
+        "productType": "zhubaoshoushi_bojin_xiangliandiaozhui"
+    },
+    {
+        "productTypeCh": "铂金手镯/手链/脚链",
+        "addtion": "250902",
+        "productType": "zhubaoshoushi_bojin_shouzhuoshoulianjiaolian"
+    },
+    {
+        "productTypeCh": "铂金戒指",
+        "addtion": "250903",
+        "productType": "zhubaoshoushi_bojin_jiezhi"
+    },
+    {
+        "productTypeCh": "铂金耳饰",
+        "addtion": "250904",
+        "productType": "zhubaoshoushi_bojin_ershi"
+    },
+    {
+        "productTypeCh": "天然木饰",
+        "addtion": "2510",
+        "productType": "tianranmushi"
+    },
+    {
+        "productTypeCh": "小叶紫檀",
+        "addtion": "251001",
+        "productType": "zhubaoshoushi_tianranmushi_xiaoyezitan"
+    },
+    {
+        "productTypeCh": "黄花梨",
+        "addtion": "251002",
+        "productType": "zhubaoshoushi_tianranmushi_huanghuali"
+    },
+    {
+        "productTypeCh": "沉香",
+        "addtion": "251003",
+        "productType": "zhubaoshoushi_tianranmushi_chenxiang"
+    },
+    {
+        "productTypeCh": "金丝楠",
+        "addtion": "251004",
+        "productType": "zhubaoshoushi_tianranmushi_jinsinan"
+    },
+    {
+        "productTypeCh": "菩提",
+        "addtion": "251005",
+        "productType": "zhubaoshoushi_tianranmushi_puti"
+    },
+    {
+        "productTypeCh": "珍珠",
+        "addtion": "2511",
+        "productType": "zhenzhu"
+    },
+    {
+        "productTypeCh": "珍珠项链",
+        "addtion": "251101",
+        "productType": "zhubaoshoushi_zhenzhu_xianglian"
+    },
+    {
+        "productTypeCh": "吊坠",
+        "addtion": "251102",
+        "productType": "zhubaoshoushi_zhenzhu_diaozhui"
+    },
+    {
+        "productTypeCh": "珍珠耳饰",
+        "addtion": "251103",
+        "productType": "zhubaoshoushi_zhenzhu_ershi"
+    },
+    {
+        "productTypeCh": "手链",
+        "addtion": "251104",
+        "productType": "zhubaoshoushi_zhenzhu_shoulian"
+    },
+    {
+        "productTypeCh": "珍珠戒指",
+        "addtion": "251105",
+        "productType": "zhubaoshoushi_zhenzhu_jiezhi"
+    },
+    {
+        "productTypeCh": "珍珠胸针",
+        "addtion": "251106",
+        "productType": "zhubaoshoushi_zhenzhu_xiongzhen"
+    },
+    {
+        "productTypeCh": "学生用品",
+        "addtion": "190108",
+        "productType": "wanjuyueqi_shiyongnianling_xueshengyongpin"
+    },
+    {
+        "productTypeCh": "儿童玩具乐器",
+        "addtion": "191212",
+        "productType": "wanjuyueqi_yueqixiangguan_ertongwanjuyueqi"
+    },
+    {
+        "productTypeCh": "欧美大牌",
+        "addtion": "2202",
+        "productType": "oumeidapai"
+    },
+    {
+        "productTypeCh": "经典国产",
+        "addtion": "2203",
+        "productType": "jingdianguochan"
+    },
+    {
+        "productTypeCh": "日韩港台",
+        "addtion": "2204",
+        "productType": "rihangangtai"
+    },
+    {
+        "productTypeCh": "时尚手表",
+        "addtion": "2206",
+        "productType": "shishangshoubiao"
+    },
+    {
+        "productTypeCh": "男士瑞士手表",
+        "addtion": "220101",
+        "productType": "zhongbiao_ruishishoubiao_nanshi"
+    },
+    {
+        "productTypeCh": "女士瑞士手表",
+        "addtion": "220102",
+        "productType": "zhongbiao_ruishishoubiao_nvshi"
+    },
+    {
+        "productTypeCh": "情侣瑞士手表",
+        "addtion": "220103",
+        "productType": "zhongbiao_ruishishoubiao_qinglv"
+    },
+    {
+        "productTypeCh": "中性手表",
+        "addtion": "220104",
+        "productType": "zhongbiao_ruishishoubiao_zhongxing"
+    },
+    {
+        "productTypeCh": "男士欧美手表",
+        "addtion": "220201",
+        "productType": "zhongbiao_oumeidapai_nanshi"
+    },
+    {
+        "productTypeCh": "女士欧美手表",
+        "addtion": "220202",
+        "productType": "zhongbiao_oumeidapai_nvshi"
+    },
+    {
+        "productTypeCh": "情侣欧美手表",
+        "addtion": "220203",
+        "productType": "zhongbiao_oumeidapai_qinglv"
+    },
+    {
+        "productTypeCh": "大牌中性手表",
+        "addtion": "220204",
+        "productType": "zhongbiao_oumeidapai_zhongxing"
+    },
+    {
+        "productTypeCh": "男士国产手表",
+        "addtion": "220301",
+        "productType": "zhongbiao_jingdianguochan_nanshi"
+    },
+    {
+        "productTypeCh": "女士国产手表",
+        "addtion": "220302",
+        "productType": "zhongbiao_jingdianguochan_nvshi"
+    },
+    {
+        "productTypeCh": "情侣国产手表",
+        "addtion": "220303",
+        "productType": "zhongbiao_jingdianguochan_qinglv"
+    },
+    {
+        "productTypeCh": "国产中性手表",
+        "addtion": "220304",
+        "productType": "zhongbiao_jingdianguochan_zhongxing"
+    },
+    {
+        "productTypeCh": "男士日韩手表",
+        "addtion": "220401",
+        "productType": "zhongbiao_rihangangtai_nanshi"
+    },
+    {
+        "productTypeCh": "女士日韩手表",
+        "addtion": "220402",
+        "productType": "zhongbiao_rihangangtai_nvshi"
+    },
+    {
+        "productTypeCh": "情侣日韩手表",
+        "addtion": "220403",
+        "productType": "zhongbiao_rihangangtai_qinglv"
+    },
+    {
+        "productTypeCh": "日韩中性手表",
+        "addtion": "220404",
+        "productType": "zhongbiao_rihangangtai_zhongxing"
+    },
+    {
+        "productTypeCh": "男士时尚手表",
+        "addtion": "220601",
+        "productType": "zhongbiao_shishangshoubiao_nanshi"
+    },
+    {
+        "productTypeCh": "女士时尚手表",
+        "addtion": "220602",
+        "productType": "zhongbiao_shishangshoubiao_nvshi"
+    },
+    {
+        "productTypeCh": "情侣时尚手表",
+        "addtion": "220603",
+        "productType": "zhongbiao_shishangshoubiao_qinglv"
+    },
+    {
+        "productTypeCh": "时尚中性手表",
+        "addtion": "220604",
+        "productType": "zhongbiao_shishangshoubiao_zhongxing"
+    },
+    {
+        "productTypeCh": "座钟挂钟",
+        "addtion": "220701",
+        "productType": "zhongbiao_zhonglei_zuozhongguazhong"
+    },
+    {
+        "productTypeCh": "脂肪酸/脂类",
+        "addtion": "230207",
+        "productType": "yingyangbaojian_yingyangchengfen_zhifangsuanzhilei"
+    },
+    {
+        "productTypeCh": "植物精华/提取物",
+        "addtion": "230208",
+        "productType": "yingyangbaojian_yingyangchengfen_zhiwujinghua"
+    },
+    {
+        "productTypeCh": "动物精华/提取物",
+        "addtion": "230209",
+        "productType": "yingyangbaojian_yingyangchengfen_dongwujinghua"
+    },
+    {
+        "productTypeCh": "海洋生物类",
+        "addtion": "230210",
+        "productType": "yingyangbaojian_yingyangchengfen_haiyangshengwulei"
+    },
+    {
+        "productTypeCh": "菌/菇/微生物发酵",
+        "addtion": "230211",
+        "productType": "yingyangbaojian_yingyangchengfen_junguweishengwufajiao"
+    },
+    {
+        "productTypeCh": "功能复合性膳食补充剂",
+        "addtion": "230212",
+        "productType": "yingyangbaojian_yingyangchengfen_gongnengfuhexingshanshi"
+    },
+    {
+        "productTypeCh": "浓缩|速溶|剂|液|",
+        "addtion": "230213",
+        "productType": "yingyangbaojian_yingyangchengfen_baojianyinpin"
+    },
+    {
+        "productTypeCh": "中医药品",
+        "addtion": "2307",
+        "productType": "zhongyiyaopin"
+    },
+    {
+        "productTypeCh": "心脑血管",
+        "addtion": "230701",
+        "productType": "yingyangbaojian_zhongyiyaopin_xinnaoxueguan"
+    },
+    {
+        "productTypeCh": "神经系统",
+        "addtion": "230702",
+        "productType": "yingyangbaojian_zhongyiyaopin_shenjingxitong"
+    },
+    {
+        "productTypeCh": "皮肤科",
+        "addtion": "230703",
+        "productType": "yingyangbaojian_zhongyiyaopin_pifuke"
+    },
+    {
+        "productTypeCh": "中医药品儿科",
+        "addtion": "230704",
+        "productType": "yingyangbaojian_zhongyiyaopin_erke"
+    },
+    {
+        "productTypeCh": "妇科用药",
+        "addtion": "230705",
+        "productType": "yingyangbaojian_zhongyiyaopin_fukeyongyao"
+    },
+    {
+        "productTypeCh": "男科用药",
+        "addtion": "230706",
+        "productType": "yingyangbaojian_zhongyiyaopin_nankeyongyao"
+    },
+    {
+        "productTypeCh": "五官用药",
+        "addtion": "230707",
+        "productType": "yingyangbaojian_zhongyiyaopin_wuguanyongyao"
+    },
+    {
+        "productTypeCh": "口服抗菌消炎类",
+        "addtion": "230708",
+        "productType": "yingyangbaojian_zhongyiyaopin_koufukangjunxiaoyan"
+    },
+    {
+        "productTypeCh": "感冒药/呼吸道",
+        "addtion": "230709",
+        "productType": "yingyangbaojian_zhongyiyaopin_ganmaoyaohuxidao"
+    },
+    {
+        "productTypeCh": "肝胆用药",
+        "addtion": "230710",
+        "productType": "yingyangbaojian_zhongyiyaopin_gandanyongyao"
+    },
+    {
+        "productTypeCh": "风湿骨伤",
+        "addtion": "230711",
+        "productType": "yingyangbaojian_zhongyiyaopin_fengshigushang"
+    },
+    {
+        "productTypeCh": "补益调养",
+        "addtion": "230712",
+        "productType": "yingyangbaojian_zhongyiyaopin_buyitiaoyang"
+    },
+    {
+        "productTypeCh": "肠胃用药",
+        "addtion": "230713",
+        "productType": "yingyangbaojian_zhongyiyaopin_changweiyongyao"
+    },
+    {
+        "productTypeCh": "泌尿系统炎症/结石",
+        "addtion": "230714",
+        "productType": "yingyangbaojian_zhongyiyaopin_miniaoxitongjieshi"
+    },
+    {
+        "productTypeCh": "洗护消炎",
+        "addtion": "230508",
+        "productType": "yingyangbaojian_baojianqixie_xihuxiaoyan"
+    },
+    {
+        "productTypeCh": "药品维生素/矿物质",
+        "addtion": "230715",
+        "productType": "yingyangbaojian_zhongyiyaopin_weishengsukuangwuzhi"
+    },
+    {
+        "productTypeCh": "女装套装",
+        "addtion": "240133",
+        "productType": "fushineiyi_nvzhuang_taozhuang"
+    },
+    {
+        "productTypeCh": "民族舞台服装",
+        "addtion": "240135",
+        "productType": "fushineiyi_nvzhuang_minzuwutaifuzhuang"
+    },
+    {
+        "productTypeCh": "船袜",
+        "addtion": "240323",
+        "productType": "fushineiyi_neiyi_chuanwa"
+    },
+    {
+        "productTypeCh": "情侣内裤",
+        "addtion": "240324",
+        "productType": "fushineiyi_neiyi_qinglvneiku"
+    },
+    {
+        "productTypeCh": "眼镜配件/护理剂",
+        "addtion": "240435",
+        "productType": "fushineiyi_fushipeijian_yanjingpeijianhuliji"
+    },
+    {
+        "productTypeCh": "彩宝挂件/摆件/把件",
+        "addtion": "250805",
+        "productType": "zhubaoshoushi_caibao_guajianbaijianbajian"
+    },
+    {
+        "productTypeCh": "彩宝裸石",
+        "addtion": "250806",
+        "productType": "zhubaoshoushi_caibao_luoshi"
+    },
+    {
+        "productTypeCh": "彩宝首饰套装",
+        "addtion": "250807",
+        "productType": "zhubaoshoushi_caibao_shoushitaozhuang"
+    },
+    {
+        "productTypeCh": "珍珠裸石",
+        "addtion": "251107",
+        "productType": "zhubaoshoushi_zhenzhu_luoshi"
+    },
+    {
+        "productTypeCh": "珍珠首饰套装",
+        "addtion": "251108",
+        "productType": "zhubaoshoushi_zhenzhu_shoushitaozhuang"
+    },
+    {
+        "productTypeCh": "珍珠摆件",
+        "addtion": "251109",
+        "productType": "zhubaoshoushi_zhenzhu_baijian"
+    },
+    {
+        "productTypeCh": "女工装",
+        "addtion": "240140",
+        "productType": "fushineiyi_nvzhuang_gongzhuang"
+    },
+    {
+        "productTypeCh": "首饰套装",
+        "addtion": "250109",
+        "productType": "zhubaoshoushi_shishangshipin_shoushitaozhuang"
+    },
+    {
+        "productTypeCh": "装饰品/摆件/挂件",
+        "addtion": "250110",
+        "productType": "zhubaoshoushi_shishangshipin_baijianguajian"
+    },
+    {
+        "productTypeCh": "储存与清洁",
+        "addtion": "250111",
+        "productType": "zhubaoshoushi_shishangshipin_chucunqingjie"
+    },
+    {
+        "productTypeCh": "摆件",
+        "addtion": "250205",
+        "productType": "zhubaoshoushi_chunjinjinshipin_baijian"
+    },
+    {
+        "productTypeCh": "纯金首饰套装",
+        "addtion": "250206",
+        "productType": "zhubaoshoushi_chunjinjinshipin_shoushitaozhuang"
+    },
+    {
+        "productTypeCh": "情侣款",
+        "addtion": "250207",
+        "productType": "zhubaoshoushi_chunjinjinshipin_qinglvkuan"
+    },
+    {
+        "productTypeCh": "和服",
+        "addtion": "240141",
+        "productType": "fushineiyi_nvzhuang_hefu"
+    },
+    {
+        "productTypeCh": "金银藏品/摆件",
+        "addtion": "250303",
+        "productType": "zhubaoshoushi_jinyintouzi_jinyincangpin"
+    },
+    {
+        "productTypeCh": "挂件/摆件",
+        "addtion": "250406",
+        "productType": "zhubaoshoushi_yinshi_guajianbaijian"
+    },
+    {
+        "productTypeCh": "钻石胸针",
+        "addtion": "250506",
+        "productType": "zhubaoshoushi_zuanshi_xiongzhen"
+    },
+    {
+        "productTypeCh": "钻石摆件",
+        "addtion": "250507",
+        "productType": "zhubaoshoushi_zuanshi_baijian"
+    },
+    {
+        "productTypeCh": "钻石首饰套装",
+        "addtion": "250508",
+        "productType": "zhubaoshoushi_zuanshi_shoushitaozhuang"
+    },
+    {
+        "productTypeCh": "翡翠裸石",
+        "addtion": "250607",
+        "productType": "zhubaoshoushi_feicuiyushi_luoshi"
+    },
+    {
+        "productTypeCh": "翡翠首饰套装",
+        "addtion": "250608",
+        "productType": "zhubaoshoushi_feicuiyushi_shoushitaozhuang"
+    },
+    {
+        "productTypeCh": "宝宝饰品",
+        "addtion": "250113",
+        "productType": "zhubaoshoushi_shishangshipin_baobaoshipin"
+    },
+    {
+        "productTypeCh": "摄像配件",
+        "addtion": "060210",
+        "productType": "shexiang_sheyingshexiang_shexiangpeijian"
+    },
+    {
+        "productTypeCh": "服务器/工作站配件",
+        "addtion": "020109",
+        "productType": "diannao_diannaozhengtiji_fuwuqipeijian"
+    },
+    {
+        "productTypeCh": "儿童柜",
+        "addtion": "130904",
+        "productType": "jiaju_ertongjiaju_ertonggui"
+    },
+    {
+        "productTypeCh": "鱼油/磷脂",
+        "addtion": "230215",
+        "productType": "yingyangbaojian_yingyangchengfen_yuyoulinzhi"
+    },
+    {
+        "productTypeCh": "螺旋藻",
+        "addtion": "230216",
+        "productType": "yingyangbaojian_yingyangchengfen_luoxuanzao"
+    },
+    {
+        "productTypeCh": "番茄红素",
+        "addtion": "230217",
+        "productType": "yingyangbaojian_yingyangchengfen_fanqiehongsu"
+    },
+    {
+        "productTypeCh": "辅酶Q10",
+        "addtion": "230218",
+        "productType": "yingyangbaojian_yingyangchengfen_fumeiq10"
+    },
+    {
+        "productTypeCh": "葡萄籽",
+        "addtion": "230219",
+        "productType": "yingyangbaojian_yingyangchengfen_putaozi"
+    },
+    {
+        "productTypeCh": "益生菌",
+        "addtion": "230220",
+        "productType": "yingyangbaojian_yingyangchengfen_yishengjun"
+    },
+    {
+        "productTypeCh": "玛咖",
+        "addtion": "230221",
+        "productType": "yingyangbaojian_yingyangchengfen_maka"
+    },
+    {
+        "productTypeCh": "大豆异黄酮",
+        "addtion": "230222",
+        "productType": "yingyangbaojian_yingyangchengfen_dadouyihuangtong"
+    },
+    {
+        "productTypeCh": "芦荟提取",
+        "addtion": "230223",
+        "productType": "yingyangbaojian_yingyangchengfen_luhuitiqu"
+    },
+    {
+        "productTypeCh": "牛初乳",
+        "addtion": "230224",
+        "productType": "yingyangbaojian_yingyangchengfen_niuchuru"
+    },
+    {
+        "productTypeCh": "酵素",
+        "addtion": "230225",
+        "productType": "yingyangbaojian_yingyangchengfen_jiaosu"
+    },
+    {
+        "productTypeCh": "宠物主粮",
+        "addtion": "120601",
+        "productType": "jiajujiazhuang_chongwushenghuo_chongwuzhuliang"
+    },
+    {
+        "productTypeCh": "宠物零食",
+        "addtion": "120602",
+        "productType": "jiajujiazhuang_chongwushenghuo_chongwulingshi"
+    },
+    {
+        "productTypeCh": "宠物玩具",
+        "addtion": "120607",
+        "productType": "jiajujiazhuang_chongwushenghuo_chongwuwanju"
+    },
+    {
+        "productTypeCh": "医疗保健",
+        "addtion": "120603",
+        "productType": "jiajujiazhuang_chongwushenghuo_yiliaobaojian"
+    },
+    {
+        "productTypeCh": "家居日用",
+        "addtion": "120604",
+        "productType": "jiajujiazhuang_chongwushenghuo_jiajuriyong"
+    },
+    {
+        "productTypeCh": "出行装备",
+        "addtion": "120605",
+        "productType": "jiajujiazhuang_chongwushenghuo_chuxingzhuangbei"
+    },
+    {
+        "productTypeCh": "洗护美容",
+        "addtion": "120606",
+        "productType": "jiajujiazhuang_chongwushenghuo_xihumeirong"
+    },
+    {
+        "productTypeCh": "宠物生活",
+        "addtion": "1206",
+        "productType": "chongwushenghuo"
+    },
+    {
+        "productTypeCh": "活体宠物",
+        "addtion": "120608",
+        "productType": "jiajujiazhuang_chongwushenghuo_huotichongwu"
+    },
+    {
+        "productTypeCh": "白酒",
+        "addtion": "040107",
+        "productType": "jiushui_jiulei_baijiu"
+    },
+    {
+        "productTypeCh": "石斛/枫斗",
+        "addtion": "230312",
+        "productType": "yingyangbaojian_chuantongzibu_shihufengdou"
+    },
+    {
+        "productTypeCh": "儿童时尚手表",
+        "addtion": "220605",
+        "productType": "zhongbiao_shishangshoubiao_ertongshoubiao"
+    },
+    {
+        "productTypeCh": "怀表",
+        "addtion": "220606",
+        "productType": "zhongbiao_shishangshoubiao_huaibiao"
+    },
+    {
+        "productTypeCh": "画具画材",
+        "addtion": "080619",
+        "productType": "bangong_bangongwenyi_huajuhuacai"
+    },
+    {
+        "productTypeCh": "酒店用品",
+        "addtion": "1507",
+        "productType": "jiudianyongpin"
+    },
+    {
+        "productTypeCh": "其他酒店用品",
+        "addtion": "150701",
+        "productType": "chuju_jiudianyongpin_qita"
+    },
+    {
+        "productTypeCh": "自助餐炉",
+        "addtion": "150702",
+        "productType": "chuju_jiudianyongpin_zizhucanlu"
+    },
+    {
+        "productTypeCh": "宠物服饰",
+        "addtion": "120609",
+        "productType": "jiajujiazhuang_chongwushenghuo_chongwufushi"
+    },
+    {
+        "productTypeCh": "其它宠物用品",
+        "addtion": "120610",
+        "productType": "jiajujiazhuang_chongwushenghuo_qita"
+    },
+    {
+        "productTypeCh": "灯具配件",
+        "addtion": "120212",
+        "productType": "jiajujiazhuang_dengju_dengjupeijian"
+    },
+    {
+        "productTypeCh": "炒冰机",
+        "addtion": "030317",
+        "productType": "jiayongdianqi_chufangdianqi_chaobingji"
+    },
+    {
+        "productTypeCh": "豆芽机",
+        "addtion": "030318",
+        "productType": "jiayongdianqi_chufangdianqi_douyaji"
+    },
+    {
+        "productTypeCh": "其他生活电器",
+        "addtion": "030215",
+        "productType": "jiayongdianqi_shenghuodianqi_qitashenghuodianqi"
+    },
+    {
+        "productTypeCh": "垃圾处理器",
+        "addtion": "140214",
+        "productType": "jiazhuangjiancai_chufangweiyu_lajichuliqi"
+    },
+    {
+        "productTypeCh": "地锁",
+        "addtion": "180509",
+        "productType": "qicheyongpin_anquanzijia_disuo"
+    },
+    {
+        "productTypeCh": "摩托车",
+        "addtion": "180510",
+        "productType": "qicheyongpin_anquanzijia_motuoche"
+    },
+    {
+        "productTypeCh": "车身强化",
+        "addtion": "180117",
+        "productType": "qicheyongpin_weixiubaoyang_cheshenqianghua"
+    },
+    {
+        "productTypeCh": "武夷山岩茶",
+        "addtion": "090212",
+        "productType": "shipin_chaye_dahongpao"
+    },
+    {
+        "productTypeCh": "金骏眉",
+        "addtion": "090213",
+        "productType": "shipin_chaye_jinjunmei"
+    },
+    {
+        "productTypeCh": "烘焙原料",
+        "addtion": "090807",
+        "productType": "shipin_shengxianshipin_hongpeiyuanliao"
+    },
+    {
+        "productTypeCh": "冷冻食品",
+        "addtion": "090808",
+        "productType": "shipin_shengxianshipin_lengdongshipin"
+    },
+    {
+        "productTypeCh": "猪牛羊肉",
+        "addtion": "090809",
+        "productType": "shipin_shengxianshipin_zhuniuyangrou"
+    },
+    {
+        "productTypeCh": "手机拍照配件",
+        "addtion": "010117",
+        "productType": "shouji_shoujipeijian_paizhaopeijian"
+    },
+    {
+        "productTypeCh": "无人机",
+        "addtion": "070609",
+        "productType": "shuma_zhinengshebei_wurenji"
+    },
+    {
+        "productTypeCh": "血氧仪",
+        "addtion": "230509",
+        "productType": "yingyangbaojian_baojianqixie_xueyangyi"
+    },
+    {
+        "productTypeCh": "倒立机",
+        "addtion": "160811",
+        "productType": "yundonghuwai_jianshenxunlian_daoliji"
+    },
+    {
+        "productTypeCh": "划船机",
+        "addtion": "160812",
+        "productType": "yundonghuwai_jianshenxunlian_huachuanji"
+    },
+    {
+        "productTypeCh": "健腹轮",
+        "addtion": "160813",
+        "productType": "yundonghuwai_jianshenxunlian_jianfulun"
+    },
+    {
+        "productTypeCh": "拉力器/臂力器",
+        "addtion": "160814",
+        "productType": "yundonghuwai_jianshenxunlian_lalishunlaliqi"
+    },
+    {
+        "productTypeCh": "甩脂机",
+        "addtion": "160815",
+        "productType": "yundonghuwai_jianshenxunlian_shuaizhiji"
+    },
+    {
+        "productTypeCh": "踏步机",
+        "addtion": "160816",
+        "productType": "yundonghuwai_jianshenxunlian_tabuji"
+    },
+    {
+        "productTypeCh": "跳绳",
+        "addtion": "160817",
+        "productType": "yundonghuwai_jianshenxunlian_tiaosheng"
+    },
+    {
+        "productTypeCh": "椭圆机",
+        "addtion": "160818",
+        "productType": "yundonghuwai_jianshenxunlian_tuoyuanji"
+    },
+    {
+        "productTypeCh": "钟表配件",
+        "addtion": "220702",
+        "productType": "zhongbiao_zhonglei_zhongbiaopeijian"
+    },
+    {
+        "productTypeCh": "琥珀",
+        "addtion": "2512",
+        "productType": "hupo"
+    },
+    {
+        "productTypeCh": "琥珀吊坠/项链",
+        "addtion": "251201",
+        "productType": "zhubaoshoushi_hupo_diaozhuixianglian"
+    },
+    {
+        "productTypeCh": "琥珀耳饰",
+        "addtion": "251202",
+        "productType": "zhubaoshoushi_hupo_ershi"
+    },
+    {
+        "productTypeCh": "琥珀摆件/挂件/把件",
+        "addtion": "251203",
+        "productType": "zhubaoshoushi_hupo_hupobaijianguajianbajian"
+    },
+    {
+        "productTypeCh": "琥珀戒指",
+        "addtion": "251204",
+        "productType": "zhubaoshoushi_hupo_jiezhi"
+    },
+    {
+        "productTypeCh": "琥珀手镯/手链",
+        "addtion": "251205",
+        "productType": "zhubaoshoushi_hupo_shouzhuoshoulian"
+    },
+    {
+        "productTypeCh": "碎纸机",
+        "addtion": "080513",
+        "productType": "bangong_bangongdayin_suizhiji"
+    }
+]

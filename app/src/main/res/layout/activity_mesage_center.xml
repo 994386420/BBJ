@@ -1,0 +1,155 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:clickable="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="#FFF" >
+
+            <ImageButton
+                android:id="@+id/topbar_goback_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/goback_btn" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="#B8B8B8" />
+
+            <TextView
+                android:id="@+id/topbar_title_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="消息中心"
+                android:textSize="21dp" />
+        </RelativeLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="#ff7d41"
+            app:tabSelectedTextColor="#ff7d41"
+            app:tabTextColor="#333333"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#cbcbcb" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:id="@+id/mzhanwei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="#fff"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="130dp"
+                    android:src="@mipmap/zw_img_330" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="这里什么都没有"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#999999"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="去看看别的"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#999999"
+                    android:textSize="16dp" />
+            </LinearLayout>
+            <com.andview.refreshview.XRefreshView
+                android:id="@+id/xrefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <ListView
+                    android:id="@+id/mlistview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </ListView>
+            </com.andview.refreshview.XRefreshView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sendtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#fff"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/msgEdittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入回复的话"
+            android:imeOptions="actionSend"
+            android:maxHeight="60dp" />
+
+        <TextView
+            android:id="@+id/mhuifusend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/text_result_orange"
+            android:gravity="center"
+            android:paddingBottom="6dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="6dp"
+            android:text="发送"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/sendhenggang"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/sendtext"
+        android:background="#dbdbdb"
+        android:visibility="gone" />
+
+</RelativeLayout>

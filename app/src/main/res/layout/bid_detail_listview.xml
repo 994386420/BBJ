@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/mimg"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@mipmap/bj_05"/>
+    <TextView
+        android:id="@+id/muser"
+        android:layout_width="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:maxEms="3"
+        android:ellipsize="end"
+        android:text="促进萨卡困"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="接镖"/>
+    <TextView
+        android:id="@+id/mbidtime"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/mbidprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥9000"/>
+</LinearLayout>

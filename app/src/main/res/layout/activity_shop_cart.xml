@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f3f3"
+    android:orientation="vertical"
+    >
+	<RelativeLayout
+            android:id="@+id/topbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="#FFF" >
+
+		<ImageButton
+			android:id="@+id/topbar_goback_btn"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_alignParentLeft="true"
+			android:layout_centerInParent="true"
+			android:background="@null"
+			android:paddingTop="12dp"
+			android:paddingBottom="12dp"
+			android:paddingLeft="18dp"
+			android:paddingRight="18dp"
+			android:scaleType="centerCrop"
+			android:src="@mipmap/goback_btn" />
+
+            <TextView
+                android:id="@+id/topbar_title_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="购物车"
+                android:textSize="21dp" />
+
+        </RelativeLayout>
+    <GridView 
+        android:id="@+id/mgridview"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="2dp"
+        android:verticalSpacing="2dp"
+        android:layout_marginBottom="15dp"
+        android:numColumns="2"></GridView>
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="15dp"
+	    android:layout_marginRight="15dp"
+	    android:textColor="#999999"
+	    android:textSize="14dp"
+	    android:text="温馨提示："/>
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="15dp"
+	    android:layout_marginRight="15dp"
+	    android:textColor="#999999"
+	    android:textSize="14dp"
+	    android:text="1、暂时支持淘宝、天猫、京东、苏宁、一号店、亚马逊、国美等购物平台，更多平台正在接入中…"/>
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="15dp"
+	    android:layout_marginRight="15dp"
+	    android:textColor="#999999"
+	    android:textSize="14dp"
+	    android:text="2、点击查看时，可能会需要您登录相应的平台才能继续。"/>
+</LinearLayout>

@@ -1,0 +1,142 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF" >
+
+        <ImageButton
+            android:id="@+id/topbar_goback_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@null"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/goback_btn" />
+
+        <TextView
+            android:id="@+id/topbar_title_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我要爆料"
+            android:textSize="21dp" />
+
+        <TextView
+            android:id="@+id/mydraft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:text="我的爆料"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f3f3f3" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/mtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="标题"
+                android:maxLength="20"
+                android:padding="15dp"
+                android:textColorHint="#999999" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+            <EditText
+                android:id="@+id/murl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="链接"
+                android:padding="15dp"
+                android:maxHeight="50dp"
+                android:textColorHint="#999999" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+
+            <EditText
+                android:id="@+id/mcontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="left|top"
+                android:hint="说点什么…"
+                android:maxHeight="260dp"
+                android:minHeight="80dp"
+                android:padding="15dp"
+                android:textColorHint="#999999" />
+
+            <com.bbk.view.MyGridView
+                android:id="@+id/noScrollgridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:numColumns="3"
+                android:verticalSpacing="1dp" >
+            </com.bbk.view.MyGridView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:background="#f3f3f3" />
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="未发布的信息将自动保存到我的草稿哦~"
+                android:padding="15dp"
+                android:textColor="#999999"
+                android:textSize="14dp"/>
+            <TextView 
+                android:id="@+id/msend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_result_red"
+                android:text="发布"
+                android:textColor="#fff"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="20dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

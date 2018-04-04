@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:layout_height="match_parent">
+
+	    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF" >
+
+			<ImageButton
+				android:id="@+id/topbar_goback_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_alignParentLeft="true"
+				android:layout_centerInParent="true"
+				android:background="@null"
+				android:paddingTop="12dp"
+				android:paddingBottom="12dp"
+				android:paddingLeft="18dp"
+				android:paddingRight="18dp"
+				android:scaleType="centerCrop"
+				android:src="@mipmap/goback_btn" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="#B8B8B8" />
+
+        <TextView
+            android:id="@+id/topbar_title_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="超市"
+            android:textColor="#19a79d"
+            android:textSize="21dp" />
+    </RelativeLayout>
+		<GridView 
+  			android:background="#fff"
+	    	android:id="@+id/mgridView"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:numColumns="5"></GridView>
+</LinearLayout>

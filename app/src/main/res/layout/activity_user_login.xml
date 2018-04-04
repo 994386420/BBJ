@@ -1,0 +1,200 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f3f3"
+    android:orientation="vertical"
+     >
+
+    <View
+        android:id="@+id/data_head"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#fff" />
+
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF" >
+
+        <ImageView
+            android:id="@+id/mback"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:src="@mipmap/top_back" />
+
+        <TextView
+            android:id="@+id/topbar_title_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="用户登录"
+            android:textColor="#333333"
+            android:textSize="21dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#fff"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="15dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="15dp" >
+
+        <EditText
+            android:id="@+id/mphoneedit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入手机号"
+             android:textSize="15dp"
+            android:textColorHint="#999999" />
+
+        <ImageView
+            android:id="@+id/mclear1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="gone"
+            android:src="@mipmap/quxiao" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="#fff"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="15dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="15dp" >
+
+        <EditText
+            android:id="@+id/mpassedit1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入密码"
+             android:textSize="15dp"
+            android:textColorHint="#999999" />
+        <ImageView
+            android:id="@+id/mclear3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="gone"
+            android:src="@mipmap/quxiao" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mregist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/text_result_gray2"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="登录"
+        android:textColor="#fff"
+        android:textSize="12dp" />
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_height="wrap_content">
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="新用户注册"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="忘记密码"/>
+    </RelativeLayout>
+
+	<RelativeLayout 
+	    android:layout_marginTop="20dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+	    >
+	    <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:gravity="center_horizontal"
+	        android:orientation="vertical">
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="其他方式登录"
+	            android:textColor="#999999"
+	            android:layout_marginBottom="20dp"
+	            android:textSize="12dp"
+	            />
+	        <LinearLayout 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal">
+	            <LinearLayout 
+	                android:id="@+id/mqqlogin"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical"
+	                android:gravity="center_horizontal">
+	                <ImageView 
+	                    android:layout_width="40dp"
+	                    android:layout_height="40dp"
+	                    android:layout_marginBottom="15dp"
+	                    />
+	                <TextView 
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="15dp"
+	                    android:text="QQ登录"
+	                    android:textColor="#666666"/>
+	            </LinearLayout>
+	            <LinearLayout 
+	                android:id="@+id/mwxlogin"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="100dp"
+	                android:orientation="vertical"
+	                android:gravity="center_horizontal">
+	                <ImageView 
+	                    android:layout_width="40dp"
+	                    android:layout_height="40dp"
+	                    android:layout_marginBottom="15dp"
+	                    />
+	                <TextView 
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="15dp"
+	                    android:text="微信登录"
+	                    android:textColor="#666666"/>
+	            </LinearLayout>
+	        </LinearLayout>
+	    </LinearLayout>
+	</RelativeLayout>
+</LinearLayout>

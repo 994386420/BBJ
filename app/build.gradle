@@ -1,0 +1,179 @@
+//noinspection GradleCompatible
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+    defaultConfig {
+        applicationId "com.bbk.activity"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 36
+        versionName '4.2.8'
+        multiDexEnabled true
+    }
+    android {
+        testOptions {
+            dexOptions {
+                incremental true
+                javaMaxHeapSize "4g"
+            }
+        }
+        packagingOptions {
+
+        }
+    }
+    //签名配置
+    signingConfigs {
+        debugConfig {
+            keyAlias "bbk_keystore"
+            keyPassword "bbk123456"
+            storeFile file('E:/bibijing/bbkkeystore.keystore')
+            storePassword "bbk123456"
+        }
+        releaseConfig {
+            keyAlias "bbk_keystore"
+            keyPassword "bbk123456"
+            storeFile file('E:/bibijing/bbkkeystore.keystore')
+            storePassword "bbk123456"
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debugConfig
+        }
+        release {
+            signingConfig signingConfigs.releaseConfig
+        }
+    }
+//        debug {
+//            //启用代码混淆
+//            minifyEnabled false
+//            //混淆规则配置文件
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            //
+//            signingConfig signingConfigs.debug
+//        }
+//        release {
+////            minifyEnabled false
+////            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            //是否优化zip
+//            zipAlignEnabled true
+//            // 移除无用的resource文件
+//            shrinkResources true
+//            //启用代码混淆
+//            minifyEnabled true
+//            //混淆规则配置文件
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            //
+//            signingConfig signingConfigs.release
+//        }
+//    }
+//    dexOptions {
+//        incremental false
+//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    productFlavors {
+    }
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    google()
+}
+android {
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        multiDexEnabled true
+    }
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.alibaba:fastjson:1.2.41'
+    //    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    //noinspection GradleCompatible,GradleCompatible
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
+    compile 'com.android.support:support-v4:26.1.0'
+    compile files('libs/Baidu_Mtj_3.7.2.0.jar')
+    compile files('libs/gson-2.2.4.jar')
+    compile files('libs/jg_filter_sdk_1.1.jar')
+    compile files('libs/mail.jar')
+    compile files('libs/mhvp-core.jar')
+    compile files('libs/mid-core-sdk-3.7.2.jar')
+    compile files('libs/Msc.jar')
+    compile files('libs/nineoldandroids.jar')
+    compile files('libs/weibosdk.jar')
+    compile files('libs/weiboSDKCore_3.1.2.jar')
+    compile files('libs/wup-1.0.0.E-SNAPSHOT.jar')
+    compile files('libs/Xg_sdk_v3.0_20170301_1733.jar')
+    //刷新控件
+    compile 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
+    compile project(':library')
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+//    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile('com.alibaba.android:vlayout:1.2.2@aar') {
+        transitive = true
+    }
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    compile 'com.github.chrisbanes:PhotoView:v1.2.5'
+    implementation files('libs/glide-3.7.0.jar')
+    implementation files('libs/glide-okhttp3-integration-1.4.0.jar')
+    implementation files('libs/glide-okhttp-integration-1.4.0.jar')
+    //登陆
+    compile 'com.ali.auth.sdk:alibabauth_core:1.1.4@jar'
+    compile 'com.ali.auth.sdk:alibabauth_ui:1.1.4@aar'
+    compile 'com.ali.auth.sdk:alibabauth_ext:1.1.4@jar'
+    //安全基础
+    compile 'com.taobao.android:securityguardaar3:5.1.81@aar'
+    //【可选】安全高级，如使用了发放红包、优惠券高级功能，则必须引入
+    compile 'com.taobao.android:securitybodyaar3:5.1.25@aar'
+    //Mtop网关
+    compile 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
+    //applink
+    compile 'com.taobao.android:alibc_applink:2.0.0.9@jar'
+    //UT
+    compile 'com.taobao.android:utdid4all:1.1.5.3_proguard@jar'
+    compile 'com.alibaba.mtl:app-monitor-sdk:2.5.1.3_for_bc_proguard@jar'
+    //电商SDK
+    compile 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
+    //deviceID，主要用于计算设备的uttid， 设备唯一标识 （67kb）
+    compile 'com.taobao.android:utdid4all:1.1.5'
+    // UT，用于组件、接口可用性统计（337kb）
+    compile 'com.alibaba.mtl:app-monitor-sdk:2.5.1_for_bc@jar'
+    compile 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.0.7@aar'
+    compile 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
+    compile 'com.taobao.android:alibc_applink:2.0.0.2@jar'
+    compile 'com.ali.auth.sdk:alibabauth_accountlink:1.0.9.7@jar'
+    compile 'com.youth.banner:banner:1.4.10'
+    //最新版本
+    implementation project(':presentation')
+    implementation project(':sdk')
+    implementation project(':tlslibrary')
+    implementation project(':ui')
+    implementation project(':cptr')
+    implementation files('libs/okio-1.6.0.jar')
+    implementation files('libs/okhttp-3.2.0.jar')
+    provided files('libs/open_sdk.jar')
+    compile 'me.zhanghai.android.materialratingbar:library:1.2.0'
+    //第三方webview
+    compile 'com.tamic:browse:1.0.0'
+    //友盟依赖
+    compile 'com.umeng.sdk:common:1.5.0'
+    compile 'com.umeng.sdk:analytics:7.5.0'
+}
+

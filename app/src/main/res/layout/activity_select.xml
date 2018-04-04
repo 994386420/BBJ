@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+        <RelativeLayout
+        android:id="@+id/topbar_about_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true" >
+
+        <ImageButton
+            android:id="@+id/select_goback_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="2.0dip"
+            android:background="@null"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_arrow_left_blue" />
+
+        <TextView
+            android:id="@+id/select_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+            android:layout_marginLeft="8dp"
+            android:singleLine="true"
+            android:text="联合登录"
+            android:textColor="#0098FF"
+            android:textSize="18sp" />
+    </RelativeLayout>
+            <ImageView
+            android:id="@+id/select_logo"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/denglu_logo" />
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="13sp"
+        android:text="为了给你更好的服务，请关联一个手机账号"/>
+    
+    <TextView 
+         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="还没有手机账号？"
+        android:textSize="13sp"
+        android:textColor="#B1B3B5"
+        />
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:background="#DCDCDC"
+	    android:layout_height="40dp"
+	    android:layout_margin="10dp">
+	    <TextView 
+	    	android:id="@+id/select_regist"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+	    	android:background="#fff"
+	    	android:layout_margin="1dp"
+	    	android:text="快速注册"
+	    	android:layout_gravity="center_horizontal"
+	    	android:gravity="center"
+	    />
+	</RelativeLayout>
+	
+	 <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="已有手机账号？"
+        android:textSize="13sp"
+        android:textColor="#B1B3B5"
+        />
+	 <RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:background="#DCDCDC"
+	    android:layout_height="40dp"
+	    android:layout_margin="10dp">
+	    <TextView 
+	    	android:id="@+id/select_guanlian"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+	    	android:background="#fff"
+	    	android:layout_margin="1dp"
+	    	android:text="立即关联"
+	    	android:layout_gravity="center_horizontal"
+	    	android:gravity="center"
+	    />
+	</RelativeLayout>
+    
+
+</LinearLayout>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="30dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/top"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp" >
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="#ff7d41" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/orderlist_circle" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/mtimeimg"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="#f3f3f3"
+                android:src="@mipmap/time1" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/mtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="2017-09-06" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="20dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp" >
+
+            <View
+                android:id="@+id/mxian"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="#ff7d41" />
+
+            <ImageView
+                android:id="@+id/mselectimg"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/weixuanzhongyuan" />
+        </RelativeLayout>
+        <LinearLayout 
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/text_result_white"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_height="35dp">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="15dp"
+                android:textColor="#999999"
+                android:text="你在"/>
+            <TextView 
+                android:id="@+id/mdomain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textColor="#ff7d41"
+                android:text="京东"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textColor="#999999"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="有更多条订单"/>
+            <ImageView 
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/enter01"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

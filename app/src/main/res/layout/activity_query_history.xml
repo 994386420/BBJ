@@ -1,0 +1,214 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF" >
+
+        <ImageButton
+            android:id="@+id/topbar_goback_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/goback_btn" />
+
+        <TextView
+            android:id="@+id/topbar_title_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="查询商品历史价格"
+            android:textSize="21dp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="商品链接"
+                    android:textColor="#333333"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/medit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="请通过购物APP中使用分享或浏览器打开商品页面获取商品链接"
+                    android:maxHeight="100dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColorHint="#999999"
+                    android:textSize="11dp" />
+
+                <RelativeLayout
+                    android:id="@+id/mqueryhistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/text_result_gray2"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingTop="6dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="查询历史价格"
+                        android:textColor="#fff"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:background="#f3f3f3" />
+                <LinearLayout
+                android:id="@+id/myindao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="帮你像电脑比价插件一样轻松查商品历史价！"
+                    android:textColor="#333333"
+                    android:textSize="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:background="@drawable/history_circle"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="#fff"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="打开购物APP（如：手机京东）复制商品链接"
+                        android:textColor="#999999"
+                        android:textSize="11dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="443dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@mipmap/chalishijia" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:background="@drawable/history_circle"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textColor="#fff"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="回到比比鲸APP，粘贴链接查历史价格"
+                        android:textColor="#999999"
+                        android:textSize="11dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:background="#f3f3f3" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/historytext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="历史搜索"
+                android:textColor="#333333"
+                android:textSize="15dp" />
+
+            <com.bbk.view.MyListView
+                android:id="@+id/mlistview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </com.bbk.view.MyListView>
+
+            <LinearLayout
+                android:id="@+id/mdelete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_menu_delete" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空历史记录"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

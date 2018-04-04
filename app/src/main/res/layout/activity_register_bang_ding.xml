@@ -1,0 +1,164 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+	android:id="@+id/login_main"
+	 >
+
+	<RelativeLayout
+        android:id="@+id/bangding_about_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true" >
+
+        <ImageButton
+            android:id="@+id/bangding_goback_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="2.0dip"
+            android:background="@null"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_arrow_left_blue" />
+
+        <TextView
+            android:id="@+id/bangding_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+            android:layout_marginLeft="8dp"
+            android:singleLine="true"
+            android:text="绑定手机号"
+            android:textColor="#0098FF"
+            android:textSize="18sp" />
+    </RelativeLayout>
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		android:orientation="vertical" >
+
+		<ImageView
+			android:layout_width="100dp"
+			android:layout_height="100dp"
+			android:layout_gravity="center_horizontal"
+			android:src="@mipmap/logo" />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="16dp"
+			android:layout_marginBottom="5dp"
+			android:text="为了账户安全，请绑定一个手机号"/>
+	</LinearLayout>
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:background="#DCDCDC"
+	    android:layout_height="35dp"
+	    android:layout_margin="10dp">
+		<EditText 
+		    android:id="@+id/bangding_account"
+		    android:layout_margin="1dp"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:background="#fff"
+		    android:singleLine="true"
+		    android:paddingLeft="10dp"
+			android:textSize="14dp"
+		    android:hint="请输入手机号"
+		    android:textColorHint="#DCDCDC"
+		    />
+	</RelativeLayout>
+	<LinearLayout
+	    	android:layout_margin="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/bangding_code"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="4"
+                android:background="@drawable/bg_user_linearlayout"
+                android:hint="输入验证码"
+                android:padding="10.0dip"
+                android:singleLine="true"
+                android:textColorHint="#DCDCDC"
+                android:textSize="14dp" >
+            </EditText>
+
+            <Button
+                android:id="@+id/get_code_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5.0dip"
+                android:layout_weight="6"
+                android:background="@drawable/bg_user_btn_unable"
+                android:enabled="false"
+                android:text="获取验证码"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/time_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.0dip"
+            android:gravity="center"
+            android:text="120秒后重新获取"
+            android:textColor="#999999"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    <RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:background="#DCDCDC"
+	    android:layout_height="35dp"
+	    android:layout_margin="10dp">
+		<EditText 
+		    android:id="@+id/bangding_password"
+		    android:layout_margin="1dp"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:background="#fff"
+		    android:singleLine="true"
+		    android:password="true"
+		    android:paddingLeft="10dp"
+		    android:hint="推荐码（可不填）"
+			android:textSize="14dp"
+		    android:textColorHint="#DCDCDC"
+		    />
+	</RelativeLayout>
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="注册后，您的第三方账号和手机账号都可以登录"
+	    android:textSize="13sp"
+	    android:layout_margin="10dp"
+		android:visibility="gone"
+	    android:textColor="#B1B3B5"/>
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:background="@drawable/bg_user_btn_unable"
+	    android:layout_height="40dp"
+		android:layout_marginRight="30dp"
+		android:layout_marginTop="20dp"
+		android:layout_marginLeft="30dp">
+	    <TextView 
+	    	android:id="@+id/bangding_register"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+	    	android:layout_margin="1dp"
+	    	android:text="绑定"
+			android:textSize="15dp"
+			android:textColor="@color/white"
+	    	android:layout_gravity="center_horizontal"
+	    	android:gravity="center"
+	    />
+	</RelativeLayout>
+</LinearLayout>

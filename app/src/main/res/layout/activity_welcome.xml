@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <ImageView 
+        android:id="@+id/mimg"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:background="@mipmap/qidong"
+        android:layout_height="match_parent"
+        />
+    <TextView 
+        android:id="@+id/mbtn"
+        android:padding="5dp"
+        android:background="#50000000"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:text="跳过3秒"
+        android:textSize="13sp"/>
+</RelativeLayout>

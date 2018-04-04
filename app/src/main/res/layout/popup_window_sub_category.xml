@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/sub_category_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_transparent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sub_category_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:text="手机摄像数码"
+            android:textColor="@color/main_color"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#CCCCCC" />
+
+        <GridView
+            android:id="@+id/sub_category_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:listSelector="@color/transparent"
+            android:numColumns="3"
+            android:scrollbars="none"
+            android:verticalSpacing="8dp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/float_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/sub_category_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-20dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        android:src="@mipmap/icon_float_btn" />
+
+</RelativeLayout>

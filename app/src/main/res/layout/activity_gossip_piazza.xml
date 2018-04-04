@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:id="@+id/data_head"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        />
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF" >
+
+        <TextView
+            android:id="@+id/topbar_title_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="爆料吧"
+            android:textSize="21dp" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#dbdbdb"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.andview.refreshview.XRefreshView
+            android:id="@+id/mrefresh"
+            android:layout_width="match_parent"
+            android:background="#fff"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mrecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:background="#fff" />
+        </com.andview.refreshview.XRefreshView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/float_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:src="@mipmap/add"
+            app1:backgroundTint="#F85959"
+            app1:elevation="3dp"
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>

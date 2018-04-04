@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF" >
+
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp" >
+
+        <ImageButton
+            android:id="@+id/content_bar_goback"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:background="@drawable/bg_go_back_btn"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_arrow_left_blue" />
+
+        <TextView
+            android:id="@+id/bar_content_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/content_bar_goback"
+            android:text="@string/tabs_experience"
+            android:textColor="@color/main_color"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="#E4E4E4" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/topbar_layout" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" >
+
+            <TextView
+                android:id="@+id/experience_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="12dp"
+                android:ems="10"
+                android:text="iPhone6 plus与iPhone6详细配置对比"
+                android:textColor="#2D2D2D"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/experience_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5.0dp"
+                android:ems="10"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="2014-11-24"
+                android:textColor="#A9A9A9"
+                android:textSize="14sp"
+                android:visibility="gone" />
+            
+            <LinearLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/content_web"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10.0dip"
+                android:background="#FFFFFF"
+                android:visibility="gone" />
+            <!--
+            <TextView
+                android:id="@+id/experience_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10.0dip"
+                android:text="众望所归的iPhone6以及iPhone6 plus终于在众所周知的情况下被苹果发布，肯定有不少粉丝想知道到底iPhone6 plus有什么不同？而不同尺寸的iPhone6和iPhone6 plus有什么不一样？来吧，跟着小编来看看苹果这2台设备iPhone6 plus"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:visibility="gone" />
+            -->
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

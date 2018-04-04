@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:fitsSystemWindows="false">
+    <View
+        android:id="@+id/data_head"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#fff" />
+
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF" >
+
+        <ImageButton
+            android:id="@+id/topbar_goback_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/goback_btn" />
+
+        <TextView
+            android:id="@+id/topbar_title_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="鲸币提现"
+            android:textSize="21dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <RelativeLayout
+            android:id="@+id/meverydayjb"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/mtext1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="每天领鲸币"
+                android:textColor="#ff7d41" />
+
+            <View
+                android:id="@+id/henggang1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:background="#ff7d41" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mmorejb"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/mtext2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="领更多鲸币"
+                android:textColor="#333333" />
+
+            <View
+                android:id="@+id/henggang2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:background="#ffffff" />
+        </RelativeLayout>
+    </LinearLayout>
+	<android.support.v4.view.ViewPager
+        android:id="@+id/mviewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>

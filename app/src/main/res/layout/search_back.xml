@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/result_all"
+    android:background="#F2F2F2" >
+	
+    <TextView
+        android:id="@+id/resultTv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="#F2F2F2"
+        android:gravity="center"
+        android:text="匹配关键字的全网排行" />
+
+    <RelativeLayout 
+        android:id="@+id/cancelIb"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/resultTv"
+        android:layout_marginLeft="5dp"
+        android:background="#F2F2F2"
+        >
+        <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="#F2F2F2"
+        android:layout_margin="5dp"
+        android:src="@mipmap/denglvye_zhanghushanchu" />
+    </RelativeLayout>
+    
+
+</RelativeLayout>

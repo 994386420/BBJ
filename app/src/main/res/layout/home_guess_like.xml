@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/mimg"
+        android:layout_width="match_parent"
+        android:layout_height="206dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/zw_img_300" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="5dp"
+        android:singleLine="true"
+        android:textSize="15dp"
+        android:textColor="#333333"
+        android:text="Apple iPhone 5s 16G 金色Apple iPhone 5s 16G 金色" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginLeft="7dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/juan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_result_red_little"
+            android:paddingBottom="1px"
+            android:paddingLeft="1.5dp"
+            android:paddingRight="1.5dp"
+            android:paddingTop="1px"
+            android:text="劵"
+            android:textColor="#fff"
+            android:textSize="9dp" />
+
+        <TextView
+            android:id="@+id/mcoupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:text="满200减100"
+            android:textColor="#666666"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/mdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="( 09.20~09.25 )"
+            android:textColor="#666666"
+            android:singleLine="true"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="8dp" >
+
+        <TextView
+            android:id="@+id/myuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="1dp"
+            android:text="￥"
+            android:textColor="#c80000"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/mbigprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/myuan"
+            android:text="29"
+            android:textColor="#c80000"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/mlittleprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="1dp"
+            android:layout_toRightOf="@id/mbigprice"
+            android:text=".0"
+            android:textColor="#c80000"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/msale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="3dp"
+            android:text="月销2580"
+            android:layout_marginLeft="10dp"
+            android:singleLine="true"
+            android:layout_toRightOf="@id/mlittleprice"
+            android:textColor="#999999"
+            android:textSize="10dp" />
+    </RelativeLayout>
+
+</LinearLayout>

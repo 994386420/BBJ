@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.bbk.activity.BidListDetailActivity">
+    <View
+        android:id="@+id/data_head"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#b40000" />
+
+    <LinearLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#b40000"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/topbar_goback_btn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/bj_27" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="镖单详情"
+                android:textColor="#fff"
+                android:textSize="17dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/fengxiang"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/bj_25" />
+        </LinearLayout>
+    </LinearLayout>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="#b40000"
+        app:tabSelectedTextColor="#b40000"
+        app:tabTextColor="#333333"
+        />
+    <View
+        android:id="@+id/henggang213"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#cbcbcb" />
+    <com.andview.refreshview.XRefreshView
+        android:id="@+id/xrefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <ListView
+            android:id="@+id/mlistview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null">
+        </ListView>
+    </com.andview.refreshview.XRefreshView>
+</LinearLayout>

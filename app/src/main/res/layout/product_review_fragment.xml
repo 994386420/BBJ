@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_stickynavlayout_innerscrollview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:id="@+id/review_impression_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="大家印象"
+                android:textColor="#2D2D2D"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:background="#D2D2D2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reivew_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/review_impression_layout"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="商品评价"
+                android:textColor="#2D2D2D"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/good_review_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_review_sort_btn_selected"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="4dp" >
+
+                    <TextView
+                        android:id="@+id/good_review_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="好评:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:id="@+id/good_review_img"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/good_review_text"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/icon_smile_white" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bad_review_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="24dp"
+                    android:background="@drawable/bg_review_sort_btn_normal"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="4dp" >
+
+                    <TextView
+                        android:id="@+id/bad_review_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="差评:"
+                        android:textColor="@color/main_color"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:id="@+id/bad_review_img"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/bad_review_text"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/icon_cry_blue" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/review_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="16dp"
+                android:background="#DCDCDC" />
+            
+            <TextView
+                android:id="@+id/notice"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="没有相关数据"
+                android:textColor="#808080"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/load_more_review"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="加载更多"
+                android:textColor="#808080"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

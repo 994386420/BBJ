@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- 主体背景颜色值 -->
+    <item android:bottom="1dp">
+        <shape>
+            <solid android:color="#F2F2F2" />
+            <corners
+                android:topLeftRadius="15dp"
+                android:bottomLeftRadius="15dp"
+                android:topRightRadius="15dp"
+                android:bottomRightRadius="15dp"
+                />
+            
+        </shape>
+    </item>
+
+</layer-list>

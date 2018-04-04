@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E4E4E4"
+    tools:ignore="ContentDescription" >
+
+    <TextView
+        android:id="@+id/notice_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10.0dip"
+        android:text="没有找到相关规格参数"
+        android:textColor="#666666"
+        android:textSize="12sp" />
+
+</RelativeLayout>

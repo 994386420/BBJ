@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_home_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff" >
+    <LinearLayout
+        android:id="@+id/lin"
+		android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/mzhuangtai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/msearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/text_view_border_7dp"
+                android:orientation="horizontal"
+                android:paddingBottom="7dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="7dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="搜索分类品牌商品"
+                    android:textColor="#999999"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/msort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/fenlei" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分类"
+                    android:textSize="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mtitlelist"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:layout_below="@+id/lin"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+
+        <HorizontalScrollView
+            android:id="@+id/mhscrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:visibility="visible" >
+
+            <LinearLayout
+                android:id="@+id/mbox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/monclickimg"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/unfold_img"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/enter_down" />
+        </LinearLayout>
+    </LinearLayout>
+		<RelativeLayout 
+	    android:id="@+id/mzhanwei"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/mtitlelist"
+	    android:visibility="gone"
+	    >
+        <RelativeLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+            <ImageView 
+	        android:id="@+id/zwzw"
+	        android:layout_width="100dp"
+	        android:layout_height="100dp"
+	        android:layout_centerHorizontal="true"
+	        android:src="@mipmap/wujeiguo"
+	        />
+	    <TextView 
+	        android:id="@+id/mchongshi"
+	        android:layout_below="@id/zwzw"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:paddingLeft="12dp"
+	        android:paddingRight="12dp"
+	        android:background="#ff7d41"
+	        android:layout_marginBottom="10dp"
+	        android:layout_centerHorizontal="true"
+	        android:paddingTop="4dp"
+	        android:paddingBottom="4dp"
+	        android:textColor="#fff"
+	        android:text="重试"/>
+        </RelativeLayout>
+	</RelativeLayout>
+	<com.bbk.view.MyXRefresh
+        android:id="@+id/xrefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mtitlelist" >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mrecycler"
+			android:background="#f3f3f3"
+            android:layout_width="match_parent"
+			android:descendantFocusability="afterDescendants"
+            android:layout_height="match_parent">
+            
+        </android.support.v7.widget.RecyclerView>
+    </com.bbk.view.MyXRefresh>
+	<RelativeLayout
+		android:layout_below="@id/mtitlelist"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		<ImageView
+			android:id="@+id/huodongimg"
+			android:layout_width="65dp"
+			android:layout_height="65dp"
+			android:visibility="gone"
+			android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="15dp"
+			/>
+	</RelativeLayout>
+	<com.andview.refreshview.XRefreshView
+		android:id="@+id/xrefresh2"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone"
+		android:layout_below="@id/mtitlelist" >
+
+		<GridView
+			android:id="@+id/mtitleresultgrid"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="#f3f3f3"
+			android:horizontalSpacing="4dp"
+			android:numColumns="2"
+			android:verticalSpacing="4dp"
+			>
+		</GridView>
+	</com.andview.refreshview.XRefreshView>
+</RelativeLayout>

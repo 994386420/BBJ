@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+   >
+
+    <RelativeLayout
+            android:id="@+id/topbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:background="#FFFFFF" >
+
+            <ImageView
+                android:id="@+id/topbar_goback_btn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:padding="12dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerInside"
+                android:src="@mipmap/top_back" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="#B8B8B8" />
+			<LinearLayout 
+			    android:id="@+id/msearch"
+			    android:layout_toRightOf="@id/topbar_goback_btn"
+			    android:layout_centerVertical="true"
+			    android:layout_marginLeft="10dp"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:background="@drawable/search_background"
+			    android:layout_marginRight="10dp"
+			    android:paddingLeft="18dp"
+			    android:paddingRight="10dp"
+			    android:paddingTop="5dp"
+			    android:paddingBottom="5dp"
+			    android:gravity="center_vertical"
+			    android:orientation="horizontal">
+			    <TextView 
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:text="输入你想比价的商品"/>
+			     <ImageView 
+			        android:layout_width="20dp"
+			        android:layout_height="20dp"
+			        android:src="@mipmap/bottom_search01"/>
+			</LinearLayout>
+            
+        </RelativeLayout>
+		<HorizontalScrollView 
+			    android:id="@+id/sbox"
+			    android:layout_width="match_parent"
+			    android:scrollbars="none"
+			    android:fillViewport="true"
+			    android:layout_height="41dp">
+			    <LinearLayout 
+			        android:id="@+id/mbox"
+			        android:orientation="horizontal"
+			        android:background="#fff"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        ></LinearLayout>
+			</HorizontalScrollView>
+			<View 
+			    android:layout_width="match_parent"
+			    android:layout_height="1dp"
+			    android:background="#cbcbcb"
+			    />
+			<ListView 
+			    android:id="@+id/mlistview"
+			    android:background="#fff"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content">
+			</ListView>
+			<ListView 
+			    android:id="@+id/mlistview1"
+			    android:background="#fff"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content">
+			</ListView>
+</LinearLayout>

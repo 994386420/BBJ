@@ -1,0 +1,372 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/data_head"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#fff" />
+
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#FFF" >
+
+        <ImageButton
+            android:id="@+id/topbar_goback_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@null"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/goback_btn" />
+
+        <TextView
+            android:id="@+id/topbar_title_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我的鲸币"
+            android:textSize="21dp" />
+
+        <TextView
+            android:id="@+id/mjbdetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:text="鲸币明细"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/mscroll"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/mbackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/wdjb_bg" >
+
+                <LinearLayout
+                    android:layout_margin="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/user_img"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@mipmap/logo_01" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp" >
+
+                        <TextView
+                            android:id="@+id/mjbcoin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="#fff"
+                            android:textSize="30dp" />
+
+                        <ImageView
+                            android:id="@+id/coin"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/u_jb" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/msign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/text_circle_white"
+                        android:paddingBottom="7dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:paddingTop="7dp" >
+
+                        <TextView
+                            android:id="@+id/msigntext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="签到+2鲸币"
+                            android:textColor="#fff"
+                            android:textSize="15dp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mrule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="10dp"
+                    android:text="鲸币规则"
+                    android:textColor="#ffffff" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="12dp" >
+
+                <TextView
+                    android:id="@+id/textjingbi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="今天获得1鲸币"
+                    android:textColor="#ff7d41"
+                    android:textSize="12dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" >
+
+                <ImageView
+                    android:id="@+id/mimg1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/day_01" />
+
+                <View
+                    android:id="@+id/henggang1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="4dp"
+                    android:layout_weight="2"
+                    android:background="#dddddd" />
+
+                <ImageView
+                    android:id="@+id/mimg2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/day_02" />
+
+                <View
+                    android:id="@+id/henggang2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="4dp"
+                    android:layout_weight="2"
+                    android:background="#dddddd" />
+
+                <ImageView
+                    android:id="@+id/mimg3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/day_03" />
+
+                <View
+                    android:id="@+id/henggang3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="4dp"
+                    android:layout_weight="2"
+                    android:background="#dddddd" />
+
+                <ImageView
+                    android:id="@+id/mimg4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/day_04" />
+
+                <View
+                    android:id="@+id/henggang4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="4dp"
+                    android:layout_weight="2"
+                    android:background="#dddddd" />
+
+                <ImageView
+                    android:id="@+id/mimg5"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/day_05" />
+
+                <View
+                    android:id="@+id/henggang5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="4dp"
+                    android:layout_weight="2"
+                    android:background="#dddddd" />
+
+                <ImageView
+                    android:id="@+id/mimg6"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/day_06" />
+
+                <View
+                    android:id="@+id/henggang6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="4dp"
+                    android:layout_weight="2"
+                    android:background="#dddddd" />
+
+                <ImageView
+                    android:id="@+id/mimg7"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/day_07" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="4dp"
+                android:gravity="right"
+                android:text="50鲸币"
+                android:textColor="#999999"
+                android:textSize="12dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#f3f3f3" />
+
+            <LinearLayout
+                android:id="@+id/jinbinow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp" >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/gn_jbtx" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="鲸币提现"
+                    android:textColor="#333333"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1000鲸币="
+                    android:textColor="#999999"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1元"
+                    android:textColor="#ff7d41"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/enter01" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+
+            <LinearLayout
+                android:id="@+id/morezhuanpan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp" >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/gn_xydzp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="幸运大转盘"
+                    android:textColor="#333333"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="iPhone 8等你哦！"
+                    android:textColor="#999999"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/enter01" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#f3f3f3" />
+
+            <com.bbk.view.MyListView
+                android:id="@+id/mlistview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:divider="@null" >
+            </com.bbk.view.MyListView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

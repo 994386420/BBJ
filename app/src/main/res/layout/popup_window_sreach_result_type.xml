@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#CDCDCD" />
+
+    <RelativeLayout
+        android:id="@+id/popup_window_type_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/second_type_list"
+            android:layout_width="120dp"
+            android:layout_height="320dp"
+            android:background="#FFFFFF"
+            android:divider="@null"
+            android:scrollbars="none" />
+
+        <View
+            android:id="@+id/second_type_line"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="0.8dp"
+            android:layout_height="300dp"
+            android:layout_toRightOf="@id/second_type_list"
+            android:background="#CDCDCD" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/third_type_list"
+            android:layout_width="wrap_content"
+            android:layout_height="320dp"
+            android:layout_toRightOf="@id/second_type_line"
+            android:background="#FFF"
+            android:divider="@null"
+            android:scrollbars="none" />
+
+        <RelativeLayout
+            android:id="@+id/dismiss_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/second_type_list" >
+
+            <RelativeLayout
+                android:id="@+id/double_line_layout"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="#F5F5F5" >
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/icon_double_line" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/double_line_layout"
+                android:background="#80000000" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

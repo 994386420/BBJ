@@ -1,0 +1,252 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+     >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="#FFF" >
+
+            <ImageButton
+                android:id="@+id/topbar_goback_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/goback_btn" />
+
+            <TextView
+                android:id="@+id/topbar_title_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="收藏夹"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/mcompile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="20dp"
+                android:paddingRight="15dp"
+                android:text="编辑"
+                android:textSize="15dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" >
+
+            <RelativeLayout
+                android:id="@+id/mtopic"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/mtext1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="鲸话题"
+                    android:textColor="#ff7d41" />
+
+                <View
+                    android:id="@+id/henggang1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="#ff7d41" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mdomain"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/mtext2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="商品"
+                    android:textColor="#333333" />
+
+                <View
+                    android:id="@+id/henggang2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="#ffffff" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cbcbcb" />
+
+        <com.andview.refreshview.XRefreshView
+            android:id="@+id/xrefresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <com.andview.refreshview.XScrollView
+                android:id="@+id/mscroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" 
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+						  <LinearLayout
+                            android:id="@+id/mzhanwei"
+                            android:layout_marginTop="130dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#fff"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone" >
+
+                            <ImageView
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:src="@mipmap/zw_img_330" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="这里什么都没有"
+                                android:layout_marginTop="10dp"
+                                android:textColor="#999999"
+                                android:textSize="16dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="去看看别的"
+                                android:layout_marginTop="10dp"
+                                android:textColor="#999999"
+                                android:textSize="16dp" />
+                        </LinearLayout>
+                        <com.bbk.view.MyListView
+                            android:id="@+id/topiclistview"
+                            android:layout_width="match_parent"
+                            android:divider="@null"
+                            android:layout_height="match_parent" >
+                        </com.bbk.view.MyListView>
+
+                        <com.bbk.view.MyListView
+                            android:id="@+id/domainlistview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="gone" >
+                        </com.bbk.view.MyListView>
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </com.andview.refreshview.XScrollView>
+        </com.andview.refreshview.XRefreshView>
+
+        <RelativeLayout
+            android:id="@+id/mselectanddelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#fff"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:id="@+id/mallselect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp" >
+
+                <ImageView
+                    android:id="@+id/mallselectimg"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/weixuanzhongyuan" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="全选"
+                    android:textColor="#666666"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/mdelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/text_circle_red_white"
+                android:paddingBottom="8dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="8dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="删除"
+                    android:textColor="#f23030"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

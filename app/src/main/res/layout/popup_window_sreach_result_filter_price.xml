@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_window_filter_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#CDCDCD" />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/price_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#FFF" >
+
+        <TextView
+            android:id="@+id/filter_title_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:text="价格"
+            android:textColor="#808080"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/begin_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/filter_title_price"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/filter_title_price"
+            android:text=""
+            android:textColor="#808080"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/price_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/filter_title_price"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/begin_price"
+            android:text="-"
+            android:textColor="#808080"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/end_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/filter_title_price"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/price_divider"
+            android:text=""
+            android:textColor="#808080"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <com.bbk.view.MaterialRangeSlider
+        android:visibility="gone"
+        android:id="@+id/price_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:minHeight="96dp"
+        app:insideRangeLineColor="@color/main_color"
+        app:insideRangeLineStrokeWidth="2dp"
+        app:outsideRangeLineColor="#CDCDCD"
+        app:outsideRangeLineStrokeWidth="2dp"
+        app:pressedTargetRadius="8dp"
+        app:targetColor="#FFFFFF"
+        app:unpressedTargetRadius="8dp" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="价格区间" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:text="(元)" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/begin_price_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_filter_brand_normal"
+            android:hint="最低价"
+            android:inputType="number"
+            android:maxEms="6"
+            android:maxLength="6"
+            android:paddingBottom="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="10dp" />
+
+        <View 
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_width="20dp"
+            android:layout_height="2dp"
+            android:background="#DDD"
+            />
+         <EditText
+             android:id="@+id/end_price_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:inputType="number"
+            android:maxEms="6"
+            android:maxLength="6"
+            android:paddingBottom="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:background="@drawable/bg_filter_brand_normal"
+            android:hint="最高价" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#CDCDCD" />
+
+</LinearLayout>

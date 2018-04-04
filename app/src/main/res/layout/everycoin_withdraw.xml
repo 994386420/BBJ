@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="8dp" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/mtext1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="+200鲸币"
+            android:textColor="#ff7d41"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/mtext2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="邀请一个好友注册成功"
+            android:textColor="#999999"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mtext3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="09-10"
+        android:textColor="#999999"
+        android:textSize="14dp" />
+
+</LinearLayout>

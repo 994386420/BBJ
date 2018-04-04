@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.bbk.activity"
+    android:versionCode="35"
+    android:versionName="4.2.7">
+
+    <!-- 在sd卡中创建与删除文件权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 向SD卡写入数据权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.MANAGE_LOCATION_POLICY" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- 【可选】 信鸽SDK所需权限 -->
+
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="com.cn.customview.permissions.MY_BROADCAST_1" />
+
+    <permission android:name="com.cn.customview.permissions.MY_BROADCAST_1" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- mi push -->
+    <permission
+        android:name="com.tencent.qcloud.timchat.permission.MIPUSH_RECEIVE_1"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.tencent.qcloud.timchat.permission.MIPUSH_RECEIVE_1" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/appicon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+
+        <!-- android:name=".CalligraphyApplication" -->
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.bbk.activity.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <!-- 您从百度网站获取的 APP	KEY -->
+        <meta-data
+            android:name="BaiduMobAd_STAT_ID"
+            android:value="66a4db56a6" />
+        <!-- 渠道商编号 -->
+        <meta-data
+            android:name="BaiduMobAd_CHANNEL"
+            android:value="360" />
+        <!-- 是否开启错误日志统计，默认为 false -->
+        <meta-data
+            android:name="BaiduMobAd_EXCEPTION_LOG"
+            android:value="true" />
+        <!--
+			日志发送策略，可选值： APP_START、 ONCE_A_DAY、 SET_TIME_INTERVAL，
+			默认为 APP_START
+        -->
+        <meta-data
+            android:name="BaiduMobAd_SEND_STRATEGY"
+            android:value="APP_START" />
+
+        <!--
+			日志发送策略 为 SET_TIME_INTERVAL 时，需设定时间间隔(取消下
+			行注释)。取值为 1-24 的整数，默认为 1
+        -->
+        <!--
+		<meta-data
+		android:name="BaiduMobAd_TIME_INTERVAL"
+		android:value="2"	/>
+        -->
+        <!-- 日志仅在 wifi 网络下发送，默认为 false -->
+        <meta-data
+            android:name="BaiduMobAd_ONLY_WIFI"
+            android:value="true" />
+        <!-- 是否获取基站位置信息 ,默认为 true -->
+        <meta-data
+            android:name="BaiduMobAd_CELL_LOCATION"
+            android:value="false" />
+        <!-- 是否获取 GPS 位置信息，默认为 true -->
+        <meta-data
+            android:name="BaiduMobAd_GPS_LOCATION"
+            android:value="true" />
+        <!-- 是否获取 WIFI 位置信息，默认为 true -->
+        <meta-data
+            android:name="BaiduMobAd_WIFI_LOCATION"
+            android:value="true" />
+
+        <!-- GlideModule okHttp -->
+        <meta-data
+            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+            android:value="GlideModule" />
+
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="bbjtech" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MesageCenterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BidHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SubCategoryActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BrowseActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.PhotoPicker.PhotoPickerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="com.bbk.PhotoPicker.PhotoPagerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".CollectionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ZhongzhuanActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/dialog1" />
+        <activity
+            android:name=".WebViewDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/dialog1" />
+        <activity
+            android:name=".NickNameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CouponActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LogisticsQueryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DesPictureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShopCartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OrderListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GossipActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyGossipActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity
+            android:name=".MyDraftActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ImageLookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyCoinActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserRegistActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CoinGoGoGoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".QueryHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContactActivity"
+            android:screenOrientation="portrait" />
+        <!--
+        <activity
+            android:name="DataCountActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+        </activity>
+        -->
+
+        <activity
+            android:name=".ReslutBrandActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CompareActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebViewRechargeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RankCategoryActivity"
+            android:largeHeap="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DataWebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DCBrandActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DCSKUActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DomainMoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HelpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HelpContentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchRecommendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchPromptActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserLoginNewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserRegisterNewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserRegisterGetCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RecomendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserSuggestionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".UserFindPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserNewPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SortActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserNewPasswordActivity2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddressListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PushWebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebViewActivity_copy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebViewActivity111"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WelcomeGuideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebViewXGActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WebViewWZActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GossipPiazzaDetailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GossipCommentDetailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.tencent.rdm.uuid"
+            android:value="a2af72ec-a731-46eb-8501-0477e34702f3" />
+
+        <activity
+            android:name="com.bbk.chat.ui.SplashActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.bbk.chat.ui.HomeActivity" />
+        <activity
+            android:name="com.bbk.chat.ui.ChatActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name="com.bbk.chat.ui.SearchFriendActivity" />
+        <activity android:name="com.bbk.chat.ui.AddFriendActivity" />
+        <activity
+            android:name="com.bbk.chat.ui.ProfileActivity"
+            android:launchMode="singleTask" />
+        <activity android:name="com.bbk.chat.ui.ManageFriendGroupActivity" />
+        <activity
+            android:name="com.bbk.chat.ui.VideoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.bbk.chat.ui.CreateGroupActivity" />
+        <activity
+            android:name="com.bbk.chat.ui.TCVideoRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.chat.ui.TCVideoPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.chat.ui.GroupProfileActivity"
+            android:launchMode="singleTask" />
+
+        <!-- 消息收发service -->
+        <service
+            android:name="com.tencent.qalsdk.service.QalService"
+            android:exported="false"
+            android:process=":QALSERVICE" />
+        <service
+            android:name="com.tencent.qalsdk.service.QalAssistService"
+            android:exported="false"
+            android:process=":QALSERVICE" />
+        <!-- 离线消息广播接收器 -->
+        <receiver
+            android:name="com.tencent.qalsdk.QALBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.tencent.qalsdk.broadcast.qal" />
+            </intent-filter>
+        </receiver>
+        <!-- 系统消息广播接收器 -->
+        <receiver
+            android:name="com.tencent.qalsdk.core.NetConnInfoCenter"
+            android:process=":QALSERVICE">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.tencent.qalsdk.service.TASK_REMOVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- mipush -->
+        <service
+            android:name="com.xiaomi.push.service.XMJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":MiPushService" />
+        <service
+            android:name="com.xiaomi.push.service.XMPushService"
+            android:enabled="true"
+            android:process=":MiPushService" />
+        <service
+            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+            android:enabled="true" />
+
+        <receiver
+            android:name="com.bbk.chat.utils.MiPushMessageReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.PingReceiver"
+            android:exported="false"
+            android:process=":MiPushService">
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
+            </intent-filter>
+        </receiver>
+        <!-- mipush -->
+
+
+        <!-- hwpush -->
+
+
+        <!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态、标签，LBS上报结果）广播 -->
+        <receiver android:name="com.bbk.chat.utils.HwPushMessageReceiver">
+            <intent-filter>
+
+                <!-- 必须,用于接收token -->
+                <action android:name="com.huawei.android.push.intent.REGISTRATION" />
+                <!-- 必须，用于接收消息 -->
+                <action android:name="com.huawei.android.push.intent.RECEIVE" />
+                <!-- 可选，用于点击通知栏或通知栏上的按钮后触发onEvent回调 -->
+                <action android:name="com.huawei.android.push.intent.CLICK" />
+                <!-- 可选，查看push通道是否连接，不查看则不需要 -->
+                <action android:name="com.huawei.intent.action.PUSH_STATE" />
+                <!-- 可选，标签、地理位置上报回应，不上报则不需要 -->
+                <action android:name="com.huawei.android.push.plugin.RESPONSE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="CS_cloud_ablitity"
+                android:value="successRateAnalytics" />
+        </receiver>
+
+        <!--
+             备注：Push相关的android组件需要添加到业务的AndroidManifest.xml,
+        	 Push相关android组件运行在另外一个进程是为了防止Push服务异常而影响主业务
+        -->
+
+
+        <!-- PushSDK:PushSDK接收外部请求事件入口 -->
+        <receiver
+            android:name="com.huawei.android.pushagent.PushEventReceiver"
+            android:process=":HwPushService">
+            <intent-filter>
+                <action android:name="com.huawei.android.push.intent.REFRESH_PUSH_CHANNEL" />
+                <action android:name="com.huawei.intent.action.PUSH" />
+                <action android:name="com.huawei.intent.action.PUSH_ON" />
+                <action android:name="com.huawei.android.push.PLUGIN" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.huawei.android.pushagent.PushBootReceiver"
+            android:process=":HwPushService">
+            <intent-filter>
+                <action android:name="com.huawei.android.push.intent.REGISTER" />
+                <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
+            </intent-filter>
+
+            <meta-data
+                android:name="CS_cloud_version"
+                android:value="\u0032\u0037\u0030\u0035" />
+        </receiver>
+
+        <!-- PushSDK:Push服务 -->
+        <service
+            android:name="com.huawei.android.pushagent.PushService"
+            android:process=":HwPushService" />
+        <!-- hwpush -->
+
+
+        <!-- firebase -->
+        <!-- <service android:name="com.tencent.qcloud.timchat.utils.MyFirebaseInstanceIDService" android:exported="true"> -->
+
+
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- firebase -->
+
+        <activity android:name="com.bbk.chat.ui.ImageViewActivity" />
+        <activity android:name="com.bbk.chat.ui.EditActivity" />
+        <activity android:name="com.bbk.chat.ui.SearchGroupActivity" />
+        <activity android:name="com.bbk.chat.ui.ApplyGroupActivity" />
+        <activity android:name="com.bbk.chat.ui.GroupManageMessageActivity" />
+        <activity android:name="com.bbk.chat.ui.FriendshipManageMessageActivity" />
+        <activity android:name="com.bbk.chat.ui.GroupListActivity" />
+        <activity android:name="com.bbk.chat.ui.ChooseFriendActivity" />
+        <activity android:name="com.bbk.chat.ui.GroupMemberActivity" />
+        <activity
+            android:name="com.bbk.chat.ui.customview.DialogActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name="com.bbk.chat.ui.GroupMemberProfileActivity" />
+        <activity android:name="com.bbk.chat.ui.FriendshipHandleActivity" />
+        <activity android:name="com.bbk.chat.ui.AboutActivity" />
+        <activity android:name="com.bbk.chat.ui.BlackListActivity" />
+        <activity android:name="com.bbk.chat.ui.ImagePreviewActivity" />
+        <activity android:name="com.bbk.chat.ui.MessageNotifySettingActivity" />
+
+        <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
+        <activity
+            android:name="com.tencent.android.tpush.XGPushActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+
+                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action" -->
+                <action android:name="android.intent.action" />
+            </intent-filter>
+        </activity>
+        <!-- 【必须】 信鸽receiver广播接收 -->
+        <receiver
+            android:name="com.tencent.android.tpush.XGPushReceiver"
+            android:process=":xg_service_v3">
+            <intent-filter android:priority="0x7fffffff">
+
+                <!-- 【必须】 信鸽SDK的内部广播 -->
+                <action android:name="com.tencent.android.tpush.action.SDK" />
+                <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
+                <!-- 【必须】 系统广播：网络切换 -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <!-- 【可选】 系统广播：开屏 -->
+                <action android:name="android.intent.action.USER_PRESENT" />
+
+                <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+            <!-- 【可选】 usb相关的系统广播，增强信鸽service的复活机会，请根据需要添加 -->
+            <intent-filter android:priority="0x7fffffff">
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
+                <action android:name="android.intent.action.MEDIA_REMOVED" />
+                <action android:name="android.intent.action.MEDIA_CHECKING" />
+                <action android:name="android.intent.action.MEDIA_EJECT" />
+
+                <data android:scheme="file" />
+            </intent-filter>
+        </receiver>
+        <!-- 【必须】 信鸽service -->
+        <service
+            android:name="com.tencent.android.tpush.service.XGPushServiceV3"
+            android:exported="true"
+            android:persistent="true"
+            android:process=":xg_service_v3" />
+
+        <!-- 【必须】 增强xg_service存活率 -->
+        <service
+            android:name="com.tencent.android.tpush.service.XGDaemonService"
+            android:process=":xg_service_v3" />
+
+        <!-- 【可选】APP实现的Receiver，用于接收消息透传和操作结果的回调，请根据需要添加 -->
+        <!-- YOUR_PACKAGE_PATH.CustomPushReceiver需要改为自己的Receiver： -->
+        <receiver
+            android:name="com.bbk.receiver.MessageReceiver"
+            android:exported="true">
+            <intent-filter>
+
+                <!-- 接收消息透传 -->
+                <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
+                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
+                <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 【必须】 【注意】authorities修改为 包名.AUTH_XGPUSH, 如demo的包名为：com.qq.xgdemo -->
+        <provider
+            android:name="com.tencent.android.tpush.XGPushProvider"
+            android:authorities="com.bbk.activity.AUTH_XGPUSH"
+            android:exported="true" />
+
+        <!-- 【必须】 【注意】authorities修改为 包名.TPUSH_PROVIDER, 如demo的包名为：com.qq.xgdemo -->
+        <provider
+            android:name="com.tencent.android.tpush.SettingsContentProvider"
+            android:authorities="com.bbk.activity.TPUSH_PROVIDER"
+            android:exported="false" />
+
+        <!-- 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V3, 如demo的包名为：com.qq.xgdemo -->
+        <provider
+            android:name="com.tencent.mid.api.MidProvider"
+            android:authorities="com.bbk.activity.TENCENT.MID.V3"
+            android:exported="true" />
+        <!-- 【必须】 请修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_ID"
+            android:value="2100196420" />
+        <!-- 【必须】 请修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_KEY"
+            android:value="AUTV25N58F3Z" />
+
+        <!-- 微博登录 -->
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- QQ登录 -->
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:configChanges" />
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1104896963" />
+                <!-- 100380359 100381104 222222 -->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SelectActivity"
+            android:label="@string/title_activity_select" />
+        <activity
+            android:name=".AcountGuanLianActivity"
+            android:label="@string/title_activity_acount_guan_lian" />
+        <activity
+            android:name=".RegisterBangDingActivity"
+            android:label="@string/title_activity_register_bang_ding" />
+        <activity
+            android:name=".IntentActivity"
+            android:label="@string/title_activity_intent" />
+
+        <service android:name="com.bbk.server.FloatingWindowService" />
+        <!-- 友盟 -->
+        <!--<meta-data-->
+            <!--android:name="UMENG_APPKEY"-->
+            <!--android:value="59db08fcf29d985a31000021" />-->
+        <!--<meta-data-->
+            <!--android:name="UMENG_CHANNEL"-->
+            <!--android:value="360" />-->
+
+        <activity android:name=".BidAcceptanceActivity" />
+        <activity android:name=".BidDetailActivity" />
+        <activity
+            android:name=".BidingActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".BidListDetailActivity" />
+        <activity android:name=".BidActivity" />
+        <activity android:name=".BidBillDetailActivity" />
+        <activity android:name=".BidHistoryActivity" />
+        <activity android:name=".BidFilterPriceActivity" />
+        <activity android:name=".BidMyPlActivity" />
+        <activity android:name=".BidMyWantPLActivity" />
+        <activity android:name=".BidAllHotActivity"></activity>
+        <activity android:name=".BidMyListDetailActivity"></activity>
+        <activity android:name=".BidMyBillDetailActivity"></activity>
+    </application>
+
+</manifest>

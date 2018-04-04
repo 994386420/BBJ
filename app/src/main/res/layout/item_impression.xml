@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="16dp" >
+
+    <TextView
+        android:id="@+id/review_impression_text"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:textColor="#464646"
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/review_impression_rectangle"
+        android:layout_width="160dp"
+        android:layout_height="12dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/review_impression_text"
+        android:background="#FFCC33" />
+
+    <TextView
+        android:id="@+id/review_impression_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@id/review_impression_rectangle"
+        android:textColor="#808080"
+        android:textSize="12sp" />
+
+</RelativeLayout>

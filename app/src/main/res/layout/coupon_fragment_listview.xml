@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/result_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" >
+
+    <ImageView
+        android:id="@+id/mimg"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginLeft="8dp"
+        android:src="@mipmap/default_img" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/mimg" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/mtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="Apple iPhone 5s 16G 金色  Apple iPhone 5s 16G 金色 Apple iPhone 5s 16G 金色 "
+                android:textColor="#111111"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/msale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="bottom"
+                android:text="已售2854件"
+                android:textColor="#999999"
+                android:textSize="11dp" />
+
+            <RelativeLayout
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true" >
+
+                <TextView
+                    android:id="@+id/myuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="1dp"
+                    android:text="￥"
+                    android:textColor="#c80000"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/mbigprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@id/myuan"
+                    android:text="29"
+                    android:textColor="#c80000"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/mlittleprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="1dp"
+                    android:layout_toRightOf="@id/mbigprice"
+                    android:textColor="#c80000"
+                    android:text=".0"
+                    android:textSize="13dp" />
+                
+                <TextView 
+                    android:id="@+id/moldprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:layout_marginLeft="3dp"
+                    android:visibility="gone"
+                    android:layout_toRightOf="@id/mlittleprice"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#999999"/>
+            </RelativeLayout>
+            <LinearLayout 
+                android:id="@+id/mcoupon"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content">
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/yhj_bg01"/>
+                <TextView 
+                    android:id="@+id/mcouponnum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="17dp"
+                    android:text="领20元劵"
+                    android:textColor="#fff"
+                    android:gravity="center"
+                    android:textSize="13dp"
+                    android:background="#f23030"/>
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/yhj_bg02"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_result_orange"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="马上抢"
+                android:textColor="#fff"
+                android:textSize="12dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_window_stype_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#10000000"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/popup_window_stype_add_layout"
+        android:layout_width="85dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_fragment_search_stype_layout"
+        android:orientation="vertical" >
+        <View
+        android:layout_width="50dp"
+        android:layout_height="1px"
+        android:background="#CDCDCD" />
+    </LinearLayout>
+
+</LinearLayout>

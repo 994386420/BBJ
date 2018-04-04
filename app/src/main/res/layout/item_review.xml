@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentTop="true"
+        android:background="#E4E4E4" />
+
+    <TextView
+        android:id="@+id/review_publisher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="#464646"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:id="@+id/review_type"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_toRightOf="@id/review_publisher"
+        android:scaleType="centerInside"
+        android:src="@mipmap/icon_smile_blue" />
+
+    <TextView
+        android:id="@+id/review_publisher_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/review_publisher"
+        android:layout_alignParentRight="true"
+        android:textColor="#808080"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/review_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/review_publisher"
+        android:layout_marginTop="8dp"
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="#2D2D2D"
+        android:textSize="12sp" />
+
+</RelativeLayout>

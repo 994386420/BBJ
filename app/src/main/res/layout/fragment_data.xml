@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="#f3f3f3"
+    android:fitsSystemWindows="false"
+    android:layout_height="match_parent" >
+    <View 
+        android:id="@+id/data_head"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        />
+    <LinearLayout
+        android:background="#fff"
+        android:layout_below="@id/data_head"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/head_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="11dp"
+                android:text="大数据分析"
+                android:textStyle="bold"
+                android:textColor="#0098FF"
+                android:textSize="17dp" />
+        </LinearLayout>
+		<RelativeLayout 
+		    	android:visibility="gone"
+			    android:id="@+id/login_remind"
+			    android:layout_width="match_parent"
+			    android:layout_height="34dp"
+			    android:background="#f3f3f3"
+			    >
+			    <TextView
+			        android:id="@+id/mtext"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_alignParentLeft="true"
+			        android:gravity="center_vertical"
+			        android:layout_centerVertical="true"
+			        android:layout_marginLeft="8dp"
+			        android:textColor="#f9436b"
+			        android:textSize="13dp"
+			        android:text="提示：为方便查看更多数据信息，请先登录。"
+			        />
+			    <TextView
+			        android:id="@+id/mlogin"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:paddingLeft="12dp"
+			        android:paddingRight="12dp"
+			        android:paddingTop="3dp"
+			        android:paddingBottom="3dp"
+			        android:layout_marginRight="8dp"
+			        android:layout_alignParentRight="true"
+			        android:gravity="center_vertical"
+			        android:textColor="#fff"
+			        android:textSize="13dp"
+			        android:layout_centerVertical="true"
+			        android:background="@drawable/home_data"
+			        android:text="登录"
+			        />
+			</RelativeLayout>
+			<ScrollView
+            	android:id="@+id/introduce_scroll"
+            	android:layout_width="match_parent"
+            	android:layout_height="match_parent"
+            	android:fillViewport="true"
+            	android:scrollbars="none" >
+		    	<LinearLayout
+                	android:layout_width="match_parent"
+                	android:layout_height="wrap_content"
+                	android:orientation="vertical" >
+		        	<LinearLayout
+        			android:id="@+id/banner_layout"
+        			android:layout_width="match_parent"
+        			android:layout_height="wrap_content"
+        			android:orientation="horizontal" >
+    			</LinearLayout>
+    			<LinearLayout 
+    			    android:paddingTop="7dp"
+    			    android:paddingBottom="7dp"
+    			    android:layout_width="match_parent"
+    			    android:layout_height="83dp"
+    			    android:background="#f3f3f3"
+    			    android:orientation="horizontal"
+    			    >
+    			    <RelativeLayout 
+    			        android:id="@+id/list1"
+    			        android:layout_weight="1"
+    			        android:background="@drawable/home_search3"
+    			        android:layout_width="0dp"
+    			        android:paddingLeft="11dp"
+    			        android:layout_marginLeft="7dp"
+    			        android:paddingTop="11dp"
+    			        android:paddingBottom="11dp"
+    			        android:layout_marginRight="2dp"
+    			        android:layout_height="match_parent">
+    			        <ImageView 
+    			            android:id="@+id/img1"
+    			            android:layout_width="61dp"
+    			            android:layout_height="61dp"
+    			            android:layout_centerVertical="true"
+    			            android:src="@mipmap/bd_lanmu_01"
+    			            android:layout_alignParentLeft="true"
+    			            android:scaleType="centerInside"
+    			            />
+    			        <TextView 
+    			            android:layout_width="wrap_content"
+    			            android:layout_height="wrap_content"
+    			            android:layout_toRightOf="@id/img1"
+    			            android:text="行业报告"
+    			            android:layout_alignParentTop="true"
+    			            android:textStyle="bold"
+    			            android:layout_marginTop="6dp"
+    			            android:textColor="#222222"
+    			            android:textSize="16dp"/>
+    			        <TextView 
+    			            android:layout_marginBottom="6dp"
+    			            android:layout_width="wrap_content"
+    			            android:layout_height="wrap_content"
+    			            android:layout_toRightOf="@id/img1"
+    			            android:text="洞察行业趋势"
+    			            android:layout_alignParentBottom="true"
+    			            android:textColor="#777777"
+    			            android:textSize="11dp"/>
+    			    </RelativeLayout>
+    			    <RelativeLayout 
+    			        android:id="@+id/list2"
+						android:background="@drawable/home_search3"
+    			        android:layout_weight="1"
+    			        android:layout_width="0dp"
+    			        android:paddingLeft="11dp"
+    			        android:paddingTop="11dp"
+    			        android:paddingBottom="11dp"
+    			        android:layout_marginRight="7dp"
+    			        android:layout_marginLeft="2dp"
+    			        android:layout_height="match_parent">
+    			        <ImageView 
+    			            android:id="@+id/img2"
+    			            android:layout_width="61dp"
+    			            android:scaleType="centerInside"
+    			            android:layout_height="61dp"
+    			            android:layout_centerVertical="true"
+    			            android:layout_alignParentLeft="true"
+    			            android:src="@mipmap/bd_lanmu_02"
+    			            />
+    			        <TextView 
+    			            android:layout_marginTop="6dp"
+    			            android:layout_width="wrap_content"
+    			            android:layout_height="wrap_content"
+    			            android:layout_toRightOf="@id/img2"
+    			            android:text="数据图表"
+    			            android:layout_alignParentTop="true"
+    			            android:textStyle="bold"
+    			            android:textColor="#222222"
+    			            android:textSize="16dp"/>
+    			        <TextView 
+    			            android:layout_marginBottom="6dp"
+    			            android:layout_width="wrap_content"
+    			            android:layout_height="wrap_content"
+    			            android:layout_toRightOf="@id/img2"
+    			            android:text="行业数据可视化"
+    			            android:layout_alignParentBottom="true"
+    			            android:textColor="#777777"
+    			            android:textSize="11dp"/>
+    			    </RelativeLayout>
+    			</LinearLayout>
+    			<LinearLayout
+                    android:id="@+id/introduce_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:background="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginBottom="19dp"
+                            android:text="总体销售趋势"
+                            android:textColor="#0098FF"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginRight="19dp"
+                            android:gravity="center"
+                            android:lines="4"
+                            android:text="比比鲸提供各行业及细分品类的销售状况，以及平均成交价格趋势等，分析总的趋势和变化情况。"
+                            android:textColor="#323232"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:id="@+id/image1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/data_pic1" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#D8D8D8" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:background="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginBottom="19dp"
+                            android:text="高中低端商品销售分析"
+                            android:textColor="#0098FF"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginRight="19dp"
+                            android:gravity="center"
+                            android:lines="4"
+                            android:text="针对不同品类合理划分价格区间，比比鲸对各价格区间进行统计销量和占比， 分析市场上高中低端商品的消费情况。"
+                            android:textColor="#323232"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:id="@+id/image2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/data_pic2" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#D8D8D8" />
+                    </LinearLayout>
+					<LinearLayout
+                        android:background="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:text="品牌竞争状况"
+                            android:layout_marginBottom="19dp"
+                            android:textColor="#0098FF"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginRight="19dp"
+                            android:gravity="center"
+                            android:lines="4"
+                            android:text="多维度地展现品牌之间的竞争情况和趋势，可以针对性选择特定品牌，查看某品牌的电商渠道和店铺等部署情况等，为企业制定针对性运营策略提供参考。"
+                            android:textColor="#323232"
+                            android:textSize="14dp" />
+
+
+                        <ImageView
+                            android:id="@+id/image3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/data_pic3" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#D8D8D8" />
+                    </LinearLayout>
+					<LinearLayout
+                        android:background="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+							android:layout_marginBottom="19dp"
+                            android:text="电商渠道销售状况"
+                            android:textColor="#0098FF"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginRight="19dp"
+                            android:gravity="center"
+                            android:lines="4"
+                            android:text="多维度地分析各电商平台销售状况，挖掘其背后的数据信息，可以针对性地选择特定电商，查看某电商平台上各品牌和单品销售情况等，为企业选择渠道和制定策略提供数据依据。"
+                            android:textColor="#323232"
+                            android:textSize="14dp" />
+
+
+                        <ImageView
+                            android:id="@+id/image4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="6"
+                            android:src="@mipmap/data_pic4" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#D8D8D8" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginBottom="19dp"
+                            android:text="店铺销售排行"
+                            android:textColor="#0098FF"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginRight="19dp"
+                            android:gravity="center"
+                            android:text="了解店铺在各维度的排名情况，可以选择电商，查看在电商渠道上的排名，为企业制定渠道合作伙伴策略提供数据参考。"
+                            android:textColor="#323232"
+                            android:textSize="14dp" />
+
+
+                        <ImageView
+                            android:id="@+id/image5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/data_pic5" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#D8D8D8" />
+                    </LinearLayout>
+
+    			</LinearLayout>
+    			<include layout="@layout/view_end_footer" />
+    			
+		    	</LinearLayout>
+			</ScrollView>
+		</LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FC"
+    android:orientation="vertical" >
+			<View 
+        android:id="@+id/rank_head"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <RelativeLayout
+        android:id="@+id/topbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#FFFFFF" >
+
+        <ImageButton
+            android:id="@+id/topbar_goback_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_arrow_left_blue"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/topbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:singleLine="true"
+            android:text= "商品分类"
+            android:textColor="#2D2D2D"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="#B8B8B8" />
+    </RelativeLayout>
+	            <RelativeLayout
+                android:id="@+id/msearchall"
+                android:background="#f3f3f3"
+                android:layout_width="match_parent"
+ 		    	android:layout_height="wrap_content"
+ 		    	>
+                <ImageView 
+                    android:layout_marginLeft="20dp"
+ 		    		android:layout_marginRight="20dp"
+                    android:layout_centerVertical="true"
+  				    android:layout_width="match_parent"
+  				    android:layout_height="40dp"
+  				    android:src="@mipmap/search_by1"/>
+                <ImageView 
+                    
+			    	android:id="@+id/msearch"
+			    	android:layout_marginLeft="30dp"
+			    	android:src="@mipmap/search_hui"
+			    	android:layout_width="18dp"
+			    	android:layout_height="18dp"
+			    	android:layout_centerVertical="true"
+			    />
+				<TextView 
+			    	android:layout_toRightOf="@id/msearch"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_centerVertical="true"
+			    	android:textColor="#999999"
+			    	android:text="输入你想比价的商品"
+			    	android:textSize="12dp"/>
+            </RelativeLayout>
+    		<LinearLayout  
+        		android:layout_width="match_parent"  
+        		android:layout_height="match_parent"  
+        		android:background="#fbfbfb"  
+        		android:orientation="horizontal" >  
+  
+        		<ListView  
+            		android:id="@+id/mlistview"  
+            		android:layout_width="0dp"  
+            		android:layout_height="match_parent"  
+            		android:scrollbars="none"  
+            		android:layout_weight="1.0"  
+            		android:background="#fff" />   
+            	<ScrollView 
+            	    android:background="#fff"
+        			android:layout_weight="3.0"
+        			android:layout_width="0dp"
+        			android:layout_height="match_parent"
+            	    >
+            	    <LinearLayout 
+            	        android:padding="10dp"
+            	        android:background="#f3f3f3"
+            	        android:layout_width="match_parent"
+            	        android:layout_height="match_parent">
+            	        <com.bbk.view.MyListView 
+        					android:id="@+id/mlistviewright"
+        					android:background="#fff"
+        					android:layout_weight="3.0"
+        					android:layout_width="0dp"
+        					android:layout_height="match_parent">
+    					</com.bbk.view.MyListView>
+            	    </LinearLayout>
+            	</ScrollView>
+
+    </LinearLayout>  
+</LinearLayout>
