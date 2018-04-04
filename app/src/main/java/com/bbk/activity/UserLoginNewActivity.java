@@ -707,14 +707,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								nickName = userInforJson.optString("nickname");
 								imgUrl = userInforJson.optString("figureurl_qq_2");
 								SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "imgUrl", imgUrl);
-
-//								Intent intent = new Intent();
-//								intent.putExtra("openID", openID);
-//								intent.putExtra("nickName", nickName);
-//								intent.putExtra("imgUrl", imgUrl);
-//								setResult(5, intent);
-//								finish();
-								
 								userLoginThirdPartyHttp(openID, nickName, imgUrl);
 							} catch (Exception e) {
 								e.printStackTrace();
