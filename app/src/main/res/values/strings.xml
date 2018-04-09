@@ -403,4 +403,13 @@
     <string name="app_no_message_text">这里什么都没有 \n去看看别的！</string>
     //微信登陆提示
     <string name="app_wx_text">登陆前请接受并阅读以上条款</string>
+    //首页底部文字
+    <string name="home_new_text">首页</string>
+    <string name="home_baoliao_text">爆料</string>
+    <string name="home_faxian_text">发现</string>
+    <string name="home_my_text">我的</string>
+    <string name="home_news_text">消息</string>
+
+    <string name="refresh_down_text">下拉可更新</string>
+    <string name="refresh_release_text">松手可更新</string>
 </resources>

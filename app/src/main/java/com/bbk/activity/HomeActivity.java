@@ -41,10 +41,12 @@ import com.bbk.entity.XGMessageEntity;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.BaseViewPagerFragment;
+import com.bbk.fragment.BidMessageFragment;
 import com.bbk.fragment.DataFragment;
 import com.bbk.fragment.GossipPiazzaFragment;
 import com.bbk.fragment.HomeFragment2;
 import com.bbk.fragment.NewHomeFragment;
+import com.bbk.fragment.NewRankFragment;
 import com.bbk.fragment.RankFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
@@ -79,6 +81,10 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 			R.mipmap.new_bottom_news_btn, R.mipmap.bottom_find02, R.mipmap.bottom_my02 };
 	private int[] tabImgGray = { R.mipmap.bottom_home01,R.mipmap.bottom_baoliao01,
 			R.mipmap.new_bottom_news_normal, R.mipmap.bottom_find01, R.mipmap.bottom_my01 };
+//	private int[] tabImgBlue = { R.mipmap.bottom_home02,R.mipmap.bottom_find02,R.mipmap.bottom_baoliao02
+//			,R.mipmap.bottom_data02 , R.mipmap.bottom_my02 };
+//	private int[] tabImgGray = { R.mipmap.bottom_home01,R.mipmap.bottom_find01,R.mipmap.bottom_baoliao01 ,
+//			R.mipmap.bottom_data01, R.mipmap.bottom_my01 };
 	private List<String> tabImgBlue2 = new ArrayList<>();
 	private List<String> tabImgGray2 = new ArrayList<>();
 	private boolean isshow = false;
@@ -229,17 +235,24 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	}
 
 	public void initViewPagerData() {
-//		NewHomeFragment homeFragment = new NewHomeFragment();
-		HomeFragment2 homeFragment = new HomeFragment2();
-		RankFragment rankFragment = new RankFragment();//爆料
-		DataFragment dataFragment = new DataFragment();//数据
-		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();//发现
-		UserFragment userFragment = new UserFragment();//我的
-		fragments.add(homeFragment);
-		fragments.add(rankFragment);
-		fragments.add(gossipPiazzaFragment);
-		fragments.add(dataFragment);
-		fragments.add(userFragment);
+		NewHomeFragment homeFragment = new NewHomeFragment();
+//		HomeFragment2 homeFragment = new HomeFragment2();
+		NewRankFragment rankFragment = new NewRankFragment();
+//		DataFragment dataFragment = new DataFragment();
+//		RankFragment rankFragment = new RankFragment();
+		BidMessageFragment bidMessageFragment = new BidMessageFragment();
+		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();
+		UserFragment userFragment = new UserFragment();
+		fragments.add(homeFragment);//首页
+		fragments.add(gossipPiazzaFragment);//爆料
+		fragments.add(bidMessageFragment);//消息
+		fragments.add(rankFragment);//发现
+		fragments.add(userFragment);//我的
+//		fragments.add(homeFragment);//首页
+//		fragments.add(rankFragment);//发现
+//		fragments.add(gossipPiazzaFragment);//爆料
+//		fragments.add(dataFragment);//数据
+//		fragments.add(userFragment);//我的
 		mPagerAdapter.notifyDataSetChanged();
 
 	}
@@ -317,6 +330,13 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 							// TODO: handle exception
 						}
 							
+					 }
+					 if (index == 2){
+						 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+						 if (TextUtils.isEmpty(userID)){
+							 Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+							 startActivity(intent4);
+						 }
 					 }
 					mViewPager.setCurrentItem(index);
 				}

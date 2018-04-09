@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
@@ -47,6 +48,9 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_biding);
+        View topView = findViewById(R.id.topbar_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow6(this);
         fbid = getIntent().getStringExtra("fbid");
         initView();

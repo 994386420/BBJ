@@ -157,24 +157,6 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     public void initViewPagerData() {
 
         BidHomeFragment bidHomeFragment = new BidHomeFragment();
-        // homeFragment.setHomeFragmentClickListener(new
-        // HomeFragmentClickListener() {
-        // @Override
-        // public void onClick(View v) {
-        // //跳到B端数据
-        // if(v == null){
-        // mViewPager.setCurrentItem(3);
-        // return;
-        // }
-        // switch (v.getId()) {
-        // case R.id.msearchall:
-        // mViewPager.setCurrentItem(1);
-        // break;
-        // default:
-        // break;
-        // }
-        // }
-        // });
 //		SearchFragment searchFragment = new SearchFragment();
         bidFragment = new BidFragment();
         BidAcceptanceFragment bidAcceptanceFragment = new BidAcceptanceFragment();
@@ -278,6 +260,13 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                             // TODO: handle exception
                         }
 
+                    }
+                    if (index == 1 || index == 3){
+                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                        if (TextUtils.isEmpty(userID)){
+                            Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+                            startActivity(intent4);
+                        }
                     }
                     mViewPager.setCurrentItem(index);
                 }

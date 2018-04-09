@@ -4,11 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
     android:orientation="vertical"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.bbk.activity.BidMyWantPLActivity">
+    android:id="@+id/topbar_layout"
+    tools:context="com.bbk.activity.BidMyWantPLActivity"
+    android:background="#b40000">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
     <View
         android:id="@+id/data_head"
@@ -17,7 +25,6 @@
         android:background="#b40000" />
 
     <LinearLayout
-        android:id="@+id/topbar_layout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="#b40000"
@@ -188,4 +195,5 @@
         android:layout_gravity="center_horizontal"
         android:textSize="20dp"
         android:textColor="#fff"/>
+    </LinearLayout>
 </LinearLayout>

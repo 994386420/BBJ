@@ -329,11 +329,12 @@
                 <TextView
                     android:id="@+id/main_about_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_below="@+id/main_about_img"
                     android:layout_centerHorizontal="true"
+                    android:layout_gravity="bottom"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="200dp"
+                    android:layout_marginTop="220dp"
                     android:text="全网比价  省心购"
                     android:textColor="#808080"
                     android:textSize="15sp" />

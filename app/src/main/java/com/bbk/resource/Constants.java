@@ -20,11 +20,11 @@ public interface Constants {
 //	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.188/APIService/";
 
 //	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.174:8080/APIService/";
-	//内网，陈远鹏 更换169
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.159/APIService/";
+	//内网，陈远鹏 更换165
+	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.165/APIService/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:7083/APIService/";
 	//外网
-	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
+//	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:8083/APIService/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:6083/APIService/";
 

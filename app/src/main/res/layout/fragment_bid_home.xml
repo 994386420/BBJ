@@ -60,6 +60,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="center_vertical"
                     android:padding="12dp"
+                    android:visibility="gone"
                     android:src="@mipmap/bj_25"
                     android:scaleType="centerInside" />
             </LinearLayout>

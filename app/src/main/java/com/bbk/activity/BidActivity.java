@@ -113,6 +113,9 @@ public class BidActivity extends BaseActivity implements ResultEvent{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_bid);
+        View topView = findViewById(R.id.topbar_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
             dataFlow = new DataFlow6(this);
             data_head = findViewById(R.id.data_head);
             id = getIntent().getStringExtra("id");

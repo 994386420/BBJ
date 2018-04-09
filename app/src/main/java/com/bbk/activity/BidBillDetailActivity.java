@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.bbk.chat.ui.ChatActivity;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyListView;
 import com.bbk.view.RushBuyCountDownTimerView;
@@ -55,6 +57,9 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_bill_detail);
+        View topView = findViewById(R.id.topbar_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow6(this);
         fbid = getIntent().getStringExtra("fbid");
         initView();
@@ -333,10 +338,16 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 mcontact.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
-                        intent.putExtra("identify","bbk"+userid);
-                        intent.putExtra("type", TIMConversationType.C2C);
-                        startActivity(intent);
+                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                        if (TextUtils.isEmpty(userID)){
+                            Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+                            startActivity(intent4);
+                        }else {
+                            Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
+                            intent.putExtra("identify","bbj"+userid);
+                            intent.putExtra("type", TIMConversationType.C2C);
+                            startActivity(intent);
+                        }
                     }
                 });
             }else {

@@ -53,11 +53,12 @@ public class MyApplication extends Application {
 				public void handleNotification(TIMOfflinePushNotification notification) {
 					if (notification.getGroupReceiveMsgOpt() == TIMGroupReceiveMessageOpt.ReceiveAndNotify){
 						//消息被设置为需要提醒
-						notification.doNotify(getApplicationContext(), R.mipmap.ic_launcher);
+						notification.doNotify(getApplicationContext(), R.mipmap.logo);
 					}
 				}
 			});
 		}
+
 		//解决 Android 7.0 后
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

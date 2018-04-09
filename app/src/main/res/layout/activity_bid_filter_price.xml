@@ -5,8 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fff"
-    tools:context="com.bbk.activity.BidFilterPriceActivity">
+    android:id="@+id/topbar_layout"
+    tools:context="com.bbk.activity.BidFilterPriceActivity"
+    android:background="#b40000">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
     <View
         android:id="@+id/data_head"
         android:layout_width="match_parent"
@@ -14,7 +22,6 @@
         android:background="#b40000" />
 
     <LinearLayout
-        android:id="@+id/topbar_layout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="#b40000"
@@ -58,6 +65,7 @@
                 android:layout_height="45dp"
                 android:layout_gravity="center_vertical"
                 android:padding="12dp"
+                android:visibility="gone"
                 android:scaleType="centerInside"
                 android:src="@mipmap/bj_25" />
         </LinearLayout>
@@ -180,4 +188,5 @@
         android:gravity="center"
         android:textSize="18dp"
         android:padding="8dp"/>
+       </LinearLayout>
 </LinearLayout>

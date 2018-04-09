@@ -6,7 +6,7 @@
 
     android:layout_height="wrap_content"
 
-    android:background="@drawable/bg_user_btn_unable"
+    android:background="@drawable/bg_toast"
 
     android:padding="15dp" >
 

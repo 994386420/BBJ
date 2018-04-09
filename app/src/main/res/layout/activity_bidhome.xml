@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="发现"
+                android:text="发镖"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="爆料"
+                android:text="接镖"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="数据"
+                android:text="提醒"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>

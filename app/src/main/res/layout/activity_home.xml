@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="首页"
+                android:text="@string/home_new_text"
                 android:textColor="#ff7d41"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -51,13 +51,13 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_find01" />
+                android:src="@mipmap/bottom_baoliao01" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="发现"
+                android:text="@string/home_baoliao_text"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -75,13 +75,13 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_baoliao01" />
+                android:src="@mipmap/new_bottom_news_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="爆料"
+                android:text="@string/home_news_text"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -99,13 +99,13 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_data01" />
+                android:src="@mipmap/bottom_find01" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="数据"
+                android:text="@string/home_faxian_text"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -129,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="我的"
+                android:text="@string/home_my_text"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>

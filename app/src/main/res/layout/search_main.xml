@@ -4,10 +4,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:id="@+id/toolbar_layout"
     tools:ignore="ContentDescription" >
 
+    <!--<LinearLayout-->
+       <!---->
+        <!--android:background="#FFFFFF"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"/>-->
     <LinearLayout
-        android:id="@+id/toolbar_layout"
         android:layout_width="match_parent"
         android:layout_height="56.0dp"
         android:background="#FFFFFF"

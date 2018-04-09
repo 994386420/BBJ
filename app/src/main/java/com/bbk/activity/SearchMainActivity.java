@@ -52,6 +52,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.HttpUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.ValidatorUtil;
 
@@ -117,9 +118,9 @@ public class SearchMainActivity extends ActivityGroup implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_main);
-
-		// MyApplication.getInstance().addActivity(this);
-
+		View topView = findViewById(R.id.toolbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		initView();
 		initData();
 	}

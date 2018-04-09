@@ -13,6 +13,7 @@ import com.bbk.adapter.BidListDetailAdapter;
 import com.bbk.adapter.BidMyListDetailAdapter;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyFootView;
 
@@ -45,6 +46,9 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_list_detail);
+        View topView = findViewById(R.id.topbar_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow6(this);
         initVeiw();
         initData();

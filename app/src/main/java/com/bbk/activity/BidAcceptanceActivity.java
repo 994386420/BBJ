@@ -24,6 +24,7 @@ import com.bbk.adapter.BidAcceptanceAdapter;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -60,6 +61,9 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_acceptance);
+        View topView = findViewById(R.id.topbar_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow6(this);
         initView();
         if (getIntent().getStringExtra("type")!= null){

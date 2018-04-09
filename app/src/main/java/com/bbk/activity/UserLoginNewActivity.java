@@ -50,6 +50,7 @@ import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.MD5Util;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -103,9 +104,9 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	/**微信登录变量*/
 	private IWXAPI wxApi;
 	private String type;
-	
+
 	private AlertDialog alertDialog;
-	
+
 	private boolean showPwd = true;
 	private boolean iswebyanzheng =false;
 	private String url = "";
@@ -113,16 +114,16 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	private CheckBox mCheckXieyi;
 	private LinearLayout mLlUserXiyi;//用户协议
 	private RelativeLayout inflater;
+	StringUtil stringUtil;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_login_new);
-//		helper = new MyHelper(this);
-//		db = helper.getWritableDatabase();
 		View topView = findViewById(R.id.login_main);
 		// 实现沉浸式状态栏
 		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
+		stringUtil = new StringUtil();
 		if (null!= getIntent().getStringExtra("url")) {
 			url = getIntent().getStringExtra("url");
 		}
@@ -147,66 +148,15 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		mCheckXieyi = findViewById(R.id.checkbox_xieyi);
 		mLlUserXiyi.setOnClickListener(this);
 		alertDialog = buildDialog(R.layout.dialog_loading_progress);
-		
-		goBackBtn = (ImageButton) findViewById(R.id.topbar_goback);
-		
+		goBackBtn =  findViewById(R.id.topbar_goback);
 		clearName = $(R.id.clean_name);
 		clearPwd = $(R.id.clean_pwd);
-		
-		findPswTv = (TextView) findViewById(R.id.found_psw_tv);
-
-		userNameText = (EditText) findViewById(R.id.user_name);
-		userPasswordText = (EditText) findViewById(R.id.user_password);
-
-		loginBtn = (Button) findViewById(R.id.login_btn);
-
-		registerBtn = (TextView) findViewById(R.id.topbar_text_right);
-
-//		qqLoginLayout = (RelativeLayout) findViewById(R.id.qq_login_layout);
-//		qqLoginLayout.setOnTouchListener(new OnTouchListener() {
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//
-//				ImageView img = (ImageView) qqLoginLayout.getChildAt(0);
-//				int action = event.getAction();
-//				switch (action) {
-//				case MotionEvent.ACTION_DOWN:
-////					img.setImageResource(R.drawable.icon_qq_login_pressed);
-//					break;
-//				case MotionEvent.ACTION_UP:
-//				case MotionEvent.ACTION_CANCEL:
-////					img.setImageResource(R.drawable.icon_qq_login_normal);
-//					break;
-//				default:
-//					break;
-//				}
-//
-//				return false;
-//			}
-//		});
-//		weiboLoginLayout = (RelativeLayout) findViewById(R.id.weibo_login_layout);
-//		weiboLoginLayout.setOnTouchListener(new OnTouchListener() {
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				ImageView img = (ImageView) weiboLoginLayout.getChildAt(0);
-//				int action = event.getAction();
-//				switch (action) {
-//				case MotionEvent.ACTION_DOWN:
-////					img.setImageResource(R.drawable.icon_weibo_login_pressed);
-//					break;
-//				case MotionEvent.ACTION_UP:
-//				case MotionEvent.ACTION_CANCEL:
-////					img.setImageResource(R.drawable.icon_weibo_login_normal);
-//					break;
-//				default:
-//					break;
-//				}
-//
-//				return false;
-//			}
-//		});
-
-		weixinLoginLayout = (RelativeLayout) findViewById(R.id.wx_login_layout);
+		findPswTv = findViewById(R.id.found_psw_tv);
+		userNameText =  findViewById(R.id.user_name);
+		userPasswordText =  findViewById(R.id.user_password);
+		loginBtn =  findViewById(R.id.login_btn);
+		registerBtn = findViewById(R.id.topbar_text_right);
+		weixinLoginLayout =  findViewById(R.id.wx_login_layout);
 		weixinLoginLayout.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -215,11 +165,9 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				int action = event.getAction();
 				switch (action) {
 				case MotionEvent.ACTION_DOWN:
-//					img.setImageResource(R.drawable.icon_wx_login_pressed);
 					break;
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_CANCEL:
-//					img.setImageResource(R.drawable.icon_wx_login_normal);
 					break;
 				default:
 					break;
@@ -259,20 +207,13 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 
 	private void initData() {
 		registerBtn.setOnClickListener(this);
-
 		loginBtn.setOnClickListener(this);
-
 		goBackBtn.setOnClickListener(this);
-
 		userNameText.addTextChangedListener(this);
 		userPasswordText.addTextChangedListener(this);
-
 		clearName.setOnClickListener(this);
 		clearPwd.setOnClickListener(this);
 		findPswTv.setOnClickListener(this);
-
-//		weiboLoginLayout.setOnClickListener(this);
-//		qqLoginLayout.setOnClickListener(this);
 		weixinLoginLayout.setOnClickListener(this);
 	}
 
@@ -509,10 +450,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			intent = new Intent(this, UserRegisterGetCodeActivity.class);
 			startActivityForResult(intent, 1);
 			break;
-			//		case R.id.find_password_btn:
-			//			intent = new Intent(this, UserFindPasswordActivity.class);
-			//			startActivity(intent);
-			//			break;
 		case R.id.topbar_goback:
 			finish();
 			break;
@@ -541,7 +478,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			if (mCheckXieyi.isChecked()){
 				sendAuth();
 			}else {
-				showToast(getResources().getString(R.string.app_wx_text));
+				stringUtil.showToast(this,getResources().getString(R.string.app_wx_text));
 			}
 			break;
 			case R.id.ll_bbj_user_xieyi:
@@ -553,17 +490,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		default:
 			break;
 		}
-	}
-	public void showToast(String tishi) {
-// TODO Auto-generated method stub
-		View layout = inflater.inflate(this, R.layout.toast_layout, null);
-		TextView title = (TextView) layout.findViewById(R.id.toast_title);
-		title.setText(tishi);
-		Toast toast = new Toast(this);
-		toast.setDuration(Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.CENTER, 0, 0);
-		toast.setView(layout);
-		toast.show();
 	}
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
@@ -645,18 +571,9 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				// 调用 User.parse 将JSON串解析成User对象
 				User user = User.parse(response);
 				if (user != null) {
-
 					openID = user.id;
 					nickName = user.screen_name;
 					imgUrl = user.avatar_large;
-
-//					Intent intent = new Intent();
-//					intent.putExtra("openID", openID);
-//					intent.putExtra("nickName", nickName);
-//					intent.putExtra("imgUrl", imgUrl);
-//					setResult(5, intent);
-//					finish();
-
 					SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "imgUrl", imgUrl);
 					userLoginThirdPartyHttp(openID, nickName, imgUrl);
 
@@ -743,8 +660,9 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		}
 
 		if (!wxApi.isWXAppInstalled()) {
-			Toast.makeText(this, "您还未安装微信客户端",  
-					Toast.LENGTH_SHORT).show();
+//			Toast.makeText(this, "您还未安装微信客户端",
+//					Toast.LENGTH_SHORT).show();
+			stringUtil.showToast(this,"您还未安装微信客户端");
 			return;
 		}
 
@@ -827,23 +745,12 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				try {
 					String result = HttpUtil.requestByHttpGet(path,null);
 					JSONObject jsonObject = new JSONObject(result);
-					
 					nickName = jsonObject.getString("nickname");
 					openID = jsonObject.getString("unionid");
 					imgUrl = jsonObject.getString("headimgurl");
 					SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "imgUrl", imgUrl);
-					
-					
-//					Intent intent = new Intent();
-//					intent.putExtra("openID", openID);
-//					intent.putExtra("nickName", nickName);
-//					intent.putExtra("imgUrl", imgUrl);
-//					setResult(5, intent);
-//					finish();
-					
 					Message msg = Message.obtain();
 					msg.what = 4;
-					
 					msg.obj = result;
 					handler.sendMessageDelayed(msg, 500);
 					

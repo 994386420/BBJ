@@ -28,6 +28,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,7 +45,7 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 
-public class SortActivity extends BaseActivity implements ResultEvent,OnItemClickListener{
+public class SortActivity extends BaseActivity implements ResultEvent,OnItemClickListener,OnClickListener{
 	private View rank_head;
 	private ListView mlistView,mlistViewRight;
 	//分类数组
@@ -59,18 +60,22 @@ public class SortActivity extends BaseActivity implements ResultEvent,OnItemClic
 	//分类数组对应的addition
 	private String[] str2 = {"","24","20|21","05|10","17","19","01|07","02|08","03|15","04|09","22|25","16","12|14","23","18"};
 	public static int mPosition;
+	private ImageButton goBackBtn, searchBtn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sort_rank);
-		rank_head = findViewById(R.id.rank_head);
-		rank_head.setVisibility(View.VISIBLE);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
+//		rank_head = findViewById(R.id.rank_head);
+//		rank_head.setVisibility(View.GONE);
 		dataFlow = new DataFlow2(this);
 		mPosition = 0;
 		ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(getWindow(),true);
 		ImmersedStatusbarUtils.MIUISetStatusBarLightMode(this,true);
-		initstateView();
+//		initstateView();
 		initView();
 		initData();
 	}
@@ -83,25 +88,18 @@ public class SortActivity extends BaseActivity implements ResultEvent,OnItemClic
 	}
 
 	private void initView() {
+		goBackBtn =  findViewById(R.id.topbar_goback_btn);
 		listright = new ArrayList<>();
-		mlistView = (ListView) findViewById(R.id.mlistview);
-		mlistViewRight = (ListView) findViewById(R.id.mlistviewright);
-		msearchall = (RelativeLayout)findViewById(R.id.msearchall);
-	
+		mlistView =  findViewById(R.id.mlistview);
+		mlistViewRight =  findViewById(R.id.mlistviewright);
+		msearchall = findViewById(R.id.msearchall);
 		adapter = new ListViewAdapter(str, this);
 		mlistView.setAdapter(adapter);
 		mlistView.setOnItemClickListener(this);
-		msearchall.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Intent intent = new Intent(SortActivity.this, SearchMainActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		
+		msearchall.setOnClickListener(this);
+		goBackBtn.setOnClickListener(this);
 	}
+
 
 	//状态栏高度
 	private int getStatusBarHeight() {  
@@ -132,18 +130,7 @@ public class SortActivity extends BaseActivity implements ResultEvent,OnItemClic
         }  
   
         return sbar;  
-    } 
-	//沉浸式状态栏
-	private void initstateView() {
-		if (Build.VERSION.SDK_INT >=19) {
-			rank_head.setVisibility(View.VISIBLE);
-		}
-		int result = getStatusBarHeight();
-		LayoutParams layoutParams = rank_head.getLayoutParams();
-		layoutParams.height = result;
-		rank_head.setLayoutParams(layoutParams);
-	}
-
+    }
 
 
 	@Override
@@ -221,4 +208,17 @@ public class SortActivity extends BaseActivity implements ResultEvent,OnItemClic
 		}
 	}
 
+	@Override
+	public void onClick(View view) {
+		switch (view.getId()){
+			case R.id.topbar_goback_btn:
+				finish();
+				break;
+			case R.id.msearchall:
+				Intent intent = new Intent(SortActivity.this, SearchMainActivity.class);
+				startActivity(intent);
+				break;
+
+		}
+	}
 }

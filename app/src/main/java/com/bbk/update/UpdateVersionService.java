@@ -102,7 +102,7 @@ public class UpdateVersionService implements ResultEvent {
 
     public void checkForUpdates() {
         this.isShowToast = true;
-        dataFlow.requestData(1, "apiService/getAndroidUpdate", null, this,"检测更新中...");
+        dataFlow.requestData(1, "apiService/getAndroidUpdate", null, this,false);
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
@@ -113,7 +113,8 @@ public class UpdateVersionService implements ResultEvent {
                     try {
                     int versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
                     if (appVersion.getApkCode() > versionCode) {
-                        showUpdateVersionDialog();
+//                        showUpdateVersionDialog();
+                        showUpdateDialog(appVersion);
                     }
 //                    else {
 //                        if(isShowToast){
@@ -171,6 +172,34 @@ public class UpdateVersionService implements ResultEvent {
         }
     }
 
+    public void showUpdateDialog(final AppVersion appVersion) {
+
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+        builder.setTitle("更新提示");
+        builder.setMessage(appVersion.getUpdateMessage().replace("。", "\n"));
+        builder.setPositiveButton("下载", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton) {
+                showDownloadDialog();
+            }
+        });
+        if ("1".equals(appVersion.getForceupdate())){
+            builder.setCancelable(false);
+            builder.setNegativeButton("关闭APP", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    System.exit(0);
+                }
+            });
+        }else {
+            builder.setNegativeButton("忽略", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+        }
+        builder.show();
+    }
     // 更新
     View.OnClickListener mUpdateClick = new View.OnClickListener() {
         @Override

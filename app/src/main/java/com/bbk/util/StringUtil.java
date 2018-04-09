@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 
 public class StringUtil {
-	private static RelativeLayout inflater;
+	private RelativeLayout inflater;
 	public static String getResultNum(String str) {
 		char[] a = str.toCharArray();
 		StringBuffer sb = new StringBuffer();
@@ -83,15 +83,16 @@ public class StringUtil {
 		System.out.println(isPhoneNum("174813925349"));
 	}
 
-//	public static void showToast(Context context,String tishi) {
-//// TODO Auto-generated method stub
-//		View layout = inflater.inflate(context, R.layout.toast_layout, null);
-//		TextView title = (TextView) layout.findViewById(R.id.toast_title);
-//		title.setText(tishi);
-//		Toast toast = new Toast(this);
-//		toast.setDuration(Toast.LENGTH_SHORT);
-//		toast.setGravity(Gravity.CENTER, 0, 0);
-//		toast.setView(layout);
-//		toast.show();
-//	}
+	//提示消息自定义弹窗
+	public void showToast(Context context,String tishi) {
+// TODO Auto-generated method stub
+		View layout = inflater.inflate(context, R.layout.toast_layout, null);
+		TextView title = layout.findViewById(R.id.toast_title);
+		title.setText(tishi);
+		Toast toast = new Toast(context);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.setView(layout);
+		toast.show();
+	}
 }

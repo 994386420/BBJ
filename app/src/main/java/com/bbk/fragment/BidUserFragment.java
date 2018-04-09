@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BidListDetailActivity;
 import com.bbk.activity.BidMyListDetailActivity;
+import com.bbk.activity.BrowseActivity;
+import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.UserAccountActivity;
@@ -40,8 +42,9 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
     private LinearLayout mmybid,mmyfabid;
     private RelativeLayout newpinglun;
     private RelativeLayout mshenhe,mjie,mpl,mcomplete,mbidjie,mbidpl,mbidcomplete;
-    private TextView mshenhenum,mjietext,mpltext,mbidjietext,mbidpltext,mnewmsg,musername;
+    private TextView mshenhenum,mjietext,mpltext,mbidjietext,mbidpltext,mnewmsg,musername,mcollectnum,mfootnum;
     private ImageView muserimg;
+    private LinearLayout  mcollection, mfoot;
     private View data_head;
 
     @Override
@@ -65,31 +68,38 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
         dataFlow = new DataFlow6(getActivity());
         initView();
         initData();
-
         return mView;
     }
     public void initView(){
-        mmybid = (LinearLayout) mView.findViewById(R.id.mmybid);
-        mmyfabid = (LinearLayout) mView.findViewById(R.id.mmyfabid);
-        newpinglun = (RelativeLayout) mView.findViewById(R.id.newpinglun);
-        mshenhe = (RelativeLayout) mView.findViewById(R.id.mshenhe);
-        mjie = (RelativeLayout) mView.findViewById(R.id.mjie);
-        mpl = (RelativeLayout) mView.findViewById(R.id.mpl);
-        mcomplete = (RelativeLayout) mView.findViewById(R.id.mcomplete);
-        mbidjie = (RelativeLayout) mView.findViewById(R.id.mbidjie);
-        mbidpl = (RelativeLayout) mView.findViewById(R.id.mbidpl);
-        mbidcomplete = (RelativeLayout) mView.findViewById(R.id.mbidcomplete);
-        mshenhenum = (TextView) mView.findViewById(R.id.mshenhenum);
-        mjietext = (TextView) mView.findViewById(R.id.mjietext);
-        mpltext = (TextView) mView.findViewById(R.id.mpltext);
-        mbidjietext = (TextView) mView.findViewById(R.id.mbidjietext);
-        mbidpltext = (TextView) mView.findViewById(R.id.mbidpltext);
-        mnewmsg = (TextView) mView.findViewById(R.id.mnewmsg);
-        musername = (TextView) mView.findViewById(R.id.musername);
-        muserimg = (ImageView) mView.findViewById(R.id.muserimg);
+        mcollectnum =  mView.findViewById(R.id.mcollectnum);
+        mfootnum =  mView.findViewById(R.id.mfootnum);
+        String footprint = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "footprint");
+        String collect = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "collect");
+        mcollectnum.setText(collect);
+        mfootnum.setText(footprint);
+        mcollection = mView.findViewById(R.id.mcollection);
+        mfoot = mView.findViewById(R.id.mfoot);
+        mmybid = mView.findViewById(R.id.mmybid);
+        mmyfabid =  mView.findViewById(R.id.mmyfabid);
+        newpinglun = mView.findViewById(R.id.newpinglun);
+        mshenhe =  mView.findViewById(R.id.mshenhe);
+        mjie =  mView.findViewById(R.id.mjie);
+        mpl =  mView.findViewById(R.id.mpl);
+        mcomplete =  mView.findViewById(R.id.mcomplete);
+        mbidjie =  mView.findViewById(R.id.mbidjie);
+        mbidpl =  mView.findViewById(R.id.mbidpl);
+        mbidcomplete =  mView.findViewById(R.id.mbidcomplete);
+        mshenhenum =  mView.findViewById(R.id.mshenhenum);
+        mjietext =  mView.findViewById(R.id.mjietext);
+        mpltext =  mView.findViewById(R.id.mpltext);
+        mbidjietext = mView.findViewById(R.id.mbidjietext);
+        mbidpltext =  mView.findViewById(R.id.mbidpltext);
+        mnewmsg =  mView.findViewById(R.id.mnewmsg);
+        musername =  mView.findViewById(R.id.musername);
+        muserimg =  mView.findViewById(R.id.muserimg);
 
-
-
+        mcollection.setOnClickListener(this);
+        mfoot.setOnClickListener(this);
         mmybid.setOnClickListener(this);
         mmyfabid.setOnClickListener(this);
         mshenhe.setOnClickListener(this);
@@ -119,6 +129,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
     @Override
     public void onClick(View v) {
         Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         switch (v.getId()){
             case R.id.mmyfabid:
                 intent = new Intent(getActivity(), BidListDetailActivity.class);
@@ -171,6 +182,19 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
                 break;
             case R.id.newpinglun:
                 BidHomeActivity.initThree();
+                break;
+            case R.id.mcollection:
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), CollectionActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.mfoot:
+                intent = new Intent(getActivity(), BrowseActivity.class);
+                startActivity(intent);
                 break;
 
         }

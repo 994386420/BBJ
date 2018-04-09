@@ -726,6 +726,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 			String username = object.optString("username");
 			String imgurl = object.optString("imgurl");
 			String str = object.optString("addjinbi");
+			SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "footprint", object.optString("footprint"));
+				SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "collect", object.optString("collect"));
 			signnum = "+"+str;
 			num = Integer.valueOf(jinbi) + Integer.valueOf(str);
 			mjb.setText(jinbi);

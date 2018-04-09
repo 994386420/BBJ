@@ -12,7 +12,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.bbk.view.MyNewScrollView
+
+        <com.bbk.view.RefreshableView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/refresh_root"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <com.bbk.view.MyNewScrollView
         android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -326,7 +333,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="比价神器"
+                    android:text="什么镖局"
                     android:textColor="#333333"
                     android:textSize="18dp" />
 
@@ -582,6 +589,7 @@
 
     </LinearLayout>
     </com.bbk.view.MyNewScrollView>
+        </com.bbk.view.RefreshableView>
         <LinearLayout
             android:id="@+id/ll_tabTopView"
             android:layout_width="match_parent"

@@ -2,6 +2,8 @@ package com.bbk.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -43,6 +45,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyNewScrollView;
 import com.bbk.view.MyScrollListView;
+import com.bbk.view.RefreshableView;
 import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -56,7 +59,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,MyNewScrollView.OnScrollListener {
+public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,MyNewScrollView.OnScrollListener,RefreshableView.RefreshListener {
     private DataFlow6 dataFlow;
     private View mView, mzhuangtai;
     /**
@@ -113,6 +116,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private ViewFlipper mviewflipper;//发标动态轮播
     private List<Map<String, String>> titlelist;
     private List<Map<String, String>> datalist;
+    private RefreshableView mRefreshableView;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -148,16 +152,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             // 实现沉浸式状态栏
             ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
             initView(mView);
-            initData(true);
-            getIndexByType(true,3);
-            initListenerczg();
-            initListener();
+            mViewLoad();
         }
         return mView;
 
     }
     //控件实例化
     private void initView(View v){
+        mRefreshableView =  v.findViewById(R.id.refresh_root);
+        mRefreshableView.setRefreshListener(this);
         mviewflipper = mView.findViewById(R.id.mviewflipper);
         mBanner = v.findViewById(R.id.banner);
         mSearch = v.findViewById(R.id.msearch);
@@ -229,37 +232,25 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         switch (view.getId()){
             case R.id.ll_czg_layout:
                 setView();
-                type = "1";
-                x=1;
-                page=1;
-                getIndexByType(true,3);
+                mIdex("1",3);
                 mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
                 mCzgView.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_bj_layout:
                 setView();
-                type = "2";
-                x=1;
-                page=1;
-                getIndexByType(true,2);
+                mIdex("2",2);
                 mBjText.setTextColor(getResources().getColor(R.color.color_line_top));
                 mBjView.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_bl_layout:
                 setView();
-                type = "3";
-                x=1;
-                page=1;
-                getIndexByType(true,2);
+                mIdex("3",2);
                 mBlText.setTextColor(getResources().getColor(R.color.color_line_top));
                 mBlView.setVisibility(View.VISIBLE);
                 break;
             case R.id.ll_fx_layout:
                 setView();
-                type = "4";
-                x=1;
-                page=1;
-                getIndexByType(true,2);
+                mIdex("4",2);
                 mFxText.setTextColor(getResources().getColor(R.color.color_line_top));
                 mFxView.setVisibility(View.VISIBLE);
                 break;
@@ -313,14 +304,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     mCompareutil.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                            if (TextUtils.isEmpty(userID)){
-                                Intent intent4= new Intent(getActivity(), UserLoginNewActivity.class);
-                                startActivity(intent4);
-                            }else {
                                 Intent intent = new Intent(getActivity(), BidHomeActivity.class);
                                 startActivity(intent);
-                            }
                         }
                     });
                     mQueryhistory.setOnClickListener(new View.OnClickListener() {
@@ -793,5 +778,43 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
         }
 
+    }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    mRefreshableView.finishRefresh();
+                    break;
+            }
+        }
+    };
+    //首页数据下拉刷新
+    @Override
+    public void onRefresh(RefreshableView view) {
+        initData(true);
+        setView();
+        mViewLoad();
+        mIdex("1",3);
+        mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
+        mCzgView.setVisibility(View.VISIBLE);
+        initListenerczg();
+        initListener();
+        handler.sendEmptyMessageDelayed(1, 2000);
+    }
+    //首页视图数据加载
+    private void mViewLoad(){
+        initData(true);
+        getIndexByType(true,3);
+        initListenerczg();
+        initListener();
+    }
+    //超值购等数据
+    private void mIdex(String str,int code){
+        type = str;
+        x=1;
+        page=1;
+        getIndexByType(true,code);
     }
 }

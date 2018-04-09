@@ -61,6 +61,7 @@ import android.widget.Toast;
 import com.baidu.mobstat.StatService;
 import com.bbk.PhotoPicker.utils.ImageCaptureManager;
 import com.bbk.dialog.ActionSheetDialog;
+import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.DataFragment;
@@ -68,7 +69,9 @@ import com.bbk.lubanyasuo.Luban;
 import com.bbk.lubanyasuo.OnCompressListener;
 import com.bbk.resource.Constants;
 import com.bbk.util.DateUtil;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.DialogUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.NumberUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.CircleImageView1;
@@ -110,6 +113,9 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_account);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 		clearMemory();
 		// MyApplication.getInstance().addActivity(this);
@@ -373,16 +379,29 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 			break;
 
 		case R.id.user_sign_out:
-			StatService.onEvent(UserAccountActivity.this, "loginout", "退出登录:个人设置页面");
-			Tencent mTencent = Tencent.createInstance(Constants.QQ_APP_ID, getApplicationContext());
-			mTencent.logout(this);
-			SharedPreferencesUtil.cleanShareData(getApplicationContext(), "userInfor");
-			intent = new Intent();
-			setResult(2, intent);
-			DataFragment.login_remind.setVisibility(View.VISIBLE);
-			//友盟登出
-			MobclickAgent.onProfileSignOff();
-			finish();
+			new AlertDialog(this).builder().setTitle("提示")
+					.setMsg("确认退出帐号？")
+					.setPositiveButton("确认", new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							//友盟登出
+							DialogSingleUtil.show(UserAccountActivity.this,"退出中...");
+							MobclickAgent.onProfileSignOff();
+							StatService.onEvent(UserAccountActivity.this, "loginout", "退出登录:个人设置页面");
+							Tencent mTencent = Tencent.createInstance(Constants.QQ_APP_ID, UserAccountActivity.this);
+							mTencent.logout(getApplicationContext());
+							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "userInfor");
+							Intent intent = new Intent();
+							setResult(2, intent);
+//							DataFragment.login_remind.setVisibility(View.VISIBLE);
+							finish();
+							DialogSingleUtil.dismiss(0);
+						}
+					}).setNegativeButton("取消", new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+				}
+			}).show();
 			break;
 		default:
 			break;

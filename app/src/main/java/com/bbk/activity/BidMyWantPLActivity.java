@@ -95,6 +95,9 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_my_want_pl);
+        View topView = findViewById(R.id.topbar_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         id = getIntent().getStringExtra("id");
 //        id = "2";
         dataFlow = new DataFlow6(this);

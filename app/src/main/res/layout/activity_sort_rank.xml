@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F9FC"
+	android:id="@+id/topbar_layout"
     android:orientation="vertical" >
 			<View 
         android:id="@+id/rank_head"
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         />
     <RelativeLayout
-        android:id="@+id/topbar_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
@@ -28,7 +28,7 @@
             android:padding="12dp"
             android:scaleType="centerInside"
             android:src="@mipmap/icon_arrow_left_blue"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/topbar_title"
@@ -77,11 +77,11 @@
 			    	android:text="输入你想比价的商品"
 			    	android:textSize="12dp"/>
             </RelativeLayout>
-    		<LinearLayout  
+    		<LinearLayout
         		android:layout_width="match_parent"  
-        		android:layout_height="match_parent"  
-        		android:background="#fbfbfb"  
-        		android:orientation="horizontal" >  
+        		android:layout_height="match_parent"
+        		android:background="#fbfbfb"
+        		android:orientation="horizontal" >
   
         		<ListView  
             		android:id="@+id/mlistview"  
