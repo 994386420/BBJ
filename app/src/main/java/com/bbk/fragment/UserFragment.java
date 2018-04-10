@@ -47,6 +47,8 @@ import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.andview.refreshview.XRefreshView;
 import com.bbk.activity.AboutUsActivity;
+import com.bbk.activity.BidListDetailActivity;
+import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.ContactActivity;
@@ -91,12 +93,12 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	private RelativeLayout helpLayout,newpinglun;
 
 	public TextView isLoginTv;
-	private TextView hasNewTv,sign,mjb,mcollectnum,mfootnum,mnewmsg;
+	private TextView hasNewTv,sign,mjb,mcollectnum,mfootnum,mnewmsg,mJlzText;
 	private View user_head;
 	private ImageView mjbimg;
 	private LinearLayout mbackground;
 	private LinearLayout mjingbi, mcollection, mfoot, mphonechongzhi, mshopcart, morderlist, mlogisticsquery, mycomment,
-			mygossip, mfeedback, mcallservices, mabout, msign,mtaobaologin;
+			mygossip, mfeedback, mcallservices, mabout, msign,mtaobaologin,mFabiaoLayout,mJiebiaoLayout;
 	private boolean issign = true;
 	private DataFlow dataFlow;
 	private String token;
@@ -137,7 +139,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	}
 
 	public void initView() {
-		
+		mFabiaoLayout = mView.findViewById(R.id.ll_my_fabiao);
+		mJiebiaoLayout = mView.findViewById(R.id.ll_my_jiebiao);
+		mJlzText = mView.findViewById(R.id.jlz_text);
 		anim_mask_layout = createAnimLayout(); 
 		newpinglun = (RelativeLayout) mView.findViewById(R.id.newpinglun);
 		xrefresh = (XRefreshView) mView.findViewById(R.id.xrefresh);
@@ -176,6 +180,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		mcallservices = (LinearLayout) mView.findViewById(R.id.mcallservices);
 		mjbimg = (ImageView) mView.findViewById(R.id.mjbimg);
 //		mjbimg1 = (ImageView) mView.findViewById(R.id.mjbimg1);
+		mFabiaoLayout.setOnClickListener(this);
+		mJiebiaoLayout.setOnClickListener(this);
 		mjingbi.setOnClickListener(this);
 		mfoot.setOnClickListener(this);
 		mphonechongzhi.setOnClickListener(this);
@@ -500,6 +506,24 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 			}
 			
 			break;
+			case R.id.ll_my_fabiao:
+				if (TextUtils.isEmpty(userID)) {
+					intent = new Intent(getActivity(), UserLoginNewActivity.class);
+					startActivityForResult(intent, 1);
+				} else {
+					intent = new Intent(getActivity(), BidListDetailActivity.class);
+					startActivity(intent);
+				}
+				break;
+			case R.id.ll_my_jiebiao:
+				if (TextUtils.isEmpty(userID)) {
+					intent = new Intent(getActivity(), UserLoginNewActivity.class);
+					startActivityForResult(intent, 1);
+				} else {
+					intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+					startActivity(intent);
+				}
+				break;
 
 		default:
 			break;
@@ -726,8 +750,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 			String username = object.optString("username");
 			String imgurl = object.optString("imgurl");
 			String str = object.optString("addjinbi");
+			String exp = object.optString("exp");//鲸力值
 			SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "footprint", object.optString("footprint"));
-				SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "collect", object.optString("collect"));
+			SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "collect", object.optString("collect"));
 			signnum = "+"+str;
 			num = Integer.valueOf(jinbi) + Integer.valueOf(str);
 			mjb.setText(jinbi);
@@ -735,6 +760,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 			mfootnum.setText(footprint);
 			mnewmsg.setText(messages);
 			user_name.setText(username);
+			mJlzText.setText("鲸力值"+exp);
 			CircleImageView1.getImg(getActivity(), imgurl, user_img);
 //				Glide.with(getActivity())
 //						.load(imgurl).asBitmap().centerCrop()

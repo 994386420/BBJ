@@ -21,6 +21,7 @@ import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyFootView;
 
@@ -68,6 +69,9 @@ public class GossipActivity extends BaseActivity implements OnClickListener,Resu
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gossip);
+		View topView = findViewById(R.id.layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 		initVeiw();
 		initData();

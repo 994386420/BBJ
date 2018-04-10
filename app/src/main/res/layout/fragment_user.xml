@@ -32,14 +32,33 @@
 			    android:src="@mipmap/logo_01"
 			    android:layout_marginLeft="15dp"/>
 
-            <TextView
-                android:id="@+id/user_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/user_img"
-                android:text="请登录" />
+                android:layout_toRightOf="@id/user_img">
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="请登录"
+                    android:textSize="12dp"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:id="@+id/jlz_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="鲸力值"
+                    android:textSize="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_user_jlz"/>
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/msign"
@@ -291,7 +310,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="8dp"
                 android:background="#f3f3f3" />
 
             <LinearLayout
@@ -303,6 +322,7 @@
                 android:paddingBottom="15dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="10dp"
+                android:visibility="gone"
                 android:paddingTop="15dp" >
 
                 <ImageView
@@ -337,6 +357,7 @@
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
                 android:paddingLeft="15dp"
+                android:visibility="gone"
                 android:paddingRight="10dp"
                 android:paddingTop="15dp" >
 
@@ -359,12 +380,9 @@
                     android:src="@mipmap/enter01" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="#f3f3f3" />
+
             <LinearLayout
-                android:id="@+id/mtaobaologin"
+                android:id="@+id/ll_my_fabiao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -377,34 +395,60 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@mipmap/taobao_img" />
+                    android:src="@mipmap/fabiao_user" />
 
                 <TextView
-                    android:id="@+id/mtaobaotext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginLeft="5dp"
-                    android:text="淘宝授权登录" />
-                    <TextView
-                        android:id="@+id/mtaobaouser"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginLeft="10dp"
-                        android:src="@mipmap/enter01" />
+                    android:layout_weight="1"
+                    android:text="我的发镖" />
 
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/enter01" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="1dp"
                 android:background="#f3f3f3" />
+            <LinearLayout
+                android:id="@+id/ll_my_jiebiao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="15dp" >
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/jiebiao_user" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="我的接镖" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/enter01" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
             <LinearLayout
                 android:id="@+id/mycomment"
                 android:layout_width="match_parent"
@@ -468,6 +512,47 @@
                     android:layout_height="15dp"
                     android:layout_marginLeft="10dp"
                     android:src="@mipmap/enter01" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="#f3f3f3" />
+            <LinearLayout
+                android:id="@+id/mtaobaologin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="15dp" >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/taobao_img" />
+
+                <TextView
+                    android:id="@+id/mtaobaotext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:text="淘宝授权登录" />
+                <TextView
+                    android:id="@+id/mtaobaouser"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/enter01" />
+
             </LinearLayout>
 
             <View

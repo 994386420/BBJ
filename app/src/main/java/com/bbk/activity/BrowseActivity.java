@@ -19,6 +19,7 @@ import com.bbk.adapter.CollectionWenzhangAdapter;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyFootView;
 import com.bbk.view.MyListView;
@@ -72,6 +73,9 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_blank);
+		View topView = findViewById(R.id.parentview);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 		
 		initView();

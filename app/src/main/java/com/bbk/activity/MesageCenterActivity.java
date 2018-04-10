@@ -19,6 +19,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
 import com.bbk.util.EventIdIntentUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyFootView;
 
@@ -81,6 +82,9 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mesage_center);
+		View topView = findViewById(R.id.parentview);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 				| WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		if (getIntent().getStringExtra("type") != null) {

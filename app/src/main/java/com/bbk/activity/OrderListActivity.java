@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.bbk.adapter.OrderListAdapter;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyListView;
 
@@ -54,6 +55,9 @@ public class OrderListActivity extends BaseActivity implements ResultEvent, OnCl
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order_list);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 		initView();
 		initData();

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.bbk.adapter.DraftAdapter;
 import com.bbk.adapter.GossipAdapter;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -55,6 +56,9 @@ public class MyDraftActivity extends BaseActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_draft);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		initView();
 		initData();
 	}

@@ -41,6 +41,7 @@
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="180dp"
+            android:background="@mipmap/banner_zhanwei"
             app:indicator_height="6dp"
             app:indicator_width="6dp"
             app:indicator_margin="2.5dp"
@@ -132,6 +133,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:adjustViewBounds="true"
+                android:background="@mipmap/logo_01"
                 android:layout_gravity="center_horizontal"
 
                 />
@@ -159,6 +161,7 @@
                 android:id="@+id/img2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/logo_01"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -187,6 +190,7 @@
                 android:id="@+id/img3"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/logo_01"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -215,6 +219,7 @@
                 android:id="@+id/img4"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/logo_01"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -243,6 +248,7 @@
                 android:id="@+id/img5"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/logo_01"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -333,7 +339,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="什么镖局"
+                    android:text="比价神器"
                     android:textColor="#333333"
                     android:textSize="18dp" />
 
@@ -369,6 +375,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
+                android:background="@mipmap/logo_01"
                 android:src="@mipmap/lsyg" />
 
             <LinearLayout
@@ -426,7 +433,12 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical">
-
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:visibility="gone"
+                        android:background="@color/white"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -594,8 +606,7 @@
             android:id="@+id/ll_tabTopView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"/>
+            android:orientation="vertical" />
     </FrameLayout>
 
 </LinearLayout>

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.bbk.adapter.ShopCartGridAdapter;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.ImmersedStatusbarUtils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -37,6 +38,9 @@ public class ShopCartActivity extends BaseActivity implements ResultEvent{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shop_cart);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 		initView();
 		initData();

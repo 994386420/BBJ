@@ -113,4 +113,7 @@
     <color name="color8">#B6B6B6</color>
     <color name="gray">#dedede</color>
     <color name="transparent2">#58000000</color>
+
+    <color name="jlz_color">#B26A15</color>
+    <color name="white_transtion">#20ffffff</color>
 </resources>

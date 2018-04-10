@@ -272,6 +272,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_marginLeft="30dp"
+                        android:gravity="center"
                         android:layout_marginRight="30dp"
                         android:layout_weight="1" >
 
@@ -283,11 +284,20 @@
                             android:scaleType="centerCrop"
                             android:src="@mipmap/denglu_weixin"
                             android:visibility="gone"/>
+
+                        <ImageView
+                            android:id="@+id/image_logo"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/enter_img" />
                         <TextView
+                            android:layout_toRightOf="@+id/image_logo"
                             android:layout_centerInParent="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="微信登陆比比鲸"
+                            android:layout_marginLeft="5dp"
                             android:textColor="@color/white"
                             android:textSize="15dp"/>
                     </RelativeLayout>

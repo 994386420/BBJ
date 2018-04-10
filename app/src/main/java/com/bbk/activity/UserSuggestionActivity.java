@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 
 public class UserSuggestionActivity extends BaseActivity implements OnClickListener,ResultEvent {
@@ -31,6 +32,9 @@ public class UserSuggestionActivity extends BaseActivity implements OnClickListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_suggestion);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 
 //		MyApplication.getInstance().addActivity(this);

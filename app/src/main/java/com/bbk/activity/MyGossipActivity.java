@@ -37,6 +37,7 @@ import com.bbk.lubanyasuo.Luban;
 import com.bbk.lubanyasuo.OnCompressListener;
 import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -94,6 +95,9 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_gossip);
+        View topView = findViewById(R.id.topbar_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow(this);
         initVeiw();
         initData();

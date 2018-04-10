@@ -2,6 +2,7 @@ package com.bbk.activity;
 
 
 import com.bbk.resource.Constants;
+import com.bbk.util.ImmersedStatusbarUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +31,9 @@ public class AboutUsActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about_us);
-		
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		initView();
 	}
 

@@ -12,6 +12,8 @@ import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +64,7 @@ public class NewCzgAdapter extends BaseAdapter{
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        try {
         Map<String,String> map = list.get(position);
         String img = map.get("imgurl");
         String title = map.get("title");
@@ -69,16 +72,27 @@ public class NewCzgAdapter extends BaseAdapter{
 //        String bidprice = map.get("bidprice");
         String dianpu = map.get("dianpu");
         String youhui = map.get("youhui");
+        String mbidprice = map.get("hislowprice");
         viewHolder.item_title.setText(title);
-//        viewHolder.mbidprice.setText("接镖价  "+bidprice);
-        viewHolder.mprice.setText(price);
+            try {
+            if (!mbidprice.isEmpty()){
+                viewHolder.mbidprice.setText("最低价 "+mbidprice);
+            }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        viewHolder.mprice.setText("¥"+price);
         viewHolder.dianpu.setText(dianpu);
         viewHolder.youhui.setText(youhui);
         Glide.with(context)
-                .load(img)
-                .priority(Priority.HIGH)
-                .placeholder(R.mipmap.zw_img_300)
-                .into(viewHolder.item_img);
+                    .load(img)
+                    .priority(Priority.HIGH)
+                    .placeholder(R.mipmap.zw_img_300)
+                    .into(viewHolder.item_img);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         return convertView;
     }
     class ViewHolder{

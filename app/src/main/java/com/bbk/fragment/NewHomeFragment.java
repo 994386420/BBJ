@@ -39,6 +39,7 @@ import com.bbk.adapter.NewFxAdapter;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
+import com.bbk.util.DensityUtils;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -117,6 +118,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private List<Map<String, String>> titlelist;
     private List<Map<String, String>> datalist;
     private RefreshableView mRefreshableView;
+    private View view;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -159,6 +161,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //控件实例化
     private void initView(View v){
+        view = v.findViewById(R.id.view);
         mRefreshableView =  v.findViewById(R.id.refresh_root);
         mRefreshableView.setRefreshListener(this);
         mviewflipper = mView.findViewById(R.id.mviewflipper);
@@ -304,8 +307,14 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     mCompareutil.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+//                            if (TextUtils.isEmpty(userID)){
+//                                Intent intent4= new Intent(getActivity(), UserLoginNewActivity.class);
+//                                startActivity(intent4);
+//                            }else {
                                 Intent intent = new Intent(getActivity(), BidHomeActivity.class);
                                 startActivity(intent);
+//                            }
                         }
                     });
                     mQueryhistory.setOnClickListener(new View.OnClickListener() {
@@ -495,6 +504,9 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             map.put("dianpu",object.optString("dianpu"));
             map.put("youhui",object.optString("youhui"));
             map.put("url",object.optString("url"));
+            if (!object.optString("hislowprice").isEmpty()){
+                map.put("hislowprice",object.optString("hislowprice"));
+            }
             czglist.add(map);
         }
     }
@@ -675,12 +687,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             if (mTopView.getParent() != mTopTabViewLayout) {
                 mTabViewLayout.removeView(mTopView);
                 mTopTabViewLayout.addView(mTopView);
+                view.setVisibility(View.VISIBLE);
             }
-
         } else {
             if (mTopView.getParent() != mTabViewLayout) {
                 mTopTabViewLayout.removeView(mTopView);
                 mTabViewLayout.addView(mTopView);
+                view.setVisibility(View.GONE);
             }
 
         }

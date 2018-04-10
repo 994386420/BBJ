@@ -75,6 +75,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12dp"
+                                android:visibility="gone"
                                 android:text=""/>
                         </LinearLayout>
                         <TextView
