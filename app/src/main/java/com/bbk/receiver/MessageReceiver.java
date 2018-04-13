@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.bbk.activity.BidHomeActivity;
 import com.bbk.util.EventIdIntentUtil;
+import com.bbk.util.SharedPreferencesUtil;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
@@ -115,48 +117,16 @@ public class MessageReceiver extends XGPushBaseReceiver {
 					// key1为前台配置的key
 					if (!obj.isNull("eventId")) {
 						String eventId = obj.getString("eventId");
-						Log.e("====eventId========", eventId+"");
 						Log.d(LogTag, "get custom value:" + eventId);
+						if (eventId.equals("108")){
+								Log.i("eventId======",eventId+"========");
+								SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
+								Intent intent = new Intent(context, BidHomeActivity.class);
+							    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+								context.startActivity(intent);
+						}
 						EventIdIntentUtil.EventIdIntent(context, obj);
-//						switch (eventId) {
-//						case "1":
-//							Log.e("====进入方法了========", eventId+"进入方法了");
-//							Intent intent = new Intent(context,PromoteChaoZhiGou.class);
-//							intent.setAction(Intent.ACTION_MAIN);
-//							intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//							context.startActivity(intent);
-//							
-//							break;
-//						case "2":
-//							Intent intent1 = new Intent(context,PromoteChaoBaoKuan.class);
-//							context.startActivity(intent1);
-//							break;
-//						case "3":
-//							Intent intent2 = new Intent(context,PromoteChaoChaoChao.class);
-//							context.startActivity(intent2);
-//							break;
-//						case "4":
-//							Intent intent3 = new Intent(context,PromoteMeiWeiShengXian.class);
-//							context.startActivity(intent3);
-//							break;
-//						case "5":
-//							String htmlUrl = obj.getString("htmlUrl");
-//							Intent intent4 = new Intent(context,WebViewXGActivity.class);
-//							intent4.putExtra("htmlUrl", htmlUrl);
-//							context.startActivity(intent4);
-//							break;
-//						case "6":
-//							String groupRowkey=obj.getString("groupRowKey");
-//							Intent intent5 = new Intent(context,DetailsMainActivity22.class);
-//							intent5.putExtra("groupRowKey", groupRowkey);
-//							context.startActivity(intent5);
-//							break;
-//
-//
-//						}
-						
 					}
-					// ...
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

@@ -99,7 +99,6 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
         tlist.add(mtext2);
         vlist.add(henggang1);
         vlist.add(henggang2);
-
         meverydayjb.setOnClickListener(this);
         mmorejb.setOnClickListener(this);
     }

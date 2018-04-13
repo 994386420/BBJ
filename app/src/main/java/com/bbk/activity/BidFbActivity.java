@@ -7,22 +7,25 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +43,6 @@ import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
-import com.bbk.util.StringUtil;
 import com.bbk.view.MyGridView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -70,84 +72,97 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+/**
+ *
+ * 发镖_01_填写
+ */
 
-public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
-
+public class BidFbActivity extends BaseActivity implements ResultEvent{
+    private DataFlow6 dataFlow;
+    private View data_head;
+    private EditText mname,mcount,mprice,mdetail;
     private MyGridView mgridview;
+    private TextView mcommit;
+    private RadioGroup mradioGroup;
+    private Toast toast;
     private MyGossipGirdAdapter adapter;
     private List<String> list;
     private List<String> litlelist;
     private ImageCaptureManager captureManager;
     final List<File> list1 = new ArrayList<>();
     private int length = 0;
-    private Toast toast;
-    private DataFlow6 dataFlow;
-    private String id;
-    private MaterialRatingBar mratingbar;
-    private TextView mprice,mtitle,msend;
-    private ImageView mimg;
-    private EditText mpltext;
-    private String biduserid;
+    private ScrollView mscrollview;
+    private ImageView magrement;
+    private boolean isagrement = true;
     private ImageView topbar_goback_btn;
-    private String pinglun = "0";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bid_my_want_pl);
+        setContentView(R.layout.fragment_bid);
         View topView = findViewById(R.id.topbar_layout);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-        id = getIntent().getStringExtra("id");
-//        id = "2";
         dataFlow = new DataFlow6(this);
+
         initView();
-        initData();
     }
+
 
     private void initView() {
         list = new ArrayList<>();
         litlelist = new ArrayList<>();
         list.add("add");
-        topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
+        topbar_goback_btn = (ImageView)findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                getActivity().finish();
+//                SharedPreferencesUtil.putSharedData(BidFbActivity.this, "Bidhomeactivty", "type", "0");
+                Intent intent = new Intent(BidFbActivity.this, BidHomeActivity.class);
+                setResult(1,intent);
                 finish();
             }
         });
-        mimg = (ImageView) findViewById(R.id.mimg);
-        mprice = (TextView) findViewById(R.id.mprice);
-        mtitle = (TextView) findViewById(R.id.mtitle);
-        mpltext = (EditText) findViewById(R.id.mpltext);
-        msend = (TextView) findViewById(R.id.msend);
-        msend.setOnClickListener(new View.OnClickListener() {
+        magrement = (ImageView) findViewById(R.id.magrement);
+        magrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("1".equals(pinglun)){
-                    loadData();
+                if (isagrement){
+                    isagrement = false;
+                    magrement.setImageResource(R.mipmap.bj_09_01);
+                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
+                    mcommit.setClickable(false);
                 }else {
-                    ToastUtil("为了保护你的消费权益，请于24小时后进行评论。");
+                    isagrement = true;
+                    magrement.setImageResource(R.mipmap.bj_09_02);
+                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
+                    mcommit.setClickable(true);
                 }
-
             }
         });
-        mratingbar = (MaterialRatingBar) findViewById(R.id.mratingbar);
-        mratingbar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
+        mscrollview = (ScrollView)findViewById(R.id.mscrollview);
+        mname = (EditText)findViewById(R.id.mname);
+        mcount = (EditText)findViewById(R.id.mcount);
+        mprice = (EditText)findViewById(R.id.mprice);
+        mdetail = (EditText)findViewById(R.id.mdetail);
+        mgridview = findViewById(R.id.mgridview);
+        mcommit = (TextView)findViewById(R.id.mcommit);
+        mradioGroup = (RadioGroup)findViewById(R.id.mradioGroup);
+        mradioGroup.check(R.id.mbtn1);
+        mcommit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-                Log.e("------------","当前的评价等级："+rating);
+            public void onClick(View v) {
+                loadData();
             }
         });
-        mgridview = (MyGridView)findViewById(R.id.mgridview);
         adapter = new MyGossipGirdAdapter(this, list);
         mgridview.setAdapter(adapter);
         mgridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 if ("add".equals(list.get(position))) {
-                    ActionSheetDialog dialog = new ActionSheetDialog(BidMyWantPLActivity.this).builder().setCancelable(true)
+                    ActionSheetDialog dialog = new ActionSheetDialog(BidFbActivity.this).builder().setCancelable(true)
                             .setCanceledOnTouchOutside(true).addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
                                     new ActionSheetDialog.OnSheetItemClickListener() {
                                         @Override
@@ -165,7 +180,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
                                                     .setPhotoCount(4 - list.size())
                                                     .setGridColumnCount(3)
                                                     .setShowGif(true)
-                                                    .start(BidMyWantPLActivity.this);
+                                                    .start(BidFbActivity.this);
 
 
                                         }
@@ -179,21 +194,36 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
                     if ("add".equals(list.get(litlelist.size() - 1))) {
                         litlelist.remove(litlelist.size() - 1);
                     }
-                    Intent Intent = new Intent(BidMyWantPLActivity.this, DesPictureActivity.class);
+                    Intent Intent = new Intent(BidFbActivity.this, DesPictureActivity.class);
                     Intent.putStringArrayListExtra("list", (ArrayList<String>) litlelist);
                     Intent.putExtra("position", position);
                     startActivity(Intent);
                 }
             }
         });
+
     }
-    private void initData() {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("fbid",id);
-        dataFlow.requestData(1, "bid/queryFinishBid", paramsMap, this,true);
+    public void photo() {
+        captureManager = new ImageCaptureManager(BidFbActivity.this);
+        try {
+            Intent intent = captureManager.dispatchTakePictureIntent();
+            startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ActivityNotFoundException e) {
+            // TODO No Activity Found to handle Intent
+            e.printStackTrace();
+        }
     }
     private void loadData() {
-            DialogSingleUtil.show(this);
+        if (TextUtils.isEmpty(mname.getText().toString())){
+            ToastUtil("镖品名称不能为空");
+        }else if (TextUtils.isEmpty(mprice.getText().toString())){
+            ToastUtil("镖品单价不能为空");
+        }else if(TextUtils.isEmpty(mcount.getText().toString())){
+            ToastUtil("数量不能为空");
+        }else {
+            DialogSingleUtil.show(BidFbActivity.this);
             if ("add".equals(list.get(list.size() - 1))) {
                 length = list.size() - 1;
             } else {
@@ -207,17 +237,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
                 list1.clear();
                 downloadimg();
             }
-    }
-    public void photo() {
-        captureManager = new ImageCaptureManager(this);
-        try {
-            Intent intent = captureManager.dispatchTakePictureIntent();
-            startActivityForResult(intent, ImageCaptureManager.REQUEST_TAKE_PHOTO);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ActivityNotFoundException e) {
-            // TODO No Activity Found to handle Intent
-            e.printStackTrace();
+
         }
     }
 
@@ -243,7 +263,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
     }
     private void lubanyasuo(File file,final int i){
         if (file.exists()) {
-            Luban.with(this).load(file).setFilename(i+"JPEG_")
+            Luban.with(BidFbActivity.this).load(file).setFilename(i+"JPEG_")
                     .setCompressListener(new OnCompressListener() {
 
                         @Override
@@ -293,26 +313,71 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
         if (toast!= null){
             toast.cancel();
         }
-        toast = Toast.makeText(this,s,Toast.LENGTH_LONG);
+        toast = Toast.makeText(BidFbActivity.this,s,Toast.LENGTH_LONG);
         toast.show();
     }
+    private int getStatusBarHeight() {
+        Class<?> c = null;
 
+        Object obj = null;
 
+        Field field = null;
+
+        int x = 0, sbar = 0;
+
+        try {
+
+            c = Class.forName("com.android.internal.R$dimen");
+
+            obj = c.newInstance();
+
+            field = c.getField("status_bar_height");
+
+            x = Integer.parseInt(field.get(obj).toString());
+
+            sbar = this.getResources().getDimensionPixelSize(x);
+
+        } catch (Exception e1) {
+
+            e1.printStackTrace();
+
+        }
+
+        return sbar;
+    }
+
+    private void initstateView() {
+        if (Build.VERSION.SDK_INT >= 19) {
+            data_head.setVisibility(View.VISIBLE);
+        }
+        int result = getStatusBarHeight();
+        ViewGroup.LayoutParams layoutParams = data_head.getLayoutParams();
+        layoutParams.height = result;
+        data_head.setLayoutParams(layoutParams);
+        ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(this.getWindow(),true);
+    }
     private void initsend() {
         final HashMap<String, String> params = new HashMap<String, String>();
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-        Log.i("===========",biduserid+"==="+id);
-        if (userID.equals(biduserid)){
-            params.put("role", "1");
+        RadioButton radioButton = (RadioButton)findViewById(mradioGroup.getCheckedRadioButtonId());
+        String mins = radioButton.getText().toString();
+        if (mins.contains("24")){
+            mins = "24";
+        }else if (mins.contains("48")){
+            mins = "48";
         }else {
-            params.put("role", "-1");
+            mins = "72";
         }
-        params.put("type", "3");
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");
+        Log.i("发镖信息openid",openID+"==========");
         params.put("userid", userID);
-        params.put("title", mpltext.getText().toString());
-        params.put("fbid", id);
-        float numStars1 = mratingbar.getRating();
-        params.put("number", numStars1+"");
+        params.put("type", "1");
+        params.put("mins", mins);
+        params.put("title",mname.getText().toString());
+        params.put("price",mprice.getText().toString());
+        params.put("number",mcount.getText().toString());
+        params.put("extra",mdetail.getText().toString());
+        params.put("openid",openID);
 
         new Thread(new Runnable() {
 
@@ -320,7 +385,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
             public void run() {
                 String post;
                 try {
-                    String actionUrl = Constants.MAIN_BASE_URL_MOBILE+"bid/insertPinglun";
+                    String actionUrl = Constants.MAIN_BASE_URL_MOBILE+"bid/insertFabiao";
                     post = post(actionUrl, params, list1);
                     Message msg = Message.obtain();
                     msg.what = 3;
@@ -360,15 +425,25 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
                 String post = msg.obj.toString();
                 try {
                     JSONObject object = new JSONObject(post);
-                    Log.i("======",object+"=======");
+                    Log.i("发镖信息",object+"==========");
                     if (object.optInt("status") <= 0) {
-                        StringUtil.showToast(BidMyWantPLActivity.this, "发布失败");
+                        Toast.makeText(BidFbActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
                     } else {
-                        StringUtil.showToast(BidMyWantPLActivity.this,"发布成功");
-                        Intent intent = new Intent(BidMyWantPLActivity.this,BidMyPlActivity.class);
-                        intent.putExtra("id",id);
+                        Toast.makeText(BidFbActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                        mname.setText("");
+                        mprice.setText("");
+                        mcount.setText("");
+                        mdetail.setText("");
+                        mradioGroup.check(R.id.mbtn1);
+                        list.clear();
+                        list.add("add");
+                        litlelist.clear();
+                        list1.clear();
+                        adapter.notifyDataSetChanged();
+                        mscrollview.fullScroll(ScrollView.FOCUS_UP);
+                        Intent intent = new Intent(BidFbActivity.this, BidListDetailActivity.class);
+                        intent.putExtra("status", "1");
                         startActivity(intent);
-                        finish();
                     }
                     DialogSingleUtil.dismiss(0);
                 } catch (JSONException e) {
@@ -486,7 +561,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
         }
         return "-1";
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void IntentResult(int requestCode, int resultCode, Intent data) {
         try {
             if (resultCode == -1) {
 
@@ -494,7 +569,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
                     case ImageCaptureManager.REQUEST_TAKE_PHOTO:
                         try {
                             if (captureManager == null) {
-                                captureManager = new ImageCaptureManager(this);
+                                captureManager = new ImageCaptureManager(BidFbActivity.this);
                             }
                             String path = captureManager.getCurrentPhotoPath();
                             list.add(list.size() - 1, path);
@@ -529,21 +604,13 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
             adapter.notifyDataSetChanged();
         }
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult(requestCode, resultCode, data);
+    }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        try {
-            JSONObject object = new JSONObject(content);
-            String title = object.optString("title");
-            String img = object.optString("img");
-            String bidprice = object.optString("bidprice");
-            biduserid = object.optString("userid");
-            pinglun = object.optString("pinglun");
-            mtitle.setText(title);
-            mprice.setText("￥"+bidprice);
-            Glide.with(this).load(img).placeholder(R.mipmap.zw_img_300).into(mimg);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
 }

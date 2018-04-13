@@ -51,7 +51,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
     private TIMFriendshipManager timFriendshipManager;
     private String tag = "ConversationAdapter=====";
     private Context context;
-
+    List<String> users;
     /**
      * Constructor
      *
@@ -60,10 +60,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ConversationAdapter(Context context, int resource, List<Conversation> objects) {
+    public ConversationAdapter(Context context, int resource, List<Conversation> objects,List<String> users) {
         super(context, resource, objects);
         resourceId = resource;
         this.context = context;
+        this.users = users;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -83,9 +84,9 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             view.setTag(viewHolder);
         }
         final Conversation data = getItem(position);
-        viewHolder.tvName.setText(data.getName());
-        viewHolder.avatar.setImageResource(R.mipmap.logo);
-//        getFriendsProfile(data,position);
+//        viewHolder.tvName.setText(data.getName());
+//        viewHolder.avatar.setImageResource(R.mipmap.logo);
+        getFriendsProfile();
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();
@@ -115,12 +116,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         public TextView unread;
 
     }
-    private void getFriendsProfile(Conversation data,int postion){
-        data = getItem(postion);
-        //待获取用户资料的好友列表
-        List<String> users = new ArrayList<String>();
-        users.add(data.getIdentify());
-        Log.e(tag, "getUsersProfile " + " id"+data.getIdentify()+users);
+    private void getFriendsProfile(){
+//        data = getItem(postion);
+//        //待获取用户资料的好友列表
+//        List<String> users = new ArrayList<String>();
+//        users.add(data.getIdentify());
+//        Log.e(tag, "getUsersProfile " + " id"+data.getIdentify()+users);
         //获取好友资料
         timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
             @Override
@@ -134,8 +135,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             public void onSuccess(List<TIMUserProfile> result){
                 Log.e(tag, "getUsersProfile succ");
                 for(TIMUserProfile res : result){
-                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
-                            + " remark: " + res.getRemark()+"imageUrl :"+res.getFaceUrl());
+//                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
+//                            + " remark: " + res.getRemark()+"imageUrl :"+res.getFaceUrl());
                     viewHolder.tvName.setText(res.getNickName());
 //                    viewHolder.avatar.setImageResource(data.getAvatar());
                     Glide.with(context)

@@ -71,7 +71,7 @@ public class ConversationFragment extends Fragment implements ConversationView,F
         if (view == null){
             view = inflater.inflate(R.layout.fragment_conversation, container, false);
             listView = (ListView) view.findViewById(R.id.list);
-            adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList);
+//            adapter =new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

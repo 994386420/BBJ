@@ -3,6 +3,7 @@ package com.bbk.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,7 +60,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     private List<String> groupList;
     private FriendshipConversation friendshipConversation;
     private GroupManageConversation groupManageConversation;
-
+    List<String> users = new ArrayList<String>();
 
     public BidChatFragment() {
         // Required empty public constructor
@@ -72,7 +73,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         if (view == null){
             view = inflater.inflate(R.layout.fragment_bid_chat, container, false);
             listView = (ListView) view.findViewById(R.id.list);
-            adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList);
+            adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList,users);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -119,6 +120,12 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
                 case Group:
                     this.conversationList.add(new NomalConversation(item));
                     groupList.add(item.getPeer());
+                    for (int i= 0;i<this.conversationList.size();i++){
+                        Log.i("聊天信息=++++++++==",this.conversationList.get(i).getIdentify()+"===========");
+                        //待获取用户资料的好友列表
+                        users.add(this.conversationList.get(i).getIdentify());
+                    }
+                    Log.e("==========", "getUsersProfile " + users);
                     break;
             }
         }

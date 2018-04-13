@@ -37,7 +37,7 @@ public class WebViewXGActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview_xg_activity);
 //		MyApplication.getInstance().addActivity(this);
-		
+
 		htmlUrl=getIntent().getStringExtra("htmlUrl")+"?client=android";
 		initView();
 		initData();	

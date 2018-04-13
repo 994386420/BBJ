@@ -26,6 +26,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -43,6 +44,7 @@ import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.adapter.CouponListAdapter;
 import com.bbk.adapter.HomeTitleGridAdapter;
+import com.bbk.adapter.ListViewAdapter;
 import com.bbk.dao.SearchHistoryDao;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
@@ -84,41 +86,20 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
     private LinearLayout monclickimg;
 
     private ImageView unfold_img;
-//
-//	@Override
-//	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//		super.onActivityCreated(savedInstanceState);
-//	}
-//
-//	@Override
-//	public void onCreate(@Nullable Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//	}
-//
-//	@Override
-//	@Nullable
-//	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-//			@Nullable Bundle savedInstanceState) {
-//		dataFlow = new DataFlow(getActivity());
-//		if (null == mView) {
-//			mView = inflater.inflate(R.layout.fragment_coupon, null);
-//			search_head = mView.findViewById(R.id.search_head);
-//			initstateView();
-//			initView();
-//			initData();
-//		}
-//		return mView;
-//	}
+    private ImageButton goBackBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_coupon);
         dataFlow = new DataFlow(this);
-        search_head = findViewById(R.id.search_head);
-        ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(getWindow(),true);
-        ImmersedStatusbarUtils.MIUISetStatusBarLightMode(this,true);
-        initstateView();
+        View topView = findViewById(R.id.search_head);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
+//        search_head = findViewById(R.id.);
+//        ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(getWindow(),true);
+//        ImmersedStatusbarUtils.MIUISetStatusBarLightMode(this,true);
+//        initstateView();
         initView();
         initData();
     }
@@ -126,7 +107,8 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
     public void initView() {
         list = new ArrayList<>();
         titlelist = new ArrayList<>();
-
+        goBackBtn =  findViewById(R.id.topbar_goback_btn);
+        goBackBtn.setOnClickListener(this);
         monclickimg = (LinearLayout) findViewById(R.id.monclickimg);
         monclickimg.setOnClickListener(new OnClickListener() {
 
@@ -266,7 +248,9 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            case R.id.topbar_goback_btn:
+                finish();
+                break;
             default:
                 break;
         }
@@ -417,15 +401,15 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
         return sbar;
     }
 
-    private void initstateView() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            search_head.setVisibility(View.VISIBLE);
-        }
-        int result = getStatusBarHeight();
-        LayoutParams layoutParams = search_head.getLayoutParams();
-        layoutParams.height = result;
-        search_head.setLayoutParams(layoutParams);
-    }
+//    private void initstateView() {
+//        if (Build.VERSION.SDK_INT >= 19) {
+//            search_head.setVisibility(View.VISIBLE);
+//        }
+//        int result = getStatusBarHeight();
+//        LayoutParams layoutParams = search_head.getLayoutParams();
+//        layoutParams.height = result;
+//        search_head.setLayoutParams(layoutParams);
+//    }
     @Override
     public void onResume() {
         super.onResume();

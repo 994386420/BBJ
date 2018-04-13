@@ -3,6 +3,7 @@ package com.bbk.util;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.CouponActivity;
 import com.bbk.activity.DetailsMainActivity22;
@@ -22,6 +23,7 @@ import com.bbk.activity.WelcomeActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 public class EventIdIntentUtil {
@@ -133,6 +135,12 @@ public class EventIdIntentUtil {
 		case "107":
 			HomeActivity.initThree();
 			break;
+			case "108":
+//				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "2");
+//				Intent intent = new Intent(context, BidHomeActivity.class);
+//				context.startActivity(intent);
+
+				break;
 		case "666":
 			String url = jo.optString("url");
 			Intent intent666 = new Intent(context, WebViewActivity_copy.class);

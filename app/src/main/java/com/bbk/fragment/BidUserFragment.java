@@ -18,6 +18,7 @@ import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.MyApplication;
+import com.bbk.activity.MyCoinActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.UserAccountActivity;
 import com.bbk.activity.UserLoginNewActivity;
@@ -133,47 +134,43 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         switch (v.getId()){
             case R.id.mmyfabid:
-                intent = new Intent(getActivity(), BidListDetailActivity.class);
-                startActivity(intent);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BidListDetailActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.mshenhe:
-                intent = new Intent(getActivity(), BidListDetailActivity.class);
-                intent.putExtra("status","1");
-                startActivity(intent);
+                mJieBiaoDetail(userID,"1");
                 break;
             case R.id.mjie:
-                intent = new Intent(getActivity(), BidListDetailActivity.class);
-                intent.putExtra("status","2");
-                startActivity(intent);
+                mJieBiaoDetail(userID,"2");
                 break;
             case R.id.mpl:
-                intent = new Intent(getActivity(), BidListDetailActivity.class);
-                intent.putExtra("status","3");
-                startActivity(intent);
+                mJieBiaoDetail(userID,"3");
                 break;
             case R.id.mcomplete:
-                intent = new Intent(getActivity(), BidListDetailActivity.class);
-                intent.putExtra("status","4");
-                startActivity(intent);
+                mJieBiaoDetail(userID,"4");
                 break;
             case R.id.mmybid:
-                intent = new Intent(getActivity(), BidMyListDetailActivity.class);
-                startActivity(intent);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.mbidjie:
-                intent = new Intent(getActivity(), BidMyListDetailActivity.class);
-                intent.putExtra("status","1");
-                startActivity(intent);
+                mDetail(userID,"1");
                 break;
             case R.id.mbidpl:
-                intent = new Intent(getActivity(), BidMyListDetailActivity.class);
-                intent.putExtra("status","2");
-                startActivity(intent);
+                mDetail(userID,"2");
                 break;
             case R.id.mbidcomplete:
-                intent = new Intent(getActivity(), BidMyListDetailActivity.class);
-                intent.putExtra("status","3");
-                startActivity(intent);
+                mDetail(userID,"3");
                 break;
             case R.id.muserimg:
                 islogin();
@@ -198,6 +195,28 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
                 startActivity(intent);
                 break;
 
+        }
+    }
+    private void mJieBiaoDetail(String userid ,String value){
+        Intent intent;
+        if (TextUtils.isEmpty(userid)) {
+            intent = new Intent(getActivity(), UserLoginNewActivity.class);
+            startActivityForResult(intent, 1);
+        } else {
+            intent = new Intent(getActivity(), BidListDetailActivity.class);
+            intent.putExtra("status",value);
+            startActivity(intent);
+        }
+    }
+    private void mDetail(String userid ,String value){
+        Intent intent;
+        if (TextUtils.isEmpty(userid)) {
+            intent = new Intent(getActivity(), UserLoginNewActivity.class);
+            startActivityForResult(intent, 1);
+        } else {
+            intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+            intent.putExtra("status",value);
+            startActivity(intent);
         }
     }
     public void islogin(){

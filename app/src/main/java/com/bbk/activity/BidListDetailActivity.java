@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 发镖_02_列表
+ * 我的接镖
  */
 public class BidListDetailActivity extends BaseActivity implements ResultEvent {
 

@@ -11,6 +11,13 @@
         android:thicknessRatio="40"
         android:useLevel="false">
 
+        <!--<gradient-->
+            <!--android:centerColor="#1C1C1C"-->
+            <!--android:centerY="0.01"-->
+            <!--android:endColor="#1C1C1C"-->
+            <!--android:startColor="#20ffffff"-->
+            <!--android:type="sweep"-->
+            <!--android:useLevel="false" />-->
         <gradient
             android:centerColor="#1C1C1C"
             android:centerY="0.01"

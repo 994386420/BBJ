@@ -36,6 +36,7 @@ import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
 import com.sina.weibo.sdk.api.share.WeiboShareSDK;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -195,32 +196,12 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
             ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
             int select = BaseTools.getPixelsFromDp(this, 35);
             int not = BaseTools.getPixelsFromDp(this, 20);
-            // 如果不是在首页则显示图片加文字，在首页就只显示图片
-            // if (index!=0) {
-            // mtext.setVisibility(View.VISIBLE);
-            // android.widget.LinearLayout.LayoutParams params =
-            // (android.widget.LinearLayout.LayoutParams)
-            // mimg.getLayoutParams();
-            // params.height = not;
-            // params.topMargin = BaseTools.getPixelsFromDp(this, 5);
-            // mimg.setLayoutParams(params);
-
-            // }else{
-            //// mtext.setVisibility(View.GONE);
-            // android.widget.LinearLayout.LayoutParams params =
-            // (android.widget.LinearLayout.LayoutParams)
-            // mimg.getLayoutParams();
-            // params.height = select;
-            // params.topMargin = BaseTools.getPixelsFromDp(this, 0);
-            // mimg.setLayoutParams(params);
-            // }
             if (isshow){
                 Glide.with(this).load(tabImgBlue2.get(index)).into(nextIV);
             }else {
                 nextIV.setImageResource(tabImgBlue[index]);
             }
             TextView nextTV = (TextView) nextLayout.getChildAt(1);
-//			ColorStateList mainColor = (ColorStateList) resource.getColorStateList(R.color.main1_color);
             nextTV.setTextColor(Color.parseColor(ctcolor));
 
             currentIndex = index;
@@ -241,7 +222,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     public void clickTab() {
         for (int i = 0; i < TAB_SIZE; i++) {
             final int index = i;
-            LinearLayout tabLayout = (LinearLayout) tabParentLayout.getChildAt(i);
+            final LinearLayout tabLayout = (LinearLayout) tabParentLayout.getChildAt(i);
             tabLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -261,10 +242,14 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                         }
 
                     }
+                    if (index == 1 ){
+                        Intent intent= new Intent(BidHomeActivity.this, BidFbActivity.class);
+                        startActivityForResult(intent,1);
+                    }
                     if (index == 1 || index == 3){
                         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                         if (TextUtils.isEmpty(userID)){
-                            Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+                            Intent intent4= new Intent(BidHomeActivity.this, UserLoginNewActivity.class);
                             startActivity(intent4);
                         }
                     }
@@ -288,5 +273,20 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         bidFragment.IntentResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                mViewPager.setCurrentItem(0);
+                break;
+        }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String type = SharedPreferencesUtil.getSharedData(getApplicationContext(), "Bidhomeactivty", "type");
+        if (!TextUtils.isEmpty(type)) {
+            SharedPreferencesUtil.cleanShareData(getApplicationContext(), "Bidhomeactivty");
+            mViewPager.setCurrentItem(Integer.valueOf(type));
+        }
+    }
+
 }

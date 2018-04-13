@@ -39,6 +39,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -643,9 +644,9 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
                 try {
                     JSONObject object = new JSONObject(post);
                     if (object.optInt("status") <= 0) {
-                        Toast.makeText(MyGossipActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(MyGossipActivity.this,object.optString("errmsg").toString());
                     } else {
-                        Toast.makeText(MyGossipActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(MyGossipActivity.this,"发布成功");
                         Intent intent = new Intent(MyGossipActivity.this, GossipActivity.class);
                         intent.putExtra("type", "1");
                         startActivity(intent);

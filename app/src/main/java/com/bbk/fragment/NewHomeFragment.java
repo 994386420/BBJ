@@ -651,7 +651,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private void setListView() {
             page++;
             x=2;
-            getIndexByType(true,2);
+            getIndexByType(false,2);
     };
 
 

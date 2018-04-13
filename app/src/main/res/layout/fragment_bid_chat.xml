@@ -6,12 +6,17 @@
     android:orientation="vertical"
     tools:context="com.bbk.chat.ui.ConversationFragment">
 
-    <ListView
-        android:id="@id/list"
+
+    <com.bbk.view.MyXRefreshView
+        android:id="@+id/xrefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ListView
+            android:id="@id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </ListView>
-
+        </ListView>
+    </com.bbk.view.MyXRefreshView>
 
 </LinearLayout>

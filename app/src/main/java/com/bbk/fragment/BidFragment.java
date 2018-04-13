@@ -137,6 +137,7 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
         litlelist = new ArrayList<>();
         list.add("add");
         topbar_goback_btn = (ImageView)mView.findViewById(R.id.topbar_goback_btn);
+        topbar_goback_btn.setVisibility(View.GONE);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +145,7 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
             }
         });
         magrement = (ImageView) mView.findViewById(R.id.magrement);
+        magrement.setVisibility(View.GONE);
         magrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +163,7 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
             }
         });
         mscrollview = (ScrollView)mView.findViewById(R.id.mscrollview);
+        mscrollview.setVisibility(View.GONE);
         mname = (EditText)mView.findViewById(R.id.mname);
         mcount = (EditText)mView.findViewById(R.id.mcount);
         mprice = (EditText)mView.findViewById(R.id.mprice);

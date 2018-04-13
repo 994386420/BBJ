@@ -234,34 +234,6 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 				Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
 			}
 		});
-//		if (TextUtils.isEmpty(userId)) {
-//			XGPushManager.registerPush(context, userId,new XGIOperateCallback() {
-//				@Override
-//				public void onSuccess(Object data, int flag) {
-//					Log.d("TPush", "注册成功，设备token为：" + data);
-//					SharedPreferencesUtil.putSharedData(WelcomeActivity.this,
-//							"deviceToken", "token", data.toString());
-//				}
-//				@Override
-//				public void onFail(Object data, int errCode, String msg) {
-//					Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-//				}
-//			});
-//		}
-//			Log.e("====123=====","123");
-		// 2.36（不包括）之前的版本需要调用以下2行代码
-//		Intent service = new Intent(context, XGPushService.class);
-//		context.startService(service);
-
-		// 其它常用的API：
-		// 绑定账号（别名）注册：registerPush(context,account)或registerPush(context,account,
-		// XGIOperateCallback)，其中account为APP账号，可以为任意字符串（qq、openid或任意第三方），业务方一定要注意终端与后台保持一致。
-		// 取消绑定账号（别名）：registerPush(context,"*")，即account="*"为取消绑定，解绑后，该针对该账号的推送将失效
-		// 反注册（不再接收消息）：unregisterPush(context)
-		// 设置标签：setTag(context, tagName)
-		// 删除标签：deleteTag(context, tagName)
-
-		// MyApplication.getInstance().addActivity(this);
 		//外部应用打开APP传递参数
 		Intent intent = getIntent();
 		String scheme = intent.getScheme();
@@ -350,8 +322,9 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 			if (customContent != null && customContent.length() != 0) {
 				try {
 					JSONObject obj = new JSONObject(customContent);
-					xgMessage.setStartType(obj.getString("startType"));
-					xgMessage.setUrl(obj.getString("url"));
+//					Log.i("=============start",obj+"===========");
+//					xgMessage.setStartType(obj.getString("startType"));
+//					xgMessage.setUrl(obj.getString("url"));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -438,8 +411,6 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 					"seelike", seelike);
 		}
 		String hotKeyword = SharedPreferencesUtil.getSharedData(getApplicationContext(), "hotKeyword", "hotKeyword");
-//		String categoryType = SharedPreferencesUtil.getSharedData(getApplicationContext(), "categoryType", "categoryType");
-//		String pageInit = SharedPreferencesUtil.getSharedData(getApplicationContext(), "pageInit", "pageInit");
 		if (hotKeyword == null || "".equals(hotKeyword)) {
 			hotKeyword = "[{\"name\":\"iphone se\",\"productType\":\"\"},{\"name\":\"衬衫\",\"productType\":\"240201\"},{\"name\":\"电炖锅\",\"productType\":\"030313\"},{\"name\":\"情侣睡衣\",\"productType\":\"240313\"},{\"name\":\"空调\",\"productType\":\"030102\"},{\"name\":\"风扇\",\"productType\":\"030201\"},{\"name\":\"T恤\",\"productType\":\"160209\"},{\"name\":\"奶粉\",\"productType\":\"1701\"}]";
 			SharedPreferencesUtil.putSharedData(getApplicationContext(),
@@ -462,54 +433,6 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 				}
 			}
 		}
-//		if (categoryType == null || "".equals(categoryType)) {
-//			categoryType = "[{\"name\":\"服饰\",\"chid\":[{\"hasdata\":0,\"name\":\"女装\","
-//					+ "\"number\":\"2401\"},{\"hasdata\":0,\"name\":\"男装\",\"number\":\"2402\"},"
-//					+ "{\"hasdata\":0,\"name\":\"内衣\",\"number\":\"2403\"},{\"hasdata\":0,\"name\":\"服饰配件\",\"number\":\"2404\"}]},{\"name\":\"鞋靴\\/箱包\",\"chid\":[{\"hasdata\":0,\"name\":\"流行男鞋\",\"number\":\"2001\"},{\"hasdata\":0,\"name\":\"时尚女鞋\",\"number\":\"2002\"},{\"hasdata\":0,\"name\":\"潮流女包\",\"number\":\"2101\"},{\"hasdata\":0,\"name\":\"精品男包\",\"number\":\"2102\"},{\"hasdata\":0,\"name\":\"功能箱包\",\"number\":\"2103\"},{\"hasdata\":0,\"name\":\"礼品\",\"number\":\"2104\"},{\"hasdata\":0,\"name\":\"奢侈品\",\"number\":\"2105\"},{\"hasdata\":0,\"name\":\"婚庆\",\"number\":\"2106\"}]},{\"name\":\"美妆\\/个护\",\"chid\":[{\"hasdata\":0,\"name\":\"香水彩妆\",\"number\":\"0501\"},{\"hasdata\":0,\"name\":\"洗发护发\",\"number\":\"0502\"},{\"hasdata\":0,\"name\":\"面部护肤\",\"number\":\"0503\"},{\"hasdata\":0,\"name\":\"身体护肤\",\"number\":\"0504\"},{\"hasdata\":0,\"name\":\"口腔护理\",\"number\":\"1005\"},{\"hasdata\":0,\"name\":\"女性护理\",\"number\":\"1006\"}]},{\"name\":\"母婴\",\"chid\":[{\"hasdata\":0,\"name\":\"奶粉\",\"number\":\"1701\"},{\"hasdata\":0,\"name\":\"营养辅食\",\"number\":\"1702\"},{\"hasdata\":0,\"name\":\"尿裤湿巾\",\"number\":\"1703\"},{\"hasdata\":0,\"name\":\"喂养用品\",\"number\":\"1704\"},{\"hasdata\":0,\"name\":\"洗护用品\",\"number\":\"1705\"},{\"hasdata\":0,\"name\":\"童车童床\",\"number\":\"1706\"},{\"hasdata\":0,\"name\":\"寝居服饰\",\"number\":\"1707\"},{\"hasdata\":0,\"name\":\"妈妈专区\",\"number\":\"1708\"},{\"hasdata\":0,\"name\":\"童装童鞋\",\"number\":\"1709\"},{\"hasdata\":0,\"name\":\"安全座椅\",\"number\":\"1710\"}]},{\"name\":\"玩具\",\"chid\":[{\"hasdata\":0,\"name\":\"适用年龄\",\"number\":\"1901\"},{\"hasdata\":0,\"name\":\"遥控\\/电动\",\"number\":\"1902\"},{\"hasdata\":0,\"name\":\"毛绒布艺\",\"number\":\"1903\"},{\"hasdata\":0,\"name\":\"娃娃玩具\",\"number\":\"1904\"},{\"hasdata\":0,\"name\":\"模型玩具\",\"number\":\"1905\"},{\"hasdata\":0,\"name\":\"健身玩具\",\"number\":\"1906\"},{\"hasdata\":0,\"name\":\"动漫玩具\",\"number\":\"1907\"},{\"hasdata\":0,\"name\":\"益智玩具\",\"number\":\"1908\"},{\"hasdata\":0,\"name\":\"积木拼插\",\"number\":\"1909\"},{\"hasdata\":0,\"name\":\"DIY玩具\",\"number\":\"1910\"},{\"hasdata\":0,\"name\":\"创意减压\",\"number\":\"1911\"},{\"hasdata\":0,\"name\":\"乐器相关\",\"number\":\"1912\"}]},{\"name\":\"手机\\/数码\",\"chid\":[{\"hasdata\":0,\"name\":\"手机配件\",\"number\":\"0101\"},{\"hasdata\":0,\"name\":\"手机通讯\",\"number\":\"0103\"},{\"hasdata\":0,\"name\":\"数码配件\",\"number\":\"0704\"},{\"hasdata\":0,\"name\":\"时尚影音\",\"number\":\"0705\"},{\"hasdata\":0,\"name\":\"智能设备\",\"number\":\"0706\"},{\"hasdata\":0,\"name\":\"电子教育\",\"number\":\"0707\"}]},{\"name\":\"电脑\\/办公\",\"chid\":[{\"hasdata\":0,\"name\":\"电脑整机\",\"number\":\"0201\"},{\"hasdata\":0,\"name\":\"电脑配件\",\"number\":\"0202\"},{\"hasdata\":0,\"name\":\"外设产品\",\"number\":\"0203\"},{\"hasdata\":0,\"name\":\"网络产品\",\"number\":\"0204\"},{\"hasdata\":0,\"name\":\"服务产品\",\"number\":\"0207\"},{\"hasdata\":0,\"name\":\"办公打印\",\"number\":\"0805\"},{\"hasdata\":0,\"name\":\"办公文仪\",\"number\":\"0806\"}]},{\"name\":\"家电\",\"chid\":[{\"hasdata\":0,\"name\":\"大家电\",\"number\":\"0301\"},{\"hasdata\":0,\"name\":\"生活电器\",\"number\":\"0302\"},{\"hasdata\":0,\"name\":\"厨房电器\",\"number\":\"0303\"},{\"hasdata\":0,\"name\":\"个护健康\",\"number\":\"0304\"},{\"hasdata\":0,\"name\":\"五金家装\",\"number\":\"0305\"}]},{\"name\":\"家具\\/厨具\",\"chid\":[{\"hasdata\":0,\"name\":\"卧室家具\",\"number\":\"1301\"},{\"hasdata\":0,\"name\":\"客厅家具\",\"number\":\"1302\"},{\"hasdata\":0,\"name\":\"餐厅家具\",\"number\":\"1303\"},{\"hasdata\":0,\"name\":\"书房家具\",\"number\":\"1304\"},{\"hasdata\":0,\"name\":\"储物家具\",\"number\":\"1305\"},{\"hasdata\":0,\"name\":\"阳台\\/户外\",\"number\":\"1306\"},{\"hasdata\":0,\"name\":\"商业办公\",\"number\":\"1307\"},{\"hasdata\":0,\"name\":\"儿童家具\",\"number\":\"1309\"},{\"hasdata\":0,\"name\":\"烹饪锅具\",\"number\":\"1501\"},{\"hasdata\":0,\"name\":\"刀剪菜板\",\"number\":\"1502\"},{\"hasdata\":0,\"name\":\"厨房配件\",\"number\":\"1503\"},{\"hasdata\":0,\"name\":\"水具酒具\",\"number\":\"1504\"},{\"hasdata\":0,\"name\":\"餐具\",\"number\":\"1505\"},{\"hasdata\":0,\"name\":\"茶具\\/咖啡具\",\"number\":\"1506\"}]},{\"name\":\"酒水\\/食品\",\"chid\":[{\"hasdata\":0,\"name\":\"酒类\",\"number\":\"0401\"},{\"hasdata\":0,\"name\":\"饮料\",\"number\":\"0409\"},{\"hasdata\":0,\"name\":\"茶叶\",\"number\":\"0902\"},{\"hasdata\":0,\"name\":\"进口食品\",\"number\":\"0903\"},{\"hasdata\":0,\"name\":\"休闲食品\",\"number\":\"0904\"},{\"hasdata\":0,\"name\":\"粮油调味\",\"number\":\"0905\"},{\"hasdata\":0,\"name\":\"饮料冲调\",\"number\":\"0906\"},{\"hasdata\":0,\"name\":\"地方特产\",\"number\":\"0907\"},{\"hasdata\":0,\"name\":\"生鲜食品\",\"number\":\"0908\"}]},{\"name\":\"钟表\\/珠宝\",\"chid\":[{\"hasdata\":0,\"name\":\"瑞士名表\",\"number\":\"2201\"},{\"hasdata\":0,\"name\":\"欧美大牌\",\"number\":\"2202\"},{\"hasdata\":0,\"name\":\"经典国产\",\"number\":\"2203\"},{\"hasdata\":0,\"name\":\"日韩港台\",\"number\":\"2204\"},{\"hasdata\":0,\"name\":\"时尚手表\",\"number\":\"2206\"},{\"hasdata\":0,\"name\":\"钟类\",\"number\":\"2207\"},{\"hasdata\":0,\"name\":\"时尚饰品\",\"number\":\"2501\"},{\"hasdata\":0,\"name\":\"纯金K金饰品\",\"number\":\"2502\"},{\"hasdata\":0,\"name\":\"金银投资\",\"number\":\"2503\"},{\"hasdata\":0,\"name\":\"银饰\",\"number\":\"2504\"},{\"hasdata\":0,\"name\":\"钻石\",\"number\":\"2505\"},{\"hasdata\":0,\"name\":\"翡翠玉石\",\"number\":\"2506\"},{\"hasdata\":0,\"name\":\"水晶玛瑙\",\"number\":\"2507\"},{\"hasdata\":0,\"name\":\"彩宝\",\"number\":\"2508\"},{\"hasdata\":0,\"name\":\"铂金\",\"number\":\"2509\"},{\"hasdata\":0,\"name\":\"天然木饰\",\"number\":\"2510\"},{\"hasdata\":0,\"name\":\"珍珠\",\"number\":\"2511\"}]},{\"name\":\"户外\",\"chid\":[{\"hasdata\":0,\"name\":\"运动鞋包\",\"number\":\"1601\"},{\"hasdata\":0,\"name\":\"运动服饰\",\"number\":\"1602\"},{\"hasdata\":0,\"name\":\"骑行运动\",\"number\":\"1603\"},{\"hasdata\":0,\"name\":\"垂钓用品\",\"number\":\"1604\"},{\"hasdata\":0,\"name\":\"游泳用品\",\"number\":\"1605\"},{\"hasdata\":0,\"name\":\"户外鞋服\",\"number\":\"1606\"},{\"hasdata\":0,\"name\":\"户外装备\",\"number\":\"1607\"},{\"hasdata\":0,\"name\":\"健身训练\",\"number\":\"1608\"},{\"hasdata\":0,\"name\":\"纤体瑜伽\",\"number\":\"1609\"},{\"hasdata\":0,\"name\":\"体育用品\",\"number\":\"1610\"}]},{\"name\":\"家装\\/建材\",\"chid\":[{\"hasdata\":0,\"name\":\"家纺\",\"number\":\"1201\"},{\"hasdata\":0,\"name\":\"灯具\",\"number\":\"1202\"},{\"hasdata\":0,\"name\":\"生活日用\",\"number\":\"1203\"},{\"hasdata\":0,\"name\":\"家装软饰\",\"number\":\"1204\"},{\"hasdata\":0,\"name\":\"清洁用品\",\"number\":\"1205\"},{\"hasdata\":0,\"name\":\"宠物生活\",\"number\":\"1206\"},{\"hasdata\":0,\"name\":\"灯饰照明\",\"number\":\"1401\"},{\"hasdata\":0,\"name\":\"厨房卫浴\",\"number\":\"1402\"},{\"hasdata\":0,\"name\":\"五金工具\",\"number\":\"1403\"},{\"hasdata\":0,\"name\":\"电工电料\",\"number\":\"1404\"},{\"hasdata\":0,\"name\":\"墙地面材料\",\"number\":\"1405\"},{\"hasdata\":0,\"name\":\"装饰材料\",\"number\":\"1406\"},{\"hasdata\":0,\"name\":\"装修服务\",\"number\":\"1407\"}]},{\"name\":\"保健\",\"chid\":[{\"hasdata\":0,\"name\":\"营养健康\",\"number\":\"2301\"},{\"hasdata\":0,\"name\":\"营养成分\",\"number\":\"2302\"},{\"hasdata\":0,\"name\":\"传统滋补\",\"number\":\"2303\"},{\"hasdata\":0,\"name\":\"成人用品\",\"number\":\"2304\"},{\"hasdata\":0,\"name\":\"保健器械\",\"number\":\"2305\"},{\"hasdata\":0,\"name\":\"急救卫生\",\"number\":\"2306\"},{\"hasdata\":0,\"name\":\"中医药品\",\"number\":\"2307\"}]},{\"name\":\"汽车\",\"chid\":[{\"hasdata\":0,\"name\":\"维修保养\",\"number\":\"1801\"},{\"hasdata\":0,\"name\":\"车载电器\",\"number\":\"1802\"},{\"hasdata\":0,\"name\":\"美容清洗\",\"number\":\"1803\"},{\"hasdata\":0,\"name\":\"汽车装饰\",\"number\":\"1804\"},{\"hasdata\":0,\"name\":\"安全自驾\",\"number\":\"1805\"}]}]";
-//			SharedPreferencesUtil.putSharedData(getApplicationContext(),
-//					"categoryType", "categoryType", categoryType);
-//		} else {
-//			Map<String, String> paramsMap = new HashMap<String, String>();
-//			String cType = HttpUtil.getHttp(paramsMap,
-//					Constants.MAIN_BASE_URL_MOBILE + "apiService/getTypeTree",
-//					null);
-//			if (cType != null && !"".equals(cType)) {
-//				try {
-//					JSONObject jo = new JSONObject(cType);
-//					cType = jo.getString("content");
-//					if (!"[]".equals(cType)) {
-//						SharedPreferencesUtil.putSharedData(
-//								getApplicationContext(), "categoryType",
-//								"categoryType", cType);
-//					}
-//				} catch (JSONException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		if (pageInit == null || "".equals(pageInit)) {
-//			pageInit = "{\"img2\":\"http://www.bibijing.com/images_dt/app/banner2.jpg\",\"img1\":\"http://www.bibijing.com/images_dt/app/banner1.jpg\",\"keyword\":\"裤子\"}";
-//			SharedPreferencesUtil.putSharedData(getApplicationContext(),
-//					"pageInit", "pageInit", pageInit);
-//		} else {
-//			Map<String, String> paramsMap = new HashMap<String, String>();
-//			String pInit = HttpUtil.getHttp(paramsMap,
-//					Constants.MAIN_BASE_URL_MOBILE + "apiService/getAppFirstPageInit",
-//					null);
-//			if (pInit != null && !"".equals(pInit)) {
-//				try {
-//					JSONObject jo = new JSONObject(pInit);
-//					pInit = jo.getString("content");
-//					if (!"{}".equals(pInit)) {
-//						SharedPreferencesUtil.putSharedData(
-//								getApplicationContext(), "pageInit",
-//								"pageInit", pInit);
-//					}
-//				} catch (JSONException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
 	}
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
