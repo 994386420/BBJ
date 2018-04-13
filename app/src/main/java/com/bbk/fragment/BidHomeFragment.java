@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.andview.refreshview.XRefreshView;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.Decoration.TwoDecoration2;
+import com.bbk.activity.BidAcceptanceActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
@@ -51,6 +53,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     private XRefreshView mrefresh;
     private boolean isclear = true;
     private ImageView topbar_goback_btn;
+    private LinearLayout ll_search_layout;
 
 
     @Override
@@ -83,6 +86,8 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     }
 
     public void initView(){
+        ll_search_layout = mView.findViewById(R.id.search_layout);
+        ll_search_layout.setOnClickListener(this);
        list = new ArrayList<>();
         topbar_goback_btn = (ImageView)mView.findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +137,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
         paramsMap.put("userid",userID);
         dataFlow.requestData(1, "bid/queryIndex", paramsMap, this,true);
     }
+
     private void refreshAndloda() {
         mrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
 
@@ -213,7 +219,12 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     }
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.search_layout:
+                Intent intent = new Intent(getActivity(), BidAcceptanceActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
     @Override
     public void lazyLoad() {

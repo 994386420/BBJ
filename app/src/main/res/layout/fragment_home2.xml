@@ -158,19 +158,22 @@
             
         </android.support.v7.widget.RecyclerView>
     </com.bbk.view.MyXRefresh>
+
 	<RelativeLayout
-		android:layout_below="@id/mtitlelist"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentTop="true">
+
 		<ImageView
 			android:id="@+id/huodongimg"
 			android:layout_width="65dp"
 			android:layout_height="65dp"
-			android:visibility="gone"
-			android:layout_centerVertical="true"
 			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
 			android:layout_marginRight="15dp"
-			/>
+			android:visibility="gone" />
 	</RelativeLayout>
 	<com.andview.refreshview.XRefreshView
 		android:id="@+id/xrefresh2"

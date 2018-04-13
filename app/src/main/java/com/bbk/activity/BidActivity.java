@@ -120,7 +120,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
             data_head = findViewById(R.id.data_head);
             id = getIntent().getStringExtra("id");
             type = getIntent().getStringExtra("type");
-            initstateView();
+//            initstateView();
             initView();
             initData();
     }
@@ -386,6 +386,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
             mins = "72";
         }
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");
         params.put("userid", userID);
         params.put("type", type);
         params.put("mins", mins);
@@ -394,6 +395,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
         params.put("price",mprice.getText().toString());
         params.put("number",mcount.getText().toString());
         params.put("extra",mdetail.getText().toString());
+        params.put("openid",openID);
 
         new Thread(new Runnable() {
 
@@ -457,7 +459,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
                         adapter.notifyDataSetChanged();
                         mscrollview.fullScroll(ScrollView.FOCUS_UP);
                         Intent intent = new Intent(BidActivity.this, BidListDetailActivity.class);
-                        intent.putExtra("status", "0");
+                        intent.putExtra("status", "1");
                         startActivity(intent);
                     }
                     DialogSingleUtil.dismiss(0);

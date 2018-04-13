@@ -116,7 +116,7 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:lines="2"
-                            android:text="Apple iPhone 5s 16G 金色Apple iPhone 5s 16G 金色 Apple iPhone 5s 16G 金色 "
+                            android:text=""
                             android:textColor="#111111"
                             android:textSize="14dp" />
 
@@ -153,7 +153,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="7dp"
                                 android:layout_weight="1"
-                                android:text="5456"
+                                android:text=""
                                 android:textColor="#b40000"
                                 android:textSize="25dp" />
 
@@ -198,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="围观 108  人" />
+                    android:text="围观 0 人" />
 
                 <View
                     android:layout_width="1dp"
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="接镖 108  人" />
+                    android:text="接镖 0 人" />
 
                 <View
                     android:layout_width="1dp"
@@ -265,7 +265,7 @@
                         android:id="@+id/mendprice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="￥49"
+                        android:text="￥"
                         android:textColor="#b40000"
                         android:textSize="15dp" />
 
@@ -380,7 +380,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="5 条" />
+                    android:text="" />
 
                 <ImageView
                     android:layout_width="15dp"
@@ -390,9 +390,135 @@
 
             <com.bbk.view.MyListView
                 android:id="@+id/mlistview"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_jbjl_layout1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/mimg"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:id="@+id/muser"
+                    android:layout_width="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxEms="3"
+                    android:ellipsize="end"
+                    android:text=""
+                    />
+                <TextView
+                    android:id="@+id/mbidtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="接镖"/>
+                <TextView
+                    android:id="@+id/mbidtime"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/mbidprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_jbjl_layout2"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/mimg1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:id="@+id/muser1"
+                    android:layout_width="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:maxEms="3"
+                    android:ellipsize="end"
+                    android:text=""
+                    />
+                <TextView
+                    android:id="@+id/mbidtext1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="接镖"/>
+                <TextView
+                    android:id="@+id/mbidtime1"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/mbidprice1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_jbjl_layout3"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/mimg2"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+            <TextView
+                android:id="@+id/muser2"
+                android:layout_width="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:maxEms="3"
+                android:ellipsize="end"
+                android:text=""
+                />
+            <TextView
+                android:id="@+id/mbidtext2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="接镖"/>
+            <TextView
+                android:id="@+id/mbidtime2"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/mbidprice2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""/>
+        </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"

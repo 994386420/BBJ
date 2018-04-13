@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +22,15 @@ import android.widget.Toast;
 
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageStatus;
+import com.tencent.imsdk.TIMUserProfile;
+import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.message.TIMMessageDraft;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
+import com.tencent.imsdk.ext.sns.TIMFriendshipManagerExt;
 import com.tencent.qcloud.presentation.presenter.ChatPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ChatView;
 import com.bbk.activity.R;
@@ -74,6 +79,10 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     private TIMConversationType type;
     private String titleStr;
     private Handler handler = new Handler();
+    private TIMFriendshipManager timFriendshipManager;
+    private TIMFriendshipManagerExt timFriendshipManagerExt;
+    private String tag = "ChatActivity=====";
+    private String leftImageUri,rightImageUrl;
 
 
     public static void navToChat(Context context, String identify, TIMConversationType type){
@@ -94,87 +103,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         identify = getIntent().getStringExtra("identify");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
-        presenter = new ChatPresenter(this, identify, type);
-        input = (ChatInput) findViewById(R.id.input_panel);
-        input.setChatView(this);
-        adapter = new ChatAdapter(this, R.layout.item_message, messageList);
-        listView = (ListView) findViewById(R.id.list);
-        listView.setAdapter(adapter);
-        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-        listView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        input.setInputMode(ChatInput.InputMode.NONE);
-                        break;
-                }
-                return false;
-            }
-        });
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            private int firstItem;
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && firstItem == 0) {
-                    //如果拉到顶端读取更多消息
-                    presenter.getMessage(messageList.size() > 0 ? messageList.get(0).getMessage() : null);
-
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                firstItem = firstVisibleItem;
-            }
-        });
-        registerForContextMenu(listView);
-        TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
-        switch (type) {
-            case C2C:
-                title.setMoreImg(R.drawable.btn_person);
-                if (FriendshipInfo.getInstance().isFriend(identify)){
-                    title.setMoreImgAction(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
-                            intent.putExtra("identify", identify);
-                            startActivity(intent);
-                        }
-                    });
-                    FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
-                    title.setTitleText(titleStr = profile == null ? identify : profile.getName());
-                }else{
-                    title.setMoreImgAction(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent person = new Intent(ChatActivity.this,AddFriendActivity.class);
-                            person.putExtra("id",identify);
-                            person.putExtra("name",identify);
-                            startActivity(person);
-                        }
-                    });
-                    title.setTitleText(titleStr = identify);
-                }
-                break;
-            case Group:
-                title.setMoreImg(R.drawable.btn_group);
-                title.setMoreImgAction(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
-                        intent.putExtra("identify", identify);
-                        startActivity(intent);
-                    }
-                });
-                title.setTitleText(GroupInfo.getInstance().getGroupName(identify));
-                break;
-
-        }
-        voiceSendingView = (VoiceSendingView) findViewById(R.id.voice_sending);
-        presenter.start();
+        getFriendsProfile();
     }
 
     @Override
@@ -574,5 +503,132 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         }
     };
 
+    private void getSelfProfile(){
+        timFriendshipManager.getInstance().getSelfProfile(new TIMValueCallBack<TIMUserProfile>(){
+            @Override
+            public void onError(int code, String desc){
+                //错误码code和错误描述desc，可用于定位请求失败原因
+                //错误码code列表请参见错误码表
+                Log.e(tag, "getSelfProfile failed: " + code + " desc");
+            }
 
+            @Override
+            public void onSuccess(TIMUserProfile result){
+                Log.e(tag, "getSelfProfile succ");
+                Log.e(tag, "identifier: " + result.getIdentifier() + " nickName: " + result.getNickName()
+                        + " remark: " + result.getRemark() + " allow: " + result.getAllowType()+ " url: "+result.getFaceUrl());
+                if (result.getFaceUrl() != null){
+                    rightImageUrl = result.getFaceUrl();
+                }
+            }
+        });
+    }
+
+    private void getFriendsProfile(){
+        getSelfProfile();
+        //待获取用户资料的好友列表
+        List<String> users = new ArrayList<String>();
+        users.add(identify);
+        Log.e(tag, "getUsersProfile " + " iddddd"+identify);
+        //获取好友资料
+        timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+                //错误码code和错误描述desc，可用于定位请求失败原因
+                //错误码code列表请参见错误码表
+                Log.e(tag, "getUsersProfile failed: " + code + " desc");
+            }
+
+            @Override
+            public void onSuccess(List<TIMUserProfile> result){
+                Log.e(tag, "getUsersProfile succ");
+                for(TIMUserProfile res : result){
+                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
+                            + " remark: " + res.getRemark());
+                    presenter = new ChatPresenter(ChatActivity.this, identify, type);
+                    input = (ChatInput) findViewById(R.id.input_panel);
+                    input.setChatView(ChatActivity.this);
+                    adapter = new ChatAdapter(ChatActivity.this, R.layout.item_message, messageList,res.getFaceUrl(),rightImageUrl);
+                    listView = (ListView) findViewById(R.id.list);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+                    listView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_DOWN:
+                                    input.setInputMode(ChatInput.InputMode.NONE);
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+                        private int firstItem;
+
+                        @Override
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
+                            if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && firstItem == 0) {
+                                //如果拉到顶端读取更多消息
+                                presenter.getMessage(messageList.size() > 0 ? messageList.get(0).getMessage() : null);
+
+                            }
+                        }
+
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                            firstItem = firstVisibleItem;
+                        }
+                    });
+                    registerForContextMenu(listView);
+                    TemplateTitle title = (TemplateTitle) findViewById(R.id.chat_title);
+                    switch (type) {
+                        case C2C:
+                            title.setMoreImg(R.drawable.btn_person);
+                            if (FriendshipInfo.getInstance().isFriend(identify)){
+                                title.setMoreImgAction(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+                                        intent.putExtra("identify", identify);
+                                        startActivity(intent);
+                                    }
+                                });
+                                FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
+                                title.setTitleText(titleStr = profile == null ? identify : profile.getName());
+                            }else{
+                                title.setMoreImgAction(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent person = new Intent(ChatActivity.this,AddFriendActivity.class);
+                                        person.putExtra("id",identify);
+                                        person.putExtra("name",identify);
+                                        startActivity(person);
+                                    }
+                                });
+                                title.setTitleText(titleStr = res.getNickName());
+                            }
+                            break;
+                        case Group:
+                            title.setMoreImg(R.drawable.btn_group);
+                            title.setMoreImgAction(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
+                                    intent.putExtra("identify", identify);
+                                    startActivity(intent);
+                                }
+                            });
+                            title.setTitleText(GroupInfo.getInstance().getGroupName(identify));
+                            break;
+
+                    }
+                    voiceSendingView = (VoiceSendingView) findViewById(R.id.voice_sending);
+                    presenter.start();
+                }
+            }
+        });
+    }
 }

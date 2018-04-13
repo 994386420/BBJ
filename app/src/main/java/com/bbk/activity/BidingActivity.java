@@ -11,6 +11,7 @@ import android.text.SpannedString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -133,19 +134,22 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
     }
     public void insertJiebiao(){
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");
+        Log.i("发镖信息openid",openID+"==========");
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("fbid",fbid);
         paramsMap.put("userid", userID);
         paramsMap.put("price",mbidprice.getText().toString());
         paramsMap.put("desc",mdesc.getText().toString());
         paramsMap.put("url",mediturl.getText().toString());
+        paramsMap.put("openid",openID);
         dataFlow.requestData(2, "bid/insertJiebiao", paramsMap, this,true);
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        try {
             switch (requestCode){
                 case 1:
+                    try {
                     JSONObject object = new JSONObject(content);
                     String endtime = object.optString("endtime");
                     String title = object.optString("title");
@@ -164,20 +168,24 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
                             .priority(Priority.HIGH)
                             .placeholder(R.mipmap.zw_img_300)
                             .into(item_img);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     break;
                 case 2:
+                    try {
                     if(dataJo.optInt("status")>0){
                         Intent intent = new Intent(BidingActivity.this,BidMyListDetailActivity.class);
                         intent.putExtra("status","1");
                         startActivity(intent);
                     }
+                   } catch (Exception e) {
+                   e.printStackTrace();
+                   }
                     break;
                 default:
                     break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

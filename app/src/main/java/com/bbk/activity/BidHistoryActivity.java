@@ -86,10 +86,12 @@ public class BidHistoryActivity extends BaseActivity implements ResultEvent{
             map.put("bidprice",object.optString("bidprice"));
             map.put("bidtime",object.optString("bidtime"));
             map.put("bidurl",object.optString("bidurl"));
+            map.put("biduserid",object.optString("biduserid"));
+            map.put("bidtime",object.optString("bidtime"));
+            map.put("userid",object.optString("userid"));
             list.add(map);
         }
         adapter.notifyDataSetChanged();
-
     }
 
     @Override

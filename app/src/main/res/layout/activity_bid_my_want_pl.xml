@@ -68,6 +68,7 @@
                 android:layout_height="45dp"
                 android:layout_gravity="center_vertical"
                 android:padding="12dp"
+                android:visibility="gone"
                 android:scaleType="centerInside"
                 android:src="@mipmap/bj_25" />
         </LinearLayout>
@@ -142,7 +143,7 @@
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
             android:id="@+id/mratingbar"
-            style="@style/Widget.MaterialRatingBar.RatingBar.Indicator"
+            style="@style/Widget.MaterialRatingBar.RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

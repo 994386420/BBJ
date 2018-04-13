@@ -56,7 +56,8 @@ public class BidDetailListAdapter extends BaseAdapter{
                 viewHolder.mbidtime = (TextView)convertView.findViewById(R.id.mbidtime);
                 viewHolder.mbidprice = (TextView)convertView.findViewById(R.id.mbidprice);
                 viewHolder.muser = (TextView)convertView.findViewById(R.id.muser);
-
+                viewHolder.mimg = convertView.findViewById(R.id.mimg);
+                viewHolder.mBid = convertView.findViewById(R.id.mbidtext);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -71,33 +72,40 @@ public class BidDetailListAdapter extends BaseAdapter{
             viewHolder.mbidprice.setText("￥"+bidprice);
             viewHolder.mbidtime.setText(bidtime);
             viewHolder.muser.setText(biduser);
-            switch (position){
-                case 0:
-                    viewHolder.mbidprice.setTextColor(Color.parseColor("#b40000"));
-                    viewHolder.mbidtime.setTextColor(Color.parseColor("#b40000"));
-                    viewHolder.muser.setTextColor(Color.parseColor("#b40000"));
-                    viewHolder.mimg.setImageResource(R.mipmap.bj_05);
-                    break;
-                case 1:
-                    viewHolder.mbidprice.setTextColor(Color.parseColor("#666666"));
-                    viewHolder.mbidtime.setTextColor(Color.parseColor("#666666"));
-                    viewHolder.muser.setTextColor(Color.parseColor("#666666"));
-                    viewHolder.mimg.setImageResource(R.mipmap.bj_06);
-                    break;
-                default:
-                    viewHolder.mbidprice.setTextColor(Color.parseColor("#999999"));
-                    viewHolder.mbidtime.setTextColor(Color.parseColor("#999999"));
-                    viewHolder.muser.setTextColor(Color.parseColor("#999999"));
-                    viewHolder.mimg.setImageResource(R.mipmap.bj_07);
-                    break;
+            if (position == 0){
+
             }
             String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
             if (biduserid.equals(userID)){
                 viewHolder.mbidprice.setTextColor(Color.parseColor("#1a9afc"));
                 viewHolder.mbidtime.setTextColor(Color.parseColor("#1a9afc"));
                 viewHolder.muser.setTextColor(Color.parseColor("#1a9afc"));
+                viewHolder.mBid.setTextColor(Color.parseColor("#1a9afc"));
                 String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "imgUrl");
                 CircleImageView1.getImg(context,imgUrl,viewHolder.mimg);
+            }
+            switch (position){
+                case 0:
+                    viewHolder.mbidprice.setTextColor(Color.parseColor("#b40000"));
+                    viewHolder.mbidtime.setTextColor(Color.parseColor("#b40000"));
+                    viewHolder.muser.setTextColor(Color.parseColor("#b40000"));
+                    viewHolder.mBid.setTextColor(Color.parseColor("#b40000"));
+                    viewHolder.mimg.setBackgroundResource(R.mipmap.bj_05);
+                    break;
+                case 1:
+                    viewHolder.mbidprice.setTextColor(Color.parseColor("#666666"));
+                    viewHolder.mbidtime.setTextColor(Color.parseColor("#666666"));
+                    viewHolder.muser.setTextColor(Color.parseColor("#666666"));
+                    viewHolder.mBid.setTextColor(Color.parseColor("#666666"));
+                    viewHolder.mimg.setBackgroundResource(R.mipmap.bj_06);
+                    break;
+                default:
+                    viewHolder.mbidprice.setTextColor(Color.parseColor("#999999"));
+                    viewHolder.mbidtime.setTextColor(Color.parseColor("#999999"));
+                    viewHolder.muser.setTextColor(Color.parseColor("#999999"));
+                    viewHolder.mBid.setTextColor(Color.parseColor("#999999"));
+                    viewHolder.mimg.setBackgroundResource(R.mipmap.bj_07);
+                    break;
             }
             return convertView;
         } catch (Exception e) {
@@ -106,7 +114,7 @@ public class BidDetailListAdapter extends BaseAdapter{
         }
     }
     class ViewHolder{
-        TextView mbidprice,mbidtime,muser;
+        TextView mbidprice,mbidtime,muser,mBid;
         ImageView mimg;
     }
 

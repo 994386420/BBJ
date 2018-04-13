@@ -88,10 +88,6 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             ImmersionUtil.initstateView(getActivity(),data_head);
             initView();
             initData(1);
-//        if (getIntent().getStringExtra("describe")!= null){
-//            describe = getIntent().getStringExtra("describe");
-//            initData(2);
-//        }
         }
         return mView;
     }
@@ -110,8 +106,6 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
         mrefresh = (XRefreshView)mView.findViewById(R.id.mrefresh);
         search_edit = (EditText) mView.findViewById(R.id.search_edit);
         mlistview = (ListView)mView.findViewById(R.id.mlistview);
-//        adapter = new BidAcceptanceAdapter(getActivity(),list);
-//        mlistview.setAdapter(adapter);
         mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

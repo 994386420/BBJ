@@ -57,7 +57,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
     }
     private void initVeiw() {
         list = new ArrayList<>();
-        topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
+        topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,10 +65,9 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
             }
         });
         userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-
-        mlistview = (ListView) findViewById(R.id.mlistview);
-        tablayout = (TabLayout) findViewById(R.id.tablayout);
-        xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
+        mlistview = findViewById(R.id.mlistview);
+        tablayout =  findViewById(R.id.tablayout);
+        xrefresh = findViewById(R.id.xrefresh);
         tablayout.addTab(tablayout.newTab().setText("全部"));
         tablayout.addTab(tablayout.newTab().setText("待审核"));
         tablayout.addTab(tablayout.newTab().setText("待接镖"));
@@ -92,7 +91,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
                     status =3;
                 }
                 isclear = true;
-               loadData();
+                loadData();
             }
 
             @Override
@@ -105,20 +104,10 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
 
             }
         });
-        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(BidListDetailActivity.this,BidBillDetailActivity.class);
-                intent.putExtra("fbid",list.get(position).get("id"));
-                startActivity(intent);
-            }
-        });
 
     }
 
     private void initData() {
-        adapter = new BidListDetailAdapter(this,list);
-        mlistview.setAdapter(adapter);
         if (getIntent().getStringExtra("status")!=null) {
             String status1 = getIntent().getStringExtra("status");
             int i = Integer.valueOf(status1);
@@ -151,7 +140,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
             public void onRefresh(boolean isPullDown) {
                 isclear = true;
                 page = 1;
-                initData();
+                loadData();
 
             }
 
@@ -164,7 +153,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
             @Override
             public void onLoadMore(boolean isSilence) {
                 page++;
-                initData();
+                loadData();
             }
 
             @Override
@@ -200,21 +189,33 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         xrefresh.stopRefresh();
         xrefresh.stopLoadMore();
-        try {
             switch (requestCode){
                 case 1:
                     if (isclear){
                         list.clear();
                     }
-                    JSONArray array = new JSONArray(content);
-                    addList(array);
-                    adapter.notifyDataSetChanged();
+                    try {
+                        JSONArray array = new JSONArray(content);
+                        addList(array);
+                        adapter = new BidListDetailAdapter(this,list);
+                        mlistview.setAdapter(adapter);
+                        mlistview.setOnItemClickListener(onItemClickListener);
+                        adapter.notifyDataSetChanged();
+                    }catch (Exception e){
+
+                    }
                     break;
                 default:
                     break;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
+
+    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Intent intent = new Intent(BidListDetailActivity.this,BidBillDetailActivity.class);
+            intent.putExtra("fbid",list.get(i).get("id"));
+            startActivity(intent);
+        }
+    };
 }

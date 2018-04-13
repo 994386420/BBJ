@@ -8,8 +8,7 @@
     <ImageView
         android:id="@+id/mimg"
         android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@mipmap/bj_05"/>
+        android:layout_height="20dp" />
     <TextView
         android:id="@+id/muser"
         android:layout_width="50dp"
@@ -18,9 +17,10 @@
         android:singleLine="true"
         android:maxEms="3"
         android:ellipsize="end"
-        android:text="促进萨卡困"
+        android:text=""
         />
     <TextView
+        android:id="@+id/mbidtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="接镖"/>
@@ -34,5 +34,5 @@
         android:id="@+id/mbidprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="￥9000"/>
+        android:text=""/>
 </LinearLayout>

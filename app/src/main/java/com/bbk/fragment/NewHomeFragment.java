@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.bbk.adapter.NewBjAdapter;
 import com.bbk.adapter.NewBlAdapter;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.NewFxAdapter;
+import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
@@ -119,6 +121,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private List<Map<String, String>> datalist;
     private RefreshableView mRefreshableView;
     private View view;
+    private ImageView huodongimg;//活动按钮
+    private boolean isshowzhezhao = true;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -138,6 +142,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         if (null != getActivity().getIntent().getStringExtra("content")) {
             String content = getActivity().getIntent().getStringExtra("content");
             try {
+                isshowzhezhao = false;
                 JSONObject jsonObject = new JSONObject(content);
                 EventIdIntentUtil.EventIdIntent(getActivity(), jsonObject);
             } catch (Exception e) {
@@ -161,6 +166,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //控件实例化
     private void initView(View v){
+        huodongimg =mView.findViewById(R.id.huodongimg);
         view = v.findViewById(R.id.view);
         mRefreshableView =  v.findViewById(R.id.refresh_root);
         mRefreshableView.setRefreshListener(this);
@@ -235,7 +241,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         switch (view.getId()){
             case R.id.ll_czg_layout:
                 setView();
-                mIdex("1",3);
+                mIdex("1",2);
                 mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
                 mCzgView.setVisibility(View.VISIBLE);
                 break;
@@ -287,43 +293,58 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case 1:
                 try {
                     JSONObject object = new JSONObject(content);
+                    if (object.has("fubiao")){
+                        huodongimg.setVisibility(View.VISIBLE);
+                        final JSONObject jo = object.getJSONObject("fubiao");
+                        Glide.with(getActivity()).load(jo.optString("img")).into(huodongimg);
+                        huodongimg.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                EventIdIntentUtil.EventIdIntent(getActivity(),jo);
+                            }
+                        });
+                    }else {
+                        huodongimg.setVisibility(View.GONE);
+                    }
                     banner = object.optJSONArray("banner");
                     tag = object.optJSONArray("tag");
                     if (object.has("gongneng")){
                         gongneng = object.optJSONArray("gongneng");
                     }
                     fabiao = object.optJSONArray("fabiao");
+                    if (object.has("guanggao")) {
+                        if (isshowzhezhao) {
+                            final JSONObject jo = object.optJSONObject("guanggao");
+                            new HomeAlertDialog(getActivity()).builder()
+                                    .setimag(jo.optString("img"))
+                                    .setonclick(new OnClickListener() {
+                                        @Override
+                                        public void onClick(View arg0) {
+                                            EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                                        }
+                                    }).show();
+                            isshowzhezhao = false;
+                        }
+
+                    }
                     loadbanner(banner);
                     loadTag(tag);
-                    loadFlipper(fabiao);
+                    if (fabiao != null ){
+                        loadFlipper(fabiao);
+                    }
                     //功能模块图片动态获取
                     if (gongneng.length() >= 2) {
                         Glide.with(getActivity()).
                                 load(gongneng.getJSONObject(0).optString("img")).
                                 placeholder(R.mipmap.bjsq).into(mCompareimg);
                         Glide.with(getActivity()).load(gongneng.getJSONObject(1).optString("img")).placeholder(R.mipmap.lsyg).into(mQueryhistoryimg);
+                    }else {
+                        mCompareimg.setBackgroundResource(R.mipmap.bjsq);
+                        mQueryhistoryimg.setBackgroundResource(R.mipmap.lsyg);
                     }
                     //功能模块点击事件
-                    mCompareutil.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-//                            if (TextUtils.isEmpty(userID)){
-//                                Intent intent4= new Intent(getActivity(), UserLoginNewActivity.class);
-//                                startActivity(intent4);
-//                            }else {
-                                Intent intent = new Intent(getActivity(), BidHomeActivity.class);
-                                startActivity(intent);
-//                            }
-                        }
-                    });
-                    mQueryhistory.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), QueryHistoryActivity.class);
-                            startActivity(intent);
-                        }
-                    });
+                    mCompareutil.setOnClickListener(onClickListener);
+                    mQueryhistory.setOnClickListener(onClickListener);
                 } catch (Exception e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -341,6 +362,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         addBList(array);
                     }else if (type.equals("4")){
                         addFxList(array);
+                    }else if (type.equals("1")){
+                        addCzgList(array);
                     }
                     loadBjData();
                     initListener();
@@ -350,18 +373,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 }
                 break;
             case 3:
-                try {
-                czglist = new ArrayList<>();
-                czglist.clear();
-                JSONArray array = new JSONArray(content);
-                addCzgList(array);
-                loadCzgData();
-                initListenerczg();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                break;
+            break;
             case 4:
                 Intent intent = new Intent(getActivity(), WebViewWZActivity.class);
                 intent.putExtra("url", content);
@@ -371,7 +383,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         }
     }
 
-    //放镖局数据
+    //放数据
     private void loadBjData(){
         if (x==1){
             mList = list;
@@ -388,12 +400,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     mFxAdapter = new NewFxAdapter(getActivity(), mList);
                     mlistview.setAdapter(mFxAdapter);
                     mFxAdapter.notifyDataSetChanged();
+                }else if (type.equals("1")){
+                    mCzgAdapter = new NewCzgAdapter(getActivity(), mList);
+                    mlistview.setAdapter(mCzgAdapter);
+                    mCzgAdapter.notifyDataSetChanged();
                 }
                 mlistview.setVisibility(View.VISIBLE);
-                mCzgListview.setVisibility(View.GONE);
                 mlistview.setOnItemClickListener(onItemClickListener);
                 mlistview.LoadingComplete();   //告诉listview已经加载完毕,重置提示文字
                 myScrollView.loadingComponent();//告示scrollview已经加载完毕，重置并发控制符的值
+            }else {
+                mlistview.setVisibility(View.GONE);
             }
         }else if (x==2){
             addlist = list;
@@ -404,41 +421,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     mBlAdapter.notifyData(addlist);
                 }else if (type.equals("4")){
                     mFxAdapter.notifyData(addlist);
+                }else if(type.equals("1")){
+                    mCzgAdapter.notifyData(addlist);
                 }
                 mlistview.LoadingComplete();
                 myScrollView.loadingComponent();//告示scrollview已经加载完毕，重置并发控制符的值
             }else {
                 mlistview.LoadingCompleted();
-//                myScrollView.loadingComponent();
             }
         }
     }
-    //放超值购数据
-    private void loadCzgData(){
-        if (x==1){
-            mCzgList = czglist;
-            if (mCzgList != null && mCzgList.size() > 0) {
-                mCzgAdapter = new NewCzgAdapter(getActivity(), mCzgList);
-                mCzgListview.setAdapter(mCzgAdapter);
-                mlistview.setVisibility(View.GONE);
-                mCzgListview.setVisibility(View.VISIBLE);
-                mCzgListview.setOnItemClickListener(onItemClickListenerCzg);
-                mCzgAdapter.notifyDataSetChanged();
-                mCzgListview.LoadingComplete();   //告诉listview已经加载完毕,重置提示文字
-                myScrollView.loadingComponent();//告示scrollview已经加载完毕，重置并发控制符的值
-            }
-        }else if (x==2){
-            czgaddlist = czglist;
-            if (czgaddlist != null && czgaddlist.size() > 0){
-                mCzgAdapter.notifyData(czgaddlist);
-                mCzgListview.LoadingComplete();
-                myScrollView.loadingComponent();//告示scrollview已经加载完毕，重置并发控制符的值
-            }else {
-                mCzgListview.LoadingCompleted();
-//                myScrollView.loadingComponent();
-            }
-        }
-    }
+
     @Override
     public void lazyLoad() {
 
@@ -507,7 +500,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             if (!object.optString("hislowprice").isEmpty()){
                 map.put("hislowprice",object.optString("hislowprice"));
             }
-            czglist.add(map);
+            list.add(map);
         }
     }
     //首页发标
@@ -576,40 +569,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 .setIndicatorGravity(BannerConfig.CENTER)
                 .start();
-       mBanner.setOnTouchListener(new View.OnTouchListener() {
-            public float startX;
-            public float startY;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        mBanner.requestDisallowInterceptTouchEvent(true);
-                        // 记录手指按下的位置
-                        startY = event.getY();
-                        startX = event.getX();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        // 获取当前手指位置
-                        float endY = event.getY();
-                        float endX = event.getX();
-                        float distanceX = Math.abs(endX - startX);
-                        float distanceY = Math.abs(endY - startY);
-                        mBanner.requestDisallowInterceptTouchEvent(true);
-//                        refreshLayout.setEnabled(false);
-                        // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
-                        if (distanceX+500 < distanceY) {
-                            mBanner.requestDisallowInterceptTouchEvent(false);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-//                        refreshLayout.setEnabled(true);
-                        break;
-                }
-                return false;
-            }
-        });
+       mBanner.setOnTouchListener(onTouchListener);
     }
 
     private void loadTag(final JSONArray tag) throws Exception {
@@ -679,6 +639,111 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         }
     }
 
+    private void initListener() {
+        myScrollView.setOnZdyScrollViewListener(new MyNewScrollView.OnZdyScrollViewListener() {
+            @Override
+            public void ZdyScrollViewListener() {
+                mlistview.onLoading();
+                setListView();
+            }
+        });
+    }
+    private void setListView() {
+            page++;
+            x=2;
+            getIndexByType(true,2);
+    };
+
+
+    OnItemClickListener onItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            try {
+                if (type.equals("4")){
+                    insertWenzhangGuanzhu(i);
+                }else if (type.equals("3")){
+                    Intent intent = new Intent(getActivity(), GossipPiazzaDetailActivity.class);
+                    intent.putExtra("blid",mList.get(i).get("blid"));
+                    startActivity(intent);
+                }else if (type.equals("2")){
+                    Intent intent = new Intent(getActivity(), BidDetailActivity.class);
+                    intent.putExtra("id",mList.get(i).get("id"));
+                    startActivity(intent);
+                }else if(type.equals("1")){
+                    Intent intent = new Intent(getActivity(),WebViewActivity.class);
+                    intent.putExtra("url",  mList.get(i).get("url"));
+                    intent.putExtra("title",  mList.get(i).get("title"));
+                    startActivity(intent);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private void insertWenzhangGuanzhu(int position) {
+        try {
+            wztitle  = mList.get(position).get("title");
+            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+            String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "token");
+            if (!TextUtils.isEmpty(userID)) {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("userid", userID);
+                params.put("wzid",  mList.get(position).get("id"));
+                params.put("token", token);
+                params.put("type", "2");
+                dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
+            } else {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("userid", "-1");
+                params.put("token", token);
+                params.put("wzid",  mList.get(position).get("id"));
+                params.put("type", "2");
+                dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    mRefreshableView.finishRefresh();
+                    break;
+            }
+        }
+    };
+    //首页数据下拉刷新
+    @Override
+    public void onRefresh(RefreshableView view) {
+        initData(true);
+        setView();
+        mViewLoad();
+        mIdex("1",2);
+        mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
+        mCzgView.setVisibility(View.VISIBLE);
+//        initListenerczg();
+        initListener();
+        handler.sendEmptyMessageDelayed(1, 2000);
+    }
+    //首页视图数据加载
+    private void mViewLoad(){
+        initData(true);
+        getIndexByType(true,2);
+//        initListenerczg();
+        initListener();
+    }
+    //超值购等数据
+    private void mIdex(String str,int code){
+        type = str;
+        x=1;
+        page=1;
+        getIndexByType(true,code);
+    }
+
     @Override
     public void onScroll(int scrollY) {
         int mHeight = layout.getBottom();
@@ -699,135 +764,54 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         }
     }
 
-    private void initListener() {
-        myScrollView.setOnZdyScrollViewListener(new MyNewScrollView.OnZdyScrollViewListener() {
-            @Override
-            public void ZdyScrollViewListener() {
-                //上拉加载更多数据
-//                getDataThread(current,number);
-                mlistview.onLoading();
-                setListView();
-            }
-        });
-
-    }
-    private void setListView() {
-            page++;
-            x=2;
-            getIndexByType(true,2);
-    };
-
-    private void initListenerczg() {
-        myScrollView.setOnZdyScrollViewListener(new MyNewScrollView.OnZdyScrollViewListener() {
-            @Override
-            public void ZdyScrollViewListener() {
-                //上拉加载更多数据
-//                getDataThread(current,number);
-                mCzgListview.onLoading();
-                setListViewczg();
-            }
-        });
-
-    }
-    private void setListViewczg() {
-        page++;
-        x=2;
-        getIndexByType(true,3);
-    };
-
-    OnItemClickListener onItemClickListener = new OnItemClickListener() {
+    //功能模块点击事件
+    OnClickListener onClickListener = new OnClickListener() {
+        Intent intent;
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            if (type.equals("4")){
-                insertWenzhangGuanzhu(i);
-            }else if (type.equals("3")){
-                Intent intent = new Intent(getActivity(), GossipPiazzaDetailActivity.class);
-                intent.putExtra("blid",mList.get(i).get("blid"));
-                startActivity(intent);
-            }else if (type.equals("2")){
-                Intent intent = new Intent(getActivity(), BidDetailActivity.class);
-                intent.putExtra("id",mList.get(i).get("id"));
-                startActivity(intent);
-            }
-        }
-    };
-    OnItemClickListener onItemClickListenerCzg = new OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent;
-            //判断是否跳转中转页面
-//            if (JumpIntentUtil.isJump2(mList,i,"domain")) {
-//                intent = new Intent(getActivity(),IntentActivity.class);
-//                intent.putExtra("title", mList.get(i).get("title"));
-//                intent.putExtra("domain",  mList.get(i).get("domain"));
-//                intent.putExtra("url",  mList.get(i).get("url"));
-//                intent.putExtra("groupRowKey",  mList.get(i).get("rowkey"));
-//            }else{
-                intent = new Intent(getActivity(),WebViewActivity.class);
-                intent.putExtra("url",  mCzgList.get(i).get("url"));
-                intent.putExtra("title",  mCzgList.get(i).get("title"));
-//            }
-            startActivity(intent);
-        }
-    };
-    private void insertWenzhangGuanzhu(int position) {
-        wztitle  = mList.get(position).get("title");
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "token");
-//        Log.i("=========",wztitle+"=========="+userID);
-        if (!TextUtils.isEmpty(userID)) {
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("userid", userID);
-            params.put("wzid",  mList.get(position).get("id"));
-            params.put("token", token);
-            params.put("type", "2");
-            dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
-        } else {
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("userid", "-1");
-            params.put("token", token);
-            params.put("wzid",  mList.get(position).get("id"));
-            params.put("type", "2");
-            dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
-        }
-
-    }
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    mRefreshableView.finishRefresh();
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.queryhistory:
+                    intent = new Intent(getActivity(), QueryHistoryActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.compareutil:
+                    intent = new Intent(getActivity(), BidHomeActivity.class);
+                    startActivity(intent);
                     break;
             }
         }
     };
-    //首页数据下拉刷新
-    @Override
-    public void onRefresh(RefreshableView view) {
-        initData(true);
-        setView();
-        mViewLoad();
-        mIdex("1",3);
-        mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
-        mCzgView.setVisibility(View.VISIBLE);
-        initListenerczg();
-        initListener();
-        handler.sendEmptyMessageDelayed(1, 2000);
-    }
-    //首页视图数据加载
-    private void mViewLoad(){
-        initData(true);
-        getIndexByType(true,3);
-        initListenerczg();
-        initListener();
-    }
-    //超值购等数据
-    private void mIdex(String str,int code){
-        type = str;
-        x=1;
-        page=1;
-        getIndexByType(true,code);
-    }
+
+    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        public float startX;
+        public float startY;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mBanner.requestDisallowInterceptTouchEvent(true);
+                    // 记录手指按下的位置
+                    startY = event.getY();
+                    startX = event.getX();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    // 获取当前手指位置
+                    float endY = event.getY();
+                    float endX = event.getX();
+                    float distanceX = Math.abs(endX - startX);
+                    float distanceY = Math.abs(endY - startY);
+                    mBanner.requestDisallowInterceptTouchEvent(true);
+                    // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
+                    if (distanceX+500 < distanceY) {
+                        mBanner.requestDisallowInterceptTouchEvent(false);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    break;
+            }
+            return false;
+        }
+    };
 }

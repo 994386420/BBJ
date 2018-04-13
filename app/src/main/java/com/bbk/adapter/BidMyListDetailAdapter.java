@@ -90,6 +90,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
             Map<String,String> map = list.get(position);
             String bidstatus = map.get("bidstatus");
             final String id = map.get("bidid");
+            final String fbid = map.get("id");
             final String endtime = map.get("endtime");
             initData(vh,map);
             vh.mtext1.setVisibility(View.GONE);
@@ -135,7 +136,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(context,BidMyWantPLActivity.class);
-                            intent.putExtra("id",id);
+                            intent.putExtra("id",fbid);
                             context.startActivity(intent);
                         }
                     });
@@ -147,7 +148,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(context,BidMyPlActivity.class);
-                            intent.putExtra("id",id);
+                            intent.putExtra("id",fbid);
                             context.startActivity(intent);
                         }
                     });

@@ -111,6 +111,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
         musername.setOnClickListener(this);
         muserimg.setOnClickListener(this);
         newpinglun.setOnClickListener(this);
+        mbidcomplete.setOnClickListener(this);
 
 }
     public void initData(){

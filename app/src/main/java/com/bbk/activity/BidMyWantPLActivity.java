@@ -40,6 +40,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyGridView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -136,7 +137,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
         mratingbar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
             @Override
             public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-
+                Log.e("------------","当前的评价等级："+rating);
             }
         });
         mgridview = (MyGridView)findViewById(R.id.mgridview);
@@ -300,6 +301,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
     private void initsend() {
         final HashMap<String, String> params = new HashMap<String, String>();
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        Log.i("===========",biduserid);
         if (userID.equals(biduserid)){
             params.put("role", "1");
         }else {
@@ -359,12 +361,13 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
                 try {
                     JSONObject object = new JSONObject(post);
                     if (object.optInt("status") <= 0) {
-                        Toast.makeText(BidMyWantPLActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(BidMyWantPLActivity.this, "发布失败");
                     } else {
-                        Toast.makeText(BidMyWantPLActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(BidMyWantPLActivity.this, BidListDetailActivity.class);
-                        intent.putExtra("status", "0");
+                        StringUtil.showToast(BidMyWantPLActivity.this,"发布成功");
+                        Intent intent = new Intent(BidMyWantPLActivity.this,BidMyPlActivity.class);
+                        intent.putExtra("id",id);
                         startActivity(intent);
+                        finish();
                     }
                     DialogSingleUtil.dismiss(0);
                 } catch (JSONException e) {

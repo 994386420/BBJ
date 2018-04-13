@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.bbk.resource.Constants;
 import com.bbk.util.DateUtil;
 import com.bbk.util.HttpUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,9 @@ public class NickNameActivity extends BaseActivity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nick_name);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		initView();
 	}
 

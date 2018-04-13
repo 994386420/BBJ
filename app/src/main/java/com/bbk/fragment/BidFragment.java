@@ -39,6 +39,7 @@ import com.bbk.activity.GossipActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.MyGossipActivity;
 import com.bbk.activity.R;
+import com.bbk.activity.RegisterBangDingActivity;
 import com.bbk.adapter.MyGossipGirdAdapter;
 import com.bbk.dialog.ActionSheetDialog;
 import com.bbk.flow.DataFlow;
@@ -386,6 +387,8 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
             mins = "72";
         }
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");
+        Log.i("发镖信息openid",openID+"==========");
         params.put("userid", userID);
         params.put("type", "1");
         params.put("mins", mins);
@@ -393,6 +396,7 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
         params.put("price",mprice.getText().toString());
         params.put("number",mcount.getText().toString());
         params.put("extra",mdetail.getText().toString());
+        params.put("openid",openID);
 
         new Thread(new Runnable() {
 
@@ -440,6 +444,7 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
                 String post = msg.obj.toString();
                 try {
                     JSONObject object = new JSONObject(post);
+                    Log.i("发镖信息",object+"==========");
                     if (object.optInt("status") <= 0) {
                         Toast.makeText(getActivity(), "发布失败", Toast.LENGTH_SHORT).show();
                     } else {
@@ -456,7 +461,7 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
                         adapter.notifyDataSetChanged();
                         mscrollview.fullScroll(ScrollView.FOCUS_UP);
                         Intent intent = new Intent(getActivity(), BidListDetailActivity.class);
-                        intent.putExtra("status", "0");
+                        intent.putExtra("status", "1");
                         startActivity(intent);
                     }
                     DialogSingleUtil.dismiss(0);

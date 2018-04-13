@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.bbk.activity.R;
 import com.bbk.chat.model.Message;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.List;
 
@@ -23,10 +26,11 @@ import java.util.List;
 public class ChatAdapter extends ArrayAdapter<Message> {
 
     private final String TAG = "ChatAdapter";
-
+    private Context context;
     private int resourceId;
     private View view;
     private ViewHolder viewHolder;
+    private String leftImageUri,rightImageUrl;
 
     /**
      * Constructor
@@ -36,9 +40,12 @@ public class ChatAdapter extends ArrayAdapter<Message> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ChatAdapter(Context context, int resource, List<Message> objects) {
+    public ChatAdapter(Context context, int resource, List<Message> objects,String leftiamgeUrl,String rightImageUrl) {
         super(context, resource, objects);
         resourceId = resource;
+        this.context = context;
+        this.rightImageUrl = rightImageUrl;
+        this.leftImageUri = leftiamgeUrl;
     }
 
     @Override
@@ -58,8 +65,20 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             viewHolder.sender = (TextView) view.findViewById(R.id.sender);
             viewHolder.rightDesc = (TextView) view.findViewById(R.id.rightDesc);
             viewHolder.systemMessage = (TextView) view.findViewById(R.id.systemMessage);
+            viewHolder.leftImage = view.findViewById(R.id.leftAvatar);
+            viewHolder.rightImage = view.findViewById(R.id.rightAvatar);
             view.setTag(viewHolder);
         }
+        Glide.with(context)
+                .load(rightImageUrl)
+                .priority(Priority.HIGH)
+                .placeholder(R.mipmap.logo)
+                .into(viewHolder.rightImage);
+        Glide.with(context)
+                .load(leftImageUri)
+                .priority(Priority.HIGH)
+                .placeholder(R.mipmap.logo)
+                .into(viewHolder.leftImage);
         if (position < getCount()){
             final Message data = getItem(position);
             data.showMessage(viewHolder, getContext());
@@ -78,5 +97,6 @@ public class ChatAdapter extends ArrayAdapter<Message> {
         public TextView sender;
         public TextView systemMessage;
         public TextView rightDesc;
+        public CircleImageView leftImage,rightImage;
     }
 }

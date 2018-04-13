@@ -90,16 +90,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         mrefresh = (XRefreshView)findViewById(R.id.mrefresh);
         search_edit = (EditText) findViewById(R.id.search_edit);
         mlistview = (ListView)findViewById(R.id.mlistview);
-        adapter = new BidAcceptanceAdapter(this,list);
-        mlistview.setAdapter(adapter);
-        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
-                intent.putExtra("id",list.get(position).get("id"));
-                startActivity(intent);
-            }
-        });
         refreshAndloda();
         search_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -190,7 +180,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         View henggang1 = view.findViewById(R.id.bottom_view);
         title1.setTextColor(Color.parseColor("#ff7d41"));
         henggang1.setBackgroundColor(Color.parseColor("#ff7d41"));
-
         View view4 = mbox.getChildAt(currentIndex);
         TextView title3 = (TextView) view4.findViewById(R.id.item_title);
         View henggang3 = view4.findViewById(R.id.bottom_view);
@@ -216,7 +205,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         if (i == 0) {
             view.setVisibility(View.GONE);
         }
-        if (i == currentIndex) {
+        //判断如果传进来的type值与当前页面值一样则显示当然页面选项
+        if (type.equals(text)) {
             title.setTextColor(Color.parseColor("#ff7d41"));
             henggang.setBackgroundColor(Color.parseColor("#ff7d41"));
         }
@@ -292,8 +282,24 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                     }
                     JSONArray array = object.getJSONArray("moren");
                     addList(array);
-                    Log.i("=========",list+"---------");
-                    adapter.notifyDataSetChanged();
+                    if (list != null && list.size() > 0){
+                        adapter = new BidAcceptanceAdapter(this,list);
+                        mlistview.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        mlistview.setVisibility(View.VISIBLE);
+                        mNoMessageLayout.setVisibility(View.GONE);
+                    }else {
+                        mlistview.setVisibility(View.GONE);
+                        mNoMessageLayout.setVisibility(View.VISIBLE);
+                    }
+                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
+                            intent.putExtra("id",list.get(position).get("id"));
+                            startActivity(intent);
+                        }
+                    });
                     break;
                 case 2:
                     list.clear();
@@ -316,7 +322,24 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                     JSONObject object1 = new JSONObject(content);
                     JSONArray array1 = object1.getJSONArray("moren");
                     addList(array1);
-                    adapter.notifyDataSetChanged();
+                    if (list != null && list.size() > 0){
+                        adapter = new BidAcceptanceAdapter(this,list);
+                        mlistview.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        mlistview.setVisibility(View.VISIBLE);
+                        mNoMessageLayout.setVisibility(View.GONE);
+                    }else {
+                        mlistview.setVisibility(View.GONE);
+                        mNoMessageLayout.setVisibility(View.VISIBLE);
+                    }
+                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
+                            intent.putExtra("id",list.get(position).get("id"));
+                            startActivity(intent);
+                        }
+                    });
                     break;
             }
 

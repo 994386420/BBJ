@@ -4,30 +4,11 @@ package com.bbk.resource;
 public interface Constants {
 	
 	/**主url*/
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.1.49:8080/APIService/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
-//	public static final String MAIN_URL_MOBILE = "http://125.67.237.28:8080/APIService/apiService/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.1.49:8080/APIService/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.99.16:8080/APIService/"; 
-//	public static final String MAIN_BASE_URL_MOBILE = "http://172.27.35.1:8080/APIService/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://125.67.237.49:6060/APIService/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://10.0.2.2:8080/APIService/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.1.189/APIService/"; 
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.1.188/APIService/"; 
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.1.175:8080/APIService/"; 
-	//内网，李量
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.188/APIService/WaiWang/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.188/APIService/";
-
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.174:8080/APIService/";
 	//内网，陈远鹏 更换165
 	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.165/APIService/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:7083/APIService/";
 	//外网
 //	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:8083/APIService/";
-//	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:6083/APIService/";
-
 	//新版首页超值购等分类模块
 	public static final String GetQueryAppIndexByType = "newService/queryAppIndexByType";
 	//更新APP

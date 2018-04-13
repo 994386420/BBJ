@@ -104,6 +104,7 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(BidMyListDetailActivity.this,BidMyBillDetailActivity.class);
                 intent.putExtra("fbid",list.get(position).get("id"));
+                intent.putExtra("bidid",list.get(position).get("bidid"));
                 startActivity(intent);
             }
         });

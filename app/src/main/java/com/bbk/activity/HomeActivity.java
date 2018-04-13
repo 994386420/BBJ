@@ -111,9 +111,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-//        View topView = findViewById(R.id.activity_home_layout);
-//        // 实现沉浸式状态栏
-//        ImmersedStatusbarUtils.initAfterSetContentView(HomeActivity.this, topView);
 		instance = this;
 		mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, Constants.WEIBO_APP_KEY);
 		mWeiboShareAPI.registerApp();

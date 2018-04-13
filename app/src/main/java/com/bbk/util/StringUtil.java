@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 
 public class StringUtil {
-	private RelativeLayout inflater;
+	private static RelativeLayout inflater;
 	public static String getResultNum(String str) {
 		char[] a = str.toCharArray();
 		StringBuffer sb = new StringBuffer();
@@ -84,7 +84,7 @@ public class StringUtil {
 	}
 
 	//提示消息自定义弹窗
-	public void showToast(Context context,String tishi) {
+	public static void showToast(Context context,String tishi) {
 // TODO Auto-generated method stub
 		View layout = inflater.inflate(context, R.layout.toast_layout, null);
 		TextView title = layout.findViewById(R.id.toast_title);
