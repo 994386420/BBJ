@@ -10,10 +10,10 @@
         android:background="@mipmap/qidong"
         android:layout_height="match_parent"
         />
-    <TextView 
+    <TextView
         android:id="@+id/mbtn"
         android:padding="5dp"
-        android:background="#50000000"
+        android:background="@drawable/text_view_welcome"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

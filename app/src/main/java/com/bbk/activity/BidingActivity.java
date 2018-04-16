@@ -69,23 +69,23 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
         SpannableString ss = new SpannableString("请输入接镖价");//定义hint的值
         AbsoluteSizeSpan ass = new AbsoluteSizeSpan(30,true);//设置字体大小 true表示单位是sp
         ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        magrement = (ImageView) findViewById(R.id.magrement);
-        magrement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isagrement){
-                    isagrement = false;
-                    magrement.setImageResource(R.mipmap.bj_09_01);
-                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
-                    mcommit.setClickable(false);
-                }else {
-                    isagrement = true;
-                    magrement.setImageResource(R.mipmap.bj_09_02);
-                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
-                    mcommit.setClickable(true);
-                }
-            }
-        });
+//        magrement = (ImageView) findViewById(R.id.magrement);
+//        magrement.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isagrement){
+//                    isagrement = false;
+//                    magrement.setImageResource(R.mipmap.bj_09_01);
+//                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
+//                    mcommit.setClickable(false);
+//                }else {
+//                    isagrement = true;
+//                    magrement.setImageResource(R.mipmap.bj_09_02);
+//                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
+//                    mcommit.setClickable(true);
+//                }
+//            }
+//        });
         mbidprice.setHint(new SpannedString(ss));
         item_title = (TextView)findViewById(R.id.item_title);
         mprice = (TextView)findViewById(R.id.mprice);

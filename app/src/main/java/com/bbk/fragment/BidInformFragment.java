@@ -55,7 +55,7 @@ public class BidInformFragment extends Fragment implements ResultEvent {
                 .inflate(R.layout.fragment_bid_chat, null);
         dataFlow = new DataFlow6(getActivity());
         initView();
-        initData(false);
+        initData(true);
         return mView;
     }
 

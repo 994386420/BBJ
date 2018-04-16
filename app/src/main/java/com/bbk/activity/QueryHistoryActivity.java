@@ -18,6 +18,7 @@ import com.bbk.adapter.QueryHistoryAdapter;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyListView;
 import android.annotation.SuppressLint;
@@ -58,6 +59,9 @@ public class QueryHistoryActivity extends BaseActivity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_query_history);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 		initView();
 		initData();

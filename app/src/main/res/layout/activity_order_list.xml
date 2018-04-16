@@ -7,6 +7,7 @@
   >
 
     <RelativeLayout
+        android:id="@+id/topbar_layou"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:background="#FFF" >
@@ -48,7 +49,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topbar_layout"
+        android:layout_below="@id/topbar_layou"
         android:scrollbars="none" >
 
         <LinearLayout

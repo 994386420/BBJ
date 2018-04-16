@@ -74,6 +74,34 @@
                 android:layout_height="1dp"
                 android:background="#f3f3f3" />
             <EditText
+                android:id="@+id/mPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="价格"
+                android:maxLength="20"
+                android:padding="15dp"
+                android:textColorHint="#999999" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+            <EditText
+                android:id="@+id/mExtra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="优惠信息"
+                android:maxLength="20"
+                android:padding="15dp"
+                android:textColorHint="#999999" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+            <EditText
                 android:id="@+id/murl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

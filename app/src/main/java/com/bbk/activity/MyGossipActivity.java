@@ -73,7 +73,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class MyGossipActivity extends BaseActivity implements OnClickListener, ResultEvent {
     private ImageButton topbar_goback_btn;
-    private EditText mtitle, mcontent;
+    private EditText mtitle, mcontent,mPrice,mExtra;
     private GridView noScrollgridview;
     private MyGossipGirdAdapter adapter;
     private TextView msend, mydraft;
@@ -113,6 +113,8 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
     }
 
     private void initVeiw() {
+        mPrice = findViewById(R.id.mPrice);
+        mExtra = findViewById(R.id.mExtra);
         list = new ArrayList<>();
         litlelist = new ArrayList<>();
         list.add("add");
@@ -605,6 +607,8 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
         params.put("title", mtitle.getText().toString());
         params.put("content", mcontent.getText().toString());
         params.put("address", murl.getText().toString());
+        params.put("price", mPrice.getText().toString());
+        params.put("extra", mExtra.getText().toString());
 
         new Thread(new Runnable() {
 

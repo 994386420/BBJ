@@ -57,7 +57,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 	private MyListView mlistview;
 	private String[] str1 = { "邀请好友下载APP", "签到打卡", "新注册用户", "完善资料", "查历史价", "收藏奖励", "爆料奖励", "评论奖励", "意见反馈" };
 	private String[] str2 = { "+500鲸币", "+5至50鲸币", "+800鲸币", "+5鲸币", "+15鲸币", "+5鲸币", "+50鲸币", "+10鲸币", "+50鲸币" };
-	private String[] str3 = { "每邀请一个好友注册成功", "连续签到7天+50鲸币，每轮7天", "新用户注册成功", "完善个人资料", "每日分享文章一次", "每日收藏商品一件",
+	private String[] str3 = { "每邀请一个好友注册成功", "连续签到7天+50鲸币，每轮7天", "新用户注册成功", "完善个人资料", "查询商品历史价格一次(限10次/日)", "每日收藏商品一件",
 			"发表一条图文信息并审核通过", "文章评论内容大于10个字", "反馈有效意见或建议" };
 	private int[] drawable = { R.mipmap.rw_1, R.mipmap.rw_2, R.mipmap.rw_3, R.mipmap.rw_4, R.mipmap.jinbi_clsj,
 			R.mipmap.rw_6, R.mipmap.rw_7, R.mipmap.rw_8, R.mipmap.rw_10 };
@@ -555,8 +555,8 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 				startActivity(intent);
 				break;
 			case 4:
-				SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "0");
-				intent = new Intent(this, HomeActivity.class);
+//				SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "0");
+				intent = new Intent(this, QueryHistoryActivity.class);
 				startActivity(intent);
 				break;
 			case 5:

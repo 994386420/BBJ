@@ -19,6 +19,7 @@ import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyListView;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
@@ -299,83 +300,100 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        try {
-            JSONObject object = new JSONObject(content);
-            String  endtime =object.optString("endtime");
-            String  beginlong =object.optString("beginlong");
-            String  begintime =object.optString("begintime");
-            String  extra =object.optString("extra");
-            String  ordernum =object.optString("ordernum");
-            String  img =object.optString("img");
-            String  number =object.optString("number");
-            String  spectator =object.optString("spectator");
-            final String  id =object.optString("id");
-            String  endlong =object.optString("endlong");
-            String  title =object.optString("title");
-            String  price =object.optString("price");
-            String  bidnum =object.optString("bidnum");
-            final String  userid =object.optString("userid");
-            JSONArray imgs = object.getJSONArray("imgs");
-            status =object.optString("status");
-            initbutton();
-            JSONArray bidarr = object.getJSONArray("bidarr");
-            if (!"".equals(object.optString("bidindex"))){
-                int i = object.optInt("bidindex");
-                String  bidprice =bidarr.getJSONObject(i).optString("bidprice");
-                String  biddesc =bidarr.getJSONObject(i).optString("biddesc");
-                final String  bidurl =bidarr.getJSONObject(i).optString("bidurl");
-                mendprice.setText("￥"+bidprice);
-                murltext.setText(bidurl);
-                mintentbuy.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(BidBillDetailActivity.this,WebViewActivity.class);
-                        intent.putExtra("url",bidurl);
-                        startActivity(intent);
+        switch (requestCode){
+            case 1:
+                try {
+                    JSONObject object = new JSONObject(content);
+                    String  endtime =object.optString("endtime");
+                    String  beginlong =object.optString("beginlong");
+                    String  begintime =object.optString("begintime");
+                    String  extra =object.optString("extra");
+                    String  ordernum =object.optString("ordernum");
+                    String  img =object.optString("img");
+                    String  number =object.optString("number");
+                    String  spectator =object.optString("spectator");
+                    final String  id =object.optString("id");
+                    String  endlong =object.optString("endlong");
+                    String  title =object.optString("title");
+                    String  price =object.optString("price");
+                    String  bidnum =object.optString("bidnum");
+                    final String  userid =object.optString("userid");
+                    JSONArray imgs = object.getJSONArray("imgs");
+                    status =object.optString("status");
+                    initbutton();
+                    JSONArray bidarr = object.getJSONArray("bidarr");
+                    if (!"".equals(object.optString("bidindex"))){
+                        int i = object.optInt("bidindex");
+                        String  bidprice =bidarr.getJSONObject(i).optString("bidprice");
+                        String  biddesc =bidarr.getJSONObject(i).optString("biddesc");
+                        final String  bidurl =bidarr.getJSONObject(i).optString("bidurl");
+                        mendprice.setText("￥"+bidprice);
+                        murltext.setText(bidurl);
+                        mintentbuy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(BidBillDetailActivity.this,WebViewActivity.class);
+                                intent.putExtra("url",bidurl);
+                                startActivity(intent);
+                            }
+                        });
+                        mbidesc.setText("留言:"+biddesc);
+                        mcontact.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                                if (TextUtils.isEmpty(userID)){
+                                    Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+                                    startActivity(intent4);
+                                }else {
+                                    Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
+                                    intent.putExtra("identify","bbj"+userid);
+                                    intent.putExtra("type", TIMConversationType.C2C);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }else {
+                        mbox.setVisibility(View.GONE);
                     }
-                });
-                mbidesc.setText("留言:"+biddesc);
-                mcontact.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                        if (TextUtils.isEmpty(userID)){
-                            Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
-                            startActivity(intent4);
-                        }else {
-                            Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
-                            intent.putExtra("identify","bbj"+userid);
-                            intent.putExtra("type", TIMConversationType.C2C);
-                            startActivity(intent);
-                        }
-                    }
-                });
-            }else {
-                mbox.setVisibility(View.GONE);
-            }
 //            private TextView item_title,mprice,mcount,mtime,mspectatornum,mbidnum,mendprice,
 //                    murltext,mintentbuy,mbidesc,mbidnum2,mordernum,mbegintime,mendtime;
 //            private LinearLayout mpricebox,mcontact;
-            item_title.setText(title);
-            mprice.setText(price);
-            mcount.setText("x"+number);
-            mtime.addsum(endlong,"#999999");
-            mtime.start();
-            mspectatornum.setText("围观 "+spectator+"  人");
-            mbidnum.setText("接镖 "+bidnum+"  人");
-            mbidnum2.setText(bidnum+" 条");
+                    item_title.setText(title);
+                    mprice.setText(price);
+                    mcount.setText("x"+number);
+                    mtime.addsum(endlong,"#999999");
+                    mtime.start();
+                    mspectatornum.setText("围观 "+spectator+"  人");
+                    mbidnum.setText("接镖 "+bidnum+"  人");
+                    mbidnum2.setText(bidnum+" 条");
 
-            mordernum.setText("镖单编号:"+ordernum);
-            mbegintime.setText("创建时间:"+beginlong);
-            mendtime.setText("完成时间:"+endlong);
-            addList(bidarr);
-            Glide.with(this).load(img).placeholder(R.mipmap.zw_img_300).into(item_img);
-
-
+                    mordernum.setText("镖单编号:"+ordernum);
+                    mbegintime.setText("创建时间:"+beginlong);
+                    mendtime.setText("完成时间:"+endlong);
+                    addList(bidarr);
+                    Glide.with(this).load(img).placeholder(R.mipmap.zw_img_300).into(item_img);
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 2:
+                switch (content){
+                    case "-1":
+                        StringUtil.showToast(this,"已经延长过了");
+                        break;
+                    case "0":
+                        StringUtil.showToast(this,"延长失败");
+                        break;
+                    case "1":
+                        StringUtil.showToast(this,"延长成功");
+                        break;
+                }
+                break;
         }
     }
 }

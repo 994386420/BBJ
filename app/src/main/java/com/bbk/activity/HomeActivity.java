@@ -59,6 +59,8 @@ import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.LoadImgUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
+import com.bbk.view.CustomViewPager;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -74,7 +76,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 
 	private static final int TAB_SIZE = 5;
 	private int screenWidth = 0;
-	private static ViewPager mViewPager;
+	private static CustomViewPager mViewPager;
 	private CustomFragmentPagerAdapter mPagerAdapter;
 	private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
 	private LinearLayout tabParentLayout;
@@ -105,6 +107,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	private String ctcolor = "#ff7d41";
 	private UpdateVersionService updateVersionService;
 	private final String mPageName = "HomeActivity";
+	public static String Flag = "";
 
 
 	@Override
@@ -180,6 +183,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		String token = TelephonyMgr.getDeviceId();
 		SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
 		mViewPager = $(R.id.main_layout);
+		mViewPager.setScanScroll(false);
 		tabParentLayout = $(R.id.tab_layout);
 		mtext = $(R.id.mtext);
 		mimg = $(R.id.home_img_btn);
@@ -333,10 +337,11 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 							
 					 }
 					 if (index == 2){
+					 	 Flag = "home";
 						 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 						 if (TextUtils.isEmpty(userID)){
 							 Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
-							 startActivity(intent4);
+							 startActivityForResult(intent4,1);
 						 }
 					 }
 					mViewPager.setCurrentItem(index);
@@ -349,7 +354,11 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
-
+		switch (arg0) {
+			case 1:
+				mViewPager.setCurrentItem(1);
+				break;
+		    }
 		super.onActivityResult(arg0, arg1, arg2);
 	}
 
@@ -407,7 +416,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		Timer tExit = null;
 		if (isExit == false) {
 			isExit = true; // 准备退出
-			Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+			StringUtil.showToast(this, "再按一次退出程序");
 			tExit = new Timer();
 			tExit.schedule(new TimerTask() {
 				@Override

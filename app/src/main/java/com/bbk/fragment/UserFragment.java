@@ -2,16 +2,12 @@ package com.bbk.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,21 +23,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-
 import com.ali.auth.third.login.callback.LogoutCallback;
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
@@ -64,27 +51,14 @@ import com.bbk.activity.UserAccountActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.UserSuggestionActivity;
 import com.bbk.activity.WebViewActivity;
-import com.bbk.chat.ui.ChatActivity;
-import com.bbk.chat.ui.HomeActivity;
-import com.bbk.chat.ui.SplashActivity;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
-import com.bbk.resource.Constants;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
-import com.bbk.util.DialogUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.CircleImageView1;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.tencent.imsdk.TIMCallBack;
-import com.tencent.imsdk.TIMConversationType;
-import com.tencent.imsdk.TIMManager;
 
-import okhttp3.internal.framed.Variant;
-
-import static com.tencent.qalsdk.service.QalService.tag;
 
 public class UserFragment extends BaseViewPagerFragment implements OnClickListener ,ResultEvent{
 
@@ -322,8 +296,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 				@Override
 				public void onSuccess() {
 					DialogSingleUtil.dismiss(0);
-					Toast.makeText(getActivity(), "退出登录成功",
-							Toast.LENGTH_SHORT).show();
+					StringUtil.showToast(getActivity(), "退出登录成功");
 					mtaobaotext.setText("淘宝授权登录");
 					mtaobaouser.setText("");
 					SharedPreferencesUtil.cleanShareData(MyApplication.getApplication(), "taobao");
@@ -333,8 +306,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 				@Override
 				public void onFailure(int code, String msg) {
 					DialogSingleUtil.dismiss(0);
-					Toast.makeText(getActivity(), "退出登录失败 " + code + msg,
-							Toast.LENGTH_SHORT).show();
+					StringUtil.showToast(getActivity(), "退出登录失败 " + code + msg);
 					isTaoBaoLogin = true;
 				}
 			});
@@ -347,8 +319,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 				@Override
 				public void onSuccess() {
 					DialogSingleUtil.dismiss(0);
-					Toast.makeText(getActivity(), "登录成功 ",
-							Toast.LENGTH_LONG).show();
+					StringUtil.showToast(getActivity(), "登录成功 ");
 					mtaobaotext.setText("取消淘宝授权");
 					mtaobaouser.setText(AlibcLogin.getInstance().getSession().nick.toString());
 					isTaoBaoLogin = true;
@@ -362,8 +333,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 				@Override
 				public void onFailure(int code, String msg) {
 					DialogSingleUtil.dismiss(0);
-					Toast.makeText(getActivity(), "登录失败 ",
-							Toast.LENGTH_LONG).show();
+					StringUtil.showToast(getActivity(), "登录失败 ");
 				}
 			});
 		}
@@ -500,7 +470,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
 				}
 			}else{
-				Toast.makeText(getActivity(), "请先登录！", Toast.LENGTH_SHORT).show();
+				StringUtil.showToast(getActivity(), "请先登录！");
 				intent = new Intent(getActivity(), UserLoginNewActivity.class);
 				startActivity(intent);
 			}
@@ -614,41 +584,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 	}
-//	private void initsigntext(String day, String jinbi) {
-//		switch (day) {
-//		case "0":
-//			signnum = "+5";
-//			num = Integer.valueOf(jinbi)+5;
-//			break;
-//		case "1":
-//			signnum = "+10";
-//			num = Integer.valueOf(jinbi)+10;
-//			break;
-//		case "2":
-//			signnum = "+15";
-//			num = Integer.valueOf(jinbi)+15;
-//			break;
-//		case "3":
-//			signnum = "+20";
-//			num = Integer.valueOf(jinbi)+20;
-//			break;
-//		case "4":
-//			signnum = "+25";
-//			num = Integer.valueOf(jinbi)+25;
-//			break;
-//		case "5":
-//			signnum = "+30";
-//			num = Integer.valueOf(jinbi)+30;
-//			break;
-//		case "6":
-//			signnum = "+50";
-//			num = Integer.valueOf(jinbi)+50;
-//			break;
-//
-//		default:
-//			break;
-//		}
-//	}
 	private void sign() {
 		 View view = addViewToAnimLayout(anim_mask_layout); 
 		 int[] end_location = new int[2];   
@@ -810,7 +745,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 				mjbimg.setVisibility(View.GONE);
 				issign = false;
 			}else if(content.equals("-2")){
-				Toast.makeText(getActivity(), "签到异常", Toast.LENGTH_SHORT).show();
+				StringUtil.showToast(getActivity(), "签到异常");
 			}else{
 				mjb.setText(content);
 				sign();

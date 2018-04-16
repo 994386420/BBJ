@@ -27,6 +27,7 @@ import com.bbk.chat.ui.ProfileActivity;
 import com.bbk.chat.utils.TimeUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.imsdk.TIMValueCallBack;
@@ -52,6 +53,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
     private String tag = "ConversationAdapter=====";
     private Context context;
     List<String> users;
+    List<TIMUserProfile> result1;
+    List<Conversation> object;
     /**
      * Constructor
      *
@@ -60,11 +63,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ConversationAdapter(Context context, int resource, List<Conversation> objects,List<String> users) {
+    public ConversationAdapter(Context context, int resource, List<Conversation> objects,List<TIMUserProfile> result) {
         super(context, resource, objects);
         resourceId = resource;
         this.context = context;
-        this.users = users;
+        this.result1 = result;
+        this.object =  objects;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -84,9 +88,16 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             view.setTag(viewHolder);
         }
         final Conversation data = getItem(position);
-//        viewHolder.tvName.setText(data.getName());
-//        viewHolder.avatar.setImageResource(R.mipmap.logo);
-        getFriendsProfile();
+        try {
+            viewHolder.tvName.setText(result1.get(position).getNickName());
+            Glide.with(context).load(result1.get(position).getFaceUrl())
+                        .priority(Priority.HIGH)
+                        .placeholder(R.mipmap.zw_img_300)
+                        .into(viewHolder.avatar);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        getFriendsProfile();
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();
@@ -115,37 +126,5 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         public TextView time;
         public TextView unread;
 
-    }
-    private void getFriendsProfile(){
-//        data = getItem(postion);
-//        //待获取用户资料的好友列表
-//        List<String> users = new ArrayList<String>();
-//        users.add(data.getIdentify());
-//        Log.e(tag, "getUsersProfile " + " id"+data.getIdentify()+users);
-        //获取好友资料
-        timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
-            @Override
-            public void onError(int code, String desc){
-                //错误码code和错误描述desc，可用于定位请求失败原因
-                //错误码code列表请参见错误码表
-                Log.e(tag, "getUsersProfile failed: " + code + " desc");
-            }
-
-            @Override
-            public void onSuccess(List<TIMUserProfile> result){
-                Log.e(tag, "getUsersProfile succ");
-                for(TIMUserProfile res : result){
-//                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
-//                            + " remark: " + res.getRemark()+"imageUrl :"+res.getFaceUrl());
-                    viewHolder.tvName.setText(res.getNickName());
-//                    viewHolder.avatar.setImageResource(data.getAvatar());
-                    Glide.with(context)
-                            .load(res.getFaceUrl())
-                            .priority(Priority.HIGH)
-                            .placeholder(R.mipmap.zw_img_300)
-                            .into(viewHolder.avatar);
-                }
-            }
-        });
     }
 }

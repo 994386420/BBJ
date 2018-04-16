@@ -22,6 +22,7 @@ import com.bbk.activity.R;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.StringUtil;
 import com.bbk.view.CircleImageView1;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
@@ -309,23 +310,23 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
         switch (requestCode){
             case 1:
                 if(dataJo.optInt("status")<=0){
-                    Toast.makeText(context, "取消失败", Toast.LENGTH_SHORT).show();
+                    StringUtil.showToast(context, "取消失败");
                 }else{
                     list.remove(curposition);
                     notifyDataSetChanged();
-                    Toast.makeText(context, "取消成功", Toast.LENGTH_SHORT).show();
+                    StringUtil.showToast(context,"取消成功");
                 }
                 break;
             case 2:
                 switch (content){
                     case "-1":
-                        Toast.makeText(context, "已经延长过了", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(context,"已经延长过了");
                         break;
                     case "0":
-                        Toast.makeText(context, "延长失败", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(context,"延长失败");
                         break;
                     case "1":
-                        Toast.makeText(context, "延长成功", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(context,"延长成功");
                         break;
                 }
                 break;

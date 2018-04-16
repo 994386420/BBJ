@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
+import com.bbk.util.StringUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,7 +82,8 @@ public class DataFlow6 {
 				JSONObject dataJo = data.dataJo;
 				String content = dataJo.optString("content");
 				if(dataJo.optInt("status")<=0){
-					Toast.makeText(context, dataJo.optString("errmsg"), Toast.LENGTH_SHORT).show();
+					StringUtil.showToast(context, dataJo.optString("errmsg"));
+//					Toast.makeText(context, dataJo.optString("errmsg"), Toast.LENGTH_SHORT).show();
 				}else{
 					Log.i("网络请求返回数据：",dataJo+"------------------------");
 					data.event.onResultData(requestCode,api,dataJo,content);

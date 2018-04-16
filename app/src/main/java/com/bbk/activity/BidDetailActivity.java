@@ -181,7 +181,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(BidDetailActivity.this,BidMyPlActivity.class);
-                    intent.putExtra("fbid",fbid);
+                    intent.putExtra("id",fbid);
                     startActivity(intent);
                 }
             });

@@ -1,6 +1,7 @@
 package com.bbk.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.R;
 import com.bbk.chat.adapters.ConversationAdapter;
@@ -22,11 +24,17 @@ import com.bbk.chat.model.FriendshipConversation;
 import com.bbk.chat.model.GroupManageConversation;
 import com.bbk.chat.model.MessageFactory;
 import com.bbk.chat.model.NomalConversation;
+import com.bbk.chat.ui.ChatActivity;
 import com.bbk.chat.ui.HomeActivity;
 import com.bbk.chat.utils.PushUtil;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMUserProfile;
+import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.group.TIMGroupCacheInfo;
 import com.tencent.imsdk.ext.group.TIMGroupPendencyItem;
 import com.tencent.imsdk.ext.sns.TIMFriendFutureItem;
@@ -61,6 +69,8 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     private FriendshipConversation friendshipConversation;
     private GroupManageConversation groupManageConversation;
     List<String> users = new ArrayList<String>();
+    private TIMFriendshipManager timFriendshipManager;
+    List<TIMUserProfile> result1;
 
     public BidChatFragment() {
         // Required empty public constructor
@@ -71,27 +81,14 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view == null){
-            view = inflater.inflate(R.layout.fragment_bid_chat, container, false);
+            view = inflater.inflate(R.layout.fragment_bid_chat_ytx, container, false);
             listView = (ListView) view.findViewById(R.id.list);
-            adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList,users);
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    conversationList.get(position).navToDetail(getActivity());
-                    if (conversationList.get(position) instanceof GroupManageConversation) {
-                        groupManagerPresenter.getGroupManageLastMessage();
-                    }
-
-                }
-            });
             friendshipManagerPresenter = new FriendshipManagerPresenter(this);
             groupManagerPresenter = new GroupManagerPresenter(this);
             presenter = new ConversationPresenter(this);
             presenter.getConversation();
             registerForContextMenu(listView);
         }
-        adapter.notifyDataSetChanged();
         return view;
 
     }
@@ -108,24 +105,31 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     /**
      * 初始化界面或刷新界面
      *
-     * @param conversationList
+     * @param timconversationList
      */
     @Override
-    public void initView(List<TIMConversation> conversationList) {
+    public void initView(List<TIMConversation> timconversationList) {
         this.conversationList.clear();
         groupList = new ArrayList<>();
-        for (TIMConversation item:conversationList){
+        for (TIMConversation item:timconversationList){
             switch (item.getType()){
                 case C2C:
                 case Group:
                     this.conversationList.add(new NomalConversation(item));
                     groupList.add(item.getPeer());
-                    for (int i= 0;i<this.conversationList.size();i++){
-                        Log.i("聊天信息=++++++++==",this.conversationList.get(i).getIdentify()+"===========");
-                        //待获取用户资料的好友列表
-                        users.add(this.conversationList.get(i).getIdentify());
+                    try {
+                        for (int i= 0;i<this.conversationList.size();i++){
+                            //待获取用户资料的好友列表
+                            users.add(this.conversationList.get(i).getIdentify());
+                        }
+                        removeDuplicate(users);
+                        Log.e("==========", "getUsersProfile " + users);
+                        if (users != null && users.size() >0){
+                            getFriendsProfile();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                    Log.e("==========", "getUsersProfile " + users);
                     break;
             }
         }
@@ -133,6 +137,65 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         groupManagerPresenter.getGroupManageLastMessage();
     }
 
+    public   static   List  removeDuplicate(List list)  {
+        for  ( int  i  =   0 ; i  <  list.size()  -   1 ; i ++ )  {
+            for  ( int  j  =  list.size()  -   1 ; j  >  i; j -- )  {
+                if  (list.get(j).equals(list.get(i)))  {
+                    list.remove(j);
+                }
+            }
+        }
+        return list;
+    }
+    private void getFriendsProfile(){
+        //获取好友资料
+        timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+                //错误码code和错误描述desc，可用于定位请求失败原因
+                //错误码code列表请参见错误码表
+                Log.e("==========", "getUsersProfile failed: " + code + " desc");
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                                Log.e("==========", "getUsersProfile succ"+result);
+                                result1 = result;
+                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        conversationList.get(position).navToDetail(getActivity());
+                        try {
+                            Intent intent = new Intent(getActivity(),ChatActivity.class);
+                            intent.putExtra("identify",result1.get(position).getIdentifier());
+                            intent.putExtra("type", TIMConversationType.C2C);
+                            startActivity(intent);
+                            if (conversationList.get(position) instanceof GroupManageConversation) {
+                                groupManagerPresenter.getGroupManageLastMessage();
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                if (adapter != null){
+                    adapter.notifyDataSetChanged();
+                }
+                for(TIMUserProfile res : result){
+//                    Log.e("================", "identifier: " + res);
+//                    viewHolder.tvName.setText(res.getNickName());
+////                    viewHolder.avatar.setImageResource(data.getAvatar());
+//                    Glide.with(context)
+//                            .load(res.getFaceUrl())
+//                            .priority(Priority.HIGH)
+//                            .placeholder(R.mipmap.zw_img_300)
+//                            .into(viewHolder.avatar);
+                }
+            }
+        });
+    }
     /**
      * 更新最新消息显示
      *
@@ -141,7 +204,9 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     @Override
     public void updateMessage(TIMMessage message) {
         if (message == null){
-            adapter.notifyDataSetChanged();
+            if (adapter != null){
+                adapter.notifyDataSetChanged();
+            }
             return;
         }
         if (message.getConversation().getType() == TIMConversationType.System){
@@ -185,7 +250,9 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             Conversation conversation = iterator.next();
             if (conversation.getIdentify()!=null&&conversation.getIdentify().equals(identify)){
                 iterator.remove();
-                adapter.notifyDataSetChanged();
+                if (adapter != null){
+                    adapter.notifyDataSetChanged();
+                }
                 return;
             }
         }
@@ -200,7 +267,9 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     public void updateGroupInfo(TIMGroupCacheInfo info) {
         for (Conversation conversation : conversationList){
             if (conversation.getIdentify()!=null && conversation.getIdentify().equals(info.getGroupInfo().getGroupId())){
-                adapter.notifyDataSetChanged();
+                if (adapter != null){
+                    adapter.notifyDataSetChanged();
+                }
                 return;
             }
         }
@@ -212,7 +281,9 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     @Override
     public void refresh() {
         Collections.sort(conversationList);
-        adapter.notifyDataSetChanged();
+        if (adapter != null){
+            adapter.notifyDataSetChanged();
+        }
         if (getParentFragment() instanceof BidMessageFragment)
             ((BidMessageFragment)getParentFragment()).setMsgUnread(getTotalUnreadNum() == 0);
     }
@@ -297,7 +368,9 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
                 if (conversation != null){
                     if (presenter.delConversation(conversation.getType(), conversation.getIdentify())){
                         conversationList.remove(conversation);
-                        adapter.notifyDataSetChanged();
+                        if (adapter != null){
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                 }
                 break;

@@ -31,6 +31,7 @@ import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
 import com.bbk.util.BaseTools;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.view.CustomViewPager;
 import com.bumptech.glide.Glide;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
@@ -53,7 +54,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
 
     private int screenWidth = 0;
 
-    private static ViewPager mViewPager;
+    private static CustomViewPager mViewPager;
     private CustomFragmentPagerAdapter mPagerAdapter;
     private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
 
@@ -86,6 +87,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     private String tcolor = "#444444";
     private String ctcolor = "#b40000";
     private BidFragment bidFragment;
+    public static String Flag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         String token = TelephonyMgr.getDeviceId();
         SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
         mViewPager = $(R.id.main_layout);
+        mViewPager.setScanScroll(false);
         tabParentLayout = $(R.id.tab_layout);
         mtext = $(R.id.mtext);
         mimg = $(R.id.home_img_btn);
@@ -242,15 +245,23 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                         }
 
                     }
-                    if (index == 1 ){
-                        Intent intent= new Intent(BidHomeActivity.this, BidFbActivity.class);
-                        startActivityForResult(intent,1);
-                    }
-                    if (index == 1 || index == 3){
+                    if (index == 3 ){
+                        Flag = "bifhome3";
                         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                         if (TextUtils.isEmpty(userID)){
                             Intent intent4= new Intent(BidHomeActivity.this, UserLoginNewActivity.class);
-                            startActivity(intent4);
+                            startActivityForResult(intent4,3);
+                        }
+                    }
+                    if (index == 1){
+                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                        if (TextUtils.isEmpty(userID)){
+                            Flag = "bifhome1";
+                            Intent intent4= new Intent(BidHomeActivity.this, UserLoginNewActivity.class);
+                            startActivityForResult(intent4,2);
+                        }else {
+                            Intent intent= new Intent(BidHomeActivity.this, BidFbActivity.class);
+                            startActivityForResult(intent,1);
                         }
                     }
                     mViewPager.setCurrentItem(index);
@@ -276,6 +287,12 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         switch (requestCode) {
             case 1:
                 mViewPager.setCurrentItem(0);
+                break;
+            case 2:
+                mViewPager.setCurrentItem(0);
+                break;
+            case 3:
+                mViewPager.setCurrentItem(2);
                 break;
         }
     }

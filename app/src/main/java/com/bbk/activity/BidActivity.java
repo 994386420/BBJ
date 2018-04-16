@@ -142,23 +142,23 @@ public class BidActivity extends BaseActivity implements ResultEvent{
                 finish();
             }
         });
-        magrement = (ImageView) findViewById(R.id.magrement);
-        magrement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isagrement){
-                    isagrement = false;
-                    magrement.setImageResource(R.mipmap.bj_09_01);
-                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
-                    mcommit.setClickable(false);
-                }else {
-                    isagrement = true;
-                    magrement.setImageResource(R.mipmap.bj_09_02);
-                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
-                    mcommit.setClickable(true);
-                }
-            }
-        });
+//        magrement = (ImageView) findViewById(R.id.magrement);
+//        magrement.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isagrement){
+//                    isagrement = false;
+//                    magrement.setImageResource(R.mipmap.bj_09_01);
+//                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
+//                    mcommit.setClickable(false);
+//                }else {
+//                    isagrement = true;
+//                    magrement.setImageResource(R.mipmap.bj_09_02);
+//                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
+//                    mcommit.setClickable(true);
+//                }
+//            }
+//        });
         mscrollview = (ScrollView)findViewById(R.id.mscrollview);
         mname = (EditText)findViewById(R.id.mname);
         mcount = (EditText)findViewById(R.id.mcount);

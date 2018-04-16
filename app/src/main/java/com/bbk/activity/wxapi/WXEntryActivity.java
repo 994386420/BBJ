@@ -22,6 +22,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -79,7 +80,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler,Resu
 			case BaseResp.ErrCode.ERR_OK:
 				result += "成功";
 				if (ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX == resp.getType()) {
-					Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+					StringUtil.showToast(context, result);
 					break;
 				}
 				String code = ((SendAuth.Resp) resp).code;
@@ -90,20 +91,20 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler,Resu
 		        editor.commit();
 		        editor.putString("code",code);
 		        editor.commit();
-				
-		        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+
+				StringUtil.showToast(context, result);
 				break;
 			case BaseResp.ErrCode.ERR_USER_CANCEL:
 				result += "取消";
-				Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+				StringUtil.showToast(this, result);
 				break;
 			case BaseResp.ErrCode.ERR_AUTH_DENIED:
 				result += "被拒绝";
-				Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+				StringUtil.showToast(this, result);
 				break;
 			default:
 				result = "返回";
-				Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+				StringUtil.showToast(this, result);
 				break;
 			}
 			finish();

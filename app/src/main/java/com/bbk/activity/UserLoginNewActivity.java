@@ -326,8 +326,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 							finish();
 
 						}else {
-							Toast.makeText(getApplicationContext(), jsonObj.optString("msg"),
-									Toast.LENGTH_SHORT).show();
+							StringUtil.showToast(getApplicationContext(), jsonObj.optString("msg"));
 							loginBtn.setEnabled(true);
 						}
 						break;
@@ -339,8 +338,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 						DialogUtil.dismiss(alertDialog,0);
 						try {
 							if("0".equals(dataJo.optString("status"))) {
-								Toast.makeText(getApplicationContext(), dataJo.optString("msg"),
-										Toast.LENGTH_SHORT).show();
+								StringUtil.showToast(getApplicationContext(), dataJo.optString("msg"));
 							}
 							if("1".equals(dataJo.optString("status"))) {
 								if ("1".equals(jsonObj.optString("status"))) {
@@ -399,8 +397,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 						break;
 				}
 			}else {
-				Toast.makeText(getApplicationContext(), dataJo.optString("errmsg"),
-						Toast.LENGTH_SHORT).show();
+				StringUtil.showToast(getApplicationContext(), dataJo.optString("errmsg"));
 			}
 
 
@@ -451,7 +448,21 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			startActivityForResult(intent, 1);
 			break;
 		case R.id.topbar_goback:
-			finish();
+			if (BidHomeActivity.Flag.equals("bidhome1")){
+				intent = new Intent(this, BidHomeActivity.class);
+				setResult(2,intent);
+				finish();
+			} else if (BidHomeActivity.Flag.equals("bidhome3")) {
+				intent = new Intent(this, BidHomeActivity.class);
+				setResult(3,intent);
+				finish();
+			} else if (HomeActivity.Flag.equals("home")) {
+				intent = new Intent(this, HomeActivity.class);
+				setResult(1,intent);
+				finish();
+			} else {
+				finish();
+			}
 			break;
 		case R.id.clean_name:
 			userNameText.setText("");
@@ -578,14 +589,14 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 					userLoginThirdPartyHttp(openID, nickName, imgUrl);
 
 				} else {
-					Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+					StringUtil.showToast(getApplicationContext(), response);
 				}
 			}
 		}
 		@Override
 		public void onWeiboException(WeiboException e) {
 			ErrorInfo info = ErrorInfo.parse(e.getMessage());
-			Toast.makeText(getApplicationContext(), info.toString(), Toast.LENGTH_LONG).show();
+			StringUtil.showToast(getApplicationContext(), info.toString());
 		}
 	};
 
@@ -598,11 +609,11 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	class BaseUiListener implements IUiListener {
 		@Override
 		public void onCancel() {
-			Toast.makeText(getApplicationContext(), "登录取消", Toast.LENGTH_LONG).show();
+			StringUtil.showToast(UserLoginNewActivity.this, "登录取消");
 		}
 		@Override
 		public void onComplete(Object response) {
-			Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_LONG).show();
+			StringUtil.showToast(UserLoginNewActivity.this,  "登录成功");
 			try {
 				JSONObject jsonObj = new JSONObject(response.toString());
 				openID = jsonObj.optString("openid");
@@ -645,7 +656,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		}
 		@Override
 		public void onError(UiError arg0) {
-			Toast.makeText(getApplicationContext(), "登录失败", Toast.LENGTH_LONG).show();
+			StringUtil.showToast(getApplicationContext(), "登录失败");
 		}
 
 	}

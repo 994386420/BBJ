@@ -165,7 +165,6 @@ dependencies {
     implementation project(':sdk')
     implementation project(':tlslibrary')
     implementation project(':ui')
-    implementation project(':cptr')
     implementation files('libs/okio-1.6.0.jar')
     implementation files('libs/okhttp-3.2.0.jar')
     provided files('libs/open_sdk.jar')

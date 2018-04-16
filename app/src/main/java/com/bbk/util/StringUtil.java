@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.bbk.activity.R;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,5 +95,16 @@ public class StringUtil {
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.setView(layout);
 		toast.show();
+	}
+
+	public  static List removeDuplicate(List list)  {
+		for  ( int  i  =   0 ; i  <  list.size()  -   1 ; i ++ )  {
+			for  ( int  j  =  list.size()  -   1 ; j  >  i; j -- )  {
+				if  (list.get(j).equals(list.get(i)))  {
+					list.remove(j);
+				}
+			}
+		}
+		return list;
 	}
 }

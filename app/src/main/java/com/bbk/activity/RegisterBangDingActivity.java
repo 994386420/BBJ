@@ -18,6 +18,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.JiaMiUtil;
 import com.bbk.util.MD5Util;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
 import com.bbk.util.ValidatorUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -69,9 +70,9 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					JSONObject data;
                         data = new JSONObject(dataStr);
 					if ("1".equals(data.optString("status"))) {
-						Toast.makeText(getApplicationContext(),"请求成功", Toast.LENGTH_LONG).show();
+						StringUtil.showToast(RegisterBangDingActivity.this,"发送成功");
 					}else {
-						Toast.makeText(getApplicationContext(),data.optString("errmsg"), Toast.LENGTH_LONG).show();
+						StringUtil.showToast(RegisterBangDingActivity.this,data.optString("errmsg"));
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -115,10 +116,10 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							}
 						}).start();
 					} else {
-						Toast.makeText(getApplicationContext(),"您输入的不是手机号或者邮箱", Toast.LENGTH_LONG).show();
+						StringUtil.showToast(RegisterBangDingActivity.this,"您输入的不是手机号或者邮箱");
 					}
 				}else{
-					Toast.makeText(getApplicationContext(),data.optString("errmsg"), Toast.LENGTH_LONG).show();
+					StringUtil.showToast(RegisterBangDingActivity.this,data.optString("errmsg"));
 				}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -134,7 +135,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					JSONObject content = data1.getJSONObject("content");
 					if("1".equals(data1.optString("status"))) {
 						if ("1".equals(content.optString("status"))) {
-							Toast.makeText(RegisterBangDingActivity.this, content.optString("msg"),Toast.LENGTH_LONG ).show();
+							StringUtil.showToast(RegisterBangDingActivity.this, content.optString("msg"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "thirdLogin", "yes");
 							JSONObject inforJsonObj = content.optJSONObject("info");
 							String usertjm = bangding_tjm.getText().toString();
@@ -157,7 +158,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 									"userInfor", "login_STATE","1");
 								intent = new Intent();
 								setResult(3, intent);
-							TencentLoginUtil.Login(RegisterBangDingActivity.this);
+							    TencentLoginUtil.Login(RegisterBangDingActivity.this);
 								if (DataFragment.login_remind!= null) {
 									DataFragment.login_remind.setVisibility(View.GONE);
 								}
@@ -165,10 +166,10 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							//友盟登录
 							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
 							}else if("0".equals(content.optString("status"))){
-								Toast.makeText(RegisterBangDingActivity.this, content.optString("errmsg"),Toast.LENGTH_LONG ).show();
+								StringUtil.showToast(RegisterBangDingActivity.this, content.optString("errmsg"));
 							}
 					}else {
-						Toast.makeText(RegisterBangDingActivity.this, data1.optString("errmsg"),Toast.LENGTH_LONG ).show();
+						StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -352,6 +353,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 				params.put("openid", openID);
 				params.put("imgUrl", imgUrl);
 			    params.put("mesgCode", mesgCode);
+			    params.put("client", "android");
 				final String url1 = Constants.MAIN_BASE_URL_MOBILE + "apiService/registBandOpenid";
 				new Thread(new Runnable() {
 					

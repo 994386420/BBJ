@@ -43,6 +43,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyGridView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -124,23 +125,23 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
                 finish();
             }
         });
-        magrement = (ImageView) findViewById(R.id.magrement);
-        magrement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isagrement){
-                    isagrement = false;
-                    magrement.setImageResource(R.mipmap.bj_09_01);
-                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
-                    mcommit.setClickable(false);
-                }else {
-                    isagrement = true;
-                    magrement.setImageResource(R.mipmap.bj_09_02);
-                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
-                    mcommit.setClickable(true);
-                }
-            }
-        });
+//        magrement = (ImageView) findViewById(R.id.magrement);
+//        magrement.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isagrement){
+//                    isagrement = false;
+//                    magrement.setImageResource(R.mipmap.bj_09_01);
+//                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
+//                    mcommit.setClickable(false);
+//                }else {
+//                    isagrement = true;
+//                    magrement.setImageResource(R.mipmap.bj_09_02);
+//                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
+//                    mcommit.setClickable(true);
+//                }
+//            }
+//        });
         mscrollview = (ScrollView)findViewById(R.id.mscrollview);
         mname = (EditText)findViewById(R.id.mname);
         mcount = (EditText)findViewById(R.id.mcount);
@@ -217,11 +218,11 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
     }
     private void loadData() {
         if (TextUtils.isEmpty(mname.getText().toString())){
-            ToastUtil("镖品名称不能为空");
+            StringUtil.showToast(this,"镖品名称不能为空");
         }else if (TextUtils.isEmpty(mprice.getText().toString())){
-            ToastUtil("镖品单价不能为空");
+            StringUtil.showToast(this,"镖品单价不能为空");
         }else if(TextUtils.isEmpty(mcount.getText().toString())){
-            ToastUtil("数量不能为空");
+            StringUtil.showToast(this,"数量不能为空");
         }else {
             DialogSingleUtil.show(BidFbActivity.this);
             if ("add".equals(list.get(list.size() - 1))) {
@@ -425,11 +426,10 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
                 String post = msg.obj.toString();
                 try {
                     JSONObject object = new JSONObject(post);
-                    Log.i("发镖信息",object+"==========");
                     if (object.optInt("status") <= 0) {
-                        Toast.makeText(BidFbActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(BidFbActivity.this, object.optString("errmsg"));
                     } else {
-                        Toast.makeText(BidFbActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(BidFbActivity.this, "发布成功");
                         mname.setText("");
                         mprice.setText("");
                         mcount.setText("");
