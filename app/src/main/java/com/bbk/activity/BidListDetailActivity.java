@@ -8,9 +8,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.andview.refreshview.XRefreshView;
+import com.bbk.adapter.BidAcceptanceAdapter;
 import com.bbk.adapter.BidListDetailAdapter;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
@@ -22,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +48,9 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
     private BidListDetailAdapter adapter;
     private DataFlow6 dataFlow;
     private ImageView topbar_goback_btn;
+    private LinearLayout mNoMessageLayout;//无数据显示页面
+    private RelativeLayout mNoNetWorkLayout;//链接异常页面
+    private TextView mchongshi,mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,12 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
         initData();
     }
     private void initVeiw() {
+        mNoMessageLayout = findViewById(R.id.no_message_layout);
+        mNoNetWorkLayout = findViewById(R.id.mzhanwei_layout);
+        mchongshi = findViewById(R.id.mchongshi);
+        mchongshi.setOnClickListener(onClickListener);
+        mTitle = findViewById(R.id.title);
+        mTitle.setText("我的发镖");
         list = new ArrayList<>();
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +120,15 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
         });
 
     }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            isclear = true;
+            page = 1;
+            loadData();
+        }
+    };
 
     private void initData() {
         if (getIntent().getStringExtra("status")!=null) {
@@ -197,12 +220,21 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
                     try {
                         JSONArray array = new JSONArray(content);
                         addList(array);
-                        adapter = new BidListDetailAdapter(this,list);
-                        mlistview.setAdapter(adapter);
-                        mlistview.setOnItemClickListener(onItemClickListener);
-                        adapter.notifyDataSetChanged();
+                        if (list != null && list.size() > 0){
+                            adapter = new BidListDetailAdapter(this,list);
+                            mlistview.setAdapter(adapter);
+                            mlistview.setOnItemClickListener(onItemClickListener);
+                            adapter.notifyDataSetChanged();
+                            mlistview.setVisibility(View.VISIBLE);
+                            mNoMessageLayout.setVisibility(View.GONE);
+                        }else {
+                            mlistview.setVisibility(View.GONE);
+                            mNoMessageLayout.setVisibility(View.VISIBLE);
+                        }
                     }catch (Exception e){
-
+                        mNoNetWorkLayout.setVisibility(View.VISIBLE);
+                        mlistview.setVisibility(View.GONE);
+                        mNoMessageLayout.setVisibility(View.GONE);
                     }
                     break;
                 default:

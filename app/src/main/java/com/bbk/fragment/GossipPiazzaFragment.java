@@ -107,21 +107,14 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
 
     private void initView() {
         list = new ArrayList<>();
-
-        mrefresh = (XRefreshView) mView.findViewById(R.id.mrefresh);
-        mrecyclerview = (RecyclerView) mView.findViewById(R.id.mrecyclerview);
-        float_btn = (FloatingActionButton) mView.findViewById(R.id.float_btn);
+        mrefresh =  mView.findViewById(R.id.mrefresh);
+        mrecyclerview =  mView.findViewById(R.id.mrecyclerview);
+        float_btn = mView.findViewById(R.id.float_btn);
         mrecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         adapter = new GossipPiazzaAdapter(getActivity(), list);
         adapter.setOnItemClickListener(new GossipPiazzaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-//                String url = Constants.MAIN_BASE_URL_MOBILE +"mobile/blbar?blid="+list.get(position).get("blid")+"&userid="+userID;
-//                Intent intent = new Intent(getActivity(), WebViewWZActivity.class);
-//                intent.putExtra("url",url);
-//                intent.putExtra("title",list.get(position).get("title"));
-//                startActivity(intent);
                 Intent intent = new Intent(getActivity(), GossipPiazzaDetailActivity.class);
                 intent.putExtra("blid",list.get(position).get("blid"));
                 startActivity(intent);
@@ -236,10 +229,8 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
                 JSONArray array = new JSONArray(content);
                 if (array.length() < 10) {
                     mrefresh.setPullLoadEnable(false);
-//                mrefresh.setLoadComplete(true);
                 } else {
                     mrefresh.setPullLoadEnable(true);
-//                mrefresh.setLoadComplete(false);
                 }
                 for (int i = 0; i < array.length(); i++) {
                     Map<String, String> map = new HashMap<>();
@@ -250,7 +241,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
                     map.put("title", Object.optString("title"));
                     map.put("headimg", Object.optString("headimg"));
                     map.put("dtime", Object.optString("dtime"));
-//                    String iszna = Object.optString("isZan");
                     map.put("isZan", Object.optString("isZan"));
                     map.put("zannum", Object.optString("zannum"));
                     map.put("readnum", Object.optString("readnum"));

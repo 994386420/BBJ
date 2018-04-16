@@ -27,6 +27,7 @@ import com.bbk.chat.model.NomalConversation;
 import com.bbk.chat.ui.ChatActivity;
 import com.bbk.chat.ui.HomeActivity;
 import com.bbk.chat.utils.PushUtil;
+import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.tencent.imsdk.TIMConversation;
@@ -122,7 +123,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
                             //待获取用户资料的好友列表
                             users.add(this.conversationList.get(i).getIdentify());
                         }
-                        removeDuplicate(users);
+                        StringUtil.removeDuplicate(users);
                         Log.e("==========", "getUsersProfile " + users);
                         if (users != null && users.size() >0){
                             getFriendsProfile();
@@ -137,16 +138,6 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         groupManagerPresenter.getGroupManageLastMessage();
     }
 
-    public   static   List  removeDuplicate(List list)  {
-        for  ( int  i  =   0 ; i  <  list.size()  -   1 ; i ++ )  {
-            for  ( int  j  =  list.size()  -   1 ; j  >  i; j -- )  {
-                if  (list.get(j).equals(list.get(i)))  {
-                    list.remove(j);
-                }
-            }
-        }
-        return list;
-    }
     private void getFriendsProfile(){
         //获取好友资料
         timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
@@ -184,14 +175,6 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
                     adapter.notifyDataSetChanged();
                 }
                 for(TIMUserProfile res : result){
-//                    Log.e("================", "identifier: " + res);
-//                    viewHolder.tvName.setText(res.getNickName());
-////                    viewHolder.avatar.setImageResource(data.getAvatar());
-//                    Glide.with(context)
-//                            .load(res.getFaceUrl())
-//                            .priority(Priority.HIGH)
-//                            .placeholder(R.mipmap.zw_img_300)
-//                            .into(viewHolder.avatar);
                 }
             }
         });

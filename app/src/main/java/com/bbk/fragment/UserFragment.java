@@ -65,7 +65,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	private View mView;
 	private Context context;
 	private RelativeLayout helpLayout,newpinglun;
-
 	public TextView isLoginTv;
 	private TextView hasNewTv,sign,mjb,mcollectnum,mfootnum,mnewmsg,mJlzText;
 	private View user_head;
@@ -117,43 +116,42 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		mJiebiaoLayout = mView.findViewById(R.id.ll_my_jiebiao);
 		mJlzText = mView.findViewById(R.id.jlz_text);
 		anim_mask_layout = createAnimLayout(); 
-		newpinglun = (RelativeLayout) mView.findViewById(R.id.newpinglun);
-		xrefresh = (XRefreshView) mView.findViewById(R.id.xrefresh);
-		mzhanwei = (RelativeLayout) mView.findViewById(R.id.mzhanwei);
-		user_img = (ImageView) mView.findViewById(R.id.user_img);
+		newpinglun =  mView.findViewById(R.id.newpinglun);
+		xrefresh =  mView.findViewById(R.id.xrefresh);
+		mzhanwei = mView.findViewById(R.id.mzhanwei);
+		user_img =  mView.findViewById(R.id.user_img);
 		CircleImageView1.getImg(getActivity(), R.mipmap.logo_01, user_img);
-		mbackground = (LinearLayout) mView.findViewById(R.id.mbackground);
-		sign = (TextView) mView.findViewById(R.id.sign);
-		user_name = (TextView) mView.findViewById(R.id.user_name);
-		mjb = (TextView) mView.findViewById(R.id.mjb);
-		mcollectnum = (TextView) mView.findViewById(R.id.mcollectnum);
-		mfootnum = (TextView) mView.findViewById(R.id.mfootnum);
-		mnewmsg = (TextView) mView.findViewById(R.id.mnewmsg);
-		mchongshi = (TextView) mView.findViewById(R.id.mchongshi);
-		mtaobaotext = (TextView) mView.findViewById(R.id.mtaobaotext);
-		mtaobaouser = (TextView) mView.findViewById(R.id.mtaobaouser);
+		mbackground =  mView.findViewById(R.id.mbackground);
+		sign = mView.findViewById(R.id.sign);
+		user_name = mView.findViewById(R.id.user_name);
+		mjb =  mView.findViewById(R.id.mjb);
+		mcollectnum = mView.findViewById(R.id.mcollectnum);
+		mfootnum = mView.findViewById(R.id.mfootnum);
+		mnewmsg =  mView.findViewById(R.id.mnewmsg);
+		mchongshi =  mView.findViewById(R.id.mchongshi);
+		mtaobaotext = mView.findViewById(R.id.mtaobaotext);
+		mtaobaouser =  mView.findViewById(R.id.mtaobaouser);
 		WindowManager wm = getActivity().getWindowManager();
 		int width = wm.getDefaultDisplay().getWidth();
-		LayoutParams params = (LayoutParams) mbackground.getLayoutParams();
+		LayoutParams params = mbackground.getLayoutParams();
 		params.height = (width * 360) / 828;
 		mbackground.setLayoutParams(params);
-		mjingbi = (LinearLayout) mView.findViewById(R.id.mjingbi);
-		mcollection = (LinearLayout) mView.findViewById(R.id.mcollection);
-		mfoot = (LinearLayout) mView.findViewById(R.id.mfoot);
-		mphonechongzhi = (LinearLayout) mView.findViewById(R.id.mphonechongzhi);
-		mshopcart = (LinearLayout) mView.findViewById(R.id.mshopcart);
-		morderlist = (LinearLayout) mView.findViewById(R.id.morderlist);
-		mlogisticsquery = (LinearLayout) mView.findViewById(R.id.mlogisticsquery);
-		mycomment = (LinearLayout) mView.findViewById(R.id.mycomment);
-		mygossip = (LinearLayout) mView.findViewById(R.id.mygossip);
-		mfeedback = (LinearLayout) mView.findViewById(R.id.mfeedback);
-		mtaobaologin = (LinearLayout) mView.findViewById(R.id.mtaobaologin);
-		mcallservices = (LinearLayout) mView.findViewById(R.id.mcallservices);
-		mabout = (LinearLayout) mView.findViewById(R.id.mabout);
-		msign = (LinearLayout) mView.findViewById(R.id.msign);
-		mcallservices = (LinearLayout) mView.findViewById(R.id.mcallservices);
-		mjbimg = (ImageView) mView.findViewById(R.id.mjbimg);
-//		mjbimg1 = (ImageView) mView.findViewById(R.id.mjbimg1);
+		mjingbi =  mView.findViewById(R.id.mjingbi);
+		mcollection =  mView.findViewById(R.id.mcollection);
+		mfoot =  mView.findViewById(R.id.mfoot);
+		mphonechongzhi = mView.findViewById(R.id.mphonechongzhi);
+		mshopcart =  mView.findViewById(R.id.mshopcart);
+		morderlist =mView.findViewById(R.id.morderlist);
+		mlogisticsquery =  mView.findViewById(R.id.mlogisticsquery);
+		mycomment =  mView.findViewById(R.id.mycomment);
+		mygossip =  mView.findViewById(R.id.mygossip);
+		mfeedback = mView.findViewById(R.id.mfeedback);
+		mtaobaologin =  mView.findViewById(R.id.mtaobaologin);
+		mcallservices =  mView.findViewById(R.id.mcallservices);
+		mabout =  mView.findViewById(R.id.mabout);
+		msign =  mView.findViewById(R.id.msign);
+		mcallservices =  mView.findViewById(R.id.mcallservices);
+		mjbimg = mView.findViewById(R.id.mjbimg);
 		mFabiaoLayout.setOnClickListener(this);
 		mJiebiaoLayout.setOnClickListener(this);
 		mjingbi.setOnClickListener(this);
@@ -476,6 +474,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 			}
 			
 			break;
+			//我的发镖
 			case R.id.ll_my_fabiao:
 				if (TextUtils.isEmpty(userID)) {
 					intent = new Intent(getActivity(), UserLoginNewActivity.class);
@@ -485,6 +484,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 					startActivity(intent);
 				}
 				break;
+			//我的劫镖
 			case R.id.ll_my_jiebiao:
 				if (TextUtils.isEmpty(userID)) {
 					intent = new Intent(getActivity(), UserLoginNewActivity.class);

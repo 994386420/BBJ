@@ -81,20 +81,24 @@
     <View
         android:id="@+id/henggang213"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="#cbcbcb" />
-    <com.andview.refreshview.XRefreshView
-        android:id="@+id/xrefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <ListView
-            android:background="#f3f3f3"
-            android:id="@+id/mlistview"
+        <include
+            layout="@layout/no_network_layout"/>
+        <include
+            layout="@layout/activity_no_message_layout"/>
+        <com.andview.refreshview.XRefreshView
+            android:id="@+id/xrefresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@null">
-        </ListView>
-    </com.andview.refreshview.XRefreshView>
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/mlistview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f3f3f3"
+                android:divider="@null"></ListView>
+        </com.andview.refreshview.XRefreshView>
+
        </LinearLayout>
 </LinearLayout>

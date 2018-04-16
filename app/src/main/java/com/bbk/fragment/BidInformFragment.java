@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 消息_01_通知
+ * 消息_发镖_通知
  */
 
 public class BidInformFragment extends Fragment implements ResultEvent {
@@ -79,7 +79,7 @@ public class BidInformFragment extends Fragment implements ResultEvent {
             public void onRefresh(boolean isPullDown) {
                     isclear = true;
                     topicpage = 1;
-                    initData(false);
+                    initData(true);
             }
 
             @Override
@@ -91,7 +91,7 @@ public class BidInformFragment extends Fragment implements ResultEvent {
             @Override
             public void onLoadMore(boolean isSilence) {
                     topicpage++;
-                    initData(false);
+                    initData(true);
             }
 
             @Override
@@ -168,8 +168,9 @@ public class BidInformFragment extends Fragment implements ResultEvent {
                             intent.putExtra("fbid",map.get("fbid"));
                             startActivity(intent);
                             readSysmsg(map.get("id"));
-                        }
-                    });
+                          }
+                       });
+                        isclear =false;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -180,6 +181,5 @@ public class BidInformFragment extends Fragment implements ResultEvent {
     @Override
     public void onResume() {
         super.onResume();
-        initData(false);
     }
 }

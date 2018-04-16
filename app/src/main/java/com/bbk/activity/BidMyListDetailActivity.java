@@ -6,7 +6,10 @@ import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.andview.refreshview.XRefreshView;
 import com.bbk.adapter.BidListDetailAdapter;
@@ -41,6 +44,9 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
     private BidMyListDetailAdapter adapter;
     private DataFlow6 dataFlow;
     private ImageView topbar_goback_btn;
+    private LinearLayout mNoMessageLayout;//无数据显示页面
+    private RelativeLayout mNoNetWorkLayout;//链接异常页面
+    private TextView mchongshi,mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +60,24 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
         initData();
     }
     private void initVeiw() {
+        mNoMessageLayout = findViewById(R.id.no_message_layout);
+        mNoNetWorkLayout = findViewById(R.id.mzhanwei_layout);
+        mchongshi = findViewById(R.id.mchongshi);
+        mchongshi.setOnClickListener(onClickListener);
+        mTitle = findViewById(R.id.title);
+        mTitle.setText("我的劫镖");
         list = new ArrayList<>();
         userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-        topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
+        topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        mlistview = (ListView) findViewById(R.id.mlistview);
-        tablayout = (TabLayout) findViewById(R.id.tablayout);
-        xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
+        mlistview =  findViewById(R.id.mlistview);
+        tablayout = findViewById(R.id.tablayout);
+        xrefresh =  findViewById(R.id.xrefresh);
         tablayout.addTab(tablayout.newTab().setText("全部"));
         tablayout.addTab(tablayout.newTab().setText("正接镖"));
         tablayout.addTab(tablayout.newTab().setText("待评论"));
@@ -99,21 +111,18 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
 
             }
         });
-        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(BidMyListDetailActivity.this,BidMyBillDetailActivity.class);
-                intent.putExtra("fbid",list.get(position).get("id"));
-                intent.putExtra("bidid",list.get(position).get("bidid"));
-                startActivity(intent);
-            }
-        });
-
     }
 
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            isclear = true;
+            page = 1;
+            loadData();
+        }
+    };
+
     private void initData() {
-        adapter = new BidMyListDetailAdapter(this,list);
-        mlistview.setAdapter(adapter);
         if (getIntent().getStringExtra("status")!=null) {
             String status1 = getIntent().getStringExtra("status");
             int i = Integer.valueOf(status1);
@@ -197,21 +206,43 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         xrefresh.stopRefresh();
         xrefresh.stopLoadMore();
-        try {
             switch (requestCode){
                 case 1:
                     if (isclear){
                         list.clear();
                     }
+                    try {
                     JSONArray array = new JSONArray(content);
                     addList(array);
-                    adapter.notifyDataSetChanged();
+                    if (list != null && list.size() > 0){
+                        adapter = new BidMyListDetailAdapter(this,list);
+                        mlistview.setAdapter(adapter);
+                        mlistview.setOnItemClickListener(onItemClickListener);
+                        adapter.notifyDataSetChanged();
+                        mlistview.setVisibility(View.VISIBLE);
+                        mNoMessageLayout.setVisibility(View.GONE);
+                    }else {
+                        mlistview.setVisibility(View.GONE);
+                        mNoMessageLayout.setVisibility(View.VISIBLE);
+                    }
+                  }catch (Exception e){
+                mNoNetWorkLayout.setVisibility(View.VISIBLE);
+                mlistview.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }
+
                     break;
                 default:
                     break;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
+    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Intent intent = new Intent(BidMyListDetailActivity.this,BidMyBillDetailActivity.class);
+            intent.putExtra("fbid",list.get(i).get("id"));
+            intent.putExtra("bidid",list.get(i).get("bidid"));
+            startActivity(intent);
+        }
+    };
 }
