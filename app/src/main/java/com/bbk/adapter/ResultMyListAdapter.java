@@ -109,18 +109,19 @@ public class ResultMyListAdapter extends BaseAdapter{
 		}
         if ("1".equals(dataSet.get("isxianshi"))) {
         	final String domain1 = dataSet.get("domain1").toString();
+			final String rowkey = dataSet.get("groupRowKey").toString();
     		vh.intentbuy.setOnClickListener(new OnClickListener() {
     			
     			@Override
     			public void onClick(View arg0) {
     				Intent intent = new Intent(context, ResultDialogActivity.class);
-    				intent.putExtra("tarr",dataSet.get("tarr").toString() );
+//    				intent.putExtra("tarr",dataSet.get("tarr").toString() );
     				intent.putExtra("keyword",dataSet.get("keyword").toString() );
+					intent.putExtra("rowkey",rowkey );
     				context.startActivity(intent);
     				
     			}
     		});
-            final String rowkey = dataSet.get("groupRowKey").toString();
             vh.findsimilar.setOnClickListener(new OnClickListener() {
     			
     			@Override

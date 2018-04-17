@@ -11,6 +11,8 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.bbk.activity.BuildConfig;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -66,8 +68,9 @@ public class ImageCaptureManager {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        String authority = mContext.getApplicationInfo().packageName + ".provider";
-        photoFile = FileProvider.getUriForFile(this.mContext.getApplicationContext(), authority, file);
+        //清单文件配置com.bbk.activity.fileProvider，否则要报错
+        String authority = BuildConfig.APPLICATION_ID + ".fileProvider";
+        photoFile = FileProvider.getUriForFile(mContext, authority, file);
       } else {
         photoFile = Uri.fromFile(file);
       }

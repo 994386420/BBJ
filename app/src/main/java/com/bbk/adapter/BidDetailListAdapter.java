@@ -83,6 +83,7 @@ public class BidDetailListAdapter extends BaseAdapter{
                 viewHolder.mBid.setTextColor(Color.parseColor("#1a9afc"));
                 String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "imgUrl");
                 CircleImageView1.getImg(context,imgUrl,viewHolder.mimg);
+
             }
             switch (position){
                 case 0:

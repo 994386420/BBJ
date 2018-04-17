@@ -2,4 +2,6 @@
 <paths>
     <external-path name="external_storage_root" path="."/>
     <files-path name="files" path="."/>
+    <external-path path="Android/data/com.bbk.activity/" name="files_root" />
+    <external-path path="." name="external_storage_root" />
 </paths>

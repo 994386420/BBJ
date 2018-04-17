@@ -14,6 +14,8 @@ import com.bbk.adapter.BidDetailListAdapter;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,36 +86,52 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent 
     }
     private void updateAssociateBid() {
         HashMap<String, String> paramsMap = new HashMap<>();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         paramsMap.put("jbid",bidid);
         paramsMap.put("fbid",fbid);
-        dataFlow.requestData(1, "bid/updateAssociateBid", paramsMap, this,true);
+        paramsMap.put("userid",userID);
+        dataFlow.requestData(2, "bid/updateAssociateBid", paramsMap, this,true);
     }
 
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        try {
-            JSONArray array = new JSONArray(content);
-            JSONObject object = array.getJSONObject(0);
-            String blidid = object.optString("bidid");
-            String biduser = object.optString("biduser");
-            String biddesc = object.optString("biddesc");
-            String bidprice = object.optString("bidprice");
-            String bidtime = object.optString("bidtime");
-            final String bidurl = object.optString("bidurl");
-            mendprice.setText("￥"+bidprice);
-            murltext.setText(bidurl);
-            mintentbuy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(BidFilterPriceActivity.this,WebViewActivity.class);
-                    intent.putExtra("url",bidurl);
-                    startActivity(intent);
+        switch (requestCode){
+            case 1:
+                try {
+                    JSONArray array = new JSONArray(content);
+                    JSONObject object = array.getJSONObject(0);
+                    String blidid = object.optString("bidid");
+                    String biduser = object.optString("biduser");
+                    String biddesc = object.optString("biddesc");
+                    String bidprice = object.optString("bidprice");
+                    String bidtime = object.optString("bidtime");
+                    final String bidurl = object.optString("bidurl");
+                    mendprice.setText("￥"+bidprice);
+                    murltext.setText(bidurl);
+                    mintentbuy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(BidFilterPriceActivity.this,WebViewActivity.class);
+                            intent.putExtra("url",bidurl);
+                            startActivity(intent);
+                        }
+                    });
+                    mbidesc.setText("留言:"+biddesc);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-            mbidesc.setText("留言:"+biddesc);
-        } catch (JSONException e) {
-            e.printStackTrace();
+                break;
+            case 2:
+                if (dataJo.optString("status").equals("1")){
+                    StringUtil.showToast(this, "交镖成功");
+                    Intent intent = new Intent(this, BidListDetailActivity.class);
+                    intent.putExtra("status","3");
+                    startActivity(intent);
+                    finish();
+                }else {
+                    StringUtil.showToast(this, "交镖失败");
+                }
+                break;
         }
-
     }
 }

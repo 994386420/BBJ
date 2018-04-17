@@ -51,7 +51,6 @@ public class BidAcceptanceAdapter extends BaseAdapter{
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        try {
             ViewHolder viewHolder;
             if (convertView == null) {
                 viewHolder = new ViewHolder();
@@ -62,10 +61,13 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                 viewHolder.mcount = (TextView)convertView.findViewById(R.id.mcount);
                 viewHolder.mprice = (TextView)convertView.findViewById(R.id.mprice);
                 viewHolder.mtime = (RushBuyCountDownTimerView)convertView.findViewById(R.id.mtime);
+                viewHolder.mbackground = convertView.findViewById(R.id.item_image_background);
+                viewHolder.mStatus = convertView.findViewById(R.id.status_text);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+          try {
             Map<String,String> map = list.get(position);
             String endtime = map.get("endtime");
             String img = map.get("img");
@@ -76,6 +78,16 @@ public class BidAcceptanceAdapter extends BaseAdapter{
             String number = map.get("number");
             String type = map.get("type");
             String url = map.get("url");
+            String status = map.get("status");
+            if (status != null){
+                if (status.equals("1")){
+                viewHolder.mStatus.setText("接镖");
+                viewHolder.mbackground.setVisibility(View.GONE);
+                }else {
+                viewHolder.mbackground.setVisibility(View.VISIBLE);
+                viewHolder.mStatus.setText("完成");
+                }
+            }
             viewHolder.mtime.addsum(endtime,"#999999");
             viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
@@ -94,8 +106,8 @@ public class BidAcceptanceAdapter extends BaseAdapter{
         }
     }
     class ViewHolder{
-        ImageView item_img;
-        TextView item_title,mbidprice,mcount,mprice;
+        ImageView item_img,mbackground;
+        TextView item_title,mbidprice,mcount,mprice,mStatus;
         RushBuyCountDownTimerView mtime;
     }
 

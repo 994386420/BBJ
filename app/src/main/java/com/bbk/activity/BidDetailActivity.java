@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ import lecho.lib.hellocharts.model.Line;
 public class BidDetailActivity extends BaseActivity implements ResultEvent {
 
     private DataFlow6 dataFlow;
-    private String fbid;
+    private String fbid,status;
     private Banner mbanner;
     private TextView mtitle,mendtimetop,mprice,mcount,mspectatornum,mbidnum
             ,mbidnum2,mstarttime,mendtime,mprice2,mextra,mplnum,mallpl;
@@ -54,6 +55,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     private BidDetailListPLAdapter pladapter;
     private ImageView topbar_goback_btn;
     private String userid = "";
+    private LinearLayout isJiebiaoLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +66,21 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow6(this);
         fbid = getIntent().getStringExtra("id");
-//        fbid = "2";
         initView();
         initData();
+        //从我的接镖列表获取返回值status，如果status = 1，可接镖；其他为不可接镖
+        if (getIntent().getStringExtra("status") != null){
+            status = getIntent().getStringExtra("status");
+            if (status.equals("1")){
+                isJiebiaoLayout.setVisibility(View.VISIBLE);
+            }else {
+                isJiebiaoLayout.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void initView() {
+        isJiebiaoLayout = findViewById(R.id.isJiebiao_layout);
         list = new ArrayList<>();
         listpl = new ArrayList<>();
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
@@ -154,6 +165,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
         dataFlow.requestData(1, "bid/queryBidDetail", paramsMap, this,true);
     }
     public void addList(JSONArray bidarr) throws JSONException {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         for (int i = 0; i < bidarr.length(); i++) {
             JSONObject object = bidarr.getJSONObject(i);
             Map<String,String> map = new HashMap<>();
@@ -165,8 +177,17 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             map.put("bidstatus",object.optString("bidstatus"));
             map.put("bidtime",object.optString("bidtime"));
             map.put("bidurl",object.optString("bidurl"));
-            if (i<3){
+//            if (i<3){
                 list.add(map);
+//            }
+//            Log.i("status是否可接镖",object.optString("bidstatus"));
+            //判断如果用户ID跟biduserid有一样的，如果bidstatus状态为-1则可以接镖
+            if (list.get(i).get("biduserid").toString().equals(userID)){
+                if (object.optString("bidstatus").equals("-1")){
+                    isJiebiaoLayout.setVisibility(View.VISIBLE);
+                }else {
+                    isJiebiaoLayout.setVisibility(View.GONE);
+                }
             }
         }
         adapter.notifyDataSetChanged();
@@ -226,28 +247,32 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             JSONArray imgs = object.getJSONArray("imgs");
             JSONArray bidarr = object.getJSONArray("bidarr");
             JSONArray plarr = object.getJSONArray("plarr");
-            mtitle.setText(title);
-            mendtimetop.setText("待接镖   "+endtime+" 结束");
-            mprice.setText(price);
-            mprice2.setText("￥"+price);
-            mcount.setText("x"+number);
-            mspectatornum.setText("围观 "+spectator+"  人");
-            mbidnum.setText("接镖 "+bidnum+"  人");
-            mbidnum2.setText(bidnum+" 条");
-            mstarttime.setText(begintime);
-            mendtime.setText(endtime);
-            mextra.setText(extra);
-            addList(bidarr);
-            addPLList(plarr);
-            List<Object> imgUrlList = new ArrayList<>();
             try {
-                for (int i = 0; i < imgs.length(); i++) {
-                    String imgUrl = imgs.getString(i);
-                    imgUrlList.add(imgUrl);
-                }
-            } catch (Exception e) {
+                mtitle.setText(title);
+                mendtimetop.setText("待接镖   "+endtime+" 结束");
+                mprice.setText(price);
+                mprice2.setText("￥"+price);
+                mcount.setText("x"+number);
+                mspectatornum.setText("围观 "+spectator+"  人");
+                mbidnum.setText("接镖 "+bidnum+"  人");
+                mbidnum2.setText(bidnum+" 条");
+                mstarttime.setText(begintime);
+                mendtime.setText(endtime);
+                mextra.setText(extra);
+            }catch (Exception e){
                 e.printStackTrace();
             }
+            try {
+                addList(bidarr);
+                addPLList(plarr);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            List<Object> imgUrlList = new ArrayList<>();
+             for (int i = 0; i < imgs.length(); i++) {
+                    String imgUrl = imgs.getString(i);
+                    imgUrlList.add(imgUrl);
+             }
             mbanner.setImages(imgUrlList)
                     .setImageLoader(new GlideImageLoader())
                     .setOnBannerListener(new OnBannerListener() {

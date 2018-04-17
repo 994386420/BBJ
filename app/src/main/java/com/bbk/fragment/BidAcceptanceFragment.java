@@ -95,25 +95,17 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
     public void initView(){
         list = new ArrayList<>();
         titlelist = new ArrayList<>();
-        topbar_goback_btn = (ImageView)mView.findViewById(R.id.topbar_goback_btn);
+        topbar_goback_btn = mView.findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
             }
         });
-        mbox = (LinearLayout)mView.findViewById(R.id.mbox);
-        mrefresh = (XRefreshView)mView.findViewById(R.id.mrefresh);
-        search_edit = (EditText) mView.findViewById(R.id.search_edit);
-        mlistview = (ListView)mView.findViewById(R.id.mlistview);
-        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), BidDetailActivity.class);
-                intent.putExtra("id",list.get(position).get("id"));
-                startActivity(intent);
-            }
-        });
+        mbox = mView.findViewById(R.id.mbox);
+        mrefresh = mView.findViewById(R.id.mrefresh);
+        search_edit =  mView.findViewById(R.id.search_edit);
+        mlistview = mView.findViewById(R.id.mlistview);
         refreshAndloda();
         search_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -282,6 +274,8 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             map.put("number",object.optString("number"));
             map.put("type",object.optString("type"));
             map.put("url",object.optString("url"));
+            Log.i("商品状态++++++",object.optString("status"));
+            map.put("status",object.optString("status"));
             list.add(map);
         }
     }
@@ -314,6 +308,15 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
                         mlistview.setVisibility(View.VISIBLE);
                         mNoMessageLayout.setVisibility(View.GONE);
                         mHorizontalScrollView.setVisibility(View.VISIBLE);
+                        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(getActivity(), BidDetailActivity.class);
+                                intent.putExtra("id",list.get(position).get("id"));
+                                intent.putExtra("status",list.get(position).get("status"));
+                                startActivity(intent);
+                            }
+                        });
                     }
                     adapter.notifyDataSetChanged();
                     break;

@@ -187,8 +187,12 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         viewHolder.mprice.setText(object.optString("price"));
         viewHolder.mextra.setText(object.optString("extra"));
         JSONArray imgs = object.getJSONArray("imgs");
-        for (int j = 0; j < 3; j++) {
-            Glide.with(context).load(imgs.getString(j)).into(img[j]);
+        try {
+            for (int j = 0; j < 3; j++) {
+                Glide.with(context).load(imgs.getString(j)).into(img[j]);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

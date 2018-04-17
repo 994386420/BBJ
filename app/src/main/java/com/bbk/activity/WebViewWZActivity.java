@@ -13,6 +13,7 @@ import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.ShareUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.SoftHideKeyBoardUtil;
 import com.bbk.view.MyWebView;
 import com.tamic.jswebview.browse.JsWeb.CustomWebChromeClient;
 import com.tamic.jswebview.browse.JsWeb.CustomWebViewClient;
@@ -64,6 +65,7 @@ public class WebViewWZActivity extends BaseActivity implements OnClickListener, 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.web_view_activity);
+		SoftHideKeyBoardUtil.assistActivity(this);
 		mTencent = Tencent.createInstance(Constants.QQ_APP_ID, WebViewWZActivity.this);
 		dataFlow = new DataFlow(this);
 		// MyApplication.getInstance().addActivity(this);

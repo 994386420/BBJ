@@ -262,6 +262,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             map.put("number",object.optString("number"));
             map.put("type",object.optString("type"));
             map.put("url",object.optString("url"));
+            Log.i("商品状态++++++",object.optString("status"));
+            map.put("status",object.optString("status"));
             list.add(map);
         }
     }
@@ -297,6 +299,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
                             intent.putExtra("id",list.get(position).get("id"));
+                            intent.putExtra("status",list.get(position).get("status"));
                             startActivity(intent);
                         }
                     });

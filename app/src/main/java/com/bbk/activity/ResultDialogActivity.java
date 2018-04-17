@@ -11,16 +11,23 @@ import org.json.JSONObject;
 
 import com.bbk.adapter.ResultDialogAdapter1;
 import com.bbk.adapter.ResultDialogAdapter2;
+import com.bbk.flow.DataFlow3;
+import com.bbk.flow.DataFlow6;
+import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.JumpIntentUtil;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyListView;
+import com.tencent.qcloud.sdk.Constant;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class ResultDialogActivity extends BaseActivity {
+public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 	private MyListView mlistview1,mlistview2;
 	private ResultDialogAdapter1 adapter1;
 	private ResultDialogAdapter2 adapter2;
@@ -45,25 +52,28 @@ public class ResultDialogActivity extends BaseActivity {
 	private boolean isrequest = true;
 	private int requestnum = 0;
 	private int removenum = 0;
-	private String keyword;
+	private String keyword,rowkey;
 	private boolean isrun = true;
+	private DataFlow3 dataFlow;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result_dialog);
-		String tarr = getIntent().getStringExtra("tarr");
+		dataFlow = new DataFlow3(this);
+//		String tarr = getIntent().getStringExtra("tarr");
 		keyword = getIntent().getStringExtra("keyword");
-		initlist(tarr);
+		rowkey = getIntent().getStringExtra("rowkey");
 		initView();
+		getBijiaArr();
 	}
 
-	private void initlist(String tarr) {
+	private void initlist(JSONArray array) {
 		list = new ArrayList<>();
 		list1 = new ArrayList<>();
 		list2 = new ArrayList<>();
 		try {
-			JSONArray array = new JSONArray(tarr);
+//			JSONArray array = new JSONArray(tarr);
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject object = array.getJSONObject(i);
 				if (object.optString("price").isEmpty()) {
@@ -96,6 +106,12 @@ public class ResultDialogActivity extends BaseActivity {
 		}
 	}
 
+	private void getBijiaArr() {
+		HashMap<String, String> paramsMap = new HashMap<>();
+		paramsMap.put("rowkey",rowkey);
+		dataFlow.requestData(1, Constants.getBijiaArr, paramsMap, this);
+	}
+
 	private void initView() {
 		mlistview1 = (MyListView) findViewById(R.id.mlistview1);
 		mlistview2 = (MyListView) findViewById(R.id.mlistview2);
@@ -107,70 +123,6 @@ public class ResultDialogActivity extends BaseActivity {
 	    params.height = (int) (height*0.8);
 	    msize.setLayoutParams(params);
 		henggang = findViewById(R.id.henggang);
-		if (list2.isEmpty()) {
-			wantdomain.setVisibility(View.GONE);
-			henggang.setVisibility(View.GONE);
-		}
-		mclose = (ImageView) findViewById(R.id.mclose);
-		mclose.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-
-				finish();
-			}
-		});
-		adapter1 = new ResultDialogAdapter1(list1, this);
-		adapter2 = new ResultDialogAdapter2(list2, this);
-		mlistview1.setAdapter(adapter1);
-		mlistview2.setAdapter(adapter2);
-
-		mlistview1.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Map<String, Object> map = list1.get(arg2);
-				final String url = map.get("url").toString();
-				final String title = map.get("title").toString();
-				final String domain1 = map.get("domain").toString();
-				final String groupRowKey = map.get("groupRowKey").toString();
-				Intent intent;
-				if (JumpIntentUtil.isJump(list1,arg2,"domain")) {
-					intent = new Intent(ResultDialogActivity.this,IntentActivity.class);
-					intent.putExtra("title", title);
-					intent.putExtra("domain", domain1);
-					intent.putExtra("url", url);
-					intent.putExtra("groupRowKey", groupRowKey);
-				}else{
-					intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
-					if (null!= getIntent().getStringExtra("isweb")) {
-						WebViewActivity.instance.finish();
-					}
-					intent.putExtra("url", url);
-					intent.putExtra("groupRowKey", groupRowKey);
-				}
-				startActivity(intent);
-				finish();
-			}
-		});
-		mlistview2.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Map<String, Object> map = list2.get(arg2);
-				final String url = map.get("url").toString();
-				Intent intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
-				if (null!= getIntent().getStringExtra("isweb")) {
-					WebViewActivity.instance.finish();
-				}
-				intent.putExtra("url", url);
-				startActivity(intent);
-				finish();
-			}
-		});
-		if (thread == null) {
-			NowPrice();
-		}
 	}
 	private void NowPrice(){
     	thread = new Thread(new Runnable() {
@@ -263,5 +215,83 @@ public class ResultDialogActivity extends BaseActivity {
 		isrun = false;
 		super.onDestroy();
 
+	}
+
+	@Override
+	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
+		switch (requestCode){
+			case 1:
+				try {
+					JSONArray array = new JSONArray(content);
+					initlist(array);
+					if (list2.isEmpty()) {
+						wantdomain.setVisibility(View.GONE);
+						henggang.setVisibility(View.GONE);
+					}
+					mclose = (ImageView) findViewById(R.id.mclose);
+					mclose.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+
+							finish();
+						}
+					});
+					adapter1 = new ResultDialogAdapter1(list1, this);
+					adapter2 = new ResultDialogAdapter2(list2, this);
+					mlistview1.setAdapter(adapter1);
+					mlistview2.setAdapter(adapter2);
+
+					mlistview1.setOnItemClickListener(new OnItemClickListener() {
+
+						@Override
+						public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+							Map<String, Object> map = list1.get(arg2);
+							final String url = map.get("url").toString();
+							final String title = map.get("title").toString();
+							final String domain1 = map.get("domain").toString();
+							final String groupRowKey = map.get("groupRowKey").toString();
+							Intent intent;
+							if (JumpIntentUtil.isJump(list1,arg2,"domain")) {
+								intent = new Intent(ResultDialogActivity.this,IntentActivity.class);
+								intent.putExtra("title", title);
+								intent.putExtra("domain", domain1);
+								intent.putExtra("url", url);
+								intent.putExtra("groupRowKey", groupRowKey);
+							}else{
+								intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
+								if (null!= getIntent().getStringExtra("isweb")) {
+									WebViewActivity.instance.finish();
+								}
+								intent.putExtra("url", url);
+								intent.putExtra("groupRowKey", groupRowKey);
+							}
+							startActivity(intent);
+							finish();
+						}
+					});
+					mlistview2.setOnItemClickListener(new OnItemClickListener() {
+
+						@Override
+						public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+							Map<String, Object> map = list2.get(arg2);
+							final String url = map.get("url").toString();
+							Intent intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
+							if (null!= getIntent().getStringExtra("isweb")) {
+								WebViewActivity.instance.finish();
+							}
+							intent.putExtra("url", url);
+							startActivity(intent);
+							finish();
+						}
+					});
+					if (thread == null) {
+						NowPrice();
+					}
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+				break;
+		}
 	}
 }

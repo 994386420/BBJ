@@ -18,6 +18,7 @@ import com.bumptech.glide.Priority;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -79,7 +80,7 @@ public class ResultMyGridAdapter extends BaseAdapter{
 		    LayoutParams params = vh.img.getLayoutParams();
 		    params.height = width/2;
 		    vh.img.setLayoutParams(params);
-			final Map<String, Object> dataSet = list.get(position);	        
+			final Map<String, Object> dataSet = list.get(position);
 //	        final String url = dataSet.get("url").toString();
 			String title = dataSet.get("title").toString();
 	        String img = dataSet.get("img").toString();
@@ -112,17 +113,18 @@ public class ResultMyGridAdapter extends BaseAdapter{
 				vh.item_offer.setText("全网总评"+hnumber+"条  ");
 			}
 	        if ("1".equals(dataSet.get("isxianshi"))) {
+				final String groupRowKey = dataSet.get("groupRowKey").toString();
 	        	vh.mmoredomain.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View arg0) {
 						Intent intent = new Intent(context, ResultDialogActivity.class);
-						intent.putExtra("tarr",dataSet.get("tarr").toString() );
+//						intent.putExtra("tarr",dataSet.get("tarr").toString() );
 						intent.putExtra("keyword",dataSet.get("keyword").toString() );
+						intent.putExtra("rowkey",groupRowKey );
 						context.startActivity(intent);
 					}
 				});
-		        final String groupRowKey = dataSet.get("groupRowKey").toString();
 				vh.intentbuy.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
