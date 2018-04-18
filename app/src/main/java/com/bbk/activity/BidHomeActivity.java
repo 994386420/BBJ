@@ -23,12 +23,6 @@ import com.bbk.fragment.BidFragment;
 import com.bbk.fragment.BidHomeFragment;
 import com.bbk.fragment.BidMessageFragment;
 import com.bbk.fragment.BidUserFragment;
-import com.bbk.fragment.DataFragment;
-import com.bbk.fragment.GossipPiazzaFragment;
-import com.bbk.fragment.HomeFragment2;
-import com.bbk.fragment.RankFragment;
-import com.bbk.fragment.UserFragment;
-import com.bbk.resource.Constants;
 import com.bbk.util.BaseTools;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.CustomViewPager;
@@ -36,8 +30,6 @@ import com.bumptech.glide.Glide;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
-import com.sina.weibo.sdk.api.share.WeiboShareSDK;
-import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -159,21 +151,17 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     }
 
     public void initViewPagerData() {
-
         BidHomeFragment bidHomeFragment = new BidHomeFragment();
 //		SearchFragment searchFragment = new SearchFragment();
         bidFragment = new BidFragment();
         BidAcceptanceFragment bidAcceptanceFragment = new BidAcceptanceFragment();
-
         BidMessageFragment bidMessageFragment = new BidMessageFragment();
         BidUserFragment userFragment = new BidUserFragment();
-
         fragments.add(bidHomeFragment);
         fragments.add(bidFragment);
         fragments.add(bidAcceptanceFragment);
         fragments.add(bidMessageFragment);
         fragments.add(userFragment);
-
         mPagerAdapter.notifyDataSetChanged();
 
     }

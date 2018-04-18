@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+	android:id="@+id/topbar_layout1"
  >
 	    <RelativeLayout
         android:id="@+id/topbar_layout"
@@ -35,8 +36,8 @@
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
             android:background="#B8B8B8" />
-    </RelativeLayout> 
- 	    <ProgressBar 
+    </RelativeLayout>
+ 	    <ProgressBar
         android:id="@+id/mProgressBar"
         android:layout_width="match_parent"
         android:layout_below="@id/topbar_layout"

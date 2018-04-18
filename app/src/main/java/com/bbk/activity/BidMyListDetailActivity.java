@@ -65,7 +65,7 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
         mchongshi = findViewById(R.id.mchongshi);
         mchongshi.setOnClickListener(onClickListener);
         mTitle = findViewById(R.id.title);
-        mTitle.setText("我的劫镖");
+        mTitle.setText("我的接镖");
         list = new ArrayList<>();
         userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
@@ -190,7 +190,7 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
             map.put("id",object.optString("id"));
             map.put("title",object.optString("title"));
             map.put("price",object.optString("price"));
-            map.put("bidstatus",object.optString("bidstatus"));
+            map.put("bidstatus",object.optString("bidstatus"));//判断功能按钮
             map.put("extra",object.optString("extra"));
             map.put("img",object.optString("img"));
             map.put("number",object.optString("number"));
@@ -242,6 +242,7 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
             Intent intent = new Intent(BidMyListDetailActivity.this,BidMyBillDetailActivity.class);
             intent.putExtra("fbid",list.get(i).get("id"));
             intent.putExtra("bidid",list.get(i).get("bidid"));
+            intent.putExtra("bidstatus",list.get(i).get("bidstatus"));
             startActivity(intent);
         }
     };

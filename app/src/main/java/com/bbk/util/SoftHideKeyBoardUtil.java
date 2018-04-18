@@ -1,6 +1,7 @@
 package com.bbk.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.view.View;
@@ -13,8 +14,8 @@ import android.widget.FrameLayout;
  */
 
 public class SoftHideKeyBoardUtil {
-    public static void assistActivity (Activity activity) {
-        new SoftHideKeyBoardUtil(activity);
+    public static void assistActivity (Activity activity,int statusBarHeight) {
+        new SoftHideKeyBoardUtil(activity,statusBarHeight);
     }
     private View mChildOfContent;
     private int usableHeightPrevious;
@@ -22,8 +23,8 @@ public class SoftHideKeyBoardUtil {
     //为适应华为小米等手机键盘上方出现黑条或不适配
     private int contentHeight;//获取setContentView本来view的高度
     private boolean isfirst = true;//只用获取一次
-//    private  int statusBarHeight;//状态栏高度
-    private SoftHideKeyBoardUtil(Activity activity) {
+    private  int statusBarHeights;//状态栏高度
+    private SoftHideKeyBoardUtil(Activity activity, final int i) {
         //1､找到Activity的最外层布局控件，它其实是一个DecorView,它所用的控件就是FrameLayout
         FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);
         //2､获取到setContentView放进去的View
@@ -37,7 +38,7 @@ public class SoftHideKeyBoardUtil {
                     isfirst = false;
                 }
                 //5､当前布局发生变化时，对Activity的xml布局进行重绘
-                possiblyResizeChildOfContent();
+                possiblyResizeChildOfContent(i);
             }
         });
         //6､获取到Activity的xml布局的放置参数
@@ -45,7 +46,7 @@ public class SoftHideKeyBoardUtil {
     }
 
     // 获取界面可用高度，如果软键盘弹起后，Activity的xml布局可用高度需要减去键盘高度
-    private void possiblyResizeChildOfContent() {
+    private void possiblyResizeChildOfContent(int i) {
         //1､获取当前界面可用高度，键盘弹起后，当前界面可用布局会减少键盘的高度
         int usableHeightNow = computeUsableHeight();
         //2､如果当前可用高度和原始值不一样
@@ -58,7 +59,7 @@ public class SoftHideKeyBoardUtil {
             if (heightDifference > (usableHeightSansKeyboard/4)) {
                 // 6､键盘弹出了，Activity的xml布局高度应当减去键盘高度
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-                    frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                    frameLayoutParams.height = usableHeightSansKeyboard - heightDifference + i ;
                 } else {
                     frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
                 }

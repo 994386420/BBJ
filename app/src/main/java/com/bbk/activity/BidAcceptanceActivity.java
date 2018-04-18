@@ -69,7 +69,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         if (getIntent().getStringExtra("type")!= null){
             type = getIntent().getStringExtra("type");
         }
-        initData(1);
+        initData(type,1);
 //        if (getIntent().getStringExtra("describe")!= null){
 //            describe = getIntent().getStringExtra("describe");
 //            initData(2);
@@ -107,7 +107,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         });
         mNoMessageLayout = findViewById(R.id.no_message_layout);
     }
-    public void initData(int requestCode){
+    public void initData(String type,int requestCode){
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("describe",describe);
         paramsMap.put("type",type);
@@ -127,7 +127,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             public void onRefresh(boolean isPullDown) {
                     isclear = true;
                     page = 1;
-                    initData(1);
+                    initData(type,1);
             }
 
             @Override
@@ -140,7 +140,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             public void onLoadMore(boolean isSilence) {
                     page++;
                     isclear = false;
-                    initData(1);
+                    initData(type,1);
 
             }
 
@@ -169,7 +169,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             }
             type = "";
             describe = search_edit.getText().toString();
-            initData(2);
+            initData(type,2);
         }
     }
     private void updateTitle(int position) {
@@ -188,9 +188,20 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         // mhscrollview.scrollTo(view.getLeft() - 200, 0);
         currentIndex = position;
         describe = "";
-        type = titlelist.get(position).get("keyword");
-        isclear = true;
-        initData(1);
+//        type = titlelist.get(position).get("keyword");
+//        isclear = true;
+//        initData(1);
+        if (position == 1) {
+            isclear = true;
+            type = "";
+            page = 1;
+            initData(type,1);
+        } else {
+            isclear = true;
+            page = 1;
+            type = titlelist.get(position).get("keyword");
+            initData(type,1);
+        }
     }
     // 一级菜单一
     private void addtitle(final String text, final int i) {
@@ -303,6 +314,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                             startActivity(intent);
                         }
                     });
+                    isclear = false;
                     break;
                 case 2:
                     list.clear();

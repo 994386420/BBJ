@@ -151,9 +151,15 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
         mgobid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BidDetailActivity.this,BidingActivity.class);
-                intent.putExtra("fbid",fbid);
-                startActivity(intent);
+                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                if (TextUtils.isEmpty(userID)){
+                    Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+                    startActivity(intent4);
+                }else {
+                    Intent intent = new Intent(BidDetailActivity.this, BidingActivity.class);
+                    intent.putExtra("fbid", fbid);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -229,6 +235,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         try {
+            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
             JSONObject object  = new JSONObject(content);
             String  endtime =object.optString("endtime");
             String  beginlong =object.optString("beginlong");
@@ -259,6 +266,12 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 mstarttime.setText(begintime);
                 mendtime.setText(endtime);
                 mextra.setText(extra);
+                //userid与登陆userid一样时，隐藏去接镖
+                if (userid.equals(userID )){
+                    isJiebiaoLayout.setVisibility(View.GONE);
+                }else {
+                    isJiebiaoLayout.setVisibility(View.VISIBLE);
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }

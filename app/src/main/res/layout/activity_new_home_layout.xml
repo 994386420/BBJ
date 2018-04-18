@@ -340,7 +340,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="比价神器"
+                    android:text="什么镖局"
                     android:textColor="#333333"
                     android:textSize="18dp" />
 

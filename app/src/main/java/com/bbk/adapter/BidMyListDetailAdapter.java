@@ -19,6 +19,7 @@ import com.bbk.activity.R;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.StringUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
 
@@ -86,75 +87,81 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-        if (list.size()>0){
-            Map<String,String> map = list.get(position);
-            String bidstatus = map.get("bidstatus");
-            final String id = map.get("bidid");
-            final String fbid = map.get("id");
-            final String endtime = map.get("endtime");
-            initData(vh,map);
-            vh.mtext1.setVisibility(View.GONE);
-            switch (bidstatus){
-                case "-1":
-                    vh.mtypetext.setText("已失效");
-                    vh.mtextbox.setVisibility(View.GONE);
-                    break;
-                case "0":
-                    vh.mtypetext.setText("已取消");
-                    vh.mtime.setVisibility(View.GONE);
-                    vh.mtimebefor.setText(endtime);
-                    vh.mtextbox.setVisibility(View.GONE);
-                    break;
-                case "1":
-                    vh.mtypetext.setText("正接镖");
-                    vh.mtext2.setText("取消接镖");
-                    vh.mtext2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            curposition = position;
-                            new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发镖？")
-                                    .setPositiveButton("确定", new View.OnClickListener() {
-                                        @SuppressLint("NewApi")
-                                        @Override
-                                        public void onClick(View v) {
-                                            upData(id,1);
-                                        }
-                                    }).setNegativeButton("取消", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+        try {
+            if (list.size()>0){
+                Map<String,String> map = list.get(position);
+                String bidstatus = map.get("bidstatus");
+                final String id = map.get("bidid");
+                final String fbid = map.get("id");
+                final String endtime = map.get("endtime");
+                vh.mtime.addsum(endtime,"#999999");
+                vh.mtime.start();
+                initData(vh,map);
+                vh.mtext1.setVisibility(View.GONE);
+                switch (bidstatus){
+                    case "-1":
+                        vh.mtypetext.setText("已失效");
+                        vh.mtextbox.setVisibility(View.GONE);
+                        break;
+                    case "0":
+                        vh.mtypetext.setText("已取消");
+                        vh.mtime.setVisibility(View.GONE);
+                        vh.mtimebefor.setText(endtime);
+                        vh.mtextbox.setVisibility(View.GONE);
+                        break;
+                    case "1":
+                        vh.mtypetext.setText("正接镖");
+                        vh.mtext2.setText("取消接镖");
+                        vh.mtext2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                curposition = position;
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发镖？")
+                                        .setPositiveButton("确定", new View.OnClickListener() {
+                                            @SuppressLint("NewApi")
+                                            @Override
+                                            public void onClick(View v) {
+                                                upData(id,1);
+                                            }
+                                        }).setNegativeButton("取消", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
 
-                                }
-                            }).show();
+                                    }
+                                }).show();
 
-                        }
-                    });
-                    break;
-                case "2":
-                    vh.mtypetext.setText("待评论");
-                    vh.mtext2.setText("评论");
-                    vh.mtext2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context,BidMyWantPLActivity.class);
-                            intent.putExtra("id",fbid);
-                            context.startActivity(intent);
-                        }
-                    });
-                    break;
-                case "3":
-                    vh.mtypetext.setText("已完成");
-                    vh.mtext2.setText("查看评论");
-                    vh.mtext2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context,BidMyPlActivity.class);
-                            intent.putExtra("id",fbid);
-                            context.startActivity(intent);
-                        }
-                    });
-                    break;
+                            }
+                        });
+                        break;
+                    case "2":
+                        vh.mtypetext.setText("待评论");
+                        vh.mtext2.setText("评论");
+                        vh.mtext2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(context,BidMyWantPLActivity.class);
+                                intent.putExtra("id",fbid);
+                                context.startActivity(intent);
+                            }
+                        });
+                        break;
+                    case "3":
+                        vh.mtypetext.setText("已完成");
+                        vh.mtext2.setText("查看评论");
+                        vh.mtext2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(context,BidMyPlActivity.class);
+                                intent.putExtra("id",fbid);
+                                context.startActivity(intent);
+                            }
+                        });
+                        break;
+                }
+
             }
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return convertView;
     }
@@ -186,11 +193,11 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
         switch (requestCode){
             case 1:
                 if(dataJo.optInt("status")<=0){
-                    Toast.makeText(context, "取消失败", Toast.LENGTH_SHORT).show();
+                    StringUtil.showToast(context, "取消失败");
                 }else{
                     list.remove(curposition);
                     notifyDataSetChanged();
-                    Toast.makeText(context, "取消成功", Toast.LENGTH_SHORT).show();
+                    StringUtil.showToast(context, "取消成功");
                 }
                 break;
             case 2:

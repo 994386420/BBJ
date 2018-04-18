@@ -181,5 +181,8 @@ public class BidInformFragment extends Fragment implements ResultEvent {
     @Override
     public void onResume() {
         super.onResume();
+        isclear = true;
+        topicpage = 1;
+        initData(false);
     }
 }

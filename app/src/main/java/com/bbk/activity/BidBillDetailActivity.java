@@ -143,7 +143,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                                     @SuppressLint("NewApi")
                                     @Override
                                     public void onClick(View v) {
-                                        upData(fbid,"bid/cancelBid",1);
+                                        upData(fbid,"bid/cancelBid",3);
                                     }
                                 }).setNegativeButton("取消", new View.OnClickListener() {
                             @Override
@@ -164,7 +164,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                                     @SuppressLint("NewApi")
                                     @Override
                                     public void onClick(View v) {
-                                        upData(fbid,"bid/cancelBid",1);
+                                        upData(fbid,"bid/cancelBid",3);
                                     }
                                 }).setNegativeButton("取消", new View.OnClickListener() {
                             @Override
@@ -222,7 +222,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                                     @SuppressLint("NewApi")
                                     @Override
                                     public void onClick(View v) {
-                                        upData(fbid,"bid/cancelBid",1);
+                                        upData(fbid,"bid/cancelBid",3);
                                     }
                                 }).setNegativeButton("取消", new View.OnClickListener() {
                             @Override
@@ -356,9 +356,6 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     }else {
                         mbox.setVisibility(View.GONE);
                     }
-//            private TextView item_title,mprice,mcount,mtime,mspectatornum,mbidnum,mendprice,
-//                    murltext,mintentbuy,mbidesc,mbidnum2,mordernum,mbegintime,mendtime;
-//            private LinearLayout mpricebox,mcontact;
                     item_title.setText(title);
                     mprice.setText(price);
                     mcount.setText("x"+number);
@@ -392,6 +389,17 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     case "1":
                         StringUtil.showToast(this,"延长成功");
                         break;
+                }
+                break;
+            case 3:
+                if (dataJo.optString("status").equals("1")){
+                    StringUtil.showToast(this,"取消成功");
+                    Intent intent = new Intent(this, BidListDetailActivity.class);
+                    intent.putExtra("status","4");
+                    startActivity(intent);
+                    finish();
+                }else {
+                    StringUtil.showToast(this,"取消失败");
                 }
                 break;
         }

@@ -87,25 +87,52 @@ public class BidDetailListAdapter extends BaseAdapter{
             }
             switch (position){
                 case 0:
-                    viewHolder.mbidprice.setTextColor(Color.parseColor("#b40000"));
-                    viewHolder.mbidtime.setTextColor(Color.parseColor("#b40000"));
-                    viewHolder.muser.setTextColor(Color.parseColor("#b40000"));
-                    viewHolder.mBid.setTextColor(Color.parseColor("#b40000"));
-                    viewHolder.mimg.setBackgroundResource(R.mipmap.bj_05);
+                    if (biduserid.equals(userID)){
+                        viewHolder.mbidprice.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.mbidtime.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.muser.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.mBid.setTextColor(Color.parseColor("#1a9afc"));
+                        String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "imgUrl");
+                        CircleImageView1.getImg(context,imgUrl,viewHolder.mimg);
+                    }else {
+                        viewHolder.mbidprice.setTextColor(Color.parseColor("#b40000"));
+                        viewHolder.mbidtime.setTextColor(Color.parseColor("#b40000"));
+                        viewHolder.muser.setTextColor(Color.parseColor("#b40000"));
+                        viewHolder.mBid.setTextColor(Color.parseColor("#b40000"));
+                        viewHolder.mimg.setBackgroundResource(R.mipmap.bj_05);
+                    }
                     break;
                 case 1:
-                    viewHolder.mbidprice.setTextColor(Color.parseColor("#666666"));
-                    viewHolder.mbidtime.setTextColor(Color.parseColor("#666666"));
-                    viewHolder.muser.setTextColor(Color.parseColor("#666666"));
-                    viewHolder.mBid.setTextColor(Color.parseColor("#666666"));
-                    viewHolder.mimg.setBackgroundResource(R.mipmap.bj_06);
+                    if (biduserid.equals(userID)){
+                        viewHolder.mbidprice.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.mbidtime.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.muser.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.mBid.setTextColor(Color.parseColor("#1a9afc"));
+                        String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "imgUrl");
+                        CircleImageView1.getImg(context,imgUrl,viewHolder.mimg);
+                    }else {
+                        viewHolder.mbidprice.setTextColor(Color.parseColor("#666666"));
+                        viewHolder.mbidtime.setTextColor(Color.parseColor("#666666"));
+                        viewHolder.muser.setTextColor(Color.parseColor("#666666"));
+                        viewHolder.mBid.setTextColor(Color.parseColor("#666666"));
+                        viewHolder.mimg.setBackgroundResource(R.mipmap.bj_06);
+                    }
                     break;
                 default:
-                    viewHolder.mbidprice.setTextColor(Color.parseColor("#999999"));
-                    viewHolder.mbidtime.setTextColor(Color.parseColor("#999999"));
-                    viewHolder.muser.setTextColor(Color.parseColor("#999999"));
-                    viewHolder.mBid.setTextColor(Color.parseColor("#999999"));
-                    viewHolder.mimg.setBackgroundResource(R.mipmap.bj_07);
+                    if (biduserid.equals(userID)){
+                        viewHolder.mbidprice.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.mbidtime.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.muser.setTextColor(Color.parseColor("#1a9afc"));
+                        viewHolder.mBid.setTextColor(Color.parseColor("#1a9afc"));
+                        String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "imgUrl");
+                        CircleImageView1.getImg(context,imgUrl,viewHolder.mimg);
+                    }else {
+                        viewHolder.mbidprice.setTextColor(Color.parseColor("#999999"));
+                        viewHolder.mbidtime.setTextColor(Color.parseColor("#999999"));
+                        viewHolder.muser.setTextColor(Color.parseColor("#999999"));
+                        viewHolder.mBid.setTextColor(Color.parseColor("#999999"));
+                        viewHolder.mimg.setBackgroundResource(R.mipmap.bj_07);
+                    }
                     break;
             }
             return convertView;
@@ -118,5 +145,4 @@ public class BidDetailListAdapter extends BaseAdapter{
         TextView mbidprice,mbidtime,muser,mBid;
         ImageView mimg;
     }
-
 }

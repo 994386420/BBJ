@@ -3,6 +3,7 @@ package com.bbk.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -11,11 +12,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bbk.adapter.BidDetailListAdapter;
+import com.bbk.chat.ui.ChatActivity;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.tencent.imsdk.TIMConversationType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,12 +32,12 @@ import java.util.Map;
 /**
  * 发镖_05_交镖
  */
-public class BidFilterPriceActivity extends BaseActivity implements ResultEvent {
+public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,View.OnClickListener {
     private String bidid;
     private DataFlow6 dataFlow;
     private TextView mensure,mendprice,murltext,mintentbuy,mbidesc;
     private String type;
-    private String fbid;
+    private String fbid,userid;
     private LinearLayout mcontact;
     private ImageView topbar_goback_btn;
 
@@ -66,6 +69,7 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent 
         mintentbuy = (TextView) findViewById(R.id.mintentbuy);
         mbidesc = (TextView) findViewById(R.id.mbidesc);
         mcontact = (LinearLayout) findViewById(R.id.mcontact);
+        mcontact.setOnClickListener(this);
         mensure = (TextView) findViewById(R.id.mensure);
         mensure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +110,7 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent 
                     String bidprice = object.optString("bidprice");
                     String bidtime = object.optString("bidtime");
                     final String bidurl = object.optString("bidurl");
+                    userid = object.optString("userid");
                     mendprice.setText("￥"+bidprice);
                     murltext.setText(bidurl);
                     mintentbuy.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +135,26 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent 
                     finish();
                 }else {
                     StringUtil.showToast(this, "交镖失败");
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.mcontact:
+                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                if (TextUtils.isEmpty(userID)){
+                    Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+                    startActivity(intent4);
+                }else {
+                    Intent intent = new Intent(BidFilterPriceActivity.this, ChatActivity.class);
+                    if (userid != null) {
+                        intent.putExtra("identify","bbj"+userid);
+                        intent.putExtra("type", TIMConversationType.C2C);
+                        startActivity(intent);
+                    }
                 }
                 break;
         }

@@ -179,7 +179,12 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
                 islogin();
                 break;
             case R.id.newpinglun:
-                BidHomeActivity.initThree();
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                }else {
+                    BidHomeActivity.initThree();
+                }
                 break;
             case R.id.mcollection:
                 if (TextUtils.isEmpty(userID)) {

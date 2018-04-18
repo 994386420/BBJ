@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bbk.activity.WebViewWZActivity;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SoftHideKeyBoardUtil;
 import com.tencent.imsdk.TIMConversationType;
@@ -32,6 +33,7 @@ import com.tencent.imsdk.ext.message.TIMMessageDraft;
 import com.tencent.imsdk.ext.message.TIMMessageExt;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
 import com.tencent.imsdk.ext.sns.TIMFriendshipManagerExt;
+import com.tencent.qcloud.presentation.event.RefreshEvent;
 import com.tencent.qcloud.presentation.presenter.ChatPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ChatView;
 import com.bbk.activity.R;
@@ -98,7 +100,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        SoftHideKeyBoardUtil.assistActivity(this);
+        SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(ChatActivity.this));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         View topView = findViewById(R.id.root);
         // 实现沉浸式状态栏
@@ -112,23 +114,35 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     protected void onPause(){
         super.onPause();
         //退出聊天界面时输入框有内容，保存草稿
-        if (input.getText().length() > 0){
-            TextMessage message = new TextMessage(input.getText());
-            presenter.saveDraft(message.getMessage());
-        }else{
-            presenter.saveDraft(null);
+        if (input != null){
+            if (input.getText().length() > 0){
+                TextMessage message = new TextMessage(input.getText());
+                presenter.saveDraft(message.getMessage());
+            }else{
+                presenter.saveDraft(null);
+            }
+            RefreshEvent.getInstance().onRefresh();
+            presenter.readMessages();
+            MediaUtil.getInstance().stop();
         }
-//        RefreshEvent.getInstance().onRefresh();
-        presenter.readMessages();
-        MediaUtil.getInstance().stop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.stop();
+        if (presenter!= null){
+            presenter.stop();
+        }
     }
 
+    private int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
     /**
      * 显示消息

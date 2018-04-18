@@ -90,8 +90,9 @@ public class QueryHistoryActivity extends BaseActivity implements OnClickListene
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 				String rowkey = list.get(arg2).get("rowkey");
-				String url1 = Constants.MAIN_BASE_URL_MOBILE + "mobile/user/history?rowkey=" + rowkey;
+				String url1 = Constants.MAIN_BASE_URL_MOBILE + "mobile/user/history?rowkey=" + rowkey+"&userid="+userID;
 				Intent intent = new Intent(QueryHistoryActivity.this, WebViewActivity.class);
 				intent.putExtra("url", url1);
 				startActivity(intent);

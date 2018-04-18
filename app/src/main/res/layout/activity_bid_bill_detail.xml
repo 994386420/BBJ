@@ -222,6 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:gravity="center_horizontal"
                     android:text="设置提醒 0  人" />
             </LinearLayout>
@@ -574,7 +575,7 @@
             android:paddingBottom="3dp"
             android:background="@drawable/bid_list_detail_text"
             android:layout_height="wrap_content"
-            android:text="取消发镖"/>
+            android:text=""/>
         <TextView
             android:id="@+id/mtext2"
             android:layout_width="85dp"
@@ -584,7 +585,7 @@
             android:paddingBottom="3dp"
             android:background="@drawable/bid_list_detail_text"
             android:layout_height="wrap_content"
-            android:text="修改"/>
+            android:text=""/>
     </LinearLayout>
        </LinearLayout>
 </LinearLayout>

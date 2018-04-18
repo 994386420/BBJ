@@ -87,7 +87,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             data_head = mView.findViewById(R.id.data_head);
             ImmersionUtil.initstateView(getActivity(),data_head);
             initView();
-            initData(1);
+            initData(type,1);
         }
         return mView;
     }
@@ -124,7 +124,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
         mNoMessageLayout = mView.findViewById(R.id.no_message_layout);
         mHorizontalScrollView = mView.findViewById(R.id.mhscrollview);
     }
-    public void initData(int requestCode){
+    public void initData(String type,int requestCode){
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("describe",describe);
         paramsMap.put("type",type);
@@ -144,7 +144,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             public void onRefresh(boolean isPullDown) {
                     isclear = true;
                     page = 1;
-                    initData(1);
+                    initData(type,1);
             }
 
             @Override
@@ -157,7 +157,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             public void onLoadMore(boolean isSilence) {
                     page++;
                     isclear = false;
-                    initData(1);
+                    initData(type,1);
 
             }
 
@@ -186,7 +186,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             }
             type = "";
             describe = search_edit.getText().toString();
-            initData(2);
+            initData(type,2);
         }
     }
     private void updateTitle(int position) {
@@ -206,9 +206,20 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
         // mhscrollview.scrollTo(view.getLeft() - 200, 0);
         currentIndex = position;
         describe = "";
-        type = titlelist.get(position).get("keyword");
-        isclear = true;
-        initData(1);
+//        isclear = true;
+//        initData(1);
+        if (position == 1) {
+            isclear = true;
+            page = 1;
+            type = "";
+            initData(type,1);
+        } else {
+            isclear = true;
+            page = 1;
+            type = titlelist.get(position).get("keyword");
+            initData(type,1);
+        }
+
     }
     // 一级菜单一
     private void addtitle(final String text, final int i) {
@@ -295,30 +306,27 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
                         loadtitlekeywords(typelist);
                     }
                     JSONArray array = object.getJSONArray("moren");
-                    Log.i("TAG",array.toString()+"---------");
-                    if (array.toString().equals("[]")){
-                        mNoMessageLayout.setVisibility(View.VISIBLE);
-                        mlistview.setVisibility(View.GONE);
-                        mHorizontalScrollView.setVisibility(View.VISIBLE);
-                    }else {
-                        addList(array);
+                    addList(array);
+                    if (list != null && list.size() > 0){
                         adapter = new BidAcceptanceAdapter(getActivity(),list);
                         mlistview.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         mlistview.setVisibility(View.VISIBLE);
                         mNoMessageLayout.setVisibility(View.GONE);
-                        mHorizontalScrollView.setVisibility(View.VISIBLE);
-                        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Intent intent = new Intent(getActivity(), BidDetailActivity.class);
-                                intent.putExtra("id",list.get(position).get("id"));
-                                intent.putExtra("status",list.get(position).get("status"));
-                                startActivity(intent);
-                            }
-                        });
+                    }else {
+                        mlistview.setVisibility(View.GONE);
+                        mNoMessageLayout.setVisibility(View.VISIBLE);
                     }
-                    adapter.notifyDataSetChanged();
+                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(getActivity(), BidDetailActivity.class);
+                            intent.putExtra("id",list.get(position).get("id"));
+                            intent.putExtra("status",list.get(position).get("status"));
+                            startActivity(intent);
+                        }
+                    });
+                    isclear = false;
                     break;
                 case 2:
                     list.clear();

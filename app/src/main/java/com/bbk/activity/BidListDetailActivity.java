@@ -136,6 +136,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
             int i = Integer.valueOf(status1);
             TabLayout.Tab tabAt = tablayout.getTabAt(i);
             tabAt.select();
+            loadData();
         }else {
             loadData();
         }

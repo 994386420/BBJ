@@ -23,6 +23,7 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -65,7 +66,7 @@ public class WebViewWZActivity extends BaseActivity implements OnClickListener, 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.web_view_activity);
-		SoftHideKeyBoardUtil.assistActivity(this);
+		SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(WebViewWZActivity.this));
 		mTencent = Tencent.createInstance(Constants.QQ_APP_ID, WebViewWZActivity.this);
 		dataFlow = new DataFlow(this);
 		// MyApplication.getInstance().addActivity(this);
@@ -114,6 +115,14 @@ public class WebViewWZActivity extends BaseActivity implements OnClickListener, 
 		};
 		// 设置setWebChromeClient对象
 		mPbWebview.setWebChromeClient(wvcc);
+	}
+	private int getStatusBarHeight(Context context) {
+		int result = 0;
+		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) {
+			result = context.getResources().getDimensionPixelSize(resourceId);
+		}
+		return result;
 	}
 
 	private void initView() {

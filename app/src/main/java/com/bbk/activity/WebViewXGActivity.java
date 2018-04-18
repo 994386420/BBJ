@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.view.MyWebView;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushManager;
@@ -37,7 +38,9 @@ public class WebViewXGActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview_xg_activity);
 //		MyApplication.getInstance().addActivity(this);
-
+		View topView = findViewById(R.id.topbar_layout1);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		htmlUrl=getIntent().getStringExtra("htmlUrl")+"?client=android";
 		initView();
 		initData();	

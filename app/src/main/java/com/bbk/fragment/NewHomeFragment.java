@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
+import com.bbk.activity.DataFragmentActivity;
 import com.bbk.activity.DomainMoreActivity;
 import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.MyApplication;
@@ -624,7 +625,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 @Override
                 public void onClick(View v) {
                     if (position == 4) {
-                        Intent intent = new Intent(getActivity(), DomainMoreActivity.class);
+//                        Intent intent = new Intent(getActivity(), DomainMoreActivity.class);
+                        Intent intent = new Intent(getActivity(), DataFragmentActivity.class);
                         startActivity(intent);
                     } else {
                         try {

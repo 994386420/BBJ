@@ -112,6 +112,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
         float_btn = mView.findViewById(R.id.float_btn);
         mrecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         adapter = new GossipPiazzaAdapter(getActivity(), list);
+        mrecyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(new GossipPiazzaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -120,7 +121,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
                 startActivity(intent);
             }
         });
-        mrecyclerview.setAdapter(adapter);
         refreshAndloda();
         float_btn.setOnClickListener(new View.OnClickListener() {
             @Override

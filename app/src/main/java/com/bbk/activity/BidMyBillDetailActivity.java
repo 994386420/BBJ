@@ -36,7 +36,7 @@ import java.util.Map;
 import mtopsdk.common.util.StringUtils;
 
 /**
- * 我的_03_详情
+ * 我的_镖单_详情
  */
 
 public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent {
@@ -51,9 +51,8 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
     private RushBuyCountDownTimerView mtime;
     private List<Map<String,String>> list;
     private BidDetailListAdapter adapter;
-    private String status;
     private ImageView topbar_goback_btn;
-    String  bidurl,userid,fbid,bidid;
+    private String  bidurl,userid,fbid,bidid,bidstatus;
     TextView mbidprice,mbidtime,muser,mBid,mbidprice1,mbidtime1,muser1,mBid1,mbidprice2,mbidtime2,muser2,mBid2;
     ImageView mimg,mimg1,mimg2;
     private LinearLayout mLayout1,mLayout2,mLayout3;
@@ -68,6 +67,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
         dataFlow = new DataFlow6(this);
         fbid = getIntent().getStringExtra("fbid");
         bidid = getIntent().getStringExtra("bidid");
+        bidstatus = getIntent().getStringExtra("bidstatus");//功能键判断
         initView();
         initData();
     }
@@ -132,7 +132,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
     }
     private void initbutton() {
         mtext1.setVisibility(View.GONE);
-        switch (status){
+        switch (bidstatus){
             case "-1":
                 mtextbox.setVisibility(View.GONE);
                 break;
@@ -218,7 +218,6 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                     String  price =object.optString("price");
                     userid =object.optString("userid");
                     String  bidnum =object.optString("bidnum");
-                    status =object.optString("status");
                     initbutton();
                     JSONArray imgs = object.getJSONArray("imgs");
                     JSONArray bidarr = object.getJSONArray("bidarr");
@@ -363,9 +362,11 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                     break;
                 case R.id.mcontact:
                     intent = new Intent(BidMyBillDetailActivity.this,ChatActivity.class);
-                    intent.putExtra("identify","bbj"+userid);
-                    intent.putExtra("type", TIMConversationType.C2C);
-                    startActivity(intent);
+                    if (userid != null){
+                        intent.putExtra("identify","bbj"+userid);
+                        intent.putExtra("type", TIMConversationType.C2C);
+                        startActivity(intent);
+                    }
                     break;
                 case R.id.malllist:
                     intent = new Intent(BidMyBillDetailActivity.this,BidHistoryActivity.class);

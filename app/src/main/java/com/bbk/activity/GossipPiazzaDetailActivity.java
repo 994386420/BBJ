@@ -1,5 +1,6 @@
 package com.bbk.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.SoftHideKeyBoardUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +50,7 @@ public class GossipPiazzaDetailActivity extends BaseActivity implements ResultEv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gossip_detail);
+        SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(this));
         View topView = findViewById(R.id.topbar_layout);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
@@ -56,6 +59,15 @@ public class GossipPiazzaDetailActivity extends BaseActivity implements ResultEv
 //        blid = "3548";
         initView();
         initData();
+    }
+
+    private int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private void initView() {

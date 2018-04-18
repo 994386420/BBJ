@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import com.baidu.mobstat.StatService;
 import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.MD5Util;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyWebView;
@@ -35,7 +36,7 @@ import android.widget.Toast;
  * B端数据加载WebView视图
  */
 public class DataWebViewActivity extends BaseActivity{
-	
+
 
 	private ProgressBar bar;
 	private MyWebView webViewLayout;
@@ -50,7 +51,9 @@ public class DataWebViewActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview_xg_activity);
 		htmlUrl = getIntent().getStringExtra("url");
-		
+		View topView = findViewById(R.id.topbar_layout1);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		initView();
 		initData();
 	}
@@ -67,9 +70,9 @@ public class DataWebViewActivity extends BaseActivity{
 		topbar_goback_btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				 if (webViewLayout.canGoBack()) { 
-					 webViewLayout.goBack(); 
-				   } 
+				 if (webViewLayout.canGoBack()) {
+					 webViewLayout.goBack();
+				   }
 				   else{
 				         finish();
 				  }
