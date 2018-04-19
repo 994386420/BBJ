@@ -43,7 +43,7 @@ public class BidHistoryActivity extends BaseActivity implements ResultEvent{
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow6(this);
         fbid = getIntent().getStringExtra("fbid");
-        type = getIntent().getStringExtra("type");
+//        type = getIntent().getStringExtra("type");
         initView();
         initData();
     }
@@ -66,7 +66,7 @@ public class BidHistoryActivity extends BaseActivity implements ResultEvent{
                 Intent intent = new Intent(BidHistoryActivity.this,BidFilterPriceActivity.class);
                 intent.putExtra("bidid",list.get(position).get("bidid"));
                 intent.putExtra("fbid",fbid);
-                intent.putExtra("type",type);
+//                intent.putExtra("type",type);
                 startActivity(intent);
             }
         });

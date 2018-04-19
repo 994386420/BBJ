@@ -91,8 +91,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             view.setTag(viewHolder);
         }
         final Conversation data = getItem(position);
-//        try {
-            viewHolder.tvName.setText(data.getName());
+        try {
 //            Log.i("头像","======="+data.getName()+"==="+data.getIdentify());
 //            List<String> users = new ArrayList<String>();
 //            users.add(data.getAvatarUrls());
@@ -109,18 +108,20 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 //                public void onSuccess(final List<TIMUserProfile> result) {
 //                    Log.e("==========", "getUsersProfile succ" + result);
 ////                    for(TIMUserProfile res : result){
-//                        Glide.with(context).load(result1.get(position).getFaceUrl().toString())
-//                                .priority(Priority.HIGH)
-//                                .placeholder(R.mipmap.logo)
-//                                .into(viewHolder.avatar);
-//                    }
-//                }
-//            });
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+            if (result1.get(position).getIdentifier().equals(data.getIdentify())){
+                viewHolder.tvName.setText(result1.get(position).getNickName().toString());
+                Glide.with(context).load(result1.get(position).getFaceUrl().toString())
+                        .priority(Priority.HIGH)
+                        .placeholder(R.mipmap.logo)
+                        .into(viewHolder.avatar);
+            }else {
+                viewHolder.tvName.setText(data.getName());
+                viewHolder.avatar.setImageResource(data.getAvatar());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 //        getFriendsProfile();
-        viewHolder.avatar.setImageResource(data.getAvatar());
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();

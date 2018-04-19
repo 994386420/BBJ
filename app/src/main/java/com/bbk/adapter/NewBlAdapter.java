@@ -70,7 +70,8 @@ public class NewBlAdapter extends BaseAdapter{
         String title = map.get("title");
         String count = map.get("plnum");
         String zan = map.get("zannum");
-        viewHolder.item_title.setText(title);
+        String content = map.get("content");
+        viewHolder.item_title.setText(content);
         viewHolder.time.setText(time);
         viewHolder.mExtr.setText(mExtr);
         viewHolder.mlike.setText(zan);

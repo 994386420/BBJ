@@ -126,7 +126,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 Intent intent = new Intent(BidDetailActivity.this,BidFilterPriceActivity.class);
                 intent.putExtra("bidid",list.get(position).get("bidid"));
                 intent.putExtra("fbid",fbid);
-                intent.putExtra("type","1");
+//                intent.putExtra("type","1");
                 startActivity(intent);
             }
         });
@@ -137,7 +137,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             public void onClick(View v) {
                 Intent intent = new Intent(BidDetailActivity.this,BidHistoryActivity.class);
                 intent.putExtra("fbid",fbid);
-                intent.putExtra("type","2");
+//                intent.putExtra("type","2");
                 startActivity(intent);
             }
         });
@@ -189,7 +189,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 }else {
 //                    isJiebiaoLayout.setVisibility(View.GONE);
                     mgobid.setClickable(false);
-                    mGoJbText.setText("已接镖或镖已结束");
+                    mGoJbText.setText("已接镖");
                     mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
                     mGoJbTextStaus.setVisibility(View.GONE);
                     mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
@@ -287,7 +287,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                     }else {
 //                    isJiebiaoLayout.setVisibility(View.GONE);
                         mgobid.setClickable(false);
-                        mGoJbText.setText("已接镖或镖已结束");
+                        mGoJbText.setText("已结束");
                         mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
                         mGoJbTextStaus.setVisibility(View.GONE);
                         mgobid.setBackgroundColor(getResources().getColor(R.color.gray));

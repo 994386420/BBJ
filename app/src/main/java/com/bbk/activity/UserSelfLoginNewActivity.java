@@ -1,11 +1,5 @@
 package com.bbk.activity;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,14 +16,13 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -41,16 +34,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.DataFragment;
-import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
 import com.bbk.util.DialogUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
-import com.bbk.util.MD5Util;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
@@ -72,7 +62,12 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
-public class UserLoginNewActivity extends BaseActivity implements OnClickListener, TextWatcher,ResultEvent {
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserSelfLoginNewActivity extends BaseActivity implements OnClickListener, TextWatcher,ResultEvent {
 	private Typeface typeFace;
 	private DataFlow dataFlow;
 	private ImageButton goBackBtn;
@@ -122,7 +117,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.user_login_new);
+		setContentView(R.layout.self_logo_layout);
 		View topView = findViewById(R.id.login_main);
 		// 实现沉浸式状态栏
 		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
@@ -144,40 +139,8 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			userNameText.setText(addr);
 		}
 		initData();
-		//内部长按登陆
-		imageView.setOnCreateContextMenuListener(this);
 	}
 
-	/**
-	 * 内部长按登录
-	 * @param menu
-	 * @param v
-	 * @param menuInfo
-	 */
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-		menu.add(1, 1000, 0, "登录");
-
-		super.onCreateContextMenu(menu, v, menuInfo);
-	}
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-			case 1000:
-//				StringUtil.showToast(this, "标记为未读");
-				Intent intent = new Intent(this,UserSelfLoginNewActivity.class);
-				startActivity(intent);
-				break;
-			default:
-				break;
-		}
-
-		boolean b = super.onContextItemSelected(item);
-		return super.onContextItemSelected(item);
-	}
 	private void initView() {
 		imageView = findViewById(R.id.logo_iamge);
 		mLlUserXiyi = findViewById(R.id.ll_bbj_user_xieyi);
@@ -282,30 +245,20 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 
 	private boolean getUserLoginInfor() {
 		userLogin = userNameText.getText().toString();
-		userPass = userPasswordText.getText().toString();
-		Toast toast;
 		if(TextUtils.isEmpty(userLogin)) {
-			toast = Toast.makeText(this, "用户名不能为空！",Toast.LENGTH_LONG );
-			toast.show();
+			StringUtil.showToast(this, "登录id不能为空");
 			return false;
 		}
-		if(TextUtils.isEmpty(userPass)) {
-			toast = Toast.makeText(this, "密码不能为空！",Toast.LENGTH_LONG );
-			toast.show();
-			return false;
-		}
-
 		return true;
 	}
 
 
 	private void userLoginHttp() {
 		loginBtn.setText("登录中...");
-		loginBtn.setEnabled(false);
+//		loginBtn.setEnabled(false);
 		Map<String, String> paramsMap = new HashMap<String, String>();
-		paramsMap.put("phone", userLogin);
-		paramsMap.put("password", userPass);
-		dataFlow.requestData(1, "apiService/loginUser", paramsMap, this, false);
+		paramsMap.put("id", userLogin);
+		dataFlow.requestData(1, "bid/mjLogin", paramsMap, this, false);
 	}
 
 	@Override
@@ -314,33 +267,30 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		String str = content;
 		try {
 			JSONObject jsonObj = new JSONObject(str);
-			
 			Intent intent;
 			if ("1".equals(dataJo.optString("status"))){
 				switch (requestCode) {
-
 					case 1:
 						loginBtn.setText("立即登录");
 						loginBtn.setEnabled(true);
-
 						if("1".equals(jsonObj.optString("status"))) {
-							JSONObject inforJsonObj = jsonObj.optJSONObject("info");
+							JSONObject inforJsonObj = new JSONObject(content);
 							String userID = inforJsonObj.optString("u_id");
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor","password", inforJsonObj.optString("u_pass"));
+//							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor","password", inforJsonObj.optString("u_pass"));
 							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "userID", userID);
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userLogin", inforJsonObj.optString("u_name"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userEmail", inforJsonObj.optString("u_email"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userPhone", inforJsonObj.optString("u_phone"));
+//							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userEmail", inforJsonObj.optString("u_email"));
+//							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userPhone", inforJsonObj.optString("u_phone"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "nickname", inforJsonObj.optString("u_nickname"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "gender", inforJsonObj.optString("u_sex"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "brithday", inforJsonObj.optString("u_birthday"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "province", inforJsonObj.optString("u_province"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "city", inforJsonObj.optString("u_city"));
+//							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "brithday", inforJsonObj.optString("u_birthday"));
+//							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "province", inforJsonObj.optString("u_province"));
+//							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "city", inforJsonObj.optString("u_city"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "imgUrl", inforJsonObj.optString("u_imgurl"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "mid", inforJsonObj.optString("u_mdid"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "identifier", inforJsonObj.optString("u_iden"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", inforJsonObj.optString("u_sig"));
-							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "login_STATE","1");
+//							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "login_STATE","1");
 							intent = new Intent();
 							setResult(3, intent);
 							TencentLoginUtil.Login(this);
@@ -378,8 +328,8 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 							}
 							if("1".equals(dataJo.optString("status"))) {
 								if ("1".equals(jsonObj.optString("status"))) {
-									String openID = SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this,"userInfor","openID");
-									String username = SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this,"userInfor","username");
+									String openID = SharedPreferencesUtil.getSharedData(UserSelfLoginNewActivity.this,"userInfor","openID");
+									String username = SharedPreferencesUtil.getSharedData(UserSelfLoginNewActivity.this,"userInfor","username");
 									SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "thirdLogin", "yes");
 									JSONObject inforJsonObj = jsonObj.optJSONObject("info");
 									SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userID", inforJsonObj.optString("u_id"));
@@ -513,14 +463,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			startActivity(intent);
 			finish();
 			break;
-//		case R.id.weibo_login_layout:
-//			isWeboLogin = true;
-//			weiboLogin();
-//			break;
-//		case R.id.qq_login_layout:
-//			isQQLogin = true;
-//			QQLogin();
-//			break;
 		case R.id.wx_login_layout:
 			if (mCheckXieyi.isChecked()){
 				sendAuth();
@@ -546,21 +488,14 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		String userName = userNameText.getText().toString();
-		String userPassword = userPasswordText.getText().toString();
 
 		if(TextUtils.isEmpty(userName)) {
 			clearName.setVisibility(View.GONE);
 		} else {
 			clearName.setVisibility(View.VISIBLE);
 		}
-		
-		if(TextUtils.isEmpty(userPassword)) {
-			clearPwd.setVisibility(View.GONE);
-		} else {
-			clearPwd.setVisibility(View.VISIBLE);
-		}
 
-		if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(userPassword)) {
+		if(!TextUtils.isEmpty(userName)) {
 			loginBtn.setEnabled(true);
 			loginBtn.setTextColor(Color.parseColor("#FFFFFF"));
 			loginBtn.setBackgroundResource(R.drawable.bg_user_btn);
@@ -573,12 +508,12 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		
+
 	}
 
 	public void weiboLogin() {
-		mAuthInfo = new AuthInfo(UserLoginNewActivity.this, Constants.WEIBO_APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
-		mSsoHandler = new SsoHandler(UserLoginNewActivity.this, mAuthInfo);
+		mAuthInfo = new AuthInfo(UserSelfLoginNewActivity.this, Constants.WEIBO_APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
+		mSsoHandler = new SsoHandler(UserSelfLoginNewActivity.this, mAuthInfo);
 		mSsoHandler.authorize(new AuthListener());
 	}
 
@@ -588,10 +523,10 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			mAccessToken = Oauth2AccessToken.parseAccessToken(values); // 从Bundle中解析Token
 			mUsersAPI = new UsersAPI(getApplicationContext(), Constants.WEIBO_APP_KEY, mAccessToken);
 			if (mAccessToken.isSessionValid()) {
-				
+
 				progressDialogText.setText("正在使用微博登录");
 				alertDialog.show();
-				
+
 				long uid = Long.parseLong(mAccessToken.getUid());
 				mUsersAPI.show(uid, mListener);
 			} else {
@@ -645,11 +580,11 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	class BaseUiListener implements IUiListener {
 		@Override
 		public void onCancel() {
-			StringUtil.showToast(UserLoginNewActivity.this, "登录取消");
+			StringUtil.showToast(UserSelfLoginNewActivity.this, "登录取消");
 		}
 		@Override
 		public void onComplete(Object response) {
-			StringUtil.showToast(UserLoginNewActivity.this,  "登录成功");
+			StringUtil.showToast(UserSelfLoginNewActivity.this,  "登录成功");
 			try {
 				JSONObject jsonObj = new JSONObject(response.toString());
 				openID = jsonObj.optString("openid");
@@ -661,7 +596,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 
 					progressDialogText.setText("正在使用QQ登录");
 					alertDialog.show();
-					
+
 					UserInfo userInfo = new UserInfo(getApplicationContext(), qqToken);
 					userInfo.getUserInfo(new IUiListener() {
 						@Override
@@ -701,7 +636,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	 * 申请微信授权
 	 */
 	private void sendAuth() {
-		
+
 		if (wxApi == null) {
 			wxApi = WXAPIFactory.createWXAPI(this, Constants.WX_APP_ID, false);
 		}
@@ -720,7 +655,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		req.scope = "snsapi_userinfo";
 		req.state = "bbj_login_state";
 		wxApi.sendReq(req);
-		
+
 	}
 
 	@Override
@@ -729,10 +664,10 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			SharedPreferences settings = getSharedPreferences("setting", 0);
 			String code = settings.getString("code", null);
 			if (code != null && !code.equals("")) {
-				
+
 				progressDialogText.setText("正在使用微信登录");
 				alertDialog.show();
-				
+
 				getOpenid(code);
 			}
 			type = "";
@@ -741,7 +676,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		}
 		super.onResume();
 	}
-	
+
 	/**
 	 * 获取openid accessToken值用于后期操作
 	 * @param code 请求码
@@ -759,7 +694,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 						+ "&grant_type=authorization_code";
 				try {
 					String result = HttpUtil.requestByHttpGet(path, null);// 请求https连接并得到json结果
-					
+
 					JSONObject jsonObject = new JSONObject(result);
 
 					if (null != jsonObject) {
@@ -777,7 +712,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			};
 		}.start();
 	}
-	
+
 	/**
 	 * 获取用户唯一标识
 	 * @param openId
@@ -800,7 +735,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 					msg.what = 4;
 					msg.obj = result;
 					handler.sendMessageDelayed(msg, 500);
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -814,25 +749,25 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		System.gc();
 		super.onDestroy();
 	}
-	
-	
+
+
 	private void userLoginThirdPartyHttp(final String openID, final String nickName, final String imgUrl) {
 		progressDialogText.setText("正在获取登录信息");
 		Map<String, String> paramsMap = new HashMap<String, String>();
-		SharedPreferencesUtil.putSharedData(UserLoginNewActivity.this,"userInfor","openID", openID);
-		SharedPreferencesUtil.putSharedData(UserLoginNewActivity.this,"userInfor","username", nickName);
+		SharedPreferencesUtil.putSharedData(UserSelfLoginNewActivity.this,"userInfor","openID", openID);
+		SharedPreferencesUtil.putSharedData(UserSelfLoginNewActivity.this,"userInfor","username", nickName);
 		paramsMap.put("openid", openID);
 		paramsMap.put("nickname", nickName);
 		paramsMap.put("imgurl", imgUrl);
 		dataFlow.requestData(3, "apiService/checkIsThirdBand" , paramsMap, this, false);
-		
+
 	}
-	
-	
+
+
 	private TextView progressDialogText;
-	
+
 	public AlertDialog buildDialog(int id) {
-		AlertDialog.Builder builder = new Builder(this, R.style.progress_dialog);
+		Builder builder = new Builder(this, R.style.progress_dialog);
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view = inflater.inflate(id, null);
 		progressDialogText = (TextView) view.findViewById(R.id.loading_text);

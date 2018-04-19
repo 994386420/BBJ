@@ -51,7 +51,7 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
         dataFlow = new DataFlow6(this);
         bidid = getIntent().getStringExtra("bidid");
         fbid = getIntent().getStringExtra("fbid");
-        type = getIntent().getStringExtra("type");
+//        type = getIntent().getStringExtra("type");
         initView();
         initData();
     }
@@ -77,11 +77,6 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
                 updateAssociateBid();
             }
         });
-        if ("1".equals(type)){
-            mensure.setVisibility(View.VISIBLE);
-        }else {
-            mensure.setVisibility(View.GONE);
-        }
     }
     private void initData() {
         HashMap<String, String> paramsMap = new HashMap<>();
@@ -102,6 +97,7 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
         switch (requestCode){
             case 1:
                 try {
+                    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     JSONArray array = new JSONArray(content);
                     JSONObject object = array.getJSONObject(0);
                     String blidid = object.optString("bidid");
@@ -109,9 +105,15 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
                     String biddesc = object.optString("biddesc");
                     String bidprice = object.optString("bidprice");
                     String bidtime = object.optString("bidtime");
+                    String biduserid = object.optString("biduserid");
                     final String bidurl = object.optString("bidurl");
                     userid = object.optString("userid");
                     mendprice.setText("￥"+bidprice);
+                    if (biduserid.equals(userID)){
+                        mensure.setVisibility(View.VISIBLE);
+                    }else {
+                        mensure.setVisibility(View.GONE);
+                    }
                     murltext.setText(bidurl);
                     mintentbuy.setOnClickListener(new View.OnClickListener() {
                         @Override
