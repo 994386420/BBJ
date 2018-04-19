@@ -273,7 +273,7 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 					case 1:
 						loginBtn.setText("立即登录");
 						loginBtn.setEnabled(true);
-						if("1".equals(jsonObj.optString("status"))) {
+						if("1".equals(dataJo.optString("status"))) {
 							JSONObject inforJsonObj = new JSONObject(content);
 							String userID = inforJsonObj.optString("u_id");
 //							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor","password", inforJsonObj.optString("u_pass"));

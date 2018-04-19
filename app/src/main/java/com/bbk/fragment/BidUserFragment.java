@@ -47,6 +47,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
     private ImageView muserimg;
     private LinearLayout  mcollection, mfoot;
     private View data_head;
+    public static int mMessage;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -202,6 +203,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
 
         }
     }
+    //接镖点击事件
     private void mJieBiaoDetail(String userid ,String value){
         Intent intent;
         if (TextUtils.isEmpty(userid)) {
@@ -213,6 +215,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
             startActivity(intent);
         }
     }
+    //发镖点击事件
     private void mDetail(String userid ,String value){
         Intent intent;
         if (TextUtils.isEmpty(userid)) {
@@ -262,7 +265,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
             setnum(mbidjietext,object.optString("bidjie"));
             setnum(mbidpltext,object.optString("bidpl"));
             setnum(mnewmsg,object.optString("sysmsg"));
-
+            BidUserFragment.mMessage = object.optInt("sysmsg");
         } catch (JSONException e) {
             e.printStackTrace();
         }

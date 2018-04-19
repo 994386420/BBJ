@@ -16,7 +16,6 @@ import com.bbk.adapter.BidDetailListPLAdapter;
 import com.bbk.chat.ui.ChatActivity;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
-import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -29,7 +28,6 @@ import com.youth.banner.listener.OnBannerListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

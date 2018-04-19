@@ -140,7 +140,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             @Override
             public void onLoadMore(boolean isSilence) {
                     page++;
-                    isclear = false;
+//                    isclear = false;
                     initData(type,1);
 
             }
@@ -257,6 +257,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         }
     }
     public void addList(JSONArray array) throws JSONException {
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         if (array.length()<10) {
             mrefresh.setPullLoadEnable(false);
         }else{
@@ -278,6 +279,39 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             map.put("userid",object.optString("userid"));
             list.add(map);
         }
+        if (adapter != null){
+            adapter.notifyDataSetChanged();
+        }else {
+            if (list != null && list.size() > 0){
+                adapter = new BidAcceptanceAdapter(this,list);
+                mlistview.setAdapter(adapter);
+                mlistview.setVisibility(View.VISIBLE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }else {
+                mlistview.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.VISIBLE);
+            }
+            mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        if (list.get(position).get("userid").equals(userID)){
+                            Intent intent = new Intent(BidAcceptanceActivity.this,BidBillDetailActivity.class);
+                            intent.putExtra("fbid",list.get(position).get("id"));
+                            startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
+                            intent.putExtra("id",list.get(position).get("id"));
+                            intent.putExtra("status",list.get(position).get("status"));
+                            startActivity(intent);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        isclear = false;
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
@@ -286,7 +320,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         try {
             switch (requestCode){
                 case 1:
-                    final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     JSONObject object = new JSONObject(content);
                     if (isclear){
                         list.clear();
@@ -297,36 +330,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                     }
                     JSONArray array = object.getJSONArray("moren");
                     addList(array);
-                    if (list != null && list.size() > 0){
-                        adapter = new BidAcceptanceAdapter(this,list);
-                        mlistview.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                        mlistview.setVisibility(View.VISIBLE);
-                        mNoMessageLayout.setVisibility(View.GONE);
-                    }else {
-                        mlistview.setVisibility(View.GONE);
-                        mNoMessageLayout.setVisibility(View.VISIBLE);
-                    }
-                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            try {
-                                if (list.get(position).get("userid").equals(userID)){
-                                    Intent intent = new Intent(BidAcceptanceActivity.this,BidBillDetailActivity.class);
-                                    intent.putExtra("fbid",list.get(position).get("id"));
-                                    startActivity(intent);
-                                }else {
-                                    Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
-                                    intent.putExtra("id",list.get(position).get("id"));
-                                    intent.putExtra("status",list.get(position).get("status"));
-                                    startActivity(intent);
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    isclear = false;
                     break;
                 case 2:
                     list.clear();

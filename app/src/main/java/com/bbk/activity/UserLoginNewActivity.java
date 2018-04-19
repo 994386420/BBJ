@@ -170,6 +170,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 //				StringUtil.showToast(this, "标记为未读");
 				Intent intent = new Intent(this,UserSelfLoginNewActivity.class);
 				startActivity(intent);
+				finish();
 				break;
 			default:
 				break;

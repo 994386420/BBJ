@@ -26,6 +26,7 @@ import com.bbk.fragment.BidUserFragment;
 import com.bbk.util.BaseTools;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.CustomViewPager;
+import com.bbk.view.NumImageView;
 import com.bumptech.glide.Glide;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
@@ -43,35 +44,24 @@ import java.util.List;
 
 public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandler.Response, ResultEvent {
     private static final int TAB_SIZE = 5;
-
-    private int screenWidth = 0;
-
     private static CustomViewPager mViewPager;
     private CustomFragmentPagerAdapter mPagerAdapter;
     private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
-
     private LinearLayout tabParentLayout;
-
     private int[] tabImgBlue = { R.mipmap.bj_51_02, R.mipmap.bj_52_02,R.mipmap.bj_53_02,
             R.mipmap.bj_54_02, R.mipmap.bj_55_02 };
-
     private int[] tabImgGray = { R.mipmap.bj_51_01, R.mipmap.bj_52_01,R.mipmap.bj_53_01,
             R.mipmap.bj_54_01, R.mipmap.bj_55_01 };
     private List<String> tabImgBlue2 = new ArrayList<>();
     private List<String> tabImgGray2 = new ArrayList<>();
     private boolean isshow = false;
     private int currentIndex = 0;
-
     private IWeiboShareAPI mWeiboShareAPI = null;
-
-    //	private Tencent mTencent;
     private TextView mtext;
     private ImageView mimg;
     private int k = 0;
     private boolean iscli = false;
-
     private DataFlow dataFlow;
-
     public static ImageView mzhezhao;
     private boolean isuserzhezhao = false;
     public static Activity instance = null;
@@ -80,6 +70,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     private String ctcolor = "#b40000";
     private BidFragment bidFragment;
     public static String Flag = "";
+    private NumImageView mNumImage;//带数字角标的自定义view
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +91,8 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         mtext = $(R.id.mtext);
         mimg = $(R.id.home_img_btn);
         mzhezhao = $(R.id.mzhezhao);
+        mNumImage = findViewById(R.id.data_img_btn);
+        mNumImage.setNum(BidUserFragment.mMessage);
         mzhezhao.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -14,11 +14,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="有人接镖"/>
         <TextView
             android:id="@+id/mtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="2018-11-05"/>
     </LinearLayout>
     <TextView
@@ -28,6 +30,7 @@
         android:singleLine="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:textColor="@color/black"
         android:ellipsize="end"/>
     <TextView
         android:id="@+id/muserandprice"
@@ -35,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:textColor="@color/black"
         android:layout_marginBottom="20dp"
         />
 </LinearLayout>

@@ -42,6 +42,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.BaseViewPagerFragment;
 import com.bbk.fragment.BidMessageFragment;
+import com.bbk.fragment.BidUserFragment;
 import com.bbk.fragment.DataFragment;
 import com.bbk.fragment.GossipPiazzaFragment;
 import com.bbk.fragment.HomeFragment2;
@@ -60,7 +61,9 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.LoadImgUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.util.TencentLoginUtil;
 import com.bbk.view.CustomViewPager;
+import com.bbk.view.NumImageView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -108,6 +111,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	private UpdateVersionService updateVersionService;
 	private final String mPageName = "HomeActivity";
 	public static String Flag = "";
+	private NumImageView mNumImageView;
 
 
 	@Override
@@ -120,8 +124,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		dataFlow = new DataFlow(this);
 		initView();
 		initData();
-
-
+		initMsg();
 	}
 
 	@Override
@@ -188,6 +191,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		mtext = $(R.id.mtext);
 		mimg = $(R.id.home_img_btn);
 		mzhezhao = $(R.id.mzhezhao);
+		mNumImageView = findViewById(R.id.rank_img_btn);
 		mzhezhao.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -218,7 +222,13 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		dataFlow.requestData(1, "newService/queryIndexMenu", paramsMap, this, false);
 
 	}
-
+	//获取未读消息
+	public void initMsg(){
+		HashMap<String, String> paramsMap = new HashMap<>();
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+		paramsMap.put("userid",userID);
+		dataFlow.requestData(2, "bid/queryMyBiaoMsg", paramsMap, this,false);
+	}
 	public void initViewPager() {
 		fragments.clear();
 		mPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager(), fragments);
@@ -268,7 +278,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 			LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
 			ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
 			if (isshow){
-				Log.e("==================",""+tabImgGray2.get(currentIndex));
+//				Log.e("==================",""+tabImgGray2.get(currentIndex));
 				Glide.with(this).
 						load(tabImgGray2.get(currentIndex)).
 						into(currentIV);
@@ -508,6 +518,12 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
                 		switchTab(currentIndex);
 					}
                     break;
+
+				case 2:
+					JSONObject objectMeaage = new JSONObject(content);
+					BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
+					mNumImageView.setNum(BidUserFragment.mMessage);
+					break;
             }
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -548,5 +564,11 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	         }
 	         return super.dispatchTouchEvent(ev);
 	 }
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		initMsg();
+	}
 }
 

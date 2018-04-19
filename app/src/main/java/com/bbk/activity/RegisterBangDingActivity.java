@@ -163,8 +163,8 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 									DataFragment.login_remind.setVisibility(View.GONE);
 								}
 								finish();
-							//友盟登录
-							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
+							    //友盟登录
+							    MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
 							}else if("0".equals(content.optString("status"))){
 								StringUtil.showToast(RegisterBangDingActivity.this, content.optString("errmsg"));
 							}

@@ -69,7 +69,17 @@ public class BidMsgInformAdapter extends BaseAdapter{
             viewHolder.mtime.setText(dtimes);
             viewHolder.mcontent.setText(roledesc+":"+title);
             viewHolder.muserandprice.setText(extra+",戳我查看详情~");
-
+            if (isread.equals("0")){
+                viewHolder.mtitle.setTextColor(context.getResources().getColor(R.color.biao_color));
+                viewHolder.mtime.setTextColor(context.getResources().getColor(R.color.biao_color));
+                viewHolder.mcontent.setTextColor(context.getResources().getColor(R.color.biao_color));
+                viewHolder.muserandprice.setTextColor(context.getResources().getColor(R.color.biao_color));
+            }else {
+                viewHolder.mtitle.setTextColor(context.getResources().getColor(R.color.black));
+                viewHolder.mtime.setTextColor(context.getResources().getColor(R.color.black));
+                viewHolder.mcontent.setTextColor(context.getResources().getColor(R.color.black));
+                viewHolder.muserandprice.setTextColor(context.getResources().getColor(R.color.black));
+            }
             return convertView;
         } catch (Exception e) {
             e.printStackTrace();

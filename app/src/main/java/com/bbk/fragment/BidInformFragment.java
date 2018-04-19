@@ -137,6 +137,29 @@ public class BidInformFragment extends Fragment implements ResultEvent {
             map.put("dtimes",object.optString("dtimes"));
             list.add(map);
         }
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter = new BidMsgInformAdapter(getActivity(), list);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Map<String, String> map = list.get(position);
+                    String role = map.get("role");
+                    Intent intent;
+                    if ("1".equals(role)) {
+                        intent = new Intent(getActivity(), BidBillDetailActivity.class);
+                    } else {
+                        intent = new Intent(getActivity(), BidMyBillDetailActivity.class);
+                    }
+                    intent.putExtra("fbid", map.get("fbid"));
+                    startActivity(intent);
+                    readSysmsg(map.get("id"));
+                }
+            });
+        }
+        isclear =false;
     }
 
     @Override
@@ -151,26 +174,6 @@ public class BidInformFragment extends Fragment implements ResultEvent {
                     }
                     JSONArray array = new JSONArray(content);
                     addList(array);
-                    adapter = new BidMsgInformAdapter(getActivity(),list);
-                    listView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Map<String, String> map = list.get(position);
-                            String role = map.get("role");
-                            Intent intent;
-                            if ("1".equals(role)){
-                                intent = new Intent(getActivity(), BidBillDetailActivity.class);
-                            }else {
-                                intent = new Intent(getActivity(), BidMyBillDetailActivity.class);
-                            }
-                            intent.putExtra("fbid",map.get("fbid"));
-                            startActivity(intent);
-                            readSysmsg(map.get("id"));
-                          }
-                       });
-                        isclear =false;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -181,6 +184,11 @@ public class BidInformFragment extends Fragment implements ResultEvent {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         isclear = true;
         topicpage = 1;
         initData(false);
