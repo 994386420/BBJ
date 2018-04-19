@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 我的接镖
+ * 我的发镖
  */
 public class BidListDetailActivity extends BaseActivity implements ResultEvent {
 

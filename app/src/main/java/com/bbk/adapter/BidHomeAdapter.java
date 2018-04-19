@@ -15,10 +15,15 @@ import android.widget.ViewFlipper;
 
 import com.bbk.activity.BidAcceptanceActivity;
 import com.bbk.activity.BidAllHotActivity;
+import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
+import com.bbk.activity.BidListDetailActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.util.DateUtil;
+import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
 
@@ -160,6 +165,7 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     }
 
     private void initList(LikeListViewHolder viewHolder, int position) throws JSONException {
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         final JSONObject object = listarray.getJSONObject(position);
         String time = DateUtil.TimeDifference(object.optString("endtime"));
         viewHolder.mtime.setText("距结束  "+time);
@@ -170,15 +176,27 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, BidDetailActivity.class);
-                intent.putExtra("id",object.optString("id"));
-                context.startActivity(intent);
+                try{
+                if (object.optString("userid").equals(userID)){
+                    Intent intent = new Intent(context,BidBillDetailActivity.class);
+                    intent.putExtra("fbid",object.optString("id"));
+                    context.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(context, BidDetailActivity.class);
+                    intent.putExtra("id",object.optString("id"));
+                    context.startActivity(intent);
+                }  }catch (Exception e){
+                e.printStackTrace();
+                    StringUtil.showToast(context,"网络连接异常");
+            }
+
             }
         });
         Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg);
     }
 
     private void initHot(HotViewHolder viewHolder, int i) throws JSONException, ParseException {
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         ImageView[] img = {viewHolder.mimg1,viewHolder.mimg2,viewHolder.mimg3};
         final JSONObject object = hotarray.getJSONObject(i);
         viewHolder.mtitle.setText(object.optString("title"));
@@ -197,9 +215,20 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, BidDetailActivity.class);
-                intent.putExtra("id",object.optString("id"));
-                context.startActivity(intent);
+                try {
+                    if (object.optString("userid").equals(userID)){
+                        Intent intent = new Intent(context,BidBillDetailActivity.class);
+                        intent.putExtra("fbid",object.optString("id"));
+                        context.startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(context, BidDetailActivity.class);
+                        intent.putExtra("id",object.optString("id"));
+                        context.startActivity(intent);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    StringUtil.showToast(context,"网络连接异常");
+                }
             }
         });
 

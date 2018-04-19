@@ -45,7 +45,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     private ImageView item_img;
     private TextView item_title,mprice,mcount,mspectatornum,mbidnum,mendprice,
             murltext,mintentbuy,mbidesc,mbidnum2,mordernum,mbegintime,mendtime
-            ,mtext1,mtext2;
+            ,mtext1,mtext2,mTitle;
     private LinearLayout mbox,mcontact,malllist;
     private MyListView mlistview;
     private RushBuyCountDownTimerView mtime;
@@ -68,6 +68,8 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     }
     public void initView(){
         list = new ArrayList<>();
+        mTitle = findViewById(R.id.title);
+        mTitle.setText("发镖详情");
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,18 +98,6 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         mcontact = (LinearLayout) findViewById(R.id.mcontact);
         malllist = (LinearLayout) findViewById(R.id.malllist);
         mlistview = (MyListView) findViewById(R.id.mlistview);
-        adapter = new BidDetailListAdapter(this,list);
-        mlistview.setAdapter(adapter);
-        mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(BidBillDetailActivity.this,BidFilterPriceActivity.class);
-                intent.putExtra("bidid",list.get(position).get("bidid"));
-                intent.putExtra("fbid",fbid);
-                intent.putExtra("type","1");
-                startActivity(intent);
-            }
-        });
         malllist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,16 +277,16 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
             Map<String,String> map = new HashMap<>();
             map.put("bidid",object.optString("bidid"));
             map.put("biduser",object.optString("biduser"));
+            map.put("biduserid",object.optString("biduserid"));
             map.put("biddesc",object.optString("biddesc"));
             map.put("bidprice",object.optString("bidprice"));
+            map.put("bidstatus",object.optString("bidstatus"));
             map.put("bidtime",object.optString("bidtime"));
             map.put("bidurl",object.optString("bidurl"));
             if (i<3){
                 list.add(map);
             }
         }
-        adapter.notifyDataSetChanged();
-
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
@@ -369,11 +359,20 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     mbegintime.setText("创建时间:"+beginlong);
                     mendtime.setText("完成时间:"+endlong);
                     addList(bidarr);
+                    adapter = new BidDetailListAdapter(this,list);
+                    mlistview.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(BidBillDetailActivity.this,BidFilterPriceActivity.class);
+                            intent.putExtra("bidid",list.get(position).get("bidid"));
+                            intent.putExtra("fbid",fbid);
+                            intent.putExtra("type","1");
+                            startActivity(intent);
+                        }
+                    });
                     Glide.with(this).load(img).placeholder(R.mipmap.zw_img_300).into(item_img);
-
-
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

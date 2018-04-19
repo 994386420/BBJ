@@ -24,7 +24,9 @@ import android.widget.Toast;
 import com.andview.refreshview.XRefreshView;
 import com.bbk.activity.BaseActivity;
 import com.bbk.activity.BidAcceptanceActivity;
+import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.adapter.BidAcceptanceAdapter;
 import com.bbk.flow.DataFlow6;
@@ -32,6 +34,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.ImmersionUtil;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -285,8 +288,9 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             map.put("number",object.optString("number"));
             map.put("type",object.optString("type"));
             map.put("url",object.optString("url"));
-            Log.i("商品状态++++++",object.optString("status"));
+//            Log.i("商品状态++++++",object.optString("status"));
             map.put("status",object.optString("status"));
+            map.put("userid",object.optString("userid"));
             list.add(map);
         }
     }
@@ -297,6 +301,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
         try {
             switch (requestCode){
                 case 1:
+                    final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     JSONObject object = new JSONObject(content);
                     if (isclear){
                         list.clear();
@@ -320,10 +325,20 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
                     mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(getActivity(), BidDetailActivity.class);
-                            intent.putExtra("id",list.get(position).get("id"));
-                            intent.putExtra("status",list.get(position).get("status"));
-                            startActivity(intent);
+                            try {
+                            if (list.get(position).get("userid").equals(userID)){
+                                Intent intent = new Intent(getActivity(),BidBillDetailActivity.class);
+                                intent.putExtra("fbid",list.get(position).get("id"));
+                                startActivity(intent);
+                            }else {
+                                Intent intent = new Intent(getActivity(), BidDetailActivity.class);
+                                intent.putExtra("id",list.get(position).get("id"));
+                                intent.putExtra("status",list.get(position).get("status"));
+                                startActivity(intent);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         }
                     });
                     isclear = false;

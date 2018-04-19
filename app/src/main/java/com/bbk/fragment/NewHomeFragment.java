@@ -21,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import com.bbk.activity.BidAcceptanceActivity;
+import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.DataFragmentActivity;
@@ -483,6 +486,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             map.put("extra",object.optString("extra"));
             map.put("number",object.optString("number"));
             map.put("type",object.optString("type"));
+            map.put("userid",object.optString("userid"));//新增字段，用于判断是否是自己的发标，是则跳转发标详情
             list.add(map);
         }
     }
@@ -655,12 +659,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             x=2;
             getIndexByType(false,2);
     };
-
-
+    //首页四大模块点击事件
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             try {
+                final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                 if (type.equals("4")){
                     insertWenzhangGuanzhu(i);
                 }else if (type.equals("3")){
@@ -668,9 +672,19 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     intent.putExtra("blid",mList.get(i).get("blid"));
                     startActivity(intent);
                 }else if (type.equals("2")){
-                    Intent intent = new Intent(getActivity(), BidDetailActivity.class);
-                    intent.putExtra("id",mList.get(i).get("id"));
-                    startActivity(intent);
+                    try {
+                        if (list.get(i).get("userid").equals(userID)){
+                            Intent intent = new Intent(getActivity(),BidBillDetailActivity.class);
+                            intent.putExtra("fbid",list.get(i).get("id"));
+                            startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(getActivity(), BidDetailActivity.class);
+                            intent.putExtra("id",mList.get(i).get("id"));
+                            startActivity(intent);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }else if(type.equals("1")){
                     Intent intent = new Intent(getActivity(),WebViewActivity.class);
                     intent.putExtra("url",  mList.get(i).get("url"));

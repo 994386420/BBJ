@@ -125,12 +125,11 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
         msend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("1".equals(pinglun)){
+//                if ("1".equals(pinglun)){
                     loadData();
-                }else {
-                    ToastUtil("为了保护你的消费权益，请于24小时后进行评论。");
-                }
-
+//                }else {
+//                    ToastUtil("为了保护你的消费权益，请于24小时后进行评论。");
+//                }
             }
         });
         mratingbar = (MaterialRatingBar) findViewById(R.id.mratingbar);
@@ -362,7 +361,7 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
                     JSONObject object = new JSONObject(post);
                     Log.i("======",object+"=======");
                     if (object.optInt("status") <= 0) {
-                        StringUtil.showToast(BidMyWantPLActivity.this, "发布失败");
+                        StringUtil.showToast(BidMyWantPLActivity.this, object.optString("errmsg"));
                     } else {
                         StringUtil.showToast(BidMyWantPLActivity.this,"发布成功");
                         Intent intent = new Intent(BidMyWantPLActivity.this,BidMyPlActivity.class);

@@ -72,19 +72,16 @@ public class BidDetailListAdapter extends BaseAdapter{
             viewHolder.mbidprice.setText("￥"+bidprice);
             viewHolder.mbidtime.setText(bidtime);
             viewHolder.muser.setText(biduser);
-            if (position == 0){
-
-            }
             String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-            if (biduserid.equals(userID)){
-                viewHolder.mbidprice.setTextColor(Color.parseColor("#1a9afc"));
-                viewHolder.mbidtime.setTextColor(Color.parseColor("#1a9afc"));
-                viewHolder.muser.setTextColor(Color.parseColor("#1a9afc"));
-                viewHolder.mBid.setTextColor(Color.parseColor("#1a9afc"));
-                String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "imgUrl");
-                CircleImageView1.getImg(context,imgUrl,viewHolder.mimg);
-
-            }
+//            if (biduserid.equals(userID)){
+//                viewHolder.mbidprice.setTextColor(Color.parseColor("#1a9afc"));
+//                viewHolder.mbidtime.setTextColor(Color.parseColor("#1a9afc"));
+//                viewHolder.muser.setTextColor(Color.parseColor("#1a9afc"));
+//                viewHolder.mBid.setTextColor(Color.parseColor("#1a9afc"));
+//                String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "imgUrl");
+//                CircleImageView1.getImg(context,imgUrl,viewHolder.mimg);
+//
+//            }
             switch (position){
                 case 0:
                     if (biduserid.equals(userID)){

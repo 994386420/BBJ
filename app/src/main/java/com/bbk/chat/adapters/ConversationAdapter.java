@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.bbk.chat.model.Conversation;
 import com.bbk.chat.model.FriendProfile;
 import com.bbk.chat.model.FriendshipInfo;
 import com.bbk.chat.model.GroupInfo;
+import com.bbk.chat.model.GroupManageConversation;
 import com.bbk.chat.ui.AddFriendActivity;
 import com.bbk.chat.ui.ChatActivity;
 import com.bbk.chat.ui.GroupProfileActivity;
@@ -28,6 +30,7 @@ import com.bbk.chat.utils.TimeUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.imsdk.TIMValueCallBack;
@@ -73,7 +76,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView != null){
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
@@ -88,16 +91,36 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
             view.setTag(viewHolder);
         }
         final Conversation data = getItem(position);
-        try {
-            viewHolder.tvName.setText(result1.get(position).getNickName());
-            Glide.with(context).load(result1.get(position).getFaceUrl())
-                        .priority(Priority.HIGH)
-                        .placeholder(R.mipmap.zw_img_300)
-                        .into(viewHolder.avatar);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+            viewHolder.tvName.setText(data.getName());
+//            Log.i("头像","======="+data.getName()+"==="+data.getIdentify());
+//            List<String> users = new ArrayList<String>();
+//            users.add(data.getAvatarUrls());
+//            //获取好友资料
+//            timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+//                @Override
+//                public void onError(int code, String desc) {
+//                    //错误码code和错误描述desc，可用于定位请求失败原因
+//                    //错误码code列表请参见错误码表
+//                    Log.e("==========", "getUsersProfile failed: " + code + " desc");
+//                }
+//
+//                @Override
+//                public void onSuccess(final List<TIMUserProfile> result) {
+//                    Log.e("==========", "getUsersProfile succ" + result);
+////                    for(TIMUserProfile res : result){
+//                        Glide.with(context).load(result1.get(position).getFaceUrl().toString())
+//                                .priority(Priority.HIGH)
+//                                .placeholder(R.mipmap.logo)
+//                                .into(viewHolder.avatar);
+//                    }
+//                }
+//            });
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 //        getFriendsProfile();
+        viewHolder.avatar.setImageResource(data.getAvatar());
         viewHolder.lastMessage.setText(data.getLastMessageSummary());
         viewHolder.time.setText(TimeUtil.getTimeStr(data.getLastMessageTime()));
         long unRead = data.getUnreadNum();

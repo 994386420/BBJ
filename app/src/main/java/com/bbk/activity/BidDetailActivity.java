@@ -46,7 +46,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     private String fbid,status;
     private Banner mbanner;
     private TextView mtitle,mendtimetop,mprice,mcount,mspectatornum,mbidnum
-            ,mbidnum2,mstarttime,mendtime,mprice2,mextra,mplnum,mallpl;
+            ,mbidnum2,mstarttime,mendtime,mprice2,mextra,mplnum,mallpl,mGoJbText,mGoJbTextStaus;
     private MyListView mlistview,mlistviewpl;
     private List<Map<String,String>> list;
     private List<Map<String,String>> listpl;
@@ -68,18 +68,11 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
         fbid = getIntent().getStringExtra("id");
         initView();
         initData();
-        //从我的接镖列表获取返回值status，如果status = 1，可接镖；其他为不可接镖
-        if (getIntent().getStringExtra("status") != null){
-            status = getIntent().getStringExtra("status");
-            if (status.equals("1")){
-                isJiebiaoLayout.setVisibility(View.VISIBLE);
-            }else {
-                isJiebiaoLayout.setVisibility(View.GONE);
-            }
-        }
     }
 
     private void initView() {
+        mGoJbText =findViewById(R.id.gojb_text);
+        mGoJbTextStaus =findViewById(R.id.gojb_text_status);
         isJiebiaoLayout = findViewById(R.id.isJiebiao_layout);
         list = new ArrayList<>();
         listpl = new ArrayList<>();
@@ -190,9 +183,16 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             //判断如果用户ID跟biduserid有一样的，如果bidstatus状态为-1则可以接镖
             if (list.get(i).get("biduserid").toString().equals(userID)){
                 if (object.optString("bidstatus").equals("-1")){
-                    isJiebiaoLayout.setVisibility(View.VISIBLE);
+//                    isJiebiaoLayout.setVisibility(View.VISIBLE);
+                    mgobid.setClickable(true);
+                    mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
                 }else {
-                    isJiebiaoLayout.setVisibility(View.GONE);
+//                    isJiebiaoLayout.setVisibility(View.GONE);
+                    mgobid.setClickable(false);
+                    mGoJbText.setText("已接镖或镖已结束");
+                    mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                    mGoJbTextStaus.setVisibility(View.GONE);
+                    mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
                 }
             }
         }
@@ -268,9 +268,30 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 mextra.setText(extra);
                 //userid与登陆userid一样时，隐藏去接镖
                 if (userid.equals(userID )){
-                    isJiebiaoLayout.setVisibility(View.GONE);
+                    mgobid.setClickable(false);
+                    mGoJbText.setText("不能接自己的镖");
+                    mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                    mGoJbTextStaus.setVisibility(View.GONE);
+                    mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
                 }else {
-                    isJiebiaoLayout.setVisibility(View.VISIBLE);
+//                    isJiebiaoLayout.setVisibility(View.GONE);
+                    mgobid.setClickable(true);
+                    mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                }
+                //从我的接镖列表获取返回值status，如果status = 1，可接镖；其他为不可接镖
+                if (getIntent().getStringExtra("status") != null){
+                    status = getIntent().getStringExtra("status");
+                    if (status.equals("1")){
+                        mgobid.setClickable(true);
+                        mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                    }else {
+//                    isJiebiaoLayout.setVisibility(View.GONE);
+                        mgobid.setClickable(false);
+                        mGoJbText.setText("已接镖或镖已结束");
+                        mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                        mGoJbTextStaus.setVisibility(View.GONE);
+                        mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();

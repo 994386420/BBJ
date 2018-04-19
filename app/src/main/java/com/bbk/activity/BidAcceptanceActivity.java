@@ -25,6 +25,7 @@ import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
 import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -273,8 +274,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             map.put("number",object.optString("number"));
             map.put("type",object.optString("type"));
             map.put("url",object.optString("url"));
-            Log.i("商品状态++++++",object.optString("status"));
             map.put("status",object.optString("status"));
+            map.put("userid",object.optString("userid"));
             list.add(map);
         }
     }
@@ -285,6 +286,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         try {
             switch (requestCode){
                 case 1:
+                    final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     JSONObject object = new JSONObject(content);
                     if (isclear){
                         list.clear();
@@ -308,10 +310,20 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                     mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
-                            intent.putExtra("id",list.get(position).get("id"));
-                            intent.putExtra("status",list.get(position).get("status"));
-                            startActivity(intent);
+                            try {
+                                if (list.get(position).get("userid").equals(userID)){
+                                    Intent intent = new Intent(BidAcceptanceActivity.this,BidBillDetailActivity.class);
+                                    intent.putExtra("fbid",list.get(position).get("id"));
+                                    startActivity(intent);
+                                }else {
+                                    Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
+                                    intent.putExtra("id",list.get(position).get("id"));
+                                    intent.putExtra("status",list.get(position).get("status"));
+                                    startActivity(intent);
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     });
                     isclear = false;

@@ -183,7 +183,7 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
 //                                        intent.setAction(Intent.ACTION_GET_CONTENT);
 //                                        intent.addCategory(Intent.CATEGORY_OPENABLE);
                                         startActivityForResult(intent, 5);
-                                        Toast.makeText(MyGossipActivity.this, "请选择小于10M的文件", Toast.LENGTH_SHORT).show();
+                                        StringUtil.showToast(MyGossipActivity.this, "请选择小于10M的文件");
 
                                     }
                                 });
@@ -325,7 +325,7 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
                         File file = new File(path);
                         long fileSizes = getFileSizes(file);
                         if (fileSizes>10*1024*1024){
-                            Toast.makeText(this,"文件不得超过10M",Toast.LENGTH_SHORT).show();
+                            StringUtil.showToast(this,"文件不得超过10M");
                         }else {
                             Log.e("===path===",path+"");
                             list.add(list.size() - 1, path);
@@ -460,17 +460,9 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
                 break;
             case R.id.msend:
                 if (mtitle.getText().toString().isEmpty()) {
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-                    toast = Toast.makeText(this, "标题不能为空！", Toast.LENGTH_SHORT);
-                    toast.show();
+                    StringUtil.showToast(this, "标题不能为空！");
                 } else if (!mtitle.getText().toString().isEmpty() && mcontent.getText().toString().isEmpty()) {
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-                    toast = Toast.makeText(this, "内容不能为空！", Toast.LENGTH_SHORT);
-                    toast.show();
+                    StringUtil.showToast(this, "内容不能为空！");
                 } else {
                     msend.setClickable(false);
                     DialogSingleUtil.show(MyGossipActivity.this);
