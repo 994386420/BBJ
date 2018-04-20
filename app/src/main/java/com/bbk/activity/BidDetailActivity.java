@@ -188,7 +188,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
 //                    isJiebiaoLayout.setVisibility(View.GONE);
                     mgobid.setClickable(false);
                     mGoJbText.setText("已接镖");
-                    mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                    mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
                     mGoJbTextStaus.setVisibility(View.GONE);
                     mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
                 }
@@ -286,7 +286,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
 //                    isJiebiaoLayout.setVisibility(View.GONE);
                         mgobid.setClickable(false);
                         mGoJbText.setText("已结束");
-                        mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                        mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
                         mGoJbTextStaus.setVisibility(View.GONE);
                         mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
                     }

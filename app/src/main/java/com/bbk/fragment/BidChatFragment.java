@@ -141,64 +141,52 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
                 case Group:
                     this.conversationList.add(new NomalConversation(item));
                     groupList.add(item.getPeer());
-//                    try {
-//                        for (int i= 0;i<this.conversationList.size();i++){
-//                            //待获取用户资料的好友列表
-//                            users.add(this.conversationList.get(i).getIdentify());
-//                        }
-//                        StringUtil.removeDuplicate(users);
-//                        Log.e("==========", "getUsersProfile " + users);
-//                        if (users != null && users.size() >0){
-//                            getFriendsProfile();
-//                        }
-//                    }catch (Exception e){
-//                        e.printStackTrace();
-//                    }
                     break;
             }
         }
         friendshipManagerPresenter.getFriendshipLastMessage();
         groupManagerPresenter.getGroupManageLastMessage();
         Collections.sort(groupList);
+        refreshView();
         //获取好友资料
-        timFriendshipManager.getInstance().getUsersProfile(groupList, new TIMValueCallBack<List<TIMUserProfile>>(){
-            @Override
-            public void onError(int code, String desc){
-                //错误码code和错误描述desc，可用于定位请求失败原因
-                //错误码code列表请参见错误码表
-//                Log.e("==========", "getUsersProfile failed: " + code + " desc");
-            }
-
-            @Override
-            public void onSuccess(final List<TIMUserProfile> result){
-                Log.e("==========", "getUsersProfile succ"+result);
-                result1 = result;
-                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
-                listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        conversationList.get(position).navToDetail(getActivity());
-//                        try {
-//                            Intent intent = new Intent(getActivity(),ChatActivity.class);
-//                            intent.putExtra("identify",result1.get(position).getIdentifier());
-//                            intent.putExtra("type", TIMConversationType.C2C);
-//                            startActivity(intent);
-                            if (conversationList.get(position) instanceof GroupManageConversation) {
-                                groupManagerPresenter.getGroupManageLastMessage();
-                            }
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-                    }
-                });
-                if (adapter != null){
-                    adapter.notifyDataSetChanged();
-                }
-                for(TIMUserProfile res : result){
-                }
-            }
-        });
+//        timFriendshipManager.getInstance().getUsersProfile(groupList, new TIMValueCallBack<List<TIMUserProfile>>(){
+//            @Override
+//            public void onError(int code, String desc){
+//                //错误码code和错误描述desc，可用于定位请求失败原因
+//                //错误码code列表请参见错误码表
+////                Log.e("==========", "getUsersProfile failed: " + code + " desc");
+//            }
+//
+//            @Override
+//            public void onSuccess(final List<TIMUserProfile> result){
+//                Log.e("==========", "getUsersProfile succ"+result);
+//                result1 = result;
+//                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
+//                listView.setAdapter(adapter);
+//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        conversationList.get(position).navToDetail(getActivity());
+////                        try {
+////                            Intent intent = new Intent(getActivity(),ChatActivity.class);
+////                            intent.putExtra("identify",result1.get(position).getIdentifier());
+////                            intent.putExtra("type", TIMConversationType.C2C);
+////                            startActivity(intent);
+//                            if (conversationList.get(position) instanceof GroupManageConversation) {
+//                                groupManagerPresenter.getGroupManageLastMessage();
+//                            }
+////                        }catch (Exception e){
+////                            e.printStackTrace();
+////                        }
+//                    }
+//                });
+//                if (adapter != null){
+//                    adapter.notifyDataSetChanged();
+//                }
+//                for(TIMUserProfile res : result){
+//                }
+//            }
+//        });
     }
 
     private void getFriendsProfile(){
@@ -290,35 +278,10 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         Collections.sort(conversationList);
         if (adapter != null){
             adapter.notifyDataSetChanged();
+            refreshView();
         }
         if (getParentFragment() instanceof BidMessageFragment)
             ((BidMessageFragment)getParentFragment()).setMsgUnread(getTotalUnreadNum() == 0);
-        if (groupList != null){
-            //获取好友资料
-            timFriendshipManager.getInstance().getUsersProfile(groupList, new TIMValueCallBack<List<TIMUserProfile>>(){
-                @Override
-                public void onError(int code, String desc){
-                }
-                @Override
-                public void onSuccess(final List<TIMUserProfile> result){
-                    result1 = result;
-                    adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            conversationList.get(position).navToDetail(getActivity());
-                            if (conversationList.get(position) instanceof GroupManageConversation) {
-                                groupManagerPresenter.getGroupManageLastMessage();
-                            }
-                        }
-                    });
-                    if (adapter != null){
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            });
-        }
     }
 
 
@@ -422,6 +385,32 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     }
 
 
-
-
+    private void refreshView(){
+        if (groupList != null){
+            //获取好友资料
+            timFriendshipManager.getInstance().getUsersProfile(groupList, new TIMValueCallBack<List<TIMUserProfile>>(){
+                @Override
+                public void onError(int code, String desc){
+                }
+                @Override
+                public void onSuccess(final List<TIMUserProfile> result){
+                    result1 = result;
+                    if (conversationList != null && result1 != null && getActivity() != null){
+                        adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                conversationList.get(position).navToDetail(getActivity());
+                                if (conversationList.get(position) instanceof GroupManageConversation) {
+                                    groupManagerPresenter.getGroupManageLastMessage();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
 }

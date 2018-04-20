@@ -49,24 +49,15 @@ public class WelcomeGuideActivity extends BaseActivity {
 		String token = TelephonyMgr.getDeviceId();
 		SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
 		pager = (ViewPager) findViewById(R.id.viewPager);
-//		Bitmap bm = BitmapFactory.decodeResource(this.getResources(),
-//				R.drawable.welcome_guide_btn);
 		Bitmap bm = ImageUtil.readBitMap(this, R.mipmap.welcome_guide_btn);
 		BitmapDrawable bd = new BitmapDrawable(this.getResources(), bm);
-
-
-		
-
 		mListViews = new ArrayList<View>();
 		mAdapter = new MyViewPagerAdapter(mListViews);
 		pager.setAdapter(mAdapter);
 
-
 		for (int i = 0; i < pics.length; i++) {
-			
 			ImageView imageView = new ImageView(this);
 			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-			
 			Bitmap bitmap = ImageUtil.readBitMap(this, pics[i]);
 			BitmapDrawable bt = new BitmapDrawable(this.getResources(), bitmap);
 			imageView.setBackgroundDrawable(bt);
@@ -79,7 +70,6 @@ public class WelcomeGuideActivity extends BaseActivity {
 			.dontAnimate()
 			.centerCrop()
 			.into(imageView);*/
-			
 			mListViews.add(imageView);
 			if (i == 2) {
 				imageView.setOnClickListener(new OnClickListener() {

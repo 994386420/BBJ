@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
+import com.bbk.activity.BidActivity;
+import com.bbk.activity.BidFbActivity;
 import com.bbk.activity.CompareActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.ResultDialogActivity;
@@ -126,8 +128,11 @@ public class ResultMyListAdapter extends BaseAdapter{
     			
     			@Override
     			public void onClick(View arg0) {
-    				Intent intent = new Intent(context, CompareActivity.class);
+//    				Intent intent = new Intent(context, CompareActivity.class);
+					//二级页面去发标
+					Intent intent = new Intent(context, BidActivity.class);
     				intent.putExtra("rowkey",rowkey);
+					intent.putExtra("type","1");
     				context.startActivity(intent);
     			}
     		});

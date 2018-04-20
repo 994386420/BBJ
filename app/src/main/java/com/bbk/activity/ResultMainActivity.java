@@ -648,13 +648,13 @@ public class ResultMainActivity extends BaseActivity
 			if (islistview) {
 				islistview = false;
 				topbar_search_btn.setImageResource(R.mipmap.lietu);
-				xrefresh.setVisibility(View.GONE);
-				xrefresh1.setVisibility(View.VISIBLE);
+				xrefresh.setVisibility(View.VISIBLE);
+				xrefresh1.setVisibility(View.GONE);
 			}else{
 				islistview = true;
 				topbar_search_btn.setImageResource(R.mipmap.liebiao);
-				xrefresh.setVisibility(View.VISIBLE);
-				xrefresh1.setVisibility(View.GONE);
+				xrefresh.setVisibility(View.GONE);
+				xrefresh1.setVisibility(View.VISIBLE);
 			}
 			break;
 		case R.id.mfilter:
@@ -907,7 +907,7 @@ public class ResultMainActivity extends BaseActivity
 						intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
 					}
 					startActivity(intent);
-					
+
 				}
 			});
 			gridviewadapter = new ResultMyGridAdapter(itemList, this);
@@ -939,7 +939,7 @@ public class ResultMainActivity extends BaseActivity
 					startActivity(intent);
 				}
 			});
-		
+
 			isLoad = false;						
 		} catch (JSONException e) {
 //			Log.e("=======ResultMainActivity=======", e+"");

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bbk.activity.R;
 import com.bbk.view.RushBuyCountDownTimerView;
+import com.bbk.view.selecttableview.SelectableTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
@@ -97,7 +98,8 @@ public class NewCzgAdapter extends BaseAdapter{
     }
     class ViewHolder{
         ImageView item_img;
-        TextView item_title,mbidprice,dianpu,mprice,youhui;
+        TextView mbidprice,dianpu,mprice,youhui;
+        SelectableTextView item_title;
     }
 
 }

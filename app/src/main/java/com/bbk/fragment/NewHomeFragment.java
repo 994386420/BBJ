@@ -664,7 +664,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             try {
-                final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                Log.i("======type",type);
                 if (type.equals("4")){
                     insertWenzhangGuanzhu(i);
                 }else if (type.equals("3")){
@@ -672,6 +672,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     intent.putExtra("blid",mList.get(i).get("blid"));
                     startActivity(intent);
                 }else if (type.equals("2")){
+                    final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     try {
                         if (list.get(i).get("userid").equals(userID)){
                             Intent intent = new Intent(getActivity(),BidBillDetailActivity.class);

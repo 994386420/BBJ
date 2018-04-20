@@ -291,7 +291,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_centerVertical="true"
-                            android:src="@mipmap/enter_img" />
+                            android:src="@mipmap/bj_login_wx" />
                         <TextView
                             android:layout_toRightOf="@+id/image_logo"
                             android:layout_centerInParent="true"

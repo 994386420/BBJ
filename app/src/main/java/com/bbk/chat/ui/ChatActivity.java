@@ -107,7 +107,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         identify = getIntent().getStringExtra("identify");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
-        getFriendsProfile();
+        getSelfProfile();
     }
 
     @Override
@@ -508,6 +508,12 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        getSelfProfile();
+    }
+
     /**
      * 将标题设置为对象名称
      */
@@ -530,44 +536,47 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 
             @Override
             public void onSuccess(TIMUserProfile result){
-                Log.e(tag, "getSelfProfile succ");
-                Log.e(tag, "identifier: " + result.getIdentifier() + " nickName: " + result.getNickName()
-                        + " remark: " + result.getRemark() + " allow: " + result.getAllowType()+ " url: "+result.getFaceUrl());
+//                Log.e(tag, "getSelfProfile succ");
+//                Log.e(tag, "identifier: " + result.getIdentifier() + " nickName: " + result.getNickName()
+//                        + " remark: " + result.getRemark() + " allow: " + result.getAllowType()+ " url: "+result.getFaceUrl());
                 if (result.getFaceUrl() != null){
                     rightImageUrl = result.getFaceUrl();
+                    getFriendsProfile();
                 }
             }
         });
     }
 
     private void getFriendsProfile(){
-        getSelfProfile();
+//        getSelfProfile();
         //待获取用户资料的好友列表
         List<String> users = new ArrayList<String>();
         users.add(identify);
-        Log.e(tag, "getUsersProfile " + " iddddd"+identify);
+//        Log.e(tag, "getUsersProfile " + " iddddd"+identify);
         //获取好友资料
         timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
             @Override
             public void onError(int code, String desc){
                 //错误码code和错误描述desc，可用于定位请求失败原因
                 //错误码code列表请参见错误码表
-                Log.e(tag, "getUsersProfile failed: " + code + " desc");
+//                Log.e(tag, "getUsersProfile failed: " + code + " desc");
             }
 
             @Override
             public void onSuccess(List<TIMUserProfile> result){
                 Log.e(tag, "getUsersProfile succ");
                 for(TIMUserProfile res : result){
-                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
-                            + " remark: " + res.getRemark());
+//                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
+//                            + " remark: " + res.getRemark());
                     presenter = new ChatPresenter(ChatActivity.this, identify, type);
                     input = (ChatInput) findViewById(R.id.input_panel);
                     input.setChatView(ChatActivity.this);
-                    adapter = new ChatAdapter(ChatActivity.this, R.layout.item_message, messageList,res.getFaceUrl(),rightImageUrl);
-                    listView = (ListView) findViewById(R.id.list);
-                    listView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+                    if (messageList != null){
+                        adapter = new ChatAdapter(ChatActivity.this, R.layout.item_message, messageList,res.getFaceUrl(),rightImageUrl);
+                        listView = (ListView) findViewById(R.id.list);
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
                     listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
                     listView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
@@ -615,15 +624,6 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                                 FriendProfile profile = FriendshipInfo.getInstance().getProfile(identify);
                                 title.setTitleText(titleStr = profile == null ? identify : profile.getName());
                             }else{
-                                title.setMoreImgAction(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent person = new Intent(ChatActivity.this,AddFriendActivity.class);
-                                        person.putExtra("id",identify);
-                                        person.putExtra("name",identify);
-                                        startActivity(person);
-                                    }
-                                });
                                 title.setTitleText(titleStr = res.getNickName());
                             }
                             break;
@@ -646,5 +646,11 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getSelfProfile();
     }
 }

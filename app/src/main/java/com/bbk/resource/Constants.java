@@ -5,16 +5,18 @@ public interface Constants {
 	
 	/**主url*/
 	//内网，陈远鹏 更换165
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.165/APIService/";
+	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.159/APIService/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:7083/APIService/";
 	//外网
-	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
+//	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
 	//新版首页超值购等分类模块
 	public static final String GetQueryAppIndexByType = "newService/queryAppIndexByType";
 	//更新APP
 	String UPDATEVERSIONXMLPATH = MAIN_BASE_URL_MOBILE + "apiService/getAndroidUpdate";
 	//获取看比价
 	String  getBijiaArr = "newService/getBijiaArr";
+	//获取二级页面去发镖信息
+	String  getFabiaoMsgByRowkey = "bid/queryFabiaoMsgByRowkey";
 	/**上传图片*/
 	public static final String USER_IMG_URL_HEADER = "http://www.bibkan.com/upload/Image/";
 	

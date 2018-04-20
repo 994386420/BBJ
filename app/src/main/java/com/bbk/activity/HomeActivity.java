@@ -193,17 +193,17 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		mzhezhao = $(R.id.mzhezhao);
 		mNumImageView = findViewById(R.id.rank_img_btn);
 		mzhezhao.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				try {
-				
+
 						if (isuserzhezhao) {
 							mzhezhao.setVisibility(View.GONE);
 						}else{
 							mzhezhao.setImageResource(R.mipmap.app_qiandao);
 							isuserzhezhao = true;
-						
+
 					}
 				} catch (Exception e) {
 					// TODO: handle exception

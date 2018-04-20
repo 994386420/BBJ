@@ -305,6 +305,7 @@
                 android:id="@+id/xrefresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:layout_below="@id/home_layout_bar"
                  >
                         <ListView
@@ -319,7 +320,7 @@
                 android:id="@+id/xrefresh1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_below="@id/home_layout_bar"
                  >
                         <GridView

@@ -71,7 +71,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         resourceId = resource;
         this.context = context;
         this.result1 = result;
-        this.object =  objects;
+//        this.object =  objects;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)

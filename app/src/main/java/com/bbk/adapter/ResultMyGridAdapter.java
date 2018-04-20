@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
+import com.bbk.activity.BidActivity;
 import com.bbk.activity.CompareActivity;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.R;
@@ -128,8 +129,12 @@ public class ResultMyGridAdapter extends BaseAdapter{
 				vh.intentbuy.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
-						Intent intent = new Intent(context, CompareActivity.class);
-						intent.putExtra("rowkey",groupRowKey );
+//						Intent intent = new Intent(context, CompareActivity.class);
+//						intent.putExtra("rowkey",groupRowKey );
+						//二级页面去发标
+						Intent intent = new Intent(context, BidActivity.class);
+						intent.putExtra("rowkey",groupRowKey);
+						intent.putExtra("type","1");
 						context.startActivity(intent);
 					}
 				});

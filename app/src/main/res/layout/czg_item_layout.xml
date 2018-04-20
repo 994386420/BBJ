@@ -32,14 +32,13 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-                <TextView
+                <com.bbk.view.selecttableview.SelectableTextView
                     android:id="@+id/item_title"
                     android:layout_width="match_parent"
                     android:layout_height="38dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:lines="2"
-                    android:textIsSelectable="true"
                     android:text="Apple iPhone 5s 16G 金色Apple iPhone 5s 16G 金色 Apple iPhone 5s 16G 金色 "
                     android:textColor="#111111"
                     android:textSize="14dp" />

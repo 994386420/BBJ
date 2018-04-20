@@ -50,6 +50,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyGridView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -105,6 +106,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
     private ScrollView mscrollview;
     private String id = "";
     private String type = "1";
+    private String rowkey;//二级页面去发镖rowkey
     private ImageView magrement;
     private boolean isagrement = true;
     private ImageView topbar_goback_btn;
@@ -118,11 +120,20 @@ public class BidActivity extends BaseActivity implements ResultEvent{
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
             dataFlow = new DataFlow6(this);
             data_head = findViewById(R.id.data_head);
-            id = getIntent().getStringExtra("id");
+
+        if ( getIntent().getStringExtra("type")!= null){
             type = getIntent().getStringExtra("type");
+        }
+            if (getIntent().getStringExtra("id") != null){
+                id = getIntent().getStringExtra("id");
+                initData();
+            }
+            if (getIntent().getStringExtra("rowkey") != null){
+                rowkey = getIntent().getStringExtra("rowkey");
+                initDataFabiaoMsg();
+            }
 //            initstateView();
             initView();
-            initData();
     }
 
     private void initData() {
@@ -130,7 +141,12 @@ public class BidActivity extends BaseActivity implements ResultEvent{
         paramsMap.put("fbid",id);
         dataFlow.requestData(1, "bid/queryFabiaoMsg", paramsMap, this,true);
     }
-
+    //获取推荐发标信息
+    private void initDataFabiaoMsg() {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("rowkey",rowkey);
+        dataFlow.requestData(1, Constants.getFabiaoMsgByRowkey, paramsMap, this,true);
+    }
     private void initView() {
         list = new ArrayList<>();
         litlelist = new ArrayList<>();
@@ -142,23 +158,6 @@ public class BidActivity extends BaseActivity implements ResultEvent{
                 finish();
             }
         });
-//        magrement = (ImageView) findViewById(R.id.magrement);
-//        magrement.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (isagrement){
-//                    isagrement = false;
-//                    magrement.setImageResource(R.mipmap.bj_09_01);
-//                    mcommit.setBackgroundColor(Color.parseColor("#999999"));
-//                    mcommit.setClickable(false);
-//                }else {
-//                    isagrement = true;
-//                    magrement.setImageResource(R.mipmap.bj_09_02);
-//                    mcommit.setBackgroundColor(Color.parseColor("#b40000"));
-//                    mcommit.setClickable(true);
-//                }
-//            }
-//        });
         mscrollview = (ScrollView)findViewById(R.id.mscrollview);
         mname = (EditText)findViewById(R.id.mname);
         mcount = (EditText)findViewById(R.id.mcount);
@@ -192,8 +191,6 @@ public class BidActivity extends BaseActivity implements ResultEvent{
                                     new ActionSheetDialog.OnSheetItemClickListener() {
                                         @Override
                                         public void onClick(int which) {
-//											Intent intent = new Intent(MyGossipActivity.this, TestPicActivity.class);
-//											startActivity(intent);
                                             PhotoPicker.builder()
                                                     .setPhotoCount(4 - list.size())
                                                     .setGridColumnCount(3)
@@ -235,11 +232,11 @@ public class BidActivity extends BaseActivity implements ResultEvent{
     }
     private void loadData() {
         if (TextUtils.isEmpty(mname.getText().toString())){
-            ToastUtil("镖品名称不能为空");
+            StringUtil.showToast(this,"镖品名称不能为空");
         }else if (TextUtils.isEmpty(mprice.getText().toString())){
-            ToastUtil("镖品单价不能为空");
+            StringUtil.showToast(this,"镖品单价不能为空");
         }else if(TextUtils.isEmpty(mcount.getText().toString())){
-            ToastUtil("数量不能为空");
+            StringUtil.showToast(this,"数量不能为空");
         }else {
             DialogSingleUtil.show(this);
             if ("add".equals(list.get(list.size() - 1))) {
@@ -625,31 +622,37 @@ public class BidActivity extends BaseActivity implements ResultEvent{
     @SuppressLint("ResourceType")
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        try {
-            JSONObject object = new JSONObject(content);
-            mname.setText(object.optString("title"));
-            mprice.setText(object.optString("price"));
-            mcount.setText(object.optString("number"));
-            mdetail.setText(object.optString("extra"));
-            String mins = object.optString("mins");
-            if ("24".equals(mins)){
-                mradioGroup.check(R.id.mbtn1);
-            }else if("48".equals(mins)){
-                mradioGroup.check(R.id.mbtn2);
-            }else {
-                mradioGroup.check(R.id.mbtn3);
-            }
-            JSONArray imgs = object.getJSONArray("imgs");
-            list.remove(list.size() - 1);
-            for (int i = 0; i < imgs.length(); i++) {
-                list.add(imgs.optString(i));
-            }
-            if (list.size() < 9) {
-                list.add("add");
-            }
-            adapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        switch (requestCode){
+            case 1:
+                try {
+                    JSONObject object = new JSONObject(content);
+                    mname.setText(object.optString("title"));
+                    mprice.setText(object.optString("price"));
+                    mcount.setText(object.optString("number"));
+                    mdetail.setText(object.optString("extra"));
+                    String mins = object.optString("mins");
+                    if ("24".equals(mins)){
+                        mradioGroup.check(R.id.mbtn1);
+                    }else if("48".equals(mins)){
+                        mradioGroup.check(R.id.mbtn2);
+                    }else {
+                        mradioGroup.check(R.id.mbtn3);
+                    }
+                    JSONArray imgs = object.getJSONArray("imgs");
+                    list.remove(list.size() - 1);
+                    for (int i = 0; i < imgs.length(); i++) {
+                        list.add(imgs.optString(i));
+                    }
+                    if (list.size() < 9) {
+                        list.add("add");
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 2:
+                break;
         }
     }
 }
