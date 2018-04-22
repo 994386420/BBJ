@@ -68,7 +68,7 @@ import java.util.Map;
 
 public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,MyNewScrollView.OnScrollListener,RefreshableView.RefreshListener {
     private DataFlow6 dataFlow;
-    private View mView, mzhuangtai;
+    private View mView;
     /**
      * Banner
      */
@@ -118,14 +118,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private int page = 1,x = 1;
     private String type = "1";
     private List<Map<String,String>> list,addlist,mList;
-    private List<Map<String,String>> czglist,czgaddlist,mCzgList;
     private String wztitle = "";
     private ViewFlipper mviewflipper;//发标动态轮播
-    private List<Map<String, String>> titlelist;
-    private List<Map<String, String>> datalist;
     private RefreshableView mRefreshableView;
     private View view;
     private ImageView huodongimg;//活动按钮
+    //第一次引导页是否显示隐藏
     private boolean isshowzhezhao = true;
 
     @Override
@@ -220,7 +218,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mLlbjLayout.setOnClickListener(this);
         mLlblLayout.setOnClickListener(this);
         mLlfxLayout.setOnClickListener(this);
-//        mrefresh = mView.findViewById(R.id.mrefresh);
         mlistview = mView.findViewById(R.id.mlistview);
         mCzgListview = mView.findViewById(R.id.mczglistview);
         mSearch.setOnClickListener(this);
