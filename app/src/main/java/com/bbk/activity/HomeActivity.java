@@ -102,7 +102,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	private boolean iscli = false;
 	private DataFlow dataFlow;
 	public static ImageView mzhezhao;
-	private boolean isuserzhezhao = false;
+	private boolean isuserzhezhao = false,isHomeGudie = false;
 	public static Activity instance = null;
 	private String bcolor = "#ffffff";
 	private String tcolor = "#444444";
@@ -112,6 +112,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	private final String mPageName = "HomeActivity";
 	public static String Flag = "";
 	private NumImageView mNumImageView;
+	public static ImageView mHomeGudieImage;//第一次安装首页新人引导
 
 
 	@Override
@@ -182,6 +183,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	};
 
 	public void initView() {
+		mHomeGudieImage = findViewById(R.id.new_gudie_image_home);
 		TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 		String token = TelephonyMgr.getDeviceId();
 		SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
@@ -192,17 +194,26 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		mimg = $(R.id.home_img_btn);
 		mzhezhao = $(R.id.mzhezhao);
 		mNumImageView = findViewById(R.id.rank_img_btn);
-		mzhezhao.setOnClickListener(new OnClickListener() {
+		String isFirstResultUse = SharedPreferencesUtil.getSharedData(HomeActivity.this,"isFirstUse", "isFirstUserUse");
+		if (TextUtils.isEmpty(isFirstResultUse)) {
+			isFirstResultUse = "yes";
+		}
+		if (isFirstResultUse.equals("yes")) {
+			SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstUse","isFirstUserUse", "");
+			HomeActivity.mHomeGudieImage.setVisibility(View.VISIBLE);
+			HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.new_guide_biaoju);
+		}
+		mHomeGudieImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				try {
 
-						if (isuserzhezhao) {
-							mzhezhao.setVisibility(View.GONE);
-						}else{
-							mzhezhao.setImageResource(R.mipmap.app_qiandao);
-							isuserzhezhao = true;
+					if (isHomeGudie) {
+						mHomeGudieImage.setVisibility(View.GONE);
+					}else{
+						mHomeGudieImage.setImageResource(R.mipmap.new_guide_bijia);
+						isHomeGudie = true;
 
 					}
 				} catch (Exception e) {
@@ -340,7 +351,25 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 									SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstUse","isFirstUserUse", "no");
 									HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
 									HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
-								} 
+								}
+							 mzhezhao.setOnClickListener(new OnClickListener() {
+
+								 @Override
+								 public void onClick(View v) {
+									 try {
+
+										 if (isuserzhezhao) {
+											 mzhezhao.setVisibility(View.GONE);
+										 }else{
+											 mzhezhao.setImageResource(R.mipmap.app_qiandao);
+											 isuserzhezhao = true;
+
+										 }
+									 } catch (Exception e) {
+										 // TODO: handle exception
+									 }
+								 }
+							 });
 						} catch (Exception e) {
 							// TODO: handle exception
 						}

@@ -93,6 +93,19 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         mzhezhao = $(R.id.mzhezhao);
         mNumImage = findViewById(R.id.data_img_btn);
         mNumImage.setNum(BidUserFragment.mMessage);
+        try {
+            String isFirstResultUse = SharedPreferencesUtil.getSharedData(BidHomeActivity.this,"isFirstBidUse", "isFirstBidUserUse");
+            if (TextUtils.isEmpty(isFirstResultUse)) {
+                isFirstResultUse = "yes";
+            }
+            if (isFirstResultUse.equals("yes")) {
+                SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstBidUse","isFirstBidUserUse", "bidno");
+                BidHomeActivity.mzhezhao.setVisibility(View.VISIBLE);
+                BidHomeActivity.mzhezhao.setImageResource(R.mipmap.new_bid_guide_fabiao);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         mzhezhao.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -102,7 +115,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                     if (isuserzhezhao) {
                         mzhezhao.setVisibility(View.GONE);
                     }else{
-                        mzhezhao.setImageResource(R.mipmap.app_qiandao);
+                        mzhezhao.setImageResource(R.mipmap.new_bid_guide_jiebiao);
                         isuserzhezhao = true;
 
                     }
@@ -210,22 +223,22 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
             tabLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (index == 4) {
-                        try {
-                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(BidHomeActivity.this,"isFirstUse", "isFirstUserUse");
-                            if (TextUtils.isEmpty(isFirstResultUse)) {
-                                isFirstResultUse = "yes";
-                            }
-                            if (isFirstResultUse.equals("yes")) {
-                                SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstUse","isFirstUserUse", "no");
-                                HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
-                                HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
-                            }
-                        } catch (Exception e) {
-                            // TODO: handle exception
-                        }
-
-                    }
+//                    if (index == 4) {
+//                        try {
+//                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(BidHomeActivity.this,"isFirstUse", "isFirstUserUse");
+//                            if (TextUtils.isEmpty(isFirstResultUse)) {
+//                                isFirstResultUse = "yes";
+//                            }
+//                            if (isFirstResultUse.equals("yes")) {
+//                                SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstUse","isFirstUserUse", "no");
+//                                BidHomeActivity.mzhezhao.setVisibility(View.VISIBLE);
+//                                BidHomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
+//                            }
+//                        } catch (Exception e) {
+//                            // TODO: handle exception
+//                        }
+//
+//                    }
                     if (index == 3 ){
                         Flag = "bifhome3";
                         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");

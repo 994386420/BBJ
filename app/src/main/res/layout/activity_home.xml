@@ -154,4 +154,11 @@
 	    android:layout_height="match_parent"
 	    android:scaleType="centerCrop"
 	    android:src="@mipmap/app_bijiashenqi"/>
+    <ImageView
+        android:id="@+id/new_gudie_image_home"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/app_bijiashenqi"/>
 </RelativeLayout>
