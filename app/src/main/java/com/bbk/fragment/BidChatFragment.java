@@ -3,6 +3,8 @@ package com.bbk.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.bbk.activity.BidBillDetailActivity;
+import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.R;
 import com.bbk.chat.adapters.ConversationAdapter;
@@ -276,16 +279,62 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     @Override
     public void refresh() {
         Collections.sort(conversationList);
-        if (adapter != null){
-            adapter.notifyDataSetChanged();
-            refreshView();
-        }
+//        if (adapter != null){
+//            adapter.notifyDataSetChanged();
+//            refreshView();
+//        }
+        handler.sendEmptyMessageDelayed(1,0);
         if (getParentFragment() instanceof BidMessageFragment)
             ((BidMessageFragment)getParentFragment()).setMsgUnread(getTotalUnreadNum() == 0);
     }
 
 
-
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    users = new ArrayList<String>();
+                    users.clear();
+                    for (int i = 0; i<conversationList.size(); i++){
+                        users.add(conversationList.get(i).getIdentify());
+                    }
+                    Log.i("刷新数据====",users+"===========");
+                    Collections.sort(users);
+                    //获取好友资料
+                    TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+                        @Override
+                        public void onError(int code, String desc){
+                        }
+                        @Override
+                        public void onSuccess(final List<TIMUserProfile> result){
+                            Log.i("===========",result+"========");
+                            result1 = result;
+                            if (conversationList != null && result1 != null && getActivity() != null){
+                                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        conversationList.get(position).navToDetail(getActivity());
+//                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
+//                                        intent.putExtra("identify",result1.get(position).getIdentifier());
+//                                        intent.putExtra("type", TIMConversationType.C2C);
+//                                        startActivity(intent);
+                                        if (conversationList.get(position) instanceof GroupManageConversation) {
+                                            groupManagerPresenter.getGroupManageLastMessage();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    break;
+            }
+        }
+    };
     /**
      * 获取好友关系链管理系统最后一条消息的回调
      *

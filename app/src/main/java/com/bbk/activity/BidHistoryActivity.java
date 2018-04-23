@@ -66,7 +66,6 @@ public class BidHistoryActivity extends BaseActivity implements ResultEvent{
                 Intent intent = new Intent(BidHistoryActivity.this,BidFilterPriceActivity.class);
                 intent.putExtra("bidid",list.get(position).get("bidid"));
                 intent.putExtra("fbid",fbid);
-//                intent.putExtra("type",type);
                 startActivity(intent);
             }
         });

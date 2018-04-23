@@ -125,6 +125,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(BidDetailActivity.this,BidFilterPriceActivity.class);
                 intent.putExtra("bidid",list.get(position).get("bidid"));
+//                intent.putExtra("biduserid",list.get(position).get("biduserid"));
                 intent.putExtra("fbid",fbid);
 //                intent.putExtra("type","1");
                 startActivity(intent);
@@ -176,23 +177,23 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             map.put("bidstatus",object.optString("bidstatus"));
             map.put("bidtime",object.optString("bidtime"));
             map.put("bidurl",object.optString("bidurl"));
-//            if (i<3){
+            if (i<3){
                 list.add(map);
-//            }
-//            Log.i("status是否可接镖",object.optString("bidstatus"));
-            //判断如果用户ID跟biduserid有一样的，如果bidstatus状态为-1则可以接镖
-            if (list.get(i).get("biduserid").toString().equals(userID)){
-                if (object.optString("bidstatus").equals("-1")){
+                //            Log.i("status是否可接镖",object.optString("bidstatus"));
+                //判断如果用户ID跟biduserid有一样的，如果bidstatus状态为-1则可以接镖
+                if (list.get(i).get("biduserid").toString().equals(userID)){
+                    if (object.optString("bidstatus").equals("-1")){
 //                    isJiebiaoLayout.setVisibility(View.VISIBLE);
-                    mgobid.setClickable(true);
-                    mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
-                }else {
+                        mgobid.setClickable(true);
+                        mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                    }else {
 //                    isJiebiaoLayout.setVisibility(View.GONE);
-                    mgobid.setClickable(false);
-                    mGoJbText.setText("已接镖");
-                    mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
-                    mGoJbTextStaus.setVisibility(View.GONE);
-                    mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
+                        mgobid.setClickable(false);
+                        mGoJbText.setText("已接镖");
+                        mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
+                        mGoJbTextStaus.setVisibility(View.GONE);
+                        mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
+                    }
                 }
             }
         }

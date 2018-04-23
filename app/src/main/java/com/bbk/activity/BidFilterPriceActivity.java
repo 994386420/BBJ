@@ -37,7 +37,7 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
     private DataFlow6 dataFlow;
     private TextView mensure,mendprice,murltext,mintentbuy,mbidesc;
     private String type;
-    private String fbid,userid;
+    private String fbid,userid,biduserid;
     private LinearLayout mcontact;
     private ImageView topbar_goback_btn;
 
@@ -105,11 +105,26 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
                     String biddesc = object.optString("biddesc");
                     String bidprice = object.optString("bidprice");
                     String bidtime = object.optString("bidtime");
-                    String biduserid = object.optString("biduserid");
+                    biduserid = object.optString("biduserid");//接镖者id;
                     final String bidurl = object.optString("bidurl");
-                    userid = object.optString("userid");
+                    userid = object.optString("userid");//发镖者id
                     mendprice.setText("￥"+bidprice);
-                    if (biduserid.equals(userID)){
+//                    if (getIntent().getStringExtra("biduserid") != null){
+//                        biduserid = getIntent().getStringExtra("biduserid");
+//                        if (biduserid.equals(userid)){
+//                            mensure.setVisibility(View.VISIBLE);
+//                        }else {
+//                            mensure.setVisibility(View.GONE);
+//                        }
+//                    }else {
+//                       biduserid = object.optString("biduserid");//接镖者id
+//                       if (biduserid.equals(userid)){
+//                        mensure.setVisibility(View.GONE);
+//                       }else {
+//                        mensure.setVisibility(View.VISIBLE);
+//                      }
+//                    }
+                    if (userid.equals(userID)){
                         mensure.setVisibility(View.VISIBLE);
                     }else {
                         mensure.setVisibility(View.GONE);
@@ -152,8 +167,8 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
                     startActivity(intent4);
                 }else {
                     Intent intent = new Intent(BidFilterPriceActivity.this, ChatActivity.class);
-                    if (userid != null) {
-                        intent.putExtra("identify","bbj"+userid);
+                    if (biduserid != null) {
+                        intent.putExtra("identify","bbj"+biduserid);
                         intent.putExtra("type", TIMConversationType.C2C);
                         startActivity(intent);
                     }
