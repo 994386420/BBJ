@@ -71,12 +71,14 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow = new DataFlow6(this);
-        fbid = getIntent().getStringExtra("fbid");
-        bidid = getIntent().getStringExtra("bidid");
-        bidstatus = getIntent().getStringExtra("bidstatus");//功能键判断
+        if (getIntent().getStringExtra("fbid") != null){
+            fbid = getIntent().getStringExtra("fbid");
+        }
+        if (getIntent().getStringExtra("bidid") != null){
+            bidid = getIntent().getStringExtra("bidid");
+        }
         initView();
         initData();
-        initbutton();
     }
     public void initView(){
         mTitle = findViewById(R.id.title);
@@ -200,6 +202,14 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
             map.put("bidurl",object.optString("bidurl"));
             if (i<3){
             list.add(map);
+            }
+            //传进来的如果不为null
+            if (getIntent().getStringExtra("bidstatus") != null){
+                bidstatus = getIntent().getStringExtra("bidstatus");//功能键判断
+                initbutton();
+            }else {
+                bidstatus = object.optString("bidstatus");//功能键判断
+                initbutton();
             }
 //            Log.i("status是否可接镖",object.optString("bidstatus"));
             //判断如果用户ID跟biduserid有一样的，如果bidstatus状态为-1则可以接镖

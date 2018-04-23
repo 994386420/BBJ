@@ -76,105 +76,109 @@ public class ResultMyGridAdapter extends BaseAdapter{
 			}else{
 				vh = (ViewHolder) convertView.getTag();
 			}
-			WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-		    int width = wm.getDefaultDisplay().getWidth();
-		    LayoutParams params = vh.img.getLayoutParams();
-		    params.height = width/2;
-		    vh.img.setLayoutParams(params);
-			final Map<String, Object> dataSet = list.get(position);
+			try {
+				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+				int width = wm.getDefaultDisplay().getWidth();
+				LayoutParams params = vh.img.getLayoutParams();
+				params.height = width/2;
+				vh.img.setLayoutParams(params);
+				final Map<String, Object> dataSet = list.get(position);
 //	        final String url = dataSet.get("url").toString();
-			String title = dataSet.get("title").toString();
-	        String img = dataSet.get("img").toString();
-	        String price = dataSet.get("price").toString();
-	        String hnumber = dataSet.get("hnumber").toString();
-	        vh.title.setText(title);
-	        String bigprice;
-	        String littleprice;
-	        if (price.contains(".")) {
-	        	int end = price.indexOf(".");
-	    		bigprice = price.substring(0, end);
-	    		littleprice = price.substring(end, price.length());
-			}else{
-				bigprice = price;
-				littleprice = ".0";
-			}
-	        vh.mbigprice.setText(bigprice);
-	        vh.mlittleprice.setText(littleprice);
-	        if (Integer.valueOf(hnumber)>10000) {
-				if (Integer.valueOf(hnumber)>100000000) {
-					DecimalFormat df = new DecimalFormat("###.0");  
-					String num = df.format(Double.valueOf(hnumber)/100000000);
-					vh.item_offer.setText("全网总评"+num+"亿条  ");
+				String title = dataSet.get("title").toString();
+				String img = dataSet.get("img").toString();
+				String price = dataSet.get("price").toString();
+				String hnumber = dataSet.get("hnumber").toString();
+				vh.title.setText(title);
+				String bigprice;
+				String littleprice;
+				if (price.contains(".")) {
+					int end = price.indexOf(".");
+					bigprice = price.substring(0, end);
+					littleprice = price.substring(end, price.length());
 				}else{
-					DecimalFormat df = new DecimalFormat("###.0");  
-					String num = df.format(Double.valueOf(hnumber)/10000);
-					vh.item_offer.setText("全网总评"+num+"万条  ");
+					bigprice = price;
+					littleprice = ".0";
 				}
-			}else{
-				vh.item_offer.setText("全网总评"+hnumber+"条  ");
-			}
-	        if ("1".equals(dataSet.get("isxianshi"))) {
-				final String groupRowKey = dataSet.get("groupRowKey").toString();
-	        	vh.mmoredomain.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View arg0) {
-						Intent intent = new Intent(context, ResultDialogActivity.class);
-//						intent.putExtra("tarr",dataSet.get("tarr").toString() );
-						intent.putExtra("keyword",dataSet.get("keyword").toString() );
-						intent.putExtra("rowkey",groupRowKey );
-						context.startActivity(intent);
+				vh.mbigprice.setText(bigprice);
+				vh.mlittleprice.setText(littleprice);
+				if (Integer.valueOf(hnumber)>10000) {
+					if (Integer.valueOf(hnumber)>100000000) {
+						DecimalFormat df = new DecimalFormat("###.0");
+						String num = df.format(Double.valueOf(hnumber)/100000000);
+						vh.item_offer.setText("全网总评"+num+"亿条  ");
+					}else{
+						DecimalFormat df = new DecimalFormat("###.0");
+						String num = df.format(Double.valueOf(hnumber)/10000);
+						vh.item_offer.setText("全网总评"+num+"万条  ");
 					}
-				});
-				vh.intentbuy.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View arg0) {
+				}else{
+					vh.item_offer.setText("全网总评"+hnumber+"条  ");
+				}
+				if ("1".equals(dataSet.get("isxianshi"))) {
+					final String groupRowKey = dataSet.get("groupRowKey").toString();
+					vh.mmoredomain.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View arg0) {
+							Intent intent = new Intent(context, ResultDialogActivity.class);
+//						intent.putExtra("tarr",dataSet.get("tarr").toString() );
+							intent.putExtra("keyword",dataSet.get("keyword").toString() );
+							intent.putExtra("rowkey",groupRowKey );
+							context.startActivity(intent);
+						}
+					});
+					vh.intentbuy.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View arg0) {
 //						Intent intent = new Intent(context, CompareActivity.class);
 //						intent.putExtra("rowkey",groupRowKey );
-						//二级页面去发标
-						Intent intent = new Intent(context, BidActivity.class);
-						intent.putExtra("rowkey",groupRowKey);
-						intent.putExtra("type","1");
-						context.startActivity(intent);
-					}
-				});
-	        }else{
-	        	vh.mmoredomain.setVisibility(View.GONE);
-	        	vh.intentbuy.setVisibility(View.GONE);
-	        }
-		if ("0".equals(dataSet.get("yjson"))){
-			if ("-1".equals(dataSet.get("saleinfo"))){
-				vh.juan.setVisibility(View.GONE);
-			}else {
-				vh.juan.setVisibility(View.VISIBLE);
-				vh.juan.setText("劵");
-				vh.juan.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
+							//二级页面去发标
+							Intent intent = new Intent(context, BidActivity.class);
+							intent.putExtra("rowkey",groupRowKey);
+							intent.putExtra("type","1");
+							context.startActivity(intent);
+						}
+					});
+				}else{
+					vh.mmoredomain.setVisibility(View.GONE);
+					vh.intentbuy.setVisibility(View.GONE);
+				}
+				if ("0".equals(dataSet.get("yjson"))){
+					if ("-1".equals(dataSet.get("saleinfo"))){
+						vh.juan.setVisibility(View.GONE);
+					}else {
+						vh.juan.setVisibility(View.VISIBLE);
+						vh.juan.setText("劵");
+						vh.juan.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
 
+							}
+						});
 					}
-				});
-			}
-		}else {
-			try {
-				vh.juan.setVisibility(View.VISIBLE);
-				String yjson = dataSet.get("yjson").toString();
-				final JSONObject object = new JSONObject(yjson);
-				vh.juan.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						new ResultDialog(context).buildDiloag(object,v, context);
+				}else {
+					try {
+						vh.juan.setVisibility(View.VISIBLE);
+						String yjson = dataSet.get("yjson").toString();
+						final JSONObject object = new JSONObject(yjson);
+						vh.juan.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								new ResultDialog(context).buildDiloag(object,v, context);
+							}
+						});
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
-				});
-			} catch (JSONException e) {
+				}
+				Glide.with(context)
+						.load(img)
+						.placeholder(R.mipmap.zw_img_300)
+						.priority(Priority.HIGH)
+						.into(vh.img);
+			}catch (Exception e){
 				e.printStackTrace();
 			}
-		}
-	        Glide.with(context)
-			.load(img)
-			.placeholder(R.mipmap.zw_img_300)
-			.priority(Priority.HIGH)
-			.into(vh.img);
 		return convertView;
 	}
 	class ViewHolder {

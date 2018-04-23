@@ -117,7 +117,7 @@
                         android:id="@+id/mmoredomain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/text_result_orange"
+                        android:background="@drawable/text_circle_orange_white"
                         android:paddingBottom="5dp"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
@@ -127,7 +127,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="看比价"
-                            android:textColor="#fff"
+                            android:textColor="@color/biao_color"
                             android:textSize="12dp" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -142,7 +142,7 @@
                         android:id="@+id/intentbuy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/text_circle_orange_white"
+                        android:background="@drawable/text_result_orange"
                         android:paddingBottom="5dp"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
@@ -152,7 +152,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="去发镖"
-                            android:textColor="@color/biao_color"
+                            android:textColor="#fff"
                             android:textSize="12dp" />
                     </RelativeLayout>
                 </LinearLayout>

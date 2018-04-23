@@ -49,7 +49,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     private List<Map<String,String>> list;
     private List<Map<String,String>> listpl;
     private BidDetailListAdapter adapter;
-    private LinearLayout mgobid,malllist,mplbox,mchat;
+    private LinearLayout mgobid,malllist,mplbox,mchat,mFabiaoLayout;
     private BidDetailListPLAdapter pladapter;
     private ImageView topbar_goback_btn;
     private String userid = "";
@@ -69,6 +69,8 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     }
 
     private void initView() {
+        mFabiaoLayout = findViewById(R.id.fabiao_layout);
+        mFabiaoLayout.setVisibility(View.GONE);
         mGoJbText =findViewById(R.id.gojb_text);
         mGoJbTextStaus =findViewById(R.id.gojb_text_status);
         isJiebiaoLayout = findViewById(R.id.isJiebiao_layout);

@@ -886,7 +886,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/app_kanbijia"
+        android:src="@mipmap/new_bid_guide_qufabiao"
         android:visibility="gone" />
 
 </RelativeLayout>
