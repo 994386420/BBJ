@@ -96,7 +96,7 @@ public class BidDetailListAdapter extends BaseAdapter{
                         viewHolder.mbidtime.setTextColor(Color.parseColor("#b40000"));
                         viewHolder.muser.setTextColor(Color.parseColor("#b40000"));
                         viewHolder.mBid.setTextColor(Color.parseColor("#b40000"));
-                        viewHolder.mimg.setBackgroundResource(R.mipmap.bj_05);
+                        CircleImageView1.getImgBid(context,"",viewHolder.mimg);
                     }
                     break;
                 case 1:
