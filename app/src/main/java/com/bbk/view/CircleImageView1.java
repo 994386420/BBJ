@@ -62,4 +62,19 @@ public class CircleImageView1 {
             }
         });
     }
+
+
+    public static void getImgBid(final Context cont, Object url, final ImageView img) {
+
+        Glide.with(cont).load(url).asBitmap().centerCrop().placeholder(R.mipmap.bj_05).into(new BitmapImageViewTarget(img) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(cont.getResources(), resource);
+
+                circularBitmapDrawable.setCircular(true);
+                img.setImageDrawable(circularBitmapDrawable);
+            }
+        });
+    }
 }
