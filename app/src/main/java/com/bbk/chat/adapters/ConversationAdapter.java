@@ -108,16 +108,16 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 //                public void onSuccess(final List<TIMUserProfile> result) {
 //                    Log.e("==========", "getUsersProfile succ" + result);
 ////                    for(TIMUserProfile res : result){
-            if (result1.get(position).getIdentifier().equals(data.getIdentify())){
+//            if (result1.get(position).getIdentifier().equals(data.getIdentify())){
                 viewHolder.tvName.setText(result1.get(position).getNickName().toString());
                 Glide.with(context).load(result1.get(position).getFaceUrl().toString())
                         .priority(Priority.HIGH)
                         .placeholder(R.mipmap.logo)
                         .into(viewHolder.avatar);
-            }else {
-                viewHolder.tvName.setText(data.getName());
-                viewHolder.avatar.setImageResource(data.getAvatar());
-            }
+//            }else {
+//                viewHolder.tvName.setText(data.getName());
+//                viewHolder.avatar.setImageResource(data.getAvatar());
+//            }
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -194,12 +194,13 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		mimg = $(R.id.home_img_btn);
 		mzhezhao = $(R.id.mzhezhao);
 		mNumImageView = findViewById(R.id.rank_img_btn);
-		String isFirstResultUse = SharedPreferencesUtil.getSharedData(HomeActivity.this,"isFirstUse", "isFirstUserUse");
+		//首页引导页只显示一次
+		String isFirstResultUse = SharedPreferencesUtil.getSharedData(HomeActivity.this,"isFirstHomeUse", "isFirstHomeUserUse");
 		if (TextUtils.isEmpty(isFirstResultUse)) {
 			isFirstResultUse = "yes";
 		}
 		if (isFirstResultUse.equals("yes")) {
-			SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstUse","isFirstUserUse", "");
+			SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstHomeUse","isFirstHomeUserUse", "no");
 			HomeActivity.mHomeGudieImage.setVisibility(View.VISIBLE);
 			HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.new_guide_biaoju);
 		}

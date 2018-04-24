@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="正在接镖"
+                android:text="正在发镖"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>

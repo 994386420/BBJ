@@ -221,10 +221,12 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
             StringUtil.showToast(this,"镖品名称不能为空");
         }else if (TextUtils.isEmpty(mprice.getText().toString())){
             StringUtil.showToast(this,"镖品单价不能为空");
-        }else if(TextUtils.isEmpty(mcount.getText().toString())){
-            StringUtil.showToast(this,"数量不能为空");
-        }else {
-            DialogSingleUtil.show(BidFbActivity.this);
+        }
+//        else if(TextUtils.isEmpty(mcount.getText().toString())){
+//            StringUtil.showToast(this,"数量不能为空");
+//        }
+        else {
+            DialogSingleUtil.show(BidFbActivity.this,"发镖中...");
             if ("add".equals(list.get(list.size() - 1))) {
                 length = list.size() - 1;
             } else {
@@ -376,7 +378,12 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
         params.put("mins", mins);
         params.put("title",mname.getText().toString());
         params.put("price",mprice.getText().toString());
-        params.put("number",mcount.getText().toString());
+        //发镖数量默认不填写为1
+        if (mcount.getText().toString() != null){
+            params.put("number",mcount.getText().toString());
+        }else {
+            params.put("number","1");
+        }
         params.put("extra",mdetail.getText().toString());
         params.put("openid",openID);
 

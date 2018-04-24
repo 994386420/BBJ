@@ -285,6 +285,24 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
             map.put("bidurl",object.optString("bidurl"));
             if (i<3){
                 list.add(map);
+                //判断发镖用户id是否一致，一直则隐藏聊天
+                mcontact.setVisibility(View.VISIBLE);
+                final int finalI = i;
+                mcontact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                        if (TextUtils.isEmpty(userID)){
+                            Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
+                            startActivity(intent4);
+                        }else {
+                            Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
+                            intent.putExtra("identify","bbj"+list.get(finalI).get("biduserid"));
+                            intent.putExtra("type", TIMConversationType.C2C);
+                            startActivity(intent);
+                        }
+                    }
+                });
             }
         }
     }
@@ -328,21 +346,6 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                             }
                         });
                         mbidesc.setText("留言:"+biddesc);
-                        mcontact.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                                if (TextUtils.isEmpty(userID)){
-                                    Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
-                                    startActivity(intent4);
-                                }else {
-                                    Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
-                                    intent.putExtra("identify","bbj"+userid);
-                                    intent.putExtra("type", TIMConversationType.C2C);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
                     }else {
                         mbox.setVisibility(View.GONE);
                     }
@@ -357,7 +360,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
 
                     mordernum.setText("镖单编号:"+ordernum);
                     mbegintime.setText("创建时间:"+beginlong);
-                    mendtime.setText("完成时间:"+endlong);
+                    mendtime.setText("结束时间:"+endlong);
                     addList(bidarr);
                     adapter = new BidDetailListAdapter(this,list);
                     mlistview.setAdapter(adapter);
