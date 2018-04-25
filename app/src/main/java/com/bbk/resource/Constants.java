@@ -1,6 +1,13 @@
 package com.bbk.resource;
 
 
+import com.alibaba.fastjson.JSON;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+
 public interface Constants {
 	
 	/**主url*/
@@ -19,7 +26,7 @@ public interface Constants {
 	String  getFabiaoMsgByRowkey = "bid/queryFabiaoMsgByRowkey";
 	/**上传图片*/
 	public static final String USER_IMG_URL_HEADER = "http://www.bibkan.com/upload/Image/";
-	
+
 	/**微博登录常量*/
 	public static final String WEIBO_APP_KEY = "3785658514"; // 应用的APP_KEY
 	public static final String REDIRECT_URL = "http://www.bibijing.com"; // 应用的回调页
@@ -38,5 +45,4 @@ public interface Constants {
 	public static String GetCodeRequest = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 	//获取用户个人信息
 	public static String GetUserInfo = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID";
-	
 }

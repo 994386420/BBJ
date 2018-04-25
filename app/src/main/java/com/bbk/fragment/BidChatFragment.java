@@ -1,10 +1,14 @@
 package com.bbk.fragment;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -30,6 +34,8 @@ import com.bbk.chat.model.NomalConversation;
 import com.bbk.chat.ui.ChatActivity;
 import com.bbk.chat.ui.HomeActivity;
 import com.bbk.chat.utils.PushUtil;
+import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -48,13 +54,17 @@ import com.tencent.qcloud.presentation.presenter.GroupManagerPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ConversationView;
 import com.tencent.qcloud.presentation.viewfeatures.FriendshipMessageView;
 import com.tencent.qcloud.presentation.viewfeatures.GroupManageMessageView;
+import com.tencent.qcloud.sdk.Constant;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.tencent.open.utils.Global.getSharedPreferences;
 
 /**
  * 会话列表界面
@@ -74,8 +84,18 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     private FriendshipConversation friendshipConversation;
     private GroupManageConversation groupManageConversation;
     List<String> users = new ArrayList<String>();
+    List<String> users1 = new ArrayList<String>();
+    List<String> users2 = new ArrayList<String>();
+    List<String> users3 = new ArrayList<String>();
+    List<String> users4 = new ArrayList<String>();
+    List<String> users5 = new ArrayList<String>();
+    List<String> users6 = new ArrayList<String>();
+    List<String> users7 = new ArrayList<String>();
+    List<String> users8 = new ArrayList<String>();
+    List<String> users9 = new ArrayList<String>();
     private TIMFriendshipManager timFriendshipManager;
     List<TIMUserProfile> result1;
+    private SharedPreferences sharedPreferences;
 
     public BidChatFragment() {
         // Required empty public constructor
@@ -134,7 +154,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     @Override
     public void onResume(){
         super.onResume();
-        refresh();
+//        refresh();
         PushUtil.getInstance().reset();
     }
 
@@ -300,52 +320,165 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     }
 
 
+    @SuppressLint("HandlerLeak")
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
                 case 1:
-                    users = new ArrayList<String>();
-                    users.clear();
-                    for (int i = 0; i<conversationList.size(); i++){
-                        users.add(conversationList.get(i).getIdentify());
+//                    users = new ArrayList<String>();
+//                    users.clear();
+//                    for (int i = 0; i<conversationList.size(); i++){
+                    switch (conversationList.size()){
+                        case 1:
+                            users.add(conversationList.get(0).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 2:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            getfriends(users);
+                            getfriends1(users1);
+                            break;
                     }
-                    Log.i("刷新数据====",users+"===========");
-                    Collections.sort(users);
+//                    adapter();
+//                    }
+                    Log.i("刷新数据====", NewConstants.mChatMap+"===========");
+
+//                    sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
+//                    if(sharedPreferences.getString("name",null)!=null){
+//                        String result1 = sharedPreferences.getString("name",null);
+//                        if (result1 != null && result1.length() > 0) {
+////                mHistoryLayout.setVisibility(View.VISIBLE);
+//                            NewConstants.mChatMap = NewConstants.getJsonObject(result1);
+//                            adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,NewConstants.mChatMap);
+//                            listView.setAdapter(adapter);
+//                            adapter.notifyDataSetChanged();
+//                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                @Override
+//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                    conversationList.get(position).navToDetail(getActivity());
+////                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
+////                                        intent.putExtra("identify",result1.get(position).getIdentifier());
+////                                        intent.putExtra("type", TIMConversationType.C2C);
+////                                        startActivity(intent);
+//                                    if (conversationList.get(position) instanceof GroupManageConversation) {
+//                                        groupManagerPresenter.getGroupManageLastMessage();
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    }
+//                    Collections.sort(users);
                     //获取好友资料
-                    TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
-                        @Override
-                        public void onError(int code, String desc){
-                        }
-                        @Override
-                        public void onSuccess(final List<TIMUserProfile> result){
-                            Log.i("===========",result+"========");
-                            result1 = result;
-                            if (conversationList != null && result1 != null && getActivity() != null){
-                                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
-                                listView.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        conversationList.get(position).navToDetail(getActivity());
-//                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
-//                                        intent.putExtra("identify",result1.get(position).getIdentifier());
-//                                        intent.putExtra("type", TIMConversationType.C2C);
-//                                        startActivity(intent);
-                                        if (conversationList.get(position) instanceof GroupManageConversation) {
-                                            groupManagerPresenter.getGroupManageLastMessage();
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
+//                    TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+//                        @Override
+//                        public void onError(int code, String desc){
+//                        }
+//                        @Override
+//                        public void onSuccess(final List<TIMUserProfile> result){
+//                            Log.i("===========",result+"========");
+//                            result1 = result;
+//                            Comparator<TIMUserProfile> comparable = new Comparator<TIMUserProfile>() {
+//                                @Override
+//                                public int compare(TIMUserProfile timUserProfile, TIMUserProfile t1) {
+//                                    return timUserProfile.getIdentifier().compareTo(t1.getIdentifier());
+//                                }
+//                            };
+//                            Collections.sort(result1,comparable);
+//                            if (conversationList != null && result1 != null && getActivity() != null){
+//                                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
+//                                listView.setAdapter(adapter);
+//                                adapter.notifyDataSetChanged();
+//                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                    @Override
+//                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                        conversationList.get(position).navToDetail(getActivity());
+////                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
+////                                        intent.putExtra("identify",result1.get(position).getIdentifier());
+////                                        intent.putExtra("type", TIMConversationType.C2C);
+////                                        startActivity(intent);
+//                                        if (conversationList.get(position) instanceof GroupManageConversation) {
+//                                            groupManagerPresenter.getGroupManageLastMessage();
+//                                        }
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    });
                     break;
             }
         }
     };
+
+    private void getfriends(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+//                for (TIMUserProfile res : result){
+//                    Constants.mChatMap.put(Constants.mChatMap.size()+"",res.getNickName());
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE).edit();
+                        NewConstants.mChatMap.put(0 + "", result.get(0).getFaceUrl());
+                        Log.i("刷新数据000====", NewConstants.mChatMap+"===========");
+                        editor.putString("name", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatMap).toString());
+                        editor.commit();
+                       adapter();
+//                }
+            }
+        });
+    }
+    private void getfriends1(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+//                for (TIMUserProfile res : result){
+//                    Constants.mChatMap.put(Constants.mChatMap.size()+"",res.getNickName());
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE).edit();
+                    NewConstants.mChatMap.put(1 + "", result.get(0).getFaceUrl());
+                    Log.i("刷新数11111====", NewConstants.mChatMap+"===========");
+                    editor.putString("name", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatMap).toString());
+                    editor.commit();
+                    adapter();
+//                }
+            }
+        });
+    }
+
+    private void adapter(){
+        sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
+        if(sharedPreferences.getString("name",null)!=null){
+            String result1 = sharedPreferences.getString("name",null);
+            if (result1 != null && result1.length() > 0) {
+//                mHistoryLayout.setVisibility(View.VISIBLE);
+                NewConstants.mChatMap = NewConstants.getJsonObject(result1);
+                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,NewConstants.mChatMap);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        conversationList.get(position).navToDetail(getActivity());
+//                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
+//                                        intent.putExtra("identify",result1.get(position).getIdentifier());
+//                                        intent.putExtra("type", TIMConversationType.C2C);
+//                                        startActivity(intent);
+                        if (conversationList.get(position) instanceof GroupManageConversation) {
+                            groupManagerPresenter.getGroupManageLastMessage();
+                        }
+                    }
+                });
+            }
+        }
+    }
     /**
      * 获取好友关系链管理系统最后一条消息的回调
      *
@@ -446,31 +579,31 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
 
 
     private void refreshView(){
-        if (groupList != null){
-            //获取好友资料
-            timFriendshipManager.getInstance().getUsersProfile(groupList, new TIMValueCallBack<List<TIMUserProfile>>(){
-                @Override
-                public void onError(int code, String desc){
-                }
-                @Override
-                public void onSuccess(final List<TIMUserProfile> result){
-                    result1 = result;
-                    if (conversationList != null && result1 != null && getActivity() != null){
-                        adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
-                        listView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                conversationList.get(position).navToDetail(getActivity());
-                                if (conversationList.get(position) instanceof GroupManageConversation) {
-                                    groupManagerPresenter.getGroupManageLastMessage();
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        }
+//        if (groupList != null){
+//            //获取好友资料
+//            timFriendshipManager.getInstance().getUsersProfile(groupList, new TIMValueCallBack<List<TIMUserProfile>>(){
+//                @Override
+//                public void onError(int code, String desc){
+//                }
+//                @Override
+//                public void onSuccess(final List<TIMUserProfile> result){
+//                    result1 = result;
+//                    if (conversationList != null && result1 != null && getActivity() != null){
+//                        adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
+//                        listView.setAdapter(adapter);
+//                        adapter.notifyDataSetChanged();
+//                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                conversationList.get(position).navToDetail(getActivity());
+//                                if (conversationList.get(position) instanceof GroupManageConversation) {
+//                                    groupManagerPresenter.getGroupManageLastMessage();
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//            });
+//        }
     }
 }

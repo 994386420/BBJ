@@ -42,6 +42,7 @@ import com.tencent.qcloud.ui.VoiceSendingView;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -58,6 +59,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
     List<String> users;
     List<TIMUserProfile> result1;
     List<Conversation> object;
+    private HashMap<String, Object> mList;
     /**
      * Constructor
      *
@@ -66,11 +68,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ConversationAdapter(Context context, int resource, List<Conversation> objects,List<TIMUserProfile> result) {
+    public ConversationAdapter(Context context, int resource, List<Conversation> objects,HashMap<String, Object> List) {
         super(context, resource, objects);
         resourceId = resource;
         this.context = context;
-        this.result1 = result;
+        this.mList = List;
 //        this.object =  objects;
     }
 
@@ -109,8 +111,8 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 //                    Log.e("==========", "getUsersProfile succ" + result);
 ////                    for(TIMUserProfile res : result){
 //            if (result1.get(position).getIdentifier().equals(data.getIdentify())){
-                viewHolder.tvName.setText(result1.get(position).getNickName().toString());
-                Glide.with(context).load(result1.get(position).getFaceUrl().toString())
+//                viewHolder.tvName.setText(result1.get(position).getNickName().toString());
+                Glide.with(context).load(mList.get(position+"").toString())
                         .priority(Priority.HIGH)
                         .placeholder(R.mipmap.logo)
                         .into(viewHolder.avatar);
