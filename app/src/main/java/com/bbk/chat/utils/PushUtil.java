@@ -10,6 +10,7 @@ import android.util.Log;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.chat.ui.ChatActivity;
+import com.bbk.chat.ui.ChatNoActivity;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMGroupReceiveMessageOpt;
 import com.tencent.imsdk.TIMMessage;
@@ -42,7 +43,7 @@ public class PushUtil implements Observer {
     public static PushUtil getInstance(){
         return instance;
     }
-
+    public static String senderStr,contentStr;
 
 
     private void PushNotify(TIMMessage msg){
@@ -55,22 +56,18 @@ public class PushUtil implements Observer {
                 msg.getRecvFlag() == TIMGroupReceiveMessageOpt.ReceiveNotNotify ||
                 MessageFactory.getMessage(msg) instanceof CustomMessage) return;
 
-        String senderStr,contentStr;
         Message message = MessageFactory.getMessage(msg);
         if (message == null) return;
         senderStr = message.getSender();
         contentStr = message.getSummary();
-        Log.d(TAG, "recv msg " + contentStr);
+        Log.i(TAG, "recv msg=============== " + senderStr);
         NotificationManager mNotificationManager = (NotificationManager) MyApplication.getContext().getSystemService(MyApplication.getContext().NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext());
         //通知跳转到聊天界面
-        Intent notificationIntent = new Intent(MyApplication.getContext(), ChatActivity.class);
-        try {
-            notificationIntent.putExtra("identify",senderStr);
-            notificationIntent.putExtra("type", TIMConversationType.C2C);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        Intent notificationIntent = new Intent(MyApplication.getContext(), ChatNoActivity.class);
+//        notificationIntent.putExtra("identify",senderStr);
+//        notificationIntent.putExtra("identifyy",senderStr);
+        notificationIntent.putExtra("type", TIMConversationType.C2C);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = PendingIntent.getActivity(MyApplication.getContext(), 0,

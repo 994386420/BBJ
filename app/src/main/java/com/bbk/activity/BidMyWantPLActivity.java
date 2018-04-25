@@ -125,11 +125,11 @@ public class BidMyWantPLActivity extends BaseActivity implements ResultEvent {
         msend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if ("1".equals(pinglun)){
+                if ("1".equals(pinglun)){
                     loadData();
-//                }else {
-//                    ToastUtil("为了保护你的消费权益，请于24小时后进行评论。");
-//                }
+                }else {
+                    StringUtil.showToast(BidMyWantPLActivity.this,"为了保护你的消费权益，请于24小时后进行评论。");
+                }
             }
         });
         mratingbar = (MaterialRatingBar) findViewById(R.id.mratingbar);

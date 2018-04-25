@@ -47,6 +47,7 @@
         <LinearLayout
             android:layout_width="45dp"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:layout_height="45dp">
             <ImageView
                 android:id="@+id/fengxiang"
@@ -90,6 +91,7 @@
                 android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="35dp"
+                android:visibility="gone"
                 android:layout_marginRight="35dp"
                 android:background="#b40000" />
         </RelativeLayout>
@@ -118,8 +120,9 @@
                 android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="35dp"
+                android:visibility="gone"
                 android:layout_marginRight="35dp"
-                android:background="#ffffff" />
+                android:background="#b40000" />
             <ImageView
                 android:id="@+id/tabUnread"
                 android:layout_width="6dp"
@@ -134,7 +137,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#f3f3f3"/>
-    <android.support.v4.view.ViewPager
+    <com.bbk.view.CustomViewPager
         android:id="@+id/mviewpager"
         android:background="#fff"
         android:layout_width="match_parent"

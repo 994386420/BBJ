@@ -50,9 +50,19 @@ public class BidInformFragment extends Fragment implements ResultEvent {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container
             , Bundle savedInstanceState) {
-
+        /***
+         * 判断Fragment是否已经添加了contentView（第一次加载时，可以将view保存下 来，再  次加载时，判断保存下来的view是否为null），
+         * 如果保存的view为null，返回新的view ，否则，先将 保存的view从父view中移除，然后将该view返回出去
+         */
+        if (mView != null) {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (parent != null) {
+                parent.removeView(mView);
+            }
+            return mView;
+        }
         mView = LayoutInflater.from(getActivity())
-                .inflate(R.layout.fragment_bid_chat, null);
+                .inflate(R.layout.fragment_bid_chat,container,false);
         dataFlow = new DataFlow6(getActivity());
         initView();
         return mView;

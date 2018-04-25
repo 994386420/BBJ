@@ -28,6 +28,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersionUtil;
+import com.bbk.view.CustomViewPager;
 
 import org.json.JSONObject;
 
@@ -43,13 +44,13 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
     private View mView;
     private DataFlow6 dataFlow;
     private ImageView msgUnread;
-    private List<TextView> tlist = new ArrayList<>();
-    private List<View> vlist = new ArrayList<>();
+//    private List<TextView> tlist = new ArrayList<>();
+//    private List<View> vlist = new ArrayList<>();
     private TextView mtext2,mtext1;
     private RelativeLayout meverydayjb,mmorejb;
     private View henggang1,henggang2;
     private int curclick = 0;
-    private ViewPager mViewPager;
+    private CustomViewPager mViewPager;
     private MyFragmentPagerAdapter mPagerAdapter;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     private ImageView topbar_goback_btn;
@@ -70,13 +71,24 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // return super.onCreateView(inflater, container, savedInstanceState);
-        mView = inflater.inflate(R.layout.fragment_bid_message, null);
+        // TODO 自动生成的方法存根
+        /***
+         * 判断Fragment是否已经添加了contentView（第一次加载时，可以将view保存下 来，再  次加载时，判断保存下来的view是否为null），
+         * 如果保存的view为null，返回新的view ，否则，先将 保存的view从父view中移除，然后将该view返回出去
+         */
+        if (mView != null) {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (parent != null) {
+                parent.removeView(mView);
+            }
+            return mView;
+        }
+        mView = inflater.inflate(R.layout.fragment_bid_message, container,false);
         data_head = mView.findViewById(R.id.data_head);
         ImmersionUtil.initstateView(getActivity(),data_head);
         dataFlow = new DataFlow6(getActivity());
         initView();
         initData();
-
         return mView;
     }
     public void initView(){
@@ -89,16 +101,21 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
         });
         meverydayjb = (RelativeLayout) mView.findViewById(R.id.meverydayjb);
         mmorejb = (RelativeLayout) mView.findViewById(R.id.mmorejb);
-        mViewPager = (ViewPager) mView.findViewById(R.id.mviewpager);
+        mViewPager = mView.findViewById(R.id.mviewpager);
+        mViewPager.setScanScroll(false);//
         msgUnread = (ImageView)mView.findViewById(R.id.tabUnread) ;
         mtext1 = (TextView) mView.findViewById(R.id.mtext1);
         mtext2 = (TextView) mView.findViewById(R.id.mtext2);
         henggang1 =mView. findViewById(R.id.henggang1);
         henggang2 =mView.findViewById(R.id.henggang2);
-        tlist.add(mtext1);
-        tlist.add(mtext2);
-        vlist.add(henggang1);
-        vlist.add(henggang2);
+//        tlist.add(mtext1);
+//        tlist.add(mtext2);
+//        vlist.add(henggang1);
+//        vlist.add(henggang2);
+        mtext1.setTextColor(getActivity().getResources().getColor(R.color.biao_color));
+        henggang1.setVisibility(View.VISIBLE);
+        mtext2.setTextColor(getActivity().getResources().getColor(R.color.black));
+        henggang2.setVisibility(View.GONE);
         meverydayjb.setOnClickListener(this);
         mmorejb.setOnClickListener(this);
     }
@@ -114,7 +131,7 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int i) {
-                clickTabtitle(i);
+//                clickTabtitle(i);
             }
 
             @Override
@@ -138,30 +155,37 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.meverydayjb:
-                clickTabtitle(0);
+//                clickTabtitle(0);
+                mtext1.setTextColor(getActivity().getResources().getColor(R.color.biao_color));
+                henggang1.setVisibility(View.VISIBLE);
+                mtext2.setTextColor(getActivity().getResources().getColor(R.color.black));
+                henggang2.setVisibility(View.GONE);
                 mViewPager.setCurrentItem(0);
                 break;
             case R.id.mmorejb:
-                clickTabtitle(1);
+//                clickTabtitle(1);
+                mtext1.setTextColor(getActivity().getResources().getColor(R.color.black));
+                henggang1.setVisibility(View.GONE);
+                mtext2.setTextColor(getActivity().getResources().getColor(R.color.biao_color));
+                henggang2.setVisibility(View.VISIBLE);
                 mViewPager.setCurrentItem(1);
                 break;
-
             default:
                 break;
         }
     }
-    private void clickTabtitle(int i) {
-        if (curclick != i) {
-            tlist.get(0).setTextColor(Color.parseColor("#333333"));
-            tlist.get(1).setTextColor(Color.parseColor("#333333"));
-            vlist.get(0).setBackgroundColor(Color.parseColor("#ffffff"));
-            vlist.get(1).setBackgroundColor(Color.parseColor("#ffffff"));
-            tlist.get(i).setTextColor(Color.parseColor("#b40000"));
-            vlist.get(i).setBackgroundColor(Color.parseColor("#b40000"));
-            curclick = i;
-        }
-
-    }
+//    private void clickTabtitle(int i) {
+//        if (curclick != i) {
+//            tlist.get(0).setTextColor(Color.parseColor("#333333"));
+//            tlist.get(1).setTextColor(Color.parseColor("#333333"));
+//            vlist.get(0).setBackgroundColor(Color.parseColor("#ffffff"));
+//            vlist.get(1).setBackgroundColor(Color.parseColor("#ffffff"));
+//            tlist.get(i).setTextColor(Color.parseColor("#b40000"));
+//            vlist.get(i).setBackgroundColor(Color.parseColor("#b40000"));
+//            curclick = i;
+//        }
+//
+//    }
     /**
      * 设置未读tab显示
      */

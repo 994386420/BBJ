@@ -20,22 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bbk.activity.WebViewWZActivity;
-import com.bbk.util.ImmersedStatusbarUtils;
-import com.bbk.util.SoftHideKeyBoardUtil;
-import com.tencent.imsdk.TIMConversationType;
-import com.tencent.imsdk.TIMFriendshipManager;
-import com.tencent.imsdk.TIMMessage;
-import com.tencent.imsdk.TIMMessageStatus;
-import com.tencent.imsdk.TIMUserProfile;
-import com.tencent.imsdk.TIMValueCallBack;
-import com.tencent.imsdk.ext.message.TIMMessageDraft;
-import com.tencent.imsdk.ext.message.TIMMessageExt;
-import com.tencent.imsdk.ext.message.TIMMessageLocator;
-import com.tencent.imsdk.ext.sns.TIMFriendshipManagerExt;
-import com.tencent.qcloud.presentation.event.RefreshEvent;
-import com.tencent.qcloud.presentation.presenter.ChatPresenter;
-import com.tencent.qcloud.presentation.viewfeatures.ChatView;
 import com.bbk.activity.R;
 import com.bbk.chat.adapters.ChatAdapter;
 import com.bbk.chat.model.CustomMessage;
@@ -52,7 +36,23 @@ import com.bbk.chat.model.VideoMessage;
 import com.bbk.chat.model.VoiceMessage;
 import com.bbk.chat.utils.FileUtil;
 import com.bbk.chat.utils.MediaUtil;
+import com.bbk.chat.utils.PushUtil;
 import com.bbk.chat.utils.RecorderUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.SoftHideKeyBoardUtil;
+import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMFriendshipManager;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageStatus;
+import com.tencent.imsdk.TIMUserProfile;
+import com.tencent.imsdk.TIMValueCallBack;
+import com.tencent.imsdk.ext.message.TIMMessageDraft;
+import com.tencent.imsdk.ext.message.TIMMessageExt;
+import com.tencent.imsdk.ext.message.TIMMessageLocator;
+import com.tencent.imsdk.ext.sns.TIMFriendshipManagerExt;
+import com.tencent.qcloud.presentation.event.RefreshEvent;
+import com.tencent.qcloud.presentation.presenter.ChatPresenter;
+import com.tencent.qcloud.presentation.viewfeatures.ChatView;
 import com.tencent.qcloud.ui.ChatInput;
 import com.tencent.qcloud.ui.TemplateTitle;
 import com.tencent.qcloud.ui.VoiceSendingView;
@@ -61,7 +61,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatActivity extends FragmentActivity implements ChatView {
+public class ChatNoActivity extends FragmentActivity implements ChatView {
 
     private static final String TAG = "ChatActivity";
 
@@ -89,7 +89,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
 
 
     public static void navToChat(Context context, String identify, TIMConversationType type){
-        Intent intent = new Intent(context, ChatActivity.class);
+        Intent intent = new Intent(context, ChatNoActivity.class);
         intent.putExtra("identify", identify);
         intent.putExtra("type", type);
         context.startActivity(intent);
@@ -100,15 +100,18 @@ public class ChatActivity extends FragmentActivity implements ChatView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(ChatActivity.this));
+        SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(ChatNoActivity.this));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         View topView = findViewById(R.id.root);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-        if (getIntent().getStringExtra("identify")!= null){
-            identify = getIntent().getStringExtra("identify");
-            Log.i("------",identify+"-----------");
-        }
+//        if (getIntent().getStringExtra("identify").equals(PushUtil.senderStr)){
+            identify = PushUtil.senderStr;
+//        }
+//        if (getIntent().getStringExtra("identify")!= null){
+//            identify = getIntent().getStringExtra("identify");
+            Log.i("------",identify+"no-----------");
+//        }
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         getSelfProfile();
     }
@@ -571,11 +574,11 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                 for(TIMUserProfile res : result){
 //                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
 //                            + " remark: " + res.getRemark());
-                    presenter = new ChatPresenter(ChatActivity.this, identify, type);
+                    presenter = new ChatPresenter(ChatNoActivity.this, identify, type);
                     input = (ChatInput) findViewById(R.id.input_panel);
-                    input.setChatView(ChatActivity.this);
+                    input.setChatView(ChatNoActivity.this);
                     if (messageList != null){
-                        adapter = new ChatAdapter(ChatActivity.this, R.layout.item_message, messageList,res.getFaceUrl(),rightImageUrl);
+                        adapter = new ChatAdapter(ChatNoActivity.this, R.layout.item_message, messageList,res.getFaceUrl(),rightImageUrl);
                         listView = (ListView) findViewById(R.id.list);
                         listView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -619,7 +622,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                                 title.setMoreImgAction(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+                                        Intent intent = new Intent(ChatNoActivity.this, ProfileActivity.class);
                                         intent.putExtra("identify", identify);
                                         startActivity(intent);
                                     }
@@ -635,7 +638,7 @@ public class ChatActivity extends FragmentActivity implements ChatView {
                             title.setMoreImgAction(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent intent = new Intent(ChatActivity.this, GroupProfileActivity.class);
+                                    Intent intent = new Intent(ChatNoActivity.this, GroupProfileActivity.class);
                                     intent.putExtra("identify", identify);
                                     startActivity(intent);
                                 }

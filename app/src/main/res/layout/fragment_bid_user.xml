@@ -160,10 +160,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="14dp"
+            android:textColor="@color/black"
             android:text="我的发镖"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12dp"
             android:text="查看全部"/>
     </LinearLayout>
     <View
@@ -194,6 +197,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mimg11"
                 android:layout_marginTop="10dp"
+                android:textColor="@color/text_dark"
                 android:layout_centerHorizontal="true"
                 android:text="待审核"/>
             <TextView
@@ -229,6 +233,7 @@
                 android:layout_below="@+id/mimg12"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/text_dark"
                 android:text="待接镖"/>
             <TextView
                 android:id="@+id/mjietext"
@@ -263,6 +268,7 @@
                 android:layout_below="@+id/mimg13"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/text_dark"
                 android:text="待评论"/>
             <TextView
                 android:id="@+id/mpltext"
@@ -297,6 +303,7 @@
                 android:layout_below="@+id/mimg14"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/text_dark"
                 android:text="完成"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -328,10 +335,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="14dp"
+            android:textColor="@color/black"
             android:text="我的接镖"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12dp"
             android:text="查看全部"/>
     </LinearLayout>
     <View
@@ -363,6 +373,7 @@
                 android:layout_below="@+id/mimg21"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/text_dark"
                 android:text="正接镖"/>
             <TextView
                 android:id="@+id/mbidjietext"
@@ -397,6 +408,7 @@
                 android:layout_below="@+id/mimg22"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/text_dark"
                 android:text="待评论"/>
             <TextView
                 android:id="@+id/mbidpltext"
@@ -431,6 +443,7 @@
                 android:layout_below="@+id/mimg23"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/text_dark"
                 android:text="完成"/>
             <TextView
                 android:layout_width="wrap_content"

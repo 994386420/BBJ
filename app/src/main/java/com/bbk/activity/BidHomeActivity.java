@@ -71,6 +71,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     private BidFragment bidFragment;
     public static String Flag = "";
     private NumImageView mNumImage;//带数字角标的自定义view
+    private String currentItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,11 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         initViewPagerData();
         clickTab();
         mViewPager.setOffscreenPageLimit(0);
-        mViewPager.setCurrentItem(0);
+        if (getIntent().getStringExtra("currentitem") != null){
+            mViewPager.setCurrentItem(3);
+        }else {
+            mViewPager.setCurrentItem(0);
+        }
         HashMap<String, String> paramsMap = new HashMap<>();
         dataFlow.requestData(1, "newService/queryIndexMenu", paramsMap, this, false);
 
@@ -295,11 +300,11 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     @Override
     protected void onResume() {
         super.onResume();
-        String type = SharedPreferencesUtil.getSharedData(getApplicationContext(), "Bidhomeactivty", "type");
-        if (!TextUtils.isEmpty(type)) {
-            SharedPreferencesUtil.cleanShareData(getApplicationContext(), "Bidhomeactivty");
-            mViewPager.setCurrentItem(Integer.valueOf(type));
-        }
+//        String type = SharedPreferencesUtil.getSharedData(getApplicationContext(), "Bidhomeactivty", "type");
+//        if (!TextUtils.isEmpty(type)) {
+//            SharedPreferencesUtil.cleanShareData(getApplicationContext(), "Bidhomeactivty");
+//            mViewPager.setCurrentItem(Integer.valueOf(type));
+//        }
     }
     @Override
     protected void onStart() {

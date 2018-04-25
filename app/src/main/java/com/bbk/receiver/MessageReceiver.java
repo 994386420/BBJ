@@ -120,8 +120,9 @@ public class MessageReceiver extends XGPushBaseReceiver {
 						Log.d(LogTag, "get custom value:" + eventId);
 						if (eventId.equals("108")){
 								Log.i("eventId======",eventId+"========");
-								SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
+//								SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
 								Intent intent = new Intent(context, BidHomeActivity.class);
+							    intent.putExtra("currentitem", "2");
 							    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
 								context.startActivity(intent);
 						}

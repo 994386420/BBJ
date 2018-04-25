@@ -85,6 +85,17 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        /***
+         * 判断Fragment是否已经添加了contentView（第一次加载时，可以将view保存下 来，再  次加载时，判断保存下来的view是否为null），
+         * 如果保存的view为null，返回新的view ，否则，先将 保存的view从父view中移除，然后将该view返回出去
+         */
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null) {
+                parent.removeView(view);
+            }
+            return view;
+        }
         if (view == null){
             view = inflater.inflate(R.layout.fragment_bid_chat_ytx, container, false);
             listView = (ListView) view.findViewById(R.id.list);
