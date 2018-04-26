@@ -107,7 +107,6 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         if (getIntent().getStringExtra("identify")!= null){
             identify = getIntent().getStringExtra("identify");
-            Log.i("------",identify+"-----------");
         }
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         getSelfProfile();

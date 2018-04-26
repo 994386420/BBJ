@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="#fff"
-                android:text="正在发镖"
+                android:text="正在接镖"
                 android:textSize="17dp" />
         </LinearLayout>
         <LinearLayout

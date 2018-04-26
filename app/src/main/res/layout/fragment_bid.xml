@@ -171,7 +171,6 @@
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:hint="￥"
-                        android:inputType="number"
                         android:textSize="14dp" />
                 </LinearLayout>
 
@@ -235,7 +234,7 @@
                         android:layout_weight="1"
                         android:button="@drawable/bid_radiobtn"
                         android:checked="true"
-                        android:text="  24小时" />
+                        android:text="  3天" />
 
                     <RadioButton
                         android:id="@+id/mbtn2"
@@ -243,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:button="@drawable/bid_radiobtn"
                         android:layout_weight="1"
-                        android:text="  48小时" />
+                        android:text="  5天" />
 
                     <RadioButton
                         android:id="@+id/mbtn3"
@@ -251,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:button="@drawable/bid_radiobtn"
                         android:layout_weight="1"
-                        android:text="  72小时" />
+                        android:text="  7天" />
                 </RadioGroup>
             </LinearLayout>
 

@@ -63,24 +63,28 @@ public class NewBlAdapter extends BaseAdapter{
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        Map<String,String> map = list.get(position);
-        String mExtr = map.get("extra");
-        String img = map.get("img");
-        String time = map.get("dtime");
-        String title = map.get("title");
-        String count = map.get("plnum");
-        String zan = map.get("zannum");
-        String content = map.get("content");
-        viewHolder.item_title.setText(content);
-        viewHolder.time.setText(time);
-        viewHolder.mExtr.setText(mExtr);
-        viewHolder.mlike.setText(zan);
-        viewHolder.mcomment.setText(count);
-        Glide.with(context)
-                .load(img)
-                .priority(Priority.HIGH)
-                .placeholder(R.mipmap.zw_img_300)
-                .into(viewHolder.item_img);
+        try {
+            Map<String,String> map = list.get(position);
+            String mExtr = map.get("extra");
+            String img = map.get("img");
+            String time = map.get("dtime");
+            String title = map.get("title");
+            String count = map.get("plnum");
+            String zan = map.get("zannum");
+            String content = map.get("content");
+            viewHolder.item_title.setText(content);
+            viewHolder.time.setText(time);
+            viewHolder.mExtr.setText(mExtr);
+            viewHolder.mlike.setText(zan);
+            viewHolder.mcomment.setText(count);
+            Glide.with(context)
+                    .load(img)
+                    .priority(Priority.HIGH)
+                    .placeholder(R.mipmap.zw_img_300)
+                    .into(viewHolder.item_img);
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
         return convertView;
     }
     class ViewHolder{

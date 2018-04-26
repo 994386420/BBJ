@@ -63,6 +63,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                 viewHolder.mtime = (RushBuyCountDownTimerView)convertView.findViewById(R.id.mtime);
                 viewHolder.mbackground = convertView.findViewById(R.id.item_image_background);
                 viewHolder.mStatus = convertView.findViewById(R.id.status_text);
+                viewHolder.mTimeStatus = convertView.findViewById(R.id.time_status_text);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -83,13 +84,17 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                 if (status.equals("1")){
                 viewHolder.mStatus.setText("接镖");
                 viewHolder.mbackground.setVisibility(View.GONE);
+                viewHolder.mTimeStatus.setText("距结束");
+                viewHolder.mtime.setVisibility(View.VISIBLE);
+                viewHolder.mtime.addsumHour(endtime,"#999999");
                 }else {
                 viewHolder.mbackground.setVisibility(View.VISIBLE);
                 viewHolder.mStatus.setText("完成");
+                viewHolder.mTimeStatus.setText("已结束");
+                viewHolder.mtime.setVisibility(View.GONE);
                 }
             }
-            viewHolder.mtime.addsum(endtime,"#999999");
-            viewHolder.mtime.start();
+//            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
             viewHolder.mbidprice.setText("接镖价  "+bidprice);
             viewHolder.mprice.setText(price);
@@ -109,6 +114,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
         ImageView item_img,mbackground;
         TextView item_title,mbidprice,mcount,mprice,mStatus;
         RushBuyCountDownTimerView mtime;
+        TextView mTimeStatus;//根据时间是否完成显示状态
     }
 
 }

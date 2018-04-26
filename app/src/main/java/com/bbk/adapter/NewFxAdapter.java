@@ -61,23 +61,27 @@ public class NewFxAdapter extends BaseAdapter{
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        Map<String,String> map = list.get(position);
-        String content = map.get("content");
-        String img = map.get("img");
-        String time = map.get("atime");
-        String title = map.get("title");
-        String count = map.get("count");
-        String zan = map.get("zan");
-        viewHolder.item_title.setText(title);
-        viewHolder.time.setText(time);
-        viewHolder.content.setText(content);
-        viewHolder.mlike.setText(zan);
-        viewHolder.mcomment.setText(count);
-        Glide.with(context)
-                .load(img)
-                .priority(Priority.HIGH)
-                .placeholder(R.mipmap.zw_img_300)
-                .into(viewHolder.item_img);
+        try {
+            Map<String,String> map = list.get(position);
+            String content = map.get("content");
+            String img = map.get("img");
+            String time = map.get("atime");
+            String title = map.get("title");
+            String count = map.get("count");
+            String zan = map.get("zan");
+            viewHolder.item_title.setText(title);
+            viewHolder.time.setText(time);
+            viewHolder.content.setText(content);
+            viewHolder.mlike.setText(zan);
+            viewHolder.mcomment.setText(count);
+            Glide.with(context)
+                    .load(img)
+                    .priority(Priority.HIGH)
+                    .placeholder(R.mipmap.zw_img_300)
+                    .into(viewHolder.item_img);
+        }catch (Exception e){
+
+        }
         return convertView;
     }
     class ViewHolder{

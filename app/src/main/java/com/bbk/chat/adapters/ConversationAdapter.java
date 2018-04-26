@@ -60,6 +60,7 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
     List<TIMUserProfile> result1;
     List<Conversation> object;
     private HashMap<String, Object> mList;
+    private HashMap<String, Object> mNickNameList;
     /**
      * Constructor
      *
@@ -68,12 +69,12 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public ConversationAdapter(Context context, int resource, List<Conversation> objects,HashMap<String, Object> List) {
+    public ConversationAdapter(Context context, int resource, List<Conversation> objects,HashMap<String, Object> List,HashMap<String, Object> nickList) {
         super(context, resource, objects);
         resourceId = resource;
         this.context = context;
         this.mList = List;
-//        this.object =  objects;
+        this.mNickNameList = nickList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -94,32 +95,11 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
         }
         final Conversation data = getItem(position);
         try {
-//            Log.i("头像","======="+data.getName()+"==="+data.getIdentify());
-//            List<String> users = new ArrayList<String>();
-//            users.add(data.getAvatarUrls());
-//            //获取好友资料
-//            timFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
-//                @Override
-//                public void onError(int code, String desc) {
-//                    //错误码code和错误描述desc，可用于定位请求失败原因
-//                    //错误码code列表请参见错误码表
-//                    Log.e("==========", "getUsersProfile failed: " + code + " desc");
-//                }
-//
-//                @Override
-//                public void onSuccess(final List<TIMUserProfile> result) {
-//                    Log.e("==========", "getUsersProfile succ" + result);
-////                    for(TIMUserProfile res : result){
-//            if (result1.get(position).getIdentifier().equals(data.getIdentify())){
-//                viewHolder.tvName.setText(result1.get(position).getNickName().toString());
+                viewHolder.tvName.setText(mNickNameList.get(position+"").toString());
                 Glide.with(context).load(mList.get(position+"").toString())
                         .priority(Priority.HIGH)
                         .placeholder(R.mipmap.logo)
                         .into(viewHolder.avatar);
-//            }else {
-//                viewHolder.tvName.setText(data.getName());
-//                viewHolder.avatar.setImageResource(data.getAvatar());
-//            }
         }catch (Exception e){
             e.printStackTrace();
         }

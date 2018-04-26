@@ -94,14 +94,15 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                 final String id = map.get("bidid");
                 final String fbid = map.get("id");
                 final String endtime = map.get("endtime");
-                vh.mtime.addsum(endtime,"#999999");
-                vh.mtime.start();
+//                vh.mtime.start();
                 initData(vh,map);
                 vh.mtext1.setVisibility(View.GONE);
                 switch (bidstatus){
                     case "-1":
                         vh.mtypetext.setText("已失效");
+                        vh.mtimebefor.setText(endtime);
                         vh.mtextbox.setVisibility(View.GONE);
+                        vh.mtime.setVisibility(View.GONE);
                         break;
                     case "0":
                         vh.mtypetext.setText("已取消");
@@ -110,6 +111,8 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtextbox.setVisibility(View.GONE);
                         break;
                     case "1":
+                        vh.mtime.setVisibility(View.VISIBLE);
+                        vh.mtime.addsumHour(endtime,"#999999");
                         vh.mtypetext.setText("正接镖");
                         vh.mtext2.setText("取消接镖");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +137,8 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         });
                         break;
                     case "2":
+                        vh.mtimebefor.setText("交镖完成");
+                        vh.mtime.setVisibility(View.GONE);
                         vh.mtypetext.setText("待评论");
                         vh.mtext2.setText("评论");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +151,8 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         });
                         break;
                     case "3":
+                        vh.mtimebefor.setText("评论完成");
+                        vh.mtime.setVisibility(View.GONE);
                         vh.mtypetext.setText("已完成");
                         vh.mtext2.setText("查看评论");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {
@@ -171,20 +178,23 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
         dataFlow.requestData(i, "bid/cancelBid", paramsMap, this,true);
     }
     public void initData(BidMyListDetailAdapter.ViewHolder vh, Map<String, String> map){
-        String title = map.get("title");
-        String price = map.get("price");
-        String img = map.get("img");
-        String number = map.get("number");
-        String bidnum = map.get("bidnum");
-        String bidprice = map.get("bidprice");
-        String url = map.get("url");
-        vh.item_title.setText(title);
-        vh.mcount.setText("x"+number);
-        vh.mbidnum.setText("接镖 "+bidnum+" 人");
-        vh.mprice.setText(price);
-        vh.mendprice.setText("￥"+bidprice);
-        Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);
-
+        try {
+            String title = map.get("title");
+            String price = map.get("price");
+            String img = map.get("img");
+            String number = map.get("number");
+            String bidnum = map.get("bidnum");
+            String bidprice = map.get("bidprice");
+            String url = map.get("url");
+            vh.item_title.setText(title);
+            vh.mcount.setText("x"+number);
+            vh.mbidnum.setText("接镖 "+bidnum+" 人");
+            vh.mprice.setText(price);
+            vh.mendprice.setText("￥"+bidprice);
+            Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

@@ -37,14 +37,26 @@
             android:scaleType="centerCrop"
             android:src="@mipmap/bj_30"/>
         <TextView
-            android:id="@+id/mtime"
+            android:id="@+id/mtime1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="3dp"
             android:layout_alignParentLeft="true"
             android:textSize="11dp"
-            android:text="距结束  01天11时06分"
+            android:text="距结束"
+            android:textColor="#999999"
+            />
+         <com.bbk.view.RushBuyCountDownTimerViewBidHome
+            android:id="@+id/mtime"
+            android:layout_toRightOf="@+id/mtime1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"
+            android:textSize="11dp"
+            android:layout_marginLeft="5dp"
+            android:text="01天11时06分"
             android:textColor="#999999"
             />
         <TextView

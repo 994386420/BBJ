@@ -108,10 +108,6 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
         mtext2 = (TextView) mView.findViewById(R.id.mtext2);
         henggang1 =mView. findViewById(R.id.henggang1);
         henggang2 =mView.findViewById(R.id.henggang2);
-//        tlist.add(mtext1);
-//        tlist.add(mtext2);
-//        vlist.add(henggang1);
-//        vlist.add(henggang2);
         mtext1.setTextColor(getActivity().getResources().getColor(R.color.biao_color));
         henggang1.setVisibility(View.VISIBLE);
         mtext2.setTextColor(getActivity().getResources().getColor(R.color.black));
@@ -131,7 +127,6 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int i) {
-//                clickTabtitle(i);
             }
 
             @Override
@@ -155,7 +150,6 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.meverydayjb:
-//                clickTabtitle(0);
                 mtext1.setTextColor(getActivity().getResources().getColor(R.color.biao_color));
                 henggang1.setVisibility(View.VISIBLE);
                 mtext2.setTextColor(getActivity().getResources().getColor(R.color.black));
@@ -163,7 +157,6 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
                 mViewPager.setCurrentItem(0);
                 break;
             case R.id.mmorejb:
-//                clickTabtitle(1);
                 mtext1.setTextColor(getActivity().getResources().getColor(R.color.black));
                 henggang1.setVisibility(View.GONE);
                 mtext2.setTextColor(getActivity().getResources().getColor(R.color.biao_color));
@@ -174,18 +167,6 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
                 break;
         }
     }
-//    private void clickTabtitle(int i) {
-//        if (curclick != i) {
-//            tlist.get(0).setTextColor(Color.parseColor("#333333"));
-//            tlist.get(1).setTextColor(Color.parseColor("#333333"));
-//            vlist.get(0).setBackgroundColor(Color.parseColor("#ffffff"));
-//            vlist.get(1).setBackgroundColor(Color.parseColor("#ffffff"));
-//            tlist.get(i).setTextColor(Color.parseColor("#b40000"));
-//            vlist.get(i).setBackgroundColor(Color.parseColor("#b40000"));
-//            curclick = i;
-//        }
-//
-//    }
     /**
      * 设置未读tab显示
      */

@@ -970,6 +970,12 @@ public class ResultMainActivity extends BaseActivity
 			}else {
 				itemMap.put("saleinfo",  "-1");
 			}
+			//新增newsaleinfo
+			if (arr.optJSONObject(i).has("newsaleinfo")){
+				itemMap.put("newsaleinfo",  arr.optJSONObject(i).optString("newsaleinfo"));
+			}else {
+				itemMap.put("newsaleinfo",  "-1");
+			}
 			if (arr.optJSONObject(i).has("yjson")){
 				itemMap.put("yjson",  arr.optJSONObject(i).optString("yjson"));
 			}else {

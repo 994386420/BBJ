@@ -149,12 +149,6 @@ public class ResultMyGridAdapter extends BaseAdapter{
 					}else {
 						vh.juan.setVisibility(View.VISIBLE);
 						vh.juan.setText("劵");
-						vh.juan.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-
-							}
-						});
 					}
 				}else {
 					try {

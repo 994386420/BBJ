@@ -9,6 +9,7 @@ import com.bbk.activity.BidFbActivity;
 import com.bbk.activity.CompareActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.ResultDialogActivity;
+import com.bbk.activity.WebViewActivity;
 import com.bbk.dialog.ResultDialog;
 import com.bbk.view.MyListView;
 import com.bumptech.glide.Glide;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Priority;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -144,29 +146,61 @@ public class ResultMyListAdapter extends BaseAdapter{
 				vh.mcouponimg.setVisibility(View.VISIBLE);
 				vh.myouhuitext.setVisibility(View.VISIBLE);
 				vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
-				if ("-1".equals(dataSet.get("saleinfo"))){
+				Log.i("newsalefino",dataSet.get("newsaleinfo").toString()+"=====");
+				if ("-1".equals(dataSet.get("newsaleinfo"))){
 					vh.mcoupon.setVisibility(View.GONE);
 					vh.myouhuitext.setVisibility(View.GONE);
 					vh.lingjuanzhanwei.setVisibility(View.GONE);
 				}else {
-					if (!"".equals(dataSet.get("saleinfo"))){
+					String newsaleinfo = dataSet.get("newsaleinfo").toString();
+					JSONObject object = new JSONObject(newsaleinfo);
+					String desc = object.optString("desc");
+					final String url = object.optString("url");
+					if (!"".equals(url)){
 						vh.mcoupon.setVisibility(View.VISIBLE);
-						vh.mlingjuan.setVisibility(View.GONE);
-						vh.mcouponimg.setVisibility(View.GONE);
-						vh.mcoupontext.setText(dataSet.get("saleinfo").toString());
+						vh.myouhuitext.setVisibility(View.VISIBLE);
+						vh.mlingjuan.setVisibility(View.VISIBLE);
+						vh.mcouponimg.setVisibility(View.VISIBLE);
+						Log.i("newsalefino",desc+"====="+url);
+						vh.mcoupontext.setText(desc);
 						vh.mcoupon.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-
+								Intent intent = new Intent(context, WebViewActivity.class);
+								intent.putExtra("url",url);
+								context.startActivity(intent);
 							}
 						});
 					}else {
 						vh.mcoupon.setVisibility(View.GONE);
 						vh.myouhuitext.setVisibility(View.GONE);
 						vh.lingjuanzhanwei.setVisibility(View.GONE);
+						vh.mlingjuan.setVisibility(View.GONE);
 					}
-
 				}
+//				if ("-1".equals(dataSet.get("saleinfo"))){
+//					vh.mcoupon.setVisibility(View.GONE);
+//					vh.myouhuitext.setVisibility(View.GONE);
+//					vh.lingjuanzhanwei.setVisibility(View.GONE);
+//				}else {
+//					if (!"".equals(dataSet.get("saleinfo"))){
+//						vh.mcoupon.setVisibility(View.VISIBLE);
+//						vh.mlingjuan.setVisibility(View.GONE);
+//						vh.mcouponimg.setVisibility(View.GONE);
+//						vh.mcoupontext.setText(dataSet.get("saleinfo").toString());
+//						vh.mcoupon.setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//
+//							}
+//						});
+//					}else {
+//						vh.mcoupon.setVisibility(View.GONE);
+//						vh.myouhuitext.setVisibility(View.GONE);
+//						vh.lingjuanzhanwei.setVisibility(View.GONE);
+//					}
+//
+//				}
 
 			}else {
 				try {

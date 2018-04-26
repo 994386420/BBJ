@@ -80,7 +80,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="1dp"
                     android:layout_toRightOf="@id/mbigprice"
-                    android:text=".9"
+                    android:text=""
                     android:textColor="#c80000"
                     android:textSize="13dp" />
 

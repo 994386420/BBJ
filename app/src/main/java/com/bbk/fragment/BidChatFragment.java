@@ -93,10 +93,21 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     List<String> users7 = new ArrayList<String>();
     List<String> users8 = new ArrayList<String>();
     List<String> users9 = new ArrayList<String>();
+    List<String> users10 = new ArrayList<String>();
+    List<String> users11= new ArrayList<String>();
+    List<String> users12 = new ArrayList<String>();
+    List<String> users13= new ArrayList<String>();
+    List<String> users14 = new ArrayList<String>();
+    List<String> users15 = new ArrayList<String>();
+    List<String> users16 = new ArrayList<String>();
+    List<String> users17 = new ArrayList<String>();
+    List<String> users18 = new ArrayList<String>();
+    List<String> users19 = new ArrayList<String>();
     private TIMFriendshipManager timFriendshipManager;
     List<TIMUserProfile> result1;
     private SharedPreferences sharedPreferences;
-
+    private SharedPreferences sharedPreferencesnickname;
+    TIMMessage message;
     public BidChatFragment() {
         // Required empty public constructor
     }
@@ -119,34 +130,12 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         if (view == null){
             view = inflater.inflate(R.layout.fragment_bid_chat_ytx, container, false);
             listView = (ListView) view.findViewById(R.id.list);
-//            adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
-//            listView.setAdapter(adapter);
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    conversationList.get(position).navToDetail(getActivity());
-////                        try {
-////                            Intent intent = new Intent(getActivity(),ChatActivity.class);
-////                            intent.putExtra("identify",result1.get(position).getIdentifier());
-////                            intent.putExtra("type", TIMConversationType.C2C);
-////                            startActivity(intent);
-//                    if (conversationList.get(position) instanceof GroupManageConversation) {
-//                        groupManagerPresenter.getGroupManageLastMessage();
-//                    }
-////                        }catch (Exception e){
-////                            e.printStackTrace();
-////                        }
-//                }
-//            });
             friendshipManagerPresenter = new FriendshipManagerPresenter(this);
             groupManagerPresenter = new GroupManagerPresenter(this);
             presenter = new ConversationPresenter(this);
             presenter.getConversation();
             registerForContextMenu(listView);
         }
-//        if (adapter != null){
-//            adapter.notifyDataSetChanged();
-//        }
         return view;
 
     }
@@ -154,7 +143,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     @Override
     public void onResume(){
         super.onResume();
-//        refresh();
+        refresh();
         PushUtil.getInstance().reset();
     }
 
@@ -182,48 +171,6 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         groupManagerPresenter.getGroupManageLastMessage();
         Collections.sort(groupList);
         refreshView();
-        //获取好友资料
-//        timFriendshipManager.getInstance().getUsersProfile(groupList, new TIMValueCallBack<List<TIMUserProfile>>(){
-//            @Override
-//            public void onError(int code, String desc){
-//                //错误码code和错误描述desc，可用于定位请求失败原因
-//                //错误码code列表请参见错误码表
-////                Log.e("==========", "getUsersProfile failed: " + code + " desc");
-//            }
-//
-//            @Override
-//            public void onSuccess(final List<TIMUserProfile> result){
-//                Log.e("==========", "getUsersProfile succ"+result);
-//                result1 = result;
-//                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
-//                listView.setAdapter(adapter);
-//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        conversationList.get(position).navToDetail(getActivity());
-////                        try {
-////                            Intent intent = new Intent(getActivity(),ChatActivity.class);
-////                            intent.putExtra("identify",result1.get(position).getIdentifier());
-////                            intent.putExtra("type", TIMConversationType.C2C);
-////                            startActivity(intent);
-//                            if (conversationList.get(position) instanceof GroupManageConversation) {
-//                                groupManagerPresenter.getGroupManageLastMessage();
-//                            }
-////                        }catch (Exception e){
-////                            e.printStackTrace();
-////                        }
-//                    }
-//                });
-//                if (adapter != null){
-//                    adapter.notifyDataSetChanged();
-//                }
-//                for(TIMUserProfile res : result){
-//                }
-//            }
-//        });
-    }
-
-    private void getFriendsProfile(){
     }
     /**
      * 更新最新消息显示
@@ -309,27 +256,80 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
      */
     @Override
     public void refresh() {
+//        updateMessage(message);
         Collections.sort(conversationList);
-//        if (adapter != null){
-//            adapter.notifyDataSetChanged();
-//            refreshView();
-//        }
         handler.sendEmptyMessageDelayed(1,0);
         if (getParentFragment() instanceof BidMessageFragment)
             ((BidMessageFragment)getParentFragment()).setMsgUnread(getTotalUnreadNum() == 0);
     }
 
 
-    @SuppressLint("HandlerLeak")
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
                 case 1:
-//                    users = new ArrayList<String>();
-//                    users.clear();
-//                    for (int i = 0; i<conversationList.size(); i++){
+                    if (users != null){
+                        users.clear();
+                    }
+                    if (users1 != null){
+                        users1.clear();
+                    }
+                    if (users2 != null){
+                        users2.clear();
+                    }
+                    if (users3 != null){
+                        users3.clear();
+                    }
+                    if (users4 != null){
+                        users4.clear();
+                    }
+                    if (users5 != null){
+                        users5.clear();
+                    }
+                    if (users6 != null){
+                        users6.clear();
+                    }
+                    if (users7 != null){
+                        users7.clear();
+                    }
+                    if (users8 != null){
+                        users8.clear();
+                    }
+                    if (users9 != null){
+                        users9.clear();
+                    }
+                    if (users10 != null){
+                        users10.clear();
+                    }
+                    if (users11 != null){
+                        users11.clear();
+                    }
+                    if (users12 != null){
+                        users12.clear();
+                    }
+                    if (users13 != null){
+                        users13.clear();
+                    }
+                    if (users14 != null){
+                        users14.clear();
+                    }
+                    if (users15 != null){
+                        users15.clear();
+                    }
+                    if (users16 != null){
+                        users16.clear();
+                    }
+                    if (users17 != null){
+                        users17.clear();
+                    }
+                    if (users18 != null){
+                        users18.clear();
+                    }
+                    if (users19 != null){
+                        users19.clear();
+                    }
                     switch (conversationList.size()){
                         case 1:
                             users.add(conversationList.get(0).getIdentify());
@@ -339,74 +339,268 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
                             users.add(conversationList.get(0).getIdentify());
                             users1.add(conversationList.get(1).getIdentify());
                             getfriends(users);
-                            getfriends1(users1);
+                            break;
+                        case 3:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 4:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 5:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 6:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 7:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 8:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 9:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 10:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            getfriends(users);
+                        case 11:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 12:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 13:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 14:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            users13.add(conversationList.get(13).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 15:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            users13.add(conversationList.get(13).getIdentify());
+                            users14.add(conversationList.get(14).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 16:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            users13.add(conversationList.get(13).getIdentify());
+                            users14.add(conversationList.get(14).getIdentify());
+                            users15.add(conversationList.get(15).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 17:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            users13.add(conversationList.get(13).getIdentify());
+                            users14.add(conversationList.get(14).getIdentify());
+                            users15.add(conversationList.get(15).getIdentify());
+                            users16.add(conversationList.get(16).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 18:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            users13.add(conversationList.get(13).getIdentify());
+                            users14.add(conversationList.get(14).getIdentify());
+                            users15.add(conversationList.get(15).getIdentify());
+                            users16.add(conversationList.get(16).getIdentify());
+                            users17.add(conversationList.get(17).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 19:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            users13.add(conversationList.get(13).getIdentify());
+                            users14.add(conversationList.get(14).getIdentify());
+                            users15.add(conversationList.get(15).getIdentify());
+                            users16.add(conversationList.get(16).getIdentify());
+                            users17.add(conversationList.get(17).getIdentify());
+                            users18.add(conversationList.get(18).getIdentify());
+                            getfriends(users);
+                            break;
+                        case 20:
+                            users.add(conversationList.get(0).getIdentify());
+                            users1.add(conversationList.get(1).getIdentify());
+                            users2.add(conversationList.get(2).getIdentify());
+                            users3.add(conversationList.get(3).getIdentify());
+                            users4.add(conversationList.get(4).getIdentify());
+                            users5.add(conversationList.get(5).getIdentify());
+                            users6.add(conversationList.get(6).getIdentify());
+                            users7.add(conversationList.get(7).getIdentify());
+                            users8.add(conversationList.get(8).getIdentify());
+                            users9.add(conversationList.get(9).getIdentify());
+                            users10.add(conversationList.get(10).getIdentify());
+                            users11.add(conversationList.get(11).getIdentify());
+                            users12.add(conversationList.get(12).getIdentify());
+                            users13.add(conversationList.get(13).getIdentify());
+                            users14.add(conversationList.get(14).getIdentify());
+                            users15.add(conversationList.get(15).getIdentify());
+                            users16.add(conversationList.get(16).getIdentify());
+                            users17.add(conversationList.get(17).getIdentify());
+                            users18.add(conversationList.get(18).getIdentify());
+                            users19.add(conversationList.get(19).getIdentify());
+                            getfriends(users);
                             break;
                     }
-//                    adapter();
-//                    }
-                    Log.i("刷新数据====", NewConstants.mChatMap+"===========");
-
-//                    sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
-//                    if(sharedPreferences.getString("name",null)!=null){
-//                        String result1 = sharedPreferences.getString("name",null);
-//                        if (result1 != null && result1.length() > 0) {
-////                mHistoryLayout.setVisibility(View.VISIBLE);
-//                            NewConstants.mChatMap = NewConstants.getJsonObject(result1);
-//                            adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,NewConstants.mChatMap);
-//                            listView.setAdapter(adapter);
-//                            adapter.notifyDataSetChanged();
-//                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                @Override
-//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                    conversationList.get(position).navToDetail(getActivity());
-////                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
-////                                        intent.putExtra("identify",result1.get(position).getIdentifier());
-////                                        intent.putExtra("type", TIMConversationType.C2C);
-////                                        startActivity(intent);
-//                                    if (conversationList.get(position) instanceof GroupManageConversation) {
-//                                        groupManagerPresenter.getGroupManageLastMessage();
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    }
-//                    Collections.sort(users);
-                    //获取好友资料
-//                    TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
-//                        @Override
-//                        public void onError(int code, String desc){
-//                        }
-//                        @Override
-//                        public void onSuccess(final List<TIMUserProfile> result){
-//                            Log.i("===========",result+"========");
-//                            result1 = result;
-//                            Comparator<TIMUserProfile> comparable = new Comparator<TIMUserProfile>() {
-//                                @Override
-//                                public int compare(TIMUserProfile timUserProfile, TIMUserProfile t1) {
-//                                    return timUserProfile.getIdentifier().compareTo(t1.getIdentifier());
-//                                }
-//                            };
-//                            Collections.sort(result1,comparable);
-//                            if (conversationList != null && result1 != null && getActivity() != null){
-//                                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,result1);
-//                                listView.setAdapter(adapter);
-//                                adapter.notifyDataSetChanged();
-//                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                    @Override
-//                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                        conversationList.get(position).navToDetail(getActivity());
-////                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
-////                                        intent.putExtra("identify",result1.get(position).getIdentifier());
-////                                        intent.putExtra("type", TIMConversationType.C2C);
-////                                        startActivity(intent);
-//                                        if (conversationList.get(position) instanceof GroupManageConversation) {
-//                                            groupManagerPresenter.getGroupManageLastMessage();
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    });
                     break;
             }
         }
@@ -420,19 +614,17 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             }
             @Override
             public void onSuccess(final List<TIMUserProfile> result){
-//                for (TIMUserProfile res : result){
-//                    Constants.mChatMap.put(Constants.mChatMap.size()+"",res.getNickName());
-                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE).edit();
                         NewConstants.mChatMap.put(0 + "", result.get(0).getFaceUrl());
-                        Log.i("刷新数据000====", NewConstants.mChatMap+"===========");
-                        editor.putString("name", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatMap).toString());
-                        editor.commit();
-                       adapter();
-//                }
+                        NewConstants.mChatNickMameMap.put(0+"",result.get(0).getNickName());
+                        if (users1 != null && users1.size() > 0){
+                            getfriends1(users1);
+                        }else {
+                            adapter();
+                        }
             }
         });
     }
-    private void getfriends1(List<String> users){
+    private void getfriends1(final List<String> users){
         //获取好友资料
         TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
             @Override
@@ -440,43 +632,394 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             }
             @Override
             public void onSuccess(final List<TIMUserProfile> result){
-//                for (TIMUserProfile res : result){
-//                    Constants.mChatMap.put(Constants.mChatMap.size()+"",res.getNickName());
-                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE).edit();
-                    NewConstants.mChatMap.put(1 + "", result.get(0).getFaceUrl());
-                    Log.i("刷新数11111====", NewConstants.mChatMap+"===========");
-                    editor.putString("name", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatMap).toString());
-                    editor.commit();
+                NewConstants.mChatMap.put(1 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(1+"",result.get(0).getNickName());
+                Log.i("刷新数据====+++", NewConstants.mChatMap+"==========="+NewConstants.mChatNickMameMap+"===="+users2.toString());
+                if (users2 != null && users2.size() > 0){
+                    getfriends2(users2);
+                }else {
                     adapter();
-//                }
+                }
+            }
+        });
+    }
+    private void getfriends2(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(2 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(2+"",result.get(0).getNickName());
+                if (users3 != null && users3.size() > 0){
+                    getfriends3(users3);
+                }else {
+                    adapter();
+                }
             }
         });
     }
 
-    private void adapter(){
-        sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
-        if(sharedPreferences.getString("name",null)!=null){
-            String result1 = sharedPreferences.getString("name",null);
-            if (result1 != null && result1.length() > 0) {
-//                mHistoryLayout.setVisibility(View.VISIBLE);
-                NewConstants.mChatMap = NewConstants.getJsonObject(result1);
-                adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,NewConstants.mChatMap);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        conversationList.get(position).navToDetail(getActivity());
-//                                        Intent intent = new Intent(getActivity(),ChatActivity.class);
-//                                        intent.putExtra("identify",result1.get(position).getIdentifier());
-//                                        intent.putExtra("type", TIMConversationType.C2C);
-//                                        startActivity(intent);
-                        if (conversationList.get(position) instanceof GroupManageConversation) {
-                            groupManagerPresenter.getGroupManageLastMessage();
-                        }
-                    }
-                });
+    private void getfriends3(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
             }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(3 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(3+"",result.get(0).getNickName());
+                if (users4 != null&& users4.size() > 0){
+                    getfriends4(users4);
+                }else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends4(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(4 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(4+"",result.get(0).getNickName());
+                if (users5 != null&& users5.size() > 0){
+                    getfriends5(users5);
+                }else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends5(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(5 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(5+"",result.get(0).getNickName());
+                if (users6 != null&& users6.size() > 0){
+                    getfriends6(users6);
+                }else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends6(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(6 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(6+"",result.get(0).getNickName());
+                if (users7 != null&& users7.size() > 0){
+                    getfriends7(users7);
+                }else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends7(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(7 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(7+"",result.get(0).getNickName());
+                if (users8 != null&& users8.size() > 0){
+                    getfriends8(users8);
+                }else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends8(final List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(8 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(8+"",result.get(0).getNickName());
+                if (users9 != null&& users9.size() > 0){
+                    getfriends9(users9);
+                }else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends9(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(9 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(9 + "", result.get(0).getNickName());
+                if (users10 != null && users10.size() > 0) {
+                    getfriends10(users10);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+    private void getfriends10(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(10 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(10 + "", result.get(0).getNickName());
+                if (users11 != null && users11.size() > 0) {
+                    getfriends11(users11);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends11(List<String> users){
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>(){
+            @Override
+            public void onError(int code, String desc){
+            }
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result){
+                NewConstants.mChatMap.put(11 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(11+"",result.get(0).getNickName());
+                if (users12 != null&& users12.size() > 0){
+                    getfriends12(users12);
+                }else {
+                    adapter();
+                }
+            }
+        });
+    }
+    private void getfriends12(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(12 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(12 + "", result.get(0).getNickName());
+                if (users13 != null && users13.size() > 0) {
+                    getfriends13(users13);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+    private void getfriends13(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(13 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(13 + "", result.get(0).getNickName());
+                if (users14 != null && users14.size() > 0) {
+                    getfriends14(users14);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends14(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(14 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(14 + "", result.get(0).getNickName());
+                if (users15 != null && users15.size() > 0) {
+                    getfriends15(users15);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+    private void getfriends15(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(15 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(15 + "", result.get(0).getNickName());
+                if (users16 != null && users16.size() > 0) {
+                    getfriends16(users16);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+    private void getfriends16(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(16 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(16 + "", result.get(0).getNickName());
+                if (users17 != null && users17.size() > 0) {
+                    getfriends17(users17);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends17(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(17 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(17 + "", result.get(0).getNickName());
+                if (users18 != null && users18.size() > 0) {
+                    getfriends18(users18);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends18(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(18 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(18 + "", result.get(0).getNickName());
+                if (users19 != null && users19.size() > 0) {
+                    getfriends19(users19);
+                } else {
+                    adapter();
+                }
+            }
+        });
+    }
+
+    private void getfriends19(List<String> users) {
+        //获取好友资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(final List<TIMUserProfile> result) {
+                NewConstants.mChatMap.put(19 + "", result.get(0).getFaceUrl());
+                NewConstants.mChatNickMameMap.put(19 + "", result.get(0).getNickName());
+                    adapter();
+            }
+        });
+    }
+    private void adapter(){
+        try {
+            SharedPreferences.Editor editor = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE).edit();
+            SharedPreferences.Editor editorNickName = getActivity().getSharedPreferences("nickname", getActivity().MODE_PRIVATE).edit();
+            editor.putString("name", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatMap).toString());
+            editorNickName.putString("nickname", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatNickMameMap).toString());
+            editor.commit();
+            editorNickName.commit();
+            Log.i("刷新数据-----====", NewConstants.mChatMap+"==========="+NewConstants.mChatNickMameMap);
+
+            sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
+            sharedPreferencesnickname = getActivity().getSharedPreferences("nickname",getActivity().MODE_PRIVATE);
+            if(sharedPreferences.getString("name",null)!=null &&sharedPreferencesnickname.getString("nickname",null)!=null ){
+                String result1 = sharedPreferences.getString("name",null);
+                String result2 = sharedPreferencesnickname.getString("nickname",null);
+                if (result1 != null && result1.length() > 0 && result2 != null && result2.length() > 0 ) {
+//                mHistoryLayout.setVisibility(View.VISIBLE);
+                    NewConstants.mChatMap = NewConstants.getJsonObject(result1);
+                    NewConstants.mChatNickMameMap = NewConstants.getJsonObject(result2);
+                    adapter = new ConversationAdapter(getActivity(), R.layout.item_conversation, conversationList ,NewConstants.mChatMap,NewConstants.mChatNickMameMap);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            conversationList.get(position).navToDetail(getActivity());
+                            if (conversationList.get(position) instanceof GroupManageConversation) {
+                                groupManagerPresenter.getGroupManageLastMessage();
+                            }
+                        }
+                    });
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
     /**

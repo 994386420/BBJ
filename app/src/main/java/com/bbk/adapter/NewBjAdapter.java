@@ -73,8 +73,8 @@ public class NewBjAdapter extends BaseAdapter{
             String number = map.get("number");
             String type = map.get("type");
             String url = map.get("url");
-            viewHolder.mtime.addsum(endtime,"#999999");
-            viewHolder.mtime.start();
+            viewHolder.mtime.addsumHour(endtime,"#999999");
+//            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
             viewHolder.mbidprice.setVisibility(View.GONE);
             viewHolder.mprice.setText(price);

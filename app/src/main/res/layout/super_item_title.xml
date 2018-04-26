@@ -9,8 +9,8 @@
     <TextView
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
+        android:paddingLeft="21dp"
+        android:paddingRight="21dp"
         android:gravity="center"
         android:id="@+id/item_title"
         android:layout_weight="1"

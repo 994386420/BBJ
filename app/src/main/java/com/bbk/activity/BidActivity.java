@@ -377,12 +377,13 @@ public class BidActivity extends BaseActivity implements ResultEvent{
         final HashMap<String, String> params = new HashMap<String, String>();
         RadioButton radioButton = (RadioButton)findViewById(mradioGroup.getCheckedRadioButtonId());
         String mins = radioButton.getText().toString();
-        if (mins.contains("24")){
-            mins = "24";
-        }else if (mins.contains("48")){
-            mins = "48";
-        }else {
+        //发镖改成三天，五天，七天，传小时
+        if (mins.contains("3")){
             mins = "72";
+        }else if (mins.contains("5")){
+            mins = "120";
+        }else {
+            mins = "168";
         }
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");

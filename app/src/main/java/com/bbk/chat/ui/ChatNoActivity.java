@@ -105,13 +105,8 @@ public class ChatNoActivity extends FragmentActivity implements ChatView {
         View topView = findViewById(R.id.root);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-//        if (getIntent().getStringExtra("identify").equals(PushUtil.senderStr)){
-            identify = PushUtil.senderStr;
-//        }
-//        if (getIntent().getStringExtra("identify")!= null){
-//            identify = getIntent().getStringExtra("identify");
-            Log.i("------",identify+"no-----------");
-//        }
+        identify = PushUtil.senderStr;
+        Log.i("------",identify+"no-----------");
         type = (TIMConversationType) getIntent().getSerializableExtra("type");
         getSelfProfile();
     }

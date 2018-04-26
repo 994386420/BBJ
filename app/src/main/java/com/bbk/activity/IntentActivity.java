@@ -10,6 +10,7 @@ import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.bbk.flow.DataFlow3;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.EventIdIntentUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,6 +56,9 @@ public class IntentActivity extends BaseActivity implements ResultEvent{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intent);
+		View topView = findViewById(R.id.topbar_layout);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow3(this);
 		title = getIntent().getStringExtra("title");
 		url = getIntent().getStringExtra("url");

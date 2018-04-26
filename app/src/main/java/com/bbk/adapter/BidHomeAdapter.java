@@ -25,6 +25,7 @@ import com.bbk.util.DateUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
+import com.bbk.view.RushBuyCountDownTimerViewBidHome;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -165,34 +166,38 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     }
 
     private void initList(LikeListViewHolder viewHolder, int position) throws JSONException {
-        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        final JSONObject object = listarray.getJSONObject(position);
-        String time = DateUtil.TimeDifference(object.optString("endtime"));
-        viewHolder.mtime.setText("距结束  "+time);
-        viewHolder.mprice.setText("镖价￥"+object.optString("price"));
-        viewHolder.mtitle.setText(object.optString("title"));
-        final String url = object.optString("url");
-        String img = object.optString("img");
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try{
-                if (object.optString("userid").equals(userID)){
-                    Intent intent = new Intent(context,BidBillDetailActivity.class);
-                    intent.putExtra("fbid",object.optString("id"));
-                    context.startActivity(intent);
-                }else {
-                    Intent intent = new Intent(context, BidDetailActivity.class);
-                    intent.putExtra("id",object.optString("id"));
-                    context.startActivity(intent);
-                }  }catch (Exception e){
-                e.printStackTrace();
-                    StringUtil.showToast(context,"网络连接异常");
-            }
+        try {
+            final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+            final JSONObject object = listarray.getJSONObject(position);
+            String time = object.optString("endtime");
+            viewHolder.mtime.addsumHour(time,"#999999");
+            viewHolder.mprice.setText("镖价￥"+object.optString("price"));
+            viewHolder.mtitle.setText(object.optString("title"));
+            final String url = object.optString("url");
+            String img = object.optString("img");
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try{
+                        if (object.optString("userid").equals(userID)){
+                            Intent intent = new Intent(context,BidBillDetailActivity.class);
+                            intent.putExtra("fbid",object.optString("id"));
+                            context.startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(context, BidDetailActivity.class);
+                            intent.putExtra("id",object.optString("id"));
+                            context.startActivity(intent);
+                        }  }catch (Exception e){
+                        e.printStackTrace();
+                        StringUtil.showToast(context,"网络连接异常");
+                    }
 
-            }
-        });
-        Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg);
+                }
+            });
+            Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initHot(HotViewHolder viewHolder, int i) throws JSONException, ParseException {
@@ -319,12 +324,13 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
 
     class LikeListViewHolder extends RecyclerView.ViewHolder{
         private ImageView mimg;
-        private TextView mtitle,mtime,mprice;
+        private TextView mtitle,mprice;
+        private RushBuyCountDownTimerViewBidHome mtime;
         public LikeListViewHolder(View v) {
             super(v);
             mimg = (ImageView)v.findViewById(R.id.mimg);
             mtitle = (TextView)v.findViewById(R.id.mtitle);
-            mtime = (TextView)v.findViewById(R.id.mtime);
+            mtime = (RushBuyCountDownTimerViewBidHome) v.findViewById(R.id.mtime);
             mprice = (TextView)v.findViewById(R.id.mprice);
         }
     }
