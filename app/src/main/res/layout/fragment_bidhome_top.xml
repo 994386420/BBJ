@@ -153,18 +153,20 @@
         android:layout_height="1dp"
         android:background="#f3f3f3"/>
     <LinearLayout
+        android:id="@+id/jingtopic"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginBottom="12dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <ImageView
-            android:layout_width="36dp"
+            android:layout_width="72dp"
             android:layout_height="36dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/bj_31" />
+            android:src="@mipmap/zhengzaibiao_new" />
 
         <ViewFlipper
             android:id="@+id/mviewflipper"

@@ -19,6 +19,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.BaseViewPagerFragment;
 import com.bbk.fragment.BidAcceptanceFragment;
+import com.bbk.fragment.BidChatFragment;
 import com.bbk.fragment.BidFragment;
 import com.bbk.fragment.BidHomeFragment;
 import com.bbk.fragment.BidMessageFragment;
@@ -93,7 +94,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         mimg = $(R.id.home_img_btn);
         mzhezhao = $(R.id.mzhezhao);
         mNumImage = findViewById(R.id.data_img_btn);
-        mNumImage.setNum(BidUserFragment.mMessage);
+        mNumImage.setNum((int) BidChatFragment.mChatMessage);
         try {
             String isFirstResultUse = SharedPreferencesUtil.getSharedData(BidHomeActivity.this,"isFirstBidUse", "isFirstBidUserUse");
             if (TextUtils.isEmpty(isFirstResultUse)) {
@@ -268,7 +269,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                 try {
                     JSONObject objectMeaage = new JSONObject(content);
                     BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
-                    mNumImage.setNum(BidUserFragment.mMessage);
+//                    mNumImage.setNum(BidUserFragment.mMessage);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

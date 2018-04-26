@@ -90,54 +90,36 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                 finish();
             }
         });
-
-        mtext1 = (TextView) findViewById(R.id.mtext1);
-        mtext2 = (TextView) findViewById(R.id.mtext2);
-        mtextbox = (LinearLayout) findViewById(R.id.mtextbox);
+        mtext1 = findViewById(R.id.mtext1);
+        mtext2 =findViewById(R.id.mtext2);
+        mtextbox = findViewById(R.id.mtextbox);
         list = new ArrayList<>();
         listpl = new ArrayList<>();
-        topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
+        topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        mtitle= (TextView) findViewById(R.id.mtitle);
-        mendtimetop= (TextView) findViewById(R.id.mendtimetop);
-        mprice= (TextView) findViewById(R.id.mprice);
-        mcount= (TextView) findViewById(R.id.mcount);
-        mspectatornum= (TextView) findViewById(R.id.mspectatornum);
-        mbidnum= (TextView) findViewById(R.id.mbidnum);
-        mbidnum2= (TextView) findViewById(R.id.mbidnum2);
-        mstarttime= (TextView) findViewById(R.id.mstarttime);
-        mendtime= (TextView) findViewById(R.id.mendtime);
-        mprice2= (TextView) findViewById(R.id.mprice2);
-        mextra= (TextView) findViewById(R.id.mextra);
-        mplnum= (TextView) findViewById(R.id.mplnum);
-        mallpl= (TextView) findViewById(R.id.mallpl);
-        mbanner= (Banner) findViewById(R.id.mbanner);
-//        mgobid= (LinearLayout) findViewById(R.id.mgobid);
-        malllist= (LinearLayout) findViewById(R.id.malllist);
-//        mchat= (LinearLayout) findViewById(R.id.mchat);
-//        mchat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-//                if (TextUtils.isEmpty(userID)){
-//                    Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
-//                    startActivity(intent4);
-//                }else {
-//                    Intent intent = new Intent(BidMyBillDetailActivity.this,ChatActivity.class);
-//                    intent.putExtra("identify","bbj"+userid);
-//                    intent.putExtra("type", TIMConversationType.C2C);
-//                    startActivity(intent);
-//                }
-//            }
-//        });
-        mplbox= (LinearLayout) findViewById(R.id.mplbox);
-        mlistview= (MyListView) findViewById(R.id.mlistview);
-        mlistviewpl= (MyListView) findViewById(R.id.mlistviewpl);
+        mtitle= findViewById(R.id.mtitle);
+        mendtimetop= findViewById(R.id.mendtimetop);
+        mprice=  findViewById(R.id.mprice);
+        mcount=  findViewById(R.id.mcount);
+        mspectatornum= findViewById(R.id.mspectatornum);
+        mbidnum=  findViewById(R.id.mbidnum);
+        mbidnum2=  findViewById(R.id.mbidnum2);
+        mstarttime= findViewById(R.id.mstarttime);
+        mendtime=  findViewById(R.id.mendtime);
+        mprice2= findViewById(R.id.mprice2);
+        mextra=  findViewById(R.id.mextra);
+        mplnum=  findViewById(R.id.mplnum);
+        mallpl= findViewById(R.id.mallpl);
+        mbanner=  findViewById(R.id.mbanner);
+        malllist=  findViewById(R.id.malllist);
+        mplbox=  findViewById(R.id.mplbox);
+        mlistview= findViewById(R.id.mlistview);
+        mlistviewpl=  findViewById(R.id.mlistviewpl);
         adapter = new BidDetailListAdapter(this,list);
         mlistview.setAdapter(adapter);
         mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -161,20 +143,6 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                 startActivity(intent);
             }
         });
-//        mgobid.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-//                if (TextUtils.isEmpty(userID)){
-//                    Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
-//                    startActivity(intent4);
-//                }else {
-//                    Intent intent = new Intent(BidMyBillDetailActivity.this, BidingActivity.class);
-//                    intent.putExtra("fbid", fbid);
-//                    startActivity(intent);
-//                }
-//            }
-//        });
     }
 
 
@@ -327,13 +295,34 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                     String  title =object.optString("title");
                     String  price =object.optString("price");
                     String  bidnum =object.optString("bidnum");
+                    String mStatus = object.optString("status");//判断发镖详情页状态
                     userid =object.optString("userid");
                     JSONArray imgs = object.getJSONArray("imgs");
                     JSONArray bidarr = object.getJSONArray("bidarr");
                     JSONArray plarr = object.getJSONArray("plarr");
                     try {
                         mtitle.setText(title);
-                        mendtimetop.setText("待接镖   "+endtime+" 结束");
+                        //根据status判断状态显示
+                        switch (mStatus){
+                            case "1":
+                                mendtimetop.setText("待接镖   "+endtime+" 结束");
+                                break;
+                            case "2":
+                                mendtimetop.setText("待评论 "+endtime);
+                                break;
+                            case "3":
+                                mendtimetop.setText("已取消 "+endtime);
+                                break;
+                            case "4":
+                                mendtimetop.setText("未审核通过 "+endtime);
+                                break;
+                            case "5":
+                                mendtimetop.setText("已失效 "+endtime);
+                                break;
+                            case "6":
+                                mendtimetop.setText("已完成 "+endtime);
+                                break;
+                        }
                         mprice.setText(price);
                         mprice2.setText("￥"+price);
                         mcount.setText("x"+number);

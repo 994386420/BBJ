@@ -108,6 +108,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     private SharedPreferences sharedPreferences;
     private SharedPreferences sharedPreferencesnickname;
     TIMMessage message;
+    public static long mChatMessage;
     public BidChatFragment() {
         // Required empty public constructor
     }
@@ -1117,6 +1118,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         for (Conversation conversation : conversationList){
             num += conversation.getUnreadNum();
         }
+        BidChatFragment.mChatMessage = num;
         return num;
     }
 

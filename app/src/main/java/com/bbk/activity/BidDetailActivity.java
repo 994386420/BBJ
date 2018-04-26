@@ -251,13 +251,34 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             String  title =object.optString("title");
             String  price =object.optString("price");
             String  bidnum =object.optString("bidnum");
+            String mStatus = object.optString("status");//判断发镖详情页状态
             userid =object.optString("userid");
             JSONArray imgs = object.getJSONArray("imgs");
             JSONArray bidarr = object.getJSONArray("bidarr");
             JSONArray plarr = object.getJSONArray("plarr");
             try {
                 mtitle.setText(title);
-                mendtimetop.setText("待接镖   "+endtime+" 结束");
+                //根据status判断状态显示
+                switch (mStatus){
+                    case "1":
+                        mendtimetop.setText("待接镖   "+endtime+" 结束");
+                        break;
+                    case "2":
+                        mendtimetop.setText("待评论 "+endtime);
+                        break;
+                    case "3":
+                        mendtimetop.setText("已取消 "+endtime);
+                        break;
+                    case "4":
+                        mendtimetop.setText("未审核通过 "+endtime);
+                        break;
+                    case "5":
+                        mendtimetop.setText("已失效 "+endtime);
+                        break;
+                    case "6":
+                        mendtimetop.setText("已完成 "+endtime);
+                        break;
+                }
                 mprice.setText(price);
                 mprice2.setText("￥"+price);
                 mcount.setText("x"+number);
