@@ -170,7 +170,7 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
             final JSONObject object = listarray.getJSONObject(position);
             String time = object.optString("endtime");
-            viewHolder.mtime.addsumHour(time,"#999999");
+            viewHolder.mtime.friendly_time(time,"#999999");
             viewHolder.mprice.setText("镖价￥"+object.optString("price"));
             viewHolder.mtitle.setText(object.optString("title"));
             final String url = object.optString("url");

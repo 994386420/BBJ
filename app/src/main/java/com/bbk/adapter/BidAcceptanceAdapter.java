@@ -86,7 +86,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                 viewHolder.mbackground.setVisibility(View.GONE);
                 viewHolder.mTimeStatus.setText("距结束");
                 viewHolder.mtime.setVisibility(View.VISIBLE);
-                viewHolder.mtime.addsumHour(endtime,"#999999");
+                viewHolder.mtime.friendly_time(endtime,"#999999");
                 }else {
                 viewHolder.mbackground.setVisibility(View.VISIBLE);
                 viewHolder.mStatus.setText("完成");
@@ -105,7 +105,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                     .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.item_img);
             return convertView;
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return convertView;
         }

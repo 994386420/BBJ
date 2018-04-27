@@ -143,14 +143,17 @@ public class ResultMyListAdapter extends BaseAdapter{
 				vh.findsimilar.setVisibility(View.GONE);
 			}
 			if ("0".equals(dataSet.get("yjson"))){
-				vh.mcouponimg.setVisibility(View.VISIBLE);
-				vh.myouhuitext.setVisibility(View.VISIBLE);
-				vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
-				Log.i("newsalefino",dataSet.get("newsaleinfo").toString()+"=====");
+//				vh.mcouponimg.setVisibility(View.VISIBLE);
+//				vh.myouhuitext.setVisibility(View.VISIBLE);
+//				vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
+//				Log.i("newsalefino",dataSet.get("newsaleinfo").toString()+"=====");
+				//新增nessaleinfo字段，当url存在时直接跳转，不存在则隐藏跳转只显示优惠信息
 				if ("-1".equals(dataSet.get("newsaleinfo"))){
 					vh.mcoupon.setVisibility(View.GONE);
 					vh.myouhuitext.setVisibility(View.GONE);
 					vh.lingjuanzhanwei.setVisibility(View.GONE);
+					vh.mcouponimg.setVisibility(View.GONE);
+					vh.myouhuitext.setVisibility(View.GONE);
 				}else {
 					String newsaleinfo = dataSet.get("newsaleinfo").toString();
 					JSONObject object = new JSONObject(newsaleinfo);
@@ -161,7 +164,8 @@ public class ResultMyListAdapter extends BaseAdapter{
 						vh.myouhuitext.setVisibility(View.VISIBLE);
 						vh.mlingjuan.setVisibility(View.VISIBLE);
 						vh.mcouponimg.setVisibility(View.VISIBLE);
-						Log.i("newsalefino",desc+"====="+url);
+						vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
+//						Log.i("newsalefino",desc+"====="+url);
 						vh.mcoupontext.setText(desc);
 						vh.mcoupon.setOnClickListener(new OnClickListener() {
 							@Override
@@ -172,10 +176,12 @@ public class ResultMyListAdapter extends BaseAdapter{
 							}
 						});
 					}else {
-						vh.mcoupon.setVisibility(View.GONE);
-						vh.myouhuitext.setVisibility(View.GONE);
+						vh.mcoupon.setVisibility(View.VISIBLE);
+						vh.myouhuitext.setVisibility(View.VISIBLE);
+						vh.mcoupontext.setText(desc);
 						vh.lingjuanzhanwei.setVisibility(View.GONE);
 						vh.mlingjuan.setVisibility(View.GONE);
+						vh.mcouponimg.setVisibility(View.GONE);
 					}
 				}
 //				if ("-1".equals(dataSet.get("saleinfo"))){

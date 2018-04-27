@@ -46,7 +46,7 @@ public class NumImageView extends android.support.v7.widget.AppCompatImageView {
         super.onDraw(canvas);
         if (num > 0) {
             //初始化半径
-            radius = getWidth() / 4;
+            radius = (float) (getWidth() / 3.2);
             //初始化字体大小
             textSize = num < 10 ? radius + 5 : radius;
             //初始化边距

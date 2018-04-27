@@ -295,7 +295,14 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             list.add(map);
         }
         if (adapter != null){
-            adapter.notifyDataSetChanged();
+            if (list != null && list.size() > 0){
+                adapter.notifyDataSetChanged();
+                mlistview.setVisibility(View.VISIBLE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }else {
+                mlistview.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.VISIBLE);
+            }
         }else {
             if (list != null && list.size() > 0){
                 adapter = new BidAcceptanceAdapter(getActivity(),list);
@@ -367,7 +374,6 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
                     JSONObject object1 = new JSONObject(content);
                     JSONArray array1 = object1.getJSONArray("moren");
                     addList(array1);
-                    adapter.notifyDataSetChanged();
                     break;
             }
 

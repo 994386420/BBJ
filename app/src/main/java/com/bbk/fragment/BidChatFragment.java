@@ -23,6 +23,7 @@ import android.widget.ListView;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.R;
 import com.bbk.chat.adapters.ConversationAdapter;
 import com.bbk.chat.model.Conversation;
@@ -32,7 +33,6 @@ import com.bbk.chat.model.GroupManageConversation;
 import com.bbk.chat.model.MessageFactory;
 import com.bbk.chat.model.NomalConversation;
 import com.bbk.chat.ui.ChatActivity;
-import com.bbk.chat.ui.HomeActivity;
 import com.bbk.chat.utils.PushUtil;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
@@ -1119,6 +1119,13 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             num += conversation.getUnreadNum();
         }
         BidChatFragment.mChatMessage = num;
+        //发镖主页跟主页消息数字角标显示
+        if (BidHomeActivity.mNumImage != null){
+            BidHomeActivity.mNumImage.setNum((int) num);
+        }
+        if (HomeActivity.mNumImageView != null){
+            HomeActivity.mNumImageView.setNum((int) num);
+        }
         return num;
     }
 

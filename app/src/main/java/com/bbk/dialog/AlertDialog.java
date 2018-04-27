@@ -164,7 +164,7 @@ public class AlertDialog {
 	public AlertDialog setPositiveButtonColor(String color) {
 		if (!"".equals(color)) {
 			btn_pos.setTextColor(Color.parseColor(color));
-			
+
 		}
 		return this;
 	}
@@ -195,7 +195,7 @@ public class AlertDialog {
 	public AlertDialog setNegativeButtonColor(String color) {
 		if (!"".equals(color)) {
 			btn_neg.setTextColor(Color.parseColor(color));
-			
+
 		}
 		return this;
 	}

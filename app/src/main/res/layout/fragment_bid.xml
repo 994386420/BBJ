@@ -169,6 +169,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
                         android:background="@null"
+                        android:inputType="numberDecimal"
                         android:gravity="center_vertical"
                         android:hint="￥"
                         android:textSize="14dp" />

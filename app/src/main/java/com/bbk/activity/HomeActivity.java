@@ -111,7 +111,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	private UpdateVersionService updateVersionService;
 	private final String mPageName = "HomeActivity";
 	public static String Flag = "";
-	private NumImageView mNumImageView;
+	public static NumImageView mNumImageView;
 	public static ImageView mHomeGudieImage;//第一次安装首页新人引导
 
 
@@ -552,7 +552,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 				case 2:
 					JSONObject objectMeaage = new JSONObject(content);
 					BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
-					mNumImageView.setNum(BidUserFragment.mMessage);
+//					mNumImageView.setNum(BidUserFragment.mMessage);
 					break;
             }
 		} catch (JSONException e) {

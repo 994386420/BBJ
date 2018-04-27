@@ -96,7 +96,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                 String status = map.get("status");
                 final String id = map.get("id");
                 String endtime = map.get("endtime");
-                vh.mtime.addsumHour(endtime,"#999999");
+                vh.mtime.friendly_time(endtime,"#999999");
 //                vh.mtime.start();
                 switch (status){
                     case "0":
@@ -294,10 +294,10 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
     public void initStartData(ViewHolder vh, Map<String, String> map){
         try {
             String endtime = map.get("endtime");
-            vh.mtime.addsum(endtime,"#999999");
-            vh.mtime.start();
+            vh.mtime.friendly_time(endtime,"#999999");
+//            vh.mtime.start();
             initData(vh,map);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

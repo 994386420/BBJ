@@ -112,7 +112,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         break;
                     case "1":
                         vh.mtime.setVisibility(View.VISIBLE);
-                        vh.mtime.addsumHour(endtime,"#999999");
+                        vh.mtime.friendly_time(endtime,"#999999");
                         vh.mtypetext.setText("正接镖");
                         vh.mtext2.setText("取消接镖");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {

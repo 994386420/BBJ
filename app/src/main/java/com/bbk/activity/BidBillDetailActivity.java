@@ -48,11 +48,12 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
             ,mtext1,mtext2,mTitle;
     private LinearLayout mbox,mcontact,malllist;
     private MyListView mlistview;
-    private RushBuyCountDownTimerView mtime;
+//    private RushBuyCountDownTimerView mtime;
     private List<Map<String,String>> list;
     private BidDetailListAdapter adapter;
     private String status;
     private ImageView topbar_goback_btn;
+    private TextView tv_status;//发镖详情状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         list = new ArrayList<>();
         mTitle = findViewById(R.id.title);
         mTitle.setText("发镖详情");
+        tv_status = findViewById(R.id.tv_statuus);
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +83,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         item_title = (TextView) findViewById(R.id.item_title);
         mprice = (TextView) findViewById(R.id.mprice);
         mcount = (TextView) findViewById(R.id.mcount);
-        mtime = (RushBuyCountDownTimerView) findViewById(R.id.mtime);
+//        mtime = (RushBuyCountDownTimerView) findViewById(R.id.mtime);
         mspectatornum = (TextView) findViewById(R.id.mspectatornum);
         mbidnum = (TextView) findViewById(R.id.mbidnum);
         mendprice = (TextView) findViewById(R.id.mendprice);
@@ -120,9 +122,10 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         paramsMap.put("userid",userID);
         dataFlow.requestData(1, "bid/queryBidDetail", paramsMap, this,true);
     }
-    private void initbutton() {
+    private void initbutton(String time) {
         switch (status){
             case "0":
+                tv_status.setText("待审核 "+time);
                 mtext2.setVisibility(View.GONE);
                 mtext1.setText("取消发镖");
                 mtext1.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +148,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 });
                 break;
             case "1":
+                tv_status.setText("待接镖 "+ time);
                 mtext1.setText("取消发镖");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -187,6 +191,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 });
                 break;
             case "2":
+                tv_status.setText("待评论 "+ time);
                 rebid(fbid);
                 mtext2.setText("评论");
                 mtext2.setOnClickListener(new View.OnClickListener() {
@@ -199,10 +204,12 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 });
                 break;
             case "3":
+                tv_status.setText("已取消 "+ time);
                 mtext2.setVisibility(View.GONE);
                 rebid(fbid);
                 break;
             case "4":
+                tv_status.setText("未审核通过 "+ time);
                 mtext1.setText("取消发镖");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -234,10 +241,12 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 });
                 break;
             case "5":
+                tv_status.setText("已失效 "+ time);
                 mtext2.setVisibility(View.GONE);
                 rebid(fbid);
                 break;
             case "6":
+                tv_status.setText("已完成 "+ time);
                 mtext2.setText("查看评论");
                 mtext2.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -328,7 +337,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     final String  userid =object.optString("userid");
                     JSONArray imgs = object.getJSONArray("imgs");
                     status =object.optString("status");
-                    initbutton();
+                    initbutton(endtime);
                     JSONArray bidarr = object.getJSONArray("bidarr");
                     if (!"".equals(object.optString("bidindex"))){
                         int i = object.optInt("bidindex");
@@ -352,8 +361,8 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     item_title.setText(title);
                     mprice.setText(price);
                     mcount.setText("x"+number);
-                    mtime.addsum(endlong,"#999999");
-                    mtime.start();
+//                    mtime.addsum(endlong,"#999999");
+//                    mtime.start();
                     mspectatornum.setText("围观 "+spectator+"  人");
                     mbidnum.setText("接镖 "+bidnum+"  人");
                     mbidnum2.setText(bidnum+" 条");

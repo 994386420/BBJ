@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -105,6 +106,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
                     status =3;
                 }
                 isclear = true;
+                page = 1;
                 loadData();
             }
 
@@ -136,7 +138,6 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
             int i = Integer.valueOf(status1);
             TabLayout.Tab tabAt = tablayout.getTabAt(i);
             tabAt.select();
-            loadData();
         }else {
             loadData();
         }
@@ -191,6 +192,11 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
     }
 
     public void addList(JSONArray array) throws JSONException {
+        if (array.length()<10) {
+            xrefresh.setPullLoadEnable(false);
+        }else{
+            xrefresh.setPullLoadEnable(true);
+        }
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
             Map<String,String> map = new HashMap<>();
@@ -206,8 +212,30 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
             map.put("url",object.optString("url"));
             map.put("finalprice",object.optString("finalprice"));
             list.add(map);
-        }
-
+           }
+            if (adapter != null){
+                if (list != null && list.size() > 0){
+                    adapter.notifyDataSetChanged();
+                    mlistview.setVisibility(View.VISIBLE);
+                    mNoMessageLayout.setVisibility(View.GONE);
+                }else {
+                    mlistview.setVisibility(View.GONE);
+                    mNoMessageLayout.setVisibility(View.VISIBLE);
+                }
+            }else {
+                if (list != null && list.size() > 0){
+                    adapter = new BidListDetailAdapter(this,list);
+                    mlistview.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    mlistview.setOnItemClickListener(onItemClickListener);
+                    mlistview.setVisibility(View.VISIBLE);
+                    mNoMessageLayout.setVisibility(View.GONE);
+                }else {
+                    mlistview.setVisibility(View.GONE);
+                    mNoMessageLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        isclear = false;
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
@@ -221,17 +249,6 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
                     try {
                         JSONArray array = new JSONArray(content);
                         addList(array);
-                        if (list != null && list.size() > 0){
-                            adapter = new BidListDetailAdapter(this,list);
-                            mlistview.setAdapter(adapter);
-                            mlistview.setOnItemClickListener(onItemClickListener);
-                            adapter.notifyDataSetChanged();
-                            mlistview.setVisibility(View.VISIBLE);
-                            mNoMessageLayout.setVisibility(View.GONE);
-                        }else {
-                            mlistview.setVisibility(View.GONE);
-                            mNoMessageLayout.setVisibility(View.VISIBLE);
-                        }
                     }catch (Exception e){
                         mNoNetWorkLayout.setVisibility(View.VISIBLE);
                         mlistview.setVisibility(View.GONE);

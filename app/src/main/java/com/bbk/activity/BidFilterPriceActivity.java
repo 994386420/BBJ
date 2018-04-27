@@ -109,25 +109,17 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
                     final String bidurl = object.optString("bidurl");
                     userid = object.optString("userid");//发镖者id
                     mendprice.setText("￥"+bidprice);
-//                    if (getIntent().getStringExtra("biduserid") != null){
-//                        biduserid = getIntent().getStringExtra("biduserid");
-//                        if (biduserid.equals(userid)){
-//                            mensure.setVisibility(View.VISIBLE);
-//                        }else {
-//                            mensure.setVisibility(View.GONE);
-//                        }
-//                    }else {
-//                       biduserid = object.optString("biduserid");//接镖者id
-//                       if (biduserid.equals(userid)){
-//                        mensure.setVisibility(View.GONE);
-//                       }else {
-//                        mensure.setVisibility(View.VISIBLE);
-//                      }
-//                    }
+                    //发镖者ID如果跟用户ID一样，显示确定交镖按钮
                     if (userid.equals(userID)){
                         mensure.setVisibility(View.VISIBLE);
                     }else {
                         mensure.setVisibility(View.GONE);
+                    }
+                    //接镖者ID如果跟用户ID一样，隐藏聊天按钮
+                    if (biduserid.equals(userID)){
+                        mcontact.setVisibility(View.GONE);
+                    }else {
+                        mcontact.setVisibility(View.VISIBLE);
                     }
                     murltext.setText(bidurl);
                     mintentbuy.setOnClickListener(new View.OnClickListener() {

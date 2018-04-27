@@ -98,6 +98,7 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
                     status = 3;
                 }
                 isclear = true;
+                page = 1;
                 loadData();
             }
 
@@ -128,7 +129,6 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
             int i = Integer.valueOf(status1);
             TabLayout.Tab tabAt = tablayout.getTabAt(i);
             tabAt.select();
-            loadData();
         }else {
             loadData();
         }
@@ -183,6 +183,11 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
     }
 
     public void addList(JSONArray array) throws JSONException {
+        if (array.length()<10) {
+            xrefresh.setPullLoadEnable(false);
+        }else{
+            xrefresh.setPullLoadEnable(true);
+        }
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
             Map<String,String> map = new HashMap<>();
@@ -200,7 +205,29 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
             map.put("bidid",object.optString("bidid"));
             list.add(map);
         }
-
+        if (adapter != null){
+            if (list != null && list.size() > 0){
+                adapter.notifyDataSetChanged();
+                mlistview.setVisibility(View.VISIBLE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }else {
+                mlistview.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.VISIBLE);
+            }
+        }else {
+            if (list != null && list.size() > 0){
+                adapter = new BidMyListDetailAdapter(this,list);
+                mlistview.setAdapter(adapter);
+                mlistview.setOnItemClickListener(onItemClickListener);
+                adapter.notifyDataSetChanged();
+                mlistview.setVisibility(View.VISIBLE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }else {
+                mlistview.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.VISIBLE);
+            }
+        }
+        isclear = false;
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
@@ -214,17 +241,6 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
                     try {
                     JSONArray array = new JSONArray(content);
                     addList(array);
-                    if (list != null && list.size() > 0){
-                        adapter = new BidMyListDetailAdapter(this,list);
-                        mlistview.setAdapter(adapter);
-                        mlistview.setOnItemClickListener(onItemClickListener);
-                        adapter.notifyDataSetChanged();
-                        mlistview.setVisibility(View.VISIBLE);
-                        mNoMessageLayout.setVisibility(View.GONE);
-                    }else {
-                        mlistview.setVisibility(View.GONE);
-                        mNoMessageLayout.setVisibility(View.VISIBLE);
-                    }
                   }catch (Exception e){
                 mNoNetWorkLayout.setVisibility(View.VISIBLE);
                 mlistview.setVisibility(View.GONE);

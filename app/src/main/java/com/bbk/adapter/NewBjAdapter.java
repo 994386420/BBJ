@@ -73,7 +73,7 @@ public class NewBjAdapter extends BaseAdapter{
             String number = map.get("number");
             String type = map.get("type");
             String url = map.get("url");
-            viewHolder.mtime.addsumHour(endtime,"#999999");
+            viewHolder.mtime.friendly_time(endtime,"#999999");
 //            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
             viewHolder.mbidprice.setVisibility(View.GONE);
@@ -85,7 +85,7 @@ public class NewBjAdapter extends BaseAdapter{
                     .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.item_img);
             return convertView;
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return convertView;
         }

@@ -71,7 +71,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     private String ctcolor = "#b40000";
     private BidFragment bidFragment;
     public static String Flag = "";
-    private NumImageView mNumImage;//带数字角标的自定义view
+    public static NumImageView mNumImage;//带数字角标的自定义view
     private String currentItem;
 
     @Override
@@ -94,7 +94,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         mimg = $(R.id.home_img_btn);
         mzhezhao = $(R.id.mzhezhao);
         mNumImage = findViewById(R.id.data_img_btn);
-        mNumImage.setNum((int) BidChatFragment.mChatMessage);
+//        mNumImage.setNum((int) BidChatFragment.mChatMessage);
         try {
             String isFirstResultUse = SharedPreferencesUtil.getSharedData(BidHomeActivity.this,"isFirstBidUse", "isFirstBidUserUse");
             if (TextUtils.isEmpty(isFirstResultUse)) {

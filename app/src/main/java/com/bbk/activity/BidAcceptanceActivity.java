@@ -3,9 +3,7 @@ package com.bbk.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.andview.refreshview.XRefreshView;
 import com.bbk.adapter.BidAcceptanceAdapter;
 import com.bbk.flow.DataFlow6;
@@ -26,19 +22,18 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyFootView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 接镖_01_列表
+ * 正在接镖
  */
 public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
     private ListView mlistview;
@@ -55,7 +50,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
     private List<Map<String, String>> titlelist;
     private int currentIndex = 1;
     private EditText search_edit;
-    private Toast toast;
     private LinearLayout mNoMessageLayout;//无数据显示页面
 
     @Override
@@ -71,11 +65,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             type = getIntent().getStringExtra("type");
         }
         initData(type,1);
-//        if (getIntent().getStringExtra("describe")!= null){
-//            describe = getIntent().getStringExtra("describe");
-//            initData(2);
-//        }
-
     }
     public void initView(){
         list = new ArrayList<>();
@@ -140,7 +129,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             @Override
             public void onLoadMore(boolean isSilence) {
                     page++;
-//                    isclear = false;
                     initData(type,1);
 
             }
@@ -156,11 +144,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
     }
     private void dosearch(){
         if (search_edit.getText().toString().isEmpty()) {
-            if (toast!= null) {
-                toast.cancel();
-            }
-            toast = Toast.makeText(this, "搜索内容不能为空", Toast.LENGTH_SHORT);
-            toast.show();
+            StringUtil.showToast(this, "搜索内容不能为空");
         }else{
 			/* 隐藏软键盘 */
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -280,7 +264,14 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             list.add(map);
         }
         if (adapter != null){
-            adapter.notifyDataSetChanged();
+            if (list != null && list.size() > 0){
+                adapter.notifyDataSetChanged();
+                mlistview.setVisibility(View.VISIBLE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }else {
+                mlistview.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.VISIBLE);
+            }
         }else {
             if (list != null && list.size() > 0){
                 adapter = new BidAcceptanceAdapter(this,list);
@@ -352,24 +343,24 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                     JSONObject object1 = new JSONObject(content);
                     JSONArray array1 = object1.getJSONArray("moren");
                     addList(array1);
-                    if (list != null && list.size() > 0){
-                        adapter = new BidAcceptanceAdapter(this,list);
-                        mlistview.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-                        mlistview.setVisibility(View.VISIBLE);
-                        mNoMessageLayout.setVisibility(View.GONE);
-                    }else {
-                        mlistview.setVisibility(View.GONE);
-                        mNoMessageLayout.setVisibility(View.VISIBLE);
-                    }
-                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
-                            intent.putExtra("id",list.get(position).get("id"));
-                            startActivity(intent);
-                        }
-                    });
+//                    if (list != null && list.size() > 0){
+//                        adapter = new BidAcceptanceAdapter(this,list);
+//                        mlistview.setAdapter(adapter);
+//                        adapter.notifyDataSetChanged();
+//                        mlistview.setVisibility(View.VISIBLE);
+//                        mNoMessageLayout.setVisibility(View.GONE);
+//                    }else {
+//                        mlistview.setVisibility(View.GONE);
+//                        mNoMessageLayout.setVisibility(View.VISIBLE);
+//                    }
+//                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
+//                            intent.putExtra("id",list.get(position).get("id"));
+//                            startActivity(intent);
+//                        }
+//                    });
                     break;
             }
 
