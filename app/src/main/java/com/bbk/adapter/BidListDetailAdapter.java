@@ -96,11 +96,13 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                 String status = map.get("status");
                 final String id = map.get("id");
                 String endtime = map.get("endtime");
-                vh.mtime.friendly_time(endtime,"#999999");
 //                vh.mtime.start();
                 switch (status){
                     case "0":
+                        vh.mtimebefor.setText("距结束");
                         vh.mtypetext.setText("待审核");
+                        vh.mtime.friendly_time(endtime,"#999999");
+                        vh.mtime.setVisibility(View.VISIBLE);
                         initStartData(vh,map);
                         vh.mtext2.setVisibility(View.GONE);
                         vh.mtext1.setText("取消发镖");
@@ -126,8 +128,11 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         });
                         break;
                     case "1":
+                        vh.mtimebefor.setText("距结束");
                         vh.mtypetext.setText("待接镖");
                         initStartData(vh,map);
+                        vh.mtime.friendly_time(endtime,"#999999");
+                        vh.mtime.setVisibility(View.VISIBLE);
                         vh.mtext1.setText("取消发镖");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -173,6 +178,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                     case "2":
                         vh.mtypetext.setText("待评论");
                         vh.mtimebefor.setText("交镖完成");
+                        vh.mtime.setVisibility(View.GONE);
                         initEndData(vh,map);
                         rebid(vh,id);
                         vh.mtext2.setText("评论");
@@ -196,6 +202,8 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         break;
                     case "4":
                         vh.mtypetext.setText("未通过审核");
+                        vh.mtimebefor.setText(endtime);
+                        vh.mtime.setVisibility(View.GONE);
                         initStartData(vh,map);
                         vh.mtext1.setText("取消发镖");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
@@ -230,6 +238,8 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         break;
                     case "5":
                         vh.mtypetext.setText("已失效");
+                        vh.mtimebefor.setText(endtime);
+                        vh.mtime.setVisibility(View.GONE);
                         initStartData(vh,map);
                         vh.mtext2.setVisibility(View.GONE);
                         rebid(vh,id);
@@ -237,6 +247,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                     case "6":
                         vh.mtypetext.setText("已完成");
                         vh.mtimebefor.setText("评论完成");
+                        vh.mtime.setVisibility(View.GONE);
                         initEndData(vh,map);
                         vh.mtext2.setText("查看评论");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {

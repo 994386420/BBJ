@@ -111,6 +111,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtextbox.setVisibility(View.GONE);
                         break;
                     case "1":
+                        vh.mtimebefor.setText("距结束");
                         vh.mtime.setVisibility(View.VISIBLE);
                         vh.mtime.friendly_time(endtime,"#999999");
                         vh.mtypetext.setText("正接镖");

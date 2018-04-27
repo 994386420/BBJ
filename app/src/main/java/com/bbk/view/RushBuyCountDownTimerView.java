@@ -348,8 +348,16 @@ public class RushBuyCountDownTimerView extends LinearLayout {
         long hour = time / (1 * 60 * 60);// % 24
         long minute = time / (1 * 60) % 60;
         long second = time / (1) % 60;
-        tv_hour_unit.setText(hour + "");
-        tv_min_decade.setText(minute + "");
+        if (hour<10 && hour > 0){
+            tv_hour_unit.setText(df.format(hour) + "");
+        }else {
+            tv_hour_unit.setText(hour + "");
+        }
+        if (minute < 10 & minute >0){
+            tv_min_decade.setText(df.format(minute) + "");
+        }else {
+            tv_min_decade.setText(minute+"");
+        }
         tv_sec_decade.setVisibility(GONE);
         tv_sec_unit.setVisibility(GONE);
         mtv_miao.setVisibility(GONE);

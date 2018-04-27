@@ -168,7 +168,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="7dp"
                             android:textColor="#ffffff"
-                            android:text="待接镖   今天23：00 结束" />
+                            android:text="" />
                     </LinearLayout>
                 </com.bbk.view.SquareRelativeLayout>
 
@@ -218,7 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
                         android:layout_weight="1"
-                        android:text="5456"
+                        android:text=""
                         android:textColor="#b40000"
                         android:textSize="25dp" />
 
