@@ -22,6 +22,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:adjustViewBounds="true"
+                android:background="@mipmap/zw_img_160"
                 android:layout_gravity="center_horizontal"
 
                 />
@@ -50,6 +51,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:adjustViewBounds="true"
+                android:background="@mipmap/zw_img_160"
                 android:layout_gravity="center_horizontal"
 
                 />
@@ -77,6 +79,7 @@
                 android:id="@+id/img3"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/zw_img_160"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -106,6 +109,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:adjustViewBounds="true"
+                android:background="@mipmap/zw_img_160"
                 android:layout_gravity="center_horizontal"
 
                 />
@@ -134,6 +138,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:adjustViewBounds="true"
+                android:background="@mipmap/zw_img_160"
                 android:layout_gravity="center_horizontal"
 
                 />
