@@ -62,37 +62,6 @@ public class ShareUtil {
 		this.url = url;
 		this.activity = activity;
 		this.type = type;
-//		qqListener = new IUiListener() {
-//			@Override
-//			public void onError(UiError arg0) {
-//				Toast.makeText(MyApplication.getApplication(), "分享失败",
-//						Toast.LENGTH_LONG).show();
-//			}
-//
-//			@Override
-//			public void onComplete(Object arg0) {
-//				Toast.makeText(MyApplication.getApplication(), "分享成功",
-//						Toast.LENGTH_LONG).show();
-//				Thread loadDataThread = new Thread(new Runnable() {
-//					@Override
-//					public void run() {
-//						Map<String, String> paramsMap = new HashMap<String, String>();
-//						paramsMap.put("userid", SharedPreferencesUtil
-//								.getSharedData(MyApplication.getApplication(),"userInfor", "userID"));
-//						String url = Constants.MAIN_BASE_URL_MOBILE+"newService/checkIsShare";
-//						String http1 = HttpUtil.getHttp1(paramsMap,url);
-//						Toast.makeText(MyApplication.getApplication(), "1111111111", Toast.LENGTH_SHORT).show();
-//					}
-//				});
-//				loadDataThread.start();
-//			}
-//
-//			@Override
-//			public void onCancel() {
-//				Toast.makeText(ShareUtil.this.activity, "分享取消",
-//						Toast.LENGTH_LONG).show();
-//			}
-//		};
 	}
 	public static void showShareDialog(View view, Activity activity) {
 		ShareUtil shareUtil = new ShareUtil(activity,null,null,null,"");
@@ -109,97 +78,8 @@ public class ShareUtil {
 
 		final PopupWindow popupWindow = new PopupWindow(dialogView,
 				BaseTools.getWindowsWidth(activity), LayoutParams.WRAP_CONTENT);
-
-//		dialogView.findViewById(R.id.share_qq).setOnTouchListener(
-//				new OnTouchListener() {
-//					@Override
-//					public boolean onTouch(View v, MotionEvent event) {
-//
-//						ImageView img = (ImageView) v
-//								.findViewById(R.id.share_qq_img);
-//						int action = event.getAction();
-//						switch (action) {
-//						case MotionEvent.ACTION_DOWN:
-//							img.setImageResource(R.drawable.icon_share_qq_selected);
-//							break;
-//						case MotionEvent.ACTION_UP:
-//						case MotionEvent.ACTION_CANCEL:
-//							img.setImageResource(R.drawable.icon_share_qq_normal);
-//							break;
-//						default:
-//							break;
-//						}
-//
-//						return false;
-//					}
-//				});
-//
-//		dialogView.findViewById(R.id.share_weixin).setOnTouchListener(
-//				new OnTouchListener() {
-//					@Override
-//					public boolean onTouch(View v, MotionEvent event) {
-//
-//						ImageView img = (ImageView) v
-//								.findViewById(R.id.share_weixin_img);
-//						int action = event.getAction();
-//						switch (action) {
-//						case MotionEvent.ACTION_DOWN:
-//							img.setImageResource(R.drawable.icon_share_wx_selected);
-//							break;
-//						case MotionEvent.ACTION_UP:
-//						case MotionEvent.ACTION_CANCEL:
-//							img.setImageResource(R.drawable.icon_share_wx_normal);
-//							break;
-//						default:
-//							break;
-//						}
-//						return false;
-//					}
-//				});
-//		dialogView.findViewById(R.id.share_weixin1).setOnTouchListener(
-//				new OnTouchListener() {
-//					@Override
-//					public boolean onTouch(View v, MotionEvent event) {
-//						
-//						ImageView img = (ImageView) v
-//								.findViewById(R.id.share_weixin_img1);
-//						int action = event.getAction();
-//						switch (action) {
-//						case MotionEvent.ACTION_DOWN:
-//							img.setImageResource(R.drawable.icon_share_wx_selected);
-//							break;
-//						case MotionEvent.ACTION_UP:
-//						case MotionEvent.ACTION_CANCEL:
-//							img.setImageResource(R.drawable.icon_share_wx_normal);
-//							break;
-//						default:
-//							break;
-//						}
-//						return false;
-//					}
-//				});
-//
-//		dialogView.findViewById(R.id.share_weibo).setOnTouchListener(
-//				new OnTouchListener() {
-//					@Override
-//					public boolean onTouch(View v, MotionEvent event) {
-//						ImageView img = (ImageView) v
-//								.findViewById(R.id.share_weibo_img);
-//						int action = event.getAction();
-//						switch (action) {
-//						case MotionEvent.ACTION_DOWN:
-//							img.setImageResource(R.drawable.icon_share_weibo_selected);
-//							break;
-//						case MotionEvent.ACTION_UP:
-//						case MotionEvent.ACTION_CANCEL:
-//							img.setImageResource(R.drawable.icon_share_weibo_normal);
-//							break;
-//						default:
-//							break;
-//						}
-//						return false;
-//					}
-//				});
+		//防止虚拟软键盘被弹出菜单遮住
+		popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 		dialogView.findViewById(R.id.share_qq).setOnClickListener(
 				new OnClickListener() {
@@ -250,6 +130,7 @@ public class ShareUtil {
 						ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
 						cm.setText(url);
 						popupWindow.dismiss();
+						StringUtil.showToast(activity,"复制成功");
 					}
 				});
 
@@ -342,38 +223,6 @@ public class ShareUtil {
 		}
 		wxApi.sendReq(req);
 		loadData();
-
-
-//		WXWebpageObject.webpageUrl = url;
-//		wxApi = WXAPIFactory.createWXAPI(activity, Constants.WX_APP_ID);
-//		wxApi.registerApp(Constants.WX_APP_ID);
-//		if (!wxApi.isWXAppInstalled()) {
-//			Toast.makeText(activity, "您还未安装微信客户端", Toast.LENGTH_SHORT).show();
-//			return;
-//		}
-//
-//		WXWebpageObject webpage = new WXWebpageObject();
-//		WXMediaMessage msg = null;
-//		if(title == null || content == null || url == null){
-//			webpage.webpageUrl = "http://www.bibijing.com/bibijing.apk";
-//			msg = new WXMediaMessage(webpage);
-//			msg.title = "快去下载比比鲸吧！";
-//			msg.description = "用数据悄悄告诉你什么值得买";
-//		}else{
-//			webpage.webpageUrl = url;
-//			msg = new WXMediaMessage(webpage);
-//			msg.title = title;
-//			msg.description = content;
-//		}
-//		Bitmap thumb = BitmapFactory.decodeResource(activity.getResources(),
-//				R.mipmap.icon_logo);
-//		msg.setThumbImage(thumb);
-//
-//		SendMessageToWX.Req req = new SendMessageToWX.Req();
-//		req.transaction = String.valueOf(System.currentTimeMillis());
-//		req.message = msg;
-//		req.scene = flag;
-//		wxApi.sendReq(req);
 	}
 	private void loadData() {
 		new Thread(new Runnable() {
