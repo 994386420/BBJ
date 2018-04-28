@@ -35,6 +35,7 @@ import com.bbk.util.BaseTools;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.ImmersionUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -175,11 +176,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
     }
     private void dosearch(){
         if (search_edit.getText().toString().isEmpty()) {
-            if (toast!= null) {
-                toast.cancel();
-            }
-            toast = Toast.makeText(getActivity(), "搜索内容不能为空", Toast.LENGTH_SHORT);
-            toast.show();
+            StringUtil.showToast(getActivity(), "搜索内容不能为空");
         }else{
 			/* 隐藏软键盘 */
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -198,8 +195,8 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
         View view = mbox.getChildAt(position);
         TextView title1 = (TextView) view.findViewById(R.id.item_title);
         View henggang1 = view.findViewById(R.id.bottom_view);
-        title1.setTextColor(Color.parseColor("#ff7d41"));
-        henggang1.setBackgroundColor(Color.parseColor("#ff7d41"));
+        title1.setTextColor(Color.parseColor("#b40000"));
+        henggang1.setBackgroundColor(Color.parseColor("#b40000"));
 
         View view4 = mbox.getChildAt(currentIndex);
         TextView title3 = (TextView) view4.findViewById(R.id.item_title);
@@ -209,8 +206,6 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
         // mhscrollview.scrollTo(view.getLeft() - 200, 0);
         currentIndex = position;
         describe = "";
-//        isclear = true;
-//        initData(1);
         if (position == 1) {
             isclear = true;
             page = 1;
@@ -228,6 +223,8 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
     private void addtitle(final String text, final int i) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.super_item_title, null);
+        //设置view的weight为1，保证导航铺满当前页面
+        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
         final TextView title = (TextView) view.findViewById(R.id.item_title);
         final View henggang = view.findViewById(R.id.bottom_view);
         title.setText(text);
@@ -238,8 +235,8 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             view.setVisibility(View.GONE);
         }
         if (i == 1) {
-            title.setTextColor(Color.parseColor("#ff7d41"));
-            henggang.setBackgroundColor(Color.parseColor("#ff7d41"));
+            title.setTextColor(Color.parseColor("#b40000"));
+            henggang.setBackgroundColor(Color.parseColor("#b40000"));
         }
         view.setOnClickListener(new View.OnClickListener() {
 
@@ -361,8 +358,8 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
                     View view = mbox.getChildAt(0);
                     TextView title1 = (TextView) view.findViewById(R.id.item_title);
                     View henggang1 = view.findViewById(R.id.bottom_view);
-                    title1.setTextColor(Color.parseColor("#ff7d41"));
-                    henggang1.setBackgroundColor(Color.parseColor("#ff7d41"));
+                    title1.setTextColor(Color.parseColor("#b40000"));
+                    henggang1.setBackgroundColor(Color.parseColor("#b40000"));
 
                     View view4 = mbox.getChildAt(currentIndex);
                     TextView title3 = (TextView) view4.findViewById(R.id.item_title);

@@ -111,25 +111,6 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
         mrecyclerview.setHasFixedSize(true);
         adapter = new BidHomeAdapter(getActivity(),list);
         mrecyclerview.setAdapter(adapter);
-//        adapter.setOnItemClickListener(new BidHomeAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                try {
-//                Intent intent;
-//                if (position>=1 && position<1+list3array.length()){
-//                   intent = new Intent(getActivity(), BidDetailActivity.class);
-//                   intent.putExtra("id",list3array.getJSONObject(position-1).optString("id"));
-//                   startActivity(intent);
-//                }else if (position>2+list3array.length()){
-//                    intent = new Intent(getActivity(), BidDetailActivity.class);
-//                    intent.putExtra("id",list4array.getJSONObject(position-2-list3array.length()).optString("id"));
-//                    startActivity(intent);
-//                }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
     }
     public void initData(){
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
@@ -222,6 +203,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
         switch (v.getId()){
             case R.id.search_layout:
                 Intent intent = new Intent(getActivity(), BidAcceptanceActivity.class);
+                intent.putExtra("type","服饰");
                 startActivity(intent);
                 break;
         }

@@ -56,23 +56,6 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         try {
             this.context = context;
             this.list = list;
-//            if (list.size() == 0){
-//                this.toparray_tag = new JSONArray();
-//                this.toparray_flipper = new JSONArray();
-//                this.hotarray = new JSONArray();
-//                this.listarray = new JSONArray();
-//            }else {
-//                Map<String,String> map = list.get(0);
-//                String list1 = map.get("list1");
-//                String list2 = map.get("list2");
-//                String list3 = map.get("list3");
-//                String list4 = map.get("list4");
-//                this.toparray_tag = new JSONArray(list1);
-//                this.toparray_flipper = new JSONArray(list2);
-//                this.hotarray = new JSONArray(list3);
-//                this.listarray = new JSONArray(list4);
-//            }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +74,6 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         this.mOnItemClickListener = listener;
     }
 
-    //define interface
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);
     }

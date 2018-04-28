@@ -163,8 +163,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         View view = mbox.getChildAt(position);
         TextView title1 = (TextView) view.findViewById(R.id.item_title);
         View henggang1 = view.findViewById(R.id.bottom_view);
-        title1.setTextColor(Color.parseColor("#ff7d41"));
-        henggang1.setBackgroundColor(Color.parseColor("#ff7d41"));
+        title1.setTextColor(Color.parseColor("#b40000"));
+        henggang1.setBackgroundColor(Color.parseColor("#b40000"));
         View view4 = mbox.getChildAt(currentIndex);
         TextView title3 = (TextView) view4.findViewById(R.id.item_title);
         View henggang3 = view4.findViewById(R.id.bottom_view);
@@ -173,9 +173,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         // mhscrollview.scrollTo(view.getLeft() - 200, 0);
         currentIndex = position;
         describe = "";
-//        type = titlelist.get(position).get("keyword");
-//        isclear = true;
-//        initData(1);
         if (position == 1) {
             isclear = true;
             type = "";
@@ -192,6 +189,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
     private void addtitle(final String text, final int i) {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.super_item_title, null);
+        //设置view的weight为1，保证导航铺满当前页面
+        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
         final TextView title = (TextView) view.findViewById(R.id.item_title);
         final View henggang = view.findViewById(R.id.bottom_view);
         title.setText(text);
@@ -203,8 +202,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         }
         //判断如果传进来的type值与当前页面值一样则显示当然页面选项
         if (type.equals(text)) {
-            title.setTextColor(Color.parseColor("#ff7d41"));
-            henggang.setBackgroundColor(Color.parseColor("#ff7d41"));
+            title.setTextColor(Color.parseColor("#b40000"));
+            henggang.setBackgroundColor(Color.parseColor("#b40000"));
         }
         view.setOnClickListener(new View.OnClickListener() {
 
@@ -330,8 +329,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                     View view = mbox.getChildAt(0);
                     TextView title1 = (TextView) view.findViewById(R.id.item_title);
                     View henggang1 = view.findViewById(R.id.bottom_view);
-                    title1.setTextColor(Color.parseColor("#ff7d41"));
-                    henggang1.setBackgroundColor(Color.parseColor("#ff7d41"));
+                    title1.setTextColor(Color.parseColor("#b40000"));
+                    henggang1.setBackgroundColor(Color.parseColor("#b40000"));
 
                     View view4 = mbox.getChildAt(currentIndex);
                     TextView title3 = (TextView) view4.findViewById(R.id.item_title);

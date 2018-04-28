@@ -344,12 +344,13 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 				public void onClick(View v) {
 					 if (index == 4) {
 						 try {
-							 String isFirstResultUse = SharedPreferencesUtil.getSharedData(HomeActivity.this,"isFirstUse", "isFirstUserUse");
+						 	 //我的引导页只显示一次
+							 String isFirstResultUse = SharedPreferencesUtil.getSharedData(HomeActivity.this,"isFirstMyUse", "isFirstMyUserUse");
 								if (TextUtils.isEmpty(isFirstResultUse)) {
 									isFirstResultUse = "yes";
 								}
 								if (isFirstResultUse.equals("yes")) {
-									SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstUse","isFirstUserUse", "no");
+									SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstMyUse","isFirstMyUserUse", "no");
 									HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
 									HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
 								}
