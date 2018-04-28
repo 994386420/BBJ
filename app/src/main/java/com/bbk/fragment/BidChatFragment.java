@@ -994,13 +994,12 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             editorNickName.putString("nickname", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatNickMameMap).toString());
             editor.commit();
             editorNickName.commit();
-            Log.i("刷新数据-----====", NewConstants.mChatMap+"==========="+NewConstants.mChatNickMameMap);
-
             sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
             sharedPreferencesnickname = getActivity().getSharedPreferences("nickname",getActivity().MODE_PRIVATE);
             if(sharedPreferences.getString("name",null)!=null &&sharedPreferencesnickname.getString("nickname",null)!=null ){
                 String result1 = sharedPreferences.getString("name",null);
                 String result2 = sharedPreferencesnickname.getString("nickname",null);
+                Log.i("刷新数据-----====", result1+"==========="+result2);
                 if (result1 != null && result1.length() > 0 && result2 != null && result2.length() > 0 ) {
 //                mHistoryLayout.setVisibility(View.VISIBLE);
                     NewConstants.mChatMap = NewConstants.getJsonObject(result1);

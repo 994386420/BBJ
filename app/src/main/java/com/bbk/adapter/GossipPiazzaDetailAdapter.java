@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,6 +157,16 @@ public class GossipPiazzaDetailAdapter extends RecyclerView.Adapter implements V
         viewHolder.mpingluntexttitle.setText("评论（"+plnum+"）");
         viewHolder.mzantext.setText(zannum);
         viewHolder.mreadnum.setText(readnum+"阅读");
+        if (!"0".equals(map.get("zannum"))){
+            viewHolder.mzantext.setText(map.get("zannum"));
+        }else {
+            viewHolder.mzantext.setText("赞");
+        }
+        if (!"0".equals(map.get("plnum"))){
+            viewHolder.mpingluntext.setText(map.get("plnum"));
+        }else {
+            viewHolder.mpingluntext.setText("评论");
+        }
         if (!"0".equals(iszan)){
             viewHolder.mzanimg.setImageResource(R.mipmap.bl_zan2);
         }else {
@@ -180,10 +191,10 @@ public class GossipPiazzaDetailAdapter extends RecyclerView.Adapter implements V
                         mzantext11 = viewHolder.mzantext;
                         DataFlow dataFlow = new DataFlow(context);
                         Map<String,String> map1 = new HashMap<String, String>();
-
+                        Log.i("blid","===="+blid);
                         map1.put("userid",userID);
                         map1.put("blid",blid);
-                        dataFlow.requestData(1,"newService/insertDianZan",map1,GossipPiazzaDetailAdapter.this,false);
+                        dataFlow.requestData(1,"newService/insertDianZan",map1,GossipPiazzaDetailAdapter.this,true);
 
                     }else {
 
@@ -343,7 +354,7 @@ public class GossipPiazzaDetailAdapter extends RecyclerView.Adapter implements V
 
     class EndViewHolder extends RecyclerView.ViewHolder{
         ImageView mimg,mzanimg;
-        TextView mname,mtime,mcount,mcontent,mzantext;
+        TextView mname,mtime,mcount,mcontent,mzantext,mpingluntext;
         public EndViewHolder(View view) {
             super(view);
             mcontent = (TextView) view.findViewById(R.id.mcontent);
@@ -353,6 +364,7 @@ public class GossipPiazzaDetailAdapter extends RecyclerView.Adapter implements V
             mtime = (TextView) view.findViewById(R.id.mtime);
             mcount = (TextView) view.findViewById(R.id.mcount);
             mzantext = (TextView) view.findViewById(R.id.mzantext);
+            mpingluntext = view.findViewById(R.id.mpingluntext);
         }
     }
 
