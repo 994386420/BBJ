@@ -135,7 +135,7 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
 
                             map1.put("userid",userID);
                             map1.put("blid",blid);
-                            dataFlow.requestData(1,"newService/insertDianZan",map1,GossipPiazzaAdapter.this,false);
+                            dataFlow.requestData(1,"newService/insertDianZan",map1,GossipPiazzaAdapter.this,true);
 
                         }else {
 

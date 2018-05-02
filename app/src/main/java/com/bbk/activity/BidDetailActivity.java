@@ -44,7 +44,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     private String fbid,status;
     private Banner mbanner;
     private TextView mtitle,mendtimetop,mprice,mcount,mspectatornum,mbidnum
-            ,mbidnum2,mstarttime,mendtime,mprice2,mextra,mplnum,mallpl,mGoJbText,mGoJbTextStaus;
+            ,mbidnum2,mstarttime,mendtime,mprice2,mextra,mplnum,mallpl,mGoJbText,mGoJbTextStaus,mJieBiaojiaText;
     private MyListView mlistview,mlistviewpl;
     private List<Map<String,String>> list;
     private List<Map<String,String>> listpl;
@@ -69,6 +69,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     }
 
     private void initView() {
+        mJieBiaojiaText = findViewById(R.id.tv_jbj);
         mFabiaoLayout = findViewById(R.id.fabiao_layout);
         mFabiaoLayout.setVisibility(View.GONE);
         mGoJbText =findViewById(R.id.gojb_text);
@@ -251,11 +252,18 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             String  title =object.optString("title");
             String  price =object.optString("price");
             String  bidnum =object.optString("bidnum");
+            String finalPrice = object.optString("finalprice");//接镖价
             String mStatus = object.optString("status");//判断发镖详情页状态
             userid =object.optString("userid");
             JSONArray imgs = object.getJSONArray("imgs");
             JSONArray bidarr = object.getJSONArray("bidarr");
             JSONArray plarr = object.getJSONArray("plarr");
+            //接镖价有则显示，没有显示待定
+            if (!finalPrice.equals("") && finalPrice != null){
+                mJieBiaojiaText.setText("￥"+finalPrice);
+            }else {
+                mJieBiaojiaText.setText("待定");
+            }
             try {
                 mtitle.setText(title);
                 //根据status判断状态显示

@@ -271,336 +271,340 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             super.handleMessage(msg);
             switch (msg.what){
                 case 1:
-                    if (users != null){
-                        users.clear();
-                    }
-                    if (users1 != null){
-                        users1.clear();
-                    }
-                    if (users2 != null){
-                        users2.clear();
-                    }
-                    if (users3 != null){
-                        users3.clear();
-                    }
-                    if (users4 != null){
-                        users4.clear();
-                    }
-                    if (users5 != null){
-                        users5.clear();
-                    }
-                    if (users6 != null){
-                        users6.clear();
-                    }
-                    if (users7 != null){
-                        users7.clear();
-                    }
-                    if (users8 != null){
-                        users8.clear();
-                    }
-                    if (users9 != null){
-                        users9.clear();
-                    }
-                    if (users10 != null){
-                        users10.clear();
-                    }
-                    if (users11 != null){
-                        users11.clear();
-                    }
-                    if (users12 != null){
-                        users12.clear();
-                    }
-                    if (users13 != null){
-                        users13.clear();
-                    }
-                    if (users14 != null){
-                        users14.clear();
-                    }
-                    if (users15 != null){
-                        users15.clear();
-                    }
-                    if (users16 != null){
-                        users16.clear();
-                    }
-                    if (users17 != null){
-                        users17.clear();
-                    }
-                    if (users18 != null){
-                        users18.clear();
-                    }
-                    if (users19 != null){
-                        users19.clear();
-                    }
-                    switch (conversationList.size()){
-                        case 1:
-                            users.add(conversationList.get(0).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 2:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 3:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 4:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 5:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 6:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 7:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 8:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 9:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 10:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            getfriends(users);
-                        case 11:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 12:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 13:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 14:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            users13.add(conversationList.get(13).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 15:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            users13.add(conversationList.get(13).getIdentify());
-                            users14.add(conversationList.get(14).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 16:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            users13.add(conversationList.get(13).getIdentify());
-                            users14.add(conversationList.get(14).getIdentify());
-                            users15.add(conversationList.get(15).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 17:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            users13.add(conversationList.get(13).getIdentify());
-                            users14.add(conversationList.get(14).getIdentify());
-                            users15.add(conversationList.get(15).getIdentify());
-                            users16.add(conversationList.get(16).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 18:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            users13.add(conversationList.get(13).getIdentify());
-                            users14.add(conversationList.get(14).getIdentify());
-                            users15.add(conversationList.get(15).getIdentify());
-                            users16.add(conversationList.get(16).getIdentify());
-                            users17.add(conversationList.get(17).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 19:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            users13.add(conversationList.get(13).getIdentify());
-                            users14.add(conversationList.get(14).getIdentify());
-                            users15.add(conversationList.get(15).getIdentify());
-                            users16.add(conversationList.get(16).getIdentify());
-                            users17.add(conversationList.get(17).getIdentify());
-                            users18.add(conversationList.get(18).getIdentify());
-                            getfriends(users);
-                            break;
-                        case 20:
-                            users.add(conversationList.get(0).getIdentify());
-                            users1.add(conversationList.get(1).getIdentify());
-                            users2.add(conversationList.get(2).getIdentify());
-                            users3.add(conversationList.get(3).getIdentify());
-                            users4.add(conversationList.get(4).getIdentify());
-                            users5.add(conversationList.get(5).getIdentify());
-                            users6.add(conversationList.get(6).getIdentify());
-                            users7.add(conversationList.get(7).getIdentify());
-                            users8.add(conversationList.get(8).getIdentify());
-                            users9.add(conversationList.get(9).getIdentify());
-                            users10.add(conversationList.get(10).getIdentify());
-                            users11.add(conversationList.get(11).getIdentify());
-                            users12.add(conversationList.get(12).getIdentify());
-                            users13.add(conversationList.get(13).getIdentify());
-                            users14.add(conversationList.get(14).getIdentify());
-                            users15.add(conversationList.get(15).getIdentify());
-                            users16.add(conversationList.get(16).getIdentify());
-                            users17.add(conversationList.get(17).getIdentify());
-                            users18.add(conversationList.get(18).getIdentify());
-                            users19.add(conversationList.get(19).getIdentify());
-                            getfriends(users);
-                            break;
+                    try {
+                        if (users != null){
+                            users.clear();
+                        }
+                        if (users1 != null){
+                            users1.clear();
+                        }
+                        if (users2 != null){
+                            users2.clear();
+                        }
+                        if (users3 != null){
+                            users3.clear();
+                        }
+                        if (users4 != null){
+                            users4.clear();
+                        }
+                        if (users5 != null){
+                            users5.clear();
+                        }
+                        if (users6 != null){
+                            users6.clear();
+                        }
+                        if (users7 != null){
+                            users7.clear();
+                        }
+                        if (users8 != null){
+                            users8.clear();
+                        }
+                        if (users9 != null){
+                            users9.clear();
+                        }
+                        if (users10 != null){
+                            users10.clear();
+                        }
+                        if (users11 != null){
+                            users11.clear();
+                        }
+                        if (users12 != null){
+                            users12.clear();
+                        }
+                        if (users13 != null){
+                            users13.clear();
+                        }
+                        if (users14 != null){
+                            users14.clear();
+                        }
+                        if (users15 != null){
+                            users15.clear();
+                        }
+                        if (users16 != null){
+                            users16.clear();
+                        }
+                        if (users17 != null){
+                            users17.clear();
+                        }
+                        if (users18 != null){
+                            users18.clear();
+                        }
+                        if (users19 != null){
+                            users19.clear();
+                        }
+                        switch (conversationList.size()){
+                            case 1:
+                                users.add(conversationList.get(0).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 2:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 3:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 4:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 5:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 6:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 7:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 8:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 9:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 10:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                getfriends(users);
+                            case 11:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 12:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 13:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 14:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                users13.add(conversationList.get(13).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 15:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                users13.add(conversationList.get(13).getIdentify());
+                                users14.add(conversationList.get(14).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 16:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                users13.add(conversationList.get(13).getIdentify());
+                                users14.add(conversationList.get(14).getIdentify());
+                                users15.add(conversationList.get(15).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 17:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                users13.add(conversationList.get(13).getIdentify());
+                                users14.add(conversationList.get(14).getIdentify());
+                                users15.add(conversationList.get(15).getIdentify());
+                                users16.add(conversationList.get(16).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 18:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                users13.add(conversationList.get(13).getIdentify());
+                                users14.add(conversationList.get(14).getIdentify());
+                                users15.add(conversationList.get(15).getIdentify());
+                                users16.add(conversationList.get(16).getIdentify());
+                                users17.add(conversationList.get(17).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 19:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                users13.add(conversationList.get(13).getIdentify());
+                                users14.add(conversationList.get(14).getIdentify());
+                                users15.add(conversationList.get(15).getIdentify());
+                                users16.add(conversationList.get(16).getIdentify());
+                                users17.add(conversationList.get(17).getIdentify());
+                                users18.add(conversationList.get(18).getIdentify());
+                                getfriends(users);
+                                break;
+                            case 20:
+                                users.add(conversationList.get(0).getIdentify());
+                                users1.add(conversationList.get(1).getIdentify());
+                                users2.add(conversationList.get(2).getIdentify());
+                                users3.add(conversationList.get(3).getIdentify());
+                                users4.add(conversationList.get(4).getIdentify());
+                                users5.add(conversationList.get(5).getIdentify());
+                                users6.add(conversationList.get(6).getIdentify());
+                                users7.add(conversationList.get(7).getIdentify());
+                                users8.add(conversationList.get(8).getIdentify());
+                                users9.add(conversationList.get(9).getIdentify());
+                                users10.add(conversationList.get(10).getIdentify());
+                                users11.add(conversationList.get(11).getIdentify());
+                                users12.add(conversationList.get(12).getIdentify());
+                                users13.add(conversationList.get(13).getIdentify());
+                                users14.add(conversationList.get(14).getIdentify());
+                                users15.add(conversationList.get(15).getIdentify());
+                                users16.add(conversationList.get(16).getIdentify());
+                                users17.add(conversationList.get(17).getIdentify());
+                                users18.add(conversationList.get(18).getIdentify());
+                                users19.add(conversationList.get(19).getIdentify());
+                                getfriends(users);
+                                break;
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
                     break;
             }
@@ -635,7 +639,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             public void onSuccess(final List<TIMUserProfile> result){
                 NewConstants.mChatMap.put(1 + "", result.get(0).getFaceUrl());
                 NewConstants.mChatNickMameMap.put(1+"",result.get(0).getNickName());
-                Log.i("刷新数据====+++", NewConstants.mChatMap+"==========="+NewConstants.mChatNickMameMap+"===="+users2.toString());
+//                Log.i("刷新数据====+++", NewConstants.mChatMap+"==========="+NewConstants.mChatNickMameMap+"===="+users2.toString());
                 if (users2 != null && users2.size() > 0){
                     getfriends2(users2);
                 }else {
@@ -988,14 +992,14 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     }
     private void adapter(){
         try {
-            SharedPreferences.Editor editor = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE).edit();
-            SharedPreferences.Editor editorNickName = getActivity().getSharedPreferences("nickname", getActivity().MODE_PRIVATE).edit();
+            sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
+            sharedPreferencesnickname = getActivity().getSharedPreferences("nickname",getActivity().MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            SharedPreferences.Editor editorNickName = sharedPreferencesnickname.edit();
             editor.putString("name", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatMap).toString());
             editorNickName.putString("nickname", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mChatNickMameMap).toString());
             editor.commit();
             editorNickName.commit();
-            sharedPreferences = getActivity().getSharedPreferences("hotHistory", getActivity().MODE_PRIVATE);
-            sharedPreferencesnickname = getActivity().getSharedPreferences("nickname",getActivity().MODE_PRIVATE);
             if(sharedPreferences.getString("name",null)!=null &&sharedPreferencesnickname.getString("nickname",null)!=null ){
                 String result1 = sharedPreferences.getString("name",null);
                 String result2 = sharedPreferencesnickname.getString("nickname",null);

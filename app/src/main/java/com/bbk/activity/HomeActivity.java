@@ -125,7 +125,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		dataFlow = new DataFlow(this);
 		initView();
 		initData();
-		initMsg();
+//		initMsg();
 	}
 
 	@Override
@@ -235,12 +235,12 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 
 	}
 	//获取未读消息
-	public void initMsg(){
-		HashMap<String, String> paramsMap = new HashMap<>();
-		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-		paramsMap.put("userid",userID);
-		dataFlow.requestData(2, "bid/queryMyBiaoMsg", paramsMap, this,false);
-	}
+//	public void initMsg(){
+//		HashMap<String, String> paramsMap = new HashMap<>();
+//		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+//		paramsMap.put("userid",userID);
+//		dataFlow.requestData(2, "bid/queryMyBiaoMsg", paramsMap, this,false);
+//	}
 	public void initViewPager() {
 		fragments.clear();
 		mPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager(), fragments);
@@ -551,8 +551,8 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
                     break;
 
 				case 2:
-					JSONObject objectMeaage = new JSONObject(content);
-					BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
+//					JSONObject objectMeaage = new JSONObject(content);
+//					BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
 //					mNumImageView.setNum(BidUserFragment.mMessage);
 					break;
             }
@@ -599,7 +599,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	@Override
 	protected void onStart() {
 		super.onStart();
-		initMsg();
+//		initMsg();
 	}
 }
 

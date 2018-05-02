@@ -20,6 +20,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.SoftHideKeyBoardUtil;
+import com.bbk.util.StringUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -161,11 +162,7 @@ public class GossipPiazzaDetailActivity extends BaseActivity implements ResultEv
     }
     public void insertPL(){
         if (msgEdittext.getText().toString().isEmpty()) {
-            if (toast != null) {
-                toast.cancel();
-            }
-            toast = Toast.makeText(this, "评论不能为空", Toast.LENGTH_SHORT);
-            toast.show();
+            StringUtil.showToast(this, "评论不能为空");
         } else {
 			/* 隐藏软键盘 */
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);

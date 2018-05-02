@@ -76,7 +76,7 @@ public class NewCzgAdapter extends BaseAdapter{
         String mbidprice = map.get("hislowprice");
         viewHolder.item_title.setText(title);
             try {
-            if (!mbidprice.isEmpty()){
+            if (mbidprice != null){
                 viewHolder.mbidprice.setText("最低价 "+mbidprice);
             }
             } catch (NullPointerException e) {

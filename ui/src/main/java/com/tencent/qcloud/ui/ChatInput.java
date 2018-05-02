@@ -228,7 +228,9 @@ public class ChatInput extends RelativeLayout implements TextWatcher,View.OnClic
         isSendVisible = s!=null&&s.length()>0;
         setSendBtn();
         if (isSendVisible){
-            chatView.sending();
+            if (chatView!=null){
+                chatView.sending();
+            }
         }
     }
 
@@ -316,7 +318,9 @@ public class ChatInput extends RelativeLayout implements TextWatcher,View.OnClic
         Activity activity = (Activity) getContext();
         int id = v.getId();
         if (id == R.id.btn_send){
-            chatView.sendText();
+            if (chatView != null){
+                chatView.sendText();
+            }
         }
         if (id == R.id.btn_add){
             updateView(inputMode == InputMode.MORE ? InputMode.TEXT : InputMode.MORE);

@@ -86,7 +86,6 @@ public class DataFlow{
 
 				}else{
 				}
-				Log.i("马甲登录网络请求返回数据：",dataJo+"------------------------");
 				data.event.onResultData(requestCode,api,dataJo,content);
 			}catch(Exception e){
 

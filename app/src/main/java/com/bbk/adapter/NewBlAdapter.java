@@ -70,13 +70,14 @@ public class NewBlAdapter extends BaseAdapter{
             String time = map.get("dtime");
             String title = map.get("title");
             String count = map.get("plnum");
+            String readnum = map.get("readnum");//阅读数
             String zan = map.get("zannum");
             String content = map.get("content");
             viewHolder.item_title.setText(content);
             viewHolder.time.setText(time);
             viewHolder.mExtr.setText(mExtr);
             viewHolder.mlike.setText(zan);
-            viewHolder.mcomment.setText(count);
+            viewHolder.mcomment.setText(readnum);
             Glide.with(context)
                     .load(img)
                     .priority(Priority.HIGH)

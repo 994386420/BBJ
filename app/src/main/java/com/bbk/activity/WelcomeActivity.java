@@ -362,12 +362,12 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 
 	//是否跳转引导页
 	public void startHome() {
-		String isFirstUse = SharedPreferencesUtil.getSharedData(this,"isFirstUse", "isFirstUse");
+		String isFirstUse = SharedPreferencesUtil.getSharedData(this,"isFirstStartUse", "isFirstStartUse");
 		if (TextUtils.isEmpty(isFirstUse)) {
 			isFirstUse = "yes";
 		}
 		if (isFirstUse.equals("yes")) {
-			SharedPreferencesUtil.putSharedData(this, "isFirstUse","isFirstUse", "no");
+			SharedPreferencesUtil.putSharedData(this, "isFirstStartUse","isFirstStartUse", "no");
 			startActivity(new Intent(this, WelcomeGuideActivity.class));
 			finish();
 		}
@@ -441,7 +441,7 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 				if (!content.isEmpty()) {
 					try {
 						JSONObject jsonObject = new JSONObject(content);
-						Log.i("网络请求返回数据===dataflow：",jsonObject+"------------------------");
+//						Log.i("网络请求返回数据===dataflow：",jsonObject+"------------------------");
 						if (!jsonObject.optString("rowkey").isEmpty()) {
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "1");
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "object", content);

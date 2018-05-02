@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -9,14 +10,13 @@
     android:paddingRight="18dp"
     android:gravity="center_horizontal"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp" >
+    android:paddingBottom="8dp">
 
-    <ImageView
+    <com.zyao89.view.zloading.ZLoadingView
         android:id="@+id/dialog_img"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:scaleType="centerInside"
-        android:src="@mipmap/loading_png" />
+        app:z_color="@color/white" />
 
     <TextView
         android:id="@+id/tips_tv"

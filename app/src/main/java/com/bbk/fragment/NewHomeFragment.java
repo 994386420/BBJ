@@ -120,7 +120,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private List<Map<String,String>> list,addlist,mList;
     private String wztitle = "";
     private ViewFlipper mviewflipper;//发标动态轮播
-    private RefreshableView mRefreshableView;
+    public static RefreshableView mRefreshableView;
     private View view;
     private ImageView huodongimg;//活动按钮
     //第一次引导页是否显示隐藏
@@ -346,6 +346,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     //功能模块点击事件
                     mCompareutil.setOnClickListener(onClickListener);
                     mQueryhistory.setOnClickListener(onClickListener);
+                    handler.sendEmptyMessageDelayed(1, 0);
                 } catch (Exception e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -741,7 +742,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mCzgView.setVisibility(View.VISIBLE);
 //        initListenerczg();
         initListener();
-        handler.sendEmptyMessageDelayed(1, 2000);
     }
     //首页视图数据加载
     private void mViewLoad(){

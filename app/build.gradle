@@ -8,7 +8,7 @@ android {
     aaptOptions.useNewCruncher = false
     defaultConfig {
         applicationId "com.bbk.activity"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 21
         versionCode 36
         versionName '4.2.8'
@@ -174,5 +174,7 @@ dependencies {
     //友盟依赖
     compile 'com.umeng.sdk:common:1.5.0'
     compile 'com.umeng.sdk:analytics:7.5.0'
+    //第三方loading
+    compile 'com.zyao89:zloading:1.1.2'
 }
 

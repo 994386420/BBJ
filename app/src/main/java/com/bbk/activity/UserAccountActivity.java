@@ -74,6 +74,7 @@ import com.bbk.util.DialogUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.NumberUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.TencentLoginUtil;
 import com.bbk.view.CircleImageView1;
 import com.bbk.view.CustomDatePicker;
 import com.bumptech.glide.Glide;
@@ -390,6 +391,9 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 							StatService.onEvent(UserAccountActivity.this, "loginout", "退出登录:个人设置页面");
 							Tencent mTencent = Tencent.createInstance(Constants.QQ_APP_ID, UserAccountActivity.this);
 							mTencent.logout(getApplicationContext());
+							//退出腾讯云通讯
+							TencentLoginUtil.Loginout(getApplicationContext());
+							//清除用户信息
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "userInfor");
 							Intent intent = new Intent();
 							setResult(2, intent);

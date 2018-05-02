@@ -191,11 +191,12 @@ public class GossipPiazzaDetailAdapter extends RecyclerView.Adapter implements V
                         mzantext11 = viewHolder.mzantext;
                         DataFlow dataFlow = new DataFlow(context);
                         Map<String,String> map1 = new HashMap<String, String>();
-                        Log.i("blid","===="+blid);
+                        //bild不要B
+                        String bid = blid.replace("B","");
+                        Log.i("bild",bid);
                         map1.put("userid",userID);
-                        map1.put("blid",blid);
+                        map1.put("blid",bid);
                         dataFlow.requestData(1,"newService/insertDianZan",map1,GossipPiazzaDetailAdapter.this,true);
-
                     }else {
 
                     }

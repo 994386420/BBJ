@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.bbk.activity.R;
 import com.bbk.util.DensityUtils;
+import com.zyao89.view.zloading.ZLoadingView;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.Calendar;
 
@@ -33,7 +35,7 @@ public class RefreshableView extends LinearLayout {
     private Scroller scroller;
     private View refreshView;
     private int refreshTargetTop = -DensityUtils.dp2px(getContext(),70);
-    private ProgressBar bar;
+    private ZLoadingView bar;
     private TextView downTextView;
     private TextView refresh;
     private RefreshListener refreshListener;
@@ -69,7 +71,8 @@ public class RefreshableView extends LinearLayout {
         //刷新视图顶端的的view
          refreshView = LayoutInflater.from(mContext).inflate(R.layout.refresh_top_item, null);
         //刷新bar
-        bar = (ProgressBar) refreshView.findViewById(R.id.progress);
+        bar = (ZLoadingView) refreshView.findViewById(R.id.progress);
+        bar.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
         //下拉显示text
          downTextView = (TextView) refreshView.findViewById(R.id.refresh_hint);
          refresh = (TextView) refreshView.findViewById(R.id.refresh);

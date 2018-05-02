@@ -142,13 +142,13 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         dataFlow.requestData(1, "newService/queryIndexMenu", paramsMap, this, false);
 
     }
-    //获取未读消息
-    public void initMsg(){
-        HashMap<String, String> paramsMap = new HashMap<>();
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-        paramsMap.put("userid",userID);
-        dataFlow.requestData(2, "bid/queryMyBiaoMsg", paramsMap, this,false);
-    }
+//    //获取未读消息
+//    public void initMsg(){
+//        HashMap<String, String> paramsMap = new HashMap<>();
+//        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+//        paramsMap.put("userid",userID);
+//        dataFlow.requestData(2, "bid/queryMyBiaoMsg", paramsMap, this,false);
+//    }
     public void initViewPager() {
         fragments.clear();
         mPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager(), fragments);
@@ -266,13 +266,13 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         switch (requestCode){
             case 2:
-                try {
-                    JSONObject objectMeaage = new JSONObject(content);
-                    BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
-//                    mNumImage.setNum(BidUserFragment.mMessage);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+//                try {
+//                    JSONObject objectMeaage = new JSONObject(content);
+//                    BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
+////                    mNumImage.setNum(BidUserFragment.mMessage);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
                 break;
         }
 
@@ -310,6 +310,6 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     @Override
     protected void onStart() {
         super.onStart();
-        initMsg();
+//        initMsg();
     }
 }

@@ -1,6 +1,8 @@
 package com.bbk.util;
 
 import com.bbk.activity.R;
+import com.zyao89.view.zloading.ZLoadingView;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,15 +33,16 @@ public class DialogSingleUtil {
 			View view = inflater.inflate(id, null);
 			builder.setView(view,0,0,0,0);
 
-			ImageView imageView = (ImageView) view.findViewById(R.id.dialog_img);
-			
-			final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
-			animation.setDuration(1000);
-			animation.setRepeatCount(Animation.INFINITE);
-			animation.setRepeatMode(Animation.RESTART);
-			animation.setInterpolator(LINEAR_INTERPOLATOR);
-			imageView.setAnimation(animation);
-			animation.startNow();
+			ZLoadingView imageView = (ZLoadingView) view.findViewById(R.id.dialog_img);
+
+//			final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//			animation.setDuration(1000);
+//			animation.setRepeatCount(Animation.INFINITE);
+//			animation.setRepeatMode(Animation.RESTART);
+//			animation.setInterpolator(LINEAR_INTERPOLATOR);
+//			imageView.setAnimation(animation);
+//			animation.startNow();
+			imageView.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
 			alertDialog = builder.create();
 			alertDialog.setCanceledOnTouchOutside(false);
 			
