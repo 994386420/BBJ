@@ -58,6 +58,7 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CircleImageView1;
+import com.bbk.view.HeaderView;
 
 
 public class UserFragment extends BaseViewPagerFragment implements OnClickListener ,ResultEvent{
@@ -171,6 +172,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		mcollection.setOnClickListener(this);
 		user_name.setOnClickListener(this);
 		mtaobaologin.setOnClickListener(this);
+		xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
 		xrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
 			@Override
 			public void onRefresh() {

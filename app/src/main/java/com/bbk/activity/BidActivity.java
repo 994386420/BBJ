@@ -236,9 +236,6 @@ public class BidActivity extends BaseActivity implements ResultEvent{
         }else if (TextUtils.isEmpty(mprice.getText().toString())){
             StringUtil.showToast(this,"镖品单价不能为空");
         }
-//        else if(TextUtils.isEmpty(mcount.getText().toString())){
-//            StringUtil.showToast(this,"数量不能为空");
-//        }
         else {
             DialogSingleUtil.show(this,"发镖中...");
             if ("add".equals(list.get(list.size() - 1))) {
@@ -246,8 +243,6 @@ public class BidActivity extends BaseActivity implements ResultEvent{
             } else {
                 length = list.size();
             }
-//                    if (isnotshenhe){
-
             if (length == 0){
                 initsend();
             }else {
@@ -448,9 +443,9 @@ public class BidActivity extends BaseActivity implements ResultEvent{
                 try {
                     JSONObject object = new JSONObject(post);
                     if (object.optInt("status") <= 0) {
-                        Toast.makeText(BidActivity.this, "发布失败", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(BidActivity.this, object.optString("errmsg"));
                     } else {
-                        Toast.makeText(BidActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(BidActivity.this, "发镖成功");
                         mname.setText("");
                         mprice.setText("");
                         mcount.setText("");

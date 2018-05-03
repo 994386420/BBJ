@@ -53,6 +53,7 @@ import com.bbk.util.DensityUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.ValidatorUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bumptech.glide.Glide;
 import com.iflytek.cloud.ErrorCode;
@@ -151,6 +152,7 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
         });
         xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
         refreshAndloda();
+        xrefresh.setCustomHeaderView(new HeaderView(this));
     }
 
     private void refreshAndloda() {

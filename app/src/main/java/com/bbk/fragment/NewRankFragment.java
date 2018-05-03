@@ -40,6 +40,7 @@ import com.bbk.util.BaseTools;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.SystemBarTintManager;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bumptech.glide.Glide;
 
@@ -142,6 +143,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 		titlelist = new ArrayList<>();
 		datalist = new ArrayList<>();
 		xrefresh =  mView.findViewById(R.id.xrefresh);
+		xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
 		refreshAndloda();
 		mlistView =  mView.findViewById(R.id.mlistview);
 		mlistView.setOnScrollListener(new OnScrollListener() {

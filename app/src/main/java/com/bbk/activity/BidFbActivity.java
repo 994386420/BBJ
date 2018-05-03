@@ -175,8 +175,6 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
                                     new ActionSheetDialog.OnSheetItemClickListener() {
                                         @Override
                                         public void onClick(int which) {
-//											Intent intent = new Intent(MyGossipActivity.this, TestPicActivity.class);
-//											startActivity(intent);
                                             PhotoPicker.builder()
                                                     .setPhotoCount(4 - list.size())
                                                     .setGridColumnCount(3)
@@ -222,9 +220,6 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
         }else if (TextUtils.isEmpty(mprice.getText().toString())){
             StringUtil.showToast(this,"镖品单价不能为空");
         }
-//        else if(TextUtils.isEmpty(mcount.getText().toString())){
-//            StringUtil.showToast(this,"数量不能为空");
-//        }
         else {
             DialogSingleUtil.show(BidFbActivity.this,"发镖中...");
             if ("add".equals(list.get(list.size() - 1))) {
@@ -232,8 +227,6 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
             } else {
                 length = list.size();
             }
-//                    if (isnotshenhe){
-
             if (length == 0){
                 initsend();
             }else {
@@ -437,7 +430,7 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
                     if (object.optInt("status") <= 0) {
                         StringUtil.showToast(BidFbActivity.this, object.optString("errmsg"));
                     } else {
-                        StringUtil.showToast(BidFbActivity.this, "发布成功");
+                        StringUtil.showToast(BidFbActivity.this, "发镖成功");
                         mname.setText("");
                         mprice.setText("");
                         mcount.setText("");

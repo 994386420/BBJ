@@ -36,6 +36,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.ImmersionUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -110,6 +111,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
         mrefresh = mView.findViewById(R.id.mrefresh);
         search_edit =  mView.findViewById(R.id.search_edit);
         mlistview = mView.findViewById(R.id.mlistview);
+        mrefresh.setCustomHeaderView(new HeaderView(getActivity()));
         refreshAndloda();
         search_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

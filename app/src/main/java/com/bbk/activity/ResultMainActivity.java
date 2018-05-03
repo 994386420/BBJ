@@ -34,6 +34,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.FooterView;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bbk.view.MyGridView;
 import com.bbk.view.XCFlowLayout;
@@ -361,6 +362,8 @@ public class ResultMainActivity extends BaseActivity
 		compositerank.setTextColor(Color.parseColor("#0098ff"));
 		sellrank.setTextColor(Color.parseColor("#222222"));
 		filter_price.setTextColor(Color.parseColor("#222222"));
+		xrefresh.setCustomHeaderView(new HeaderView(this));
+		xrefresh1.setCustomHeaderView(new HeaderView(this));
 		onrefresh(xrefresh);
 		onrefresh(xrefresh1);
 		

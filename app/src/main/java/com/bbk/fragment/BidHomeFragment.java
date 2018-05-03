@@ -24,6 +24,7 @@ import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -98,6 +99,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
         });
         mrecyclerview = (RecyclerView)mView.findViewById(R.id.mrecyclerview);
         mrefresh = (XRefreshView) mView.findViewById(R.id.mrefresh);
+        mrefresh.setCustomHeaderView(new HeaderView(getActivity()));
         refreshAndloda();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {

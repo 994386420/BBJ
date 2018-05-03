@@ -32,6 +32,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -50,6 +51,7 @@ import java.util.Map;
 
 /**
  * Created by rtj on 2017/11/23.
+ * 爆料
  */
 public class GossipPiazzaFragment extends BaseViewPagerFragment implements ResultEvent {
     private DataFlow dataFlow;
@@ -121,6 +123,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
                 startActivity(intent);
             }
         });
+        mrefresh.setCustomHeaderView(new HeaderView(getActivity()));
         refreshAndloda();
         float_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +140,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
             }
         });
     }
-
     private void refreshAndloda() {
         mrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
 

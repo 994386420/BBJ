@@ -23,6 +23,7 @@ import com.bbk.util.BaseTools;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,6 +81,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         mrefresh = (XRefreshView)findViewById(R.id.mrefresh);
         search_edit = (EditText) findViewById(R.id.search_edit);
         mlistview = (ListView)findViewById(R.id.mlistview);
+        mrefresh.setCustomHeaderView(new HeaderView(this));
         refreshAndloda();
         search_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

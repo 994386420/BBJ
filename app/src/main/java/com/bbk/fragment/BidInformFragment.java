@@ -20,6 +20,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -72,6 +73,7 @@ public class BidInformFragment extends Fragment implements ResultEvent {
         list = new ArrayList<>();
         listView =  mView.findViewById(R.id.list);
         xrefresh = mView.findViewById(R.id.xrefresh);
+        xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
         refreshAndloda();
     }
 

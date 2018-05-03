@@ -21,6 +21,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 
 import android.app.Activity;
@@ -139,6 +140,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 		tablayout.addTab(tablayout.newTab().setText("发出的评论"));
 		tablayout.addTab(tablayout.newTab().setText("收到的评论"));
 		tablayout.setTabMode(TabLayout.MODE_FIXED);
+		xrefresh.setCustomHeaderView(new HeaderView(this));
 		refreshAndloda();
 		tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 			@Override

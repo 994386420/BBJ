@@ -70,6 +70,7 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.SystemBarTintManager;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bumptech.glide.Glide;
 
@@ -183,6 +184,7 @@ public class RankFragment extends BaseViewPagerFragment implements ResultEvent {
 		});
 		search_edit = (EditText) mView.findViewById(R.id.search_edit);
 		xrefresh = (XRefreshView) mView.findViewById(R.id.xrefresh);
+		xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
 		refreshAndloda();
 		mlistView = (ListView) mView.findViewById(R.id.mlistview);
 		mlistView.setOnScrollListener(new OnScrollListener() {

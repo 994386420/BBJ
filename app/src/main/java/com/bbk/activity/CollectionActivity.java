@@ -22,6 +22,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bbk.view.MyListView;
 import com.bumptech.glide.Glide;
@@ -113,6 +114,7 @@ public class CollectionActivity extends BaseFragmentActivity implements ResultEv
 		mallselectimg = (ImageView) findViewById(R.id.mallselectimg);
 		mallselect = (LinearLayout) findViewById(R.id.mallselect);
 		xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
+		xrefresh.setCustomHeaderView(new HeaderView(this));
 		refreshAndloda();
 
 		mtext1 = (TextView) findViewById(R.id.mtext1);

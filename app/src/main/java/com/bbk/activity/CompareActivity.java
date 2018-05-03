@@ -22,6 +22,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.JumpIntentUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bbk.view.MyGridView;
 import com.bbk.view.MyListView;
@@ -196,6 +197,7 @@ public class CompareActivity extends BaseActivity implements ResultEvent,OnClick
 		mfilter1 = (RelativeLayout) findViewById(R.id.mfilter1);
 		xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
 		xrefresh.setPullRefreshEnable(false);
+		xrefresh.setCustomHeaderView(new HeaderView(this));
 		xrefresh.setXRefreshViewListener(new XRefreshViewListener() {
 			
 			@Override

@@ -21,6 +21,7 @@ import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 
 import org.json.JSONArray;
@@ -89,6 +90,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
         tablayout.addTab(tablayout.newTab().setText("待评论"));
         tablayout.addTab(tablayout.newTab().setText("完成"));
         tablayout.setTabMode(TabLayout.MODE_FIXED);
+        xrefresh.setCustomHeaderView(new HeaderView(this));
         refreshAndloda();
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

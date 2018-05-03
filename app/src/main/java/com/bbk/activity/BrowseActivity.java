@@ -21,6 +21,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bbk.view.MyListView;
 import com.bumptech.glide.Glide;
@@ -97,6 +98,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 		mscroll = (XScrollView) findViewById(R.id.mscroll);
 		mzhanwei = (LinearLayout) findViewById(R.id.mzhanwei);
 		xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
+		xrefresh.setCustomHeaderView(new HeaderView(this));
 		refreshAndloda();
 		mtext1 = (TextView) findViewById(R.id.mtext1);
 		mtext2 = (TextView) findViewById(R.id.mtext2);
