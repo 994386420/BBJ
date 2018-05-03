@@ -2,10 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-     >
-	
-    <LinearLayout 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <RelativeLayout
         android:id="@+id/msize"
         android:background="@drawable/text_view_border"
         android:layout_centerInParent="true"
@@ -13,7 +12,14 @@
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:layout_height="500dp">
-        <LinearLayout 
+        <com.zyao89.view.zloading.ZLoadingView
+            android:id="@+id/loading_view"
+            android:layout_centerInParent="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:z_color="@color/black"/>
+        <LinearLayout
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -25,13 +31,18 @@
                 android:textSize="17dp"
                 android:textColor="#333333"/>
         </LinearLayout>
-        <View 
+        <View
+            android:id="@+id/view"
+            android:layout_below="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#f3f3f3"/>
-        <ScrollView 
+        <ScrollView
+            android:id="@+id/bijia_scrollview"
+            android:layout_below="@+id/view"
             android:layout_width="match_parent"
             android:scrollbars="none"
+            android:visibility="gone"
             android:layout_height="wrap_content">
             <LinearLayout 
                 android:layout_width="match_parent"
@@ -83,7 +94,7 @@
             </LinearLayout>
         </ScrollView>
         
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout 
         android:paddingTop="20dp"
         android:layout_width="match_parent"
@@ -96,7 +107,7 @@
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/close"/>
     </LinearLayout>
-   
-    
+
+
 
 </LinearLayout>
