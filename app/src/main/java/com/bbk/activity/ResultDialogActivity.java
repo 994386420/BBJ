@@ -20,6 +20,8 @@ import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyListView;
 import com.tencent.qcloud.sdk.Constant;
+import com.zyao89.view.zloading.ZLoadingView;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import android.app.Activity;
 import android.content.Context;
@@ -38,6 +40,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 	private MyListView mlistview1,mlistview2;
@@ -47,7 +51,7 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 	private ImageView mclose;
 	private LinearLayout wantdomain;
 	private View henggang;
-	private LinearLayout msize;
+	private RelativeLayout msize;
 	private Thread thread;
 	private boolean isrequest = true;
 	private int requestnum = 0;
@@ -55,6 +59,8 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 	private String keyword,rowkey;
 	private boolean isrun = true;
 	private DataFlow3 dataFlow;
+	private ZLoadingView mloadingView;
+	private ScrollView sll_bijia;//比价弹窗布局
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +119,13 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 	}
 
 	private void initView() {
+		mloadingView = findViewById(R.id.loading_view);
+		sll_bijia = findViewById(R.id.bijia_scrollview);
+		mloadingView.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
 		mlistview1 = (MyListView) findViewById(R.id.mlistview1);
 		mlistview2 = (MyListView) findViewById(R.id.mlistview2);
 		wantdomain = (LinearLayout) findViewById(R.id.wantdomain);
-		msize = (LinearLayout) findViewById(R.id.msize);
+		msize =  findViewById(R.id.msize);
 		WindowManager wm = this.getWindowManager();
 	    int height = wm.getDefaultDisplay().getHeight();
 	    LayoutParams params = msize.getLayoutParams();
@@ -288,6 +297,8 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 					if (thread == null) {
 						NowPrice();
 					}
+					mloadingView.setVisibility(View.GONE);
+					sll_bijia.setVisibility(View.VISIBLE);
 				}catch (Exception e){
 					e.printStackTrace();
 				}

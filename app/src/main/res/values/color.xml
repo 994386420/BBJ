@@ -4,28 +4,19 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_gray">#F2F2F2</color>
     <color name="black">#FF000000</color>
-    <color name="orange">#FFE84E0E</color>
     <color name="transparent">#00000000</color>
     <color name="whiteGray">#F5F5F5</color>
-    <color name="blue">#436EEE</color>
-    
-    
-    <color name="main1_color">#ff7d41</color>  <!-- #FD135B   #FF3674  #0098FF -->
+
+
+    <!-- #FD135B   #FF3674  #0098FF -->
     <color name="main_color">#0098FF</color>  <!-- #FD135B   #FF3674  #0098FF -->
     <color name="main_color11">#990098FF</color>  <!-- #FD135B   #FF3674  #0098FF -->
-    <color name="price_color">#FE0034</color>
     <color name="button_color">#ff7d41</color>
     <color name="button_color1">#99ff7d41</color>
-    
-	
-    <color name="green">#009900</color>
-    
-    <color name="window_background">#FFF5F5F5</color>
-    <color name="window_background1">#50000000</color>
-    <color name="trans">#00000000</color>
+
+
     <color name="alertdialog_line">#c6c6c6</color>
     <color name="actionsheet_blue">#037BFF</color>
-    <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
     
     
@@ -34,16 +25,7 @@
     <color name="text1">#007aff</color>
     <color name="text2">#333333</color>
 
-    <color name="color1">#F0F0F0</color>
-    <color name="color2">#FFFFFF</color>
-    <color name="color3">#B0B0B0</color>
-    <color name="color4">#666666</color>
-    <color name="color5">#57C5E8</color>
     <color name="__picker_pager_bg">#CA000000</color>
-
-    <color name="__picker_selected_bg">#44000000</color>
-
-    <color name="__picker_black_40">#282828</color>
 
     <color name="__picker_common_primary">#f3f3f3</color>
 
@@ -51,14 +33,11 @@
 
     <color name="__picker_text_80">#505050</color>
 
-    <color name="__picker_text_120">#787878</color>
-
     <color name="__picker_item_photo_border_selected">#ff99cc00</color>
 
     <color name="__picker_item_photo_border_n">#33ffffff</color>
 
     <color name="background_gray1">#EBEBEB</color>
-    <color name="background_gray2">#E6E6E6</color>
     <color name="background_gray3">#D4D4D4</color>
     <color name="background_gray4">#EFEFF4</color>
     <color name="line">#DDDDDD</color>
@@ -66,7 +45,6 @@
     <color name="text_gray1">#777777</color>
     <color name="text_gray2">#767676</color>
     <color name="text_blue1">#1173CB</color>
-    <color name="text_blue2">#1173CA</color>
     <color name="panel_black">#25272A</color>
     <color name="btn_red">#D63F41</color>
     <color name="btn_red_hover">#E8484B</color>
@@ -79,32 +57,16 @@
 
 
     <!--gray1-->
-    <color name="colorGray1">#F0F0F0</color>
     <!--light gray-->
-    <color name="colorLightGray">#E6E6E6</color>
     <!--gray2-->
-    <color name="colorGray2">#DCDCDC</color>
     <!--gray3-->
-    <color name="colorGray3">#C8C8C8</color>
     <!--gray4-->
-    <color name="colorGray4">#787878</color>
     <!--gray5-->
-    <color name="colorGray5">#505050</color>
     <!--gray6-->
-    <color name="colorGray6">#141414</color>
     <!--gray7-->
     <color name="colorGray7">#D8D8D8</color>
 
-    <color name="c1">#0ACCAC</color>
-    <color name="c2">#222b48</color>
-    <color name="c3">#F3F3F3</color>
-    <color name="c4">#F5F5F5</color>
-    <color name="c5">#D8D8D8</color>
-    <color name="c6">#FFFFFF</color>
-    <color name="c7">#000000</color>
     <color name="c8">#FFFFFF</color>
-    <color name="c9">#777777</color>
-    <color name="colorBackground">#F5F5F5</color>
     //首页新布局颜色值
     <color name="color_line">#f3f3f3</color>
     <color name="color_line_top">#FF7944</color>
@@ -114,7 +76,6 @@
     <color name="gray">#dedede</color>
     <color name="transparent2">#58000000</color>
 
-    <color name="jlz_color">#B26A15</color>
     <color name="white_transtion">#70ffffff</color>
     <color name="biao_color">#b40000</color>
     <color name="text_gray">#888888</color>
