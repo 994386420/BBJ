@@ -401,8 +401,7 @@ public class RankFragment extends BaseViewPagerFragment implements ResultEvent {
 	}
 
 	@Override
-	public void lazyLoad() {
-		// TODO Auto-generated method stub
+	protected void loadLazyData() {
 
 	}
 

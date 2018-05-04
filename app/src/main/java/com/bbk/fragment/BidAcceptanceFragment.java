@@ -382,7 +382,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
     }
 
     @Override
-    public void lazyLoad() {
+    protected void loadLazyData() {
 
     }
 }

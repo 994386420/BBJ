@@ -73,7 +73,7 @@ public class NewCzgAdapter extends BaseAdapter{
 //        String bidprice = map.get("bidprice");
         String dianpu = map.get("dianpu");
         String youhui = map.get("youhui");
-        String mbidprice = map.get("hislowprice");
+        String mbidprice = map.get("hislowprice");//最低价
         viewHolder.item_title.setText(title);
             try {
             if (mbidprice != null){

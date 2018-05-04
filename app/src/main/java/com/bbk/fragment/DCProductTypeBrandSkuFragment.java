@@ -286,9 +286,9 @@ public class DCProductTypeBrandSkuFragment extends BaseViewPagerFragment
 		startActivity(intent);
 	}
 
+
 	@Override
-	public void lazyLoad() {
-		// TODO Auto-generated method stub
+	protected void loadLazyData() {
 
 	}
 

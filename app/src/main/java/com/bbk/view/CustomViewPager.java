@@ -39,4 +39,12 @@ public class CustomViewPager extends ViewPager {
         return isCanScroll && super.onTouchEvent(ev);
 
     }
+    /**
+     * 设置其是否能点击滑动换页
+     * false 不能滑动换页， true 可以滑动换页
+     */
+    @Override
+    public void setCurrentItem(int item) {
+        super.setCurrentItem(item,false);
+    }
 }

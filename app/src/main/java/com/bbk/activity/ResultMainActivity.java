@@ -233,11 +233,11 @@ public class ResultMainActivity extends BaseActivity
 		isrequest = false;
 		initRankView();
 		Map<String, String> paramsMap = params();
-		dataFlow.requestData(1, "apiService/getPageList", paramsMap, this);
+		dataFlow.requestData(1, "apiService/getPageList", paramsMap, this,true);
 	}
 	private void initData1() {
 		Map<String, String> paramsMap = params();
-		dataFlow1.requestData(1, "apiService/getPageList", paramsMap, this);
+		dataFlow1.requestData(1, "apiService/getPageList", paramsMap, this,true);
 	}
 	private Map<String, String> params(){
 		exadapter = new ResultExpandableListViewAdapter(ResultMainActivity.this,parentlist,childlist);
@@ -478,7 +478,7 @@ public class ResultMainActivity extends BaseActivity
 		paramsMap.put("client", "Android");
 		paramsMap.put("page", currentPageIndex + "");
 
-		dataFlow1.requestData(2, "apiService/getPageList", paramsMap, this);
+		dataFlow1.requestData(2, "apiService/getPageList", paramsMap, this,true);
 	}
 	private void initstype(){
 		if (!istv1&&!istv2) {

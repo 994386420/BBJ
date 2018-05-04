@@ -17,6 +17,7 @@ import com.baidu.mobstat.StatService;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.umeng.analytics.MobclickAgent;
 
 public class BaseFragmentActivity extends FragmentActivity {
@@ -83,8 +84,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
 		if (null == networkInfo) {
-			Toast toast = Toast.makeText(this, "没有网络连接", Toast.LENGTH_LONG);
-			toast.show();
+			StringUtil.showToast(this, "没有网络连接");
 		} else if (!wifiInfo.isConnected()) {
 //			Toast toast = Toast.makeText(this, "您的WIFI未连接，正在使用流量",
 //					Toast.LENGTH_LONG);

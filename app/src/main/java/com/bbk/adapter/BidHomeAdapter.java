@@ -249,7 +249,8 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             TextView msellprice = (TextView) view.findViewById(R.id.msellprice);
             TextView mcount = (TextView) view.findViewById(R.id.mcount);
             ImageView mimg = (ImageView) view.findViewById(R.id.mimg);
-            JSONObject object = toparray_flipper.getJSONObject(i);
+            final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+            final JSONObject object = toparray_flipper.getJSONObject(i);
             final String id = object.optString("id");
             String title = object.optString("title");
             String count = object.optString("count");
@@ -265,9 +266,19 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, BidDetailActivity.class);
-                    intent.putExtra("id",id);
-                    context.startActivity(intent);
+                    try {
+                        if (object.get("userid").equals(userID)){
+                            Intent intent = new Intent(context,BidBillDetailActivity.class);
+                            intent.putExtra("fbid",id);
+                            context.startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(context, BidDetailActivity.class);
+                            intent.putExtra("id",id);
+                            context.startActivity(intent);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
             viewHolder.mviewflipper.addView(view);

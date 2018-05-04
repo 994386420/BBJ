@@ -85,7 +85,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
             data_head = mView.findViewById(R.id.data_head);
             initstateView();
             initView();
-            initData(false);
         }
         return mView;
     }
@@ -153,7 +152,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
             public void onRefresh(boolean isPullDown) {
                 isclear = true;
                 page = 1;
-                initData(false);
+                initData(true);
 
             }
 
@@ -166,7 +165,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
             @Override
             public void onLoadMore(boolean isSilence) {
                 page++;
-                initData(false);
+                initData(true);
             }
 
             @Override
@@ -265,13 +264,12 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
     }
 
     @Override
-    public void lazyLoad() {
-
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void loadLazyData() {
+        initData(true);
+    }
 }

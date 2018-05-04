@@ -125,7 +125,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
 
 
     @Override
-    public void lazyLoad() {
+    protected void loadLazyData() {
 
     }
 

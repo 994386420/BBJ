@@ -180,8 +180,7 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
     }
 
     @Override
-    public void lazyLoad() {
+    protected void loadLazyData() {
 
     }
-
 }

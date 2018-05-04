@@ -210,10 +210,12 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
                 break;
         }
     }
+
     @Override
-    public void lazyLoad() {
+    protected void loadLazyData() {
 
     }
+
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         try {

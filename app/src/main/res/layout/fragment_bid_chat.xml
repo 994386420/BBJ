@@ -6,17 +6,23 @@
     android:orientation="vertical"
     tools:context="com.bbk.chat.ui.ConversationFragment">
 
-
-    <com.bbk.view.MyXRefreshView
-        android:id="@+id/xrefresh"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ListView
-            android:id="@id/list"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <include
+            layout="@layout/activity_no_message_layout"/>
+        <com.bbk.view.MyXRefreshView
+            android:id="@+id/xrefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <ListView
+                android:id="@id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        </ListView>
-    </com.bbk.view.MyXRefreshView>
+            </ListView>
+        </com.bbk.view.MyXRefreshView>
+    </RelativeLayout>
 
 </LinearLayout>

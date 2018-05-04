@@ -280,9 +280,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		
 		
 	}
-	@Override
-	public void lazyLoad() {
-	}
 
 	/**
 	 * 淘宝授权登录
@@ -565,7 +562,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		view.setX(x1);
 		view.setY(y1);
 		view.setLayoutParams(lp);
-		return view; 
+		return view;
 	}
 
 	/**
@@ -587,65 +584,66 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
 	}
 	private void sign() {
-		 View view = addViewToAnimLayout(anim_mask_layout); 
-		 int[] end_location = new int[2];   
-		 Animation mTranslateAnimation = new TranslateAnimation 
+		 final View view = addViewToAnimLayout(anim_mask_layout);
+		 int[] end_location = new int[2];
+		 Animation mTranslateAnimation = new TranslateAnimation
 				 (TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.ABSOLUTE,
-						 800, TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.ABSOLUTE, -1000);// 移动  
-		 mTranslateAnimation.setDuration(3000); 
+						 800, TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.ABSOLUTE, -1000);// 移动
+		 mTranslateAnimation.setDuration(3000);
 		 final View view2 = addTViewToAnimLayout(anim_mask_layout);
-		 Animation mHiddenAction = AnimationUtils.loadAnimation(getActivity(), R.anim.pingyi_shang);  
+		 Animation mHiddenAction = AnimationUtils.loadAnimation(getActivity(), R.anim.pingyi_shang);
 		 view2.setAnimation(mHiddenAction);
 		 mHiddenAction.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				view2.setVisibility(View.GONE);
+				view.setVisibility(View.GONE);
 			}
 		});
-		 mHiddenAction.start();
-		 AnimationSet mAnimationSet=new AnimationSet(false); //这块要注意，必须设为false,不然组件动画结束后，不会归位。 
-		 mAnimationSet.setFillAfter(false);   
-		 mAnimationSet.addAnimation(mTranslateAnimation); 
-		 view.startAnimation(mAnimationSet);
-		 mAnimationSet.setAnimationListener(new AnimationListener() {
-			
-			@Override
-			public void onAnimationStart(Animation arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animation arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animation arg0) {
-				anim_mask_layout.getChildAt(0).setVisibility(View.GONE);
-//				vg.addView(mjbimg);
-			}
-		});
-		 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-		 sign.setText("已签到"); 
+//		 mHiddenAction.start();
+//		 AnimationSet mAnimationSet=new AnimationSet(false); //这块要注意，必须设为false,不然组件动画结束后，不会归位。
+//		 mAnimationSet.setFillAfter(false);
+//		 mAnimationSet.addAnimation(mTranslateAnimation);
+//		 view.startAnimation(mAnimationSet);
+//		 mAnimationSet.setAnimationListener(new AnimationListener() {
+//
+//			@Override
+//			public void onAnimationStart(Animation arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void onAnimationRepeat(Animation arg0) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void onAnimationEnd(Animation arg0) {
+//				anim_mask_layout.getChildAt(0).setVisibility(View.GONE);
+////				vg.addView(mjbimg);
+//			}
+//		});
+//		 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+		 sign.setText("已签到");
 		 mjbimg.setVisibility(View.GONE);
 		 mjb.setText(num+"");
-		
-		 
+
+
 	}
 	private void initsignnum(String sign2) {
 		if (sign2.equals("1")) {
@@ -759,4 +757,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	}
 
 
+	@Override
+	protected void loadLazyData() {
+
+	}
 }

@@ -98,7 +98,6 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 			ImmersedStatusbarUtils.MIUISetStatusBarLightMode(getActivity(),true);
 			initstateView();
 			initView();
-			initData(false);
 		}
 
 		return mView;
@@ -186,7 +185,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 				if (currentIndex == 1) {
 					isclear = true;
 					topicpage = 1;
-					initData(false);
+					initData(true);
 				}else if(currentIndex > 1){
 					isclear = true;
 					typepage = 1;
@@ -204,7 +203,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 			public void onLoadMore(boolean isSilence) {
 				if (currentIndex == 1) {
 					topicpage++;
-					initData(false);
+					initData(true);
 				}else if(currentIndex > 1){
 					typepage++;
 					loadData();
@@ -265,10 +264,10 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 
 	}
 
-	@Override
-	public void lazyLoad() {
-		// TODO Auto-generated method stub
 
+	@Override
+	protected void loadLazyData() {
+		initData(true);
 	}
 
 

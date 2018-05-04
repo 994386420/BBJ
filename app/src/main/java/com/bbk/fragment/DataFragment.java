@@ -154,8 +154,8 @@ public class DataFragment extends BaseViewPagerFragment implements OnClickListen
 	}
 
 	@Override
-	public void lazyLoad() {
-		// TODO Auto-generated method stub
+	protected void loadLazyData() {
+
 	}
 
 	//添加banner

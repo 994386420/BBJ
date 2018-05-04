@@ -24,7 +24,7 @@ import com.zyao89.view.zloading.Z_TYPE;
  */
 
 public class HeaderView extends LinearLayout implements IHeaderCallBack {
-    private ZLoadingView bar;
+    private ZLoadingView bar1,bar;
     private TextView downTextView;
     private TextView refresh;
     private ImageView mfreshImage;
@@ -53,12 +53,12 @@ public class HeaderView extends LinearLayout implements IHeaderCallBack {
     private void init(Context context) {
         View refreshView = LayoutInflater.from(context).inflate(R.layout.refresh_top_item, this);
         //刷新bar
-        bar = (ZLoadingView) refreshView.findViewById(R.id.progress1);
-        bar.setLoadingBuilder(Z_TYPE.INFECTION_BALL,0.4);
-//        bar.setLayoutParams(new LinearLayout.LayoutParams(DensityUtils.dp2px(getContext(),30),DensityUtils.dp2px(getContext(),30)));
+        bar = (ZLoadingView) refreshView.findViewById(R.id.progres);
+        bar1 = (ZLoadingView) refreshView.findViewById(R.id.progress1);
         //下拉显示text
         downTextView = (TextView) refreshView.findViewById(R.id.refresh_hint);
         refresh = (TextView) refreshView.findViewById(R.id.refresh);
+        bar.setLoadingBuilder(Z_TYPE.INTERTWINE,0.5);
         downTextView.setTextColor(context.getResources().getColor(R.color.color_line_text));
         refresh.setTextColor(context.getResources().getColor(R.color.color_line_text));
         refreshView.findViewById(R.id.fresh_image).setVisibility(GONE);
@@ -67,11 +67,15 @@ public class HeaderView extends LinearLayout implements IHeaderCallBack {
 
     @Override
     public void onStateNormal() {
+        bar1.setVisibility(View.VISIBLE);
+        bar1.setLoadingBuilder(Z_TYPE.INTERTWINE,0);
         downTextView.setText("下拉即可刷新...");
     }
 
     @Override
     public void onStateReady() {
+        bar1.setVisibility(View.VISIBLE);
+        bar1.setLoadingBuilder(Z_TYPE.INTERTWINE,0);
         downTextView.setText("松手即可刷新...");
     }
 
@@ -79,6 +83,7 @@ public class HeaderView extends LinearLayout implements IHeaderCallBack {
     public void onStateRefreshing() {
         bar.setVisibility(View.VISIBLE);
         refresh.setVisibility(VISIBLE);
+        bar1.setVisibility(GONE);
         refresh.setText("加载中...");
         downTextView.setVisibility(View.GONE);
         invalidate();
@@ -89,7 +94,7 @@ public class HeaderView extends LinearLayout implements IHeaderCallBack {
         bar.setVisibility(View.GONE);
         refresh.setVisibility(GONE);
         downTextView.setVisibility(View.VISIBLE);
-        downTextView.setText("加载完成");
+        downTextView.setText("下拉即可刷新...");
         mScroller.forceFinished(true);
     }
 

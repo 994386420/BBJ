@@ -208,16 +208,21 @@ public class SearchFragment extends BaseViewPagerFragment implements OnClickList
 		layoutParams.height = result;
 		search_head.setLayoutParams(layoutParams);
 	}
+//	@Override
+//	public void lazyLoad() {
+//	}
+
 	@Override
-	public void lazyLoad() {
+	protected void loadLazyData() {
 		flag = 0;
 		recommendView.notifyData();
 		stypeText.setText(stypeArr[stypeWay]);
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		lazyLoad();
+		loadLazyData();
 	}
 	
 	public void initView() {

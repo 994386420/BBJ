@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
@@ -15,6 +16,7 @@ import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidMyBillDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.adapter.BidListDetailAdapter;
 import com.bbk.adapter.BidMsgInformAdapter;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow6;
@@ -47,6 +49,7 @@ public class BidInformFragment extends Fragment implements ResultEvent {
     private int topicpage = 1;
     private boolean isclear = false;
     private boolean isloadmore = false;
+    private LinearLayout mNoMessageLayout;//无数据显示页面
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container
@@ -71,6 +74,7 @@ public class BidInformFragment extends Fragment implements ResultEvent {
 
     private void initView() {
         list = new ArrayList<>();
+        mNoMessageLayout = mView.findViewById(R.id.no_message_layout);
         listView =  mView.findViewById(R.id.list);
         xrefresh = mView.findViewById(R.id.xrefresh);
         xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
@@ -148,29 +152,43 @@ public class BidInformFragment extends Fragment implements ResultEvent {
             map.put("dtimes",object.optString("dtimes"));
             list.add(map);
         }
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        } else {
-            adapter = new BidMsgInformAdapter(getActivity(), list);
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Map<String, String> map = list.get(position);
-                    String role = map.get("role");
-                    Intent intent;
-                    if ("1".equals(role)) {
-                        intent = new Intent(getActivity(), BidBillDetailActivity.class);
-                    } else {
-                        intent = new Intent(getActivity(), BidMyBillDetailActivity.class);
+        if (adapter != null){
+            if (list != null && list.size() > 0){
+                adapter.notifyDataSetChanged();
+                listView.setVisibility(View.VISIBLE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }else {
+                listView.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.VISIBLE);
+            }
+        }else {
+            if (list != null && list.size() > 0){
+                adapter = new BidMsgInformAdapter(getActivity(), list);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Map<String, String> map = list.get(position);
+                        String role = map.get("role");
+                        Intent intent;
+                        if ("1".equals(role)) {
+                            intent = new Intent(getActivity(), BidBillDetailActivity.class);
+                        } else {
+                            intent = new Intent(getActivity(), BidMyBillDetailActivity.class);
+                        }
+                        intent.putExtra("fbid", map.get("fbid"));
+                        startActivity(intent);
+                        readSysmsg(map.get("id"));
                     }
-                    intent.putExtra("fbid", map.get("fbid"));
-                    startActivity(intent);
-                    readSysmsg(map.get("id"));
-                }
-            });
+                });
+                listView.setVisibility(View.VISIBLE);
+                mNoMessageLayout.setVisibility(View.GONE);
+            }else {
+                listView.setVisibility(View.GONE);
+                mNoMessageLayout.setVisibility(View.VISIBLE);
+            }
         }
-        isclear =false;
+        isclear = false;
     }
 
     @Override

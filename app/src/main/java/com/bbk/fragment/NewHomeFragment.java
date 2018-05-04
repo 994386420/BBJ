@@ -125,6 +125,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private ImageView huodongimg;//活动按钮
     //第一次引导页是否显示隐藏
     private boolean isshowzhezhao = true;
+    private boolean mIsVisibleToUser = false;
+    final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -243,26 +245,22 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case R.id.ll_czg_layout:
                 setView();
                 mIdex("1",2);
-                mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
-                mCzgView.setVisibility(View.VISIBLE);
+                setText(mCzgText,mCzgView);
                 break;
             case R.id.ll_bj_layout:
                 setView();
                 mIdex("2",2);
-                mBjText.setTextColor(getResources().getColor(R.color.color_line_top));
-                mBjView.setVisibility(View.VISIBLE);
+                setText(mBjText,mBjView);
                 break;
             case R.id.ll_bl_layout:
                 setView();
                 mIdex("3",2);
-                mBlText.setTextColor(getResources().getColor(R.color.color_line_top));
-                mBlView.setVisibility(View.VISIBLE);
+                setText(mBlText,mBlView);
                 break;
             case R.id.ll_fx_layout:
                 setView();
                 mIdex("4",2);
-                mFxText.setTextColor(getResources().getColor(R.color.color_line_top));
-                mFxView.setVisibility(View.VISIBLE);
+                setText(mFxText,mFxView);
                 break;
             case R.id.msort:
                 intent = new Intent(getActivity(), SortActivity.class);
@@ -273,6 +271,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void setText(TextView text,View view){
+        text.setTextColor(getResources().getColor(R.color.color_line_top));
+        view.setVisibility(View.VISIBLE);
     }
 
     private void setView(){
@@ -340,7 +343,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 placeholder(R.mipmap.bjsq).into(mCompareimg);
                         Glide.with(getActivity()).load(gongneng.getJSONObject(1).optString("img")).placeholder(R.mipmap.lsyg).into(mQueryhistoryimg);
                     }else {
-                        mCompareimg.setBackgroundResource(R.mipmap.bjsq);
+                        mCompareimg.setBackgroundResource(R.mipmap.biaoju);
                         mQueryhistoryimg.setBackgroundResource(R.mipmap.lsyg);
                     }
                     //功能模块点击事件
@@ -434,10 +437,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         }
     }
 
-    @Override
-    public void lazyLoad() {
-
-    }
 
     //发现数据
     public void addFxList(JSONArray array) throws JSONException {
@@ -515,7 +514,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             TextView msellprice =  view.findViewById(R.id.msellprice);
             TextView mcount =  view.findViewById(R.id.mcount);
             ImageView mimg =  view.findViewById(R.id.mimg);
-            JSONObject object = fabiao.getJSONObject(i);
+            final JSONObject object = fabiao.getJSONObject(i);
             final String id = object.optString("id");
             String title = object.optString("title");
             String count = object.optString("count");
@@ -531,9 +530,19 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), BidDetailActivity.class);
-                    intent.putExtra("id",id);
-                    startActivity(intent);
+                    try {
+                        if (object.get("userid").equals(userID)){
+                            Intent intent = new Intent(getActivity(),BidBillDetailActivity.class);
+                            intent.putExtra("fbid",id);
+                            startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(getActivity(), BidDetailActivity.class);
+                            intent.putExtra("id",id);
+                            startActivity(intent);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
             mviewflipper.addView(view);
@@ -542,7 +551,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         Animation chu = AnimationUtils.loadAnimation(getActivity(), R.anim.lunbo_chu);
         mviewflipper.setInAnimation(ru);
         mviewflipper.setOutAnimation(chu);
-        mviewflipper.startFlipping();
+//        mviewflipper.startFlipping();
     }
     //首页Banner
     private void loadbanner(final JSONArray banner) {
@@ -828,4 +837,44 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             return false;
         }
     };
+
+    //1.在别的Fragment的时候mIsVisibleToUser肯定是false,不会调用开始轮播
+//2.在当然Fragment的时候mIsVisibleToUser肯定是true,所有我从这个Fragment
+//  进入别的Activity又退来的时候,就会开始轮播
+//3.从别的Fragment进入Activity再回来的时候触发onResume也会开始轮播,因为
+//  mIsVisibleToUser在切换到别的Fragment的时候就已经被置为false了
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mviewflipper !=null&&mIsVisibleToUser) {//在这里进行一下判断
+            mviewflipper.startFlipping();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mviewflipper !=null) {
+            mviewflipper.stopFlipping();
+        }
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        mIsVisibleToUser = isVisibleToUser;//被调用时记录下状态
+        if (mviewflipper == null) {
+            return;
+        }
+        if (isVisibleToUser) {
+            mviewflipper.startFlipping();
+        } else {
+            mviewflipper.stopFlipping();
+        }
+    }
+
+    @Override
+    protected void loadLazyData() {
+
+    }
 }

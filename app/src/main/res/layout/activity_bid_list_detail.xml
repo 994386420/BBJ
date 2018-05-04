@@ -83,6 +83,10 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#cbcbcb" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
         <include
             layout="@layout/no_network_layout"/>
         <include
@@ -99,6 +103,6 @@
                 android:background="#f3f3f3"
                 android:divider="@null"></ListView>
         </com.andview.refreshview.XRefreshView>
-
+        </RelativeLayout>
        </LinearLayout>
 </LinearLayout>

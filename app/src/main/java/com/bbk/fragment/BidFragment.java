@@ -633,7 +633,7 @@ public class BidFragment extends BaseViewPagerFragment implements ResultEvent{
     }
 
     @Override
-    public void lazyLoad() {
+    protected void loadLazyData() {
 
     }
 }

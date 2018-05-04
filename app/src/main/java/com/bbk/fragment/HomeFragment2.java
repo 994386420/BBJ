@@ -534,8 +534,7 @@ public class HomeFragment2 extends BaseViewPagerFragment implements OnClickListe
     }
 
     @Override
-    public void lazyLoad() {
-        // TODO Auto-generated method stub
+    protected void loadLazyData() {
 
     }
 

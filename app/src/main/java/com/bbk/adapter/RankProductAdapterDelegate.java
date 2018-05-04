@@ -67,12 +67,12 @@ public class RankProductAdapterDelegate implements AdapterDelegate<ArrayList<Has
 		productViewHolder.itemPrice.setText("￥" + itemMap.get("itemPrice").toString());
 		
 		Object oldPrice = itemMap.get("itemOldPrice");
-		if(oldPrice != null){
-			productViewHolder.itemOldPrice.setText(oldPrice.toString());
-			productViewHolder.itemOldPrice.setVisibility(View.VISIBLE);
-		}else{
-			productViewHolder.itemOldPrice.setVisibility(View.GONE);
-		}
+//		if(oldPrice != null){
+//			productViewHolder.itemOldPrice.setText(oldPrice.toString());
+//			productViewHolder.itemOldPrice.setVisibility(View.VISIBLE);
+//		}else{
+//			productViewHolder.itemOldPrice.setVisibility(View.GONE);
+//		}
 		
 		productViewHolder.itemText.setText(itemMap.get("itemText").toString());
 		productViewHolder.itemNumber.setText(String.valueOf(position+1));
@@ -116,7 +116,7 @@ public class RankProductAdapterDelegate implements AdapterDelegate<ArrayList<Has
 		TextView itemText;
 		TextView itemNumber;
 		TextView itemDetails;
-		TextView itemOldPrice; 
+//		TextView itemOldPrice;
 
 		public RankProductViewHolder(View view) {
 			super(view);
@@ -126,7 +126,7 @@ public class RankProductAdapterDelegate implements AdapterDelegate<ArrayList<Has
 			itemPrice = (TextView) view.findViewById(R.id.item_price);
 			itemText = (TextView) view.findViewById(R.id.item_text);
 			itemNumber = (TextView) view.findViewById(R.id.rank_number_tv);
-			itemOldPrice = (TextView) view.findViewById(R.id.item_old_price);
+//			itemOldPrice = (TextView) view.findViewById(R.id.item_old_price);
 		}
 
 	}
