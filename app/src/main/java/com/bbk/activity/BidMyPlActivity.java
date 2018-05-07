@@ -143,23 +143,25 @@ public class BidMyPlActivity extends BaseActivity implements ResultEvent {
             list.add(map);
         }
 
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
         if (adapter != null){
             if (list != null && list.size() > 0){
                 adapter.notifyDataSetChanged();
                 mlistview.setVisibility(View.VISIBLE);
-            }else {
-                mlistview.setVisibility(View.GONE);
             }
+//            else {
+//                mlistview.setVisibility(View.GONE);
+//            }
         }else {
             if (list != null && list.size() > 0){
                 adapter = new BidDetailListPLAdapter(this, list);
                 mlistview.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 mlistview.setVisibility(View.VISIBLE);
-            }else {
-                mlistview.setVisibility(View.GONE);
             }
+//            else {
+//                mlistview.setVisibility(View.GONE);
+//            }
         }
         isclear = false;
     }

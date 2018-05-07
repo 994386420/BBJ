@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.andview.refreshview.XRefreshView;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
@@ -37,6 +38,8 @@ import com.bbk.chat.utils.PushUtil;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.StringUtil;
+import com.bbk.view.HeaderView;
+import com.bbk.view.MyFootView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.tencent.imsdk.TIMConversation;
@@ -103,12 +106,11 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
     List<String> users17 = new ArrayList<String>();
     List<String> users18 = new ArrayList<String>();
     List<String> users19 = new ArrayList<String>();
-    private TIMFriendshipManager timFriendshipManager;
-    List<TIMUserProfile> result1;
     private SharedPreferences sharedPreferences;
     private SharedPreferences sharedPreferencesnickname;
-    TIMMessage message;
     public static long mChatMessage;
+    private XRefreshView xrefresh;
+
     public BidChatFragment() {
         // Required empty public constructor
     }
@@ -131,6 +133,9 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         if (view == null){
             view = inflater.inflate(R.layout.fragment_bid_chat_ytx, container, false);
             listView = (ListView) view.findViewById(R.id.list);
+            xrefresh = view.findViewById(R.id.xrefresh);
+            xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
+            refreshAndloda();
             friendshipManagerPresenter = new FriendshipManagerPresenter(this);
             groupManagerPresenter = new GroupManagerPresenter(this);
             presenter = new ConversationPresenter(this);
@@ -140,7 +145,42 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         return view;
 
     }
+    private void refreshAndloda() {
+        xrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
 
+            @Override
+            public void onRelease(float direction) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                Collections.sort(conversationList);
+                handler.sendEmptyMessageDelayed(1,0);
+                if (getParentFragment() instanceof BidMessageFragment)
+                    ((BidMessageFragment)getParentFragment()).setMsgUnread(getTotalUnreadNum() == 0);
+            }
+
+            @Override
+            public void onRefresh() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+            }
+
+            @Override
+            public void onHeaderMove(double headerMovePercent, int offsetY) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        MyFootView footView = new MyFootView(getActivity());
+        xrefresh.setCustomFooterView(footView);
+    }
     @Override
     public void onResume(){
         super.onResume();
@@ -272,6 +312,8 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             switch (msg.what){
                 case 1:
                     try {
+                        xrefresh.stopLoadMore();
+                        xrefresh.stopRefresh();
                         if (users != null){
                             users.clear();
                         }

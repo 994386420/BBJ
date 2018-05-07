@@ -31,12 +31,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ResultMyGridAdapter extends BaseAdapter{
 	private List<Map<String, Object>> list;
 	private Activity context;
+	ViewHolder vh;
 	public ResultMyGridAdapter(List<Map<String, Object>> list,Activity context){
 		this.list = list;
 		this.context =context;
@@ -59,7 +61,6 @@ public class ResultMyGridAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup arg2) {
-		final ViewHolder vh;		
 			if (convertView == null) {
 				vh = new ViewHolder();
 				convertView = View.inflate(context, R.layout.listview_item_result4, null);
@@ -89,18 +90,8 @@ public class ResultMyGridAdapter extends BaseAdapter{
 				String price = dataSet.get("price").toString();
 				String hnumber = dataSet.get("hnumber").toString();
 				vh.title.setText(title);
-				String bigprice;
-				String littleprice;
-				if (price.contains(".")) {
-					int end = price.indexOf(".");
-					bigprice = price.substring(0, end);
-					littleprice = price.substring(end, price.length());
-				}else{
-					bigprice = price;
-					littleprice = ".0";
-				}
-				vh.mbigprice.setText(bigprice);
-				vh.mlittleprice.setText(littleprice);
+				JSONArray array = new JSONArray(dataSet.get("tarr").toString());
+				addList(array);
 				if (Integer.valueOf(hnumber)>10000) {
 					if (Integer.valueOf(hnumber)>100000000) {
 						DecimalFormat df = new DecimalFormat("###.0");
@@ -180,5 +171,24 @@ public class ResultMyGridAdapter extends BaseAdapter{
 		TextView title,item_offer,mbigprice,mlittleprice,juan;
 		LinearLayout domainLayout;
 		RelativeLayout intentbuy,mmoredomain;
+	}
+	public void addList(JSONArray array) throws JSONException {
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject object = array.getJSONObject(i);
+			String price = object.optString("price");
+			String bigprice;
+			String littleprice;
+			if (price.contains(".")) {
+				int end = price.indexOf(".");
+				bigprice = price.substring(0, end);
+				littleprice = price.substring(end, price.length());
+			}else{
+				bigprice = price;
+				littleprice = ".0";
+			}
+//			Log.i("-----",bigprice+"---------"+littleprice);
+			vh.mbigprice.setText(bigprice);
+			vh.mlittleprice.setText(littleprice);
+		}
 	}
 }

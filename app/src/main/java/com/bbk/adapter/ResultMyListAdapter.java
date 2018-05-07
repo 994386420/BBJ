@@ -1,6 +1,7 @@
 package com.bbk.adapter;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +28,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ResultMyListAdapter extends BaseAdapter{
 	private List<Map<String, Object>> list;
+	private List<Map<String, String>> list1;
 	private Activity context;
+	ViewHolder vh;
 	public ResultMyListAdapter(List<Map<String, Object>> list,Activity context){
 		this.list = list;
 		this.context =context;
@@ -55,7 +59,6 @@ public class ResultMyListAdapter extends BaseAdapter{
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup arg2) {
-		final ViewHolder vh;
 		if (convertView == null) {
 			vh = new ViewHolder();
 			convertView = View.inflate(context, R.layout.listview_result, null);
@@ -83,21 +86,11 @@ public class ResultMyListAdapter extends BaseAdapter{
 			//Log.e("====",position+"   "+dataSet);
 			final String title = dataSet.get("title").toString();
 			String img = dataSet.get("img").toString();
-			String price = dataSet.get("price").toString();
+//			String price = dataSet.get("price").toString();
 			String hnumber = dataSet.get("hnumber").toString();
 			vh.title.setText(title);
-			String bigprice;
-			String littleprice;
-			if (price.contains(".")) {
-				int end = price.indexOf(".");
-				bigprice = price.substring(0, end);
-				littleprice = price.substring(end, price.length());
-			}else{
-				bigprice = price;
-				littleprice = ".0";
-			}
-			vh.mbigprice.setText(bigprice);
-			vh.mlittleprice.setText(littleprice);
+			JSONArray array = new JSONArray(dataSet.get("tarr").toString());
+			addList(array);
 			if (Integer.valueOf(hnumber)>10000) {
 				if (Integer.valueOf(hnumber)>100000000) {
 					DecimalFormat df = new DecimalFormat("###.0");
@@ -246,5 +239,28 @@ public class ResultMyListAdapter extends BaseAdapter{
 		RelativeLayout intentbuy,findsimilar;
 		View mfengexian,lingjuanzhanwei;
 
+	}
+
+	public void addList(JSONArray array) throws JSONException {
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject object = array.getJSONObject(i);
+//			Map<String,String> map = new HashMap<>();
+//			map.put("price",object.optString("price"));
+//			list1.add(map);
+			String price = object.optString("price");
+			String bigprice;
+			String littleprice;
+			if (price.contains(".")) {
+				int end = price.indexOf(".");
+				bigprice = price.substring(0, end);
+				littleprice = price.substring(end, price.length());
+			}else{
+				bigprice = price;
+				littleprice = ".0";
+			}
+//			Log.i("-----",bigprice+"---------"+littleprice);
+			vh.mbigprice.setText(bigprice);
+			vh.mlittleprice.setText(littleprice);
+		}
 	}
 }
