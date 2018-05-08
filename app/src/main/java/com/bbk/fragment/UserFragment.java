@@ -39,6 +39,7 @@ import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.ContactActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.LogisticsQueryActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
@@ -86,6 +87,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	private RelativeLayout mzhanwei;
 	private XRefreshView xrefresh;
 	private boolean isTaoBaoLogin = false;
+	private boolean isuserzhezhao = false;
+	public static ImageView mzhezhao;
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -172,6 +175,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		mcollection.setOnClickListener(this);
 		user_name.setOnClickListener(this);
 		mtaobaologin.setOnClickListener(this);
+		mzhezhao = mView.findViewById(R.id.mzhezhao);
 		xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
 		xrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
 			@Override
@@ -759,6 +763,37 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
 	@Override
 	protected void loadLazyData() {
+		try {
+			//我的引导页只显示一次
+			String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstMyUse", "isFirstMyUserUse");
+			if (TextUtils.isEmpty(isFirstResultUse)) {
+				isFirstResultUse = "yes";
+			}
+			if (isFirstResultUse.equals("yes")) {
+				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse","isFirstMyUserUse", "no");
+				mzhezhao.setVisibility(View.VISIBLE);
+				mzhezhao.setImageResource(R.mipmap.app_jingbi);
+			}
+			mzhezhao.setOnClickListener(new OnClickListener() {
 
+				@Override
+				public void onClick(View v) {
+					try {
+
+						if (isuserzhezhao) {
+							mzhezhao.setVisibility(View.GONE);
+						}else{
+							mzhezhao.setImageResource(R.mipmap.app_qiandao);
+							isuserzhezhao = true;
+
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			});
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }

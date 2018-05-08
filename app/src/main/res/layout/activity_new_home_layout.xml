@@ -624,4 +624,10 @@
             android:layout_marginRight="15dp"
             android:visibility="gone" />
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/new_gudie_image_home"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
 </RelativeLayout>

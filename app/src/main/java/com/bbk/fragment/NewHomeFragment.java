@@ -29,6 +29,7 @@ import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.DataFragmentActivity;
 import com.bbk.activity.DomainMoreActivity;
 import com.bbk.activity.GossipPiazzaDetailActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.QueryHistoryActivity;
 import com.bbk.activity.R;
@@ -127,6 +128,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private boolean isshowzhezhao = true;
     private boolean mIsVisibleToUser = false;
     final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+    private boolean isHomeGudie = false;
+    public static ImageView mHomeGudieImage;//第一次安装首页新人引导
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -170,6 +173,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //控件实例化
     private void initView(View v){
+        mHomeGudieImage = mView.findViewById(R.id.new_gudie_image_home);
         huodongimg =mView.findViewById(R.id.huodongimg);
         view = v.findViewById(R.id.view);
         mRefreshableView =  v.findViewById(R.id.refresh_root);
@@ -875,6 +879,33 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
     @Override
     protected void loadLazyData() {
+        //首页引导页只显示一次
+        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+        if (TextUtils.isEmpty(isFirstResultUse)) {
+            isFirstResultUse = "yes";
+        }
+        if (isFirstResultUse.equals("yes")) {
+            SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
+            mHomeGudieImage.setVisibility(View.VISIBLE);
+            mHomeGudieImage.setImageResource(R.mipmap.new_guide_biaoju);
+        }
+        mHomeGudieImage.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    if (isHomeGudie) {
+                        mHomeGudieImage.setVisibility(View.GONE);
+                    }else{
+                        mHomeGudieImage.setImageResource(R.mipmap.new_guide_bijia);
+                        isHomeGudie = true;
+
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }
+        });
     }
 }
