@@ -75,12 +75,13 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
             dataFlow = new DataFlow6(getActivity());
             getActivity().getWindow().setBackgroundDrawable(null);
             mView = inflater.inflate(R.layout.fragment_bid_home, null);
-            View topView = mView.findViewById(R.id.lin1);
-            // 实现沉浸式状态栏
-            ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
+//            View topView = mView.findViewById(R.id.lin1);
+//            // 实现沉浸式状态栏
+//            ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
             initView();
             mzhuangtai = mView.findViewById(R.id.mzhuangtai);
-            initstateView();
+//            initstateView();
+//            initstateView();
             initData();
         }
         return mView;

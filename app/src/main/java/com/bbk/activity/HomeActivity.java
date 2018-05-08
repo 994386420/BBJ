@@ -46,6 +46,7 @@ import com.bbk.fragment.BidUserFragment;
 import com.bbk.fragment.DataFragment;
 import com.bbk.fragment.GossipPiazzaFragment;
 import com.bbk.fragment.HomeFragment2;
+import com.bbk.fragment.HomeMessageFragment;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.NewRankFragment;
 import com.bbk.fragment.RankFragment;
@@ -267,7 +268,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		NewRankFragment rankFragment = new NewRankFragment();
 //		DataFragment dataFragment = new DataFragment();
 //		RankFragment rankFragment = new RankFragment();
-		BidMessageFragment bidMessageFragment = new BidMessageFragment();
+		HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
 		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();
 		UserFragment userFragment = new UserFragment();
 		fragments.add(homeFragment);//首页

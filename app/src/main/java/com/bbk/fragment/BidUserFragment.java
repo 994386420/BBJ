@@ -65,8 +65,8 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
                              @Nullable Bundle savedInstanceState) {
         // return super.onCreateView(inflater, container, savedInstanceState);
         mView = inflater.inflate(R.layout.fragment_bid_user, null);
-        data_head = mView.findViewById(R.id.data_head);
-        ImmersionUtil.initstateView(getActivity(),data_head);
+//        data_head = mView.findViewById(R.id.data_head);
+//        ImmersionUtil.initstateView(getActivity(),data_head);
         dataFlow = new DataFlow6(getActivity());
         initView();
         initData();

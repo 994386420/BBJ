@@ -1,30 +1,18 @@
 package com.bbk.fragment;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.R;
 import com.bbk.adapter.MyFragmentPagerAdapter;
-import com.bbk.chat.ui.ContactFragment;
-import com.bbk.chat.ui.ConversationFragment;
-import com.bbk.chat.ui.SettingFragment;
-import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersionUtil;
@@ -33,13 +21,12 @@ import com.bbk.view.CustomViewPager;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 消息
  */
 
-public class BidMessageFragment extends BaseViewPagerFragment implements ResultEvent,View.OnClickListener{
+public class HomeMessageFragment extends BaseViewPagerFragment implements ResultEvent,View.OnClickListener{
 
     private View mView;
     private DataFlow6 dataFlow;
@@ -84,8 +71,8 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
             return mView;
         }
         mView = inflater.inflate(R.layout.fragment_bid_message, container,false);
-//        data_head = mView.findViewById(R.id.data_head);
-//        ImmersionUtil.initstateView(getActivity(),data_head);
+        data_head = mView.findViewById(R.id.data_head);
+        ImmersionUtil.initstateView(getActivity(),data_head);
         dataFlow = new DataFlow6(getActivity());
         initView();
         initData();

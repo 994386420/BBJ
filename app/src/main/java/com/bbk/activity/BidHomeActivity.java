@@ -25,6 +25,7 @@ import com.bbk.fragment.BidHomeFragment;
 import com.bbk.fragment.BidMessageFragment;
 import com.bbk.fragment.BidUserFragment;
 import com.bbk.util.BaseTools;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.CustomViewPager;
 import com.bbk.view.NumImageView;
@@ -78,6 +79,9 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bidhome);
+        View topView = findViewById(R.id.activity_home_layout);
+        // 实现沉浸式状态栏
+        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         instance = this;
         dataFlow = new DataFlow(this);
         initView();
@@ -301,11 +305,11 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     @Override
     protected void onResume() {
         super.onResume();
-//        String type = SharedPreferencesUtil.getSharedData(getApplicationContext(), "Bidhomeactivty", "type");
-//        if (!TextUtils.isEmpty(type)) {
-//            SharedPreferencesUtil.cleanShareData(getApplicationContext(), "Bidhomeactivty");
-//            mViewPager.setCurrentItem(Integer.valueOf(type));
-//        }
+        String type = SharedPreferencesUtil.getSharedData(getApplicationContext(), "Bidhomeactivty", "type");
+        if (!TextUtils.isEmpty(type)) {
+            SharedPreferencesUtil.cleanShareData(getApplicationContext(), "Bidhomeactivty");
+            mViewPager.setCurrentItem(Integer.valueOf(type));
+        }
     }
     @Override
     protected void onStart() {

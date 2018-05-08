@@ -29,6 +29,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,12 +56,18 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 	private View data_head;
 	private RelativeLayout mbackground, msign;
 	private MyListView mlistview;
-	private String[] str1 = { "邀请好友下载APP", "签到打卡", "新注册用户", "完善资料", "查历史价", "收藏奖励", "爆料奖励", "评论奖励", "意见反馈" };
-	private String[] str2 = { "+500鲸币", "+5至50鲸币", "+800鲸币", "+5鲸币", "+15鲸币", "+5鲸币", "+50鲸币", "+10鲸币", "+50鲸币" };
-	private String[] str3 = { "每邀请一个好友注册成功", "连续签到7天+50鲸币，每轮7天", "新用户注册成功", "完善个人资料", "查询商品历史价格一次(限10次/日)", "每日收藏商品一件",
-			"发表一条图文信息并审核通过", "文章评论内容大于10个字", "反馈有效意见或建议" };
-	private int[] drawable = { R.mipmap.rw_1, R.mipmap.rw_2, R.mipmap.rw_3, R.mipmap.rw_4, R.mipmap.jinbi_clsj,
-			R.mipmap.rw_6, R.mipmap.rw_7, R.mipmap.rw_8, R.mipmap.rw_10 };
+//	private String[] str1 = { "邀请好友下载APP", "签到打卡", "新注册用户", "完善资料", "查历史价", "收藏奖励", "爆料奖励", "评论奖励", "意见反馈" };
+//	private String[] str2 = { "+500鲸币", "+5至50鲸币", "+800鲸币", "+5鲸币", "+15鲸币", "+5鲸币", "+50鲸币", "+10鲸币", "+50鲸币" };
+//	private String[] str3 = { "每邀请一个好友注册成功", "连续签到7天+50鲸币，每轮7天", "新用户注册成功", "完善个人资料", "查询商品历史价格一次(限10次/日)", "每日收藏商品一件",
+//			"发表一条图文信息并审核通过", "文章评论内容大于10个字", "反馈有效意见或建议" };
+//	private int[] drawable = { R.mipmap.rw_1, R.mipmap.rw_2, R.mipmap.rw_3, R.mipmap.rw_4, R.mipmap.jinbi_clsj,
+//			R.mipmap.rw_6, R.mipmap.rw_7, R.mipmap.rw_8, R.mipmap.rw_10 };
+	private String[] str1 = { "新注册用户", "签到打卡", "微信公众号签到", "完善资料", "收藏奖励", "意见反馈", "邀请好友下载APP", "查历史价", "爆料奖励","发镖","接镖"};
+	private String[] str2 = { "+800鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+500鲸币", "+15鲸币", "+50鲸币", "+50鲸币", "+50鲸币" };
+	private String[] str3 = { "新用户注册成功", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "收藏商品一次（限10次/日）", "反馈有效意见或建议",
+			"每邀请一个好友注册成功", "查询商品历史价格一次（限10次/日）", "发表一条图文信息并审核通过","交镖成功并评论","接镖成功并评论" };
+	private int[] drawable = {R.mipmap.rw_3,R.mipmap.rw_2,R.mipmap.coin_weixin,R.mipmap.rw_4,
+			R.mipmap.rw_6, R.mipmap.rw_10,R.mipmap.rw_1, R.mipmap.jinbi_clsj, R.mipmap.rw_7,  R.mipmap.rw_8,R.mipmap.coin_jiebiao };
 	private List<Map<String, Object>> list;
 	private MyCoinAdapter adapter;
 	private DataFlow6 dataFlow;
@@ -328,7 +335,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 					initisgo(i, object);
 				}
 				adapter.notifyDataSetChanged();
-				mscroll.smoothScrollTo(0, 0);
+//				mscroll.smoothScrollTo(0, 0);
 				mbackground.setFocusable(true);  
 				mbackground.setFocusableInTouchMode(true);  
 				mbackground.requestFocus();  
@@ -407,6 +414,10 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 
 	}
 
+	/**
+	 * 	1:邀请好友下载APP,9:签到打卡,2:新注册用户,3:完善资料,4:分享文章,
+	 * 	5:收藏奖励,6:爆料奖励,7:评论奖励,8:反馈意见,10查历史价 11,完成发镖 12完成接镖
+	 */
 	private void initisgo(int i, JSONObject object) {
 		Map<String, Object> map = list.get(i);
 		if (i == 0) {
@@ -414,12 +425,21 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 		} else if (i == 1) {
 			map.put("isgo", object.optString("9"));
 			if (object.optString("9").equals("1")) {
-				 msigntext.setText("已签到"); 
+				 msigntext.setText("已签到");
 				 textjingbi.setVisibility(View.VISIBLE);
 				 issign = false;
 			}
 		} else {
-			map.put("isgo", object.optString(String.valueOf(i)));
+			map.put("isgo", object.optString("2"));
+			map.put("isgo", object.optString("3"));
+			map.put("isgo", object.optString("4"));
+			map.put("isgo", object.optString("5"));
+			map.put("isgo", object.optString("6"));
+			map.put("isgo", object.optString("7"));
+			map.put("isgo", object.optString("8"));
+			map.put("isgo", object.optString("10"));
+			map.put("isgo", object.optString("11"));
+			map.put("isgo", object.optString("12"));
 		}
 
 	}
@@ -536,6 +556,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		Map<String, Object> map = list.get(position);
 		String isgo = map.get("isgo").toString();
+//		Log.i("isgo",isgo+"=======================");
 		if (isgo.equals("0")) {
 			Intent intent;
 			switch (position) {
@@ -545,38 +566,60 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 				startActivity(intent);
 				break;
 			case 1:
+				//签到打卡
 				mscroll.fullScroll(View.FOCUS_UP);
 				break;
 			case 2:
-				
+				//微信公众号签到
 				break;
 			case 3:
+				//完善资料
 				intent = new Intent(this, UserAccountActivity.class);
 				startActivity(intent);
 				break;
 			case 4:
 //				SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "0");
-				intent = new Intent(this, QueryHistoryActivity.class);
-				startActivity(intent);
-				break;
-			case 5:
+				//收藏奖励
 				intent = new Intent(this, HomeActivity.class);
 				SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "0");
 				startActivity(intent);
 				break;
-			case 6:
-				intent = new Intent(this, MyGossipActivity.class);
-				startActivity(intent);
-				break;
-			case 7:
-				SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "3");
-				intent = new Intent(this, HomeActivity.class);
-				startActivity(intent);
-				break;
-			case 8:
+			case 5:
+				//意见反馈
 				intent = new Intent(this, UserSuggestionActivity.class);
 				startActivity(intent);
 				break;
+			case 6:
+				//邀请好友下载APP
+				intent = new Intent(this, CoinGoGoGoActivity.class);
+				intent.putExtra("type", "1");
+				startActivity(intent);
+				break;
+			case 7:
+				//查历史价
+				intent = new Intent(this, QueryHistoryActivity.class);
+				startActivity(intent);
+//				SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "3");
+//				intent = new Intent(this, HomeActivity.class);
+//				startActivity(intent);
+				break;
+			case 8:
+				//爆料奖励
+				intent = new Intent(this, MyGossipActivity.class);
+				startActivity(intent);
+				break;
+				case 9:
+					//发镖
+					intent = new Intent(this, BidHomeActivity.class);
+					SharedPreferencesUtil.putSharedData(getApplicationContext(), "Bidhomeactivty", "type", "0");
+					startActivity(intent);
+					break;
+				case 10:
+					//接镖
+					intent = new Intent(this, BidHomeActivity.class);
+					SharedPreferencesUtil.putSharedData(getApplicationContext(), "Bidhomeactivty", "type", "0");
+					startActivity(intent);
+					break;
 			default:
 				break;
 			}

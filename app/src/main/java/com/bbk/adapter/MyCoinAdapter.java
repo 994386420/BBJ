@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -66,6 +67,7 @@ public class MyCoinAdapter extends BaseAdapter{
 		String str2 = map.get("str2").toString();
 		String str3 = map.get("str3").toString();
 		String isgo = map.get("isgo").toString();
+//		Log.i("isgo",isgo+"---------------------");
 		int drawable = (int) map.get("drawable");
 		vh.mstr1.setText(str1);
 		vh.mstr2.setText(str2);
@@ -82,6 +84,18 @@ public class MyCoinAdapter extends BaseAdapter{
 		vh.mimg.setBackgroundResource(drawable);
 		if (position == 8) {
 			vh.mhenggong.setVisibility(View.GONE);
+		}
+		if (position == 2){
+			vh.mgo.setVisibility(View.GONE);
+			vh.mbiankuang.setVisibility(View.GONE);
+		}else {
+			vh.mgo.setVisibility(View.VISIBLE);
+			vh.mbiankuang.setVisibility(View.VISIBLE);
+		}
+		if (position == 0){
+			vh.mgo.setText("邀请好友");
+			vh.mbiankuang.setBackgroundResource(R.drawable.text_circle_orange_white_more);
+			vh.mgo.setTextColor(Color.parseColor("#ff7d41"));
 		}
 		return convertView;
 	}

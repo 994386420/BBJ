@@ -89,8 +89,8 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Resu
             dataFlow = new DataFlow6(getActivity());
             getActivity().getWindow().setBackgroundDrawable(null);
             mView = inflater.inflate(R.layout.activity_bid_acceptance, null);
-            data_head = mView.findViewById(R.id.data_head);
-            ImmersionUtil.initstateView(getActivity(),data_head);
+//            data_head = mView.findViewById(R.id.data_head);
+//            ImmersionUtil.initstateView(getActivity(),data_head);
             initView();
             initData(type,1);
         }
