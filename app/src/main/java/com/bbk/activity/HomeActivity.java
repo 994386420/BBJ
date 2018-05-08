@@ -458,7 +458,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		Timer tExit = null;
 		if (isExit == false) {
 			isExit = true; // 准备退出
-			StringUtil.showToast(this, "再按一次退出程序");
+			StringUtil.showToast(this, "再按一次返回键退出比比鲸");
 			tExit = new Timer();
 			tExit.schedule(new TimerTask() {
 				@Override

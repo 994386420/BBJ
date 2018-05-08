@@ -34,7 +34,7 @@
                 android:textSize="13dp"
                 android:textColor="#666666"
                 android:layout_gravity="center_horizontal"
-                android:text="超市"/>
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/box2"
@@ -63,7 +63,7 @@
                 android:textSize="13dp"
                 android:textColor="#666666"
                 android:layout_gravity="center_horizontal"
-                android:text="超市"/>
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/box3"
@@ -92,7 +92,7 @@
                 android:textSize="13dp"
                 android:textColor="#666666"
                 android:layout_gravity="center_horizontal"
-                android:text="超市"/>
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/box4"
@@ -121,7 +121,7 @@
                 android:textSize="13dp"
                 android:textColor="#666666"
                 android:layout_gravity="center_horizontal"
-                android:text="超市"/>
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/box5"
@@ -150,7 +150,7 @@
                 android:textSize="13dp"
                 android:textColor="#666666"
                 android:layout_gravity="center_horizontal"
-                android:text="超市"/>
+                android:text=""/>
         </LinearLayout>
     </LinearLayout>
     <View
