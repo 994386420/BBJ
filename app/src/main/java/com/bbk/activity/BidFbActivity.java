@@ -96,6 +96,7 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
     private ImageView magrement;
     private boolean isagrement = true;
     private ImageView topbar_goback_btn;
+    private TextView mStartTime;//发镖时间
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,6 +143,11 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
 //                }
 //            }
 //        });
+        mStartTime = findViewById(R.id.mstart_time);
+        long time=System.currentTimeMillis();
+        Date date=new Date(time);
+        SimpleDateFormat format=new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+        mStartTime.setText(format.format(date));
         mscrollview = (ScrollView)findViewById(R.id.mscrollview);
         mname = (EditText)findViewById(R.id.mname);
         mcount = (EditText)findViewById(R.id.mcount);
@@ -356,13 +362,13 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
         final HashMap<String, String> params = new HashMap<String, String>();
         RadioButton radioButton = (RadioButton)findViewById(mradioGroup.getCheckedRadioButtonId());
         String mins = radioButton.getText().toString();
-        //发镖改成三天，五天，七天，传小时
-        if (mins.contains("3")){
-            mins = "72";
-        }else if (mins.contains("5")){
-            mins = "120";
+        //发镖改回24，48，72
+        if (mins.contains("24")){
+            mins = "24";
+        }else if (mins.contains("48")){
+            mins = "48";
         }else {
-            mins = "168";
+            mins = "72";
         }
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");

@@ -55,7 +55,9 @@
                             android:id="@+id/mExtra"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:text=""
+                            android:lines="2"
                             android:textColor="#AD171B"
                             android:textSize="15dp"/>
 

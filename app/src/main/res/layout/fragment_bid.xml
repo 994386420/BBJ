@@ -200,7 +200,34 @@
                         android:textSize="14dp" />
                 </LinearLayout>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#f3f3f3" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开始发镖:" />
+
+                <TextView
+                    android:id="@+id/mstart_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    android:text=""/>
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -235,7 +262,7 @@
                         android:layout_weight="1"
                         android:button="@drawable/bid_radiobtn"
                         android:checked="true"
-                        android:text="  3天" />
+                        android:text="  24小时" />
 
                     <RadioButton
                         android:id="@+id/mbtn2"
@@ -243,7 +270,7 @@
                         android:layout_height="wrap_content"
                         android:button="@drawable/bid_radiobtn"
                         android:layout_weight="1"
-                        android:text="  5天" />
+                        android:text="  48小时" />
 
                     <RadioButton
                         android:id="@+id/mbtn3"
@@ -251,7 +278,7 @@
                         android:layout_height="wrap_content"
                         android:button="@drawable/bid_radiobtn"
                         android:layout_weight="1"
-                        android:text="  7天" />
+                        android:text="  72小时" />
                 </RadioGroup>
             </LinearLayout>
 
