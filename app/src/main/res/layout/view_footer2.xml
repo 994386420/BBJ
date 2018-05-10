@@ -2,10 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40.0dip"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eeeeee"
-    android:orientation="vertical"
-     >
-
+    android:gravity="center"
+    android:orientation="horizontal">
+    <com.zyao89.view.zloading.ZLoadingView
+        android:id="@+id/progress"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:visibility="visible"
+        app:z_color="#666666"
+        app:z_type="DoubleCircleBuilder"
+        app:z_duration_percent="0.5"
+        android:layout_marginRight="5dp"/>
     <TextView
         android:id="@+id/footer_hint_textview"
         android:layout_marginTop="10dp"

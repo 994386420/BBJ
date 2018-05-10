@@ -93,7 +93,7 @@ public class DataFlow6 {
 			//	Toast.makeText(context, "服务器忙不过来了，请稍后再试！", Toast.LENGTH_SHORT).show();
 			}
 			DialogSingleUtil.dismiss(0);
-			NewHomeFragment.mRefreshableView.finishRefresh();
+			NewHomeFragment.mRefreshableView.stopRefresh();
 		}
 	};	
 	private static class Data{

@@ -88,7 +88,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	private XRefreshView xrefresh;
 	private boolean isTaoBaoLogin = false;
 	private boolean isuserzhezhao = false;
-	public static ImageView mzhezhao;
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -175,7 +174,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		mcollection.setOnClickListener(this);
 		user_name.setOnClickListener(this);
 		mtaobaologin.setOnClickListener(this);
-		mzhezhao = mView.findViewById(R.id.mzhezhao);
 		xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
 		xrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
 			@Override
@@ -771,19 +769,19 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 			}
 			if (isFirstResultUse.equals("yes")) {
 				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse","isFirstMyUserUse", "no");
-				mzhezhao.setVisibility(View.VISIBLE);
-				mzhezhao.setImageResource(R.mipmap.app_jingbi);
+				HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
+				HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
 			}
-			mzhezhao.setOnClickListener(new OnClickListener() {
+			HomeActivity.mzhezhao.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					try {
 
 						if (isuserzhezhao) {
-							mzhezhao.setVisibility(View.GONE);
+							HomeActivity.mzhezhao.setVisibility(View.GONE);
 						}else{
-							mzhezhao.setImageResource(R.mipmap.app_qiandao);
+							HomeActivity.mzhezhao.setImageResource(R.mipmap.app_qiandao);
 							isuserzhezhao = true;
 
 						}

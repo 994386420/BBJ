@@ -193,9 +193,41 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         viewHolder.mextra.setText(object.optString("extra"));
         JSONArray imgs = object.getJSONArray("imgs");
         try {
-            for (int j = 0; j < 3; j++) {
-                Glide.with(context).load(imgs.getString(j)).into(img[j]);
-            }
+                switch (imgs.length()){
+                    case 1:
+                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg1);
+//                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg2);
+                        viewHolder.mimg2.setImageResource(R.color.white);
+                        viewHolder.mimg3.setImageResource(R.color.white);
+//                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg3);
+                        break;
+                    case 2:
+                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg1);
+                        Glide.with(context).load(imgs.getString(1)).into(viewHolder.mimg2);
+                        viewHolder.mimg3.setImageResource(R.color.white);
+                        break;
+                    case 3:
+                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg1);
+                        Glide.with(context).load(imgs.getString(1)).into(viewHolder.mimg2);
+                        Glide.with(context).load(imgs.getString(2)).into(viewHolder.mimg3);
+                        break;
+                }
+//            for (int j = 0; j < 3; j++) {
+//                switch (j){
+//                    case 0:
+//                        Glide.with(context).load(imgs.getString(0)).into(img[0]);
+//                        break;
+//                    case 1:
+//                        Glide.with(context).load(imgs.getString(0)).into(img[0]);
+//                        Glide.with(context).load(imgs.getString(1)).into(img[1]);
+//                        break;
+//                    case 2:
+//                        Glide.with(context).load(imgs.getString(0)).into(img[0]);
+//                        Glide.with(context).load(imgs.getString(1)).into(img[1]);
+//                        Glide.with(context).load(imgs.getString(2)).into(img[2]);
+//                        break;
+//                }
+//            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -225,7 +257,7 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         TextView[] text = {viewHolder.text1,viewHolder.text2,viewHolder.text3,viewHolder.text4,viewHolder.text5};
         ImageView[] img = {viewHolder.img1,viewHolder.img2,viewHolder.img3,viewHolder.img4,viewHolder.img5};
         LinearLayout[] lin = {viewHolder.box1,viewHolder.box2,viewHolder.box3,viewHolder.box4,viewHolder.box5};
-        for (int i = 0; i < toparray_tag.length(); i++) {
+        for (int i = 0; i < 5; i++) {
             final JSONObject object = toparray_tag.getJSONObject(i);
             text[i].setText(object.optString("name"));
             Glide.with(context).load(object.optString("imgurl")).placeholder(R.mipmap.zw_img_160).into(img[i]);

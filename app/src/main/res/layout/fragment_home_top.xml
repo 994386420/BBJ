@@ -6,26 +6,7 @@
     android:background="#ffffff"
     android:focusableInTouchMode="true"
     android:layout_height="wrap_content">
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="5dp"/>-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <com.youth.banner.Banner
-            android:id="@+id/banner"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            app:indicator_height="6dp"
-            app:indicator_width="6dp"
-            app:indicator_margin="2.5dp"
-            android:focusable="true"
-            app:indicator_drawable_selected="@drawable/banner_circle2"
-            app:indicator_drawable_unselected="@drawable/banner_circle"
-            />
-
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,6 +28,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:adjustViewBounds="true"
+                android:background="@mipmap/zw_img_160"
                 android:layout_gravity="center_horizontal"
 
                 />
@@ -74,6 +56,7 @@
                 android:id="@+id/img2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/zw_img_160"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -102,6 +85,7 @@
                 android:id="@+id/img3"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/zw_img_160"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -130,6 +114,7 @@
                 android:id="@+id/img4"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/zw_img_160"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -158,6 +143,7 @@
                 android:id="@+id/img5"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="@mipmap/zw_img_160"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
 
@@ -191,7 +177,7 @@
             android:layout_height="36dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/jingtoutiao" />
+            android:src="@mipmap/zhengzaibiao_new" />
 
         <ViewFlipper
             android:id="@+id/mviewflipper"
@@ -232,7 +218,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
-                android:src="@mipmap/bjsq" />
+                android:background="@mipmap/zw_img_160" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -248,7 +234,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="比价神器"
+                    android:text="买卖镖局"
                     android:textColor="#333333"
                     android:textSize="18dp" />
 
@@ -284,7 +270,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
-                android:src="@mipmap/lsyg" />
+                android:background="@mipmap/zw_img_160" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -317,10 +303,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#f3f3f3" />
 
 </LinearLayout>
