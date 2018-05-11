@@ -27,7 +27,7 @@
             android:background="@drawable/bg_go_back_btn"
             android:padding="10dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/icon_arrow_left_blue" />
+            android:src="@mipmap/top_back"/>
 
 
         <com.bbk.view.ClearableEditText
@@ -56,6 +56,7 @@
             android:layout_height="44dp"
             android:background="@null"
             android:padding="10dp"
+            android:visibility="gone"
             android:scaleType="centerInside"
             android:src="@mipmap/icon_search_right" />
 
@@ -65,16 +66,91 @@
             android:layout_alignParentBottom="true"
             android:background="#E4E4E4" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_bj_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/czg_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="商品比价"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+
+                <View
+                    android:id="@+id/bj_view"
+                    android:layout_width="70dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="#f23030" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_czg_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bj_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="超值购"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+
+                <View
+                    android:id="@+id/czg_view"
+                    android:layout_width="70dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#f23030"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f3f3f3"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"/>
+
+    </LinearLayout>
 	<ListView 
         android:visibility="gone"
         android:id="@+id/mlistView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         ></ListView>
+    <include
+        android:id="@+id/search"
+        layout="@layout/result_main2"
+        android:visibility="gone"/>
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/toolbar_layout" />
-
 </LinearLayout>

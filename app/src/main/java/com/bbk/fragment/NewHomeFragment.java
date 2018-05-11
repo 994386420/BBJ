@@ -72,6 +72,7 @@ import com.bbk.view.MyFootView;
 import com.bbk.view.MyListView;
 import com.bbk.view.MyNewScrollView;
 import com.bbk.view.MyScrollListView;
+import com.bbk.view.NoMoreDataFooterView;
 import com.bbk.view.RefreshableView;
 import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
@@ -196,6 +197,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         view = v.findViewById(R.id.view);
         mRefreshableView =  v.findViewById(R.id.refresh_root);
         mRefreshableView.setCustomHeaderView(new HeaderViewHome(getActivity()));
+        mRefreshableView.setPinnedTime(1000);
+        mRefreshableView.setMoveForHorizontal(true);
+        mRefreshableView.setPullLoadEnable(true);
+        mRefreshableView.setAutoLoadMore(true);
+        mRefreshableView.enableReleaseToLoadMore(false);
+        mRefreshableView.enableRecyclerViewPullUp(true);
+        mRefreshableView.enablePullUpWhenLoadCompleted(true);
         refreshAndloda();
         mviewflipper = mView.findViewById(R.id.mviewflipper);
         mBanner = v.findViewById(R.id.banner);
@@ -274,7 +282,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             }
         });
-        MyFootView footView = new MyFootView(getActivity());
+        NoMoreDataFooterView footView = new NoMoreDataFooterView(getActivity());
         mRefreshableView.setCustomFooterView(footView);
     }
     //首页数据请求
@@ -402,6 +410,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             case 2:
                 try {
+//                    mRefreshableView.setPullLoadEnable(true);
                     list = new ArrayList<>();
                     if (isclear) {
                         list.clear();
@@ -599,7 +608,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //超值购数据
     public void addCzgList(JSONArray array) throws JSONException {
-        mRefreshableView.setPullLoadEnable(true);
         for (int i = 0; i < array.length() ; i++) {
             JSONObject object = array.getJSONObject(i);
             Map<String,String> map = new HashMap<>();

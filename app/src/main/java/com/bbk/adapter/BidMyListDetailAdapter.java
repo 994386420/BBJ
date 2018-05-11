@@ -120,7 +120,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发镖？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消接镖？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override

@@ -50,25 +50,25 @@ public class SecondAdapter5 extends BaseAdapter{
 			convertView = LayoutInflater.from(mContext).inflate(
 					R.layout.gridview_home_text4,null);
 		}
-		
-		Map<String, Object> map = mData.get(position);
-		String text = (String) map.get("item_text");
-		TextView textView = BaseViewHolder.get(convertView, R.id.tv);
-		RelativeLayout biankuang = BaseViewHolder.get(convertView, R.id.biankuang);
-		
-		textView.setText(text);
-		if ("yes".equals(map.get("item_selected").toString())) {
-			textView.setTextColor(Color.parseColor("#0098ff"));
-			biankuang.setBackgroundResource(R.drawable.shaixuan_textview2);
-			
-		}else{
-			textView.setTextColor(Color.parseColor("#222222"));
-			biankuang.setBackgroundResource(R.drawable.shaixuan_textview);
-			
-			
-			
+
+		try {
+			Map<String, Object> map = mData.get(position);
+			String text = (String) map.get("item_text");
+			TextView textView = BaseViewHolder.get(convertView, R.id.tv);
+			RelativeLayout biankuang = BaseViewHolder.get(convertView, R.id.biankuang);
+
+			textView.setText(text);
+			if ("yes".equals(map.get("item_selected").toString())) {
+				textView.setTextColor(Color.parseColor("#0098ff"));
+				biankuang.setBackgroundResource(R.drawable.shaixuan_textview2);
+
+			}else{
+				textView.setTextColor(Color.parseColor("#222222"));
+				biankuang.setBackgroundResource(R.drawable.shaixuan_textview);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		
 		return convertView;
 	}
 }

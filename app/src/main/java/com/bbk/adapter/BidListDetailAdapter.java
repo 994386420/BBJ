@@ -314,11 +314,17 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
     }
     public void initEndData(ViewHolder vh, Map<String, String> map){
         String finalprice = map.get("finalprice");
-        vh.mtime.setVisibility(View.GONE);
-        vh.mhenggang.setVisibility(View.VISIBLE);
-        vh.mpricebox.setVisibility(View.VISIBLE);
-        vh.mendprice.setText("￥"+finalprice);
-        initData(vh,map);
+        if (finalprice != null){
+            vh.mtime.setVisibility(View.GONE);
+            vh.mhenggang.setVisibility(View.VISIBLE);
+            vh.mpricebox.setVisibility(View.VISIBLE);
+            vh.mendprice.setText("￥"+finalprice);
+            initData(vh,map);
+        }else {
+            vh.mtime.setVisibility(View.VISIBLE);
+            vh.mhenggang.setVisibility(View.GONE);
+            vh.mpricebox.setVisibility(View.GONE);
+        }
     }
 
     @Override

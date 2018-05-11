@@ -18,6 +18,7 @@
         android:orientation="vertical" >
 
         <RelativeLayout
+            android:id="@+id/tabor_layout"
             android:layout_width="fill_parent"
             android:layout_height="56.0dip"
             android:background="#FFFFFF" >
@@ -95,6 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40.0dip"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:orientation="horizontal" >
 
                     <RelativeLayout
@@ -184,6 +186,93 @@
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@id/filter"
                             android:src="@mipmap/shaixuan_01" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/czg_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="40.0dip"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal" >
+
+                    <RelativeLayout
+                        android:id="@+id/mComposite_czg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal" >
+
+                        <TextView
+                            android:id="@+id/paixu_czg_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="综合排序"
+                            android:textColor="#808080"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/discount_czg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal" >
+
+                        <TextView
+                            android:id="@+id/discount_czg_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="折扣率"
+                            android:textColor="#808080"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/mpriceczg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal" >
+
+                        <TextView
+                            android:id="@+id/filter_price_czg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="价格"
+                            android:textColor="#808080"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/mtop_czg"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@id/filter_price_czg"
+                            android:src="@mipmap/gaodi_01" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/mfilter_czg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal" >
+
+                        <TextView
+                            android:id="@+id/filter_czg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="淘宝关注度"
+                            android:textSize="14sp" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -300,7 +389,21 @@
                     android:visibility="gone" >
                 </com.bbk.view.XCFlowLayout>
             </LinearLayout>
-
+            <com.andview.refreshview.XRefreshView
+                android:id="@+id/xrefresh2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_below="@id/home_layout_bar"
+                >
+                <ListView
+                    android:id="@+id/result_list1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:listSelector="@drawable/bg_item" >
+                </ListView>
+            </com.andview.refreshview.XRefreshView>
             <com.andview.refreshview.XRefreshView
                 android:id="@+id/xrefresh"
                 android:layout_width="match_parent"

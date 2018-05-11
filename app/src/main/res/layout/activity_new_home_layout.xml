@@ -299,7 +299,7 @@
                         android:id="@+id/mlistview"
                         android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"/>
             <com.bbk.view.MyListView
                 android:id="@+id/mczglistview"
                 android:visibility="gone"
