@@ -30,13 +30,13 @@ android {
         debugConfig {
             keyAlias "bbk_keystore"
             keyPassword "bbk123456"
-            storeFile file('E:/bibijing/bbkkeystore.keystore')
+            storeFile file('D:/Android/bbkkeystore.keystore')
             storePassword "bbk123456"
         }
         releaseConfig {
             keyAlias "bbk_keystore"
             keyPassword "bbk123456"
-            storeFile file('E:/bibijing/bbkkeystore.keystore')
+            storeFile file('D:/Android/bbkkeystore.keystore')
             storePassword "bbk123456"
         }
     }
@@ -121,7 +121,7 @@ dependencies {
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-//    compile 'com.umeng.analytics:analytics:latest.integration'
+    //    compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:multidex:1.0.1'
     compile('com.alibaba.android:vlayout:1.2.2@aar') {
@@ -175,5 +175,10 @@ dependencies {
     compile 'com.umeng.sdk:analytics:7.5.0'
     //第三方loading
     compile 'com.zyao89:zloading:1.1.2'
+    compile project(path: ':cptr')
+    //1.0.5 当1.1.0出现问题可以回退到1.0.5.1
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'//没有使用特殊Header，可以不加这行
+//    compile 'com.android.support:appcompat-v7:25.3.1'//版本 23以上（必须）
 }
 
