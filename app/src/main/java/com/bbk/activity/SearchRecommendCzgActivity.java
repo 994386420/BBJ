@@ -184,8 +184,8 @@ public class SearchRecommendCzgActivity extends BaseActivity implements OnClickL
 						if (!dao.exsistHistory(str)) {
 							dao.addHistory(str);
 						}
-						if(ResultMainActivity.instance != null && !ResultMainActivity.instance.isFinishing()){
-							ResultMainActivity.instance.finish();
+						if(SearchMainActivity.instance != null && !SearchMainActivity.instance.isFinishing()){
+							SearchMainActivity.instance.finish();
 						}
 //						finish();
 						Intent intent = new Intent(ACTION_NAME);
@@ -236,13 +236,13 @@ public class SearchRecommendCzgActivity extends BaseActivity implements OnClickL
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map = (HashMap<String, Object>) parent.getItemAtPosition(position);
 		String keyword = (String) map.get("item_history");
-		if(ResultMainActivity.instance != null && !ResultMainActivity.instance.isFinishing()){
-			ResultMainActivity.instance.finish();
+		if(SearchMainActivity.instance != null && !SearchMainActivity.instance.isFinishing()){
+			SearchMainActivity.instance.finish();
 		}
-		finish();
-		Intent intent = new Intent(this, ResultMainActivity.class);
+//						finish();
+		Intent intent = new Intent(ACTION_NAME);
 		intent.putExtra("keyword", keyword);
-		startActivity(intent);
+		sendBroadcast(intent);
 	}
 	
 	@Override

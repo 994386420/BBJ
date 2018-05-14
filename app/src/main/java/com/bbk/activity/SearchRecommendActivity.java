@@ -44,6 +44,7 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 	
 	private int screenWidth = 0;
 	private String[] hotWordsArr = {"iphone 6s", "ipad pro", "外套", "长袖衬衣", "婴儿尿布", "哆啦咪", "巴拉巴拉小魔仙"};
+	public static String ACTION_NAME = "SearchRecommendActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -182,13 +183,13 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 						if (!dao.exsistHistory(str)) {
 							dao.addHistory(str);
 						}
-						if(ResultMainActivity.instance != null && !ResultMainActivity.instance.isFinishing()){
-							ResultMainActivity.instance.finish();
+						if(SearchMainActivity.instance != null && !SearchMainActivity.instance.isFinishing()){
+							SearchMainActivity.instance.finish();
 						}
-						finish();
-						Intent intent = new Intent(SearchRecommendActivity.this, SearchMainActivity.class);
+//						finish();
+						Intent intent = new Intent(ACTION_NAME);
 						intent.putExtra("keyword", str);
-						startActivity(intent);
+						sendBroadcast(intent);
 					}
 				});
 				
@@ -234,13 +235,13 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map = (HashMap<String, Object>) parent.getItemAtPosition(position);
 		String keyword = (String) map.get("item_history");
-		if(ResultMainActivity.instance != null && !ResultMainActivity.instance.isFinishing()){
-			ResultMainActivity.instance.finish();
+		if(SearchMainActivity.instance != null && !SearchMainActivity.instance.isFinishing()){
+			SearchMainActivity.instance.finish();
 		}
-		finish();
-		Intent intent = new Intent(this, ResultMainActivity.class);
+//						finish();
+		Intent intent = new Intent(ACTION_NAME);
 		intent.putExtra("keyword", keyword);
-		startActivity(intent);
+		sendBroadcast(intent);
 	}
 	
 	@Override

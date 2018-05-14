@@ -122,7 +122,7 @@ public class SearchMainActivity extends ActivityGroup implements
 	private static final String SEARCH_MAIN_PROMPT = "prompt";
 	private List<String> dataList;
 	private LinearLayout toolbarLayout;
-	private String keyword;
+	private String keyword="";
 	private PopupWindow searchKeywordPopupWindow;
 	private Typeface typeFace;
 	private ListView mlistView;
@@ -255,7 +255,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		dataList.add(str);
 		typeFace = ((MyApplication) getApplication()).getFontFace();
 		toolbarLayout = (LinearLayout) findViewById(R.id.toolbar_layout);
-		keyword = getIntent().getStringExtra("keyword");
+//		keyword = getIntent().getStringExtra("keyword");
 		mContent = (FrameLayout) findViewById(R.id.content);
 		mlistView = (ListView)findViewById(R.id.mlistView);
 		searchText = (EditText) findViewById(R.id.topbar_search_input);
@@ -504,20 +504,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		intent.putExtra("keyword", params);
 		mContent.removeAllViews();
 		mContent.addView(getLocalActivityManager().startActivity(id, intent)
-				.getDecorView());
-	}
-	public void removeView(String id, Class<?> clazz) {
-		Intent intent = new Intent(this, clazz);
-		mContent.removeAllViews();
-		mContent.removeView(getLocalActivityManager().startActivity(id, intent)
-				.getDecorView());
-	}
-
-	public void removeView(String id, Class<?> clazz, String params) {
-		Intent intent = new Intent(this, clazz);
-		intent.putExtra("keyword", params);
-		mContent.removeAllViews();
-		mContent.removeView(getLocalActivityManager().startActivity(id, intent)
 				.getDecorView());
 	}
 	public void doSearch() {
@@ -819,39 +805,31 @@ public class SearchMainActivity extends ActivityGroup implements
 	@Override
 	public void onClick(View v) {
 		Intent intent;
-		String search = searchText.getText().toString();
+//		String search = searchText.getText().toString();
 		switch (v.getId()) {
 			case R.id.ll_bj_layout:
-
 					Flag = "1";
                     type = "1";
 				    loadhotKeyword(type);
 				    setView();
 				    setText(bijia_view);
-				if (search != null && !search.equals("")) {
+				if (keyword != null && !keyword.equals("")) {
 					currentPageIndex = 1;
 					initData();
 				}
-// else {
-//					StringUtil.showToast(this, "搜索内容为空");
-//				}
 				break;
 			case R.id.ll_czg_layout:
-//				if (search != null && !search.equals("")) {
 					Flag = "2";
 				    type = "2";
 				    x = 1;
 				    loadhotKeyword(type);
 				    setView();
 				    setText(czg_view);
-				if (search != null && !search.equals("")) {
+				if (keyword!= null && !keyword.equals("")) {
 					isclear = true;
 					currentPageIndex = 1;
 					initDataCzg();
 				}
-//				}else {
-//					StringUtil.showToast(this, "搜索内容为空");
-//				}
 				break;
 			case R.id.topbar_goback_btn:
 				goBack();
@@ -2214,7 +2192,7 @@ public class SearchMainActivity extends ActivityGroup implements
 						JSONObject info = jo.getJSONObject("info");
 						String tmpCzg = info.optString("page");
 						JSONArray arrczg = new JSONArray(tmpCzg);
-						removeView(SEARCH_MAIN_RECOMMEND, SearchRecommendCzgActivity.class);
+//						removeView(SEARCH_MAIN_RECOMMEND, SearchRecommendCzgActivity.class);
 						xrefresh2.setVisibility(View.VISIBLE);
 						mshaixuanCzg.setVisibility(View.VISIBLE);
 						mshaixuanbox.setVisibility(View.GONE);
@@ -2297,7 +2275,7 @@ public class SearchMainActivity extends ActivityGroup implements
 			map.put("dianpu",object.optString("dianpu"));
 			map.put("youhui",object.optString("youhui"));
 			map.put("url",object.optString("url"));
-			if (!object.optString("hislowprice").isEmpty()){
+			if (object.optString("hislowprice")!= null){
 				map.put("hislowprice",object.optString("hislowprice"));
 			}
 			list.add(map);
@@ -2421,20 +2399,18 @@ public class SearchMainActivity extends ActivityGroup implements
 			Map<String, String> paramsMap = new HashMap<>();
 			paramsMap.put("type", type);
 			dataFlow.requestData(6, "apiService/getSearchHotWord", paramsMap, this, true);
-//			Map<String, String> paramsMap = new HashMap<String, String>();
-////			paramsMap.put("number", "10");
-//			String hKeyword = HttpUtil.getHttp(paramsMap,
-//					Constants.MAIN_BASE_URL_MOBILE
-//							+ , null);
 		}
 	}
 
 
 	public void registerBoradcastReceiver() {
 		IntentFilter myIntentFilter = new IntentFilter();
-		myIntentFilter.addAction(SearchRecommendCzgActivity.ACTION_NAME);
+		IntentFilter myIntentFilterCzg = new IntentFilter();
+		myIntentFilterCzg.addAction(SearchRecommendCzgActivity.ACTION_NAME);
+		myIntentFilter.addAction(SearchRecommendActivity.ACTION_NAME);
 		// 注册广播
 		registerReceiver(mBroadcastReceiver, myIntentFilter);
+		registerReceiver(mBroadcastReceiver, myIntentFilterCzg);
 	}
 	// 广播接收
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
