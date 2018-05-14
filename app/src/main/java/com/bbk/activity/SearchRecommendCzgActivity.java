@@ -1,13 +1,5 @@
 package com.bbk.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -15,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +24,15 @@ import com.bbk.util.BaseTools;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.SharedPreferencesUtil;
 
-public class SearchRecommendActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+public class SearchRecommendCzgActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 
 	private final static int LOAD_OVER = 1;
 	private ListView historyListView;
@@ -44,6 +45,7 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 	
 	private int screenWidth = 0;
 	private String[] hotWordsArr = {"iphone 6s", "ipad pro", "外套", "长袖衬衣", "婴儿尿布", "哆啦咪", "巴拉巴拉小魔仙"};
+	public static String ACTION_NAME = "SearchRecommendCzgActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 	private void initData() {
 		
 		try {
-			initTag(new JSONArray(SharedPreferencesUtil.getSharedData(getApplicationContext(), "hotKeyword", "hotKeyword")));
+			initTag(new JSONArray(SharedPreferencesUtil.getSharedData(getApplicationContext(), "hotCzgKeyword", "hotCzgKeyword")));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -185,10 +187,10 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 						if(ResultMainActivity.instance != null && !ResultMainActivity.instance.isFinishing()){
 							ResultMainActivity.instance.finish();
 						}
-						finish();
-						Intent intent = new Intent(SearchRecommendActivity.this, SearchMainActivity.class);
+//						finish();
+						Intent intent = new Intent(ACTION_NAME);
 						intent.putExtra("keyword", str);
-						startActivity(intent);
+						sendBroadcast(intent);
 					}
 				});
 				

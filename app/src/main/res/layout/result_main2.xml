@@ -212,7 +212,7 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:text="综合排序"
-                            android:textColor="#808080"
+                            android:textColor="#222222"
                             android:textSize="14sp" />
                     </RelativeLayout>
 
@@ -229,7 +229,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="折扣率"
-                            android:textColor="#808080"
+                            android:textColor="#222222"
                             android:textSize="14sp" />
                     </RelativeLayout>
 
@@ -246,7 +246,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="价格"
-                            android:textColor="#808080"
+                            android:textColor="#222222"
                             android:textSize="14sp" />
 
                         <ImageView
@@ -272,6 +272,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="淘宝关注度"
+                            android:textColor="#222222"
                             android:textSize="14sp" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -389,7 +390,7 @@
                     android:visibility="gone" >
                 </com.bbk.view.XCFlowLayout>
             </LinearLayout>
-            <com.andview.refreshview.XRefreshView
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/xrefresh2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -403,7 +404,7 @@
                     android:background="#FFFFFF"
                     android:listSelector="@drawable/bg_item" >
                 </ListView>
-            </com.andview.refreshview.XRefreshView>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
             <com.andview.refreshview.XRefreshView
                 android:id="@+id/xrefresh"
                 android:layout_width="match_parent"

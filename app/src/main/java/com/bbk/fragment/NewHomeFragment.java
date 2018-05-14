@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,82 +15,45 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.ali.auth.third.login.callback.LogoutCallback;
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
-import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XScrollView;
 import com.bbk.Decoration.TwoDecoration;
-import com.bbk.activity.BidAcceptanceActivity;
-import com.bbk.activity.BidBillDetailActivity;
-import com.bbk.activity.BidDetailActivity;
-import com.bbk.activity.BidHomeActivity;
-import com.bbk.activity.BidMyBillDetailActivity;
-import com.bbk.activity.DataFragmentActivity;
-import com.bbk.activity.DomainMoreActivity;
-import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MyApplication;
-import com.bbk.activity.QueryHistoryActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.SortActivity;
-import com.bbk.activity.UserLoginNewActivity;
-import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewWZActivity;
-import com.bbk.adapter.BidAcceptanceAdapter;
-import com.bbk.adapter.BidMsgInformAdapter;
-import com.bbk.adapter.HomeAdapter;
 import com.bbk.adapter.NewBjAdapter;
 import com.bbk.adapter.NewBlAdapter;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.NewFxAdapter;
 import com.bbk.adapter.NewHomeAdapter;
-import com.bbk.adapter.SsNewCzgAdapter;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
-import com.bbk.util.DensityUtils;
-import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
-import com.bbk.view.HeaderView;
-import com.bbk.view.HeaderViewHome;
-import com.bbk.view.MyFootView;
-import com.bbk.view.MyListView;
 import com.bbk.view.MyNewScrollView;
-import com.bbk.view.MyScrollListView;
-import com.bbk.view.NoMoreDataFooterView;
 import com.bbk.view.RefreshableView;
 import com.bumptech.glide.Glide;
-import com.chanven.lib.cptr.PtrClassicFrameLayout;
-import com.chanven.lib.cptr.PtrDefaultHandler;
-import com.chanven.lib.cptr.PtrFrameLayout;
-import com.chanven.lib.cptr.loadmore.GridViewWithHeaderAndFooter;
-import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
-import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -100,14 +62,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,MyNewScrollView.OnScrollListener,RefreshableView.RefreshListener {
+public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,MyNewScrollView.OnScrollListener {
     private DataFlow6 dataFlow;
     private View mView;
     /**
@@ -171,6 +132,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private RecyclerView mrecyclerview;
     private  RefreshLayout refreshLayout;
     private boolean isrequest = true;
+    JSONObject object;
+    JSONArray array;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -200,9 +163,9 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
         }
         if (null == mView) {
-            dataFlow = new DataFlow6(getContext());
             getActivity().getWindow().setBackgroundDrawable(null);
             mView = inflater.inflate(R.layout.activity_new_home_layout, null);
+            dataFlow = new DataFlow6(getContext());
             View topView = mView.findViewById(R.id.lin);
             // 实现沉浸式状态栏
             ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
@@ -273,14 +236,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        x = 2;
-                        page++;
-//                loadData();
-                        getIndexByType(false,2);
-                    }
-                }, 1000);
+                handler.sendEmptyMessageDelayed(4,100);
 //                refreshlayout.finishLoadmore(2000/*,false*/);//传入false表示加载失败
             }
         });
@@ -328,24 +284,25 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mlistview.setHasFixedSize(false);
         mlistview.setFocusable(false);
         mlistview.setNestedScrollingEnabled(false);
-        mlistview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    isrequest = true;
-                    Glide.with(getActivity()).pauseRequests();
-                    Log.i("---","滑动");
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (isrequest == true) {
-                        Glide.with(getActivity()).resumeRequests();
-                    }
-                    Log.i("---","滑动=====");
-                    isrequest = false;
-                }
-
-            }
-        });
+//        mlistview.addOnScrollListener(this);
+//        mlistview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+//                    isrequest = true;
+//                    Glide.with(getActivity()).pauseRequests();
+//                    Log.i("---","滑动");
+//                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    if (isrequest == true) {
+//                        Glide.with(getActivity()).resumeRequests();
+//                    }
+//                    Log.i("---","滑动=====");
+//                    isrequest = false;
+//                }
+//
+//            }
+//        });
 //        new XScrollView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(ScrollView view, int scrollState, boolean arriveBottom) {
@@ -499,51 +456,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         switch (requestCode){
             case 1:
                 try {
-                    JSONObject object = new JSONObject(content);
-                    if (object.has("fubiao")){
-                        huodongimg.setVisibility(View.VISIBLE);
-                        final JSONObject jo = object.getJSONObject("fubiao");
-                        Glide.with(getActivity()).load(jo.optString("img")).into(huodongimg);
-                        huodongimg.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                EventIdIntentUtil.EventIdIntent(getActivity(),jo);
-                            }
-                        });
-                    }else {
-                        huodongimg.setVisibility(View.GONE);
-                    }
-                    banner = object.optJSONArray("banner");
-                    tag = object.optJSONArray("tag");
-                    if (object.has("gongneng")){
-                        gongneng = object.optJSONArray("gongneng");
-                    }
-                    fabiao = object.optJSONArray("fabiao");
-                    loadbanner(banner);
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
-                    mrecyclerview.setLayoutManager(gridLayoutManager);
-                    mrecyclerview.addItemDecoration(new TwoDecoration(0,"#f3f3f3",3+banner.length()+tag.length()));
-                    mrecyclerview.setHasFixedSize(true);
-                    homeadapter = new NewHomeAdapter(getActivity(),taglist, banner, tag, fabiao,gongneng);
-                    mrecyclerview.setAdapter(homeadapter);
-                    if (object.has("guanggao")) {
-                        if (isshowzhezhao) {
-                            jo = object.optJSONObject("guanggao");
-                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
-                            if (isFirstResultUse.equals("no")){
-                                new HomeAlertDialog(getActivity()).builder()
-                                        .setimag(jo.optString("img"))
-                                        .setonclick(new OnClickListener() {
-                                            @Override
-                                            public void onClick(View arg0) {
-                                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
-                                            }
-                                        }).show();
-                                isshowzhezhao = false;
-                            }
-                        }
-
-                    }
+                    object = new JSONObject(content);
+                   handler.sendEmptyMessageDelayed(3,0);
                 } catch (Exception e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -557,7 +471,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     if (isclear) {
                         list.clear();
                     }
-                    JSONArray array = new JSONArray(content);
+                    array = new JSONArray(content);
                     if (type.equals("2")){
                         addList(array);
                     }else if (type.equals("3")){
@@ -648,58 +562,119 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         StringUtil.showToast(getActivity(),"没有更多了");
                     }
                     break;
+                case 3:
+                    if (object.has("fubiao")){
+                        huodongimg.setVisibility(View.VISIBLE);
+                        final JSONObject jo;
+                        try {
+                            jo = object.getJSONObject("fubiao");
+                            Glide.with(getActivity()).load(jo.optString("img")).into(huodongimg);
+                            huodongimg.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    EventIdIntentUtil.EventIdIntent(getActivity(),jo);
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        huodongimg.setVisibility(View.GONE);
+                    }
+                    banner = object.optJSONArray("banner");
+                    tag = object.optJSONArray("tag");
+                    if (object.has("gongneng")){
+                        gongneng = object.optJSONArray("gongneng");
+                    }
+                    fabiao = object.optJSONArray("fabiao");
+                    loadbanner(banner);
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    mrecyclerview.setLayoutManager(gridLayoutManager);
+                    mrecyclerview.addItemDecoration(new TwoDecoration(0,"#f3f3f3",3+banner.length()+tag.length()));
+                    mrecyclerview.setHasFixedSize(true);
+                    homeadapter = new NewHomeAdapter(getActivity(),taglist, banner, tag, fabiao,gongneng);
+                    mrecyclerview.setAdapter(homeadapter);
+                    if (object.has("guanggao")) {
+                        if (isshowzhezhao) {
+                            jo = object.optJSONObject("guanggao");
+                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+                            if (isFirstResultUse.equals("no")){
+                                new HomeAlertDialog(getActivity()).builder()
+                                        .setimag(jo.optString("img"))
+                                        .setonclick(new OnClickListener() {
+                                            @Override
+                                            public void onClick(View arg0) {
+                                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                                            }
+                                        }).show();
+                                isshowzhezhao = false;
+                            }
+                        }
+
+                    }
+                    break;
+                case 4:
+                    x = 2;
+                    page++;
+                    getIndexByType(false,2);
+                    break;
+                case 5:
+                    isclear = true;
+                    initData(true);
+                    getIndexByType(true,2);
+                    break;
             }
         }
     };
-    //放数据
-    private void loadBjData(){
-        if (x==1){
-            mList = list;
-            if (mList != null && mList.size() > 0) {
-                if (type.equals("2")){
-//                    mlistview.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    adapter = new NewBjAdapter(getActivity(), mList);
-//                    mlistview.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                }else if(type.equals("3")){
-//                    mBlAdapter = new NewBlAdapter(getActivity(), mList);
-//                    mlistview.setAdapter(mBlAdapter);
-//                    mBlAdapter.notifyDataSetChanged();
-                }else if (type.equals("4")){
-//                    mFxAdapter = new NewFxAdapter(getActivity(), mList);
-//                    mlistview.setAdapter(mFxAdapter);
-//                    mFxAdapter.notifyDataSetChanged();
-                }else if (type.equals("1")){
-//                    mCzgAdapter = new NewCzgAdapter(getActivity(), mList);
-//                    mlistview.setAdapter(mCzgAdapter);
-//                    mCzgAdapter.notifyDataSetChanged();
-                }
-                mlistview.setVisibility(View.VISIBLE);
-//                mlistview.setOnItemClickListener(onItemClickListener);
-//                mlistview.LoadingComplete();   //告诉listview已经加载完毕,重置提示文字
+//    //放数据
+//    private void loadBjData(){
+//        if (x==1){
+//            mList = list;
+//            if (mList != null && mList.size() > 0) {
+//                if (type.equals("2")){
+////                    mlistview.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                    adapter = new NewBjAdapter(getActivity(), mList);
+////                    mlistview.setAdapter(adapter);
+//                    adapter.notifyDataSetChanged();
+//                }else if(type.equals("3")){
+////                    mBlAdapter = new NewBlAdapter(getActivity(), mList);
+////                    mlistview.setAdapter(mBlAdapter);
+////                    mBlAdapter.notifyDataSetChanged();
+//                }else if (type.equals("4")){
+////                    mFxAdapter = new NewFxAdapter(getActivity(), mList);
+////                    mlistview.setAdapter(mFxAdapter);
+////                    mFxAdapter.notifyDataSetChanged();
+//                }else if (type.equals("1")){
+////                    mCzgAdapter = new NewCzgAdapter(getActivity(), mList);
+////                    mlistview.setAdapter(mCzgAdapter);
+////                    mCzgAdapter.notifyDataSetChanged();
+//                }
+//                mlistview.setVisibility(View.VISIBLE);
+////                mlistview.setOnItemClickListener(onItemClickListener);
+////                mlistview.LoadingComplete();   //告诉listview已经加载完毕,重置提示文字
+////                myScrollView.loadingComponent();//告示scrollview已经加载完毕，重置并发控制符的值
+//            }else {
+//                mlistview.setVisibility(View.GONE);
+//            }
+//        }else if (x==2){
+//            addlist = list;
+//            if (addlist != null && addlist.size() > 0){
+//                if (type.equals("2")){
+//                    adapter.notifyData(addlist);
+//                }else if(type.equals("3")){
+//                    mBlAdapter.notifyData(addlist);
+//                }else if (type.equals("4")){
+//                    mFxAdapter.notifyData(addlist);
+//                }else if(type.equals("1")){
+//                    mCzgAdapter.notifyData(addlist);
+//                }
+////                mlistview.LoadingComplete();
 //                myScrollView.loadingComponent();//告示scrollview已经加载完毕，重置并发控制符的值
-            }else {
-                mlistview.setVisibility(View.GONE);
-            }
-        }else if (x==2){
-            addlist = list;
-            if (addlist != null && addlist.size() > 0){
-                if (type.equals("2")){
-                    adapter.notifyData(addlist);
-                }else if(type.equals("3")){
-                    mBlAdapter.notifyData(addlist);
-                }else if (type.equals("4")){
-                    mFxAdapter.notifyData(addlist);
-                }else if(type.equals("1")){
-                    mCzgAdapter.notifyData(addlist);
-                }
-//                mlistview.LoadingComplete();
-                myScrollView.loadingComponent();//告示scrollview已经加载完毕，重置并发控制符的值
-            }else {
-//                mlistview.LoadingCompleted();
-            }
-        }
-    }
+//            }else {
+////                mlistview.LoadingCompleted();
+//            }
+//        }
+//    }
 
 
     //发现数据
@@ -818,24 +793,22 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 //            getIndexByType(false,2);
 //    };
 
-
-    //首页数据下拉刷新
-    @Override
-    public void onRefresh(RefreshableView view) {
-        initData(true);
-        setView();
-        mViewLoad();
-        mIdex("1",2,false);
-        mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
-        mCzgView.setVisibility(View.VISIBLE);
-//        initListenerczg();
-//        initListener();
-    }
+//
+//    //首页数据下拉刷新
+//    @Override
+//    public void onRefresh(RefreshableView view) {
+//        initData(true);
+//        setView();
+//        mViewLoad();
+//        mIdex("1",2,false);
+//        mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
+//        mCzgView.setVisibility(View.VISIBLE);
+////        initListenerczg();
+////        initListener();
+//    }
     //首页视图数据加载
     private void mViewLoad(){
-        isclear = true;
-        initData(true);
-        getIndexByType(true,2);
+        handler.sendEmptyMessageDelayed(5,0);
 //        initListenerczg();
 //        initListener();
     }
@@ -867,6 +840,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
         }
     }
+
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public float startX;
         public float startY;
