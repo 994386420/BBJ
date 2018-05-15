@@ -421,12 +421,12 @@ public class ResultMainActivity extends BaseActivity
 
 	private void onrefresh(XRefreshView xrefresh2) {
 		xrefresh2.setXRefreshViewListener(new XRefreshViewListener() {
-			
+
 			@Override
 			public void onRelease(float direction) {
 
 			}
-			
+
 			@Override
 			public void onRefresh(boolean isPullDown) {
 				if (view_box!=null) {
@@ -438,26 +438,26 @@ public class ResultMainActivity extends BaseActivity
 				currentPageIndex=1;
 				initData1();
 			}
-			
+
 			@Override
 			public void onRefresh() {
 
 			}
-			
+
 			@Override
-			public void onLoadMore(boolean isSilence) {		
+			public void onLoadMore(boolean isSilence) {
 				if (canLoadMore) {
 					currentPageIndex++;
 					loadData();
 				}
 			}
-			
+
 			@Override
 			public void onHeaderMove(double headerMovePercent, int offsetY) {
-		
+
 			}
 		});
-		
+
 		MyFootView footView = new MyFootView(this);
 		xrefresh2.setCustomFooterView(footView);
 	}
@@ -1857,7 +1857,7 @@ public class ResultMainActivity extends BaseActivity
 				gridviewadapter.notifyDataSetChanged();		
 				isrequest = true;
 //				scrollView_home.smoothScrollTo(0, scrollY+40);
-	
+
 				break;
 			case 4:
 				data.clear();

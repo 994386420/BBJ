@@ -2007,7 +2007,6 @@ public class SearchMainActivity extends ActivityGroup implements
 						addtion1 = jo11.optString("sortAddtion");
 						initRankView();
 					}
-
 					String  isBland= jo11.optString("isBland");
 
 					if (currentPageIndex == 1) {
@@ -2090,6 +2089,7 @@ public class SearchMainActivity extends ActivityGroup implements
 						tipsLayout.setVisibility(View.VISIBLE);
 						tipsKeys.setText("当前筛选条件下无搜索结果");
 					}
+//					Log.i("=======gridtype",jo11+"====");
 					mshaixuanCzg.setVisibility(View.GONE);
 					mshaixuanbox.setVisibility(View.VISIBLE);
 					xrefresh.setVisibility(View.VISIBLE);
@@ -2386,6 +2386,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		isrun = false;
 		handler.removeCallbacks(thread);
 		handler.removeCallbacks(threadtmall);
+		unregisterReceiver(mBroadcastReceiver);
 		super.onDestroy();
 	}
 

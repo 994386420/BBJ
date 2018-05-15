@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,6 +22,8 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
+import com.bbk.util.SystemUtil;
 
 public class UserSuggestionActivity extends BaseActivity implements OnClickListener,ResultEvent {
 	
@@ -38,7 +41,6 @@ public class UserSuggestionActivity extends BaseActivity implements OnClickListe
 		dataFlow = new DataFlow(this);
 
 //		MyApplication.getInstance().addActivity(this);
-
 		initView();
 	}
 
@@ -72,11 +74,15 @@ public class UserSuggestionActivity extends BaseActivity implements OnClickListe
 	 */
 	private void initData() {
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+		/**
+		 * 手机系统版本号，手机型号， 手机厂商
+		 */
+		String string =  SystemUtil.getDeviceBrand()+SystemUtil.getSystemModel()+SystemUtil.getSystemVersion();
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("userid", userID);
-		paramsMap.put("content", medit.getText().toString());
+		paramsMap.put("content", medit.getText().toString()+"来自："+string);
 		dataFlow.requestData(1, "newService/insertFeedBack", paramsMap, this);
-		Toast.makeText(this, "发布成功", Toast.LENGTH_SHORT).show();
+		StringUtil.showToast(this, "发布成功");
 	}
 
 	@Override

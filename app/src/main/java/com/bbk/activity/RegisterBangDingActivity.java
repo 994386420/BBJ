@@ -13,6 +13,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.DataFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.JiaMiUtil;
@@ -132,9 +133,9 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 				String dataStr1 = (String) msg.obj;
 				try {
 					JSONObject data1 = new JSONObject(dataStr1);
-					JSONObject content = data1.getJSONObject("content");
-					if("1".equals(data1.optString("status"))) {
-						if ("1".equals(content.optString("status"))) {
+//					if("1".equals(data1.optString("status"))) {
+						if ("1".equals(data1.optString("status"))) {
+							JSONObject content = data1.getJSONObject("content");
 							StringUtil.showToast(RegisterBangDingActivity.this, content.optString("msg"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "thirdLogin", "yes");
 							JSONObject inforJsonObj = content.optJSONObject("info");
@@ -165,15 +166,17 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 								finish();
 							    //友盟登录
 							    MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
-							}else if("0".equals(content.optString("status"))){
-								StringUtil.showToast(RegisterBangDingActivity.this, content.optString("errmsg"));
+							}else {
+								StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
 							}
-					}else {
-						StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
-					}
+//					}else {
+//						StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
+					DialogSingleUtil.dismiss(0);
+//					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					DialogSingleUtil.dismiss(0);
 				}
 				break;
 			
@@ -335,6 +338,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			finish();
 			break;
 		case R.id.bangding_register:
+			    DialogSingleUtil.show(this,"绑定中...");
 			    String invitcode;
 			    if(bangding_tjm.getText().toString().equals("")){
 			    	invitcode = "";
