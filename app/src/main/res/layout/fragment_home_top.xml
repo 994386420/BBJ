@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:background="@mipmap/banner_zhanwei"
-
             app:indicator_height="6dp"
             app:indicator_width="6dp"
             app:indicator_margin="2.5dp"
@@ -42,7 +41,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal" >
 
                 <LinearLayout
@@ -281,15 +280,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="6dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:paddingTop="6dp" >
 
         <LinearLayout
             android:id="@+id/compareutil"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:orientation="horizontal" >
 
             <ImageView
@@ -339,9 +339,12 @@
 
         <LinearLayout
             android:id="@+id/queryhistory"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:orientation="horizontal" >
 
             <ImageView
