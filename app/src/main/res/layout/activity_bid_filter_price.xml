@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="筛选镖价"
+                android:text="详情"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -175,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#1a9afc"
-            android:text="联系接镖" />
+            android:text="联系扑倒人" />
     </LinearLayout>
     </LinearLayout>
     <TextView
@@ -183,7 +183,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#b40000"
-        android:text="确定交镖"
+        android:text="确定成交"
         android:textColor="#ffffff"
         android:gravity="center"
         android:textSize="18dp"

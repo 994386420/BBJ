@@ -137,13 +137,13 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
                 break;
             case 2:
                 if (dataJo.optString("status").equals("1")){
-                    StringUtil.showToast(this, "交镖成功");
+                    StringUtil.showToast(this, "交易成功");
                     Intent intent = new Intent(this, BidListDetailActivity.class);
                     intent.putExtra("status","3");
                     startActivity(intent);
                     finish();
                 }else {
-                    StringUtil.showToast(this, "交镖失败");
+                    StringUtil.showToast(this, "交易失败");
                 }
                 break;
         }

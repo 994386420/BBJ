@@ -12,14 +12,18 @@ public interface Constants {
 	
 	/**主url*/
 	//内网，陈远鹏 更换165
-	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.165/APIService/";
+//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.188/APIService/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:7083/APIService/";
 	//外网
-//	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
+	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
 	//新版首页超值购等分类模块
 	public static final String GetQueryAppIndexByType = "newService/queryAppIndexByType";
 	//更新APP
 	String UPDATEVERSIONXMLPATH = MAIN_BASE_URL_MOBILE + "apiService/getAndroidUpdate";
+	//appid
+	String APP_ID = "wx897849778777b911";
+	// AppSecret
+	String AppSecret = "f03aec0d445f3e0acbd6c2eb4369a847";
 	//获取看比价
 	String  getBijiaArr = "newService/getBijiaArr";
 	//获取二级页面去发镖信息

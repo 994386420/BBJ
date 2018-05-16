@@ -105,12 +105,12 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtime.setVisibility(View.VISIBLE);
                         initStartData(vh,map);
                         vh.mtext2.setVisibility(View.GONE);
-                        vh.mtext1.setText("取消发镖");
+                        vh.mtext1.setText("取消我要");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发镖？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消我要？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -129,16 +129,16 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         break;
                     case "1":
                         vh.mtimebefor.setText("距结束");
-                        vh.mtypetext.setText("待接镖");
+                        vh.mtypetext.setText("待扑倒");
                         initStartData(vh,map);
                         vh.mtime.friendly_time(endtime,"#999999");
                         vh.mtime.setVisibility(View.VISIBLE);
-                        vh.mtext1.setText("取消发镖");
+                        vh.mtext1.setText("取消我要");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发镖？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消我要？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -177,7 +177,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         break;
                     case "2":
                         vh.mtypetext.setText("待评论");
-                        vh.mtimebefor.setText("交镖完成");
+                        vh.mtimebefor.setText("交易完成");
                         vh.mtime.setVisibility(View.GONE);
                         initEndData(vh,map);
                         rebid(vh,id);
@@ -205,12 +205,12 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtimebefor.setText(endtime);
                         vh.mtime.setVisibility(View.GONE);
                         initStartData(vh,map);
-                        vh.mtext1.setText("取消发镖");
+                        vh.mtext1.setText("取消我要");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发镖？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消我要？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -270,7 +270,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
     }
 
     public void rebid(ViewHolder vh, final String id){
-        vh.mtext1.setText("再次发镖");
+        vh.mtext1.setText("再次我要");
         vh.mtext1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,7 +297,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
             String url = map.get("url");
             vh.item_title.setText(title);
             vh.mcount.setText("x"+number);
-            vh.mbidnum.setText("接镖 "+bidnum+" 人");
+            vh.mbidnum.setText("扑倒 "+bidnum+" 人");
             vh.mprice.setText(price);
             Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);
 

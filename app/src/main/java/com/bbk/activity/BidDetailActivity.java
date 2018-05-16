@@ -190,7 +190,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                     }else {
 //                    isJiebiaoLayout.setVisibility(View.GONE);
                         mgobid.setClickable(false);
-                        mGoJbText.setText("已接镖");
+                        mGoJbText.setText("已扑倒");
                         mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
                         mGoJbTextStaus.setVisibility(View.GONE);
                         mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
@@ -269,7 +269,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 //根据status判断状态显示
                 switch (mStatus){
                     case "1":
-                        mendtimetop.setText("待接镖   "+endtime+" 结束");
+                        mendtimetop.setText("待扑倒   "+endtime+" 结束");
                         break;
                     case "2":
                         mendtimetop.setText("待评论 "+endtime);
@@ -291,7 +291,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 mprice2.setText("￥"+price);
                 mcount.setText("x"+number);
                 mspectatornum.setText("围观 "+spectator+"  人");
-                mbidnum.setText("接镖 "+bidnum+"  人");
+                mbidnum.setText("扑倒 "+bidnum+"  人");
                 mbidnum2.setText(bidnum+" 条");
                 mstarttime.setText(begintime);
                 mendtime.setText(endtime);
@@ -299,7 +299,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
                 //userid与登陆userid一样时，隐藏去接镖
                 if (userid.equals(userID )){
                     mgobid.setClickable(false);
-                    mGoJbText.setText("不能接自己的镖");
+                    mGoJbText.setText("不能扑倒自己");
                     mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
                     mGoJbTextStaus.setVisibility(View.GONE);
                     mgobid.setBackgroundColor(getResources().getColor(R.color.gray));

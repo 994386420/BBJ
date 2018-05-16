@@ -16,7 +16,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:background="@drawable/bid_hot_alltext"
-            android:text="全部热镖"
+            android:text="全部"
             android:textColor="#fff"/>
     </LinearLayout>
     <View

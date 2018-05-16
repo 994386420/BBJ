@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="正在发镖"
+                android:text="我要的"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_height="wrap_content"
-                android:text="镖品名称:" />
+                android:text="名称:" />
 
             <EditText
                 android:id="@+id/mname"
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="镖品图片: "
+                    android:text="图片: "
                     android:textColor="#666666" />
 
                 <TextView
@@ -160,7 +160,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="镖品单价:"
+                        android:text="单价:"
                         android:textSize="13dp" />
 
                     <EditText
@@ -217,7 +217,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="开始发镖:" />
+                    android:text="开始:" />
 
                 <TextView
                     android:id="@+id/mstart_time"
@@ -245,7 +245,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="竞标周期:" />
+                    android:text="周期:" />
 
                 <RadioGroup
                     android:id="@+id/mradioGroup"
@@ -293,7 +293,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="镖品详细:" />
+                android:text="详细:" />
 
             <EditText
                 android:id="@+id/mdetail"
@@ -303,7 +303,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@null"
-                android:hint="选取镖品的特点和要求，为您提供更准确的接镖信息"
+                android:hint="选取商品的特点和要求，为您提供更准确的商品信息"
                 android:textSize="14dp" />
 
             <View
@@ -353,7 +353,7 @@
                 android:background="#b40000"
                 android:gravity="center"
                 android:padding="7dp"
-                android:text="提交发镖信息"
+                android:text="提交信息"
                 android:textColor="#fff"
                 android:textSize="20dp" />
 

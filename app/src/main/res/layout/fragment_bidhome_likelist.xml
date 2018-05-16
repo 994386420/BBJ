@@ -29,13 +29,21 @@
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="38dp">
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/bj_30"/>
+    <LinearLayout
+        android:layout_alignParentRight="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="@drawable/bid_circle"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#fff"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="扑倒"/>
+    </LinearLayout>
+
         <TextView
             android:id="@+id/mtime1"
             android:layout_width="wrap_content"
@@ -68,7 +76,7 @@
             android:textSize="13dp"
             android:layout_marginBottom="1dp"
             android:textColor="#b40000"
-            android:text="镖价￥599"
+            android:text="我要价￥599"
             />
 
     </RelativeLayout>

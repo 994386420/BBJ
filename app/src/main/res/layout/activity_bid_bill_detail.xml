@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="镖单详细"
+                android:text="详情"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -72,14 +72,14 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
+    <com.bbk.view.MyScrollViewNew
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
@@ -142,7 +142,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="发镖价"
+                                    android:text="我要价"
                                     android:textColor="#b40000"
                                     android:textSize="11dp" />
                             </LinearLayout>
@@ -212,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="接镖 0 人" />
+                    android:text="扑倒 0 人" />
 
                 <View
                     android:layout_width="1dp"
@@ -342,7 +342,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#1a9afc"
-                        android:text="联系接镖" />
+                        android:text="联系扑倒人" />
                 </LinearLayout>
 
                 <View
@@ -370,7 +370,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:textColor="#333333"
-                    android:text="接镖记录" />
+                    android:text="扑倒记录" />
 
                 <View
                     android:layout_width="1dp"
@@ -402,6 +402,64 @@
                 android:layout_height="10dp"
                 android:background="#f3f3f3" />
 
+
+            <LinearLayout
+                android:id="@+id/xjpp_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/bj_02"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="#333333"
+                    android:text="小鲸扑扑" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="" />
+
+                <ImageView
+                    android:id="@+id/xjpp_image"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/xjpp_normal" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/xjpp_view_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:orientation="vertical">
+                <com.bbk.view.HorizontalListView
+                    android:id="@+id/horizontal_listview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="180dp"
+                    android:dividerHeight="5dp">
+                </com.bbk.view.HorizontalListView>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#f3f3f3" />
             <TextView
                 android:id="@+id/mordernum"
                 android:layout_width="match_parent"
@@ -428,7 +486,7 @@
                 android:layout_marginRight="10dp" />
 
         </LinearLayout>
-    </ScrollView>
+    </com.bbk.view.MyScrollViewNew>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

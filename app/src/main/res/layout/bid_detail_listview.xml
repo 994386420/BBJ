@@ -23,7 +23,7 @@
         android:id="@+id/mbidtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="接镖"/>
+        android:text="扑倒"/>
     <TextView
         android:id="@+id/mbidtime"
         android:layout_width="wrap_content"

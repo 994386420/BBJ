@@ -66,7 +66,7 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
         mchongshi = findViewById(R.id.mchongshi);
         mchongshi.setOnClickListener(onClickListener);
         mTitle = findViewById(R.id.title);
-        mTitle.setText("我的接镖");
+        mTitle.setText("扑倒的");
         list = new ArrayList<>();
         userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
@@ -80,7 +80,7 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
         tablayout = findViewById(R.id.tablayout);
         xrefresh =  findViewById(R.id.xrefresh);
         tablayout.addTab(tablayout.newTab().setText("全部"));
-        tablayout.addTab(tablayout.newTab().setText("正接镖"));
+        tablayout.addTab(tablayout.newTab().setText("正扑倒"));
         tablayout.addTab(tablayout.newTab().setText("待评论"));
         tablayout.addTab(tablayout.newTab().setText("完成"));
         tablayout.setTabMode(TabLayout.MODE_FIXED);

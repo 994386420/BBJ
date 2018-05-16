@@ -222,12 +222,12 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
     }
     private void loadData() {
         if (TextUtils.isEmpty(mname.getText().toString())){
-            StringUtil.showToast(this,"镖品名称不能为空");
+            StringUtil.showToast(this,"名称不能为空");
         }else if (TextUtils.isEmpty(mprice.getText().toString())){
-            StringUtil.showToast(this,"镖品单价不能为空");
+            StringUtil.showToast(this,"单价不能为空");
         }
         else {
-            DialogSingleUtil.show(BidFbActivity.this,"发镖中...");
+            DialogSingleUtil.show(BidFbActivity.this,"我要中...");
             if ("add".equals(list.get(list.size() - 1))) {
                 length = list.size() - 1;
             } else {
@@ -372,7 +372,7 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
         }
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");
-        Log.i("发镖信息openid",openID+"==========");
+//        Log.i("发镖信息openid",openID+"==========");
         params.put("userid", userID);
         params.put("type", "1");
         params.put("mins", mins);

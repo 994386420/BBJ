@@ -119,7 +119,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
             Glide.with(context)
                     .load(img)
                     .priority(Priority.HIGH)
-                    .placeholder(R.mipmap.zw_img_300).thumbnail(0.5f)
+                    .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.item_img);
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override

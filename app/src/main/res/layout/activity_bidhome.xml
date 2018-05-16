@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="发镖"
+                android:text="我要"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="接镖"
+                android:text="扑倒"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>

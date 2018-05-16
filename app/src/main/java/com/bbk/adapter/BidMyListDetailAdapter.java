@@ -114,13 +114,13 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtimebefor.setText("距结束");
                         vh.mtime.setVisibility(View.VISIBLE);
                         vh.mtime.friendly_time(endtime,"#999999");
-                        vh.mtypetext.setText("正接镖");
-                        vh.mtext2.setText("取消接镖");
+                        vh.mtypetext.setText("正扑倒");
+                        vh.mtext2.setText("取消扑倒");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消接镖？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消扑倒？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -138,7 +138,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         });
                         break;
                     case "2":
-                        vh.mtimebefor.setText("交镖完成");
+                        vh.mtimebefor.setText("交易完成");
                         vh.mtime.setVisibility(View.GONE);
                         vh.mtypetext.setText("待评论");
                         vh.mtext2.setText("评论");
@@ -189,7 +189,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
             String url = map.get("url");
             vh.item_title.setText(title);
             vh.mcount.setText("x"+number);
-            vh.mbidnum.setText("接镖 "+bidnum+" 人");
+            vh.mbidnum.setText("扑倒 "+bidnum+" 人");
             vh.mprice.setText(price);
             vh.mendprice.setText("￥"+bidprice);
             Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);

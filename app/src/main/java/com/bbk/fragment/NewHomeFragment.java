@@ -174,7 +174,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             // 实现沉浸式状态栏
             ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
             initView(mView);
-            mViewLoad();
         }
         return mView;
 
@@ -209,6 +208,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             }
         });
         mrecyclerview = (RecyclerView) mView.findViewById(R.id.mrecycler);
+        mrecyclerview.setHasFixedSize(true);
+        mrecyclerview.setNestedScrollingEnabled(false);
         mSuspensionBar = mView.findViewById(R.id.layout_click);
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         mrecyclerview.setLayoutManager(gridLayoutManager);
@@ -410,13 +411,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     }
                     if (mList != null && mList.size() > 0) {
                         if (type.equals("2")){
-                            homeadapter.notifyBjData1(mList,flag);
+                            homeadapter.notifyBjData1(mList);
                         }else if (type.equals("3")){
-                            homeadapter.notifyBlData1(mList,flag);
+                            homeadapter.notifyBlData1(mList);
                         }else if (type.equals("4")){
-                            homeadapter.notifyFxData1(mList,flag);
+                            homeadapter.notifyFxData1(mList);
                         }else if (type.equals("1")){
-                            homeadapter.notifyData1(mList,flag);
+                            homeadapter.notifyData1(mList);
                         }
                     }
                     break;
@@ -569,24 +570,9 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             list.add(map);
         }
     }
-//    首页Banner
-    private void loadbanner(final JSONArray banner) {
-        List<Object> imgUrlList = new ArrayList<>();
-        try {
-            for (int i = 0; i < banner.length(); i++) {
-                JSONObject jo = banner.getJSONObject(i);
-                String imgUrl = jo.getString("img");
-                imgUrlList.add(imgUrl);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     //首页视图数据加载
     private void mViewLoad(){
         handler.sendEmptyMessageDelayed(5,0);
-//        initListenerczg();
-//        initListener();
     }
     //超值购等数据
     private void mIdex(String str,int code,boolean is){
@@ -596,7 +582,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         isclear = true;
         getIndexByType(is,code);
     }
-
     @Override
     public void onScroll(int scrollY) {
         int mHeight = layout.getBottom();
@@ -617,43 +602,9 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         }
     }
 
-    //1.在别的Fragment的时候mIsVisibleToUser肯定是false,不会调用开始轮播
-//2.在当然Fragment的时候mIsVisibleToUser肯定是true,所有我从这个Fragment
-//  进入别的Activity又退来的时候,就会开始轮播
-//3.从别的Fragment进入Activity再回来的时候触发onResume也会开始轮播,因为
-//  mIsVisibleToUser在切换到别的Fragment的时候就已经被置为false了
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        if (mviewflipper !=null&&mIsVisibleToUser) {//在这里进行一下判断
-//            mviewflipper.startFlipping();
-//        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-//        if (mviewflipper !=null) {
-//            mviewflipper.stopFlipping();
-//        }
-    }
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-//        mIsVisibleToUser = isVisibleToUser;//被调用时记录下状态
-//        if (mviewflipper == null) {
-//            return;
-//        }
-//        if (isVisibleToUser) {
-//            mviewflipper.startFlipping();
-//        } else {
-//            mviewflipper.stopFlipping();
-//        }
-    }
-
     @Override
     protected void loadLazyData() {
+        mViewLoad();
         //首页引导页只显示一次
         String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
         if (TextUtils.isEmpty(isFirstResultUse)) {

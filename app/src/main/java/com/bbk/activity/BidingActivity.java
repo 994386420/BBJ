@@ -66,7 +66,7 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
             }
         });
         mbidprice = (EditText)findViewById(R.id.mbidprice);
-        SpannableString ss = new SpannableString("请输入接镖价");//定义hint的值
+        SpannableString ss = new SpannableString("请输入扑倒价");//定义hint的值
         AbsoluteSizeSpan ass = new AbsoluteSizeSpan(30,true);//设置字体大小 true表示单位是sp
         ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //        magrement = (ImageView) findViewById(R.id.magrement);
@@ -106,7 +106,7 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String price = mbidprice.getText().toString();
                 if (TextUtils.isEmpty(price)){
-                    SpannableString ss = new SpannableString("请输入接镖价");//定义hint的值
+                    SpannableString ss = new SpannableString("请输入扑倒价");//定义hint的值
                     AbsoluteSizeSpan ass = new AbsoluteSizeSpan(30,true);//设置字体大小 true表示单位是sp
                     ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mbidprice.setHint(new SpannedString(ss));
@@ -135,7 +135,7 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
     public void insertJiebiao(){
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         String openID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "openID");
-        Log.i("发镖信息openid",openID+"==========");
+//        Log.i("发镖信息openid",openID+"==========");
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("fbid",fbid);
         paramsMap.put("userid", userID);

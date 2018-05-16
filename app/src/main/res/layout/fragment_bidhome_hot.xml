@@ -86,7 +86,7 @@
                 android:textColor="#fff"
                 android:layout_height="wrap_content"
                 android:textSize="11sp"
-                android:text="待接镖"/>
+                android:text="谁来扑"/>
             <TextView
                 android:id="@+id/mprice"
                 android:layout_width="wrap_content"
@@ -99,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:textSize="11sp"
+                android:visibility="gone"
                 android:text="镖价"/>
         </LinearLayout>
     </LinearLayout>

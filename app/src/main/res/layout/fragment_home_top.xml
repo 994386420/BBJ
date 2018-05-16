@@ -257,7 +257,7 @@
             android:layout_height="36dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/zhengzaibiao_new" />
+            android:src="@mipmap/rangnipu" />
 
         <ViewFlipper
             android:id="@+id/mviewflipper"
@@ -313,7 +313,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="买卖镖局"
+                    android:text="你要我吗?"
                     android:textColor="#333333"
                     android:textSize="18dp" />
 
@@ -324,7 +324,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="购物还能这么玩"
+                    android:text="我要.快来扑我"
                     android:textColor="#999999"
                     android:textSize="12dp" />
             </LinearLayout>
@@ -423,6 +423,8 @@
                 android:id="@+id/czg_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_gravity="center_horizontal|bottom"
                 android:background="@color/color_line_top" />
         </LinearLayout>
@@ -442,7 +444,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="镖局"
+                android:text="扑吧"
                 android:textColor="@color/color_line_text"
                 android:textSize="14dp" />
 
@@ -450,6 +452,8 @@
                 android:id="@+id/bj_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/color_line_top"
                 android:visibility="gone" />
@@ -484,6 +488,8 @@
                 android:id="@+id/bl_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/color_line_top"
                 android:visibility="gone" />
@@ -510,6 +516,8 @@
                 android:id="@+id/fx_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/color_line_top"
                 android:visibility="gone" />

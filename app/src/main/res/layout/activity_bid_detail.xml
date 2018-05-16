@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="正在接镖"
+                android:text="详情"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -111,7 +111,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="谁在发标"
+                android:hint="你要我吗?"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textColor="#808080"
@@ -207,7 +207,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="发镖价"
+                        android:text="我要价"
                         android:textColor="#b40000"
                         android:textSize="11dp" />
                 </LinearLayout>
@@ -256,7 +256,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="接镖 0  人" />
+                    android:text="扑倒 0  人" />
 
                 <View
                     android:layout_width="1dp"
@@ -295,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:textColor="@color/black"
-                    android:text="接镖记录" />
+                    android:text="扑倒记录" />
 
                 <View
                     android:layout_width="1dp"
@@ -339,7 +339,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="发镖时间"
+                        android:text="开始时间"
                         android:textColor="@color/black"
                         android:textSize="12dp" />
 
@@ -392,7 +392,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="发镖价 "
+                        android:text="我要价 "
                         android:textColor="@color/black"
                         android:textSize="12dp" />
 
@@ -415,7 +415,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="接镖价"
+                        android:text="扑倒价"
                         android:textColor="@color/black"
                         android:textSize="12dp" />
 
@@ -497,7 +497,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:textColor="@color/black"
-                    android:text="镖品介绍" />
+                    android:text="  介绍" />
             </LinearLayout>
 
             <TextView
@@ -549,13 +549,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:text="去接镖"/>
+                android:text="马上扑倒"/>
             <TextView
                 android:id="@+id/gojb_text_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:text="(接镖价≤发镖价)"/>
+                android:text="(扑倒价≤我要价)"/>
         </LinearLayout>
     </LinearLayout>
      </LinearLayout>

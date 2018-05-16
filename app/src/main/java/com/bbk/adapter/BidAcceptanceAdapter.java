@@ -82,7 +82,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
             String status = map.get("status");
             if (status != null){
                 if (status.equals("1")){
-                viewHolder.mStatus.setText("接镖");
+                viewHolder.mStatus.setText("扑倒");
                 viewHolder.mbackground.setVisibility(View.GONE);
                 viewHolder.mTimeStatus.setText("距结束");
                 viewHolder.mtime.setVisibility(View.VISIBLE);
@@ -96,7 +96,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
             }
 //            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
-            viewHolder.mbidprice.setText("接镖价  "+bidprice);
+            viewHolder.mbidprice.setText("扑倒价  "+bidprice);
             viewHolder.mprice.setText(price);
             viewHolder.mcount.setText("x"+number);
             Glide.with(context)

@@ -71,7 +71,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
         mchongshi = findViewById(R.id.mchongshi);
         mchongshi.setOnClickListener(onClickListener);
         mTitle = findViewById(R.id.title);
-        mTitle.setText("我的发镖");
+        mTitle.setText("我要的");
         list = new ArrayList<>();
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +86,7 @@ public class BidListDetailActivity extends BaseActivity implements ResultEvent {
         xrefresh = findViewById(R.id.xrefresh);
         tablayout.addTab(tablayout.newTab().setText("全部"));
         tablayout.addTab(tablayout.newTab().setText("待审核"));
-        tablayout.addTab(tablayout.newTab().setText("待接镖"));
+        tablayout.addTab(tablayout.newTab().setText("待扑倒"));
         tablayout.addTab(tablayout.newTab().setText("待评论"));
         tablayout.addTab(tablayout.newTab().setText("完成"));
         tablayout.setTabMode(TabLayout.MODE_FIXED);

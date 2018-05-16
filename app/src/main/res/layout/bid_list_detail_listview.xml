@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="接镖 0 人" />
+                android:text="扑倒 0 人" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -157,7 +157,7 @@
             android:layout_weight="1"
             android:textColor="#333333"
             android:textSize="15dp"
-            android:text="成交总价"/>
+            android:text="扑倒价"/>
         <TextView
             android:id="@+id/mendprice"
             android:layout_width="wrap_content"
@@ -193,7 +193,7 @@
             android:paddingBottom="3dp"
             android:background="@drawable/bid_list_detail_text"
             android:layout_height="wrap_content"
-            android:text="取消发镖"/>
+            android:text="取消扑倒"/>
         <TextView
             android:id="@+id/mtext2"
             android:layout_width="85dp"

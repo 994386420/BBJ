@@ -82,7 +82,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
     }
     public void initView(){
         mTitle = findViewById(R.id.title);
-        mTitle.setText("接镖详情");
+        mTitle.setText("扑倒详情");
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +235,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                 mtextbox.setVisibility(View.GONE);
                 break;
             case "1":
-                mtext2.setText("取消接镖");
+                mtext2.setText("取消扑倒");
                 mtext2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -305,7 +305,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                         //根据status判断状态显示
                         switch (mStatus){
                             case "1":
-                                mendtimetop.setText("待接镖   "+endtime+" 结束");
+                                mendtimetop.setText("待扑倒   "+endtime+" 结束");
                                 break;
                             case "2":
                                 mendtimetop.setText("待评论 "+endtime);
@@ -327,7 +327,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                         mprice2.setText("￥"+price);
                         mcount.setText("x"+number);
                         mspectatornum.setText("围观 "+spectator+"  人");
-                        mbidnum.setText("接镖 "+bidnum+"  人");
+                        mbidnum.setText("扑倒 "+bidnum+"  人");
                         mbidnum2.setText(bidnum+" 条");
                         mstarttime.setText(begintime);
                         mendtime.setText(endtime);

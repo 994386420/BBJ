@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="正在接镖"
+                android:text="正在扑倒"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -142,7 +142,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="发镖价"
+                                    android:text="我要价"
                                     android:textColor="#b40000"
                                     android:textSize="11dp" />
                             </LinearLayout>
@@ -207,7 +207,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="接镖价"
+                        android:text="扑倒价"
                         android:textColor="#fff"
                         android:textSize="20dp" />
 
@@ -223,7 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="请输入接镖价"
+                        android:hint="请输入扑倒价"
                         android:digits="1234567890."
                         android:inputType="phone"
                         android:textColorHint="#cbcbcb"
@@ -255,7 +255,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="接镖价需小于或等于接镖价，以免错过接镖机会"
+                        android:text="扑倒价需小于或等于我要价，以免错过交易机会"
                         android:textColor="#fff"
                         android:textSize="13dp" />
                 </LinearLayout>
@@ -270,7 +270,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="为保证接镖成功和镖品质量，请填写您的商品链接" />
+                android:text="为保证扑倒成功和商品质量，请填写您的商品链接" />
 
             <EditText
                 android:id="@+id/mediturl"
@@ -309,7 +309,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:hint="接镖内容已和发镖者协商确认"
+                    android:hint="@string/jiebiao_content"
                     android:textSize="14dp" />
             </LinearLayout>
 
@@ -358,7 +358,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:background="#b40000"
-        android:text="接镖，提交价格及信息"
+        android:text="扑倒，提交价格及信息"
         android:textColor="#fff"
         android:gravity="center"/>
       </LinearLayout>

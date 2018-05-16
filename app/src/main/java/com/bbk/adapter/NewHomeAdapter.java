@@ -83,7 +83,7 @@ import java.util.Map;
  * Created by rtj on 2017/12/1.
  */
 
-public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent, View.OnClickListener,OnClickListioner{
+public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent, View.OnClickListener{
     private Context context;
     private List<Map<String, String>> taglist,list,mList,mAddList;
     private JSONArray tag, gongneng,fabiao,banner;
@@ -153,53 +153,29 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             mFxAdapter.notifyData(List);
         }
     }
-    public void notifyData1(List<Map<String, String>> List,String Flag){
+    public void notifyData1(List<Map<String, String>> List){
         if (mlistview != null && List != null) {
-            flag = Flag;
             mCzgAdapter = new NewCzgAdapter(context, List);
             mlistview.setAdapter(mCzgAdapter);
         }
     }
-    public void notifyBjData1(List<Map<String, String>> List,String Flag){
+    public void notifyBjData1(List<Map<String, String>> List){
         if (mlistview != null && List != null) {
-            flag = Flag;
             adapter = new NewBjAdapter(context, List);
             mlistview.setAdapter(adapter);
         }
     }
-    public void notifyBlData1(List<Map<String, String>> List,String Flag){
+    public void notifyBlData1(List<Map<String, String>> List){
         if (mlistview != null && List != null) {
-            flag = Flag;
             mBlAdapter = new NewBlAdapter(context, List);
             mlistview.setAdapter(mBlAdapter);
         }
     }
-    public void notifyFxData1(List<Map<String, String>> List,String Flag){
+    public void notifyFxData1(List<Map<String, String>> List){
         if (mlistview != null && List != null) {
-            flag = Flag;
             mFxAdapter = new NewFxAdapter(context, List);
             mlistview.setAdapter(mFxAdapter);
         }
-    }
-
-    @Override
-    public void onCzgClick() {
-
-    }
-
-    @Override
-    public void onBjClick() {
-
-    }
-
-    @Override
-    public void onBlClick() {
-
-    }
-
-    @Override
-    public void onFxClick() {
-
     }
 
     //define interface
@@ -240,8 +216,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
-        super.onBindViewHolder(holder, position, payloads);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         try {
             if (holder instanceof TopViewHolder) {
                 TopViewHolder viewHolder = (TopViewHolder) holder;
@@ -253,24 +228,6 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//        try {
-//            if (holder instanceof TopViewHolder) {
-//                TopViewHolder viewHolder = (TopViewHolder) holder;
-//                initTop(viewHolder);
-//        } else if (holder instanceof ViewHolder) {
-//            ViewHolder viewHolder = (ViewHolder) holder;
-//            initTop(viewHolder, position - 1);
-//        }else if (holder instanceof BjViewHolder) {
-//                BjViewHolder viewHolder = (BjViewHolder) holder;
-//                initBj(list,viewHolder, position - 1);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     private void initTop(final TopViewHolder viewHolder)  {
@@ -309,7 +266,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
                 public void onClick(View view) {
                     type = "1";
                     setView(viewHolder);
-                    mIdex("1",2,true);
+//                    mIdex("1",2,true);
                     setText(viewHolder.mCzgText,viewHolder.mCzgView);
                     onClickListioner.onCzgClick();
                 }
@@ -319,7 +276,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
                 public void onClick(View view) {
                     type = "2";
                     setView(viewHolder);
-                    mIdex("2",2,true);
+//                    mIdex("2",2,true);
                     setText(viewHolder.mBjText,viewHolder.mBjView);
                     onClickListioner.onBjClick();
                 }
@@ -329,7 +286,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
                 public void onClick(View view) {
                     type = "3";
                     setView(viewHolder);
-                    mIdex("3",2,true);
+//                    mIdex("3",2,true);
                     setText(viewHolder.mBlText,viewHolder.mBlView);
                     onClickListioner.onBlClick();
                 }
@@ -339,7 +296,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
                 public void onClick(View view) {
                     type = "4";
                     setView(viewHolder);
-                    mIdex("4",2,true);
+//                    mIdex("4",2,true);
                     setText(viewHolder.mFxText,viewHolder.mFxView);
                     onClickListioner.onFxClick();
                 }
@@ -627,66 +584,20 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             }
         });
     }
-//    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-//        public float startX;
-//        public float startY;
-//
-//        @Override
-//        public boolean onTouch(View v, MotionEvent event) {
-//            switch (event.getAction()) {
-//                case MotionEvent.ACTION_DOWN:
-//                    viewHolder.mBanner.requestDisallowInterceptTouchEvent(true);
-//                    // 记录手指按下的位置
-//                    startY = event.getY();
-//                    startX = event.getX();
-//                    break;
-//                case MotionEvent.ACTION_MOVE:
-//                    // 获取当前手指位置
-//                    float endY = event.getY();
-//                    float endX = event.getX();
-//                    float distanceX = Math.abs(endX - startX);
-//                    float distanceY = Math.abs(endY - startY);
-//                    viewHolder.mBanner.requestDisallowInterceptTouchEvent(true);
-//                    // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
-//                    if (distanceX+500 < distanceY) {
-//                        viewHolder.mBanner.requestDisallowInterceptTouchEvent(false);
-//                    }
-//                    break;
-//                case MotionEvent.ACTION_UP:
-//                case MotionEvent.ACTION_CANCEL:
-//                    break;
-//            }
-//            return false;
-//        }
-//    };
+
+
 class ViewHolder extends RecyclerView.ViewHolder {
 //        private LinearLayout layout;
     public ViewHolder(View mView) {
         super(mView);
         mlistview= mView.findViewById(R.id.mlistview);
-//        layout = mView.findViewById(R.id.click_layout);
-
+        mlistview.setHasFixedSize(true);
+        mlistview.setLayoutManager(new LinearLayoutManager(context));
     }
 }
     private void initTop(ViewHolder viewHolder, final int position) {
         try {
-            mlistview.setHasFixedSize(true);
-            mlistview.setFocusable(false);
-            mlistview.setNestedScrollingEnabled(false);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            };
-            mlistview.setLayoutManager(linearLayoutManager);
-            Log.i("positio",position+"==========");
-//            if (position == 0){
-//                viewHolder.layout.setVisibility(View.VISIBLE);
-//            }else {
-//                viewHolder.layout.setVisibility(View.GONE);
-//            }
-            isclear = true;
+//            isclear = true;
             getIndexByType(false,2);
         } catch (Exception e) {
             e.printStackTrace();
@@ -704,7 +615,6 @@ class ViewHolder extends RecyclerView.ViewHolder {
                 break;
             case 2:
                 try {
-//                    mRefreshableView.setPullLoadEnable(true);
                     list = new ArrayList<>();
                     if (isclear) {
                         list.clear();
@@ -721,15 +631,11 @@ class ViewHolder extends RecyclerView.ViewHolder {
                     }
                     if (x == 1) {
                         mList = list;
-                        Log.i("list=======",mList+"==");
                         handler.sendEmptyMessageDelayed(1, 0);
-//                        isrequest = true;
                     } else if (x == 2) {
                         mAddList = list;
                         handler.sendEmptyMessageDelayed(2, 0);
                     }
-//                    loadBjData();
-//                    initListener();
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

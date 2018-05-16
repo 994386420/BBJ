@@ -207,7 +207,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="发镖价"
+                            android:text="我要价"
                             android:textColor="#b40000"
                             android:textSize="11dp" />
                     </LinearLayout>
@@ -256,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="接镖 108  人" />
+                        android:text="扑倒 108  人" />
 
                     <View
                         android:layout_width="1dp"
@@ -294,7 +294,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text="接镖记录" />
+                        android:text="扑倒记录" />
 
                     <View
                         android:layout_width="1dp"
@@ -338,7 +338,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="发镖时间"
+                            android:text="开始时间"
                             android:textSize="12dp" />
 
                         <TextView
@@ -389,7 +389,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="发镖价 "
+                            android:text="我要价 "
                             android:textSize="12dp" />
 
                         <TextView
@@ -411,7 +411,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="接镖价"
+                            android:text="扑倒价"
                             android:textSize="12dp" />
 
                         <TextView

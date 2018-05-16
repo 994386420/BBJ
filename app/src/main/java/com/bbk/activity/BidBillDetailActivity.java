@@ -1,10 +1,12 @@
 package com.bbk.activity;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.bbk.adapter.BidDetailListAdapter;
 import com.bbk.adapter.BidListDetailAdapter;
+import com.bbk.adapter.XjppAdapter;
 import com.bbk.chat.ui.ChatActivity;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow6;
@@ -20,6 +23,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.HorizontalListView;
 import com.bbk.view.MyListView;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
@@ -49,11 +53,18 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     private LinearLayout mbox,mcontact,malllist;
     private MyListView mlistview;
 //    private RushBuyCountDownTimerView mtime;
-    private List<Map<String,String>> list;
+    private List<Map<String,String>> list,mXjppList;
     private BidDetailListAdapter adapter;
     private String status;
     private ImageView topbar_goback_btn;
     private TextView tv_status;//发镖详情状态
+    private HorizontalListView horizontalListView;
+    private int durationRotate = 700;// 旋转动画时间
+    private int durationAlpha = 500;// 透明度动画时间
+    private boolean isGlobalMenuShow;
+    private LinearLayout xjpp_layout;//小鲸扑扑
+    private LinearLayout xjpp_view_layout;//小鲸扑扑
+    private ImageView xjpp_iamge;//小鲸扑扑
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +79,21 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         initData();
     }
     public void initView(){
+        xjpp_layout = findViewById(R.id.xjpp_layout);
+        xjpp_view_layout = findViewById(R.id.xjpp_view_layout);
+        xjpp_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isGlobalMenuShow = !isGlobalMenuShow;
+                showGlobalMenu();
+            }
+        });
+        xjpp_iamge = findViewById(R.id.xjpp_image);
+        horizontalListView = findViewById(R.id.horizontal_listview);
         list = new ArrayList<>();
+        mXjppList = new ArrayList<>();
         mTitle = findViewById(R.id.title);
-        mTitle.setText("发镖详情");
+        mTitle.setText("扑倒详情");
         tv_status = findViewById(R.id.tv_statuus);
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -127,11 +150,11 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
             case "0":
                 tv_status.setText("待审核 "+time);
                 mtext2.setVisibility(View.GONE);
-                mtext1.setText("取消发镖");
+                mtext1.setText("取消我要");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消发镖？")
+                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消我要？")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @SuppressLint("NewApi")
                                     @Override
@@ -148,12 +171,12 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 });
                 break;
             case "1":
-                tv_status.setText("待接镖 "+ time);
-                mtext1.setText("取消发镖");
+                tv_status.setText("待扑倒 "+ time);
+                mtext1.setText("取消我要");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消发镖？")
+                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消我要？")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @SuppressLint("NewApi")
                                     @Override
@@ -210,11 +233,11 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 break;
             case "4":
                 tv_status.setText("未审核通过 "+ time);
-                mtext1.setText("取消发镖");
+                mtext1.setText("取消我要");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消发镖？")
+                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消我要？")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @SuppressLint("NewApi")
                                     @Override
@@ -261,7 +284,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         }
     }
     public void rebid(final String id){
-        mtext1.setText("再次发镖");
+        mtext1.setText("再次我要");
         mtext1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,6 +338,29 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
             }
         }
     }
+
+    public void addListXjpp(JSONArray array) throws JSONException {
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            Map<String,String> map = new HashMap<>();
+            map.put("imgUrl",object.optString("imgUrl"));
+            map.put("title",object.optString("title"));
+            map.put("price",object.optString("price"));
+            map.put("rowkey",object.optString("rowkey"));
+            map.put("url",object.optString("url"));
+                mXjppList.add(map);
+            }
+            horizontalListView.setAdapter(new XjppAdapter(this,mXjppList));
+            horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(BidBillDetailActivity.this, WebViewActivity.class);
+                        intent.putExtra("url", mXjppList.get(i).get("url"));
+                        intent.putExtra("groupRowKey", mXjppList.get(i).get("rowkey"));
+                         startActivity(intent);
+                }
+            });
+    }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         switch (requestCode){
@@ -336,6 +382,9 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     String  bidnum =object.optString("bidnum");
                     final String  userid =object.optString("userid");
                     JSONArray imgs = object.getJSONArray("imgs");
+                    String tjlist = object.getString("tjList");
+                    JSONArray tjlistArray = object.getJSONArray("tjList");
+                    addListXjpp(tjlistArray);
                     status =object.optString("status");
                     initbutton(endtime);
                     JSONArray bidarr = object.getJSONArray("bidarr");
@@ -364,13 +413,20 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
 //                    mtime.addsum(endlong,"#999999");
 //                    mtime.start();
                     mspectatornum.setText("围观 "+spectator+"  人");
-                    mbidnum.setText("接镖 "+bidnum+"  人");
+                    mbidnum.setText("扑倒 "+bidnum+"  人");
                     mbidnum2.setText(bidnum+" 条");
 
-                    mordernum.setText("镖单编号:"+ordernum);
+                    mordernum.setText("订单编号:"+ordernum);
                     mbegintime.setText("创建时间:"+beginlong);
                     mendtime.setText("结束时间:"+endlong);
-                    addList(bidarr);
+                    Log.i("--------",bidarr.length()+"====");
+                    if (bidarr.length() > 0){
+                        addList(bidarr);
+                    }else {
+                        isGlobalMenuShow = true;
+                        xjpp_iamge.setImageResource(R.mipmap.xjpp_top);
+                        xjpp_view_layout.setVisibility(View.VISIBLE);
+                    }
                     adapter = new BidDetailListAdapter(this,list);
                     mlistview.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
@@ -414,5 +470,40 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 }
                 break;
         }
+    }
+
+    /**
+     * 显示菜单；图标动画
+     */
+    private void showGlobalMenu() {
+        if (isGlobalMenuShow) {
+            ObjectAnimator.ofFloat(xjpp_iamge, "rotation", 0, 180)
+                    .setDuration(durationRotate).start();
+            ObjectAnimator.ofFloat(xjpp_iamge, "rotation", 0, 180)
+                    .setDuration(durationRotate).start();
+            ObjectAnimator.ofFloat(xjpp_iamge, "rotation", 0, 180)
+                    .setDuration(durationRotate).start();
+            xjpp_view_layout.setVisibility(View.VISIBLE);
+//            xjpp_view_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            ObjectAnimator.ofFloat(xjpp_view_layout, "alpha", 0, 1)
+                    .setDuration(durationAlpha).start();
+        } else {
+            ObjectAnimator.ofFloat(xjpp_iamge, "rotation", 180, 360)
+                    .setDuration(durationRotate).start();
+            ObjectAnimator.ofFloat(xjpp_iamge, "rotation", 180, 360)
+                    .setDuration(durationRotate).start();
+            ObjectAnimator.ofFloat(xjpp_iamge, "rotation", 180, 360)
+                    .setDuration(durationRotate).start();
+            ObjectAnimator.ofFloat(xjpp_view_layout, "alpha", 1, 0)
+                    .setDuration(durationAlpha).start();
+            xjpp_view_layout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    xjpp_view_layout.setVisibility(View.GONE);
+//                    xjpp_view_layout.setLayoutParams(new LinearLayout.LayoutParams(0 ,0));
+                }
+            }, durationAlpha);
+        }
+
     }
 }

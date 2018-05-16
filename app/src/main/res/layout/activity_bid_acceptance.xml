@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="#fff"
-                android:text="正在接镖"
+                android:text="正在扑倒"
                 android:textSize="17dp" />
         </LinearLayout>
         <LinearLayout
@@ -102,7 +102,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="谁在发镖"
+                android:hint="你要我吗?"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textColor="#808080"

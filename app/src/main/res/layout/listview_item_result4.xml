@@ -151,7 +151,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="去发镖"
+                            android:text="我想要"
                             android:textColor="#fff"
                             android:textSize="12dp" />
                     </RelativeLayout>

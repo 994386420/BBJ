@@ -47,7 +47,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:textColor="#fff"
-                    android:text="镖局"
+                    android:text="你要我吗"
                     android:textSize="17dp" />
             </LinearLayout>
             <LinearLayout
@@ -97,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
-                android:text="谁在发镖"/>
+                android:text="你要我吗?"/>
 
         </LinearLayout>
     </LinearLayout>
