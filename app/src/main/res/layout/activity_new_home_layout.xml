@@ -18,102 +18,11 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
-
-        <!--<com.bbk.view.SuperScrollView-->
-        <!--android:id="@+id/myScrollView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:background="#ffffff"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/layout"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="wrap_content">
-
-                <com.youth.banner.Banner
-                    android:id="@+id/banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:background="@mipmap/banner_zhanwei"
-
-                    app:indicator_height="6dp"
-                    app:indicator_width="6dp"
-                    app:indicator_margin="2.5dp"
-                    android:focusable="true"
-                    app:indicator_drawable_selected="@drawable/banner_circle2"
-                    app:indicator_drawable_unselected="@drawable/banner_circle"
-                    />
-                <LinearLayout
-                    android:id="@+id/lin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <View
-                        android:id="@+id/mzhuangtai"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal" >
-
-                        <LinearLayout
-                            android:id="@+id/msearch"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="15dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/text_view_border_5dp"
-                            android:orientation="horizontal"
-                            android:paddingBottom="7dp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="7dp" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="输入您相比价的商品"
-                                android:textColor="#999999"
-                                android:textSize="14dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/msort"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" >
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@mipmap/fenlei_white" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="分类"
-                                android:textColor="@color/white"
-                                android:textSize="10dp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/layout_click"
@@ -280,46 +189,7 @@
         android:layout_height="10dp"
         android:background="#f3f3f3" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/ll_tabView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-            </LinearLayout>
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent">-->
-                <!--<com.andview.refreshview.XRefreshView-->
-                <!--android:id="@+id/mrefresh"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent">-->
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/mlistview"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-            <com.bbk.view.MyListView
-                android:id="@+id/mczglistview"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-    </LinearLayout>
-    <!--</com.bbk.view.SuperScrollView>-->
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-        <LinearLayout
-            android:id="@+id/ll_tabTopView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
     </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"

@@ -69,7 +69,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,MyNewScrollView.OnScrollListener,OnClickListioner {
+public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,OnClickListioner {
     private DataFlow6 dataFlow;
     private View mView;
     /**
@@ -89,11 +89,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     /**
      * 顶部固定的TabViewLayout
      */
-    private LinearLayout mTopTabViewLayout;
+//    private LinearLayout mTopTabViewLayout;
     /**
      * 跟随ScrollView的TabviewLayout
      */
-    private LinearLayout mTabViewLayout;
+//    private LinearLayout mTabViewLayout;
 
     /**
      * 要悬浮在顶部的View的子View
@@ -242,8 +242,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         view = v.findViewById(R.id.view);
         refreshAndloda();
         mviewflipper = mView.findViewById(R.id.mviewflipper);
-        mTabViewLayout = mView.findViewById(R.id.ll_tabView);
-        mTopTabViewLayout = mView.findViewById(R.id.ll_tabTopView);
+//        mTabViewLayout = mView.findViewById(R.id.ll_tabView);
+//        mTopTabViewLayout = mView.findViewById(R.id.ll_tabTopView);
         mTopView = mView. findViewById(R.id.tv_topView);
         mLlCzgLayout = mView.findViewById(R.id.ll_czg_layout);
         mLlbjLayout = mView.findViewById(R.id.ll_bj_layout);
@@ -261,17 +261,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mLlbjLayout.setOnClickListener(this);
         mLlblLayout.setOnClickListener(this);
         mLlfxLayout.setOnClickListener(this);
-        mlistview = mView.findViewById(R.id.mlistview);
-        mlistview.setHasFixedSize(false);
-        mlistview.setFocusable(false);
-        mlistview.setNestedScrollingEnabled(false);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-        mlistview.setLayoutManager(linearLayoutManager);
     }
     private void refreshAndloda() {
     }
@@ -280,6 +269,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         HashMap<String, String> paramsMap = new HashMap<>();
         dataFlow.requestData(1, "newService/queryAppIndexInfo", paramsMap, this, is);
     }
+//    private void initDataWx(boolean is) {
+//        HashMap<String, String> paramsMap = new HashMap<>();
+//        paramsMap.put("paytype","wx");
+//        dataFlow.requestData(3, "appPayService/getOrderInfo", paramsMap, this, is);
+//    }
     //首页分类数据
     private void getIndexByType(boolean is,int code) {
         HashMap<String, String> paramsMap = new HashMap<>();
@@ -296,6 +290,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 setView();
                 mIdex("1",2,true);
                 setText(mCzgText,mCzgView);
+//                initDataWx(true);
                 break;
             case R.id.ll_bj_layout:
                 flag ="2";
@@ -582,25 +577,25 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         isclear = true;
         getIndexByType(is,code);
     }
-    @Override
-    public void onScroll(int scrollY) {
-        int mHeight = layout.getBottom();
-        //判断滑动距离scrollY是否大于0，因为大于0的时候就是可以滑动了，此时mTabViewLayout.getTop()才能取到值。
-        if (scrollY > 0 && scrollY >= mHeight) {
-            if (mTopView.getParent() != mTopTabViewLayout) {
-                mTabViewLayout.removeView(mTopView);
-                mTopTabViewLayout.addView(mTopView);
-                view.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (mTopView.getParent() != mTabViewLayout) {
-                mTopTabViewLayout.removeView(mTopView);
-                mTabViewLayout.addView(mTopView);
-                view.setVisibility(View.GONE);
-            }
-
-        }
-    }
+//    @Override
+//    public void onScroll(int scrollY) {
+//        int mHeight = layout.getBottom();
+//        //判断滑动距离scrollY是否大于0，因为大于0的时候就是可以滑动了，此时mTabViewLayout.getTop()才能取到值。
+//        if (scrollY > 0 && scrollY >= mHeight) {
+//            if (mTopView.getParent() != mTopTabViewLayout) {
+//                mTabViewLayout.removeView(mTopView);
+//                mTopTabViewLayout.addView(mTopView);
+//                view.setVisibility(View.VISIBLE);
+//            }
+//        } else {
+//            if (mTopView.getParent() != mTabViewLayout) {
+//                mTopTabViewLayout.removeView(mTopView);
+//                mTabViewLayout.addView(mTopView);
+//                view.setVisibility(View.GONE);
+//            }
+//
+//        }
+//    }
 
     @Override
     protected void loadLazyData() {
