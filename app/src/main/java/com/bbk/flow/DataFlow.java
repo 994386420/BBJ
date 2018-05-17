@@ -85,8 +85,9 @@ public class DataFlow{
 				if(dataJo.optInt("status")<=0){
 
 				}else{
+					Log.i("网络请求返回数据：",dataJo+"------------------------");
+					data.event.onResultData(requestCode,api,dataJo,content);
 				}
-				data.event.onResultData(requestCode,api,dataJo,content);
 			}catch(Exception e){
 
 			}
