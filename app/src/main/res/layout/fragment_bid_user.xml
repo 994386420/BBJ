@@ -162,7 +162,7 @@
             android:layout_weight="1"
             android:textSize="14dp"
             android:textColor="@color/black"
-            android:text="我的发镖"/>
+            android:text="我要的"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -234,7 +234,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/text_dark"
-                android:text="待扑倒"/>
+                android:text="谁来扑"/>
             <TextView
                 android:id="@+id/mjietext"
                 android:layout_width="wrap_content"
@@ -337,7 +337,7 @@
             android:layout_weight="1"
             android:textSize="14dp"
             android:textColor="@color/black"
-            android:text="我的接镖"/>
+            android:text="扑倒的"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -374,7 +374,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/text_dark"
-                android:text="正扑倒"/>
+                android:text="扑倒中"/>
             <TextView
                 android:id="@+id/mbidjietext"
                 android:layout_width="wrap_content"

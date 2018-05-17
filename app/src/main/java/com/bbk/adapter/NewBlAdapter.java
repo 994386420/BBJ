@@ -96,7 +96,7 @@ public class NewBlAdapter extends RecyclerView.Adapter{
             final String content = map.get("content");
             viewHolder.item_title.setText(content);
             viewHolder.time.setText(time);
-            viewHolder.mExtr.setText(mExtr);
+            viewHolder.mExtr.setText("¥"+map.get("price")+", "+ mExtr);
             viewHolder.mlike.setText(zan);
             viewHolder.mcomment.setText(readnum);
             Glide.with(context)

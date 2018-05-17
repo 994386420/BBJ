@@ -409,6 +409,10 @@
             android:name=".UserSelfLoginNewActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchRecommendCzgActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.tencent.rdm.uuid"
             android:value="a2af72ec-a731-46eb-8501-0477e34702f3" />
@@ -757,6 +761,19 @@
         <activity
             android:name=".IntentActivity"
             android:label="@string/title_activity_intent" />
+        <receiver
+            android:name="com.bbk.wxpay.AppRegister"
+            android:permission="com.tencent.mm.plugin.permission.SEND">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoDisplay"/>
 
         <service android:name="com.bbk.server.FloatingWindowService" />
         <!-- 友盟 -->

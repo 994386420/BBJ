@@ -66,7 +66,7 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
             }
         });
         mbidprice = (EditText)findViewById(R.id.mbidprice);
-        SpannableString ss = new SpannableString("请输入扑倒价");//定义hint的值
+        SpannableString ss = new SpannableString("请输入价格");//定义hint的值
         AbsoluteSizeSpan ass = new AbsoluteSizeSpan(30,true);//设置字体大小 true表示单位是sp
         ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //        magrement = (ImageView) findViewById(R.id.magrement);
@@ -106,7 +106,7 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String price = mbidprice.getText().toString();
                 if (TextUtils.isEmpty(price)){
-                    SpannableString ss = new SpannableString("请输入扑倒价");//定义hint的值
+                    SpannableString ss = new SpannableString("请输入价格");//定义hint的值
                     AbsoluteSizeSpan ass = new AbsoluteSizeSpan(30,true);//设置字体大小 true表示单位是sp
                     ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     mbidprice.setHint(new SpannedString(ss));
@@ -162,7 +162,7 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
                     mtime.start();
                     item_title.setText(title);
                     mcount.setText("x"+number);
-                    mprice.setText(price);
+                    mprice.setText("￥"+price);
                     Glide.with(this)
                             .load(img)
                             .priority(Priority.HIGH)

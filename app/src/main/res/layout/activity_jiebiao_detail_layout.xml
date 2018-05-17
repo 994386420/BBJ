@@ -195,6 +195,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <TextView
@@ -216,11 +217,10 @@
                         android:id="@+id/mprice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="7dp"
                         android:layout_weight="1"
                         android:text=""
                         android:textColor="#b40000"
-                        android:textSize="25dp" />
+                        android:textSize="13dp" />
 
                     <TextView
                         android:id="@+id/mcount"
@@ -288,12 +288,12 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:visibility="gone"
                         android:src="@mipmap/bj_02"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:text="扑倒记录" />
 
                     <View
@@ -484,13 +484,13 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:visibility="gone"
                         android:src="@mipmap/bj_02"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="镖品介绍" />
+                        android:text="商品介绍" />
                 </LinearLayout>
 
                 <TextView

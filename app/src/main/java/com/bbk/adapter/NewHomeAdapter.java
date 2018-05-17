@@ -12,13 +12,16 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -68,6 +71,8 @@ import com.bumptech.glide.Priority;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+import com.zyao89.view.zloading.ZLoadingView;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -102,6 +107,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
     private NewCzgAdapter mCzgAdapter;
     private NewFxAdapter mFxAdapter;
     private RecyclerView mlistview;
+    private ZLoadingView bar;
     TopViewHolder topViewHolder;
     String flag= "1";
 
@@ -591,13 +597,18 @@ class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder(View mView) {
         super(mView);
         mlistview= mView.findViewById(R.id.mlistview);
+        //刷新bar
+        bar = (ZLoadingView) mView.findViewById(R.id.progress);
         mlistview.setHasFixedSize(true);
         mlistview.setLayoutManager(new LinearLayoutManager(context));
+
     }
 }
     private void initTop(ViewHolder viewHolder, final int position) {
         try {
-//            isclear = true;
+            bar.setVisibility(View.VISIBLE);
+            bar.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
+            isclear = true;
             getIndexByType(false,2);
         } catch (Exception e) {
             e.printStackTrace();
@@ -676,6 +687,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
             map.put("zannum",object.optString("zannum"));
             map.put("blid",object.optString("blid"));
             map.put("content",object.optString("content"));
+            map.put("price",object.optString("price"));
             list.add(map);
         }
     }
@@ -721,12 +733,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-//                    mRefreshableView.stopLoadMore();
-//                    mRefreshableView.stopRefresh();
-//                    refreshLayout.finishLoadmore();
-//                    refreshLayout.finishRefresh();
                     if (mList.size() > 0 && mList.size() < 5) {
-//                        mRefreshableView.setLoadComplete(true);
                     }
                     if (mList != null && mList.size() > 0) {
                         if (type.equals("2")){
@@ -742,14 +749,10 @@ class ViewHolder extends RecyclerView.ViewHolder {
                             mCzgAdapter = new NewCzgAdapter(context, mList);
                             mlistview.setAdapter(mCzgAdapter);
                         }
+                        bar.setVisibility(View.GONE);
                     }
                     break;
                 case 2:
-//                    maxNum = mCzgAdapter.getCount();
-//                    mRefreshableView.stopLoadMore();
-//                    mRefreshableView.stopRefresh();
-//                    refreshLayout.finishLoadmore();
-//                    refreshLayout.finishRefresh();
                     if (mAddList != null && mAddList.size() > 0) {
                         if (type.equals("2")) {
                             adapter.notifyData(mAddList);
@@ -761,13 +764,11 @@ class ViewHolder extends RecyclerView.ViewHolder {
                             mCzgAdapter.notifyData(mAddList);
                         }
                     } else {
-//                        refreshLayout.finishLoadmore(true);
-//                        mRefreshableView.stopLoadMore(false);
-//                        refreshLayout.finishLoadMoreWithNoMoreData();
                         StringUtil.showToast(context, "没有更多了");
                     }
                     break;
             }
         }
     };
+
 }

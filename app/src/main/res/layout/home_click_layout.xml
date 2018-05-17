@@ -76,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="镖局"
+                        android:text="扑吧"
                         android:textColor="@color/color_line_text"
                         android:textSize="14dp" />
 

@@ -54,7 +54,7 @@
     </RelativeLayout>
 	<com.andview.refreshview.XRefreshView 
 	    android:id="@+id/xrefresh"
-	    android:visibility="gone"
+	    android:visibility="visible"
 	    android:layout_below="@id/topbar_layout"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">

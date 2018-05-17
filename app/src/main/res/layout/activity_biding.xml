@@ -116,7 +116,7 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:lines="2"
-                            android:text="Apple iPhone 5s 16G 金色Apple iPhone 5s 16G 金色 Apple iPhone 5s 16G 金色 "
+                            android:text=" "
                             android:textColor="#111111"
                             android:textSize="14dp" />
 
@@ -130,6 +130,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
+                                android:visibility="gone"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -153,7 +154,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="7dp"
                                 android:layout_weight="1"
-                                android:text="5456"
+                                android:text=""
                                 android:textColor="#b40000"
                                 android:textSize="25dp" />
 
@@ -207,7 +208,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="扑倒价"
+                        android:text="价格"
                         android:textColor="#fff"
                         android:textSize="20dp" />
 
@@ -223,12 +224,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="请输入扑倒价"
+                        android:hint="请输入价格"
                         android:digits="1234567890."
                         android:inputType="phone"
                         android:textColorHint="#cbcbcb"
                         android:textColor="#fff"
-                        android:textSize="40dp" />
+                        android:textSize="35dp" />
                 </LinearLayout>
 
                 <View
@@ -270,7 +271,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="为保证扑倒成功和商品质量，请填写您的商品链接" />
+                android:text="输入正确的商品链接" />
 
             <EditText
                 android:id="@+id/mediturl"
@@ -302,7 +303,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="接镖留言 :" />
+                    android:text="留言 :" />
 
                 <EditText
                     android:id="@+id/mdesc"
@@ -358,7 +359,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:background="#b40000"
-        android:text="扑倒，提交价格及信息"
+        android:text="提交价格及信息"
         android:textColor="#fff"
         android:gravity="center"/>
       </LinearLayout>

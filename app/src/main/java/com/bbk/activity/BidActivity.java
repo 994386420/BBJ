@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -50,6 +51,7 @@ import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.SoftHideKeyBoardUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.MyGridView;
 import com.bumptech.glide.Glide;
@@ -116,6 +118,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_bid);
+        SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(this));
         View topView = findViewById(R.id.topbar_layout);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
@@ -135,6 +138,14 @@ public class BidActivity extends BaseActivity implements ResultEvent{
             }
 //            initstateView();
             initView();
+    }
+    private int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private void initData() {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.content.ClipboardManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,8 +83,8 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView item_img;
         TextView mbidprice,dianpu,mprice,youhui;
-        SelectableTextView item_title;
-        LinearLayout itemlayout;
+        TextView item_title,copy_title,copy_url;
+        LinearLayout itemlayout,mCopyLayout;
         public ViewHolder(View mView) {
             super(mView);
           item_img = mView.findViewById(R.id.item_img);
@@ -93,13 +94,16 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
            mprice =mView.findViewById(R.id.mprice);
             youhui = mView.findViewById(R.id.youhui_text);
             itemlayout = mView.findViewById(R.id.result_item);
+            mCopyLayout = mView.findViewById(R.id.copy_layout);
+            copy_title = mView.findViewById(R.id.copy_title);
+            copy_url = mView.findViewById(R.id.copy_url);
         }
     }
-    private void initTop(NewCzgAdapter.ViewHolder viewHolder, final int position) {
+    private void initTop(final NewCzgAdapter.ViewHolder viewHolder, final int position) {
         try {
-            Map<String,String> map = list.get(position);
+            final Map<String,String> map = list.get(position);
             String img = map.get("imgurl");
-            String title = map.get("title");
+            final String title = map.get("title");
             String price = map.get("price");
 //        String bidprice = map.get("bidprice");
             String dianpu = map.get("dianpu");
@@ -136,6 +140,37 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+            viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+                    return true;
+                }
+            });
+            viewHolder.mCopyLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(title);
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_url.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(map.get("url"));
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {

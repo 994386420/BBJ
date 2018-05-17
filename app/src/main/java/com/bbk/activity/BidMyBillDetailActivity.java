@@ -323,7 +323,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                                 mendtimetop.setText("已完成 "+endtime);
                                 break;
                         }
-                        mprice.setText(price);
+                        mprice.setText("￥"+price);
                         mprice2.setText("￥"+price);
                         mcount.setText("x"+number);
                         mspectatornum.setText("围观 "+spectator+"  人");

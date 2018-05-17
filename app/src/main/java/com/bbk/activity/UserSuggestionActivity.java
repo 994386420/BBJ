@@ -77,7 +77,7 @@ public class UserSuggestionActivity extends BaseActivity implements OnClickListe
 		/**
 		 * 手机系统版本号，手机型号， 手机厂商
 		 */
-		String string =  SystemUtil.getDeviceBrand()+SystemUtil.getSystemModel()+SystemUtil.getSystemVersion();
+		String string =  SystemUtil.getDeviceBrand()+" "+SystemUtil.getSystemModel()+" android:"+SystemUtil.getSystemVersion();
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("userid", userID);
 		paramsMap.put("content", medit.getText().toString()+"来自："+string);

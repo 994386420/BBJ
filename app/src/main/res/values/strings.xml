@@ -337,4 +337,5 @@
     <string name="refresh_release_text">松手可更新</string>
     <string name="copy">复制</string>
     <string name="select_all">全选</string>
+    <string name="jiebiao_content">填写内容已和“我要”协商确认</string>
 </resources>

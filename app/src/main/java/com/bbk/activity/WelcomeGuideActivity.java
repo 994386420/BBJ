@@ -30,7 +30,7 @@ public class WelcomeGuideActivity extends BaseActivity {
 	private int[] pics = { 
 			R.mipmap.splash_01,
 			R.mipmap.splash_02,
-			R.mipmap.splash_03 };
+			R.mipmap.puba };
 	private ViewPager pager;
 	private List<View> mListViews;
 	private MyViewPagerAdapter mAdapter;

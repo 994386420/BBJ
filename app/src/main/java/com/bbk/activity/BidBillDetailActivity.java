@@ -143,6 +143,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         paramsMap.put("fbid",fbid);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         paramsMap.put("userid",userID);
+        Log.i("===",fbid+userID);
         dataFlow.requestData(1, "bid/queryBidDetail", paramsMap, this,true);
     }
     private void initbutton(String time) {
@@ -366,6 +367,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         switch (requestCode){
             case 1:
                 try {
+                    Log.i("====",content);
                     JSONObject object = new JSONObject(content);
                     String  endtime =object.optString("endtime");
                     String  beginlong =object.optString("beginlong");
@@ -381,10 +383,13 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     String  price =object.optString("price");
                     String  bidnum =object.optString("bidnum");
                     final String  userid =object.optString("userid");
-                    JSONArray imgs = object.getJSONArray("imgs");
-                    String tjlist = object.getString("tjList");
-                    JSONArray tjlistArray = object.getJSONArray("tjList");
-                    addListXjpp(tjlistArray);
+                    if (object.has("imgs")){
+                        JSONArray imgs = object.getJSONArray("imgs");
+                    }
+                    if (object.has("tjList")) {
+                        JSONArray tjlistArray = object.getJSONArray("tjList");
+                        addListXjpp(tjlistArray);
+                    }
                     status =object.optString("status");
                     initbutton(endtime);
                     JSONArray bidarr = object.getJSONArray("bidarr");

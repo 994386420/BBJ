@@ -393,7 +393,7 @@
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/xrefresh2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:layout_below="@id/home_layout_bar"
                 >
@@ -990,7 +990,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/new_bid_guide_qufabiao"
+        android:src="@mipmap/woyao"
         android:visibility="gone" />
 
 </RelativeLayout>

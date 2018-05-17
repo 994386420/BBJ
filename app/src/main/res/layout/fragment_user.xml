@@ -406,7 +406,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:text="我的发镖" />
+                    android:text="我要的" />
 
                 <ImageView
                     android:layout_width="15dp"
@@ -440,7 +440,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:text="我的接镖" />
+                    android:text="扑倒的" />
 
                 <ImageView
                     android:layout_width="15dp"

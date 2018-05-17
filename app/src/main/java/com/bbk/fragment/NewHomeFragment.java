@@ -40,6 +40,8 @@ import com.bbk.adapter.NewHomeAdapter;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.model.BaseService;
+import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
@@ -56,9 +58,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +66,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 
 public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,OnClickListioner {
@@ -109,11 +111,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private View mCzgView,mBjView,mBlView,mFxView;
     private TextView mCzgText,mBjText,mBlText,mFxText;
     private NewHomeAdapter homeadapter;
-    private NewBjAdapter adapter;
-    private NewBlAdapter mBlAdapter;
-    private NewCzgAdapter mCzgAdapter;
-    private NewFxAdapter mFxAdapter;
-    private RecyclerView mlistview;
     private int page = 1,x = 1;
     private int maxNum = 0;
     private String type = "1",flag = "";
@@ -139,6 +136,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
     private int mSuspensionHeight;
     private LinearLayout mSuspensionBar;
+    private HashMap<String, Object> mPayMap, mPayDataMap;
+    private IWXAPI msgApi = null;
+    private int data;// 支付结果标识
+    private PayReq mReq;
+    private PayModel mPayModel;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -170,6 +172,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             getActivity().getWindow().setBackgroundDrawable(null);
             mView = inflater.inflate(R.layout.activity_new_home_layout, null);
             dataFlow = new DataFlow6(getContext());
+            mPayModel = BaseService.getPayModel(getActivity());
             View topView = mView.findViewById(R.id.lin);
             // 实现沉浸式状态栏
             ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
@@ -180,6 +183,27 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //控件实例化
     private void initView(View v){
+        huodongimg =mView.findViewById(R.id.huodongimg);
+        view = v.findViewById(R.id.view);
+        refreshAndloda();
+        mviewflipper = mView.findViewById(R.id.mviewflipper);
+        mTopView = mView. findViewById(R.id.tv_topView);
+        mLlCzgLayout = mView.findViewById(R.id.ll_czg_layout);
+        mLlbjLayout = mView.findViewById(R.id.ll_bj_layout);
+        mLlblLayout = mView.findViewById(R.id.ll_bl_layout);
+        mLlfxLayout = mView.findViewById(R.id.ll_fx_layout);
+        mCzgText = mView.findViewById(R.id.czg_text);
+        mBjText = mView.findViewById(R.id.bj_text);
+        mBlText = mView.findViewById(R.id.bl_text);
+        mFxText = mView.findViewById(R.id.fx_text);
+        mCzgView = mView.findViewById(R.id.czg_view);
+        mBjView = mView.findViewById(R.id.bj_view);
+        mBlView = mView.findViewById(R.id.bl_view);
+        mFxView = mView.findViewById(R.id.fx_view);
+        mLlCzgLayout.setOnClickListener(this);
+        mLlbjLayout.setOnClickListener(this);
+        mLlblLayout.setOnClickListener(this);
+        mLlfxLayout.setOnClickListener(this);
         refreshLayout = (RefreshLayout)mView.findViewById(R.id.refresh_root);
         refreshLayout.setPrimaryColorsId(R.color.button_color, android.R.color.white);//全局设置主题颜色
         refreshLayout.setEnableFooterFollowWhenLoadFinished(true);
@@ -192,18 +216,26 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale).setNormalColor(getActivity().getResources().getColor(R.color.button_color)).setAnimatingColor(getActivity().getResources().getColor(R.color.button_color)));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                x = 1;
-                initData(false);
-                setView();
-//                mViewLoad();
-                mIdex("1",2,false);
+            public void onRefresh(final RefreshLayout refreshlayout) {
+                        x = 1;
+                        initData(false);
+                        mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
+                        mCzgView.setVisibility(View.VISIBLE);
+                mBjText.setTextColor(getResources().getColor(R.color.color_line_text));
+                mBjView.setVisibility(View.GONE);
+                mBlText.setTextColor(getResources().getColor(R.color.color_line_text));
+                mBlView.setVisibility(View.GONE);
+                mFxText.setTextColor(getResources().getColor(R.color.color_line_text));
+                mFxView.setVisibility(View.GONE);
+                        mIdex("1",2,false);
+                        refreshlayout.finishRefresh(2000);
             }
         });
         refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 handler.sendEmptyMessageDelayed(4,100);
+                refreshlayout.finishLoadMore(1500);
 //                refreshlayout.finishLoadmore(2000/*,false*/);//传入false表示加载失败
             }
         });
@@ -238,29 +270,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 }
             }
         });
-        huodongimg =mView.findViewById(R.id.huodongimg);
-        view = v.findViewById(R.id.view);
-        refreshAndloda();
-        mviewflipper = mView.findViewById(R.id.mviewflipper);
-//        mTabViewLayout = mView.findViewById(R.id.ll_tabView);
-//        mTopTabViewLayout = mView.findViewById(R.id.ll_tabTopView);
-        mTopView = mView. findViewById(R.id.tv_topView);
-        mLlCzgLayout = mView.findViewById(R.id.ll_czg_layout);
-        mLlbjLayout = mView.findViewById(R.id.ll_bj_layout);
-        mLlblLayout = mView.findViewById(R.id.ll_bl_layout);
-        mLlfxLayout = mView.findViewById(R.id.ll_fx_layout);
-        mCzgText = mView.findViewById(R.id.czg_text);
-        mBjText = mView.findViewById(R.id.bj_text);
-        mBlText = mView.findViewById(R.id.bl_text);
-        mFxText = mView.findViewById(R.id.fx_text);
-        mCzgView = mView.findViewById(R.id.czg_view);
-        mBjView = mView.findViewById(R.id.bj_view);
-        mBlView = mView.findViewById(R.id.bl_view);
-        mFxView = mView.findViewById(R.id.fx_view);
-        mLlCzgLayout.setOnClickListener(this);
-        mLlbjLayout.setOnClickListener(this);
-        mLlblLayout.setOnClickListener(this);
-        mLlfxLayout.setOnClickListener(this);
     }
     private void refreshAndloda() {
     }
@@ -269,11 +278,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         HashMap<String, String> paramsMap = new HashMap<>();
         dataFlow.requestData(1, "newService/queryAppIndexInfo", paramsMap, this, is);
     }
-//    private void initDataWx(boolean is) {
-//        HashMap<String, String> paramsMap = new HashMap<>();
-//        paramsMap.put("paytype","wx");
-//        dataFlow.requestData(3, "appPayService/getOrderInfo", paramsMap, this, is);
-//    }
+    private void initDataWx(boolean is) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("paytype","wx");
+        dataFlow.requestData(3, "appPayService/getOrderInfo", paramsMap, this, is);
+    }
     //首页分类数据
     private void getIndexByType(boolean is,int code) {
         HashMap<String, String> paramsMap = new HashMap<>();
@@ -385,6 +394,29 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             }
             break;
             case 3:
+                Log.i("支付数据", content + "============");
+//                String[] strs = content.toString().split("&");
+//                mPayDataMap = new HashMap<String, Object>();
+//                for (String s : strs) {
+//                    String[] str = s.split("=");
+//                    mPayDataMap.put(str[0], str[1]);
+//                }
+//                Log.i("获取json对象", mPayDataMap + "============");
+                try {
+                    JSONObject object = new JSONObject(content);
+                    mPayModel.wxPay(object, new PayModel.wxListener() {
+                        @Override
+                        public void onResult(PayReq req) {
+                            mReq = req;
+                            msgApi = WXAPIFactory.createWXAPI(getActivity(), Constants.APP_ID);
+//                            msgApi.registerApp(Constants.APP_ID);
+                            msgApi.sendReq(mReq);
+                            Log.i("调起微信支付", "============");
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             break;
             case 4:
                 Intent intent = new Intent(getActivity(), WebViewWZActivity.class);
@@ -526,6 +558,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             map.put("zannum",object.optString("zannum"));
             map.put("blid",object.optString("blid"));
             map.put("content",object.optString("content"));
+            map.put("price",object.optString("price"));
             list.add(map);
         }
     }
@@ -577,26 +610,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         isclear = true;
         getIndexByType(is,code);
     }
-//    @Override
-//    public void onScroll(int scrollY) {
-//        int mHeight = layout.getBottom();
-//        //判断滑动距离scrollY是否大于0，因为大于0的时候就是可以滑动了，此时mTabViewLayout.getTop()才能取到值。
-//        if (scrollY > 0 && scrollY >= mHeight) {
-//            if (mTopView.getParent() != mTopTabViewLayout) {
-//                mTabViewLayout.removeView(mTopView);
-//                mTopTabViewLayout.addView(mTopView);
-//                view.setVisibility(View.VISIBLE);
-//            }
-//        } else {
-//            if (mTopView.getParent() != mTabViewLayout) {
-//                mTopTabViewLayout.removeView(mTopView);
-//                mTabViewLayout.addView(mTopView);
-//                view.setVisibility(View.GONE);
-//            }
-//
-//        }
-//    }
-
     @Override
     protected void loadLazyData() {
         mViewLoad();
@@ -607,7 +620,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         }
         if (isFirstResultUse.equals("yes")) {
             HomeActivity.mHomeGudieImage.setVisibility(View.VISIBLE);
-            HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.new_guide_biaoju);
+            HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.yaoma);
         }
         HomeActivity.mHomeGudieImage.setOnClickListener(new OnClickListener() {
             @Override

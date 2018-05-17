@@ -60,15 +60,6 @@
             android:layout_height="45dp"
             android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/fengxiang"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center_vertical"
-                android:padding="12dp"
-                android:visibility="gone"
-                android:scaleType="centerInside"
-                android:src="@mipmap/bj_25" />
         </LinearLayout>
     </LinearLayout>
 
@@ -460,6 +451,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:background="#f3f3f3" />
+
+            <ImageView
+                android:id="@+id/fengxiang"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/bj_25"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/mordernum"
                 android:layout_width="match_parent"

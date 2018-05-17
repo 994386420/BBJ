@@ -30,7 +30,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bj_51_02" />
+                android:src="@mipmap/biao_home_red" />
 
             <TextView
                 android:id="@+id/mtext"
@@ -55,7 +55,7 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="0dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bj_52_01" />
+                android:src="@mipmap/biao_woyao_gray" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bj_53_01" />
+                android:src="@mipmap/biao_pudao_gray" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bj_54_01" />
+                android:src="@mipmap/biao_message_gray" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bj_55_01" />
+                android:src="@mipmap/biao_my_gray" />
 
             <TextView
                 android:layout_width="wrap_content"

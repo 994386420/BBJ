@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="我要的"
+                android:text="要什么"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>

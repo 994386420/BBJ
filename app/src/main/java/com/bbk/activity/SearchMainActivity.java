@@ -620,7 +620,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		dataFlow.requestData(1, "apiService/getPageList", paramsMap, this,true);
 	}
 	private void initDataCzg() {
-		Log.i("====",keyword+sortway);
+//		Log.i("====",keyword+sortway);
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("keyword", keyword);
 		paramsMap.put("sortWay", sortway);
@@ -2059,6 +2059,7 @@ public class SearchMainActivity extends ActivityGroup implements
 						isfirstinfo = false;
 					}
 					String tmp1 = info.optString("page");
+					String gridtype = info.optString("gridtype");
 					if (!tmp1.isEmpty()) {
 						initListViewData(info);
 						isrequest = true;
@@ -2089,12 +2090,19 @@ public class SearchMainActivity extends ActivityGroup implements
 						tipsLayout.setVisibility(View.VISIBLE);
 						tipsKeys.setText("当前筛选条件下无搜索结果");
 					}
-//					Log.i("=======gridtype",jo11+"====");
+					if (gridtype.equals("1")){
+						//显示块状
+						xrefresh.setVisibility(View.GONE);
+						xrefresh1.setVisibility(View.VISIBLE);
+						xrefresh2.setVisibility(View.GONE);
+					}else {
+						//显示列表
+						xrefresh.setVisibility(View.VISIBLE);
+						xrefresh1.setVisibility(View.GONE);
+						xrefresh2.setVisibility(View.GONE);
+					}
 					mshaixuanCzg.setVisibility(View.GONE);
 					mshaixuanbox.setVisibility(View.VISIBLE);
-					xrefresh.setVisibility(View.VISIBLE);
-					xrefresh1.setVisibility(View.GONE);
-					xrefresh2.setVisibility(View.GONE);
 					msuccessLayout.setVisibility(View.VISIBLE);
 					mlistView.setVisibility(View.GONE);
 					break;

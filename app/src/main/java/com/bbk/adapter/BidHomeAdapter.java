@@ -189,7 +189,7 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         viewHolder.mtitle.setText(object.optString("title"));
         viewHolder.mtime.addsum(object.optString("endtime"),"#b40000");
         viewHolder.mtime.start();
-        viewHolder.mprice.setText(object.optString("price"));
+        viewHolder.mprice.setText("￥"+object.optString("price"));
         viewHolder.mextra.setText(object.optString("extra"));
         JSONArray imgs = object.getJSONArray("imgs");
         try {

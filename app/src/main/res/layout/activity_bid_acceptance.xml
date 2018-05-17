@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="#fff"
-                android:text="正在扑倒"
+                android:text="怎么扑"
                 android:textSize="17dp" />
         </LinearLayout>
         <LinearLayout

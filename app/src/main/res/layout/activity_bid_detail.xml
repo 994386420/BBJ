@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="详情"
+                android:text="去扑倒"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -181,6 +181,7 @@
                 android:gravity="center_vertical"
                 android:lines="2"
                 android:text=""
+                android:textIsSelectable="true"
                 android:textColor="#111111"
                 android:textSize="14dp" />
 
@@ -195,6 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <TextView
@@ -216,11 +218,10 @@
                     android:id="@+id/mprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
                     android:layout_weight="1"
                     android:text=""
                     android:textColor="#b40000"
-                    android:textSize="25dp" />
+                    android:textSize="13dp" />
 
                 <TextView
                     android:id="@+id/mcount"
@@ -288,12 +289,12 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:visibility="gone"
                     android:src="@mipmap/bj_02"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:textColor="@color/black"
                     android:text="扑倒记录" />
 
@@ -490,14 +491,14 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:visibility="gone"
                     android:src="@mipmap/bj_02"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:textColor="@color/black"
-                    android:text="  介绍" />
+                    android:text="商品介绍" />
             </LinearLayout>
 
             <TextView
@@ -549,7 +550,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:text="马上扑倒"/>
+                android:text="去扑倒"/>
             <TextView
                 android:id="@+id/gojb_text_status"
                 android:layout_width="wrap_content"

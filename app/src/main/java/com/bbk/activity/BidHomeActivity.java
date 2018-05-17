@@ -50,10 +50,10 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     private CustomFragmentPagerAdapter mPagerAdapter;
     private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
     private LinearLayout tabParentLayout;
-    private int[] tabImgBlue = { R.mipmap.bj_51_02, R.mipmap.bj_52_02,R.mipmap.bj_53_02,
-            R.mipmap.bj_54_02, R.mipmap.bj_55_02 };
-    private int[] tabImgGray = { R.mipmap.bj_51_01, R.mipmap.bj_52_01,R.mipmap.bj_53_01,
-            R.mipmap.bj_54_01, R.mipmap.bj_55_01 };
+    private int[] tabImgBlue = { R.mipmap.biao_home_red, R.mipmap.biao_woyao_red,R.mipmap.biao_pudao_red,
+            R.mipmap.biao_message_red, R.mipmap.biao_my_red};
+    private int[] tabImgGray = { R.mipmap.biao_home_gray, R.mipmap.biao_woyao_gray,R.mipmap.biao_pudao_gray,
+            R.mipmap.biao_message_gray, R.mipmap.biao_my_gray};
     private List<String> tabImgBlue2 = new ArrayList<>();
     private List<String> tabImgGray2 = new ArrayList<>();
     private boolean isshow = false;
@@ -107,7 +107,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
             if (isFirstResultUse.equals("yes")) {
                 SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstBidUse","isFirstBidUserUse", "bidno");
                 BidHomeActivity.mzhezhao.setVisibility(View.VISIBLE);
-                BidHomeActivity.mzhezhao.setImageResource(R.mipmap.new_bid_guide_fabiao);
+                BidHomeActivity.mzhezhao.setImageResource(R.mipmap.woyaobid);
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -121,7 +121,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                     if (isuserzhezhao) {
                         mzhezhao.setVisibility(View.GONE);
                     }else{
-                        mzhezhao.setImageResource(R.mipmap.new_bid_guide_jiebiao);
+                        mzhezhao.setImageResource(R.mipmap.pudaobid);
                         isuserzhezhao = true;
 
                     }

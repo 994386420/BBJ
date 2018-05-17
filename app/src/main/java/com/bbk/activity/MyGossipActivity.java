@@ -463,7 +463,9 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
                     StringUtil.showToast(this, "标题不能为空！");
                 } else if (!mtitle.getText().toString().isEmpty() && mcontent.getText().toString().isEmpty()) {
                     StringUtil.showToast(this, "内容不能为空！");
-                } else {
+                }else if (!mPrice.getText().toString().isEmpty()){
+                    StringUtil.showToast(this, "价格不能为空！");
+                }else{
                     msend.setClickable(false);
                     DialogSingleUtil.show(MyGossipActivity.this);
                     if ("add".equals(list.get(list.size() - 1))) {

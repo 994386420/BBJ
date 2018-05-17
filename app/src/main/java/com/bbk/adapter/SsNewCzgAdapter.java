@@ -1,6 +1,7 @@
 package com.bbk.adapter;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -63,7 +64,7 @@ public class SsNewCzgAdapter extends BaseAdapter{
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = View.inflate(context, R.layout.czg_item_layout, null);
@@ -74,27 +75,17 @@ public class SsNewCzgAdapter extends BaseAdapter{
             viewHolder.mprice = convertView.findViewById(R.id.mprice);
             viewHolder.youhui = convertView.findViewById(R.id.youhui_text);
             viewHolder.itemlayout =  convertView.findViewById(R.id.result_item);
+            viewHolder. mCopyLayout =convertView.findViewById(R.id.copy_layout);
+            viewHolder.copy_title = convertView.findViewById(R.id.copy_title);
+            viewHolder.copy_url = convertView.findViewById(R.id.copy_url);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         try {
-            viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (AlibcLogin.getInstance().getSession().nick != null) {
-                        Intent intent = new Intent(context, WebViewActivity.class);
-                        intent.putExtra("url", list.get(position).get("url"));
-                        intent.putExtra("title", list.get(position).get("title"));
-                        context.startActivity(intent);
-                    } else {
-                        TaoBaoLoginandLogout();//淘宝授权登陆
-                    }
-                }
-            });
-        Map<String,String> map = list.get(position);
+        final Map<String,String> map = list.get(position);
         String img = map.get("imgurl");
-        String title = map.get("title");
+        final String title = map.get("title");
         String price = map.get("price");
 //        String bidprice = map.get("bidprice");
         String dianpu = map.get("dianpu");
@@ -111,6 +102,50 @@ public class SsNewCzgAdapter extends BaseAdapter{
         viewHolder.mprice.setText("¥"+price);
         viewHolder.dianpu.setText(dianpu);
         viewHolder.youhui.setText(youhui);
+            viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (AlibcLogin.getInstance().getSession().nick != null) {
+                        Intent intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra("url", list.get(position).get("url"));
+                        intent.putExtra("title", list.get(position).get("title"));
+                        context.startActivity(intent);
+                    } else {
+                        TaoBaoLoginandLogout();//淘宝授权登陆
+                    }
+                }
+            });
+            viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+                    return true;
+                }
+            });
+            viewHolder.mCopyLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(title);
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_url.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(map.get("url"));
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
         Glide.with(context)
                     .load(img)
                     .priority(Priority.HIGH)
@@ -125,8 +160,8 @@ public class SsNewCzgAdapter extends BaseAdapter{
     class ViewHolder{
         ImageView item_img;
         TextView mbidprice,dianpu,mprice,youhui;
-        SelectableTextView item_title;
-        LinearLayout itemlayout;
+        TextView item_title,copy_title,copy_url;
+        LinearLayout itemlayout,mCopyLayout;
     }
 
     /**

@@ -314,6 +314,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="你要我吗?"
+                    android:textStyle="bold"
                     android:textColor="#333333"
                     android:textSize="18dp" />
 
@@ -324,7 +325,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="我要.快来扑我"
+                    android:text="要不要.不要扑倒！"
                     android:textColor="#999999"
                     android:textSize="12dp" />
             </LinearLayout>
