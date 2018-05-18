@@ -47,6 +47,7 @@
 			android:layout_gravity="center_horizontal"
 			android:src="@mipmap/logo" />
 		<TextView
+			android:id="@+id/text_describe"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="16dp"
@@ -115,6 +116,48 @@
             android:textColor="#999999"
             android:textSize="14sp"
             android:visibility="gone" />
+	<RelativeLayout
+		android:id="@+id/rl_login_layout"
+		android:visibility="gone"
+		android:layout_width="match_parent"
+		android:background="#DCDCDC"
+		android:layout_height="35dp"
+		android:layout_margin="10dp">
+		<EditText
+			android:id="@+id/login_password"
+			android:layout_margin="1dp"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="#fff"
+			android:singleLine="true"
+			android:inputType="textPassword"
+			android:paddingLeft="10dp"
+			android:hint="请输入密码"
+			android:textSize="14dp"
+			android:textColorHint="#DCDCDC"
+			/>
+	</RelativeLayout>
+	<RelativeLayout
+		android:id="@+id/rl_confirm_layout"
+		android:visibility="gone"
+		android:layout_width="match_parent"
+		android:background="#DCDCDC"
+		android:layout_height="35dp"
+		android:layout_margin="10dp">
+		<EditText
+			android:id="@+id/confirm_password"
+			android:layout_margin="1dp"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="#fff"
+			android:singleLine="true"
+			android:inputType="textPassword"
+			android:paddingLeft="10dp"
+			android:hint="请确认密码"
+			android:textSize="14dp"
+			android:textColorHint="#DCDCDC"
+			/>
+	</RelativeLayout>
     <RelativeLayout 
 	    android:layout_width="match_parent"
 	    android:background="#DCDCDC"

@@ -33,10 +33,9 @@
 
         <ImageView
             android:id="@+id/logo_iamge"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="29dp"
             android:layout_marginBottom="25dp"
             android:src="@mipmap/logo" />
 
@@ -51,7 +50,7 @@
                 android:orientation="vertical" >
 
                 <LinearLayout
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
@@ -102,14 +101,14 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="#CCCCCC" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="horizontal" >
 
                     <ImageView
@@ -178,7 +177,7 @@
                     android:background="#CCCCCC" />
 
                 <RelativeLayout
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -209,7 +208,7 @@
                 </RelativeLayout>
 
                 <Button
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:id="@+id/login_btn"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -220,7 +219,7 @@
                     android:background="@drawable/bg_user_btn_unable"
                     android:enabled="false"
                     android:text="登录"
-                    android:textColor="#666666"
+                    android:textColor="@color/white"
                     android:textSize="17sp" />
 
                 <LinearLayout
@@ -228,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="horizontal" >
 
                     <View
@@ -259,17 +258,41 @@
                         android:layout_weight="1"
                         android:background="#CCCCCC" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="31dp"
+                    android:orientation="horizontal" >
 
+                    <RelativeLayout
+                        android:id="@+id/wx_login_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_weight="1" >
+
+                        <ImageView
+                            android:id="@+id/wx_login_img"
+                            android:layout_width="50dp"
+                            android:layout_height="72dp"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/denglu_weixin" />
+                    </RelativeLayout>
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:visibility="gone"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="31dp"
                     android:orientation="horizontal" >
 
                     <RelativeLayout
                         android:background="@drawable/bg_user_btn_unable"
-                        android:id="@+id/wx_login_layout"
+                        android:id="@+id/wx_login_layout1"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_marginLeft="30dp"
@@ -279,7 +302,7 @@
 
                         <ImageView
                             android:layout_centerInParent="true"
-                            android:id="@+id/wx_login_img"
+                            android:id="@+id/wx_login_img1"
                             android:layout_width="50dp"
                             android:layout_height="72dp"
                             android:scaleType="centerCrop"
@@ -306,6 +329,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -339,6 +363,7 @@
                 </LinearLayout>
                 <TextView
                     android:id="@+id/main_about_name"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/main_about_img"

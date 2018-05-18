@@ -286,7 +286,7 @@
             android:id="@+id/compareutil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -327,7 +327,7 @@
                     android:singleLine="true"
                     android:text="要不要.不要扑倒！"
                     android:textColor="#999999"
-                    android:textSize="12dp" />
+                    android:textSize="11dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -382,7 +382,7 @@
                     android:singleLine="true"
                     android:text="查查价格不吃亏"
                     android:textColor="#999999"
-                    android:textSize="12dp" />
+                    android:textSize="11dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -24,7 +24,10 @@ import android.widget.Toast;
 
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.resource.Constants;
+import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.JiaMiUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.util.ValidatorUtil;
 
 import static com.bbk.util.MD5Util.Md5;
@@ -39,12 +42,16 @@ public class UserFindPasswordActivity extends BaseActivity implements
 	private TimeCount time;
 	private TextView timeText;
 	private String addr = "";
+	private EditText mNewPassword;//新密码
     public static Activity instance = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_find_password_main);
+		View topView = findViewById(R.id.login_main);
+		// 实现沉浸式状态栏
+		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
         instance = this;
 		initView();
@@ -57,8 +64,8 @@ public class UserFindPasswordActivity extends BaseActivity implements
 		userPhoneEditText = (EditText) findViewById(R.id.user_email);
 		userCodeEditText = (EditText) findViewById(R.id.user_code);
 		timeText = (TextView) findViewById(R.id.time_text);
-
 		goBackButton = (ImageButton) findViewById(R.id.topbar_goback);
+		mNewPassword = findViewById(R.id.new_password);
 		goBackButton.setOnClickListener(this);
 	}
 
@@ -83,12 +90,12 @@ public class UserFindPasswordActivity extends BaseActivity implements
 					getCodeBtn.setBackgroundResource(R.drawable.bg_user_btn);
 				} else {
 					getCodeBtn.setEnabled(false);
-					getCodeBtn.setTextColor(Color.parseColor("#666666"));
+					getCodeBtn.setTextColor(Color.parseColor("#FFFFFF"));
 					getCodeBtn
 							.setBackgroundResource(R.drawable.bg_user_btn_unable);
 
 					nextBtn.setEnabled(false);
-					nextBtn.setTextColor(Color.parseColor("#666666"));
+					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
 					nextBtn.setBackgroundResource(R.drawable.bg_user_btn_unable);
 				}
 
@@ -117,7 +124,7 @@ public class UserFindPasswordActivity extends BaseActivity implements
 					nextBtn.setBackgroundResource(R.drawable.bg_user_btn);
 				} else {
 					nextBtn.setEnabled(false);
-					nextBtn.setTextColor(Color.parseColor("#666666"));
+					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
 					nextBtn.setBackgroundResource(R.drawable.bg_user_btn_unable);
 				}
 			}
@@ -132,13 +139,17 @@ public class UserFindPasswordActivity extends BaseActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.next_btn:
+			addr = userPhoneEditText.getText().toString();
 			userCodeStr = userCodeEditText.getText().toString();
-			if (!TextUtils.isEmpty(userCodeStr)) {
+			String password = mNewPassword.getText().toString();
+			if (password != null && !password.equals("")){
 				Map<String, String> paramsMap = new HashMap<String, String>();
-				paramsMap.put("addr", addr);
-				paramsMap.put("clientType", "android");
-				paramsMap.put("code", userCodeStr);
-				dataFlow.requestData(2, "apiService/verificationCode",paramsMap, this);
+				paramsMap.put("phone", addr);
+				paramsMap.put("password", password);
+				paramsMap.put("mesgCode", userCodeStr);
+				dataFlow.requestData(2, Constants.findPwdByPhone,paramsMap, this,true,"找回中...");
+			}else {
+				StringUtil.showToast(UserFindPasswordActivity.this,"请输入密码");
 			}
 			break;
 		case R.id.get_code_btn:
@@ -146,15 +157,13 @@ public class UserFindPasswordActivity extends BaseActivity implements
 			addr = userPhoneEditText.getText().toString();
 			if (ValidatorUtil.isMobile(addr) || ValidatorUtil.isEmail(addr)) {
 				getCodeBtn.setEnabled(false);
-
-				Map<String, String> paramsMap = new HashMap<String, String>();
+				Map<String, String> paramsMap1 = new HashMap<String, String>();
 				String cc = JiaMiUtil.jiami(addr);
-				paramsMap.put("addr", addr);
-				paramsMap.put("clientType", "android");
-				paramsMap.put("code", cc);
-				dataFlow.requestData(1, "apiService/resetPwd", paramsMap, this);
+				paramsMap1.put("phone", addr);
+				paramsMap1.put("code", cc);
+				dataFlow.requestData(1, "apiService/sendMcode", paramsMap1, this,true,"短信发送中...");
 			} else {
-				Toast.makeText(getApplicationContext(),"您输入的不是手机号或者邮箱", Toast.LENGTH_LONG).show();
+				StringUtil.showToast(getApplicationContext(),"您输入的不是手机号或者邮箱");
 			}
 			break;
 		case R.id.topbar_goback:
@@ -172,38 +181,21 @@ public class UserFindPasswordActivity extends BaseActivity implements
 		switch (requestCode) {
 		case 1:
             if ("1".equals(dataJo.optString("status"))){
+				StringUtil.showToast(UserFindPasswordActivity.this,"发送成功");
                 time.start();
             }else {
-                Toast.makeText(getApplicationContext(), dataJo.optString("errmsg"),
-                        Toast.LENGTH_SHORT).show();
+				StringUtil.showToast(getApplicationContext(), dataJo.optString("errmsg"));
             }
-//			if("notExsist".equals(content)){
-//				Toast.makeText(this, "该手机号或者邮箱地址尚未注册!", Toast.LENGTH_SHORT).show();
-//			}else if("sendSuccessful".equals(content)){
-//
-//			}else if("sendError".equals(content)){
-//				Toast.makeText(this, "验证码发送失败请稍后再试!", Toast.LENGTH_SHORT).show();
-//			}
 			break;
 		case 2:
             if ("1".equals(dataJo.optString("status"))){
-                Intent intent = new Intent(this, UserNewPasswordActivity.class);
-                intent.putExtra("addr", addr);
-                intent.putExtra("code", userCodeStr);
-                startActivity(intent);
+				StringUtil.showToast(getApplicationContext(), "修改成功");
+				Intent intent = new Intent(UserFindPasswordActivity.this,UserLoginNewActivity.class);
+				startActivity(intent);
+				finish();
             }else {
-                Toast.makeText(getApplicationContext(), dataJo.optString("errmsg"),
-                        Toast.LENGTH_SHORT).show();
+				StringUtil.showToast(getApplicationContext(), dataJo.optString("errmsg"));
             }
-//			if("succeed".equals(content)){
-//				Intent intent = new Intent(this, UserNewPasswordActivity.class);
-//				intent.putExtra("addr", addr);
-//				intent.putExtra("code", userCodeStr);
-//				startActivity(intent);
-//
-//			}else{
-//				Toast.makeText(getApplicationContext(), "验证码错误",Toast.LENGTH_LONG).show();
-//			}
 		}
 	}
 
@@ -215,7 +207,7 @@ public class UserFindPasswordActivity extends BaseActivity implements
 
 		@Override
 		public void onTick(long millisUntilFinished) {
-			getCodeBtn.setTextColor(Color.parseColor("#666666"));
+			getCodeBtn.setTextColor(Color.parseColor("#FFFFFF"));
 			getCodeBtn.setBackgroundResource(R.drawable.bg_user_btn_unable);
 			getCodeBtn.setEnabled(false);
 			timeText.setVisibility(View.VISIBLE);

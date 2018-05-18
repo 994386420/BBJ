@@ -3,6 +3,7 @@ package com.bbk.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.content.ClipboardManager;
 import android.util.Log;
@@ -128,6 +129,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    notifyDataSetChanged();
                     try {
                         if (AlibcLogin.getInstance().getSession().nick!= null){
                             Intent intent = new Intent(context,WebViewActivity.class);
@@ -146,6 +148,12 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
                 @Override
                 public boolean onLongClick(View view) {
                     viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewHolder.mCopyLayout.setVisibility(View.GONE);
+                        }
+                    }, 2500);
                     return true;
                 }
             });

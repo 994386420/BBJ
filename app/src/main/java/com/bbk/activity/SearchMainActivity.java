@@ -9,11 +9,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityGroup;
 import android.content.BroadcastReceiver;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,18 +26,22 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -60,6 +66,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,7 +121,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 public class SearchMainActivity extends ActivityGroup implements
-		OnClickListener, OnKeyListener,ResultEvent {
+		OnClickListener, OnKeyListener,ResultEvent ,PopupWindow.OnDismissListener{
 	private FrameLayout mContent;
 	private Context context;
 	private EditText searchText;
@@ -230,6 +238,7 @@ public class SearchMainActivity extends ActivityGroup implements
 	private boolean isrun = true;
 	private String Flag = "1",type = "1",isbland;
 	private List<Map<String,String>> list,addlist,mList,mAddList;
+	private PopupWindow popupWindow;
 
 
 
@@ -248,7 +257,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		registerBoradcastReceiver();
 		dao = new SearchHistoryDao(this);
 	}
-
 	private void initView() {
 		final InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		dataList = new ArrayList<String>();
@@ -260,6 +268,18 @@ public class SearchMainActivity extends ActivityGroup implements
 		mContent = (FrameLayout) findViewById(R.id.content);
 		mlistView = (ListView)findViewById(R.id.mlistView);
 		searchText = (EditText) findViewById(R.id.topbar_search_input);
+		//对于刚跳到一个新的界面就要弹出软键盘的情况上述代码可能由于界面为加载完全而无法弹出软键盘。此时应该适当的延迟弹出软键盘如998毫秒（保证界面的数据加载完成）
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask()
+					   {
+						   public void run()
+						   {
+							   InputMethodManager inputManager =
+									   (InputMethodManager)searchText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+							   inputManager.showSoftInput(searchText, 0);
+						   }
+					   },
+				998);
 		mlistView.setOnItemClickListener(new OnItemClickListener() {
 			
 			@Override
@@ -437,6 +457,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
+
 			// TODO Auto-generated method stub
 			if (s.length()>0) {
 				mlistView.setVisibility(View.VISIBLE);
@@ -1208,6 +1229,8 @@ public class SearchMainActivity extends ActivityGroup implements
 		});
 		animatorSet.start();
 	}
+
+
 	/**
 	 * 加载ListView列表
 	 *
@@ -1222,6 +1245,13 @@ public class SearchMainActivity extends ActivityGroup implements
 			}
 			listAdapter = new ResultMyListAdapter(itemList, this);
 			result_list.setAdapter(listAdapter);
+			result_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+					openPopupWindowCars(adapterView,i);
+					return true;
+				}
+			});
 			result_list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -2094,6 +2124,7 @@ public class SearchMainActivity extends ActivityGroup implements
 						tipsLayout.setVisibility(View.VISIBLE);
 						tipsKeys.setText("当前筛选条件下无搜索结果");
 					}
+					Log.i("========",gridtype);
 					if (gridtype.equals("1")){
 						//显示块状
 						xrefresh.setVisibility(View.GONE);
@@ -2440,7 +2471,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			Log.i("========",intent.getStringExtra("keyword"));
 			keyword = intent.getStringExtra("keyword");
 			if (Flag.equals("1")){
 				initData();
@@ -2449,4 +2479,65 @@ public class SearchMainActivity extends ActivityGroup implements
 			}
 		}
 	};
+
+	private void openPopupWindowCars(View v,int i) {
+		//防止重复按按钮
+		if (popupWindow != null && popupWindow.isShowing()) {
+			return;
+		}
+		//设置PopupWindow的View
+		View view = LayoutInflater.from(this).inflate(R.layout.copy_layout,null);
+		popupWindow = new PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		//设置背景,这个没什么效果，不添加会报错
+		popupWindow.setBackgroundDrawable(new BitmapDrawable());
+		//设置点击弹窗外隐藏自身
+		popupWindow.setFocusable(true);
+		popupWindow.setOutsideTouchable(true);
+		//设置动画
+		popupWindow.setAnimationStyle(R.style.AlertDialogStyle);
+		//设置位置
+		popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+		//设置消失监听
+		popupWindow.setOnDismissListener(this);
+		//设置PopupWindow的View点击事件
+		setOnPopupCarsViewClick(view,i);
+		//设置背景色
+		setBackgroundAlpha(0.5f);
+	}
+
+	private void setOnPopupCarsViewClick(View view, final int i) {
+		TextView copy_title,copy_url;
+		copy_title = view.findViewById(R.id.copy_title);
+		copy_url = view.findViewById(R.id.copy_url);
+		copy_title.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ClipboardManager cm = (ClipboardManager)getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+				cm.setText(itemList.get(i).get("title").toString());
+				StringUtil.showToast(SearchMainActivity.this,"复制成功");
+				popupWindow.dismiss();
+			}
+		});
+		copy_url.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ClipboardManager cm = (ClipboardManager)getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+				cm.setText(itemList.get(i).get("url").toString());
+				StringUtil.showToast(SearchMainActivity.this,"复制成功");
+				popupWindow.dismiss();
+			}
+		});
+	}
+	//设置屏幕背景透明效果
+	public void setBackgroundAlpha(float alpha) {
+		WindowManager.LayoutParams lp = getWindow().getAttributes();
+		lp.alpha = alpha;
+		getWindow().setAttributes(lp);
+	}
+
+	@Override
+	public void onDismiss() {
+		setBackgroundAlpha(1);
+	}
 }

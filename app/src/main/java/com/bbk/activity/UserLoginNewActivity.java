@@ -306,64 +306,58 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("phone", userLogin);
 		paramsMap.put("password", userPass);
-		dataFlow.requestData(1, "apiService/loginUser", paramsMap, this, false);
+		dataFlow.requestData(1, "apiService/loginAppByPassword", paramsMap, this, true,"登陆中...");
 	}
 
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo,
 			String content) {
-		String str = content;
 		try {
-			JSONObject jsonObj = new JSONObject(str);
-			
 			Intent intent;
-			if ("1".equals(dataJo.optString("status"))){
 				switch (requestCode) {
-
 					case 1:
-						loginBtn.setText("立即登录");
-						loginBtn.setEnabled(true);
-
-						if("1".equals(jsonObj.optString("status"))) {
-							JSONObject inforJsonObj = jsonObj.optJSONObject("info");
-							String userID = inforJsonObj.optString("u_id");
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor","password", inforJsonObj.optString("u_pass"));
+						if (dataJo.optString("status").equals("1")) {
+							JSONObject jsonObject = new JSONObject(content);
+							loginBtn.setText("立即登录");
+							loginBtn.setEnabled(true);
+							String userID = jsonObject.optString("u_id");
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "password", jsonObject.optString("u_pass"));
 							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "userID", userID);
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userLogin", inforJsonObj.optString("u_name"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userEmail", inforJsonObj.optString("u_email"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userPhone", inforJsonObj.optString("u_phone"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "nickname", inforJsonObj.optString("u_nickname"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "gender", inforJsonObj.optString("u_sex"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "brithday", inforJsonObj.optString("u_birthday"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "province", inforJsonObj.optString("u_province"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "city", inforJsonObj.optString("u_city"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "imgUrl", inforJsonObj.optString("u_imgurl"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "mid", inforJsonObj.optString("u_mdid"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "identifier", inforJsonObj.optString("u_iden"));
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", inforJsonObj.optString("u_sig"));
-							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "login_STATE","1");
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userLogin", jsonObject.optString("u_name"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userEmail", jsonObject.optString("u_email"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userPhone", jsonObject.optString("u_phone"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "nickname",jsonObject.optString("u_nickname"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "gender", jsonObject.optString("u_sex"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "brithday", jsonObject.optString("u_birthday"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "province", jsonObject.optString("u_province"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "city", jsonObject.optString("u_city"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "imgUrl", jsonObject.optString("u_imgurl"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "mid", jsonObject.optString("u_mdid"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "identifier", jsonObject.optString("u_iden"));
+							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", jsonObject.optString("u_sig"));
+							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "login_STATE", "1");
 							intent = new Intent();
 							setResult(3, intent);
 							TencentLoginUtil.Login(this);
-							if (DataFragment.login_remind!= null) {
+							if (DataFragment.login_remind != null) {
 								DataFragment.login_remind.setVisibility(View.GONE);
 							}
-							if (!"".equals(url)){
-								Intent Intent = new Intent(this,WebViewActivity111.class);
-								Intent.putExtra("url",url+"&mid="+inforJsonObj.optString("u_mdid"));
-								Intent.putExtra("mid",inforJsonObj.optString("u_mdid"));
+							if (!"".equals(url)) {
+								Intent Intent = new Intent(this, WebViewActivity111.class);
+								Intent.putExtra("url", url + "&mid=" + jsonObject.optString("u_mdid"));
+								Intent.putExtra("mid", jsonObject.optString("u_mdid"));
 								startActivity(Intent);
 							}
-							if (!"".equals(wzurl)){
-								Intent Intent = new Intent(this,WebViewActivity.class);
-								Intent.putExtra("url",wzurl+"&mid="+inforJsonObj.optString("u_mdid")
-										+"&userid="+inforJsonObj.optString("u_id"));
+							if (!"".equals(wzurl)) {
+								Intent Intent = new Intent(this, WebViewActivity.class);
+								Intent.putExtra("url", wzurl + "&mid=" + jsonObject.optString("u_mdid")
+										+ "&userid=" + jsonObject.optString("u_id"));
 								startActivity(Intent);
 							}
 							finish();
-
 						}else {
-							StringUtil.showToast(getApplicationContext(), jsonObj.optString("msg"));
+							StringUtil.showToast(UserLoginNewActivity.this,dataJo.optString("errmsg"));
+							loginBtn.setText("立即登录");
 							loginBtn.setEnabled(true);
 						}
 						break;
@@ -378,6 +372,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								StringUtil.showToast(getApplicationContext(), dataJo.optString("msg"));
 							}
 							if("1".equals(dataJo.optString("status"))) {
+								JSONObject jsonObj = new JSONObject(content);
 								if ("1".equals(jsonObj.optString("status"))) {
 									String openID = SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this,"userInfor","openID");
 									String username = SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this,"userInfor","username");
@@ -433,10 +428,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 					default:
 						break;
 				}
-			}else {
-				StringUtil.showToast(getApplicationContext(), dataJo.optString("errmsg"));
-			}
-
 
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -481,8 +472,8 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 			}
 			break;
 		case R.id.topbar_text_right:
-			intent = new Intent(this, UserRegisterGetCodeActivity.class);
-			startActivityForResult(intent, 1);
+			intent = new Intent(this, 	RegisterByPhoneActivity.class);
+			startActivity(intent);
 			break;
 		case R.id.topbar_goback:
 			if (BidHomeActivity.Flag.equals("bidhome1")){

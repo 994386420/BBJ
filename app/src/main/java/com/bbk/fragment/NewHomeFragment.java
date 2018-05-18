@@ -559,6 +559,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             map.put("blid",object.optString("blid"));
             map.put("content",object.optString("content"));
             map.put("price",object.optString("price"));
+            map.put("url",object.optString("url"));
             list.add(map);
         }
     }

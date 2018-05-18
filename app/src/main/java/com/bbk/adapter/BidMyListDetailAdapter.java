@@ -3,6 +3,7 @@ package com.bbk.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -97,7 +98,41 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
 //                vh.mtime.start();
                 initData(vh,map);
                 vh.mtext1.setVisibility(View.GONE);
+                Log.i("===","===="+bidstatus);
                 switch (bidstatus){
+                    case "-3":
+                        vh.mtypetext.setText("已失效");
+                        vh.mtimebefor.setText(endtime);
+                        vh.mtextbox.setVisibility(View.GONE);
+                        vh.mtime.setVisibility(View.GONE);
+                        break;
+                    case "-2":
+                        vh.mtypetext.setText("待审核");
+                        vh.mtimebefor.setText("距结束");
+                        vh.mtime.setVisibility(View.VISIBLE);
+                        vh.mtime.friendly_time(endtime,"#999999");
+                        vh.mtext2.setText("取消扑倒");
+                        vh.mtext2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                curposition = position;
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消扑倒？")
+                                        .setPositiveButton("确定", new View.OnClickListener() {
+                                            @SuppressLint("NewApi")
+                                            @Override
+                                            public void onClick(View v) {
+                                                upData(id,1);
+                                            }
+                                        }).setNegativeButton("取消", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                    }
+                                }).show();
+
+                            }
+                        });
+                        break;
                     case "-1":
                         vh.mtypetext.setText("已失效");
                         vh.mtimebefor.setText(endtime);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -105,6 +106,7 @@ public class SsNewCzgAdapter extends BaseAdapter{
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    notifyDataSetChanged();
                     if (AlibcLogin.getInstance().getSession().nick != null) {
                         Intent intent = new Intent(context, WebViewActivity.class);
                         intent.putExtra("url", list.get(position).get("url"));
@@ -119,6 +121,12 @@ public class SsNewCzgAdapter extends BaseAdapter{
                 @Override
                 public boolean onLongClick(View view) {
                     viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewHolder.mCopyLayout.setVisibility(View.GONE);
+                        }
+                    }, 2500);
                     return true;
                 }
             });
@@ -128,6 +136,8 @@ public class SsNewCzgAdapter extends BaseAdapter{
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
+            viewHolder.copy_title.setBackgroundResource(R.drawable.bid_circle);
+            viewHolder.copy_url.setBackgroundResource(R.drawable.bid_circle);
             viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

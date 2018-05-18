@@ -1,31 +1,6 @@
 package com.bbk.activity;
 
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.bbk.activity.UserFindPasswordActivity.TimeCount;
-import com.bbk.flow.DataFlow;
-import com.bbk.flow.ResultEvent;
-import com.bbk.fragment.DataFragment;
-import com.bbk.fragment.UserFragment;
-import com.bbk.resource.Constants;
-import com.bbk.util.DialogSingleUtil;
-import com.bbk.util.HttpUtil;
-import com.bbk.util.ImmersedStatusbarUtils;
-import com.bbk.util.JiaMiUtil;
-import com.bbk.util.MD5Util;
-import com.bbk.util.SharedPreferencesUtil;
-import com.bbk.util.StringUtil;
-import com.bbk.util.TencentLoginUtil;
-import com.bbk.util.ValidatorUtil;
-import com.umeng.analytics.MobclickAgent;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,21 +12,34 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import static com.bbk.util.MD5Util.Md5;
+import com.bbk.flow.DataFlow;
+import com.bbk.fragment.DataFragment;
+import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.HttpUtil;
+import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.JiaMiUtil;
+import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
+import com.bbk.util.TencentLoginUtil;
+import com.bbk.util.ValidatorUtil;
+import com.umeng.analytics.MobclickAgent;
 
-public class RegisterBangDingActivity extends BaseActivity implements OnClickListener{
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RegisterByPhoneActivity extends BaseActivity implements OnClickListener{
 	private EditText bangding_account,bangding_code,bangding_tjm;
 	private ImageButton bangding_goback_btn;
 	private TextView bangding_register,timeText;
@@ -59,8 +47,11 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 	private Button get_code_btn;
 	private DataFlow dataFlow;
 	private String addr = "";
-	private Context context = RegisterBangDingActivity.this;
+	private Context context = RegisterByPhoneActivity.this;
 	private String code = "";
+	private RelativeLayout mLoginLayout,mConfirmLayout;
+	private EditText mLoginEt,mConfirmEt;
+	private TextView mDescribr,mTitle;
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
@@ -71,9 +62,9 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					JSONObject data;
                         data = new JSONObject(dataStr);
 					if ("1".equals(data.optString("status"))) {
-						StringUtil.showToast(RegisterBangDingActivity.this,"发送成功");
+						StringUtil.showToast(RegisterByPhoneActivity.this,"发送成功");
 					}else {
-						StringUtil.showToast(RegisterBangDingActivity.this,data.optString("errmsg"));
+						StringUtil.showToast(RegisterByPhoneActivity.this,data.optString("errmsg"));
 					}
 					DialogSingleUtil.dismiss(0);
 				} catch (JSONException e) {
@@ -97,7 +88,6 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 						final Map<String, String> paramsMap = new HashMap<String, String>();
 						final String url = Constants.MAIN_BASE_URL_MOBILE + "apiService/sendMcode";
 						paramsMap.put("phone", addr);
-						paramsMap.put("type", "0");
 						paramsMap.put("code", v);
 						new Thread(new Runnable() {
 							
@@ -118,10 +108,10 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							}
 						}).start();
 					} else {
-						StringUtil.showToast(RegisterBangDingActivity.this,"您输入的不是手机号或者邮箱");
+						StringUtil.showToast(RegisterByPhoneActivity.this,"您输入的不是手机号或者邮箱");
 					}
 				}else{
-					StringUtil.showToast(RegisterBangDingActivity.this,data.optString("errmsg"));
+					StringUtil.showToast(RegisterByPhoneActivity.this,data.optString("errmsg"));
 				}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -136,10 +126,9 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					JSONObject data1 = new JSONObject(dataStr1);
 //					if("1".equals(data1.optString("status"))) {
 						if ("1".equals(data1.optString("status"))) {
-							JSONObject content = data1.getJSONObject("content");
-							StringUtil.showToast(RegisterBangDingActivity.this, content.optString("msg"));
+//							JSONObject content = data1.getJSONObject("content");
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "thirdLogin", "yes");
-							JSONObject inforJsonObj = content.optJSONObject("info");
+							JSONObject inforJsonObj =  data1.getJSONObject("content");
 							String usertjm = bangding_tjm.getText().toString();
 //							String pass = MD5Util.Md5(userpassword);
 //							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor","password", pass);
@@ -158,17 +147,20 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", inforJsonObj.optString("u_sig"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(),
 									"userInfor", "login_STATE","1");
-								intent = new Intent();
-								setResult(3, intent);
-							    TencentLoginUtil.Login(RegisterBangDingActivity.this);
-								if (DataFragment.login_remind!= null) {
-									DataFragment.login_remind.setVisibility(View.GONE);
+							StringUtil.showToast(RegisterByPhoneActivity.this,"注册成功");
+								intent = new Intent(RegisterByPhoneActivity.this,HomeActivity.class);
+//								setResult(3, intent);
+							    intent.putExtra("type","4");
+							    TencentLoginUtil.Login(RegisterByPhoneActivity.this);
+								if (DataFragmentActivity.login_remind!= null) {
+									DataFragmentActivity.login_remind.setVisibility(View.GONE);
 								}
+								startActivity(intent);
 								finish();
 							    //友盟登录
 							    MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
 							}else {
-								StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
+								StringUtil.showToast(RegisterByPhoneActivity.this, data1.optString("errmsg"));
 							}
 //					}else {
 //						StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
@@ -198,14 +190,24 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 	}
 
 	private void initView() {
+		mDescribr = findViewById(R.id.text_describe);
+		mDescribr.setVisibility(View.GONE);
+		mTitle = findViewById(R.id.bangding_title);
+		mTitle.setText("注册手机号");
+		mLoginLayout = findViewById(R.id.rl_login_layout);
+		mConfirmLayout = findViewById(R.id.rl_confirm_layout);
+		mLoginLayout.setVisibility(View.VISIBLE);
+		mConfirmLayout.setVisibility(View.VISIBLE);
+		mLoginEt = findViewById(R.id.login_password);
+		mConfirmEt = findViewById(R.id.confirm_password);
 		bangding_account = (EditText) findViewById(R.id.bangding_account);
 		bangding_code = (EditText) findViewById(R.id.bangding_code);
 		bangding_tjm = (EditText) findViewById(R.id.bangding_password);
 		bangding_goback_btn = (ImageButton) findViewById(R.id.bangding_goback_btn);
 		bangding_register = (TextView) findViewById(R.id.bangding_register);
+		bangding_register.setText("注册");
 		get_code_btn = (Button) findViewById(R.id.get_code_btn);
 		timeText = (TextView) findViewById(R.id.time_text);
-		
 		bangding_code.setOnClickListener(this);
 		bangding_goback_btn.setOnClickListener(this);
 		bangding_register.setOnClickListener(this);
@@ -284,34 +286,6 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			public void afterTextChanged(Editable s) {
 			}
 		});
-//		bangding_tjm.addTextChangedListener(new TextWatcher() {
-//			@Override
-//			public void onTextChanged(CharSequence s, int start, int before,
-//					int count) {
-//			}
-//
-//			@Override
-//			public void beforeTextChanged(CharSequence s, int start, int count,
-//					int after) {
-//				String userEmail = bangding_account.getText().toString();
-//				String userCode = bangding_code.getText().toString();
-//				String userpassword = bangding_tjm.getText().toString();
-//				if (!TextUtils.isEmpty(userEmail)//&& !TextUtils.isEmpty(userpassword)
-//						&& !TextUtils.isEmpty(userCode)) {
-//					bangding_register.setEnabled(true);
-//					bangding_register.setTextColor(Color.parseColor("#FFFFFF"));
-//					bangding_register.setBackgroundResource(R.drawable.bg_user_btn);
-//				} else {
-//					bangding_register.setEnabled(false);
-//					bangding_register.setTextColor(Color.parseColor("#666666"));
-//					bangding_register.setBackgroundResource(R.drawable.bg_user_btn_unable);
-//				}
-//			}
-//
-//			@Override
-//			public void afterTextChanged(Editable s) {
-//			}
-//		});
 	}
 	@Override
 	public void onClick(View v) {
@@ -340,39 +314,52 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			finish();
 			break;
 		case R.id.bangding_register:
-			    DialogSingleUtil.show(this,"绑定中...");
-			    String invitcode;
-			    if(bangding_tjm.getText().toString().equals("")){
-			    	invitcode = "";
-				}else {
-					invitcode = bangding_tjm.getText().toString();//推荐码
-				}
-			    String mesgCode = bangding_code.getText().toString();//验证码
-				String username = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "username");
-				String openID = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "openID");
-				String imgUrl = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "thirdlogin", "imgUrl");
-				addr = bangding_account.getText().toString();//手机号
-				final Map<String, String> params = new HashMap<String, String>();
-				params.put("phone", addr);
-				params.put("invitcode", invitcode);
-				params.put("username", username);
-				params.put("openid", openID);
-				params.put("imgUrl", imgUrl);
-			    params.put("mesgCode", mesgCode);
-			    params.put("client", "android");
-				final String url1 = Constants.MAIN_BASE_URL_MOBILE + "apiService/registBandOpenid";
-				new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						String dataStr = HttpUtil.getHttp(params, url1, context);
-						Message mes = handler.obtainMessage();
-						mes.obj = dataStr;
-						mes.what =2;
-						handler.sendMessage(mes);
+			String loginpassword = mLoginEt.getText().toString();//密码
+			String confirmpassword = mConfirmEt.getText().toString();//确认密码
+			if (loginpassword != null && !loginpassword.equals("")){
+				if (confirmpassword != null&& !confirmpassword.equals("")){
+					if (loginpassword.equals(confirmpassword)) {
+						DialogSingleUtil.show(this, "注册中...");
+						String invitcode;
+						if (bangding_tjm.getText().toString().equals("")) {
+							invitcode = "";
+						} else {
+							invitcode = bangding_tjm.getText().toString();//推荐码
+						}
+						String mesgCode = bangding_code.getText().toString();//验证码
+						String username = SharedPreferencesUtil.getSharedData(RegisterByPhoneActivity.this, "userInfor", "username");
+						String openID = SharedPreferencesUtil.getSharedData(RegisterByPhoneActivity.this, "userInfor", "openID");
+						String imgUrl = SharedPreferencesUtil.getSharedData(RegisterByPhoneActivity.this, "thirdlogin", "imgUrl");
+						addr = bangding_account.getText().toString();//手机号
+						final Map<String, String> params = new HashMap<String, String>();
+						params.put("phone", addr);
+						params.put("invitcode", invitcode);
+						params.put("username", username);
+						params.put("password", mLoginEt.getText().toString());
+						params.put("imgUrl", imgUrl);
+						params.put("mesgCode", mesgCode);
+						params.put("client", "android");
+						final String url1 = Constants.MAIN_BASE_URL_MOBILE + Constants.registUserByPhoneNumber;
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+								String dataStr = HttpUtil.getHttp(params, url1, context);
+								Message mes = handler.obtainMessage();
+								mes.obj = dataStr;
+								mes.what = 2;
+								handler.sendMessage(mes);
+							}
+						}).start();
+					}else {
+						StringUtil.showToast(RegisterByPhoneActivity.this,"两次密码输入不一致");
 					}
-				}).start();
-			
+				}else {
+					StringUtil.showToast(RegisterByPhoneActivity.this,"请确认密码");
+				}
+			}else {
+				StringUtil.showToast(RegisterByPhoneActivity.this,"请输入密码");
+			}
 			break;
 
 		default:

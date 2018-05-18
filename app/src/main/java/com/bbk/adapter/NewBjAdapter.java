@@ -1,7 +1,9 @@
 package com.bbk.adapter;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.bbk.activity.MyApplication;
 import com.bbk.activity.QueryHistoryActivity;
 import com.bbk.activity.R;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -76,9 +79,9 @@ public class NewBjAdapter extends RecyclerView.Adapter{
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView item_img;
-        TextView item_title,mbidprice,mcount,mprice;
+        TextView item_title,mbidprice,mcount,mprice,copy_title;
         RushBuyCountDownTimerView mtime;
-        LinearLayout itemlayout;
+        LinearLayout itemlayout,mCopyLayout;
         public ViewHolder(View mView) {
             super(mView);
             item_img = (ImageView)mView.findViewById(R.id.item_img);
@@ -88,15 +91,17 @@ public class NewBjAdapter extends RecyclerView.Adapter{
             mprice = (TextView)mView.findViewById(R.id.mprice);
             mtime = (RushBuyCountDownTimerView)mView.findViewById(R.id.mtime);
             itemlayout = mView.findViewById(R.id.result_item);
+            mCopyLayout = mView.findViewById(R.id.copy_layout);
+            copy_title = mView.findViewById(R.id.copy_title);
         }
     }
-    private void initTop(NewBjAdapter.ViewHolder viewHolder, final int position) {
+    private void initTop(final NewBjAdapter.ViewHolder viewHolder, final int position) {
         try {
             Map<String,String> map = list.get(position);
             String endtime = map.get("endtime");
             String img = map.get("img");
             String id = map.get("id");
-            String title = map.get("title");
+            final String title = map.get("title");
             String price = map.get("price");
             String bidprice = map.get("bidprice");
             String number = map.get("number");
@@ -106,7 +111,7 @@ public class NewBjAdapter extends RecyclerView.Adapter{
 //            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
             viewHolder.mbidprice.setVisibility(View.GONE);
-            viewHolder.mprice.setText(price);
+            viewHolder.mprice.setText("¥"+price);
             viewHolder.mcount.setText("x"+number);
             Glide.with(context)
                     .load(img)
@@ -116,6 +121,7 @@ public class NewBjAdapter extends RecyclerView.Adapter{
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    notifyDataSetChanged();
                     final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     try {
                         if (list.get(position).get("userid").equals(userID)) {
@@ -130,6 +136,34 @@ public class NewBjAdapter extends RecyclerView.Adapter{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+            viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewHolder.mCopyLayout.setVisibility(View.GONE);
+                        }
+                    }, 2500);
+                    return true;
+                }
+            });
+            viewHolder.mCopyLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(title);
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {

@@ -8,6 +8,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -19,6 +20,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -45,7 +47,6 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 	private int screenWidth = 0;
 	private String[] hotWordsArr = {"iphone 6s", "ipad pro", "外套", "长袖衬衣", "婴儿尿布", "哆啦咪", "巴拉巴拉小魔仙"};
 	public static String ACTION_NAME = "SearchRecommendActivity";
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -162,7 +163,7 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 				params.rightMargin = marginLength;
 				params.bottomMargin = marginLength;
 				
-				TextView localTextView = new TextView(this);
+				final TextView localTextView = new TextView(this);
 				localTextView.setBackgroundResource(R.drawable.bg_textview_recommend);
 				localTextView.setGravity(Gravity.CENTER);
 				localTextView.setPadding(paddingLength, paddingLength1, paddingLength, paddingLength1);
@@ -187,6 +188,8 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 							SearchMainActivity.instance.finish();
 						}
 //						finish();
+						final InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(localTextView.getWindowToken(), 0);
 						Intent intent = new Intent(ACTION_NAME);
 						intent.putExtra("keyword", str);
 						sendBroadcast(intent);
@@ -239,6 +242,9 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 			SearchMainActivity.instance.finish();
 		}
 //						finish();
+		final InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		imm.hideSoftInputFromWindow(historyListView.getWindowToken(), 0);
 		Intent intent = new Intent(ACTION_NAME);
 		intent.putExtra("keyword", keyword);
 		sendBroadcast(intent);

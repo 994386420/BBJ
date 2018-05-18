@@ -228,11 +228,21 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
     private void initbutton() {
         mtext1.setVisibility(View.GONE);
         switch (bidstatus){
+            //审核不通过
+            case "-3":
+                mtextbox.setVisibility(View.GONE);
+                break;
+                //待审核
+            case "-2":
+                mtextbox.setVisibility(View.GONE);
+                break;
             case "-1":
                 mtextbox.setVisibility(View.GONE);
+                mtext2.setVisibility(View.GONE);
                 break;
             case "0":
                 mtextbox.setVisibility(View.GONE);
+                mtext2.setVisibility(View.GONE);
                 break;
             case "1":
                 mtext2.setText("取消扑倒");
@@ -306,6 +316,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                         switch (mStatus){
                             case "1":
                                 mendtimetop.setText("待扑倒   "+endtime+" 结束");
+                                mtextbox.setVisibility(View.GONE);
                                 break;
                             case "2":
                                 mendtimetop.setText("待评论 "+endtime);

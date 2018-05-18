@@ -497,9 +497,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             String sellprice = object.optString("sellprice");
             final String url = object.optString("url");
             mtitle.setText(title);
-            mbuyprice.setText("发镖价 " + buyprice);
-            msellprice.setText("接镖价 " + sellprice);
-            mcount.setText("应镖 " + count + "人");
+            mbuyprice.setText("我要价 " + buyprice);
+            msellprice.setText("扑倒价 " + sellprice);
+            mcount.setText("扑倒中" + count + "人");
             Glide.with(context).load(img).into(mimg);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -688,6 +688,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
             map.put("blid",object.optString("blid"));
             map.put("content",object.optString("content"));
             map.put("price",object.optString("price"));
+            map.put("url",object.optString("url"));
             list.add(map);
         }
     }

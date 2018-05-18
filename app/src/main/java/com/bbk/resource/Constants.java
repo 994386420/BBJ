@@ -12,7 +12,7 @@ public interface Constants {
 	
 	/**主url*/
 	//内网，陈远鹏 更换165
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.188/APIService/";
+//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.165/APIService/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:7083/APIService/";
 	//外网
 	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
@@ -30,6 +30,10 @@ public interface Constants {
 	String  getFabiaoMsgByRowkey = "bid/queryFabiaoMsgByRowkey";
 	//搜索超值购
 	String  getPageListChaozhigou = "apiService/getPageListChaozhigou";//参数sortWay   0默认，1价格升序，2价格降序，3折扣率，4淘宝关注度排序
+	//通过手机号注册
+	String registUserByPhoneNumber = "apiService/registUserByPhoneNumber";
+	//找回密码
+	String findPwdByPhone = "apiService/findPwdByPhone";
 	/**上传图片*/
 	public static final String USER_IMG_URL_HEADER = "http://www.bibkan.com/upload/Image/";
 

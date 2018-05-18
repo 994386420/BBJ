@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
+import com.bbk.util.StringUtil;
 
 @SuppressLint("HandlerLeak")
 public class DataFlow{
@@ -83,11 +84,9 @@ public class DataFlow{
 				JSONObject dataJo = data.dataJo;
 				String content = dataJo.optString("content");
 				if(dataJo.optInt("status")<=0){
-
 				}else{
-					Log.i("网络请求返回数据：",dataJo+"------------------------");
-					data.event.onResultData(requestCode,api,dataJo,content);
 				}
+				data.event.onResultData(requestCode,api,dataJo,content);
 			}catch(Exception e){
 
 			}

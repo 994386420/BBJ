@@ -86,14 +86,13 @@ public class DataFlow6 {
 					StringUtil.showToast(context, dataJo.optString("errmsg"));
 //					Toast.makeText(context, dataJo.optString("errmsg"), Toast.LENGTH_SHORT).show();
 				}else{
-//					Log.i("网络请求返回数据：",dataJo+"------------------------");
+					Log.i("网络请求返回数据：",content+"------------------------");
 					data.event.onResultData(requestCode,api,dataJo,content);
 				}
 			}catch(Exception e){
 			//	Toast.makeText(context, "服务器忙不过来了，请稍后再试！", Toast.LENGTH_SHORT).show();
 			}
 			DialogSingleUtil.dismiss(0);
-			NewHomeFragment.mRefreshableView.stopRefresh();
 		}
 	};	
 	private static class Data{

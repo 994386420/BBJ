@@ -293,7 +293,7 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             mtitle.setText(title);
             mbuyprice.setText("我要价 "+buyprice);
             msellprice.setText("扑倒价 "+sellprice);
-            mcount.setText("围观 "+count+"人");
+            mcount.setText("扑倒中"+count+"人");
             Glide.with(context).load(img).into(mimg);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

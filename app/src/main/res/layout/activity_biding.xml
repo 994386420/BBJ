@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="正在扑倒"
+                android:text="怎么扑"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -152,7 +152,6 @@
                                 android:id="@+id/mprice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="7dp"
                                 android:layout_weight="1"
                                 android:text=""
                                 android:textColor="#b40000"

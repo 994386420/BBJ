@@ -91,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <TextView
@@ -112,7 +113,6 @@
                     android:id="@+id/mprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
                     android:layout_weight="1"
                     android:text="5456"
                     android:textColor="#b40000"

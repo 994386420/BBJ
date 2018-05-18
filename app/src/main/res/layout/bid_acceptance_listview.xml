@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/result_item"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#fff"
     android:orientation="vertical"
     >
+    <LinearLayout
+        android:id="@+id/result_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:orientation="vertical"
+        >
     <RelativeLayout
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
@@ -57,6 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:visibility="gone"
                         android:orientation="vertical">
                         <TextView
                             android:layout_width="wrap_content"
@@ -77,7 +84,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="#b40000"
-                        android:layout_marginLeft="7dp"
                         android:text=""
                         android:textSize="25dp"/>
                     <TextView
@@ -159,5 +165,25 @@
         android:background="#f3f3f3"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/copy_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:background="@color/transparent2">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/copy_title"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:background="@drawable/copy_circle"
+            android:textSize="11sp"
+            android:text="复制文字"/>
+
+    </LinearLayout>
+</RelativeLayout>

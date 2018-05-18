@@ -298,7 +298,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
             vh.item_title.setText(title);
             vh.mcount.setText("x"+number);
             vh.mbidnum.setText("扑倒 "+bidnum+" 人");
-            vh.mprice.setText(price);
+            vh.mprice.setText("¥"+price);
             Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);
 
     }

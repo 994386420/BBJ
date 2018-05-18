@@ -177,7 +177,6 @@ public class BidingActivity extends BaseActivity implements ResultEvent {
                     try {
                     if(dataJo.optInt("status")>0){
                         Intent intent = new Intent(BidingActivity.this,BidMyListDetailActivity.class);
-                        intent.putExtra("status","1");
                         startActivity(intent);
                     }
                    } catch (Exception e) {

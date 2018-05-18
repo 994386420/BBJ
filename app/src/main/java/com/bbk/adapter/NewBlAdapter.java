@@ -1,7 +1,9 @@
 package com.bbk.adapter;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.util.StringUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bbk.view.selecttableview.SelectableTextView;
 import com.bumptech.glide.Glide;
@@ -71,7 +74,8 @@ public class NewBlAdapter extends RecyclerView.Adapter{
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView item_img;
         TextView item_title,mbidprice,mExtr,time,mlike,mcomment;
-        LinearLayout itemlayout;
+        TextView copy_title,copy_url;
+        LinearLayout itemlayout,mCopyLayout;
         public ViewHolder(View mView) {
             super(mView);
             item_img = (ImageView)mView.findViewById(R.id.item_img);
@@ -81,15 +85,18 @@ public class NewBlAdapter extends RecyclerView.Adapter{
             mlike = mView.findViewById(R.id.mlike);
             mcomment = mView.findViewById(R.id.mcomment);
             itemlayout = mView.findViewById(R.id.result_item);
+            mCopyLayout = mView.findViewById(R.id.copy_layout);
+            copy_title = mView.findViewById(R.id.copy_title);
+            copy_url = mView.findViewById(R.id.copy_url);
         }
     }
-    private void initTop(NewBlAdapter.ViewHolder viewHolder, final int position) {
+    private void initTop(final NewBlAdapter.ViewHolder viewHolder, final int position) {
         try {
-            Map<String,String> map = list.get(position);
+            final Map<String,String> map = list.get(position);
             String mExtr = map.get("extra");
             String img = map.get("img");
             String time = map.get("dtime");
-            String title = map.get("title");
+            final String title = map.get("title");
             String count = map.get("plnum");
             String readnum = map.get("readnum");//阅读数
             String zan = map.get("zannum");
@@ -107,6 +114,7 @@ public class NewBlAdapter extends RecyclerView.Adapter{
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    notifyDataSetChanged();
                     try {
                             Intent intent = new Intent(context, GossipPiazzaDetailActivity.class);
                             intent.putExtra("blid",list.get(position).get("blid"));
@@ -114,6 +122,43 @@ public class NewBlAdapter extends RecyclerView.Adapter{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+            viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewHolder.mCopyLayout.setVisibility(View.GONE);
+                        }
+                    }, 2500);
+                    return true;
+                }
+            });
+            viewHolder.mCopyLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(title);
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_url.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(map.get("url"));
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {

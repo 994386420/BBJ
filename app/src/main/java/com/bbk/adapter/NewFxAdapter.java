@@ -1,7 +1,9 @@
 package com.bbk.adapter;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -25,6 +27,7 @@ import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.selecttableview.SelectableTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -149,7 +152,8 @@ public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView item_img;
         TextView item_title,mbidprice,content,time,mlike,mcomment;
-        LinearLayout itemlayout;
+        TextView copy_title,copy_url;
+        LinearLayout itemlayout,mCopyLayout;
         public ViewHolder(View mView) {
             super(mView);
             item_img = mView.findViewById(R.id.item_img);
@@ -159,15 +163,17 @@ public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
            mlike = mView.findViewById(R.id.mlike);
             mcomment = mView.findViewById(R.id.mcomment);
             itemlayout = mView.findViewById(R.id.result_item);
+            mCopyLayout = mView.findViewById(R.id.copy_layout);
+            copy_title = mView.findViewById(R.id.copy_title);
         }
     }
-    private void initTop(NewFxAdapter.ViewHolder viewHolder, final int position) {
+    private void initTop(final NewFxAdapter.ViewHolder viewHolder, final int position) {
         try {
             Map<String,String> map = list.get(position);
             String content = map.get("content");
             String img = map.get("img");
             String time = map.get("atime");
-            String title = map.get("title");
+            final String title = map.get("title");
             String count = map.get("count");
             String zan = map.get("zan");
             viewHolder.item_title.setText(title);
@@ -183,11 +189,40 @@ public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    notifyDataSetChanged();
                     try {
                         insertWenzhangGuanzhu(position);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+            viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewHolder.mCopyLayout.setVisibility(View.GONE);
+                        }
+                    }, 2500);
+                    return true;
+                }
+            });
+            viewHolder.mCopyLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+                }
+            });
+            viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(title);
+                    StringUtil.showToast(context,"复制成功");
+                    viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {

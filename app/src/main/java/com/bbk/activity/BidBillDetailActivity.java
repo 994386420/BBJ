@@ -413,7 +413,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                         mbox.setVisibility(View.GONE);
                     }
                     item_title.setText(title);
-                    mprice.setText(price);
+                    mprice.setText("￥"+price);
                     mcount.setText("x"+number);
 //                    mtime.addsum(endlong,"#999999");
 //                    mtime.start();
@@ -424,7 +424,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                     mordernum.setText("订单编号:"+ordernum);
                     mbegintime.setText("创建时间:"+beginlong);
                     mendtime.setText("结束时间:"+endlong);
-                    Log.i("--------",bidarr.length()+"====");
+//                    Log.i("--------",bidarr.length()+"====");
                     if (bidarr.length() > 0){
                         addList(bidarr);
                     }else {

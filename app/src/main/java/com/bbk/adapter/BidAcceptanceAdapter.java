@@ -97,7 +97,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
 //            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
             viewHolder.mbidprice.setText("扑倒价  "+bidprice);
-            viewHolder.mprice.setText(price);
+            viewHolder.mprice.setText("¥"+price);
             viewHolder.mcount.setText("x"+number);
             Glide.with(context)
                     .load(img)

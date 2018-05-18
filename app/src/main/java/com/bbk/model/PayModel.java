@@ -63,7 +63,7 @@ public class PayModel {
 
     public void wxPay(JSONObject object, wxListener listener) {
         req = new PayReq();
-        Log.i("微信支付数据", object.optString("prepayid") + "===" + object.optString("nonce_str")+ "===" + object.optString("timestamp"));
+        Log.i("微信支付数据", object.optString("prepayid") + "===" + object.optString("noncestr")+ "===" + object.optString("timestamp"));
         req.appId = Constants.APP_ID;
         req.partnerId = "1312675401";
 //        req.prepayId = resultunifiedorder.get("prepay_id");
@@ -73,8 +73,8 @@ public class PayModel {
 
         req.packageValue = "Sign=WXPay";
 //        req.nonceStr = genNonceStr();
-        if(object.optString("nonce_str")!=null) {
-            req.nonceStr = object.optString("nonce_str");
+        if(object.optString("noncestr")!=null) {
+            req.nonceStr = object.optString("noncestr");
         }
 //        req.timeStamp = String.valueOf(genTimeStamp());
         if(object.optString("timestamp")!=null) {
