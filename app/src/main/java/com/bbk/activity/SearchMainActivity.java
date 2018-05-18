@@ -89,6 +89,7 @@ import com.bbk.flow.DataFlow3;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.SearchFragment;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.AppJsonFileReader;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.DensityUtil;
@@ -525,8 +526,10 @@ public class SearchMainActivity extends ActivityGroup implements
 //		intent.putExtra("keyword", keyword);
 //		startActivity(intent);
 		if (Flag.equals("1")){
+			isclear = true;
 			initData();
 		}else {
+			isclear = true;
 			initDataCzg();
 		}
 	}
@@ -2000,6 +2003,7 @@ public class SearchMainActivity extends ActivityGroup implements
 					topbar_search_input.setText(keyword);
 					xrefresh.stopRefresh();
 					xrefresh1.stopRefresh();
+					Log.i("----",content);
 					JSONObject jo11 = new JSONObject(content);
 					String tmallSearchUrl = jo11.optString("tmallSearchUrl");
 					if (!jo11.optString("sortAddtion").isEmpty()) {
@@ -2196,6 +2200,7 @@ public class SearchMainActivity extends ActivityGroup implements
 					Log.i("=========",jo+"=====");
 					//  isBland为1 表示有数据 isBland为-1表示无数据
 					if (isBlandCzg.equals("1")){
+						NewConstants.Flag = "2";
 						isbland = "isBland";
 						JSONObject info = jo.getJSONObject("info");
 						String tmpCzg = info.optString("page");
@@ -2215,21 +2220,30 @@ public class SearchMainActivity extends ActivityGroup implements
 							handler1.sendEmptyMessageDelayed(1, 0);
 //                        isrequest = true;
 						} else if (x == 2) {
-							mAddList = list;
-							handler1.sendEmptyMessageDelayed(2, 0);
+								mAddList = list;
+								handler1.sendEmptyMessageDelayed(2, 0);
 						}
-					}else {
+					}else if(isBlandCzg.equals("-1") && x ==2 && NewConstants.Flag.equals("2")){
+						xrefresh2.finishLoadmore();
+						xrefresh2.finishRefresh();
+						StringUtil.showToast(SearchMainActivity.this,"没有更多了");
+				    }else {
 //						if (!isbland.equals("isBland") && isBlandCzg.equals("-1")){
 //							mshaixuanCzg.setVisibility(View.VISIBLE);
 //							mshaixuanbox.setVisibility(View.GONE);
-//							tipsLayout.setVisibility(View.VISIBLE);
-//							tipsKeys.setText("当前筛选条件下无搜索结果");
 //						}else {
+						    NewConstants.Flag = "1";
 							xrefresh2.finishLoadmore();
 							xrefresh2.finishRefresh();
+						    xrefresh2.setVisibility(View.GONE);
+						    xrefresh.setVisibility(View.GONE);
+						    xrefresh1.setVisibility(View.GONE);
+						    msuccessLayout.setVisibility(View.VISIBLE);
 						    mshaixuanCzg.setVisibility(View.VISIBLE);
 							mshaixuanbox.setVisibility(View.GONE);
-							StringUtil.showToast(SearchMainActivity.this,"没有更多了");
+						    tipsLayout.setVisibility(View.VISIBLE);
+							tipsKeys.setText("当前筛选条件下无搜索结果");
+//							StringUtil.showToast(SearchMainActivity.this,"没有更多了");
 //						}
 					}
 					break;
