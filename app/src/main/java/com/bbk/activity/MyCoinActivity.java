@@ -62,10 +62,10 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 //			"发表一条图文信息并审核通过", "文章评论内容大于10个字", "反馈有效意见或建议" };
 //	private int[] drawable = { R.mipmap.rw_1, R.mipmap.rw_2, R.mipmap.rw_3, R.mipmap.rw_4, R.mipmap.jinbi_clsj,
 //			R.mipmap.rw_6, R.mipmap.rw_7, R.mipmap.rw_8, R.mipmap.rw_10 };
-	private String[] str1 = { "新注册用户", "签到打卡", "微信公众号签到", "完善资料", "收藏奖励", "意见反馈", "邀请好友下载APP", "查历史价", "爆料奖励","发镖","接镖"};
+	private String[] str1 = { "新注册用户", "签到打卡", "微信公众号签到", "完善资料", "收藏奖励", "意见反馈", "邀请好友下载APP", "查历史价", "爆料奖励","我要","扑倒"};
 	private String[] str2 = { "+800鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+500鲸币", "+15鲸币", "+50鲸币", "+50鲸币", "+50鲸币" };
 	private String[] str3 = { "新用户注册成功", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "收藏商品一次（限10次/日）", "反馈有效意见或建议",
-			"每邀请一个好友注册成功", "查询商品历史价格一次（限10次/日）", "发表一条图文信息并审核通过","交镖成功并评论","接镖成功并评论" };
+			"每邀请一个好友注册成功", "查询商品历史价格一次（限10次/日）", "发表一条图文信息并审核通过","我要成功并评论","扑倒成功并评论" };
 	private int[] drawable = {R.mipmap.rw_3,R.mipmap.rw_2,R.mipmap.coin_weixin,R.mipmap.rw_4,
 			R.mipmap.rw_6, R.mipmap.rw_10,R.mipmap.rw_1, R.mipmap.jinbi_clsj, R.mipmap.rw_7,  R.mipmap.rw_8,R.mipmap.coin_jiebiao };
 	private List<Map<String, Object>> list;

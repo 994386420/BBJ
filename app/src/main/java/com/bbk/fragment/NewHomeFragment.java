@@ -23,7 +23,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XScrollView;
+import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.Bean.NewHomePubaBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MyApplication;
@@ -69,6 +72,8 @@ import java.util.Map;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.zyao89.view.zloading.ZLoadingView;
+import com.zyao89.view.zloading.Z_TYPE;
 
 
 public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,OnClickListioner {
@@ -141,6 +146,9 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private int data;// 支付结果标识
     private PayReq mReq;
     private PayModel mPayModel;
+    private ZLoadingView zLoadingView;//加载框
+    List<NewHomeCzgBean> czgBeans;
+    List<NewHomePubaBean> pubaBeans;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -183,6 +191,9 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //控件实例化
     private void initView(View v){
+        zLoadingView = mView.findViewById(R.id.progress);
+        zLoadingView.setVisibility(View.VISIBLE);
+        zLoadingView.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
         huodongimg =mView.findViewById(R.id.huodongimg);
         view = v.findViewById(R.id.view);
         refreshAndloda();
@@ -243,7 +254,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mrecyclerview.setHasFixedSize(true);
         mrecyclerview.setNestedScrollingEnabled(false);
         mSuspensionBar = mView.findViewById(R.id.layout_click);
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
+        final LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
         mrecyclerview.setLayoutManager(gridLayoutManager);
         mrecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -253,20 +264,26 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                View view = gridLayoutManager.findViewByPosition(mCurrentPosition + 1);
-                if (view != null) {
-                    if (view.getTop() <= mSuspensionHeight) {
-                        mSuspensionBar.setVisibility(View.VISIBLE);
-                        mSuspensionBar.setY(-(mSuspensionHeight - view.getTop()));
-                    } else {
-                        mSuspensionBar.setVisibility(View.GONE);
-                        mSuspensionBar.setY(0);
-                    }
-                }
-
-                if (mCurrentPosition != gridLayoutManager.findFirstVisibleItemPosition()) {
-                    mCurrentPosition = gridLayoutManager.findFirstVisibleItemPosition();
-                    mSuspensionBar.setY(0);
+//                View view = gridLayoutManager.findViewByPosition(mCurrentPosition + 1);
+//                if (view != null) {
+//                    if (view.getTop() <= mSuspensionHeight) {
+//                        mSuspensionBar.setVisibility(View.VISIBLE);
+//                        mSuspensionBar.setY(0);
+//                    } else if (mSuspensionHeight <= view.getTop()){
+//                        mSuspensionBar.setVisibility(View.GONE);
+//                        mSuspensionBar.setY(0);
+//                    }
+//                }
+//
+//                if (mCurrentPosition != gridLayoutManager.findFirstVisibleItemPosition()) {
+//                    mCurrentPosition = gridLayoutManager.findFirstVisibleItemPosition();
+//                    mSuspensionBar.setY(0);
+//                }
+                int firstPosition = gridLayoutManager.findFirstVisibleItemPosition();
+                if (firstPosition >0) {
+                    mSuspensionBar.setVisibility(View.VISIBLE);
+                } else {
+                    mSuspensionBar.setVisibility(View.GONE);
                 }
             }
         });
@@ -369,25 +386,49 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 }
                 array = new JSONArray(content);
                 if (type.equals("2")){
-                    addList(array);
+                    if (x == 1) {
+                        pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
+                        homeadapter.notifyBjData1(pubaBeans);
+                        Refresh(type);
+                    }else if (x == 2) {
+                        Log.i("支付数据====", content + "============");
+                        if (content != null && !content.toString().equals("[]")){
+                            pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
+                            homeadapter.notifyBjData(pubaBeans);
+                        }else {
+                            StringUtil.showToast(getActivity(),"没有更多了");
+                        }
+                    }
                 }else if (type.equals("3")){
                     addBList(array);
                 }else if (type.equals("4")){
                     addFxList(array);
                 }else if (type.equals("1")){
-                    addCzgList(array);
+//                    addCzgList(array);
+                    if (x == 1) {
+                        czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
+                        homeadapter.notifyData1(czgBeans);
+                        Refresh(type);
+                    }else if (x == 2) {
+                        if (content != null && !content.toString().equals("[]")){
+                            czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
+                            homeadapter.notifyData(czgBeans);
+                        }else {
+                            StringUtil.showToast(getActivity(),"没有更多了");
+                        }
+                   }
                 }
-                if (x == 1) {
-                    mList = list;
-//                    Log.i("list=======1111",mList+"==");
-                    handler.sendEmptyMessageDelayed(1, 0);
-                } else if (x == 2) {
-//                    Log.i("addlist=======222",mAddList+"====");
-                    mAddList = list;
-                    if (isrequest == true){
-                        handler.sendEmptyMessageDelayed(2, 0);
-                    }
-                }
+//                if (x == 1) {
+//                    mList = list;
+////                    Log.i("list=======1111",mList+"==");
+//                    handler.sendEmptyMessageDelayed(1, 0);
+//                } else if (x == 2) {
+////                    Log.i("addlist=======222",mAddList+"====");
+//                    mAddList = list;
+//                    if (isrequest == true){
+//                        handler.sendEmptyMessageDelayed(2, 0);
+//                    }
+//                }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -438,13 +479,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     }
                     if (mList != null && mList.size() > 0) {
                         if (type.equals("2")){
-                            homeadapter.notifyBjData1(mList);
+//                            homeadapter.notifyBjData1(mList);
+                            Refresh(type);
                         }else if (type.equals("3")){
                             homeadapter.notifyBlData1(mList);
+                            Refresh(type);
                         }else if (type.equals("4")){
                             homeadapter.notifyFxData1(mList);
+                            Refresh(type);
                         }else if (type.equals("1")){
-                            homeadapter.notifyData1(mList);
+                            homeadapter.notifyData1(czgBeans);
+                            Refresh(type);
                         }
                     }
                     break;
@@ -453,15 +498,18 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     refreshLayout.finishRefresh();
                     if(mAddList!=null && mAddList.size()>0){
                         if (type.equals("2")){
-                            homeadapter.notifyBjData(mAddList);
+//                            homeadapter.notifyBjData(mAddList);
                         }else if (type.equals("3")){
                             homeadapter.notifyBlData(mAddList);
                         }else if (type.equals("4")){
                             homeadapter.notifyFxData(mAddList);
                         }else if (type.equals("1")){
-                            homeadapter.notifyData(mAddList);
+//                            Log.i("支付数据=====", mAddList + "============");
+//                            czgBeans = JSON.parseArray(mAddList.toString(),NewHomeCzgBean.class);
+//                            homeadapter.notifyData(czgBeans);
                         }
                     }else {
+                        Log.i("支付数据",  "============");
                         StringUtil.showToast(getActivity(),"没有更多了");
                     }
                     break;
@@ -493,7 +541,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 //                    loadbanner(banner);
                     mrecyclerview.addItemDecoration(new TwoDecoration(0,"#f3f3f3",3+banner.length()+tag.length()));
                     mrecyclerview.setHasFixedSize(true);
-                    homeadapter = new NewHomeAdapter(getActivity(),taglist,list, banner, tag, fabiao,gongneng);
+                    homeadapter = new NewHomeAdapter(getActivity(),taglist,list, banner, tag, fabiao,gongneng,type);
                     mrecyclerview.setAdapter(homeadapter);
                     homeadapter.setOnClickListioner(NewHomeFragment.this);
                     if (object.has("guanggao")) {
@@ -514,6 +562,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         }
 
                     }
+                    zLoadingView.setVisibility(View.GONE);
                     break;
                 case 4:
                     x = 2;
@@ -528,6 +577,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             }
         }
     };
+
+    public void Refresh(String type){
+        mSuspensionBar.setVisibility(View.GONE);
+        mrecyclerview.setHasFixedSize(true);
+        homeadapter = new NewHomeAdapter(getActivity(),taglist,list, banner, tag, fabiao,gongneng,type);
+        mrecyclerview.setAdapter(homeadapter);
+        homeadapter.setOnClickListioner(NewHomeFragment.this);
+        homeadapter.notifyDataSetChanged();
+    }
     //发现数据
     public void addFxList(JSONArray array) throws JSONException {
         for (int i = 0; i < array.length() ; i++) {

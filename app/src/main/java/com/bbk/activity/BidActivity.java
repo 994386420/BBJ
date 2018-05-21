@@ -254,7 +254,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
             StringUtil.showToast(this,"镖品单价不能为空");
         }
         else {
-            DialogSingleUtil.show(this,"发镖中...");
+            DialogSingleUtil.show(this,"我要中...");
             if ("add".equals(list.get(list.size() - 1))) {
                 length = list.size() - 1;
             } else {
@@ -462,7 +462,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
                     if (object.optInt("status") <= 0) {
                         StringUtil.showToast(BidActivity.this, object.optString("errmsg"));
                     } else {
-                        StringUtil.showToast(BidActivity.this, "发镖成功");
+                        StringUtil.showToast(BidActivity.this, "我要成功");
                         mname.setText("");
                         mprice.setText("");
                         mcount.setText("");

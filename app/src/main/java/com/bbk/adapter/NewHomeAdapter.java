@@ -30,7 +30,10 @@ import android.widget.ViewFlipper;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.HomeData;
+import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.Bean.NewHomePubaBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
@@ -108,11 +111,11 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
     private NewFxAdapter mFxAdapter;
     private RecyclerView mlistview;
     private ZLoadingView bar;
-    TopViewHolder topViewHolder;
-    String flag= "1";
+    String typee;
+    List<NewHomeCzgBean> czgBeans;
 
 
-    public NewHomeAdapter(Context context, List<Map<String, String>> taglist, List<Map<String, String>> list, JSONArray banner,JSONArray tag,JSONArray fabiao,JSONArray gongneng) {
+    public NewHomeAdapter(Context context, List<Map<String, String>> taglist, List<Map<String, String>> list, JSONArray banner,JSONArray tag,JSONArray fabiao,JSONArray gongneng,String type) {
         this.context = context;
         this.tag =tag;
         this.gongneng = gongneng;
@@ -120,8 +123,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
         this.dataFlow = new DataFlow(context);
         this.taglist = taglist;
         this.banner = banner;
-//        this.list = list;
-//        this.topcount = 3 + articles.length() + tujian.length();
+        this.typee = type;
     }
 
     @Override
@@ -139,14 +141,14 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
-    public void notifyData(List<Map<String, String>> List){
-        if (List != null){
-            mCzgAdapter.notifyData(List);
+    public void notifyData(List<NewHomeCzgBean> newHomeCzgBeans){
+        if (newHomeCzgBeans != null){
+            mCzgAdapter.notifyData(newHomeCzgBeans);
         }
     }
-    public void notifyBjData(List<Map<String, String>> List){
-        if (List != null) {
-            adapter.notifyData(List);
+    public void notifyBjData(List<NewHomePubaBean> newHomePubaBeans){
+        if (newHomePubaBeans != null) {
+            adapter.notifyData(newHomePubaBeans);
         }
     }
     public void notifyBlData(List<Map<String, String>> List){
@@ -159,15 +161,15 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             mFxAdapter.notifyData(List);
         }
     }
-    public void notifyData1(List<Map<String, String>> List){
-        if (mlistview != null && List != null) {
-            mCzgAdapter = new NewCzgAdapter(context, List);
+    public void notifyData1(List<NewHomeCzgBean> czgBean){
+        if (mlistview != null && czgBean != null) {
+            mCzgAdapter = new NewCzgAdapter(context, czgBean);
             mlistview.setAdapter(mCzgAdapter);
         }
     }
-    public void notifyBjData1(List<Map<String, String>> List){
-        if (mlistview != null && List != null) {
-            adapter = new NewBjAdapter(context, List);
+    public void notifyBjData1(List<NewHomePubaBean> newHomePubaBeans){
+        if (mlistview != null && newHomePubaBeans != null) {
+            adapter = new NewBjAdapter(context, newHomePubaBeans);
             mlistview.setAdapter(adapter);
         }
     }
@@ -238,9 +240,17 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
 
     private void initTop(final TopViewHolder viewHolder)  {
         try {
-            loadbanner(banner, viewHolder);
-            loadTag(tag, viewHolder);
-            loadViewflipper(fabiao,viewHolder);
+            //判断传过来数据是否为null
+            if (banner != null && banner.length() >0){
+                loadbanner(banner, viewHolder);
+            }
+            if (tag != null && tag.length() >0){
+                loadTag(tag, viewHolder);
+            }
+            if (fabiao !=null && fabiao.length()>0){
+                loadViewflipper(fabiao,viewHolder);
+            }
+
             viewHolder.compareutil.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -255,17 +265,33 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
                     context.startActivity(intent);
                 }
             });
-            viewHolder.jingtopic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HomeActivity.initone();
-                }
-            });
             if (gongneng.length() >= 2) {
                 Glide.with(context).
                         load(gongneng.getJSONObject(0).optString("img")).
                         placeholder(R.mipmap.bjsq).into(viewHolder.compareimg);
                 Glide.with(context).load(gongneng.getJSONObject(1).optString("img")).placeholder(R.mipmap.lsyg).into(viewHolder.queryhistoryimg);
+            }
+            switch (typee){
+                case "1":
+                    setView(viewHolder);
+//                    mIdex("1",2,true);
+                    setText(viewHolder.mCzgText,viewHolder.mCzgView);
+                    break;
+                case "2":
+                    setView(viewHolder);
+//                    mIdex("2",2,true);
+                    setText(viewHolder.mBjText,viewHolder.mBjView);
+                    break;
+                case "3":
+                    setView(viewHolder);
+//                    mIdex("3",2,true);
+                    setText(viewHolder.mBlText,viewHolder.mBlView);
+                    break;
+                case "4":
+                    setView(viewHolder);
+//                    mIdex("4",2,true);
+                    setText(viewHolder.mFxText,viewHolder.mFxView);
+                    break;
             }
             viewHolder.mLlCzgLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -412,184 +438,6 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
         }
     }
 
-    private void loadTag(final JSONArray tag, TopViewHolder viewHolder) throws Exception {
-        taglist.clear();
-        for (int i = 0; i < tag.length(); i++) {
-            JSONObject object = tag.getJSONObject(i);
-            Map<String, String> map = new HashMap<>();
-            String htmlUrl = object.optString("htmlUrl");
-            String eventId = object.optString("eventId");
-            String img = object.optString("img");
-            String name = object.optString("name");
-            map.put("htmlUrl", htmlUrl);
-            map.put("eventId", eventId);
-            map.put("text", name);
-            map.put("imageUrl", img);
-            taglist.add(map);
-        }
-        List<ImageView> imglist = new ArrayList<>();
-        List<TextView> textlist = new ArrayList<>();
-        List<LinearLayout> boxlist = new ArrayList<>();
-        imglist.add(viewHolder.img1);
-        imglist.add(viewHolder.img2);
-        imglist.add(viewHolder.img3);
-        imglist.add(viewHolder.img4);
-        imglist.add(viewHolder.img5);
-        textlist.add(viewHolder.text1);
-        textlist.add(viewHolder.text2);
-        textlist.add(viewHolder.text3);
-        textlist.add(viewHolder.text4);
-        textlist.add(viewHolder.text5);
-        boxlist.add(viewHolder.box1);
-        boxlist.add(viewHolder.box2);
-        boxlist.add(viewHolder.box3);
-        boxlist.add(viewHolder.box4);
-        boxlist.add(viewHolder.box5);
-        for (int i = 0; i < boxlist.size(); i++) {
-            final int position = i;
-            TextView textView = textlist.get(position);
-            ImageView imageView = imglist.get(position);
-            Map<String, String> map = taglist.get(position);
-            String text = map.get("text").toString();
-            textlist.get(position).setText(text);
-            TextPaint tp = textView.getPaint();
-            tp.setFakeBoldText(true);
-            String imageUrl = map.get("imageUrl").toString();
-            Glide.with(context)
-                    .load(imageUrl)
-                    .placeholder(R.mipmap.zw_img_160)
-                    .thumbnail(0.5f)
-                    .into(imageView);
-            boxlist.get(i).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (position == 4) {
-                        Intent intent = new Intent(context, DataFragmentActivity.class);
-                        context.startActivity(intent);
-                    } else {
-                        try {
-                            EventIdIntentUtil.EventIdIntent(context, tag.getJSONObject(position));
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    private void loadViewflipper(JSONArray fabiao,TopViewHolder viewHolder) throws JSONException {
-        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        for (int i = 0; i < fabiao.length(); i++) {
-            View view = LayoutInflater.from(context).inflate(R.layout.flipper_bidhome, null);
-            TextView mtitle = view.findViewById(R.id.mtitle);
-            TextView mbuyprice = view.findViewById(R.id.mbuyprice);
-            TextView msellprice = view.findViewById(R.id.msellprice);
-            TextView mcount = view.findViewById(R.id.mcount);
-            ImageView mimg = view.findViewById(R.id.mimg);
-            final JSONObject object = fabiao.getJSONObject(i);
-            final String id = object.optString("id");
-            String title = object.optString("title");
-            final String count = object.optString("count");
-            String buyprice = object.optString("buyprice");
-            String img = object.optString("img");
-            String sellprice = object.optString("sellprice");
-            final String url = object.optString("url");
-            mtitle.setText(title);
-            mbuyprice.setText("我要价 " + buyprice);
-            msellprice.setText("扑倒价 " + sellprice);
-            mcount.setText("扑倒中" + count + "人");
-            Glide.with(context).load(img).into(mimg);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        if (object.get("userid").equals(userID)) {
-                            Intent intent = new Intent(context, BidBillDetailActivity.class);
-                            intent.putExtra("fbid", id);
-                            context.startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(context, BidDetailActivity.class);
-                            intent.putExtra("id", id);
-                            context.startActivity(intent);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            viewHolder.mviewflipper.addView(view);
-        }
-        Animation ru = AnimationUtils.loadAnimation(context, R.anim.lunbo_ru);
-        Animation chu = AnimationUtils.loadAnimation(context, R.anim.lunbo_chu);
-        viewHolder.mviewflipper.setInAnimation(ru);
-        viewHolder.mviewflipper.setOutAnimation(chu);
-        viewHolder.mviewflipper.startFlipping();
-    }
-
-    private void loadbanner(final JSONArray banner, final TopViewHolder viewHolder) {
-        List<Object> imgUrlList = new ArrayList<>();
-        try {
-            for (int i = 0; i < banner.length(); i++) {
-                JSONObject jo = banner.getJSONObject(i);
-                String imgUrl = jo.getString("img");
-                imgUrlList.add(imgUrl);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        viewHolder.mBanner.setImages(imgUrlList)
-                .setImageLoader(new GlideImageLoader())
-                .setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        try {
-                            EventIdIntentUtil.EventIdIntent(context, banner.getJSONObject(position));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                .setDelayTime(3000)
-                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                .setIndicatorGravity(BannerConfig.CENTER)
-                .start();
-        viewHolder.mBanner.setOnTouchListener(new View.OnTouchListener() {
-            public float startX;
-            public float startY;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        viewHolder.mBanner.requestDisallowInterceptTouchEvent(true);
-                        // 记录手指按下的位置
-                        startY = event.getY();
-                        startX = event.getX();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        // 获取当前手指位置
-                        float endY = event.getY();
-                        float endX = event.getX();
-                        float distanceX = Math.abs(endX - startX);
-                        float distanceY = Math.abs(endY - startY);
-                        viewHolder.mBanner.requestDisallowInterceptTouchEvent(true);
-//                        refreshLayout.setEnabled(false);
-                        // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
-                        if (distanceX+500 < distanceY) {
-                            viewHolder.mBanner.requestDisallowInterceptTouchEvent(false);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-//                        refreshLayout.setEnabled(true);
-                        break;
-                }
-                return false;
-            }
-        });
-    }
 
 
 class ViewHolder extends RecyclerView.ViewHolder {
@@ -609,7 +457,24 @@ class ViewHolder extends RecyclerView.ViewHolder {
             bar.setVisibility(View.VISIBLE);
             bar.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
             isclear = true;
-            getIndexByType(false,2);
+            switch (typee){
+                case "1":
+                    type = "1";
+                    getIndexByType(false,2);
+                    break;
+                case "2":
+                    type = "2";
+                    getIndexByType(false,2);
+                    break;
+                case "3":
+                    type = "3";
+                    getIndexByType(false,2);
+                    break;
+                case "4":
+                    type = "4";
+                    getIndexByType(false,2);
+                    break;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -632,13 +497,18 @@ class ViewHolder extends RecyclerView.ViewHolder {
                     }
                     array = new JSONArray(content);
                     if (type.equals("2")){
-                        addList(array);
+                        List<NewHomePubaBean> pubaBeans = JSON.parseArray(content,NewHomePubaBean.class);
+                        adapter = new NewBjAdapter(context, pubaBeans);
+                        mlistview.setAdapter(adapter);
+//                        addList(array);
                     }else if (type.equals("3")){
                         addBList(array);
                     }else if (type.equals("4")){
                         addFxList(array);
                     }else if (type.equals("1")){
-                        addCzgList(array);
+                        czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
+                        mCzgAdapter = new NewCzgAdapter(context, czgBeans);
+                        mlistview.setAdapter(mCzgAdapter);
                     }
                     if (x == 1) {
                         mList = list;
@@ -738,8 +608,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
                     }
                     if (mList != null && mList.size() > 0) {
                         if (type.equals("2")){
-                            adapter = new NewBjAdapter(context, mList);
-                            mlistview.setAdapter(adapter);
+
                         }else if (type.equals("3")){
                             mBlAdapter = new NewBlAdapter(context, mList);
                             mlistview.setAdapter(mBlAdapter);
@@ -747,8 +616,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
                             mFxAdapter = new NewFxAdapter(context, mList);
                             mlistview.setAdapter(mFxAdapter);
                         }else if (type.equals("1")){
-                            mCzgAdapter = new NewCzgAdapter(context, mList);
-                            mlistview.setAdapter(mCzgAdapter);
+
                         }
                         bar.setVisibility(View.GONE);
                     }
@@ -756,13 +624,13 @@ class ViewHolder extends RecyclerView.ViewHolder {
                 case 2:
                     if (mAddList != null && mAddList.size() > 0) {
                         if (type.equals("2")) {
-                            adapter.notifyData(mAddList);
+//                            adapter.notifyData(mAddList);
                         } else if (type.equals("3")) {
                             mBlAdapter.notifyData(mAddList);
                         } else if (type.equals("4")) {
                             mFxAdapter.notifyData(mAddList);
                         } else if (type.equals("1")) {
-                            mCzgAdapter.notifyData(mAddList);
+//                            mCzgAdapter.notifyData(mAddList);
                         }
                     } else {
                         StringUtil.showToast(context, "没有更多了");
@@ -771,5 +639,185 @@ class ViewHolder extends RecyclerView.ViewHolder {
             }
         }
     };
+    //加载中部图标
+    private void loadTag(final JSONArray tag, TopViewHolder viewHolder) throws Exception {
+        taglist.clear();
+        for (int i = 0; i < tag.length(); i++) {
+            JSONObject object = tag.getJSONObject(i);
+            Map<String, String> map = new HashMap<>();
+            String htmlUrl = object.optString("htmlUrl");
+            String eventId = object.optString("eventId");
+            String img = object.optString("img");
+            String name = object.optString("name");
+            map.put("htmlUrl", htmlUrl);
+            map.put("eventId", eventId);
+            map.put("text", name);
+            map.put("imageUrl", img);
+            taglist.add(map);
+        }
+        List<ImageView> imglist = new ArrayList<>();
+        List<TextView> textlist = new ArrayList<>();
+        List<LinearLayout> boxlist = new ArrayList<>();
+        imglist.add(viewHolder.img1);
+        imglist.add(viewHolder.img2);
+        imglist.add(viewHolder.img3);
+        imglist.add(viewHolder.img4);
+        imglist.add(viewHolder.img5);
+        textlist.add(viewHolder.text1);
+        textlist.add(viewHolder.text2);
+        textlist.add(viewHolder.text3);
+        textlist.add(viewHolder.text4);
+        textlist.add(viewHolder.text5);
+        boxlist.add(viewHolder.box1);
+        boxlist.add(viewHolder.box2);
+        boxlist.add(viewHolder.box3);
+        boxlist.add(viewHolder.box4);
+        boxlist.add(viewHolder.box5);
+        for (int i = 0; i < boxlist.size(); i++) {
+            final int position = i;
+            TextView textView = textlist.get(position);
+            ImageView imageView = imglist.get(position);
+            Map<String, String> map = taglist.get(position);
+            String text = map.get("text").toString();
+            textlist.get(position).setText(text);
+            TextPaint tp = textView.getPaint();
+            tp.setFakeBoldText(true);
+            String imageUrl = map.get("imageUrl").toString();
+            Glide.with(context)
+                    .load(imageUrl)
+                    .placeholder(R.mipmap.zw_img_160)
+                    .thumbnail(0.5f)
+                    .into(imageView);
+            boxlist.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position == 4) {
+                        Intent intent = new Intent(context, DataFragmentActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        try {
+                            EventIdIntentUtil.EventIdIntent(context, tag.getJSONObject(position));
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+    }
+    //加载轮播
+    private void loadViewflipper(JSONArray fabiao,TopViewHolder viewHolder) throws JSONException {
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        for (int i = 0; i < fabiao.length(); i++) {
+            View view = LayoutInflater.from(context).inflate(R.layout.flipper_bidhome, null);
+            TextView mtitle = view.findViewById(R.id.mtitle);
+            TextView mbuyprice = view.findViewById(R.id.mbuyprice);
+            TextView msellprice = view.findViewById(R.id.msellprice);
+            TextView mcount = view.findViewById(R.id.mcount);
+            ImageView mimg = view.findViewById(R.id.mimg);
+            final JSONObject object = fabiao.getJSONObject(i);
+            final String id = object.optString("id");
+            String title = object.optString("title");
+            final String count = object.optString("count");
+            String buyprice = object.optString("buyprice");
+            String img = object.optString("img");
+            String sellprice = object.optString("sellprice");
+            final String url = object.optString("url");
+            mtitle.setText(title);
+            mbuyprice.setText("我要价 " + buyprice);
+            msellprice.setText("扑倒价 " + sellprice);
+            mcount.setText("扑倒中" + count + "人");
+            Glide.with(context).load(img).into(mimg);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        if (object.get("userid").equals(userID)) {
+                            Intent intent = new Intent(context, BidBillDetailActivity.class);
+                            intent.putExtra("fbid", id);
+                            context.startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(context, BidDetailActivity.class);
+                            intent.putExtra("id", id);
+                            context.startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            viewHolder.mviewflipper.addView(view);
+        }
+        Animation ru = AnimationUtils.loadAnimation(context, R.anim.lunbo_ru);
+        Animation chu = AnimationUtils.loadAnimation(context, R.anim.lunbo_chu);
+        viewHolder.mviewflipper.setInAnimation(ru);
+        viewHolder.mviewflipper.setOutAnimation(chu);
+        viewHolder.mviewflipper.startFlipping();
+    }
+
+    //加载Banner
+    private void loadbanner(final JSONArray banner, final TopViewHolder viewHolder) {
+        List<Object> imgUrlList = new ArrayList<>();
+        try {
+            for (int i = 0; i < banner.length(); i++) {
+                JSONObject jo = banner.getJSONObject(i);
+                String imgUrl = jo.getString("img");
+                imgUrlList.add(imgUrl);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        viewHolder.mBanner.setImages(imgUrlList)
+                .setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        try {
+                            EventIdIntentUtil.EventIdIntent(context, banner.getJSONObject(position));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setDelayTime(3000)
+                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setIndicatorGravity(BannerConfig.CENTER)
+                .start();
+        viewHolder.mBanner.setOnTouchListener(new View.OnTouchListener() {
+            public float startX;
+            public float startY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        viewHolder.mBanner.requestDisallowInterceptTouchEvent(true);
+                        // 记录手指按下的位置
+                        startY = event.getY();
+                        startX = event.getX();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        // 获取当前手指位置
+                        float endY = event.getY();
+                        float endX = event.getX();
+                        float distanceX = Math.abs(endX - startX);
+                        float distanceY = Math.abs(endY - startY);
+                        viewHolder.mBanner.requestDisallowInterceptTouchEvent(true);
+//                        refreshLayout.setEnabled(false);
+                        // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
+                        if (distanceX+500 < distanceY) {
+                            viewHolder.mBanner.requestDisallowInterceptTouchEvent(false);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+//                        refreshLayout.setEnabled(true);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
 
 }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.MyApplication;
@@ -44,9 +45,11 @@ import java.util.Map;
 public class NewCzgAdapter extends RecyclerView.Adapter{
     private List<Map<String,String>> list;
     private Context context;
-    public NewCzgAdapter(Context context, List<Map<String,String>> list){
+    List<NewHomeCzgBean> newHomeCzgBean;
+    public NewCzgAdapter(Context context, List<NewHomeCzgBean> newHomeCzgBean){
         this.list = list;
         this.context = context;
+        this.newHomeCzgBean = newHomeCzgBean;
     }
 
     @Override
@@ -73,11 +76,11 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return newHomeCzgBean.size();
     }
 
-    public void notifyData(List<Map<String,String>> List){
-        this.list.addAll(List);
+    public void notifyData(List<NewHomeCzgBean> beans){
+        this.newHomeCzgBean.addAll(beans);
         notifyDataSetChanged();
     }
 
@@ -102,14 +105,15 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
     }
     private void initTop(final NewCzgAdapter.ViewHolder viewHolder, final int position) {
         try {
-            final Map<String,String> map = list.get(position);
-            String img = map.get("imgurl");
-            final String title = map.get("title");
-            String price = map.get("price");
+//            final Map<String,String> map = list.get(position);
+            Log.i("-------", newHomeCzgBean.get(position).getImgurl()+"=====");
+            String img = newHomeCzgBean.get(position).getImgurl();
+            final String title = newHomeCzgBean.get(position).getTitle();
+            String price = newHomeCzgBean.get(position).getPrice();
 //        String bidprice = map.get("bidprice");
-            String dianpu = map.get("dianpu");
-            String youhui = map.get("youhui");
-            String mbidprice = map.get("hislowprice");//最低价
+            String dianpu = newHomeCzgBean.get(position).getDianpu();
+            String youhui =newHomeCzgBean.get(position).getYouhui();
+            String mbidprice = newHomeCzgBean.get(position).getHislowprice();//最低价
             viewHolder.item_title.setText(title);
             try {
                 if (mbidprice != null){
@@ -176,7 +180,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
                 @Override
                 public void onClick(View view) {
                     ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(map.get("url"));
+                    cm.setText(newHomeCzgBean.get(position).getUrl());
                     StringUtil.showToast(context,"复制成功");
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }

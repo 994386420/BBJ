@@ -173,7 +173,7 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="#CCCCCC" />
 
                 <RelativeLayout
@@ -203,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:text="免费注册"
-                        android:textColor="#0098FF"
+                        android:textColor="@color/color_line_top"
                         android:textSize="12sp" />
                 </RelativeLayout>
 

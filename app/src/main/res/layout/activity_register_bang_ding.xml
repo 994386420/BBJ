@@ -32,7 +32,7 @@
             android:layout_marginLeft="8dp"
             android:singleLine="true"
             android:text="绑定手机号"
-            android:textColor="#0098FF"
+            android:textColor="@color/color_line_top"
             android:textSize="18sp" />
     </RelativeLayout>
 	<LinearLayout

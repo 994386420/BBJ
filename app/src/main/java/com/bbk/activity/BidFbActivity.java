@@ -448,7 +448,7 @@ public class BidFbActivity extends BaseActivity implements ResultEvent{
                     if (object.optInt("status") <= 0) {
                         StringUtil.showToast(BidFbActivity.this, object.optString("errmsg"));
                     } else {
-                        StringUtil.showToast(BidFbActivity.this, "发镖成功");
+                        StringUtil.showToast(BidFbActivity.this, "我要成功");
                         mname.setText("");
                         mprice.setText("");
                         mcount.setText("");

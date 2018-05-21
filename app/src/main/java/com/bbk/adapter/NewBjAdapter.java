@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.Bean.NewHomePubaBean;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
@@ -39,9 +41,11 @@ public class NewBjAdapter extends RecyclerView.Adapter{
     private List<Map<String,String>> list;
     private Context context;
     private int ITEM_TYPE_TOP = 1;
-    public NewBjAdapter(Context context, List<Map<String,String>> list){
+    List<NewHomePubaBean> newHomePubaBeans;
+    public NewBjAdapter(Context context, List<NewHomePubaBean> pubaBeans){
         this.list = list;
         this.context = context;
+        this.newHomePubaBeans = pubaBeans;
     }
 
     @Override
@@ -68,11 +72,11 @@ public class NewBjAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return newHomePubaBeans.size();
     }
 
-    public void notifyData(List<Map<String,String>> List){
-        this.list.addAll(List);
+    public void notifyData(List<NewHomePubaBean> beans){
+        this.newHomePubaBeans.addAll(beans);
         notifyDataSetChanged();
     }
 
@@ -97,16 +101,16 @@ public class NewBjAdapter extends RecyclerView.Adapter{
     }
     private void initTop(final NewBjAdapter.ViewHolder viewHolder, final int position) {
         try {
-            Map<String,String> map = list.get(position);
-            String endtime = map.get("endtime");
-            String img = map.get("img");
-            String id = map.get("id");
-            final String title = map.get("title");
-            String price = map.get("price");
-            String bidprice = map.get("bidprice");
-            String number = map.get("number");
-            String type = map.get("type");
-            String url = map.get("url");
+//            Map<String,String> map = list.get(position);
+            String endtime = newHomePubaBeans.get(position).getEndtime();
+            String img = newHomePubaBeans.get(position).getImg();
+            String id = newHomePubaBeans.get(position).getId();
+            final String title =newHomePubaBeans.get(position).getTitle();
+            String price = newHomePubaBeans.get(position).getPrice();
+//            String bidprice = map.get("bidprice");
+            String number = newHomePubaBeans.get(position).getNumber();
+            String type = newHomePubaBeans.get(position).getType();
+//            String url = map.get("url");
             viewHolder.mtime.friendly_time(endtime,"#999999");
 //            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
@@ -124,13 +128,13 @@ public class NewBjAdapter extends RecyclerView.Adapter{
                     notifyDataSetChanged();
                     final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     try {
-                        if (list.get(position).get("userid").equals(userID)) {
+                        if (newHomePubaBeans.get(position).getUserid().equals(userID)) {
                             Intent intent = new Intent(context, BidBillDetailActivity.class);
-                            intent.putExtra("fbid", list.get(position).get("id"));
+                            intent.putExtra("fbid", newHomePubaBeans.get(position).getId());
                             context.startActivity(intent);
                         } else {
                             Intent intent = new Intent(context, BidDetailActivity.class);
-                            intent.putExtra("id", list.get(position).get("id"));
+                            intent.putExtra("id", newHomePubaBeans.get(position).getId());
                             context.startActivity(intent);
                         }
                     } catch (Exception e) {
