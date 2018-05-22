@@ -32,7 +32,9 @@ import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.HomeData;
+import com.bbk.Bean.NewHomeBlBean;
 import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.Bean.NewHomeFxBean;
 import com.bbk.Bean.NewHomePubaBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.activity.BidBillDetailActivity;
@@ -151,14 +153,14 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             adapter.notifyData(newHomePubaBeans);
         }
     }
-    public void notifyBlData(List<Map<String, String>> List){
-        if (List != null) {
-            mBlAdapter.notifyData(List);
+    public void notifyBlData(List<NewHomeBlBean> blBeans){
+        if (blBeans != null) {
+            mBlAdapter.notifyData(blBeans);
         }
     }
-    public void notifyFxData(List<Map<String, String>> List){
-        if (List != null) {
-            mFxAdapter.notifyData(List);
+    public void notifyFxData(List<NewHomeFxBean> fxBeans){
+        if (fxBeans != null) {
+            mFxAdapter.notifyData(fxBeans);
         }
     }
     public void notifyData1(List<NewHomeCzgBean> czgBean){
@@ -173,15 +175,15 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             mlistview.setAdapter(adapter);
         }
     }
-    public void notifyBlData1(List<Map<String, String>> List){
-        if (mlistview != null && List != null) {
-            mBlAdapter = new NewBlAdapter(context, List);
+    public void notifyBlData1(List<NewHomeBlBean> blBeans){
+        if (mlistview != null && blBeans != null) {
+            mBlAdapter = new NewBlAdapter(context, blBeans);
             mlistview.setAdapter(mBlAdapter);
         }
     }
-    public void notifyFxData1(List<Map<String, String>> List){
-        if (mlistview != null && List != null) {
-            mFxAdapter = new NewFxAdapter(context, List);
+    public void notifyFxData1(List<NewHomeFxBean> fxBeans){
+        if (mlistview != null && fxBeans != null) {
+            mFxAdapter = new NewFxAdapter(context, fxBeans);
             mlistview.setAdapter(mFxAdapter);
         }
     }
@@ -274,22 +276,18 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             switch (typee){
                 case "1":
                     setView(viewHolder);
-//                    mIdex("1",2,true);
                     setText(viewHolder.mCzgText,viewHolder.mCzgView);
                     break;
                 case "2":
                     setView(viewHolder);
-//                    mIdex("2",2,true);
                     setText(viewHolder.mBjText,viewHolder.mBjView);
                     break;
                 case "3":
                     setView(viewHolder);
-//                    mIdex("3",2,true);
                     setText(viewHolder.mBlText,viewHolder.mBlView);
                     break;
                 case "4":
                     setView(viewHolder);
-//                    mIdex("4",2,true);
                     setText(viewHolder.mFxText,viewHolder.mFxView);
                     break;
             }
@@ -500,22 +498,18 @@ class ViewHolder extends RecyclerView.ViewHolder {
                         List<NewHomePubaBean> pubaBeans = JSON.parseArray(content,NewHomePubaBean.class);
                         adapter = new NewBjAdapter(context, pubaBeans);
                         mlistview.setAdapter(adapter);
-//                        addList(array);
                     }else if (type.equals("3")){
-                        addBList(array);
+                        List<NewHomeBlBean> blBeans = JSON.parseArray(content,NewHomeBlBean.class);
+                        mBlAdapter = new NewBlAdapter(context, blBeans);
+                        mlistview.setAdapter(mBlAdapter);
                     }else if (type.equals("4")){
-                        addFxList(array);
+                        List<NewHomeFxBean> fxBeans = JSON.parseArray(content,NewHomeFxBean.class);
+                        mFxAdapter = new NewFxAdapter(context, fxBeans);
+                        mlistview.setAdapter(mFxAdapter);
                     }else if (type.equals("1")){
                         czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
                         mCzgAdapter = new NewCzgAdapter(context, czgBeans);
                         mlistview.setAdapter(mCzgAdapter);
-                    }
-                    if (x == 1) {
-                        mList = list;
-                        handler.sendEmptyMessageDelayed(1, 0);
-                    } else if (x == 2) {
-                        mAddList = list;
-                        handler.sendEmptyMessageDelayed(2, 0);
                     }
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
@@ -527,118 +521,6 @@ class ViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    //发现数据
-    public void addFxList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("content",object.optString("content"));
-            map.put("img",object.optString("img"));
-            map.put("atime",object.optString("atime"));
-            map.put("count",object.optString("count"));
-            map.put("zan",object.optString("zan"));
-            map.put("title",object.optString("title"));
-            map.put("id",object.optString("id"));
-            list.add(map);
-        }
-
-    }
-    //爆料数据
-    public void addBList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("extra",object.optString("extra"));
-            map.put("img",object.optString("img"));
-            map.put("dtime",object.optString("dtime"));
-            map.put("readnum",object.optString("readnum"));
-            map.put("title",object.optString("title"));
-            map.put("plnum",object.optString("plnum"));
-            map.put("zannum",object.optString("zannum"));
-            map.put("blid",object.optString("blid"));
-            map.put("content",object.optString("content"));
-            map.put("price",object.optString("price"));
-            map.put("url",object.optString("url"));
-            list.add(map);
-        }
-    }
-    //镖局数据
-    public void addList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("endtime",object.optString("endtime"));
-            map.put("id",object.optString("id"));
-            map.put("img",object.optString("img"));
-            map.put("title",object.optString("title"));
-            map.put("price",object.optString("price"));
-            map.put("extra",object.optString("extra"));
-            map.put("number",object.optString("number"));
-            map.put("type",object.optString("type"));
-            map.put("userid",object.optString("userid"));//新增字段，用于判断是否是自己的发标，是则跳转发标详情
-            list.add(map);
-        }
-
-    }
-    //超值购数据
-    public void addCzgList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("id",object.optString("id"));
-            map.put("imgurl",object.optString("imgurl"));
-            map.put("title",object.optString("title"));
-            map.put("price",object.optString("price"));
-            map.put("dianpu",object.optString("dianpu"));
-            map.put("youhui",object.optString("youhui"));
-            map.put("url",object.optString("url"));
-            if (object.optString("hislowprice") != null){
-                map.put("hislowprice",object.optString("hislowprice"));
-            }
-            list.add(map);
-        }
-    }
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    if (mList.size() > 0 && mList.size() < 5) {
-                    }
-                    if (mList != null && mList.size() > 0) {
-                        if (type.equals("2")){
-
-                        }else if (type.equals("3")){
-                            mBlAdapter = new NewBlAdapter(context, mList);
-                            mlistview.setAdapter(mBlAdapter);
-                        }else if (type.equals("4")){
-                            mFxAdapter = new NewFxAdapter(context, mList);
-                            mlistview.setAdapter(mFxAdapter);
-                        }else if (type.equals("1")){
-
-                        }
-                        bar.setVisibility(View.GONE);
-                    }
-                    break;
-                case 2:
-                    if (mAddList != null && mAddList.size() > 0) {
-                        if (type.equals("2")) {
-//                            adapter.notifyData(mAddList);
-                        } else if (type.equals("3")) {
-                            mBlAdapter.notifyData(mAddList);
-                        } else if (type.equals("4")) {
-                            mFxAdapter.notifyData(mAddList);
-                        } else if (type.equals("1")) {
-//                            mCzgAdapter.notifyData(mAddList);
-                        }
-                    } else {
-                        StringUtil.showToast(context, "没有更多了");
-                    }
-                    break;
-            }
-        }
-    };
     //加载中部图标
     private void loadTag(final JSONArray tag, TopViewHolder viewHolder) throws Exception {
         taglist.clear();

@@ -34,6 +34,7 @@ import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.andview.refreshview.XRefreshView;
 import com.bbk.activity.AboutUsActivity;
+import com.bbk.activity.AddressActivity;
 import com.bbk.activity.BidListDetailActivity;
 import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.BrowseActivity;
@@ -73,7 +74,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	private ImageView mjbimg;
 	private LinearLayout mbackground;
 	private LinearLayout mjingbi, mcollection, mfoot, mphonechongzhi, mshopcart, morderlist, mlogisticsquery, mycomment,
-			mygossip, mfeedback, mcallservices, mabout, msign,mtaobaologin,mFabiaoLayout,mJiebiaoLayout;
+			mygossip, mfeedback, mcallservices, mabout, msign,mtaobaologin,mFabiaoLayout,mJiebiaoLayout,mAddress;
 	private boolean issign = true;
 	private DataFlow dataFlow;
 	private String token;
@@ -115,6 +116,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	}
 
 	public void initView() {
+		mAddress = mView.findViewById(R.id.maddress);
+		mAddress.setOnClickListener(this);
 		mFabiaoLayout = mView.findViewById(R.id.ll_my_fabiao);
 		mJiebiaoLayout = mView.findViewById(R.id.ll_my_jiebiao);
 		mJlzText = mView.findViewById(R.id.jlz_text);
@@ -495,7 +498,11 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 					startActivity(intent);
 				}
 				break;
-
+				//我的地址
+			case R.id.maddress:
+				intent = new Intent(getActivity(), AddressActivity.class);
+				startActivity(intent);
+				break;
 		default:
 			break;
 		}

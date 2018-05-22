@@ -80,5 +80,7 @@
     <color name="biao_color">#b40000</color>
     <color name="text_gray">#888888</color>
     <color name="text_dark">#454545</color>
+    <color name="address_color">#EF250F</color>
+    <color name="address_color1">#2C2C2C</color>
 
 </resources>

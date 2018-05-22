@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.bbk.Bean.NewHomeFxBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
@@ -45,14 +46,16 @@ import java.util.Map;
  */
 
 public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
-    private List<Map<String,String>> list;
+//    private List<Map<String,String>> list;
     private Context context;
     private String wztitle = "";
     private DataFlow6 dataFlow;
-    public NewFxAdapter(Context context, List<Map<String,String>> list){
-        this.list = list;
+    private List<NewHomeFxBean> fxBeans;
+    public NewFxAdapter(Context context, List<NewHomeFxBean> fxBeans){
+//        this.list = list;
         this.context = context;
         this.dataFlow = new DataFlow6(context);
+        this.fxBeans = fxBeans;
     }
 //    @Override
 //    public int getCount() {
@@ -89,11 +92,11 @@ public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return fxBeans.size();
     }
 
-    public void notifyData(List<Map<String,String>> List){
-        this.list.addAll(List);
+    public void notifyData(List<NewHomeFxBean> fxBeans){
+        this.fxBeans.addAll(fxBeans);
         notifyDataSetChanged();
     }
 //    @Override
@@ -169,13 +172,13 @@ public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
     }
     private void initTop(final NewFxAdapter.ViewHolder viewHolder, final int position) {
         try {
-            Map<String,String> map = list.get(position);
-            String content = map.get("content");
-            String img = map.get("img");
-            String time = map.get("atime");
-            final String title = map.get("title");
-            String count = map.get("count");
-            String zan = map.get("zan");
+//            Map<String,String> map = list.get(position);
+            String content = fxBeans.get(position).getContent();
+            String img =fxBeans.get(position).getImg();
+            String time =fxBeans.get(position).getAtime();
+            final String title = fxBeans.get(position).getTitle();
+            String count = fxBeans.get(position).getCount();
+            String zan = fxBeans.get(position).getZan();
             viewHolder.item_title.setText(title);
             viewHolder.time.setText(time);
             viewHolder.content.setText(content);
@@ -232,13 +235,13 @@ public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
 
     private void insertWenzhangGuanzhu(int position) {
         try {
-            wztitle  = list.get(position).get("title");
+            wztitle  =fxBeans.get(position).getTitle();
             String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
             String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "token");
             if (!TextUtils.isEmpty(userID)) {
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("userid", userID);
-                params.put("wzid",  list.get(position).get("id"));
+                params.put("wzid",  fxBeans.get(position).getId());
                 params.put("token", token);
                 params.put("type", "2");
                 dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
@@ -246,7 +249,7 @@ public class NewFxAdapter extends RecyclerView.Adapter implements ResultEvent{
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("userid", "-1");
                 params.put("token", token);
-                params.put("wzid",  list.get(position).get("id"));
+                params.put("wzid",  fxBeans.get(position).getId());
                 params.put("type", "2");
                 dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
             }

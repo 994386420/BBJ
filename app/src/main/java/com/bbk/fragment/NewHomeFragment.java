@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,7 +26,9 @@ import android.widget.ViewFlipper;
 
 import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XScrollView;
+import com.bbk.Bean.NewHomeBlBean;
 import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.Bean.NewHomeFxBean;
 import com.bbk.Bean.NewHomePubaBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.activity.HomeActivity;
@@ -138,7 +141,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     JSONObject object;
     JSONArray array;
     private int mCurrentPosition = 0;
-
     private int mSuspensionHeight;
     private LinearLayout mSuspensionBar;
     private HashMap<String, Object> mPayMap, mPayDataMap;
@@ -147,8 +149,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private PayReq mReq;
     private PayModel mPayModel;
     private ZLoadingView zLoadingView;//加载框
-    List<NewHomeCzgBean> czgBeans;
-    List<NewHomePubaBean> pubaBeans;
+    List<NewHomeCzgBean> czgBeans;//超值购数据
+    List<NewHomePubaBean> pubaBeans;//扑吧数据
+    List<NewHomeBlBean> blBeans;//爆料数据
+    List<NewHomeFxBean> fxBeans;//发现数据
+    private ImageButton imageButton;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -191,6 +196,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //控件实例化
     private void initView(View v){
+        imageButton = mView.findViewById(R.id.to_top_btn);
         zLoadingView = mView.findViewById(R.id.progress);
         zLoadingView.setVisibility(View.VISIBLE);
         zLoadingView.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
@@ -251,6 +257,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             }
         });
         mrecyclerview = (RecyclerView) mView.findViewById(R.id.mrecycler);
+        imageButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //滑动到顶部
+                mrecyclerview.smoothScrollToPosition(0);
+            }
+        });
         mrecyclerview.setHasFixedSize(true);
         mrecyclerview.setNestedScrollingEnabled(false);
         mSuspensionBar = mView.findViewById(R.id.layout_click);
@@ -282,8 +295,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 int firstPosition = gridLayoutManager.findFirstVisibleItemPosition();
                 if (firstPosition >0) {
                     mSuspensionBar.setVisibility(View.VISIBLE);
+                    imageButton.setVisibility(View.VISIBLE);
                 } else {
                     mSuspensionBar.setVisibility(View.GONE);
+                    imageButton.setVisibility(View.GONE);
                 }
             }
         });
@@ -314,6 +329,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case R.id.ll_czg_layout:
                 flag ="1";
                 setView();
+                Refresh("1");
                 mIdex("1",2,true);
                 setText(mCzgText,mCzgView);
 //                initDataWx(true);
@@ -321,18 +337,21 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case R.id.ll_bj_layout:
                 flag ="2";
                 setView();
+                Refresh("2");
                 mIdex("2",2,true);
                 setText(mBjText,mBjView);
                 break;
             case R.id.ll_bl_layout:
                 flag ="3";
                 setView();
+                Refresh("3");
                 mIdex("3",2,true);
                 setText(mBlText,mBlView);
                 break;
             case R.id.ll_fx_layout:
                 flag ="4";
                 setView();
+                Refresh("4");
                 mIdex("4",2,true);
                 setText(mFxText,mFxView);
                 break;
@@ -385,13 +404,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     list.clear();
                 }
                 array = new JSONArray(content);
+                refreshLayout.finishLoadmore();
+                refreshLayout.finishRefresh();
                 if (type.equals("2")){
                     if (x == 1) {
                         pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                         homeadapter.notifyBjData1(pubaBeans);
-                        Refresh(type);
                     }else if (x == 2) {
-                        Log.i("支付数据====", content + "============");
                         if (content != null && !content.toString().equals("[]")){
                             pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                             homeadapter.notifyBjData(pubaBeans);
@@ -400,15 +419,33 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         }
                     }
                 }else if (type.equals("3")){
-                    addBList(array);
+                    if (x == 1) {
+                        blBeans = JSON.parseArray(content, NewHomeBlBean.class);
+                        homeadapter.notifyBlData1(blBeans);
+                    }else if (x == 2) {
+                        if (content != null && !content.toString().equals("[]")){
+                            blBeans = JSON.parseArray(content, NewHomeBlBean.class);
+                            homeadapter.notifyBlData(blBeans);
+                        }else {
+                            StringUtil.showToast(getActivity(),"没有更多了");
+                        }
+                    }
                 }else if (type.equals("4")){
-                    addFxList(array);
+                    if (x == 1) {
+                        fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
+                        homeadapter.notifyFxData1(fxBeans);
+                    }else if (x == 2) {
+                        if (content != null && !content.toString().equals("[]")){
+                            fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
+                            homeadapter.notifyFxData(fxBeans);
+                        }else {
+                            StringUtil.showToast(getActivity(),"没有更多了");
+                        }
+                    }
                 }else if (type.equals("1")){
-//                    addCzgList(array);
                     if (x == 1) {
                         czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
                         homeadapter.notifyData1(czgBeans);
-                        Refresh(type);
                     }else if (x == 2) {
                         if (content != null && !content.toString().equals("[]")){
                             czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
@@ -418,17 +455,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         }
                    }
                 }
-//                if (x == 1) {
-//                    mList = list;
-////                    Log.i("list=======1111",mList+"==");
-//                    handler.sendEmptyMessageDelayed(1, 0);
-//                } else if (x == 2) {
-////                    Log.i("addlist=======222",mAddList+"====");
-//                    mAddList = list;
-//                    if (isrequest == true){
-//                        handler.sendEmptyMessageDelayed(2, 0);
-//                    }
-//                }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -473,45 +499,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             super.handleMessage(msg);
             switch (msg.what){
                 case 1:
-                    refreshLayout.finishLoadmore();
-                    refreshLayout.finishRefresh();
-                    if (mList.size() > 0 && mList.size()<5){
-                    }
-                    if (mList != null && mList.size() > 0) {
-                        if (type.equals("2")){
-//                            homeadapter.notifyBjData1(mList);
-                            Refresh(type);
-                        }else if (type.equals("3")){
-                            homeadapter.notifyBlData1(mList);
-                            Refresh(type);
-                        }else if (type.equals("4")){
-                            homeadapter.notifyFxData1(mList);
-                            Refresh(type);
-                        }else if (type.equals("1")){
-                            homeadapter.notifyData1(czgBeans);
-                            Refresh(type);
-                        }
-                    }
                     break;
                 case 2:
-                    refreshLayout.finishLoadmore();
-                    refreshLayout.finishRefresh();
-                    if(mAddList!=null && mAddList.size()>0){
-                        if (type.equals("2")){
-//                            homeadapter.notifyBjData(mAddList);
-                        }else if (type.equals("3")){
-                            homeadapter.notifyBlData(mAddList);
-                        }else if (type.equals("4")){
-                            homeadapter.notifyFxData(mAddList);
-                        }else if (type.equals("1")){
-//                            Log.i("支付数据=====", mAddList + "============");
-//                            czgBeans = JSON.parseArray(mAddList.toString(),NewHomeCzgBean.class);
-//                            homeadapter.notifyData(czgBeans);
-                        }
-                    }else {
-                        Log.i("支付数据",  "============");
-                        StringUtil.showToast(getActivity(),"没有更多了");
-                    }
                     break;
                 case 3:
                     if (object.has("fubiao")){
@@ -538,7 +527,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         gongneng = object.optJSONArray("gongneng");
                     }
                     fabiao = object.optJSONArray("fabiao");
-//                    loadbanner(banner);
                     mrecyclerview.addItemDecoration(new TwoDecoration(0,"#f3f3f3",3+banner.length()+tag.length()));
                     mrecyclerview.setHasFixedSize(true);
                     homeadapter = new NewHomeAdapter(getActivity(),taglist,list, banner, tag, fabiao,gongneng,type);
@@ -585,77 +573,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mrecyclerview.setAdapter(homeadapter);
         homeadapter.setOnClickListioner(NewHomeFragment.this);
         homeadapter.notifyDataSetChanged();
-    }
-    //发现数据
-    public void addFxList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("content",object.optString("content"));
-            map.put("img",object.optString("img"));
-            map.put("atime",object.optString("atime"));
-            map.put("count",object.optString("count"));
-            map.put("zan",object.optString("zan"));
-            map.put("title",object.optString("title"));
-            map.put("id",object.optString("id"));
-            list.add(map);
-        }
-
-    }
-    //爆料数据
-    public void addBList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("extra",object.optString("extra"));
-            map.put("img",object.optString("img"));
-            map.put("dtime",object.optString("dtime"));
-            map.put("readnum",object.optString("readnum"));
-            map.put("title",object.optString("title"));
-            map.put("plnum",object.optString("plnum"));
-            map.put("zannum",object.optString("zannum"));
-            map.put("blid",object.optString("blid"));
-            map.put("content",object.optString("content"));
-            map.put("price",object.optString("price"));
-            map.put("url",object.optString("url"));
-            list.add(map);
-        }
-    }
-    //镖局数据
-    public void addList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("endtime",object.optString("endtime"));
-            map.put("id",object.optString("id"));
-            map.put("img",object.optString("img"));
-            map.put("title",object.optString("title"));
-            map.put("price",object.optString("price"));
-            map.put("extra",object.optString("extra"));
-            map.put("number",object.optString("number"));
-            map.put("type",object.optString("type"));
-            map.put("userid",object.optString("userid"));//新增字段，用于判断是否是自己的发标，是则跳转发标详情
-            list.add(map);
-        }
-
-    }
-    //超值购数据
-    public void addCzgList(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("id",object.optString("id"));
-            map.put("imgurl",object.optString("imgurl"));
-            map.put("title",object.optString("title"));
-            map.put("price",object.optString("price"));
-            map.put("dianpu",object.optString("dianpu"));
-            map.put("youhui",object.optString("youhui"));
-            map.put("url",object.optString("url"));
-            if (object.optString("hislowprice") != null){
-                map.put("hislowprice",object.optString("hislowprice"));
-            }
-            list.add(map);
-        }
     }
     //首页视图数据加载
     private void mViewLoad(){

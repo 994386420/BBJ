@@ -43,11 +43,11 @@ import java.util.Map;
  */
 
 public class NewCzgAdapter extends RecyclerView.Adapter{
-    private List<Map<String,String>> list;
+//    private List<Map<String,String>> list;
     private Context context;
     List<NewHomeCzgBean> newHomeCzgBean;
     public NewCzgAdapter(Context context, List<NewHomeCzgBean> newHomeCzgBean){
-        this.list = list;
+//        this.list = list;
         this.context = context;
         this.newHomeCzgBean = newHomeCzgBean;
     }
@@ -106,7 +106,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
     private void initTop(final NewCzgAdapter.ViewHolder viewHolder, final int position) {
         try {
 //            final Map<String,String> map = list.get(position);
-            Log.i("-------", newHomeCzgBean.get(position).getImgurl()+"=====");
+//            Log.i("-------", newHomeCzgBean.get(position).getImgurl()+"=====");
             String img = newHomeCzgBean.get(position).getImgurl();
             final String title = newHomeCzgBean.get(position).getTitle();
             String price = newHomeCzgBean.get(position).getPrice();
@@ -135,10 +135,11 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
                 public void onClick(View view) {
                     notifyDataSetChanged();
                     try {
-                        if (AlibcLogin.getInstance().getSession().nick!= null){
+//                        Log.i("淘宝","=============="+ AlibcLogin.getInstance().isLogin());
+                        if (AlibcLogin.getInstance().isLogin() == true){
                             Intent intent = new Intent(context,WebViewActivity.class);
-                            intent.putExtra("url",  list.get(position).get("url"));
-                            intent.putExtra("title",  list.get(position).get("title"));
+                            intent.putExtra("url",  newHomeCzgBean.get(position).getUrl());
+                            intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
                             context.startActivity(intent);
                         }else {
                             TaoBaoLoginandLogout();//淘宝授权登陆

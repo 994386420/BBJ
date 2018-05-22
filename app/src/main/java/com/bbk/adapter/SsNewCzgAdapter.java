@@ -107,7 +107,7 @@ public class SsNewCzgAdapter extends BaseAdapter{
                 @Override
                 public void onClick(View view) {
                     notifyDataSetChanged();
-                    if (AlibcLogin.getInstance().getSession().nick != null) {
+                    if (AlibcLogin.getInstance().isLogin() == true){
                         Intent intent = new Intent(context, WebViewActivity.class);
                         intent.putExtra("url", list.get(position).get("url"));
                         intent.putExtra("title", list.get(position).get("title"));

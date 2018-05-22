@@ -34,6 +34,8 @@ public interface Constants {
 	String registUserByPhoneNumber = "apiService/registUserByPhoneNumber";
 	//找回密码
 	String findPwdByPhone = "apiService/findPwdByPhone";
+	//增加地址
+	String addAddress = "auction/addAddr";//userid（用户id）name（收货人名称）	phone（手机号码）area（所在地区）	street（具体所在的街道）tag（地址标签）original（是否为默认收货地址：1为默认，不为默认0或者传空）
 	/**上传图片*/
 	public static final String USER_IMG_URL_HEADER = "http://www.bibkan.com/upload/Image/";
 

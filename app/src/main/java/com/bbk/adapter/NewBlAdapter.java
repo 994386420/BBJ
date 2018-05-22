@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.bbk.Bean.NewHomeBlBean;
 import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
@@ -32,11 +33,13 @@ import java.util.Map;
  */
 
 public class NewBlAdapter extends RecyclerView.Adapter{
-    private List<Map<String,String>> list;
+//    private List<Map<String,String>> list;
     private Context context;
-    public NewBlAdapter(Context context, List<Map<String,String>> list){
-        this.list = list;
+    private List<NewHomeBlBean> newHomeBlBean;
+    public NewBlAdapter(Context context, List<NewHomeBlBean> blBeans){
+//        this.list = list;
         this.context = context;
+        this.newHomeBlBean = blBeans;
     }
 
     @Override
@@ -63,11 +66,11 @@ public class NewBlAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return newHomeBlBean.size();
     }
 
-    public void notifyData(List<Map<String,String>> List){
-        this.list.addAll(List);
+    public void notifyData(List<NewHomeBlBean> blBeans){
+        this.newHomeBlBean.addAll(blBeans);
         notifyDataSetChanged();
     }
 
@@ -92,18 +95,18 @@ public class NewBlAdapter extends RecyclerView.Adapter{
     }
     private void initTop(final NewBlAdapter.ViewHolder viewHolder, final int position) {
         try {
-            final Map<String,String> map = list.get(position);
-            String mExtr = map.get("extra");
-            String img = map.get("img");
-            String time = map.get("dtime");
-            final String title = map.get("title");
-            String count = map.get("plnum");
-            String readnum = map.get("readnum");//阅读数
-            String zan = map.get("zannum");
-            final String content = map.get("content");
+//            final Map<String,String> map = list.get(position);
+            String mExtr = newHomeBlBean.get(position).getExtra();
+            String img =newHomeBlBean.get(position).getImg();
+            String time =newHomeBlBean.get(position).getDtime();
+            final String title = newHomeBlBean.get(position).getTitle();
+            String count =newHomeBlBean.get(position).getPlnum();
+            String readnum = newHomeBlBean.get(position).getReadnum();//阅读数
+            String zan =newHomeBlBean.get(position).getZannum();
+            final String content = newHomeBlBean.get(position).getContent();
             viewHolder.item_title.setText(content);
             viewHolder.time.setText(time);
-            viewHolder.mExtr.setText("¥"+map.get("price")+", "+ mExtr);
+            viewHolder.mExtr.setText("¥"+newHomeBlBean.get(position).getPrice()+", "+ mExtr);
             viewHolder.mlike.setText(zan);
             viewHolder.mcomment.setText(readnum);
             Glide.with(context)
@@ -117,7 +120,7 @@ public class NewBlAdapter extends RecyclerView.Adapter{
                     notifyDataSetChanged();
                     try {
                             Intent intent = new Intent(context, GossipPiazzaDetailActivity.class);
-                            intent.putExtra("blid",list.get(position).get("blid"));
+                            intent.putExtra("blid",newHomeBlBean.get(position).getBlid());
                             context.startActivity(intent);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -156,7 +159,7 @@ public class NewBlAdapter extends RecyclerView.Adapter{
                 @Override
                 public void onClick(View view) {
                     ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(map.get("url"));
+                    cm.setText(newHomeBlBean.get(position).getUrl());
                     StringUtil.showToast(context,"复制成功");
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }

@@ -107,4 +107,30 @@ public class StringUtil {
 		}
 		return list;
 	}
+
+	public static boolean isNullOrEmpty(String content){
+		boolean result = false;
+		if(null == content || "".equals(content.trim())){
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 验证手机号码的格式是否正确
+	 */
+	public static boolean isMobilePhoneVerify(String mobileString){
+		if(mobileString ==null || "".equals(mobileString.trim())){
+			return true;
+		}else{
+			Pattern p = Pattern.compile("^1[0-9][0-9]{9}$");
+			Matcher m = p.matcher(mobileString.trim());
+			if(!m.matches()){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+	}
 }

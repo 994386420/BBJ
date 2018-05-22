@@ -38,12 +38,12 @@ import java.util.Map;
  */
 
 public class NewBjAdapter extends RecyclerView.Adapter{
-    private List<Map<String,String>> list;
+//    private List<Map<String,String>> list;
     private Context context;
     private int ITEM_TYPE_TOP = 1;
     List<NewHomePubaBean> newHomePubaBeans;
     public NewBjAdapter(Context context, List<NewHomePubaBean> pubaBeans){
-        this.list = list;
+//        this.list = list;
         this.context = context;
         this.newHomePubaBeans = pubaBeans;
     }
