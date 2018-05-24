@@ -12,7 +12,7 @@ public interface Constants {
 	
 	/**主url*/
 	//内网，陈远鹏 更换165
-//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.165/APIService/";
+//	public static final String MAIN_BASE_URL_MOBILE = "http://192.168.20.188/APIService/";
 //	public static final String MAIN_BASE_URL_MOBILE = "http://125.64.92.222:7083/APIService/";
 	//外网
 	public static final String MAIN_BASE_URL_MOBILE = "http://www.bibijing.com/";
@@ -34,8 +34,41 @@ public interface Constants {
 	String registUserByPhoneNumber = "apiService/registUserByPhoneNumber";
 	//找回密码
 	String findPwdByPhone = "apiService/findPwdByPhone";
-	//增加地址
-	String addAddress = "auction/addAddr";//userid（用户id）name（收货人名称）	phone（手机号码）area（所在地区）	street（具体所在的街道）tag（地址标签）original（是否为默认收货地址：1为默认，不为默认0或者传空）
+	/**
+	 *增加地址
+	 * userid（用户id）
+	 * name（收货人名称）
+	 * phone（手机号码）
+	 * area（所在地区）
+	 * street（具体所在的街道）
+	 * tag（地址标签）
+	 * original（是否为默认收货地址：1为默认，不为默认0或者传空）
+	 */
+	String addAddress = "auction/addAddr";
+	/**
+	 *查询地址
+	 * 参数userid（用户id）
+	 * addrid（收货地址id存在查单个，不存在查询全部）
+	 *
+	 */
+	String queryAddr = "auction/queryAddr";
+	/**
+	 *	修改收货地址单个或者多个信息
+	 * addrid（地址信息id）
+	 * name（收货人名字）
+	 * phone（手机号码）
+	 * area（所在地区）
+	 * street（具体所在的街道）
+	 * tag（地址标签）
+	 * original（是否为默认收货地址：1为默认，不为默认0或者传空）
+	 */
+	String modifyAddr = "auction/modifyAddr";
+	/**
+	 * 删除收货地址
+	 * addrid（收货地址id存在查单个，不存在查询全部）
+	 */
+	String removeAddr = "auction/removeAddr";
+
 	/**上传图片*/
 	public static final String USER_IMG_URL_HEADER = "http://www.bibkan.com/upload/Image/";
 

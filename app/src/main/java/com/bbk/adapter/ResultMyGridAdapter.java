@@ -90,8 +90,22 @@ public class ResultMyGridAdapter extends BaseAdapter{
 				String price = dataSet.get("price").toString();
 				String hnumber = dataSet.get("hnumber").toString();
 				vh.title.setText(title);
-				JSONArray array = new JSONArray(dataSet.get("tarr").toString());
-				addList(array);
+				String bigprice;
+				String littleprice;
+				if (price.contains(".")) {
+					int end = price.indexOf(".");
+					bigprice = price.substring(0, end);
+					littleprice = price.substring(end, price.length());
+				}else{
+					bigprice = price;
+					littleprice = ".0";
+				}
+				vh.mbigprice.setText(bigprice);
+				vh.mlittleprice.setText(littleprice);
+				if (dataSet.get("tarr") != null) {
+					JSONArray array = new JSONArray(dataSet.get("tarr").toString());
+					addList(array);
+				}
 				if (Integer.valueOf(hnumber)>10000) {
 					if (Integer.valueOf(hnumber)>100000000) {
 						DecimalFormat df = new DecimalFormat("###.0");
@@ -143,15 +157,17 @@ public class ResultMyGridAdapter extends BaseAdapter{
 					}
 				}else {
 					try {
-						vh.juan.setVisibility(View.VISIBLE);
-						String yjson = dataSet.get("yjson").toString();
-						final JSONObject object = new JSONObject(yjson);
-						vh.juan.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								new ResultDialog(context).buildDiloag(object,v, context);
-							}
-						});
+						if (dataSet.get("yjson") != null) {
+							vh.juan.setVisibility(View.VISIBLE);
+							String yjson = dataSet.get("yjson").toString();
+							final JSONObject object = new JSONObject(yjson);
+							vh.juan.setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									new ResultDialog(context).buildDiloag(object, v, context);
+								}
+							});
+						}
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}

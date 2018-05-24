@@ -35,6 +35,7 @@ import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.andview.refreshview.XRefreshView;
 import com.bbk.activity.AboutUsActivity;
 import com.bbk.activity.AddressActivity;
+import com.bbk.activity.AddressMangerActivity;
 import com.bbk.activity.BidListDetailActivity;
 import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.BrowseActivity;
@@ -500,7 +501,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 				break;
 				//我的地址
 			case R.id.maddress:
-				intent = new Intent(getActivity(), AddressActivity.class);
+				intent = new Intent(getActivity(), AddressMangerActivity.class);
 				startActivity(intent);
 				break;
 		default:

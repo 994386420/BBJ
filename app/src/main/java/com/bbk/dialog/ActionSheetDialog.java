@@ -98,12 +98,12 @@ public class ActionSheetDialog {
 	 * @param listener
 	 * @return
 	 */
-	public ActionSheetDialog addSheetItem(String strItem, SheetItemColor color,
+	public ActionSheetDialog addSheetItem(int size,String strItem, SheetItemColor color,
 			OnSheetItemClickListener listener) {
 		if (sheetItemList == null) {
 			sheetItemList = new ArrayList<SheetItem>();
 		}
-		sheetItemList.add(new SheetItem(strItem, color, listener));
+		sheetItemList.add(new SheetItem(size,strItem, color, listener));
 		return this;
 	}
 
@@ -134,7 +134,7 @@ public class ActionSheetDialog {
 
 			TextView textView = new TextView(context);
 			textView.setText(strItem);
-			textView.setTextSize(18);
+			textView.setTextSize(sheetItem.size);
 			textView.setGravity(Gravity.CENTER);
 
 			// ����ͼƬ
@@ -199,20 +199,23 @@ public class ActionSheetDialog {
 	}
 
 	public class SheetItem {
+		int size;
 		String name;
 		OnSheetItemClickListener itemClickListener;
 		SheetItemColor color;
 
-		public SheetItem(String name, SheetItemColor color,
+		public SheetItem(int size,String name, SheetItemColor color,
 				OnSheetItemClickListener itemClickListener) {
+			this.size = size;
 			this.name = name;
 			this.color = color;
+
 			this.itemClickListener = itemClickListener;
 		}
 	}
 
 	public enum SheetItemColor {
-		Blue("#037BFF"), Red("#FD4A2E");
+		Blue("#037BFF"), Red("#FD4A2E"),Gray("#B6B6B6");
 
 		private String name;
 

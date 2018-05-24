@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text=""
+            android:textColor="@color/address_color1"
             android:textSize="17sp" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

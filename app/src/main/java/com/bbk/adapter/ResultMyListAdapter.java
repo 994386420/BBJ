@@ -83,14 +83,29 @@ public class ResultMyListAdapter extends BaseAdapter{
 		}
 		try {
 			final Map<String, Object> dataSet = list.get(position);
-			//Log.e("====",position+"   "+dataSet);
+//			Log.e("====",position+"   "+dataSet);
 			final String title = dataSet.get("title").toString();
 			String img = dataSet.get("img").toString();
 //			String price = dataSet.get("price").toString();
 			String hnumber = dataSet.get("hnumber").toString();
 			vh.title.setText(title);
-			JSONArray array = new JSONArray(dataSet.get("tarr").toString());
-			addList(array);
+			String price = dataSet.get("price").toString();
+			String bigprice;
+			String littleprice;
+			if (price.contains(".")) {
+				int end = price.indexOf(".");
+				bigprice = price.substring(0, end);
+				littleprice = price.substring(end, price.length());
+			}else{
+				bigprice = price;
+				littleprice = ".0";
+			}
+			vh.mbigprice.setText(bigprice);
+			vh.mlittleprice.setText(littleprice);
+			if (dataSet.get("tarr") != null) {
+				JSONArray array = new JSONArray(dataSet.get("tarr").toString());
+				addList(array);
+			}
 			if (Integer.valueOf(hnumber)>10000) {
 				if (Integer.valueOf(hnumber)>100000000) {
 					DecimalFormat df = new DecimalFormat("###.0");
@@ -177,46 +192,27 @@ public class ResultMyListAdapter extends BaseAdapter{
 						vh.mcouponimg.setVisibility(View.GONE);
 					}
 				}
-//				if ("-1".equals(dataSet.get("saleinfo"))){
-//					vh.mcoupon.setVisibility(View.GONE);
-//					vh.myouhuitext.setVisibility(View.GONE);
-//					vh.lingjuanzhanwei.setVisibility(View.GONE);
-//				}else {
-//					if (!"".equals(dataSet.get("saleinfo"))){
-//						vh.mcoupon.setVisibility(View.VISIBLE);
-//						vh.mlingjuan.setVisibility(View.GONE);
-//						vh.mcouponimg.setVisibility(View.GONE);
-//						vh.mcoupontext.setText(dataSet.get("saleinfo").toString());
-//						vh.mcoupon.setOnClickListener(new OnClickListener() {
-//							@Override
-//							public void onClick(View v) {
-//
-//							}
-//						});
-//					}else {
-//						vh.mcoupon.setVisibility(View.GONE);
-//						vh.myouhuitext.setVisibility(View.GONE);
-//						vh.lingjuanzhanwei.setVisibility(View.GONE);
-//					}
-//
-//				}
 
 			}else {
 				try {
-					vh.mcouponimg.setVisibility(View.VISIBLE);
-					vh.mcoupon.setVisibility(View.VISIBLE);
-					vh.myouhuitext.setVisibility(View.VISIBLE);
-					vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
-					String yjson = dataSet.get("yjson").toString();
-					final JSONObject object = new JSONObject(yjson);
-					String desc = object.getJSONArray("ylist").getJSONObject(0).optString("desc");
-					vh.mcoupontext.setText(desc);
-					vh.mcoupon.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							new ResultDialog(context).buildDiloag(object,v,context);
-						}
-					});
+					if (dataSet.get("yjson") != null){
+						vh.mcouponimg.setVisibility(View.VISIBLE);
+						vh.mcoupon.setVisibility(View.VISIBLE);
+						vh.myouhuitext.setVisibility(View.VISIBLE);
+						vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
+						String yjson = dataSet.get("yjson").toString();
+						final JSONObject object = new JSONObject(yjson);
+						String desc = object.getJSONArray("ylist").getJSONObject(0).optString("desc");
+						vh.mcoupontext.setText(desc);
+						vh.mcoupon.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								new ResultDialog(context).buildDiloag(object,v,context);
+							}
+						});
+					}else {
+						vh.mcoupon.setVisibility(View.GONE);
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -244,9 +240,6 @@ public class ResultMyListAdapter extends BaseAdapter{
 	public void addList(JSONArray array) throws JSONException {
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject object = array.getJSONObject(i);
-//			Map<String,String> map = new HashMap<>();
-//			map.put("price",object.optString("price"));
-//			list1.add(map);
 			String price = object.optString("price");
 			String bigprice;
 			String littleprice;

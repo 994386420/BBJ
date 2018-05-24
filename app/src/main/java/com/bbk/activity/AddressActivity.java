@@ -58,6 +58,8 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 	private DataFlow6 dataFlow;
 	private String tag;//地址标签
 	private Button saveBtm;//保存
+	private String original;
+	public static String ACTION_NAME = "AdressActivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,6 +69,9 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 		// 实现沉浸式状态栏
 		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		initView();
+		if (getIntent().getStringExtra("original") != null){
+			original = getIntent().getStringExtra("original");
+		}
 	}
 
 	private void initView() {
@@ -102,14 +107,14 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 		}
 		if(validateMessage()) {
 			HashMap<String, String> paramsMap = new HashMap<>();
-			Log.i("参数",tag+"==="+name+"==="+phone+"===="+area+"===="+street);
+			Log.i("参数",original+"==="+tag+"==="+name+"==="+phone+"===="+area+"===="+street);
 			paramsMap.put("userid",userID);
 			paramsMap.put("name", name);
 			paramsMap.put("phone", phone);
 			paramsMap.put("area", area);
 			paramsMap.put("street", street);
 			paramsMap.put("tag", tag);
-			paramsMap.put("original", "1");//默认地址 传1
+			paramsMap.put("original", original);
 			dataFlow.requestData(1, Constants.addAddress, paramsMap, this, is, "保存中...");
 		}
 	}
@@ -264,6 +269,15 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-
+		switch (requestCode){
+			case 1:
+				Intent intent;
+//				intent = new Intent(this, AddressMangerActivity.class);
+//				setResult(1,intent);
+				intent = new Intent(ACTION_NAME);
+				sendBroadcast(intent);
+				finish();
+				break;
+		}
 	}
 }

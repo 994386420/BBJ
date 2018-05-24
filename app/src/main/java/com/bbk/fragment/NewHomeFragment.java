@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -120,13 +121,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private TextView mCzgText,mBjText,mBlText,mFxText;
     private NewHomeAdapter homeadapter;
     private int page = 1,x = 1;
-    private int maxNum = 0;
     private String type = "1",flag = "";
-    private List<Map<String,String>> list,addlist,mList,mAddList;
     private String wztitle = "";
-    private ViewFlipper mviewflipper;//发标动态轮播
-//    public static XRefreshView mRefreshableView;
-    private SmartRefreshLayout smartRefreshLayout;
     private View view;
     private ImageView huodongimg;//活动按钮
     //第一次引导页是否显示隐藏
@@ -134,16 +130,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     private boolean isHomeGudie = false;
     JSONObject jo;
-    private boolean isclear = false;
     private RecyclerView mrecyclerview;
     private  RefreshLayout refreshLayout;
-    private boolean isrequest = true;
     JSONObject object;
-    JSONArray array;
-    private int mCurrentPosition = 0;
-    private int mSuspensionHeight;
     private LinearLayout mSuspensionBar;
-    private HashMap<String, Object> mPayMap, mPayDataMap;
     private IWXAPI msgApi = null;
     private int data;// 支付结果标识
     private PayReq mReq;
@@ -202,8 +192,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         zLoadingView.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
         huodongimg =mView.findViewById(R.id.huodongimg);
         view = v.findViewById(R.id.view);
-        refreshAndloda();
-        mviewflipper = mView.findViewById(R.id.mviewflipper);
         mTopView = mView. findViewById(R.id.tv_topView);
         mLlCzgLayout = mView.findViewById(R.id.ll_czg_layout);
         mLlbjLayout = mView.findViewById(R.id.ll_bj_layout);
@@ -266,13 +254,14 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         });
         mrecyclerview.setHasFixedSize(true);
         mrecyclerview.setNestedScrollingEnabled(false);
+        ((SimpleItemAnimator)mrecyclerview.getItemAnimator()).setSupportsChangeAnimations(false);
         mSuspensionBar = mView.findViewById(R.id.layout_click);
         final LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
         mrecyclerview.setLayoutManager(gridLayoutManager);
         mrecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                mSuspensionHeight = mSuspensionBar.getHeight();
+//                mSuspensionHeight = mSuspensionBar.getHeight();
             }
 
             @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -329,7 +318,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case R.id.ll_czg_layout:
                 flag ="1";
                 setView();
-                Refresh("1");
                 mIdex("1",2,true);
                 setText(mCzgText,mCzgView);
 //                initDataWx(true);
@@ -337,21 +325,18 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case R.id.ll_bj_layout:
                 flag ="2";
                 setView();
-                Refresh("2");
                 mIdex("2",2,true);
                 setText(mBjText,mBjView);
                 break;
             case R.id.ll_bl_layout:
                 flag ="3";
                 setView();
-                Refresh("3");
                 mIdex("3",2,true);
                 setText(mBlText,mBlView);
                 break;
             case R.id.ll_fx_layout:
                 flag ="4";
                 setView();
-                Refresh("4");
                 mIdex("4",2,true);
                 setText(mFxText,mFxView);
                 break;
@@ -389,7 +374,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         switch (requestCode){
             case 1:
                 try {
-                    object = new JSONObject(content);
+                   object = new JSONObject(content);
                    handler.sendEmptyMessageDelayed(3,0);
                 } catch (Exception e) {
                         // TODO Auto-generated catch block
@@ -399,17 +384,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             case 2:
                 try {
-                list = new ArrayList<>();
-                if (isclear) {
-                    list.clear();
-                }
-                array = new JSONArray(content);
                 refreshLayout.finishLoadmore();
                 refreshLayout.finishRefresh();
                 if (type.equals("2")){
                     if (x == 1) {
                         pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
-                        homeadapter.notifyBjData1(pubaBeans);
+                        Refresh("2");
                     }else if (x == 2) {
                         if (content != null && !content.toString().equals("[]")){
                             pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
@@ -421,7 +401,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 }else if (type.equals("3")){
                     if (x == 1) {
                         blBeans = JSON.parseArray(content, NewHomeBlBean.class);
-                        homeadapter.notifyBlData1(blBeans);
+                        Refresh("3");
                     }else if (x == 2) {
                         if (content != null && !content.toString().equals("[]")){
                             blBeans = JSON.parseArray(content, NewHomeBlBean.class);
@@ -433,7 +413,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 }else if (type.equals("4")){
                     if (x == 1) {
                         fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
-                        homeadapter.notifyFxData1(fxBeans);
+                        Refresh("4");
                     }else if (x == 2) {
                         if (content != null && !content.toString().equals("[]")){
                             fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
@@ -445,7 +425,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 }else if (type.equals("1")){
                     if (x == 1) {
                         czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
-                        homeadapter.notifyData1(czgBeans);
+                        Refresh("1");
                     }else if (x == 2) {
                         if (content != null && !content.toString().equals("[]")){
                             czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
@@ -529,7 +509,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     fabiao = object.optJSONArray("fabiao");
                     mrecyclerview.addItemDecoration(new TwoDecoration(0,"#f3f3f3",3+banner.length()+tag.length()));
                     mrecyclerview.setHasFixedSize(true);
-                    homeadapter = new NewHomeAdapter(getActivity(),taglist,list, banner, tag, fabiao,gongneng,type);
+                    homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans);
                     mrecyclerview.setAdapter(homeadapter);
                     homeadapter.setOnClickListioner(NewHomeFragment.this);
                     if (object.has("guanggao")) {
@@ -558,9 +538,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     getIndexByType(false,2);
                     break;
                 case 5:
-                    isclear = true;
                     initData(true);
-//                    getIndexByType(true,2);
+                    getIndexByType(true,2);
                     break;
             }
         }
@@ -568,8 +547,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
     public void Refresh(String type){
         mSuspensionBar.setVisibility(View.GONE);
-        mrecyclerview.setHasFixedSize(true);
-        homeadapter = new NewHomeAdapter(getActivity(),taglist,list, banner, tag, fabiao,gongneng,type);
+        homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans);
         mrecyclerview.setAdapter(homeadapter);
         homeadapter.setOnClickListioner(NewHomeFragment.this);
         homeadapter.notifyDataSetChanged();
@@ -583,7 +561,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         type = str;
         x=1;
         page=1;
-        isclear = true;
         getIndexByType(is,code);
     }
     @Override

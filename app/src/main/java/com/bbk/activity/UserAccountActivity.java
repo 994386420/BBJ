@@ -314,13 +314,13 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 			break;
 		case R.id.muserimg:
 			StatService.onEvent(UserAccountActivity.this, "updateusrimg", "更新用户头像:个人信息页面");
-			new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true).addSheetItem("拍照",
+			new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true).addSheetItem(18,"拍照",
 					ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
 						@Override
 						public void onClick(int which) {
 							camera();
 						}
-					}).addSheetItem("我的相册", ActionSheetDialog.SheetItemColor.Blue,
+					}).addSheetItem(18,"我的相册", ActionSheetDialog.SheetItemColor.Blue,
 							new ActionSheetDialog.OnSheetItemClickListener() {
 								@Override
 								public void onClick(int which) {
@@ -345,7 +345,7 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 			startActivityForResult(intent, NICKNAME);
 			break;
 		case R.id.msex:
-			new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true).addSheetItem("男",
+			new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true).addSheetItem(18,"男",
 					ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
 						@Override
 						public void onClick(int which) {
@@ -354,7 +354,7 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "gender","1");
 							
 						}
-					}).addSheetItem("女", ActionSheetDialog.SheetItemColor.Blue,
+					}).addSheetItem(18,"女", ActionSheetDialog.SheetItemColor.Blue,
 							new ActionSheetDialog.OnSheetItemClickListener() {
 								@Override
 								public void onClick(int which) {

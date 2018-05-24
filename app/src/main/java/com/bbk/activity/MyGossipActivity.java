@@ -141,14 +141,14 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 if ("add".equals(list.get(position))) {
                     ActionSheetDialog dialog = new ActionSheetDialog(MyGossipActivity.this).builder().setCancelable(true)
-                            .setCanceledOnTouchOutside(true).addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
+                            .setCanceledOnTouchOutside(true).addSheetItem(18,"拍照", ActionSheetDialog.SheetItemColor.Blue,
                                     new ActionSheetDialog.OnSheetItemClickListener() {
                                         @Override
                                         public void onClick(int which) {
                                             photo();
                                         }
                                     })
-                            .addSheetItem("我的相册", ActionSheetDialog.SheetItemColor.Blue,
+                            .addSheetItem(18,"我的相册", ActionSheetDialog.SheetItemColor.Blue,
                                     new ActionSheetDialog.OnSheetItemClickListener() {
                                         @Override
                                         public void onClick(int which) {
@@ -172,7 +172,7 @@ public class MyGossipActivity extends BaseActivity implements OnClickListener, R
                         }
                     }
                     if (!hasvideo){
-                        dialog.addSheetItem("我的视频", ActionSheetDialog.SheetItemColor.Blue,
+                        dialog.addSheetItem(18,"我的视频", ActionSheetDialog.SheetItemColor.Blue,
                                 new ActionSheetDialog.OnSheetItemClickListener() {
                                     @Override
                                     public void onClick(int which) {

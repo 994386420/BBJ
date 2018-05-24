@@ -239,8 +239,7 @@ public class SearchMainActivity extends ActivityGroup implements
 	private String Flag = "1",type = "1",isbland;
 	private List<Map<String,String>> list,addlist,mList,mAddList;
 	private PopupWindow popupWindow;
-
-
+	private boolean isloadShaixuan = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -376,8 +375,8 @@ public class SearchMainActivity extends ActivityGroup implements
 		mnumber = (RelativeLayout) findViewById(R.id.mnumber);
 		mprice = (RelativeLayout) findViewById(R.id.mprice);
 		mfilter = (RelativeLayout) findViewById(R.id.mfilter);
-		xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
-		xrefresh1 = (XRefreshView) findViewById(R.id.xrefresh1);
+		xrefresh =  findViewById(R.id.xrefresh);
+		xrefresh1 =  findViewById(R.id.xrefresh1);
 		xrefresh2 = (SmartRefreshLayout) findViewById(R.id.xrefresh2);
 		xrefresh2.setOnRefreshListener(new OnRefreshListener() {
 			@Override
@@ -402,7 +401,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		filter_price.setTextColor(Color.parseColor("#222222"));
 		xrefresh.setCustomHeaderView(new HeaderView(this));
 		xrefresh1.setCustomHeaderView(new HeaderView(this));
-//		xrefresh2.setCustomHeaderView(new HeaderView(this));
+////		xrefresh2.setCustomHeaderView(new HeaderView(this));
 		onrefresh(xrefresh);
 		onrefresh(xrefresh1);
 
@@ -492,7 +491,7 @@ public class SearchMainActivity extends ActivityGroup implements
 			// TODO Auto-generated method stub
 		}
 	};
-	
+
 
 	private void showAnimation(View view) {
 		ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0f,
@@ -548,6 +547,7 @@ public class SearchMainActivity extends ActivityGroup implements
 //		startActivity(intent);
 		if (Flag.equals("1")){
 			isclear = true;
+			isloadShaixuan = true;
 			initData();
 		}else {
 			isclear = true;
@@ -683,6 +683,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		String filter = getFilterString();
 		Map<String, String> paramsMap = new HashMap<String, String>();
 //		paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
 		paramsMap.put("keyword", keyword);
@@ -690,7 +691,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		paramsMap.put("brand", brand);
 		paramsMap.put("bprice", bPrice);
 		paramsMap.put("eprice", ePrice);
-		String filter = getFilterString();
 		paramsMap.put("filter", filter);
 		paramsMap.put("sortWay", sortway);
 		paramsMap.put("domains", domains);
@@ -711,7 +711,6 @@ public class SearchMainActivity extends ActivityGroup implements
 
 			@Override
 			public void onRelease(float direction) {
-
 			}
 
 			@Override
@@ -832,6 +831,7 @@ public class SearchMainActivity extends ActivityGroup implements
 //		String search = searchText.getText().toString();
 		switch (v.getId()) {
 			case R.id.ll_bj_layout:
+				isloadShaixuan = false;
 					Flag = "1";
                     type = "1";
 				    loadhotKeyword(type);
@@ -888,38 +888,42 @@ public class SearchMainActivity extends ActivityGroup implements
 				}
 				break;
 			case R.id.ensure:
-				bPrice = begin_price_et.getText().toString();
-				ePrice = end_price_et.getText().toString();
-				if (bPrice.isEmpty()  || ePrice.isEmpty()) {
-					if (bPrice.isEmpty() ) {
-						bPrice = "0";
+				try {
+					isloadShaixuan = true;
+					bPrice = begin_price_et.getText().toString();
+					ePrice = end_price_et.getText().toString();
+					if (bPrice.isEmpty()  || ePrice.isEmpty()) {
+						if (bPrice.isEmpty() ) {
+							bPrice = "0";
+						}
+						if (ePrice.isEmpty()) {
+							ePrice = "10000";
+						}
 					}
-					if (ePrice.isEmpty()) {
-						ePrice = "10000";
-					}
-				}
-				if (Integer.valueOf(bPrice)>Integer.valueOf(ePrice)) {
-					if (toast!= null) {
-						toast.cancel();
-					}
-					toast = Toast.makeText(SearchMainActivity.this, "最低价不能高于最高价", Toast.LENGTH_SHORT);
-					toast.show();
-				}else{
-					if (!isfilter && "".equals(brand) &&"".equals(sort_text.getText().toString())&& !istv1 && !istv2) {
-						filter_img.setImageResource(R.mipmap.shaixuan_01);
-						filter.setTextColor(Color.parseColor("#222222"));
+					if (Integer.valueOf(bPrice)>Integer.valueOf(ePrice)) {
+						if (toast!= null) {
+							toast.cancel();
+						}
+						StringUtil.showToast(SearchMainActivity.this, "最低价不能高于最高价");
 					}else{
-						filter_img.setImageResource(R.mipmap.shaixuan_02);
-						filter.setTextColor(Color.parseColor("#f23030"));
+						if (!isfilter && "".equals(brand) &&"".equals(sort_text.getText().toString())&& !istv1 && !istv2) {
+							filter_img.setImageResource(R.mipmap.shaixuan_01);
+							filter.setTextColor(Color.parseColor("#222222"));
+						}else{
+							filter_img.setImageResource(R.mipmap.shaixuan_02);
+							filter.setTextColor(Color.parseColor("#f23030"));
+						}
+						second.setVisibility(View.GONE);
+						if (view_box!=null) {
+							view_box.removeAllViews();
+						}
+						if (shopbox!=null) {
+							shopbox.removeAllViews();
+						}
+						initData();
 					}
-					second.setVisibility(View.GONE);
-					if (view_box!=null) {
-						view_box.removeAllViews();
-					}
-					if (shopbox!=null) {
-						shopbox.removeAllViews();
-					}
-					initData();
+				}catch (Exception e){
+					e.printStackTrace();
 				}
 				break;
 			case R.id.request:
@@ -969,6 +973,7 @@ public class SearchMainActivity extends ActivityGroup implements
 				second.setVisibility(View.VISIBLE);
 				break;
 			case R.id.mprice:
+				isloadShaixuan = false;
 				filter_price.setTextColor(Color.parseColor("#f23030"));
 				sellrank.setTextColor(Color.parseColor("#222222"));
 				compositerank.setTextColor(Color.parseColor("#222222"));
@@ -986,6 +991,7 @@ public class SearchMainActivity extends ActivityGroup implements
 				initData();
 				break;
 			case R.id.mnumber:
+				isloadShaixuan = false;
 				mtop_czg.setImageResource(R.mipmap.gaodi_01);
 				sellrank.setTextColor(Color.parseColor("#f23030"));
 				compositerank.setTextColor(Color.parseColor("#222222"));
@@ -996,6 +1002,7 @@ public class SearchMainActivity extends ActivityGroup implements
 				initData();
 				break;
 			case R.id.mComposite:
+				isloadShaixuan = false;
 				mtop_czg.setImageResource(R.mipmap.gaodi_01);
 				compositerank.setTextColor(Color.parseColor("#f23030"));
 				sellrank.setTextColor(Color.parseColor("#222222"));
@@ -1264,9 +1271,15 @@ public class SearchMainActivity extends ActivityGroup implements
 						}else{
 							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
 						}
-						intent.putExtra("title", itemList.get(position).get("title").toString());
-						intent.putExtra("domain", itemList.get(position).get("domain1").toString());
-						intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						if (itemList.get(position).get("title") != null) {
+							intent.putExtra("title", itemList.get(position).get("title").toString());
+						}
+						if (itemList.get(position).get("domain1") != null) {
+							intent.putExtra("domain", itemList.get(position).get("domain1").toString());
+						}
+						if (itemList.get(position).get("groupRowKey") != null){
+							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						}
 					}else{
 						intent = new Intent(SearchMainActivity.this,WebViewActivity.class);
 						if ("0".equals(itemList.get(position).get("androidurl"))) {
@@ -1274,7 +1287,9 @@ public class SearchMainActivity extends ActivityGroup implements
 						}else{
 							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
 						}
-						intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						if (itemList.get(position).get("groupRowKey") != null){
+							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						}
 					}
 					startActivity(intent);
 
@@ -1294,9 +1309,15 @@ public class SearchMainActivity extends ActivityGroup implements
 						}else{
 							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
 						}
-						intent.putExtra("title", itemList.get(position).get("title").toString());
-						intent.putExtra("domain", itemList.get(position).get("domain1").toString());
-						intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						if (itemList.get(position).get("title") != null) {
+							intent.putExtra("title", itemList.get(position).get("title").toString());
+						}
+						if (itemList.get(position).get("domain1") != null) {
+							intent.putExtra("domain", itemList.get(position).get("domain1").toString());
+						}
+						if (itemList.get(position).get("groupRowKey") != null) {
+							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						}
 					}else{
 						intent = new Intent(SearchMainActivity.this,WebViewActivity.class);
 						if ("0".equals(itemList.get(position).get("androidurl"))) {
@@ -1304,7 +1325,9 @@ public class SearchMainActivity extends ActivityGroup implements
 						}else{
 							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
 						}
-						intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						if (itemList.get(position).get("groupRowKey") != null) {
+							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
+						}
 					}
 					startActivity(intent);
 				}
@@ -2003,7 +2026,7 @@ public class SearchMainActivity extends ActivityGroup implements
 						String price = arr.optJSONObject(i).optString("price");
 						itemMap.put("price", price);
 						itemMap.put("hnumber", arr.optJSONObject(i).optString("comnum"));
-						itemMap.put("url",  arr.optJSONObject(i).optString("url"));
+						itemMap.put("androidurl",  arr.optJSONObject(i).optString("url"));
 						itemMap.put("domain1",  "tmall");
 						itemMap.put("isxianshi", "0");
 						itemList.add(itemMap);
@@ -2023,6 +2046,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		try {
 			switch (requestCode) {
 				case 1:
+					Log.i("content",content);
 					requestnum = 0;
 					removenum = 0;
 					xrefresh.setAutoLoadMore(true);
@@ -2033,7 +2057,6 @@ public class SearchMainActivity extends ActivityGroup implements
 					topbar_search_input.setText(keyword);
 					xrefresh.stopRefresh();
 					xrefresh1.stopRefresh();
-					Log.i("----",content);
 					JSONObject jo11 = new JSONObject(content);
 					String tmallSearchUrl = jo11.optString("tmallSearchUrl");
 					if (!jo11.optString("sortAddtion").isEmpty()) {
@@ -2050,7 +2073,6 @@ public class SearchMainActivity extends ActivityGroup implements
 
 								break;
 							case "2":
-
 								String tj = jo11.optString("tuijian");
 								if (!TextUtils.isEmpty(tj)) {
 									String[] tjs = tj.split(",");
@@ -2064,7 +2086,6 @@ public class SearchMainActivity extends ActivityGroup implements
 								}
 								break;
 							case "3":
-
 								keyword = jo11.optString("blandkey");
 								correctTv.setText("没有找到相关的商品， 推荐“" + keyword + "”的搜索结果,试试");
 								tuijianText.setText(keyword);
@@ -2097,10 +2118,12 @@ public class SearchMainActivity extends ActivityGroup implements
 					if (!tmp1.isEmpty()) {
 						initListViewData(info);
 						isrequest = true;
+						if (isloadShaixuan == true) {
 							mshaixuanbox.setVisibility(View.VISIBLE);
 							loadFilterBrand(info);
 							loadFilterCheckView(info);
 							loadThirdSort(info);
+						}
 						if (thread == null) {
 							NowPrice();
 						}
@@ -2114,7 +2137,7 @@ public class SearchMainActivity extends ActivityGroup implements
 							canLoadMore = false;
 							xrefresh.setLoadComplete(true);
 							xrefresh1.setLoadComplete(true);
-							inittmallmore(tmallSearchUrl);
+							inittmallmore(tmallSearchUrl);//当数据小于12条时加载天猫数据
 						} else {
 							canLoadMore = true;
 							xrefresh.setLoadComplete(false);
@@ -2124,7 +2147,6 @@ public class SearchMainActivity extends ActivityGroup implements
 						tipsLayout.setVisibility(View.VISIBLE);
 						tipsKeys.setText("当前筛选条件下无搜索结果");
 					}
-					Log.i("========",gridtype);
 					if (gridtype.equals("1")){
 						//显示块状
 						xrefresh.setVisibility(View.GONE);
@@ -2211,8 +2233,6 @@ public class SearchMainActivity extends ActivityGroup implements
 					listAdapter.notifyDataSetChanged();
 					gridviewadapter.notifyDataSetChanged();
 					isrequest = true;
-//				scrollView_home.smoothScrollTo(0, scrollY+40);
-
 					break;
 				case 4:
 					data.clear();
@@ -2228,7 +2248,6 @@ public class SearchMainActivity extends ActivityGroup implements
 					}
 					JSONObject jo = new JSONObject(content);
 					String isBlandCzg = jo.optString("isBland");
-					Log.i("=========",jo+"=====");
 					//  isBland为1 表示有数据 isBland为-1表示无数据
 					if (isBlandCzg.equals("1")){
 						NewConstants.Flag = "2";
@@ -2236,7 +2255,6 @@ public class SearchMainActivity extends ActivityGroup implements
 						JSONObject info = jo.getJSONObject("info");
 						String tmpCzg = info.optString("page");
 						JSONArray arrczg = new JSONArray(tmpCzg);
-//						removeView(SEARCH_MAIN_RECOMMEND, SearchRecommendCzgActivity.class);
 						xrefresh2.setVisibility(View.VISIBLE);
 						mshaixuanCzg.setVisibility(View.VISIBLE);
 						mshaixuanbox.setVisibility(View.GONE);
@@ -2247,9 +2265,7 @@ public class SearchMainActivity extends ActivityGroup implements
 						addCzgList(arrczg);
 						if (x == 1) {
 							mList = list;
-//							Log.i("list=======",mList+"==");
 							handler1.sendEmptyMessageDelayed(1, 0);
-//                        isrequest = true;
 						} else if (x == 2) {
 								mAddList = list;
 								handler1.sendEmptyMessageDelayed(2, 0);
@@ -2259,10 +2275,6 @@ public class SearchMainActivity extends ActivityGroup implements
 						xrefresh2.finishRefresh();
 						StringUtil.showToast(SearchMainActivity.this,"没有更多了");
 				    }else {
-//						if (!isbland.equals("isBland") && isBlandCzg.equals("-1")){
-//							mshaixuanCzg.setVisibility(View.VISIBLE);
-//							mshaixuanbox.setVisibility(View.GONE);
-//						}else {
 						    NewConstants.Flag = "1";
 							xrefresh2.finishLoadmore();
 							xrefresh2.finishRefresh();
@@ -2274,16 +2286,11 @@ public class SearchMainActivity extends ActivityGroup implements
 							mshaixuanbox.setVisibility(View.GONE);
 						    tipsLayout.setVisibility(View.VISIBLE);
 							tipsKeys.setText("当前筛选条件下无搜索结果");
-//							StringUtil.showToast(SearchMainActivity.this,"没有更多了");
-//						}
 					}
 					break;
 				case 6:
-//					Log.i("====",content);
 					if (content!= null && !"".equals(content)) {
 						try {
-//							JSONObject jo = new JSONObject(hKeyword);
-//							hKeyword = jo.getString("content");
 							if (type.equals("1")){
 								SharedPreferencesUtil.putSharedData(
 										getApplicationContext(), "hotKeyword",
@@ -2457,6 +2464,9 @@ public class SearchMainActivity extends ActivityGroup implements
 	}
 
 
+	/***
+	 * 广播接收keyword
+	 */
 	public void registerBoradcastReceiver() {
 		IntentFilter myIntentFilter = new IntentFilter();
 		IntentFilter myIntentFilterCzg = new IntentFilter();
