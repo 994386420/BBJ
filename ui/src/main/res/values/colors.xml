@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="transparent">#00000000</color>
 
 
     <color name="background">#F9F7F8</color>
     <color name="background_gray1">#EBEBEB</color>
-    <color name="background_gray2">#E6E6E6</color>
     <color name="background_gray3">#D4D4D4</color>
     <color name="background_gray4">#EFEFF4</color>
     <color name="line">#DDDDDD</color>
@@ -16,7 +13,6 @@
     <color name="text_gray1">#777777</color>
     <color name="text_gray2">#767676</color>
     <color name="text_blue1">#1173CB</color>
-    <color name="text_blue2">#1173CA</color>
     <color name="panel_black">#25272A</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

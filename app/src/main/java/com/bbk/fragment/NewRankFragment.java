@@ -73,21 +73,15 @@ import java.util.Map;
  *
  * 新版发现页面
  */
-public class NewRankFragment extends BaseViewPagerFragment implements ResultEvent {
+public class NewRankFragment extends BaseViewPagerFragment {
 	private View rank_head, mView;
 	private DataFlow dataFlow;
 	private ListView mlistView;
 	private LinearLayout mbox;
-	private int currentIndex = 1,x= 1;
-	private List<Map<String, String>> titlelist;
-	private List<Map<String, String>> datalist;
+	private int x= 1;
 	private FindListAdapter listadapter;
-	private boolean isclear = false;
-	private String wztitle = "";
 	private SmartRefreshLayout xrefresh;
 	private int topicpage = 1;
-	private int typepage = 1;
-	private boolean isloadmore = false;
 	private List<NewFxBean> fxBeans;
 
 
@@ -105,7 +99,6 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 	@Nullable
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		// return super.onCreateView(inflater, container, savedInstanceState);
 		if (null == mView) {
 			mView = inflater.inflate(R.layout.fragment_rank, null);
 			rank_head = mView.findViewById(R.id.rank_head);
@@ -143,12 +136,6 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 									}
 								}
 							}
-							mlistView.setOnItemClickListener(new OnItemClickListener() {
-								@Override
-								public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-									insertWenzhangGuanzhu(i);
-								}
-							});
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -171,31 +158,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 				});
 	}
 
-	private void insertWenzhangGuanzhu(int position) {
-		wztitle  = datalist.get(position).get("title");
-		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-		String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "token");
-		if (!TextUtils.isEmpty(userID)) {
-			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("userid", userID);
-			params.put("wzid", datalist.get(position).get("id"));
-			params.put("token", token);
-			params.put("type", "2");
-			dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
-		} else {
-			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("userid", "-1");
-			params.put("token", token);
-			params.put("wzid", datalist.get(position).get("id"));
-			params.put("type", "2");
-			dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
-		}
-
-	}
-
 	private void initView() {
-		titlelist = new ArrayList<>();
-		datalist = new ArrayList<>();
 		xrefresh =  mView.findViewById(R.id.xrefresh);
 		refreshAndloda();
 		mlistView =  mView.findViewById(R.id.mlistview);
@@ -271,17 +234,4 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 	}
 
 
-	@Override
-	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		switch (requestCode) {
-		case 4:
-			Intent intent = new Intent(getActivity(), WebViewWZActivity.class);
-			intent.putExtra("url", content);
-			intent.putExtra("title", wztitle);
-			startActivity(intent);
-			break;
-		default:
-			break;
-		}
-	}
 }

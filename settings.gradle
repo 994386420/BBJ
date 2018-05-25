@@ -1,1 +1,1 @@
-include ':app', ':hellocharts-library', ':sdk', ':presentation', ':ui', ':tlslibrary', ':library', ':cptr'
+include ':app',  ':sdk', ':presentation', ':ui', ':tlslibrary'
