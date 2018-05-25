@@ -7,7 +7,7 @@ import com.bbk.activity.R;
 import com.bbk.activity.SortActivity;
 import com.bbk.adapter.DomainMoreListAdapter.setMyOnClickListener;
 import com.bbk.adapter.MesageCListSendAdapter.ViewHolder;
-import com.bbk.fragment.RankFragment;
+
 import com.bumptech.glide.Glide;
 
 import android.content.Context;

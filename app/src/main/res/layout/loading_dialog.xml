@@ -16,7 +16,9 @@
         android:id="@+id/dialog_img"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:z_color="@color/white" />
+        app:z_color="@color/white"
+        app:z_type="DoubleCircleBuilder"
+        app:z_duration_percent="0.5"/>
 
     <TextView
         android:id="@+id/tips_tv"

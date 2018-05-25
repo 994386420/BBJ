@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,21 +29,35 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XRefreshView.XRefreshViewListener;
+import com.bbk.Bean.BiaoLiaoBean;
+import com.bbk.Bean.NewFxBean;
+import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewWZActivity;
 import com.bbk.adapter.FindListAdapter;
+import com.bbk.adapter.GossipPiazzaAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.util.SystemBarTintManager;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bumptech.glide.Glide;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,16 +78,17 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 	private DataFlow dataFlow;
 	private ListView mlistView;
 	private LinearLayout mbox;
-	private int currentIndex = 1;
+	private int currentIndex = 1,x= 1;
 	private List<Map<String, String>> titlelist;
 	private List<Map<String, String>> datalist;
 	private FindListAdapter listadapter;
 	private boolean isclear = false;
 	private String wztitle = "";
-	private XRefreshView xrefresh;
+	private SmartRefreshLayout xrefresh;
 	private int topicpage = 1;
 	private int typepage = 1;
 	private boolean isloadmore = false;
+	private List<NewFxBean> fxBeans;
 
 
 	@Override
@@ -103,17 +119,56 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 		return mView;
 	}
 	private void initData(boolean is) {
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("page", topicpage+"");
-		params.put("type", "比比鲸原创");
-		dataFlow.requestData(1, "newService/queryArticleByType", params, this,is);
-	}
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("page", topicpage+"");
+		maps.put("type", "比比鲸原创");
+		RetrofitClient.getInstance(getActivity()).createBaseApi().queryArticleByType(
+				maps, new BaseObserver<String>(getActivity()) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								xrefresh.finishLoadMore();
+								xrefresh.finishRefresh();
+								fxBeans = JSON.parseArray(jsonObject.optString("content"), NewFxBean.class);
+								if (x == 1) {
+									listadapter = new FindListAdapter(fxBeans, getActivity());
+									mlistView.setAdapter(listadapter);
+								} else if (x == 2) {
+									if (jsonObject.optString("content") != null && !jsonObject.optString("content").toString().equals("[]")) {
+										listadapter.notifyData(fxBeans);
+									} else {
+										StringUtil.showToast(getActivity(), "没有更多了");
+									}
+								}
+							}
+							mlistView.setOnItemClickListener(new OnItemClickListener() {
+								@Override
+								public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+									insertWenzhangGuanzhu(i);
+								}
+							});
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
+					}
 
-	private void loadData() {
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("type", "比比鲸原创");
-		params.put("page", typepage+"");
-		dataFlow.requestData(2, "newService/queryArticleByType", params, this);
+					@Override
+					protected void showDialog() {
+						DialogSingleUtil.show(getActivity());
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						Log.e("Exception", e.getMessage());
+						StringUtil.showToast(getActivity(), "网络异常");
+					}
+				});
 	}
 
 	private void insertWenzhangGuanzhu(int position) {
@@ -142,82 +197,28 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 		titlelist = new ArrayList<>();
 		datalist = new ArrayList<>();
 		xrefresh =  mView.findViewById(R.id.xrefresh);
-		xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
 		refreshAndloda();
 		mlistView =  mView.findViewById(R.id.mlistview);
-		mlistView.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView arg0, int scrollState) {
-				switch (scrollState) {
-				case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-				case OnScrollListener.SCROLL_STATE_FLING:
-					// 当ListView处于滑动状态时，停止加载图片，保证操作界面流畅
-					Glide.with(getActivity()).pauseRequests();
-					break;
-				case OnScrollListener.SCROLL_STATE_IDLE:
-					// 当ListView处于静止状态时，继续加载图片
-					Glide.with(getActivity()).resumeRequests();
-					break;
-				}
-			}
-			
-			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		mbox = mView.findViewById(R.id.mbox);
 
 	}
 	private void refreshAndloda() {
-		xrefresh.setXRefreshViewListener(new XRefreshViewListener() {
-			
+		xrefresh.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRelease(float direction) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onRefresh(boolean isPullDown) {
-				if (currentIndex == 1) {
-					isclear = true;
+			public void onRefresh(final RefreshLayout refreshlayout) {
 					topicpage = 1;
+					x = 1;
 					initData(true);
-				}else if(currentIndex > 1){
-					isclear = true;
-					typepage = 1;
-					loadData();
-				}
-			}
-			
-			@Override
-			public void onRefresh() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onLoadMore(boolean isSilence) {
-				if (currentIndex == 1) {
-					topicpage++;
-					initData(true);
-				}else if(currentIndex > 1){
-					typepage++;
-					loadData();
-				}
-			}
-			
-			@Override
-			public void onHeaderMove(double headerMovePercent, int offsetY) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
-		MyFootView footView = new MyFootView(getActivity());
-		xrefresh.setCustomFooterView(footView);
+		xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+			@Override
+			public void onLoadMore(RefreshLayout refreshlayout) {
+				topicpage++;
+				x = 2;
+				initData(true);
+			}
+		});
 	}
 
 
@@ -261,7 +262,6 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 		LayoutParams layoutParams = rank_head.getLayoutParams();
 		layoutParams.height = result;
 		rank_head.setLayoutParams(layoutParams);
-
 	}
 
 
@@ -271,108 +271,9 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 	}
 
 
-	private void loadListData(JSONArray moren) throws JSONException {
-		if (moren.length()<10) {
-			isloadmore = false;
-			xrefresh.setPullLoadEnable(false);
-		}else{
-			isloadmore = true;
-			xrefresh.setPullLoadEnable(true);
-		}
-		for (int i = 0; i < moren.length(); i++) {
-			JSONObject object = moren.getJSONObject(i);
-			Map<String, String> map = new HashMap<>();
-			map.put("author", object.optString("author"));
-			map.put("title", object.optString("title"));
-			map.put("img", object.optString("img"));
-			map.put("zan", object.optString("zan"));
-			map.put("count", object.optString("count"));
-			map.put("htmlid", object.optString("htmlid"));
-			map.put("id", object.optString("id"));
-			map.put("type", object.optString("type"));
-			datalist.add(map);
-		}
-		if (listadapter != null) {
-			listadapter.notifyDataSetChanged();
-		} else {
-			listadapter = new FindListAdapter(datalist, getActivity());
-			mlistView.setAdapter(listadapter);
-			mlistView.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-					insertWenzhangGuanzhu(arg2);
-
-				}
-			});
-		}
-		isclear =false;
-	}
-
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		xrefresh.stopLoadMore();
-		xrefresh.stopRefresh();
 		switch (requestCode) {
-		case 1:
-			try {
-					if (mbox != null) {
-						mbox.removeAllViews();
-					}
-					if (isclear) {
-						datalist.clear();
-					}
-					JSONArray jsonArray = new JSONArray(content);
-					loadListData(jsonArray);
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-		case 2:
-			if (isclear) {
-				datalist.clear();
-			}
-			JSONArray jsonArray;
-			try {
-				jsonArray = new JSONArray(content);
-				loadListData(jsonArray);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			break;
-		case 3:
-			try {
-				if (isclear) {
-					datalist.clear();
-				}
-				mbox.getChildAt(0).setVisibility(View.VISIBLE);
-				
-				titlelist.get(currentIndex).put("isselect", "0");
-				titlelist.get(0).put("isselect", "1");
-				View view = mbox.getChildAt(0);
-				TextView title1 = (TextView) view.findViewById(R.id.item_title);
-				View henggang1 = view.findViewById(R.id.bottom_view);
-				title1.setTextColor(Color.parseColor("#ff7d41"));
-				henggang1.setBackgroundColor(Color.parseColor("#ff7d41"));
-
-				View view4 = mbox.getChildAt(currentIndex);
-				TextView title3 = (TextView) view4.findViewById(R.id.item_title);
-				View henggang3 = view4.findViewById(R.id.bottom_view);
-				title3.setTextColor(Color.parseColor("#666666"));
-				henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
-				// mhscrollview.scrollTo(view.getLeft() - 200, 0);
-				currentIndex = 0;
-				JSONArray jsonObject1 = new JSONArray(content);
-				loadListData(jsonObject1);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
 		case 4:
 			Intent intent = new Intent(getActivity(), WebViewWZActivity.class);
 			intent.putExtra("url", content);
@@ -383,6 +284,4 @@ public class NewRankFragment extends BaseViewPagerFragment implements ResultEven
 			break;
 		}
 	}
-
-
 }

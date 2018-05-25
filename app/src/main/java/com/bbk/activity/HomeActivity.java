@@ -49,7 +49,6 @@ import com.bbk.fragment.HomeFragment2;
 import com.bbk.fragment.HomeMessageFragment;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.NewRankFragment;
-import com.bbk.fragment.RankFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
 import com.bbk.update.UpdateChecker;
@@ -267,7 +266,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 //		HomeFragment2 homeFragment = new HomeFragment2();
 		NewRankFragment rankFragment = new NewRankFragment();
 //		DataFragment dataFragment = new DataFragment();
-//		RankFragment rankFragment = new RankFragment();
 		HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
 		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();
 		UserFragment userFragment = new UserFragment();

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.bbk.activity.R;
 import com.bbk.activity.RankCategoryActivity;
-import com.bbk.fragment.RankFragment;
 
 import android.content.Context;
 import android.graphics.Color;

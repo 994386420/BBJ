@@ -10,13 +10,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
+import com.bbk.Bean.BiaoLiaoBean;
+import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.MyGossipActivity;
@@ -25,15 +29,25 @@ import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewWZActivity;
 import com.bbk.adapter.GossipPiazzaAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.BaseViewPagerFragment;
 import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
+import com.google.gson.Gson;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,18 +63,19 @@ import java.util.Map;
  * Created by rtj on 2017/11/23.
  * 爆料
  */
-public class GossipPiazzaFragment extends BaseViewPagerFragment implements ResultEvent {
+public class GossipPiazzaFragment extends BaseViewPagerFragment{
     private DataFlow dataFlow;
-    private XRefreshView mrefresh;
+    private SmartRefreshLayout mrefresh;
     private RecyclerView mrecyclerview;
     private GossipPiazzaAdapter adapter;
     private List<Map<String, String>> list;
-    private int page = 1;
+    private int page = 1,x = 1;
     private boolean isclear = false;
     private View mView;
     private View data_head;
     private FloatingActionButton float_btn;
     private TextView mchongshi;
+    private List<BiaoLiaoBean> biaoLiaoBeans;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -84,22 +99,53 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
         }
         return mView;
     }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_gossip_piazza);
-//        dataFlow = new DataFlow(this);
-//        initView();
-//        initData();
-//    }
 
-    private void initData(boolean is) {
+    private void initData() {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("userid", userID);
-        paramsMap.put("page", page + "");
-        dataFlow.requestData(1, "newService/queryBaoliaoMessage", paramsMap, this, is);
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userID);
+        maps.put("page", page + "");
+        RetrofitClient.getInstance(getActivity()).createBaseApi().queryBaoliaoMessage(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                mrefresh.finishLoadMore();
+                                mrefresh.finishRefresh();
+                                biaoLiaoBeans = JSON.parseArray(jsonObject.optString("content"),BiaoLiaoBean.class);
+                                if (x == 1) {
+                                    adapter = new GossipPiazzaAdapter(getActivity(), biaoLiaoBeans);
+                                    mrecyclerview.setAdapter(adapter);
+                                }else if (x == 2) {
+                                    if (jsonObject.optString("content") != null && !jsonObject.optString("content").toString().equals("[]")){
+                                        adapter.notifyData(biaoLiaoBeans);
+                                    }else {
+                                        StringUtil.showToast(getActivity(),"没有更多了");
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(getActivity());
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        Log.e("Exception", e.getMessage());
+                        StringUtil.showToast(getActivity(), "网络异常");
+                    }
+                });
     }
 
     private void initView() {
@@ -108,17 +154,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
         mrecyclerview =  mView.findViewById(R.id.mrecyclerview);
         float_btn = mView.findViewById(R.id.float_btn);
         mrecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-        adapter = new GossipPiazzaAdapter(getActivity(), list);
-        mrecyclerview.setAdapter(adapter);
-        adapter.setOnItemClickListener(new GossipPiazzaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), GossipPiazzaDetailActivity.class);
-                intent.putExtra("blid",list.get(position).get("blid"));
-                startActivity(intent);
-            }
-        });
-        mrefresh.setCustomHeaderView(new HeaderView(getActivity()));
         refreshAndloda();
         float_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,42 +171,22 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
         });
     }
     private void refreshAndloda() {
-        mrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
-
+        mrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRelease(float direction) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onRefresh(boolean isPullDown) {
-                isclear = true;
+            public void onRefresh(final RefreshLayout refreshlayout) {
                 page = 1;
-                initData(true);
-
-            }
-
-            @Override
-            public void onRefresh() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                page++;
-                initData(true);
-            }
-
-            @Override
-            public void onHeaderMove(double headerMovePercent, int offsetY) {
-                // TODO Auto-generated method stub
-
+                x = 1;
+                initData();
             }
         });
-        MyFootView footView = new MyFootView(getActivity());
-        mrefresh.setCustomFooterView(footView);
+        mrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                page++;
+                x = 2;
+                initData();
+            }
+        });
     }
 
     private int getStatusBarHeight() {
@@ -215,49 +230,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
         ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(getActivity().getWindow(),true);
     }
 
-    @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        mrefresh.stopLoadMore();
-        mrefresh.stopRefresh();
-        try {
-                if (isclear) {
-                    list.clear();
-                }
-                JSONArray array = new JSONArray(content);
-                if (array.length() < 10) {
-                    mrefresh.setPullLoadEnable(false);
-                } else {
-                    mrefresh.setPullLoadEnable(true);
-                }
-                for (int i = 0; i < array.length(); i++) {
-                    Map<String, String> map = new HashMap<>();
-                    JSONObject Object = array.getJSONObject(i);
-                    map.put("content", Object.optString("content"));
-                    map.put("imgs", Object.optString("imgs"));
-                    map.put("username", Object.optString("username"));
-                    map.put("title", Object.optString("title"));
-                    map.put("headimg", Object.optString("headimg"));
-                    map.put("dtime", Object.optString("dtime"));
-                    map.put("isZan", Object.optString("isZan"));
-                    map.put("zannum", Object.optString("zannum"));
-                    map.put("readnum", Object.optString("readnum"));
-                    map.put("url", Object.optString("url"));
-                    map.put("plnum", Object.optString("plnum"));
-                    map.put("blid", Object.optString("blid"));
-                    if (Object.has("video")){
-                        map.put("video", Object.optString("video"));
-                    }else {
-                        map.put("video", Object.optString("0"));
-                    }
-                    list.add(map);
-                }
-                adapter.notifyDataSetChanged();
-                isclear = false;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -266,6 +238,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Resul
 
     @Override
     protected void loadLazyData() {
-        initData(true);
+        initData();
     }
 }

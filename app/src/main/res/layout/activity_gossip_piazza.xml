@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.andview.refreshview.XRefreshView
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/mrefresh"
             android:layout_width="match_parent"
             android:background="#fff"
@@ -43,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 android:background="#fff" />
-        </com.andview.refreshview.XRefreshView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/float_btn"
             android:layout_width="50dp"

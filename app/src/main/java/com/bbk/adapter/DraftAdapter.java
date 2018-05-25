@@ -14,7 +14,6 @@ import com.bbk.activity.MyDraftActivity;
 import com.bbk.activity.MyGossipActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.SortActivity;
-import com.bbk.fragment.RankFragment;
 import com.bbk.view.ExpandableTextView;
 import com.bbk.view.MyGridView;
 import com.bumptech.glide.Glide;

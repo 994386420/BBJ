@@ -13,14 +13,21 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.bbk.Bean.BiaoLiaoBean;
+import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.activity.DesPictureActivity;
+import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.UserLoginNewActivity;
+import com.bbk.activity.WebViewActivity;
+import com.bbk.chat.model.Conversation;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
@@ -50,15 +57,15 @@ import java.util.Map;
  */
 public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultEvent,View.OnClickListener{
     private Context context;
-    private List<Map<String,String>> list;
+    private List<BiaoLiaoBean> biaoLiaoBeans;
     private ImageView zanimg11 = null;
     private TextView mzantext11 = null;
     private int positionnum;
     private OnItemClickListener mOnItemClickListener = null;
 
-    public GossipPiazzaAdapter(Context context, List<Map<String,String>> list){
+    public GossipPiazzaAdapter(Context context, List<BiaoLiaoBean> biaoLiaoBeans){
         this.context = context;
-        this.list = list;
+        this.biaoLiaoBeans = biaoLiaoBeans;
     }
 
 
@@ -76,7 +83,12 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
     public static interface OnItemClickListener {
         void onItemClick(View view , int position);
     }
-
+    public void notifyData(List<BiaoLiaoBean> biaoLiaoBeans){
+        if (biaoLiaoBeans != null){
+            this.biaoLiaoBeans.addAll(biaoLiaoBeans);
+            notifyDataSetChanged();
+        }
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.gossippiazza_child, parent, false);
@@ -87,37 +99,44 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         try {
             final int position22 = position;
             final MyViewHolder viewHolder = (MyViewHolder) holder;
             //将position保存在itemView的Tag中，以便点击时进行获取
             viewHolder.itemView.setTag(position);
-            Map<String, String> map = list.get(position);
-            viewHolder.mcontent.setContent(map.get("content"),map.get("url"));
-            viewHolder.mname.setText(map.get("username"));
-            viewHolder.mtime.setText(map.get("dtime"));
-            viewHolder.mreadnum.setText(map.get("readnum")+"阅读");
-            if (!"0".equals(map.get("zannum"))){
-                viewHolder.mzantext.setText(map.get("zannum"));
+            viewHolder.mcontent.setContent(biaoLiaoBeans.get(position).getContent(),biaoLiaoBeans.get(position).getUrl());
+            viewHolder.mname.setText(biaoLiaoBeans.get(position).getUsername());
+            viewHolder.mtime.setText(biaoLiaoBeans.get(position).getDtime());
+            viewHolder.mreadnum.setText(biaoLiaoBeans.get(position).getReadnum()+"阅读");
+            viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, GossipPiazzaDetailActivity.class);
+                    intent.putExtra("blid",biaoLiaoBeans.get(position).getBlid());
+                    context.startActivity(intent);
+                }
+            });
+            if (!"0".equals(biaoLiaoBeans.get(position).getZannum())){
+                viewHolder.mzantext.setText(biaoLiaoBeans.get(position).getZannum());
             }else {
                 viewHolder.mzantext.setText("赞");
             }
-            if (!"0".equals(map.get("plnum"))){
-                viewHolder.mpingluntext.setText(map.get("plnum"));
+            if (!"0".equals(biaoLiaoBeans.get(position).getPlnum())){
+                viewHolder.mpingluntext.setText(biaoLiaoBeans.get(position).getPlnum());
             }else {
                 viewHolder.mpingluntext.setText("评论");
             }
-            final String iszan = map.get("isZan");
-            final String content = map.get("content");
+            final String iszan = biaoLiaoBeans.get(position).getIsZan();
+            final String content = biaoLiaoBeans.get(position).getContent();
             if (!"0".equals(iszan)){
                 viewHolder.mzanimg.setImageResource(R.mipmap.bl_zan2);
             }else {
                 viewHolder.mzanimg.setImageResource(R.mipmap.bl_zan);
             }
-            final String blid = map.get("blid");
-            final String title = map.get("title");
-            final String content1 = map.get("content");
+            final String blid =biaoLiaoBeans.get(position).getBlid();
+            final String title = biaoLiaoBeans.get(position).getTitle();
+            final String content1 = biaoLiaoBeans.get(position).getContent();
             viewHolder.mzan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -151,14 +170,14 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
                     ShareUtil.showShareDialog(v,(Activity) context,"专业的网购比价、导购平台",title,url,"");
                 }
             });
-            CircleImageView1.getImg(context,map.get("headimg"),viewHolder.mimg);
+            CircleImageView1.getImg(context,biaoLiaoBeans.get(position).getHeadimg(),viewHolder.mimg);
 //            Glide.with(context).load(map.get("headimg")).into(new SimpleTarget<GlideDrawable>() {
 //                @Override
 //                public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
 //                    viewHolder.mimg.setImageDrawable(glideDrawable);
 //                }
 //            });
-            String imgs = map.get("imgs");
+            String imgs = biaoLiaoBeans.get(position).getImgs();
             JSONArray array = new JSONArray(imgs);
             if (array.length()!= 0){
                 final List<String> imglist = new ArrayList<>();
@@ -167,7 +186,7 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
                     imglist.add(images);
                 }
                 List<String> videoimg = new ArrayList<String>();
-                videoimg.add(map.get("video"));
+                videoimg.add(biaoLiaoBeans.get(position).getVideo());
                 recyGrid(viewHolder,imglist,videoimg);
                 viewHolder.mrecy.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -188,7 +207,7 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return biaoLiaoBeans.size();
     }
 
     private void recyGrid(MyViewHolder viewHolder, List<String> imglist, List<String> videoimg){
@@ -219,10 +238,12 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
         if (zanimg11!= null){
             if ("1".equals(dataJo.optString("status"))){
                 zanimg11.setImageResource(R.mipmap.bl_zan2);
-                list.get(positionnum).put("isZan","1");
-                String zannum = list.get(positionnum).get("zannum");
+//                list.get(positionnum).put("isZan","1");
+                String zannum = biaoLiaoBeans.get(positionnum).getZannum();
                 Integer i = Integer.valueOf(zannum);
-                list.get(positionnum).put("zannum",(i+1)+"");
+                biaoLiaoBeans.get(positionnum).setIsZan("1");
+                biaoLiaoBeans.get(positionnum).setZannum((i+1)+"");
+//                list.get(positionnum).put("zannum",(i+1)+"");
 //                mzantext11.setText((i+1)+"");
                 notifyDataSetChanged();
             }else {
@@ -238,6 +259,7 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
         ImageView mzanimg,mimg;
         TextView mname,mtime,mreadnum,mzantext,mpingluntext,mzhuanfatext;
         RelativeLayout mpinglun,mzan,mzhuanfa;
+        LinearLayout itemlayout;
         public MyViewHolder(View view) {
             super(view);
             mrecy = (MyGridView) view.findViewById(R.id.mrecy);
@@ -253,6 +275,7 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
             mpinglun = (RelativeLayout) view.findViewById(R.id.mpinglun);
             mzan = (RelativeLayout) view.findViewById(R.id.mzan);
             mzhuanfa = (RelativeLayout) view.findViewById(R.id.mzhuanfa);
+            itemlayout = view.findViewById(R.id.result_item);
         }
     }
 

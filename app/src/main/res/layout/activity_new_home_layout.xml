@@ -56,15 +56,43 @@
             android:layout_marginRight="15dp"
             android:visibility="gone" />
     </RelativeLayout>
-    <com.zyao89.view.zloading.ZLoadingView
+
+
+    <LinearLayout
         android:id="@+id/progress"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_progress_dialog"
+        android:orientation="vertical"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:gravity="center_horizontal"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
-        app:z_color="@color/color_line_text"
-        android:layout_marginRight="5dp"/>
+        android:visibility="gone"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <com.zyao89.view.zloading.ZLoadingView
+            android:id="@+id/dialog_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:z_color="@color/white"
+            app:z_type="DoubleCircleBuilder"
+            app:z_duration_percent="0.5"/>
+
+        <TextView
+            android:id="@+id/tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="加载中..."
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/to_top_btn"
         android:layout_width="35dp"

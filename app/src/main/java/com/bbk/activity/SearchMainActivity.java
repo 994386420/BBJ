@@ -121,7 +121,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 public class SearchMainActivity extends ActivityGroup implements
-		OnClickListener, OnKeyListener,ResultEvent ,PopupWindow.OnDismissListener{
+		OnClickListener, OnKeyListener,ResultEvent ,OnDismissListener{
 	private FrameLayout mContent;
 	private Context context;
 	private EditText searchText;
@@ -2520,7 +2520,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		TextView copy_title,copy_url;
 		copy_title = view.findViewById(R.id.copy_title);
 		copy_url = view.findViewById(R.id.copy_url);
-		copy_title.setOnClickListener(new View.OnClickListener() {
+		copy_title.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				ClipboardManager cm = (ClipboardManager)getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -2529,7 +2529,7 @@ public class SearchMainActivity extends ActivityGroup implements
 				popupWindow.dismiss();
 			}
 		});
-		copy_url.setOnClickListener(new View.OnClickListener() {
+		copy_url.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				ClipboardManager cm = (ClipboardManager)getApplication().getSystemService(Context.CLIPBOARD_SERVICE);

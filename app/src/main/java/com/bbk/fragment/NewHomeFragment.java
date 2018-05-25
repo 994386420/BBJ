@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.alibaba.fastjson.JSON;
@@ -44,6 +45,9 @@ import com.bbk.adapter.NewBlAdapter;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.NewFxAdapter;
 import com.bbk.adapter.NewHomeAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
@@ -58,6 +62,7 @@ import com.bbk.util.StringUtil;
 import com.bbk.view.MyNewScrollView;
 import com.bbk.view.RefreshableView;
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.OnLoadmoreListener;
@@ -138,12 +143,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private int data;// 支付结果标识
     private PayReq mReq;
     private PayModel mPayModel;
-    private ZLoadingView zLoadingView;//加载框
+    private LinearLayout zLoadingView;//加载框
     List<NewHomeCzgBean> czgBeans;//超值购数据
     List<NewHomePubaBean> pubaBeans;//扑吧数据
     List<NewHomeBlBean> blBeans;//爆料数据
     List<NewHomeFxBean> fxBeans;//发现数据
     private ImageButton imageButton;
+    private String content;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -188,8 +194,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private void initView(View v){
         imageButton = mView.findViewById(R.id.to_top_btn);
         zLoadingView = mView.findViewById(R.id.progress);
-        zLoadingView.setVisibility(View.VISIBLE);
-        zLoadingView.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
         huodongimg =mView.findViewById(R.id.huodongimg);
         view = v.findViewById(R.id.view);
         mTopView = mView. findViewById(R.id.tv_topView);
@@ -223,16 +227,16 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
                         x = 1;
-                        initData(false);
+                        initData();
                         mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
                         mCzgView.setVisibility(View.VISIBLE);
-                mBjText.setTextColor(getResources().getColor(R.color.color_line_text));
-                mBjView.setVisibility(View.GONE);
-                mBlText.setTextColor(getResources().getColor(R.color.color_line_text));
-                mBlView.setVisibility(View.GONE);
-                mFxText.setTextColor(getResources().getColor(R.color.color_line_text));
-                mFxView.setVisibility(View.GONE);
-                        mIdex("1",2,false);
+                        mBjText.setTextColor(getResources().getColor(R.color.color_line_text));
+                        mBjView.setVisibility(View.GONE);
+                        mBlText.setTextColor(getResources().getColor(R.color.color_line_text));
+                        mBlView.setVisibility(View.GONE);
+                        mFxText.setTextColor(getResources().getColor(R.color.color_line_text));
+                        mFxView.setVisibility(View.GONE);
+                        mIdex("1");
                         refreshlayout.finishRefresh(2000);
             }
         });
@@ -261,26 +265,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mrecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-//                mSuspensionHeight = mSuspensionBar.getHeight();
             }
 
             @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                View view = gridLayoutManager.findViewByPosition(mCurrentPosition + 1);
-//                if (view != null) {
-//                    if (view.getTop() <= mSuspensionHeight) {
-//                        mSuspensionBar.setVisibility(View.VISIBLE);
-//                        mSuspensionBar.setY(0);
-//                    } else if (mSuspensionHeight <= view.getTop()){
-//                        mSuspensionBar.setVisibility(View.GONE);
-//                        mSuspensionBar.setY(0);
-//                    }
-//                }
-//
-//                if (mCurrentPosition != gridLayoutManager.findFirstVisibleItemPosition()) {
-//                    mCurrentPosition = gridLayoutManager.findFirstVisibleItemPosition();
-//                    mSuspensionBar.setY(0);
-//                }
                 int firstPosition = gridLayoutManager.findFirstVisibleItemPosition();
                 if (firstPosition >0) {
                     mSuspensionBar.setVisibility(View.VISIBLE);
@@ -292,12 +280,40 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             }
         });
     }
-    private void refreshAndloda() {
-    }
+
     //首页数据请求
-    private void initData(boolean is) {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        dataFlow.requestData(1, "newService/queryAppIndexInfo", paramsMap, this, is);
+    private void initData() {
+        Map<String, String> maps = new HashMap<String, String>();
+        RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexInfo(
+                 maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                object = jsonObject.optJSONObject("content");
+                                handler.sendEmptyMessageDelayed(3, 0);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        zLoadingView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        zLoadingView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        Log.e("Exception", e.getMessage());
+                        StringUtil.showToast(getActivity(), "网络异常");
+                    }
+                });
     }
     private void initDataWx(boolean is) {
         HashMap<String, String> paramsMap = new HashMap<>();
@@ -305,11 +321,39 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         dataFlow.requestData(3, "appPayService/getOrderInfo", paramsMap, this, is);
     }
     //首页分类数据
-    private void getIndexByType(boolean is,int code) {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("type",type);
-        paramsMap.put("page",page+"");
-        dataFlow.requestData(code, Constants.GetQueryAppIndexByType, paramsMap, this, is);
+    private void getIndexByType() {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("type",type);
+        maps.put("page",page+"");
+        RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexByType(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                content = jsonObject.optString("content");
+                                handler.sendEmptyMessageDelayed(2, 0);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        zLoadingView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        Log.e("Exception", e.getMessage());
+                        StringUtil.showToast(getActivity(), "网络异常");
+            }
+        });
     }
     @Override
     public void onClick(View view) {
@@ -318,26 +362,26 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case R.id.ll_czg_layout:
                 flag ="1";
                 setView();
-                mIdex("1",2,true);
+                mIdex("1");
                 setText(mCzgText,mCzgView);
 //                initDataWx(true);
                 break;
             case R.id.ll_bj_layout:
                 flag ="2";
                 setView();
-                mIdex("2",2,true);
+                mIdex("2");
                 setText(mBjText,mBjView);
                 break;
             case R.id.ll_bl_layout:
                 flag ="3";
                 setView();
-                mIdex("3",2,true);
+                mIdex("3");
                 setText(mBlText,mBlView);
                 break;
             case R.id.ll_fx_layout:
                 flag ="4";
                 setView();
-                mIdex("4",2,true);
+                mIdex("4");
                 setText(mFxText,mFxView);
                 break;
             case R.id.msort:
@@ -372,83 +416,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         switch (requestCode){
-            case 1:
-                try {
-                   object = new JSONObject(content);
-                   handler.sendEmptyMessageDelayed(3,0);
-                } catch (Exception e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                break;
-
-            case 2:
-                try {
-                refreshLayout.finishLoadmore();
-                refreshLayout.finishRefresh();
-                if (type.equals("2")){
-                    if (x == 1) {
-                        pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
-                        Refresh("2");
-                    }else if (x == 2) {
-                        if (content != null && !content.toString().equals("[]")){
-                            pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
-                            homeadapter.notifyBjData(pubaBeans);
-                        }else {
-                            StringUtil.showToast(getActivity(),"没有更多了");
-                        }
-                    }
-                }else if (type.equals("3")){
-                    if (x == 1) {
-                        blBeans = JSON.parseArray(content, NewHomeBlBean.class);
-                        Refresh("3");
-                    }else if (x == 2) {
-                        if (content != null && !content.toString().equals("[]")){
-                            blBeans = JSON.parseArray(content, NewHomeBlBean.class);
-                            homeadapter.notifyBlData(blBeans);
-                        }else {
-                            StringUtil.showToast(getActivity(),"没有更多了");
-                        }
-                    }
-                }else if (type.equals("4")){
-                    if (x == 1) {
-                        fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
-                        Refresh("4");
-                    }else if (x == 2) {
-                        if (content != null && !content.toString().equals("[]")){
-                            fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
-                            homeadapter.notifyFxData(fxBeans);
-                        }else {
-                            StringUtil.showToast(getActivity(),"没有更多了");
-                        }
-                    }
-                }else if (type.equals("1")){
-                    if (x == 1) {
-                        czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
-                        Refresh("1");
-                    }else if (x == 2) {
-                        if (content != null && !content.toString().equals("[]")){
-                            czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
-                            homeadapter.notifyData(czgBeans);
-                        }else {
-                            StringUtil.showToast(getActivity(),"没有更多了");
-                        }
-                   }
-                }
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            break;
             case 3:
                 Log.i("支付数据", content + "============");
-//                String[] strs = content.toString().split("&");
-//                mPayDataMap = new HashMap<String, Object>();
-//                for (String s : strs) {
-//                    String[] str = s.split("=");
-//                    mPayDataMap.put(str[0], str[1]);
-//                }
-//                Log.i("获取json对象", mPayDataMap + "============");
                 try {
                     JSONObject object = new JSONObject(content);
                     mPayModel.wxPay(object, new PayModel.wxListener() {
@@ -465,12 +434,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     e.printStackTrace();
                 }
             break;
-            case 4:
-                Intent intent = new Intent(getActivity(), WebViewWZActivity.class);
-                intent.putExtra("url", content);
-                intent.putExtra("title", wztitle);
-                startActivity(intent);
-                break;
         }
     }
     Handler handler = new Handler(){
@@ -481,6 +444,62 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 case 1:
                     break;
                 case 2:
+                    try {
+                        refreshLayout.finishLoadmore();
+                        refreshLayout.finishRefresh();
+                        if (type.equals("2")){
+                            if (x == 1) {
+                                pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
+                                Refresh("2");
+                            }else if (x == 2) {
+                                if (content != null && !content.toString().equals("[]")){
+                                    pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
+                                    homeadapter.notifyBjData(pubaBeans);
+                                }else {
+                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                }
+                            }
+                        }else if (type.equals("3")){
+                            if (x == 1) {
+                                blBeans = JSON.parseArray(content, NewHomeBlBean.class);
+                                Refresh("3");
+                            }else if (x == 2) {
+                                if (content != null && !content.toString().equals("[]")){
+                                    blBeans = JSON.parseArray(content, NewHomeBlBean.class);
+                                    homeadapter.notifyBlData(blBeans);
+                                }else {
+                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                }
+                            }
+                        }else if (type.equals("4")){
+                            if (x == 1) {
+                                fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
+                                Refresh("4");
+                            }else if (x == 2) {
+                                if (content != null && !content.toString().equals("[]")){
+                                    fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
+                                    homeadapter.notifyFxData(fxBeans);
+                                }else {
+                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                }
+                            }
+                        }else if (type.equals("1")){
+                            if (x == 1) {
+                                czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
+                                Refresh("1");
+                            }else if (x == 2) {
+                                if (content != null && !content.toString().equals("[]")){
+                                    czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
+                                    homeadapter.notifyData(czgBeans);
+                                }else {
+                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                     break;
                 case 3:
                     if (object.has("fubiao")){
@@ -530,16 +549,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         }
 
                     }
-                    zLoadingView.setVisibility(View.GONE);
                     break;
                 case 4:
                     x = 2;
                     page++;
-                    getIndexByType(false,2);
+                    getIndexByType();
                     break;
                 case 5:
-                    initData(true);
-                    getIndexByType(true,2);
+                    initData();
+                    getIndexByType();
                     break;
             }
         }
@@ -557,11 +575,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         handler.sendEmptyMessageDelayed(5,0);
     }
     //超值购等数据
-    private void mIdex(String str,int code,boolean is){
+    private void mIdex(String str){
         type = str;
         x=1;
         page=1;
-        getIndexByType(is,code);
+        zLoadingView.setVisibility(View.VISIBLE);
+        getIndexByType();
     }
     @Override
     protected void loadLazyData() {
@@ -610,28 +629,28 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     @Override
     public void onCzgClick() {
         setView();
-        mIdex("1",2,true);
+        mIdex("1");
         setText(mCzgText,mCzgView);
     }
 
     @Override
     public void onBjClick() {
         setView();
-        mIdex("2",2,true);
+        mIdex("2");
         setText(mBjText,mBjView);
     }
 
     @Override
     public void onBlClick() {
         setView();
-        mIdex("3",2,true);
+        mIdex("3");
         setText(mBlText,mBlView);
     }
 
     @Override
     public void onFxClick() {
         setView();
-        mIdex("4",2,true);
+        mIdex("4");
         setText(mFxText,mFxView);
     }
 }

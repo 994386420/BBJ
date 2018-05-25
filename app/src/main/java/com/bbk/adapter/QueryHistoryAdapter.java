@@ -4,11 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.bbk.activity.R;
-import com.bbk.activity.SortActivity;
-import com.bbk.fragment.RankFragment;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;

@@ -10,8 +10,8 @@ android {
         applicationId "com.bbk.activity"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 37
-        versionName '5.0.1'
+        versionCode 40
+        versionName '5.0.4'
         multiDexEnabled true
     }
     android {
@@ -30,13 +30,13 @@ android {
         debugConfig {
             keyAlias "bbk_keystore"
             keyPassword "bbk123456"
-            storeFile file('D:/Android/bbkkeystore.keystore')
+            storeFile file('E:/bibijing/bbkkeystore.keystore')
             storePassword "bbk123456"
         }
         releaseConfig {
             keyAlias "bbk_keystore"
             keyPassword "bbk123456"
-            storeFile file('D:/Android/bbkkeystore.keystore')
+            storeFile file('E:/bibijing/bbkkeystore.keystore')
             storePassword "bbk123456"
         }
     }
@@ -175,10 +175,27 @@ dependencies {
     compile 'com.umeng.sdk:analytics:7.5.0'
     //第三方loading
     compile 'com.zyao89:zloading:1.1.2'
-    compile project(path: ':cptr')
     //1.0.5 当1.1.0出现问题可以回退到1.0.5.1
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'//没有使用特殊Header，可以不加这行
 //    compile 'com.android.support:appcompat-v7:25.3.1'//版本 23以上（必须）
+    //第三方地址选择
+    compile 'com.smartTop:jd-address:1.0.3'
+    //引入okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    //引入retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    //引入rxjava
+    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
+    //引入Log拦截器，方便DEBUG模式输出log信息
+    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+    //引入rxjava适配器，方便rxjava与retrofit的结合
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    //引入json转换器，方便将返回的数据转换为json格式
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.0.0'
+    //引入rxandroid
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.google.code.gson:gson:2.7'
 }
 

@@ -3,9 +3,10 @@ package com.bbk.adapter;
 import java.util.List;
 import java.util.Map;
 
+import com.bbk.Bean.BiaoLiaoBean;
+import com.bbk.Bean.NewFxBean;
 import com.bbk.activity.R;
 import com.bbk.activity.SortActivity;
-import com.bbk.fragment.RankFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -22,23 +23,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FindListAdapter extends BaseAdapter{
-	private List<Map<String, String>> list;
+	private List<NewFxBean> fxBeans;
 	private Context context;
 	public static int mPosition;
 	
-	public FindListAdapter(List<Map<String, String>> list,Context context){
-		this.list = list;
+	public FindListAdapter(List<NewFxBean> fxBeans, Context context){
+		this.fxBeans = fxBeans;
 		this.context =context;
 	}
-	
+	public void notifyData(List<NewFxBean> fxBeans){
+		if (fxBeans != null){
+			this.fxBeans.addAll(fxBeans);
+			notifyDataSetChanged();
+		}
+	}
 	@Override
 	public int getCount() {
-		return list.size();
+		return fxBeans.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return list.get(position);
+		return fxBeans.get(position);
 	}
 
 	@Override
@@ -62,14 +68,13 @@ public class FindListAdapter extends BaseAdapter{
 		} else {
 			vh = (ViewHolder) convertView.getTag();
 		}
-		if (list!= null && list.size()>0){
-			Map<String, String> map = list.get(position);
-			String author = map.get("author");
-			String title = map.get("title");
-			String img = map.get("img");
-			String zan = map.get("zan");
-			String type = map.get("type");
-			String count = map.get("count");
+			NewFxBean fxBean = fxBeans.get(position);
+			String author = fxBean.getAuthor();
+			String title = fxBean.getTitle();
+			String img = fxBean.getImg();
+			String zan = fxBean.getZan();
+			String type = fxBean.getType();
+			String count = fxBean.getCount();
 			vh.mlike.setText(zan);
 			vh.mauthor.setText(author);
 			vh.mcomment.setText(count);
@@ -82,7 +87,6 @@ public class FindListAdapter extends BaseAdapter{
 			vh.mimg.setLayoutParams(params);
 			Glide.with(context).load(img)
 					.placeholder(R.mipmap.zhanwei_01).into(vh.mimg);
-		}
 		return convertView;
 	}
 	class ViewHolder {

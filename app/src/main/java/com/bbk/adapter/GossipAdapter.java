@@ -16,7 +16,6 @@ import com.bbk.activity.R;
 import com.bbk.activity.SortActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewWZActivity;
-import com.bbk.fragment.RankFragment;
 import com.bbk.resource.Constants;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.ExpandableTextView;
