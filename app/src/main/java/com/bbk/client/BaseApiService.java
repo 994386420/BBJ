@@ -23,4 +23,11 @@ public interface BaseApiService<T> {
     //获取发现
     @POST("newService/queryArticleByType")
     Observable<String> queryArticleByType(@QueryMap Map<String, String> map);
+    //获取热门搜索词
+    @POST("apiService/getSearchHotWord")
+    Observable<String> getSearchHotWord(@QueryMap Map<String, String> map);
+    //搜索超值购
+    @POST("apiService/getPageListChaozhigou")
+    Observable<String> getPageListChaozhigou(@QueryMap Map<String, String> map);
+
 }

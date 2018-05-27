@@ -75,8 +75,10 @@ import org.json.JSONObject;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
 import com.baidu.mobstat.StatService;
+import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.adapter.NewBjAdapter;
 import com.bbk.adapter.NewBlAdapter;
@@ -89,6 +91,9 @@ import com.bbk.adapter.ResultMyListAdapter;
 import com.bbk.adapter.SecondAdapter4;
 import com.bbk.adapter.SecondAdapter5;
 import com.bbk.adapter.SsNewCzgAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.dao.SearchHistoryDao;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.evaluator.BGAlphaEvaluator;
@@ -109,6 +114,7 @@ import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.ValidatorUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.FooterView;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
@@ -121,7 +127,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 public class SearchMainActivity extends ActivityGroup implements
-		OnClickListener, OnKeyListener,ResultEvent ,OnDismissListener{
+		OnClickListener, OnKeyListener,ResultEvent ,OnDismissListener,CommonLoadingView.LoadingHandler{
 	private FrameLayout mContent;
 	private Context context;
 	private EditText searchText;
@@ -130,7 +136,6 @@ public class SearchMainActivity extends ActivityGroup implements
 	private static final String SEARCH_MAIN_RECOMMEND = "recommemd";
 	private static final String SEARCH_MAIN_PROMPT = "prompt";
 	private List<String> dataList;
-	private LinearLayout toolbarLayout;
 	private String keyword="";
 	private PopupWindow searchKeywordPopupWindow;
 	private Typeface typeFace;
@@ -138,7 +143,6 @@ public class SearchMainActivity extends ActivityGroup implements
 	private ArrayAdapter<String> adapter1;
 	private LinearLayout bijia_layout,czg_layout;
 	private View bijia_view,czg_view;
-	private SsNewCzgAdapter newCzgAdapter;
 	private RelativeLayout mLayout;//隐藏的标题栏
 	private RelativeLayout msuccessLayout;//搜索成功界面
 	private boolean isprice = true;
@@ -170,7 +174,6 @@ public class SearchMainActivity extends ActivityGroup implements
 	private SmartRefreshLayout xrefresh2;
 	private ListView result_list;
 	private boolean isclear = false;
-	private ListView result_list1;
 	private GridView mgridView_main;
 	private List<Map<String, Object>> itemList,itemList1;
 	private LinearLayout correctLayout,view_box,third_hei,third_bai,second_hei,second,third,correctLayout1,shopbox;
@@ -240,6 +243,16 @@ public class SearchMainActivity extends ActivityGroup implements
 	private List<Map<String,String>> list,addlist,mList,mAddList;
 	private PopupWindow popupWindow;
 	private boolean isloadShaixuan = true;
+	private CommonLoadingView zLoadingView;//加载框
+	private String content,contentCzg;//服务器获取数据
+
+	/**
+	 * 搜索超值购
+	 * @param savedInstanceState
+	 */
+	private RecyclerView mCzgListview;
+	private NewCzgAdapter newCzgAdapter;
+	private List<NewHomeCzgBean> newHomeCzgBeans;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -257,12 +270,13 @@ public class SearchMainActivity extends ActivityGroup implements
 		dao = new SearchHistoryDao(this);
 	}
 	private void initView() {
+		zLoadingView = findViewById(R.id.progress);
+		zLoadingView.setLoadingHandler(this);
 		final InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		dataList = new ArrayList<String>();
 		String str = "1";
 		dataList.add(str);
 		typeFace = ((MyApplication) getApplication()).getFontFace();
-		toolbarLayout = (LinearLayout) findViewById(R.id.toolbar_layout);
 //		keyword = getIntent().getStringExtra("keyword");
 		mContent = (FrameLayout) findViewById(R.id.content);
 		mlistView = (ListView)findViewById(R.id.mlistView);
@@ -359,7 +373,6 @@ public class SearchMainActivity extends ActivityGroup implements
 //		scrollView_home = (XScrollView) findViewById(R.id.scrollView_home);
 		mgridView_main = (GridView) findViewById(R.id.mgridView_main);
 		result_list = (ListView) findViewById(R.id.result_list);
-		result_list1 = (ListView) findViewById(R.id.result_list1);
 		to_top_btn = (ImageButton) findViewById(R.id.to_top_btn);
 		correctLayout = findViewById(R.id.correct_layout);
 		correctLayout1 = findViewById(R.id.correct_layout1);
@@ -367,7 +380,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		correctTv1 = findViewById(R.id.correct_tv1);
 		tipsLayout = (RelativeLayout) findViewById(R.id.tips_layout);
 		tipsKeys = findViewById(R.id.tips_keys);
-
 		topbar_search_input = (TextView) findViewById(R.id.topbar_search_input);
 		topbar_goback_btn = (ImageButton) findViewById(R.id.topbar_goback_btn);
 		topbar_search_btn = (ImageButton) findViewById(R.id.topbar_search_btn);
@@ -426,7 +438,12 @@ public class SearchMainActivity extends ActivityGroup implements
 		ensure.setOnClickListener(this);
 		request.setOnClickListener(this);
 		mzhezhao.setOnClickListener(this);
+
 		//商品比价超值购搜索控件
+		//超值购view
+		mCzgListview = findViewById(R.id.result_list1);
+		mCzgListview.setHasFixedSize(true);
+		mCzgListview.setLayoutManager(new LinearLayoutManager(this));
 		bijia_layout = findViewById(R.id.ll_bj_layout);
 		bijia_layout.setOnClickListener(this);
 		bijia_view = findViewById(R.id.bj_view);
@@ -637,75 +654,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		}
 	}
 
-	private void initData() {
-		isrequest = false;
-		initRankView();
-		Map<String, String> paramsMap = params();
-		dataFlow.requestData(1, "apiService/getPageList", paramsMap, this,true);
-	}
-	private void initDataCzg() {
-//		Log.i("====",keyword+sortway);
-		Map<String, String> paramsMap = new HashMap<>();
-		paramsMap.put("keyword", keyword);
-		paramsMap.put("sortWay", sortway);
-		paramsMap.put("page",currentPageIndex+"");
-		paramsMap.put("client", "android");
-		dataFlow.requestData(5, Constants.getPageListChaozhigou, paramsMap, this,true);
-	}
-
-	private void initData1() {
-		Map<String, String> paramsMap = params();
-		dataFlow1.requestData(1, "apiService/getPageList", paramsMap, this,true);
-	}
-	private Map<String, String> params(){
-		try {
-			exadapter = new ResultExpandableListViewAdapter(SearchMainActivity.this,parentlist,childlist);
-			mexpandableListView.setAdapter(exadapter);
-			mexpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-				@Override
-				public boolean onChildClick(ExpandableListView parent, View v,
-											int groupPosition, int childPosition, long id) {
-					Map<String, Object> map = childlist.get(groupPosition).get(childPosition);
-					sort_text.setText(map.get("item_text").toString());
-					addition = map.get("item_addtion").toString();
-					if (view_box!=null) {
-						view_box.removeAllViews();
-					}
-					if (shopbox!=null) {
-						shopbox.removeAllViews();
-					}
-					third.setVisibility(View.GONE);
-					loadfilter();
-					return true;
-				}
-			});
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		String filter = getFilterString();
-		Map<String, String> paramsMap = new HashMap<String, String>();
-//		paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
-		paramsMap.put("keyword", keyword);
-		paramsMap.put("productType", addition);
-		paramsMap.put("brand", brand);
-		paramsMap.put("bprice", bPrice);
-		paramsMap.put("eprice", ePrice);
-		paramsMap.put("filter", filter);
-		paramsMap.put("sortWay", sortway);
-		paramsMap.put("domains", domains);
-		initstype();
-		paramsMap.put("stype", stype);
-		paramsMap.put("client", "Android");
-		paramsMap.put("page", currentPageIndex + "");
-		return paramsMap;
-	}
-	public void loadfilter(){
-		Map<String, String> paramsMap = new HashMap<String, String>();
-		paramsMap.put("keyword", keyword);
-		paramsMap.put("addtion", addition);
-		dataFlow1.requestData(4, "apiService/requestFilter", paramsMap, this);
-	}
 	private void onrefresh(XRefreshView xrefresh2) {
 		xrefresh2.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
 
@@ -965,7 +913,7 @@ public class SearchMainActivity extends ActivityGroup implements
 				break;
 			case R.id.to_top_btn:
 				result_list.smoothScrollToPosition(0);
-				result_list1.smoothScrollToPosition(0);
+				mCzgListview.smoothScrollToPosition(0);
 				mgridView_main.smoothScrollToPosition(0);
 //			scrollView_home.fullScroll(ScrollView.FOCUS_UP);
 				break;
@@ -2047,122 +1995,7 @@ public class SearchMainActivity extends ActivityGroup implements
 			switch (requestCode) {
 				case 1:
 					Log.i("content",content);
-					requestnum = 0;
-					removenum = 0;
-					xrefresh.setAutoLoadMore(true);
-					xrefresh1.setAutoLoadMore(true);
-					data.clear();
-					itemList.clear();
-					itemList1.clear();
-					topbar_search_input.setText(keyword);
-					xrefresh.stopRefresh();
-					xrefresh1.stopRefresh();
-					JSONObject jo11 = new JSONObject(content);
-					String tmallSearchUrl = jo11.optString("tmallSearchUrl");
-					if (!jo11.optString("sortAddtion").isEmpty()) {
-						rankRelativeLayout.setVisibility(View.VISIBLE);
-						addtion1 = jo11.optString("sortAddtion");
-						initRankView();
-					}
-					String  isBland= jo11.optString("isBland");
-
-					if (currentPageIndex == 1) {
-						ViewGone();
-						switch (isBland) {
-							case "1":
-
-								break;
-							case "2":
-								String tj = jo11.optString("tuijian");
-								if (!TextUtils.isEmpty(tj)) {
-									String[] tjs = tj.split(",");
-									initChildViews(tjs);
-									mflowlayout.setVisibility(View.VISIBLE);
-									henggang.setVisibility(View.VISIBLE);
-									correctLayout1.setVisibility(View.VISIBLE);
-								} else {
-									tipsLayout.setVisibility(View.VISIBLE);
-									tipsKeys.setText("没有找到相关商品");
-								}
-								break;
-							case "3":
-								keyword = jo11.optString("blandkey");
-								correctTv.setText("没有找到相关的商品， 推荐“" + keyword + "”的搜索结果,试试");
-								tuijianText.setText(keyword);
-								tuijianText.setVisibility(View.VISIBLE);
-								tuijianText.setOnClickListener(new OnClickListener() {
-
-									@Override
-									public void onClick(View arg0) {
-										if (view_box!=null) {
-											view_box.removeAllViews();
-										}
-										if (shopbox!=null) {
-											shopbox.removeAllViews();
-										}
-										currentPageIndex=1;
-										initData();
-									}
-								});
-								correctLayout.setVisibility(View.VISIBLE);
-								break;
-						}
-					}
-					info = jo11.getJSONObject("info");
-					if (isfirstinfo){
-						oldinfo = jo11.getJSONObject("info");
-						isfirstinfo = false;
-					}
-					String tmp1 = info.optString("page");
-					String gridtype = info.optString("gridtype");
-					if (!tmp1.isEmpty()) {
-						initListViewData(info);
-						isrequest = true;
-						if (isloadShaixuan == true) {
-							mshaixuanbox.setVisibility(View.VISIBLE);
-							loadFilterBrand(info);
-							loadFilterCheckView(info);
-							loadThirdSort(info);
-						}
-						if (thread == null) {
-							NowPrice();
-						}
-						int totalCount = info.optInt("totalCount");
-						if (totalCount%12 == 0) {
-							pagenum = totalCount/12;
-						}else{
-							pagenum = (int)(totalCount/12)+1;
-						}
-						if (pagenum <=currentPageIndex) {
-							canLoadMore = false;
-							xrefresh.setLoadComplete(true);
-							xrefresh1.setLoadComplete(true);
-							inittmallmore(tmallSearchUrl);//当数据小于12条时加载天猫数据
-						} else {
-							canLoadMore = true;
-							xrefresh.setLoadComplete(false);
-							xrefresh1.setLoadComplete(false);
-						}
-					}else{
-						tipsLayout.setVisibility(View.VISIBLE);
-						tipsKeys.setText("当前筛选条件下无搜索结果");
-					}
-					if (gridtype.equals("1")){
-						//显示块状
-						xrefresh.setVisibility(View.GONE);
-						xrefresh1.setVisibility(View.VISIBLE);
-						xrefresh2.setVisibility(View.GONE);
-					}else {
-						//显示列表
-						xrefresh.setVisibility(View.VISIBLE);
-						xrefresh1.setVisibility(View.GONE);
-						xrefresh2.setVisibility(View.GONE);
-					}
-					mshaixuanCzg.setVisibility(View.GONE);
-					mshaixuanbox.setVisibility(View.VISIBLE);
-					msuccessLayout.setVisibility(View.VISIBLE);
-					mlistView.setVisibility(View.GONE);
-					break;
+				break;
 				case 2:
 					xrefresh.stopLoadMore();
 					xrefresh1.stopLoadMore();
@@ -2242,70 +2075,6 @@ public class SearchMainActivity extends ActivityGroup implements
 					loadFilterCheckView(info);
 					break;
 				case 5:
-					list = new ArrayList<>();
-					if (isclear) {
-						list.clear();
-					}
-					JSONObject jo = new JSONObject(content);
-					String isBlandCzg = jo.optString("isBland");
-					//  isBland为1 表示有数据 isBland为-1表示无数据
-					if (isBlandCzg.equals("1")){
-						NewConstants.Flag = "2";
-						isbland = "isBland";
-						JSONObject info = jo.getJSONObject("info");
-						String tmpCzg = info.optString("page");
-						JSONArray arrczg = new JSONArray(tmpCzg);
-						xrefresh2.setVisibility(View.VISIBLE);
-						mshaixuanCzg.setVisibility(View.VISIBLE);
-						mshaixuanbox.setVisibility(View.GONE);
-						xrefresh.setVisibility(View.GONE);
-						xrefresh1.setVisibility(View.GONE);
-						tipsLayout.setVisibility(View.GONE);
-						msuccessLayout.setVisibility(View.VISIBLE);
-						addCzgList(arrczg);
-						if (x == 1) {
-							mList = list;
-							handler1.sendEmptyMessageDelayed(1, 0);
-						} else if (x == 2) {
-								mAddList = list;
-								handler1.sendEmptyMessageDelayed(2, 0);
-						}
-					}else if(isBlandCzg.equals("-1") && x ==2 && NewConstants.Flag.equals("2")){
-						xrefresh2.finishLoadmore();
-						xrefresh2.finishRefresh();
-						StringUtil.showToast(SearchMainActivity.this,"没有更多了");
-				    }else {
-						    NewConstants.Flag = "1";
-							xrefresh2.finishLoadmore();
-							xrefresh2.finishRefresh();
-						    xrefresh2.setVisibility(View.GONE);
-						    xrefresh.setVisibility(View.GONE);
-						    xrefresh1.setVisibility(View.GONE);
-						    msuccessLayout.setVisibility(View.VISIBLE);
-						    mshaixuanCzg.setVisibility(View.VISIBLE);
-							mshaixuanbox.setVisibility(View.GONE);
-						    tipsLayout.setVisibility(View.VISIBLE);
-							tipsKeys.setText("当前筛选条件下无搜索结果");
-					}
-					break;
-				case 6:
-					if (content!= null && !"".equals(content)) {
-						try {
-							if (type.equals("1")){
-								SharedPreferencesUtil.putSharedData(
-										getApplicationContext(), "hotKeyword",
-										"hotKeyword", content);
-								showSearchRecommendView();
-							}else {
-								SharedPreferencesUtil.putSharedData(
-										getApplicationContext(), "hotCzgKeyword",
-										"hotCzgKeyword", content);
-								showSearchRecommendCzgView();
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
 					break;
 				default:
 					break;
@@ -2323,25 +2092,6 @@ public class SearchMainActivity extends ActivityGroup implements
 	private void showSearchRecommendCzgView() {
 		addView(SEARCH_MAIN_RECOMMEND, SearchRecommendCzgActivity.class);
 	}
-	//超值购数据
-	public void addCzgList(JSONArray array) throws JSONException {
-		for (int i = 0; i < array.length() ; i++) {
-			JSONObject object = array.getJSONObject(i);
-			Map<String,String> map = new HashMap<>();
-			map.put("id",object.optString("id"));
-			map.put("imgurl",object.optString("imgurl"));
-			map.put("title",object.optString("title"));
-			map.put("price",object.optString("price"));
-			map.put("dianpu",object.optString("dianpu"));
-			map.put("youhui",object.optString("youhui"));
-			map.put("url",object.optString("url"));
-			if (object.optString("hislowprice")!= null){
-				map.put("hislowprice",object.optString("hislowprice"));
-			}
-			list.add(map);
-		}
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data5) {
 		super.onActivityResult(requestCode, resultCode, data5);
@@ -2417,23 +2167,6 @@ public class SearchMainActivity extends ActivityGroup implements
 						e.printStackTrace();
 					}
 					break;
-				case 1:
-					xrefresh2.finishLoadmore();
-					xrefresh2.finishRefresh();
-					if (mList != null && mList.size() > 0) {
-						newCzgAdapter = new SsNewCzgAdapter(SearchMainActivity.this, mList);
-						result_list1.setAdapter(newCzgAdapter);
-					}
-					break;
-				case 2:
-					xrefresh2.finishLoadmore();
-					xrefresh2.finishRefresh();
-					if(mAddList!=null && mAddList.size()>0){
-						newCzgAdapter.notifyData(mAddList);
-					}else {
-						StringUtil.showToast(SearchMainActivity.this,"没有更多了");
-					}
-					break;
 				default:
 					break;
 			}
@@ -2450,46 +2183,71 @@ public class SearchMainActivity extends ActivityGroup implements
 		super.onDestroy();
 	}
 
-	private void loadhotKeyword(String type) {
+	/**
+	 * 搜索关键词加载
+	 * @param type
+	 */
+	private void loadhotKeyword(final String type) {
 		String hotKeyword = SharedPreferencesUtil.getSharedData(getApplicationContext(), "hotKeyword", "hotKeyword");
 		if (hotKeyword == null || "".equals(hotKeyword)) {
 			hotKeyword = "[{\"name\":\"iphone se\",\"productType\":\"\"},{\"name\":\"衬衫\",\"productType\":\"240201\"},{\"name\":\"电炖锅\",\"productType\":\"030313\"},{\"name\":\"情侣睡衣\",\"productType\":\"240313\"},{\"name\":\"空调\",\"productType\":\"030102\"},{\"name\":\"风扇\",\"productType\":\"030201\"},{\"name\":\"T恤\",\"productType\":\"160209\"},{\"name\":\"奶粉\",\"productType\":\"1701\"}]";
 			SharedPreferencesUtil.putSharedData(getApplicationContext(),
 					"hotKeyword", "hotKeyword", hotKeyword);
 		} else {
-			Map<String, String> paramsMap = new HashMap<>();
-			paramsMap.put("type", type);
-			dataFlow.requestData(6, "apiService/getSearchHotWord", paramsMap, this, true);
+			Map<String, String> maps = new HashMap<String, String>();
+			maps.put("type",type);
+			RetrofitClient.getInstance(this).createBaseApi().getSearchHotWord(
+					maps, new BaseObserver<String>(this) {
+						@Override
+						public void onNext(String s) {
+							try {
+								JSONObject jsonObject = new JSONObject(s);
+								if (jsonObject.optString("status").equals("1")) {
+									String content = jsonObject.optString("content");
+									if (content!= null && !"".equals(content)) {
+										try {
+											if (type.equals("1")){
+												SharedPreferencesUtil.putSharedData(
+														getApplicationContext(), "hotKeyword",
+														"hotKeyword", content);
+												showSearchRecommendView();
+											}else {
+												SharedPreferencesUtil.putSharedData(
+														getApplicationContext(), "hotCzgKeyword",
+														"hotCzgKeyword", content);
+												showSearchRecommendCzgView();
+											}
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+						@Override
+						protected void hideDialog() {
+							zLoadingView.loadSuccess();
+						}
+
+						@Override
+						protected void showDialog() {
+                            zLoadingView.load();
+						}
+
+						@Override
+						public void onError(ExceptionHandle.ResponeThrowable e) {
+							zLoadingView.loadError();
+							StringUtil.showToast(SearchMainActivity.this, "网络异常");
+						}
+			});
 		}
 	}
 
-
-	/***
-	 * 广播接收keyword
+	/**
+	 * 复制弹窗
 	 */
-	public void registerBoradcastReceiver() {
-		IntentFilter myIntentFilter = new IntentFilter();
-		IntentFilter myIntentFilterCzg = new IntentFilter();
-		myIntentFilterCzg.addAction(SearchRecommendCzgActivity.ACTION_NAME);
-		myIntentFilter.addAction(SearchRecommendActivity.ACTION_NAME);
-		// 注册广播
-		registerReceiver(mBroadcastReceiver, myIntentFilter);
-		registerReceiver(mBroadcastReceiver, myIntentFilterCzg);
-	}
-	// 广播接收
-	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			keyword = intent.getStringExtra("keyword");
-			if (Flag.equals("1")){
-				initData();
-			}else {
-				initDataCzg();
-			}
-		}
-	};
-
 	private void openPopupWindowCars(View v,int i) {
 		//防止重复按按钮
 		if (popupWindow != null && popupWindow.isShowing()) {
@@ -2549,5 +2307,394 @@ public class SearchMainActivity extends ActivityGroup implements
 	@Override
 	public void onDismiss() {
 		setBackgroundAlpha(1);
+	}
+
+    /***
+     * 广播接收keyword
+     */
+    public void registerBoradcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        IntentFilter myIntentFilterCzg = new IntentFilter();
+        myIntentFilterCzg.addAction(SearchRecommendCzgActivity.ACTION_NAME);
+        myIntentFilter.addAction(SearchRecommendActivity.ACTION_NAME);
+        // 注册广播
+        registerReceiver(mBroadcastReceiver, myIntentFilter);
+        registerReceiver(mBroadcastReceiver, myIntentFilterCzg);
+    }
+    // 广播接收
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            keyword = intent.getStringExtra("keyword");
+            if (Flag.equals("1")){
+                initData();
+            }else {
+                initDataCzg();
+            }
+        }
+    };
+
+
+	/**
+	 * 搜索数据
+	 */
+	Handler handlerMessage = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what){
+				case 1:
+					try {
+						requestnum = 0;
+						removenum = 0;
+						xrefresh.setAutoLoadMore(true);
+						xrefresh1.setAutoLoadMore(true);
+						data.clear();
+						itemList.clear();
+						itemList1.clear();
+						topbar_search_input.setText(keyword);
+						xrefresh.stopRefresh();
+						xrefresh1.stopRefresh();
+						JSONObject jo11 = new JSONObject(content);
+						String tmallSearchUrl = jo11.optString("tmallSearchUrl");
+						if (!jo11.optString("sortAddtion").isEmpty()) {
+							rankRelativeLayout.setVisibility(View.VISIBLE);
+							addtion1 = jo11.optString("sortAddtion");
+							initRankView();
+						}
+						String  isBland= jo11.optString("isBland");
+
+						if (currentPageIndex == 1) {
+							ViewGone();
+							switch (isBland) {
+								case "1":
+
+									break;
+								case "2":
+									String tj = jo11.optString("tuijian");
+									if (!TextUtils.isEmpty(tj)) {
+										String[] tjs = tj.split(",");
+										initChildViews(tjs);
+										mflowlayout.setVisibility(View.VISIBLE);
+										henggang.setVisibility(View.VISIBLE);
+										correctLayout1.setVisibility(View.VISIBLE);
+									} else {
+										tipsLayout.setVisibility(View.VISIBLE);
+										tipsKeys.setText("没有找到相关商品");
+									}
+									break;
+								case "3":
+									keyword = jo11.optString("blandkey");
+									correctTv.setText("没有找到相关的商品， 推荐“" + keyword + "”的搜索结果,试试");
+									tuijianText.setText(keyword);
+									tuijianText.setVisibility(View.VISIBLE);
+									tuijianText.setOnClickListener(new OnClickListener() {
+
+										@Override
+										public void onClick(View arg0) {
+											if (view_box!=null) {
+												view_box.removeAllViews();
+											}
+											if (shopbox!=null) {
+												shopbox.removeAllViews();
+											}
+											currentPageIndex=1;
+											initData();
+										}
+									});
+									correctLayout.setVisibility(View.VISIBLE);
+									break;
+							}
+						}
+						info = jo11.getJSONObject("info");
+						if (isfirstinfo){
+							oldinfo = jo11.getJSONObject("info");
+							isfirstinfo = false;
+						}
+						String tmp1 = info.optString("page");
+						String gridtype = info.optString("gridtype");
+						if (!tmp1.isEmpty()) {
+							initListViewData(info);
+							isrequest = true;
+							if (isloadShaixuan == true) {
+								mshaixuanbox.setVisibility(View.VISIBLE);
+								loadFilterBrand(info);
+								loadFilterCheckView(info);
+								loadThirdSort(info);
+							}
+							if (thread == null) {
+								NowPrice();
+							}
+							int totalCount = info.optInt("totalCount");
+							if (totalCount%12 == 0) {
+								pagenum = totalCount/12;
+							}else{
+								pagenum = (int)(totalCount/12)+1;
+							}
+							if (pagenum <=currentPageIndex) {
+								canLoadMore = false;
+								xrefresh.setLoadComplete(true);
+								xrefresh1.setLoadComplete(true);
+								inittmallmore(tmallSearchUrl);//当数据小于12条时加载天猫数据
+							} else {
+								canLoadMore = true;
+								xrefresh.setLoadComplete(false);
+								xrefresh1.setLoadComplete(false);
+							}
+						}else{
+							tipsLayout.setVisibility(View.VISIBLE);
+							tipsKeys.setText("当前筛选条件下无搜索结果");
+						}
+						if (gridtype.equals("1")){
+							//显示块状
+							xrefresh.setVisibility(View.GONE);
+							xrefresh1.setVisibility(View.VISIBLE);
+							xrefresh2.setVisibility(View.GONE);
+						}else {
+							//显示列表
+							xrefresh.setVisibility(View.VISIBLE);
+							xrefresh1.setVisibility(View.GONE);
+							xrefresh2.setVisibility(View.GONE);
+						}
+						mshaixuanCzg.setVisibility(View.GONE);
+						mshaixuanbox.setVisibility(View.VISIBLE);
+						msuccessLayout.setVisibility(View.VISIBLE);
+						mlistView.setVisibility(View.GONE);
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+					break;
+				case 2:
+					try {
+						xrefresh2.finishLoadMore();
+						xrefresh2.finishRefresh();
+						JSONObject jo = new JSONObject(contentCzg);
+						String isBlandCzg = jo.optString("isBland");
+						//  isBland为1 表示有数据 isBland为-1表示无数据
+						if (isBlandCzg.equals("1")){
+							NewConstants.Flag = "2";
+							isbland = "isBland";
+							JSONObject info = jo.getJSONObject("info");
+							String tmpCzg = info.optString("page");
+							xrefresh2.setVisibility(View.VISIBLE);
+							mshaixuanCzg.setVisibility(View.VISIBLE);
+							mshaixuanbox.setVisibility(View.GONE);
+							xrefresh.setVisibility(View.GONE);
+							xrefresh1.setVisibility(View.GONE);
+							tipsLayout.setVisibility(View.GONE);
+							msuccessLayout.setVisibility(View.VISIBLE);
+							if (x == 1) {
+								newHomeCzgBeans = JSON.parseArray(tmpCzg,NewHomeCzgBean.class);
+								newCzgAdapter = new NewCzgAdapter(SearchMainActivity.this,newHomeCzgBeans);
+								mCzgListview.setAdapter(newCzgAdapter);
+							} else if (x == 2) {
+								if (tmpCzg != null && !tmpCzg.toString().equals("[]")){
+									newHomeCzgBeans = JSON.parseArray(tmpCzg,NewHomeCzgBean.class);
+									newCzgAdapter.notifyData(newHomeCzgBeans);
+								}else {
+									StringUtil.showToast(SearchMainActivity.this,"没有更多了");
+								}
+							}
+						}else if(isBlandCzg.equals("-1") && x ==2 && NewConstants.Flag.equals("2")){
+							xrefresh2.finishLoadMore();
+							xrefresh2.finishRefresh();
+							StringUtil.showToast(SearchMainActivity.this,"没有更多了");
+						}else {
+							NewConstants.Flag = "1";
+							xrefresh2.finishLoadMore();
+							xrefresh2.finishRefresh();
+							xrefresh2.setVisibility(View.GONE);
+							xrefresh.setVisibility(View.GONE);
+							xrefresh1.setVisibility(View.GONE);
+							msuccessLayout.setVisibility(View.VISIBLE);
+							mshaixuanCzg.setVisibility(View.VISIBLE);
+							mshaixuanbox.setVisibility(View.GONE);
+							tipsLayout.setVisibility(View.VISIBLE);
+							tipsKeys.setText("当前筛选条件下无搜索结果");
+						}
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+					break;
+			}
+		}
+	};
+	@Override
+	public void doRequestData() {
+		if (Flag.equals("1")){
+			isclear = true;
+			isloadShaixuan = true;
+			initData();
+		}else {
+			isclear = true;
+			initDataCzg();
+		}
+	}
+
+	/**
+	 *商品比价数据请求
+	 */
+	private void initData() {
+		isrequest = false;
+		initRankView();
+		Map<String, String> paramsMap = params();
+		RetrofitClient.getInstance(this).createBaseApi().getPageList(
+				paramsMap, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								content = jsonObject.optString("content");
+								handlerMessage.sendEmptyMessageDelayed(1, 0);
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+						result_list.setVisibility(View.VISIBLE);
+						mgridView_main.setVisibility(View.VISIBLE);
+						zLoadingView.loadSuccess();
+					}
+
+					@Override
+					protected void showDialog() {
+						zLoadingView.load();
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						Log.e("Exception", e.getMessage());
+						zLoadingView.loadError();
+						result_list.setVisibility(View.GONE);
+						mgridView_main.setVisibility(View.GONE);
+						StringUtil.showToast(SearchMainActivity.this, "网络异常");
+					}
+				});
+	}
+
+	/**
+	 *超值购数据请求
+	 */
+	private void initDataCzg() {
+		Map<String, String> paramsMap = new HashMap<>();
+		paramsMap.put("keyword", keyword);
+		paramsMap.put("sortWay", sortway);
+		paramsMap.put("page",currentPageIndex+"");
+		paramsMap.put("client", "android");
+		RetrofitClient.getInstance(this).createBaseApi().getPageListChaozhigou(
+				paramsMap, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							mCzgListview.setVisibility(View.VISIBLE);
+							JSONObject jsonObject = new JSONObject(s);
+							Log.i("---===",jsonObject+"---");
+							if (jsonObject.optString("status").equals("1")) {
+								contentCzg = jsonObject.optString("content");
+								handlerMessage.sendEmptyMessageDelayed(2, 0);
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+						zLoadingView.loadSuccess();
+					}
+
+					@Override
+					protected void showDialog() {
+						zLoadingView.load();
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						zLoadingView.loadError();
+						mCzgListview.setVisibility(View.GONE);
+						xrefresh2.finishLoadMore();
+						xrefresh2.finishRefresh();
+						StringUtil.showToast(SearchMainActivity.this, "网络异常");
+					}
+				});
+	}
+
+	private void initData1() {
+		Map<String, String> paramsMap = params();
+		dataFlow1.requestData(1, "apiService/getPageList", paramsMap, this,true);
+	}
+
+	/**
+	 * 搜索数据
+	 * @return
+	 */
+	private Map<String, String> params(){
+		try {
+			exadapter = new ResultExpandableListViewAdapter(SearchMainActivity.this,parentlist,childlist);
+			mexpandableListView.setAdapter(exadapter);
+			mexpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+				@Override
+				public boolean onChildClick(ExpandableListView parent, View v,
+											int groupPosition, int childPosition, long id) {
+					Map<String, Object> map = childlist.get(groupPosition).get(childPosition);
+					sort_text.setText(map.get("item_text").toString());
+					addition = map.get("item_addtion").toString();
+					if (view_box!=null) {
+						view_box.removeAllViews();
+					}
+					if (shopbox!=null) {
+						shopbox.removeAllViews();
+					}
+					third.setVisibility(View.GONE);
+					loadfilter();
+					return true;
+				}
+			});
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		String filter = getFilterString();
+		Map<String, String> paramsMap = new HashMap<String, String>();
+//		paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
+		if (keyword != null){
+			paramsMap.put("keyword", keyword);
+		}
+		if (addition != null){
+			paramsMap.put("productType", addition);
+		}
+		if (brand != null){
+			paramsMap.put("brand", brand);
+		}
+		if (bPrice != null) {
+			paramsMap.put("bprice", bPrice);
+		}
+		if (ePrice != null) {
+			paramsMap.put("eprice", ePrice);
+		}
+		if (filter != null) {
+			paramsMap.put("filter", filter);
+		}
+		if (sortway != null) {
+			paramsMap.put("sortWay", sortway);
+		}
+		if (domains != null) {
+			paramsMap.put("domains", domains);
+		}
+		initstype();
+		if (stype != null) {
+			paramsMap.put("stype", stype);
+		}
+		paramsMap.put("client", "Android");
+		paramsMap.put("page", currentPageIndex + "");
+		return paramsMap;
+	}
+	public void loadfilter(){
+		Map<String, String> paramsMap = new HashMap<String, String>();
+		paramsMap.put("keyword", keyword);
+		paramsMap.put("addtion", addition);
+		dataFlow1.requestData(4, "apiService/requestFilter", paramsMap, this);
 	}
 }

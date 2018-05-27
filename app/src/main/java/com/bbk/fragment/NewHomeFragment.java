@@ -59,6 +59,7 @@ import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyNewScrollView;
 import com.bbk.view.RefreshableView;
 import com.bumptech.glide.Glide;
@@ -85,7 +86,7 @@ import com.zyao89.view.zloading.ZLoadingView;
 import com.zyao89.view.zloading.Z_TYPE;
 
 
-public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,OnClickListioner {
+public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,OnClickListioner,CommonLoadingView.LoadingHandler {
     private DataFlow6 dataFlow;
     private View mView;
     /**
@@ -143,7 +144,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private int data;// 支付结果标识
     private PayReq mReq;
     private PayModel mPayModel;
-    private LinearLayout zLoadingView;//加载框
+    private CommonLoadingView zLoadingView;//加载框
     List<NewHomeCzgBean> czgBeans;//超值购数据
     List<NewHomePubaBean> pubaBeans;//扑吧数据
     List<NewHomeBlBean> blBeans;//爆料数据
@@ -194,6 +195,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private void initView(View v){
         imageButton = mView.findViewById(R.id.to_top_btn);
         zLoadingView = mView.findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
         huodongimg =mView.findViewById(R.id.huodongimg);
         view = v.findViewById(R.id.view);
         mTopView = mView. findViewById(R.id.tv_topView);
@@ -289,6 +291,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     @Override
                     public void onNext(String s) {
                         try {
+                            mrecyclerview.setVisibility(View.VISIBLE);
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 object = jsonObject.optJSONObject("content");
@@ -300,17 +303,20 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     }
                     @Override
                     protected void hideDialog() {
-                        zLoadingView.setVisibility(View.GONE);
+                        zLoadingView.loadSuccess();
                     }
 
                     @Override
                     protected void showDialog() {
-                        zLoadingView.setVisibility(View.VISIBLE);
+                        zLoadingView.load();
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         Log.e("Exception", e.getMessage());
+                        zLoadingView.loadError();
+                        mrecyclerview.setVisibility(View.GONE);
+                        mSuspensionBar.setVisibility(View.GONE);
                         StringUtil.showToast(getActivity(), "网络异常");
                     }
                 });
@@ -330,6 +336,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     @Override
                     public void onNext(String s) {
                         try {
+                            mrecyclerview.setVisibility(View.VISIBLE);
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 content = jsonObject.optString("content");
@@ -341,19 +348,23 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     }
                     @Override
                     protected void hideDialog() {
-                        zLoadingView.setVisibility(View.GONE);
+                        zLoadingView.loadSuccess();
                     }
 
                     @Override
                     protected void showDialog() {
+//                        zLoadingView.load();
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         Log.e("Exception", e.getMessage());
+                        zLoadingView.loadError();
+                        mrecyclerview.setVisibility(View.GONE);
+                        mSuspensionBar.setVisibility(View.GONE);
                         StringUtil.showToast(getActivity(), "网络异常");
-            }
-        });
+                    }
+                });
     }
     @Override
     public void onClick(View view) {
@@ -579,7 +590,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         type = str;
         x=1;
         page=1;
-        zLoadingView.setVisibility(View.VISIBLE);
+        zLoadingView.load();
         getIndexByType();
     }
     @Override
@@ -652,5 +663,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         setView();
         mIdex("4");
         setText(mFxText,mFxView);
+    }
+
+    @Override
+    public void doRequestData() {
+        initData();
+        getIndexByType();
     }
 }

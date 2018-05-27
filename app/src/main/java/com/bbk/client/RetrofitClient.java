@@ -172,7 +172,19 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+    public  void getSearchHotWord(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getSearchHotWord(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
 
+    public  void getPageListChaozhigou(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getPageListChaozhigou(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override
