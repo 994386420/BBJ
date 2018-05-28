@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,6 +81,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		url = getIntent().getStringExtra("url");
 
 		// url = "https://pages.tmall.com/wow/rais/act/tmall-choice";
+		if (url != null){
 		if (url.contains("item.jd.com")) {// 京东
 			url = url.replace("item.jd.com", "item.m.jd.com/product");
 		} /*
@@ -98,7 +100,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		} else if (url.contains("item.gome.com.cn")) {// 国美
 			url = url.replace("item.gome.com.cn/", "m.gome.com.cn/product-");
 		}
-
+		}
 		initView();
 		CustomWebChromeClient wvcc = new CustomWebChromeClient(webViewLayout.getProgressBar()) {
 			@Override
@@ -219,7 +221,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 	}
 
 	private void loadWebPage(String pageUrl) {
-		webViewLayout.loadUrl(pageUrl);
+		if (pageUrl != null){
+			webViewLayout.loadUrl(pageUrl);
+		}
 		webViewLayout.setWebViewClient(new CustomWebViewClient(null) {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {

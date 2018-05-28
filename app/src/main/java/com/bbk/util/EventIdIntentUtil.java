@@ -11,6 +11,7 @@ import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.RankCategoryActivity;
 import com.bbk.activity.ResultMainActivity;
+import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewActivity111;
@@ -90,7 +91,7 @@ public class EventIdIntentUtil {
 			break;
 		case "12":
 			String keyword = jo.optString("keyword");
-			Intent intent11 = new Intent(context, ResultMainActivity.class);
+			Intent intent11 = new Intent(context, SearchMainActivity.class);
 			intent11.putExtra("keyword", keyword);
 			context.startActivity(intent11);
 			break;

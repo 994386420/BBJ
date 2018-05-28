@@ -397,15 +397,15 @@
                 android:visibility="gone"
                 android:layout_below="@id/home_layout_bar"
                 >
-                <ListView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/result_list1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFFFFF"
                     android:listSelector="@drawable/bg_item" >
-                </ListView>
+                </android.support.v7.widget.RecyclerView>
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-            <com.andview.refreshview.XRefreshView
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/xrefresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -419,8 +419,8 @@
                             android:background="#FFFFFF"
                             android:listSelector="@drawable/bg_item" >
                         </ListView>
-            </com.andview.refreshview.XRefreshView>
-            <com.andview.refreshview.XRefreshView
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/xrefresh1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -437,7 +437,7 @@
                             android:verticalSpacing="1dp"
                             >
                         </GridView>
-            </com.andview.refreshview.XRefreshView>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
                 <RelativeLayout
                     android:id="@+id/tips_layout"
                     android:layout_width="match_parent"

@@ -883,7 +883,7 @@ public class ResultMainActivity extends BaseActivity
 					JSONArray arr = new JSONArray(tmp);
 					addmap(arr, itemList,0,arr.length());	
 				}
-			listAdapter = new ResultMyListAdapter(itemList, this);
+//			listAdapter = new ResultMyListAdapter(itemList, this);
 			result_list.setAdapter(listAdapter);
 			result_list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -913,7 +913,7 @@ public class ResultMainActivity extends BaseActivity
 
 				}
 			});
-			gridviewadapter = new ResultMyGridAdapter(itemList, this);
+//			gridviewadapter = new ResultMyGridAdapter(itemList, this);
 			mgridView_main.setAdapter(gridviewadapter);
 			mgridView_main.setOnItemClickListener(new OnItemClickListener() {
 

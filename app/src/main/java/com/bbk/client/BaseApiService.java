@@ -29,5 +29,13 @@ public interface BaseApiService<T> {
     //搜索超值购
     @POST("apiService/getPageListChaozhigou")
     Observable<String> getPageListChaozhigou(@QueryMap Map<String, String> map);
+    @POST("searchAutoService/getAutoApp")
+    Observable<String> getAutoApp(@QueryMap Map<String, String> map);
+    //消息
+    @POST("bid/querySysMessage")
+    Observable<String> querySysMessage(@QueryMap Map<String, String> map);
+    //读取消息
+    @POST("bid/readSysmsg")
+    Observable<String> readSysmsg(@QueryMap Map<String, String> map);
 
 }

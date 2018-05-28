@@ -1,5 +1,8 @@
 package com.bbk.util;
 
+import com.bbk.Bean.SearchBean;
+import com.bbk.Bean.SearchResultBean;
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,15 @@ public class JumpIntentUtil {
         if("beibei".equals(domain)
             ||"jd".equals(domain) ||"taobao".equals(domain)
                 ||"tmall".equals(domain) ||"suning".equals(domain)){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isJump4(List<SearchResultBean> itemList, int position){
+        if("beibei".equals(itemList.get(position).getDomain())
+                ||"jd".equals(itemList.get(position).getDomain()) ||"taobao".equals(itemList.get(position).getDomain())
+                ||"tmall".equals(itemList.get(position).getDomain()) ||"suning".equals(itemList.get(position).getDomain())){
             return true;
         }
         return false;

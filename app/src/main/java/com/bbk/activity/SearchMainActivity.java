@@ -79,6 +79,7 @@ import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
 import com.baidu.mobstat.StatService;
 import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.Bean.SearchResultBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.adapter.NewBjAdapter;
 import com.bbk.adapter.NewBlAdapter;
@@ -124,12 +125,12 @@ import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 public class SearchMainActivity extends ActivityGroup implements
-		OnClickListener, OnKeyListener,ResultEvent ,OnDismissListener,CommonLoadingView.LoadingHandler{
+		OnClickListener, OnKeyListener,ResultEvent,CommonLoadingView.LoadingHandler{
 	private FrameLayout mContent;
-	private Context context;
 	private EditText searchText;
 	private ImageButton goBackBtn, searchBtn;
 	private SearchHistoryDao dao;
@@ -137,7 +138,6 @@ public class SearchMainActivity extends ActivityGroup implements
 	private static final String SEARCH_MAIN_PROMPT = "prompt";
 	private List<String> dataList;
 	private String keyword="";
-	private PopupWindow searchKeywordPopupWindow;
 	private Typeface typeFace;
 	private ListView mlistView;
 	private ArrayAdapter<String> adapter1;
@@ -146,14 +146,12 @@ public class SearchMainActivity extends ActivityGroup implements
 	private RelativeLayout mLayout;//隐藏的标题栏
 	private RelativeLayout msuccessLayout;//搜索成功界面
 	private boolean isprice = true;
-	private DataFlow dataFlow;
 	public static Activity instance;
 	private TextView topbar_search_input,filter_price,compositerank,sellrank;
 	private TextView paixu_czg_text,discount_czg_text,filter_price_czg,filter_czg;//超值购导航栏
 	private ImageView mtop_czg;
 	private RelativeLayout mComposite_czg,discount_czg,mpriceczg,mfilter_czg;
 	private ImageButton topbar_goback_btn,topbar_search_btn,to_top_btn,back_third;
-//	private String keyword;
 	private String addition="";
 	private String brand="";
 	private String bPrice="";
@@ -165,29 +163,19 @@ public class SearchMainActivity extends ActivityGroup implements
 	private JSONArray thirdTypeJsonArr = new JSONArray();
 	private List<Map<String, Object>> parentlist;
 	private List<List<Map<String, Object>>> childlist;
-
 	private int currentPageIndex = 1;
-	private boolean islistview = true;
 	private Map<String, List<Map<String, Object>>> filterMap;;
 	private RelativeLayout mComposite,mnumber,mprice,mfilter,henggang,biankuang1,biankuang2;
-	private XRefreshView xrefresh;
-	private SmartRefreshLayout xrefresh2;
 	private ListView result_list;
-	private boolean isclear = false;
 	private GridView mgridView_main;
 	private List<Map<String, Object>> itemList,itemList1;
 	private LinearLayout correctLayout,view_box,third_hei,third_bai,second_hei,second,third,correctLayout1,shopbox;
 	private TextView correctTv,ensure,request,correctTv1;
 	private RelativeLayout tipsLayout,second_bai,style_box;
 	private TextView tipsKeys,tuijianText;
-	private int isshow = 1;
-	private SecondAdapter4 secondadapter;
-	private FooterView mFooterView;
 	private boolean canLoadMore;
-	private boolean isLoad;
 	private ResultMyListAdapter listAdapter;
 	private ResultMyGridAdapter gridviewadapter;
-	//	private XScrollView scrollView_home;
 	private String[] brandArr;
 	private JSONObject abcBrand;
 	private int curposition=-1;
@@ -204,10 +192,7 @@ public class SearchMainActivity extends ActivityGroup implements
 	private boolean isfirstinfo = true;
 	private ImageView mtop,filter_img,mzhezhao;
 	private EditText begin_price_et,end_price_et;
-	private Toast toast;
 	private XCFlowLayout mflowlayout = null;
-	private List<View> tvs = null;
-	private View data_head;
 	private boolean istv1=false;
 	private boolean istv2=false;
 	private String stype = "0";
@@ -222,10 +207,7 @@ public class SearchMainActivity extends ActivityGroup implements
 	private LinearLayout rankSwitchDiv;
 	private int rankSwitchDivHeight;
 	private boolean isSwichRankShow;
-	private String name1;
 	private LinearLayout rankMoreLayout,scanle;
-	private TextView text1,text2,text3,text4;
-	private ImageView img1,img2,img3,img4;
 	private String addtion1;
 	private ArrayList<String> listname = new ArrayList<>();
 	private ArrayList<String> listaddtion = new ArrayList<>();
@@ -236,12 +218,9 @@ public class SearchMainActivity extends ActivityGroup implements
 	private Thread thread;
 	private int pagenum = 0,x = 1;
 	private Thread threadtmall;
-	private XRefreshView xrefresh1;
 	private LinearLayout mshaixuanbox,mshaixuanCzg;
 	private boolean isrun = true;
-	private String Flag = "1",type = "1",isbland;
-	private List<Map<String,String>> list,addlist,mList,mAddList;
-	private PopupWindow popupWindow;
+	private String Flag = "1",type = "1";
 	private boolean isloadShaixuan = true;
 	private CommonLoadingView zLoadingView;//加载框
 	private String content,contentCzg;//服务器获取数据
@@ -254,6 +233,15 @@ public class SearchMainActivity extends ActivityGroup implements
 	private NewCzgAdapter newCzgAdapter;
 	private List<NewHomeCzgBean> newHomeCzgBeans;
 
+	/**
+	 * 商品比价搜索结果数据解析
+	 * @param savedInstanceState
+	 */
+	private List<SearchResultBean> searchResultBeans;
+	private SmartRefreshLayout xrefresh;
+	private SmartRefreshLayout xrefresh2;
+	private SmartRefreshLayout xrefresh1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -261,13 +249,21 @@ public class SearchMainActivity extends ActivityGroup implements
 		View topView = findViewById(R.id.toolbar_layout);
 		// 实现沉浸式状态栏
 		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-		dataFlow = new DataFlow(this);
 		dataFlow1 = new DataFlow3(this);
 		initView();
-//		initData();
 		loadhotKeyword(type);
 		registerBoradcastReceiver();
 		dao = new SearchHistoryDao(this);
+		if (getIntent().getStringExtra("keyword") != null){
+			keyword = getIntent().getStringExtra("keyword");
+			initData();
+		}
+		if (getIntent().getStringExtra("addition") != null){
+			addition = getIntent().getStringExtra("addition");
+		}
+		if (getIntent().getStringExtra("brand") != null){
+			brand = getIntent().getStringExtra("brand");
+		}
 	}
 	private void initView() {
 		zLoadingView = findViewById(R.id.progress);
@@ -277,7 +273,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		String str = "1";
 		dataList.add(str);
 		typeFace = ((MyApplication) getApplication()).getFontFace();
-//		keyword = getIntent().getStringExtra("keyword");
 		mContent = (FrameLayout) findViewById(R.id.content);
 		mlistView = (ListView)findViewById(R.id.mlistView);
 		searchText = (EditText) findViewById(R.id.topbar_search_input);
@@ -320,15 +315,11 @@ public class SearchMainActivity extends ActivityGroup implements
 		mLayout = findViewById(R.id.tabor_layout);
 		mLayout.setVisibility(View.GONE);
 		msuccessLayout = findViewById(R.id.search);
-		addition = getIntent().getStringExtra("addition");
-		brand = getIntent().getStringExtra("brand");
 		itemList = new ArrayList<>();
 		itemList1 = new ArrayList<>();
 		data = new ArrayList<>();
 		parentlist = new ArrayList<>();
 		childlist = new ArrayList<>();
-		tvs = new LinkedList<View>();
-
 		mflowlayout = (XCFlowLayout) findViewById(R.id.mflowlayout);
 		third_hei = (LinearLayout) findViewById(R.id.third_hei);
 		mshaixuanbox = (LinearLayout) findViewById(R.id.mshaixuanbox);
@@ -370,7 +361,6 @@ public class SearchMainActivity extends ActivityGroup implements
 
 		filter_price = (TextView) findViewById(R.id.filter_price);
 		compositerank = (TextView) findViewById(R.id.compositerank);
-//		scrollView_home = (XScrollView) findViewById(R.id.scrollView_home);
 		mgridView_main = (GridView) findViewById(R.id.mgridView_main);
 		result_list = (ListView) findViewById(R.id.result_list);
 		to_top_btn = (ImageButton) findViewById(R.id.to_top_btn);
@@ -395,13 +385,12 @@ public class SearchMainActivity extends ActivityGroup implements
 			public void onRefresh(RefreshLayout refreshlayout) {
 				x = 1;
 				currentPageIndex=1;
-				isclear = true;
 				initDataCzg();
 			}
 		});
-		xrefresh2.setOnLoadmoreListener(new OnLoadmoreListener() {
+		xrefresh2.setOnLoadMoreListener(new OnLoadMoreListener() {
 			@Override
-			public void onLoadmore(RefreshLayout refreshlayout) {
+			public void onLoadMore(RefreshLayout refreshlayout) {
 				x=2;
 				currentPageIndex ++;
 				initDataCzg();
@@ -411,14 +400,8 @@ public class SearchMainActivity extends ActivityGroup implements
 		compositerank.setTextColor(Color.parseColor("#f23030"));
 		sellrank.setTextColor(Color.parseColor("#222222"));
 		filter_price.setTextColor(Color.parseColor("#222222"));
-		xrefresh.setCustomHeaderView(new HeaderView(this));
-		xrefresh1.setCustomHeaderView(new HeaderView(this));
-////		xrefresh2.setCustomHeaderView(new HeaderView(this));
 		onrefresh(xrefresh);
 		onrefresh(xrefresh1);
-
-
-//		xrefresh.setMoveFootWhenDisablePullLoadMore(true);
 		biankuang1.setOnClickListener(this);
 		biankuang2.setOnClickListener(this);
 		topbar_search_input.setOnClickListener(this);
@@ -467,9 +450,6 @@ public class SearchMainActivity extends ActivityGroup implements
 	}
 
 	TextWatcher watcher = new TextWatcher() {
-
-
-
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
@@ -500,35 +480,12 @@ public class SearchMainActivity extends ActivityGroup implements
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
 			// TODO Auto-generated method stub
-
 		}
-
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
 		}
 	};
-
-
-	private void showAnimation(View view) {
-		ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0f,
-				180f);
-		animator.setDuration(500);
-		animator.start();
-	}
-
-	private void dismisssAnimation(View view) {
-		ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation",
-				180f, 0f);
-		animator.setDuration(500);
-		animator.start();
-	}
-
-	private View inflateView(int id) {
-		LayoutInflater inflater = LayoutInflater.from(this);
-		View view = inflater.inflate(id, null);
-		return view;
-	}
 
 	public void addView(String id, Class<?> clazz) {
 		Intent intent = new Intent(this, clazz);
@@ -554,20 +511,14 @@ public class SearchMainActivity extends ActivityGroup implements
 		if (!dao.exsistHistory(keyword)) {
 			dao.addHistory(keyword);
 		}
-		if (ResultMainActivity.instance != null
-				&& !ResultMainActivity.instance.isFinishing()) {
-			ResultMainActivity.instance.finish();
-		}
-//		finish();
-//		Intent intent = new Intent(this, ResultMainActivity.class);
-//		intent.putExtra("keyword", keyword);
-//		startActivity(intent);
 		if (Flag.equals("1")){
-			isclear = true;
 			isloadShaixuan = true;
+			x = 1;
+			currentPageIndex = 1;
 			initData();
 		}else {
-			isclear = true;
+			x = 1;
+			currentPageIndex=1;
 			initDataCzg();
 		}
 	}
@@ -625,26 +576,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		super.finish();
 	}
 
-	private void getHttpData() {
-		final String url = Constants.MAIN_BASE_URL_MOBILE+"searchAutoService/getAutoApp";
-		String text = searchText.getText().toString();
-		final HashMap<String, String> params = new HashMap<String, String>();
-		params.put("key", text);
-		new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						String dataStr = HttpUtil.getHttp(params, url, context);
-						Message msg = handler1.obtainMessage();
-						msg.what = 0;
-						msg.obj = dataStr;
-						handler1.sendMessage(msg);
-						
-					}
-				}).start();
-		
-	}
-	@SuppressWarnings("deprecation")
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -654,15 +586,10 @@ public class SearchMainActivity extends ActivityGroup implements
 		}
 	}
 
-	private void onrefresh(XRefreshView xrefresh2) {
-		xrefresh2.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
-
+	private void onrefresh(SmartRefreshLayout xrefresh2) {
+		xrefresh2.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRelease(float direction) {
-			}
-
-			@Override
-			public void onRefresh(boolean isPullDown) {
+			public void onRefresh(RefreshLayout refreshlayout) {
 				if (view_box!=null) {
 					view_box.removeAllViews();
 				}
@@ -670,30 +597,24 @@ public class SearchMainActivity extends ActivityGroup implements
 					shopbox.removeAllViews();
 				}
 				currentPageIndex=1;
-				initData1();
-			}
-
-			@Override
-			public void onRefresh() {
-
-			}
-
-			@Override
-			public void onLoadMore(boolean isSilence) {
-				if (canLoadMore) {
-					currentPageIndex++;
-					loadData();
-				}
-			}
-
-			@Override
-			public void onHeaderMove(double headerMovePercent, int offsetY) {
-
+				x = 1;
+				initData();
 			}
 		});
-
-		MyFootView footView = new MyFootView(this);
-		xrefresh2.setCustomFooterView(footView);
+		xrefresh2.setOnLoadMoreListener(new OnLoadMoreListener() {
+			@Override
+			public void onLoadMore(RefreshLayout refreshlayout) {
+				if (canLoadMore) {
+					currentPageIndex++;
+					x = 2;
+					initData();
+				}else {
+					xrefresh.finishLoadMore();
+					xrefresh1.finishLoadMore();
+					StringUtil.showToast(SearchMainActivity.this,"没有更多了");
+				}
+			}
+		});
 	}
 
 	private void loadData() {
@@ -787,6 +708,7 @@ public class SearchMainActivity extends ActivityGroup implements
 				    setText(bijia_view);
 				if (keyword != null && !keyword.equals("")) {
 					currentPageIndex = 1;
+					x=1;
 					initData();
 				}
 				break;
@@ -798,8 +720,8 @@ public class SearchMainActivity extends ActivityGroup implements
 				    setView();
 				    setText(czg_view);
 				if (keyword!= null && !keyword.equals("")) {
-					isclear = true;
 					currentPageIndex = 1;
+					x = 1;
 					initDataCzg();
 				}
 				break;
@@ -849,9 +771,6 @@ public class SearchMainActivity extends ActivityGroup implements
 						}
 					}
 					if (Integer.valueOf(bPrice)>Integer.valueOf(ePrice)) {
-						if (toast!= null) {
-							toast.cancel();
-						}
 						StringUtil.showToast(SearchMainActivity.this, "最低价不能高于最高价");
 					}else{
 						if (!isfilter && "".equals(brand) &&"".equals(sort_text.getText().toString())&& !istv1 && !istv2) {
@@ -868,6 +787,8 @@ public class SearchMainActivity extends ActivityGroup implements
 						if (shopbox!=null) {
 							shopbox.removeAllViews();
 						}
+						x = 1;
+						currentPageIndex = 1;
 						initData();
 					}
 				}catch (Exception e){
@@ -1185,158 +1106,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		animatorSet.start();
 	}
 
-
-	/**
-	 * 加载ListView列表
-	 *
-	 *
-	 */
-	private void initListViewData(JSONObject json) {
-		try {
-			String tmp = json.optString("page");
-			if (!tmp.isEmpty()) {
-				JSONArray arr = new JSONArray(tmp);
-				addmap(arr, itemList,0,arr.length());
-			}
-			listAdapter = new ResultMyListAdapter(itemList, this);
-			result_list.setAdapter(listAdapter);
-			result_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-					openPopupWindowCars(adapterView,i);
-					return true;
-				}
-			});
-			result_list.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-					Intent intent;
-					if (JumpIntentUtil.isJump(itemList,position,"domain1")) {
-						intent = new Intent(SearchMainActivity.this,IntentActivity.class);
-						if ("0".equals(itemList.get(position).get("androidurl"))) {
-							intent.putExtra("url", itemList.get(position).get("url").toString());
-						}else{
-							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
-						}
-						if (itemList.get(position).get("title") != null) {
-							intent.putExtra("title", itemList.get(position).get("title").toString());
-						}
-						if (itemList.get(position).get("domain1") != null) {
-							intent.putExtra("domain", itemList.get(position).get("domain1").toString());
-						}
-						if (itemList.get(position).get("groupRowKey") != null){
-							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
-						}
-					}else{
-						intent = new Intent(SearchMainActivity.this,WebViewActivity.class);
-						if ("0".equals(itemList.get(position).get("androidurl"))) {
-							intent.putExtra("url", itemList.get(position).get("url").toString());
-						}else{
-							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
-						}
-						if (itemList.get(position).get("groupRowKey") != null){
-							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
-						}
-					}
-					startActivity(intent);
-
-				}
-			});
-			gridviewadapter = new ResultMyGridAdapter(itemList, this);
-			mgridView_main.setAdapter(gridviewadapter);
-			mgridView_main.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-					Intent intent;
-					if (JumpIntentUtil.isJump(itemList,position,"domain1")) {
-						intent = new Intent(SearchMainActivity.this,IntentActivity.class);
-						if ("0".equals(itemList.get(position).get("androidurl"))) {
-							intent.putExtra("url", itemList.get(position).get("url").toString());
-						}else{
-							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
-						}
-						if (itemList.get(position).get("title") != null) {
-							intent.putExtra("title", itemList.get(position).get("title").toString());
-						}
-						if (itemList.get(position).get("domain1") != null) {
-							intent.putExtra("domain", itemList.get(position).get("domain1").toString());
-						}
-						if (itemList.get(position).get("groupRowKey") != null) {
-							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
-						}
-					}else{
-						intent = new Intent(SearchMainActivity.this,WebViewActivity.class);
-						if ("0".equals(itemList.get(position).get("androidurl"))) {
-							intent.putExtra("url", itemList.get(position).get("url").toString());
-						}else{
-							intent.putExtra("url", itemList.get(position).get("androidurl").toString());
-						}
-						if (itemList.get(position).get("groupRowKey") != null) {
-							intent.putExtra("groupRowKey", itemList.get(position).get("groupRowKey").toString());
-						}
-					}
-					startActivity(intent);
-				}
-			});
-
-			isLoad = false;
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-
-	}
-	private void addmap(JSONArray arr,List<Map<String, Object>> list,int j,int k){
-		for (int i = j; i < k; i++) {
-			HashMap<String, Object> itemMap = new HashMap<String, Object>();
-			itemMap.put("img", arr.optJSONObject(i).optString("imgUrl"));
-			itemMap.put("title",
-					arr.optJSONObject(i).optString("title").replace("<span>", "").replace("</span>", ""));
-			String price = arr.optJSONObject(i).optString("price");
-			itemMap.put("price", price);
-			itemMap.put("hnumber", arr.optJSONObject(i).optString("comnum"));
-			itemMap.put("domainCount", arr.optJSONObject(i).optString("domainCount"));
-			itemMap.put("groupRowKey", arr.optJSONObject(i).optString("groupRowkey"));
-			itemMap.put("quote", arr.optJSONObject(i).optString("numberCount"));
-			itemMap.put("allDomain", arr.optJSONObject(i).optString("alldomain"));
-			itemMap.put("hassimi", arr.optJSONObject(i).optString("hassimi"));
-			itemMap.put("tarr", arr.optJSONObject(i).optString("tarr").toString());
-			itemMap.put("domain1",  arr.optJSONObject(i).optString("domain"));
-			itemMap.put("url",  arr.optJSONObject(i).optString("url"));
-			if (arr.optJSONObject(i).has("saleinfo")){
-				itemMap.put("saleinfo",  arr.optJSONObject(i).optString("saleinfo"));
-			}else {
-				itemMap.put("saleinfo",  "-1");
-			}
-			//新增newsaleinfo
-			if (arr.optJSONObject(i).has("newsaleinfo")){
-				itemMap.put("newsaleinfo",  arr.optJSONObject(i).optString("newsaleinfo"));
-			}else {
-				itemMap.put("newsaleinfo",  "-1");
-			}
-			if (arr.optJSONObject(i).has("yjson")){
-				itemMap.put("yjson",  arr.optJSONObject(i).optString("yjson"));
-			}else {
-				itemMap.put("yjson",  "0");
-			}
-			if (arr.optJSONObject(i).has("androidurl")) {
-				itemMap.put("androidurl",  arr.optJSONObject(i).optString("androidurl"));
-			}else{
-				itemMap.put("androidurl",  "0");
-			}
-			itemMap.put("keyword",  keyword);
-			itemMap.put("isxianshi", "1");
-			if (arr.optJSONObject(i).has("purl")) {
-				itemMap.put("purl",  arr.optJSONObject(i).optString("purl"));
-			}else{
-				itemMap.put("purl",  "0");
-			}
-			itemList.add(itemMap);
-			itemList1.add(itemMap);
-		}
-	}
 	private void loadFilterCheckView(JSONObject result) throws JSONException {
 		if (filterMap == null) {
 			filterMap = new HashMap<>();
@@ -1832,6 +1601,7 @@ public class SearchMainActivity extends ActivityGroup implements
 					if (shopbox!=null) {
 						shopbox.removeAllViews();
 					}
+					x= 1;
 					currentPageIndex=1;
 					keyword = st;
 					initData();
@@ -1856,28 +1626,28 @@ public class SearchMainActivity extends ActivityGroup implements
 					if (isrequest == true) {
 						try {
 							Map<String, String> params = new HashMap<>();
-							if (!"0".equals(itemList1.get(requestnum).get("purl"))) {
+							if (searchResultBeans.get(requestnum).getPurl() != null) {
 								String str;
 								String content;
-								params.put("domain", itemList1.get(requestnum).get("domain1").toString());
-								params.put("rowkey", itemList1.get(requestnum).get("groupRowKey").toString());
+								params.put("domain", searchResultBeans.get(requestnum).getDomain());
+								params.put("rowkey", searchResultBeans.get(requestnum).getGroupRowkey());
 								params.put("fromwhere", "android"+keyword);
-								if (itemList1.get(requestnum).get("purl").toString().contains("||")) {
-									String url = itemList1.get(requestnum).get("purl").toString();
+								if (searchResultBeans.get(requestnum).getPurl().contains("||")) {
+									String url = searchResultBeans.get(requestnum).getPurl();
 									String[] split = url.split("\\|\\|");
 									String referrer=split[1];
 									content = HttpUtil.getHttp1(params, split[0], SearchMainActivity.this, referrer);
 									params.put("pcontent", content);
 									str = HttpUtil.getHttp(params, Constants.MAIN_BASE_URL_MOBILE+"checkService/checkProduct", SearchMainActivity.this);
 								}else{
-									content = HttpUtil.getHttp1(params, itemList1.get(requestnum).get("purl").toString(), SearchMainActivity.this,null);
+									content = HttpUtil.getHttp1(params, searchResultBeans.get(requestnum).getPurl(), SearchMainActivity.this,null);
 									params.put("pcontent", content);
 									str = HttpUtil.getHttp(params, Constants.MAIN_BASE_URL_MOBILE+"checkService/checkProduct", SearchMainActivity.this);
 								}
 								JSONObject object = new JSONObject(str);
 								if ("3".equals(object.optString("type"))) {
 									if ("".equals(object.optString("url"))) {
-										content = HttpUtil.getHttp1(params, itemList1.get(requestnum).get("url").toString(), SearchMainActivity.this,null);
+										content = HttpUtil.getHttp1(params, searchResultBeans.get(requestnum).getUrl(), SearchMainActivity.this,null);
 									}else{
 										content = HttpUtil.getHttp1(params, object.optString("url"), SearchMainActivity.this,null);
 									}
@@ -1891,7 +1661,7 @@ public class SearchMainActivity extends ActivityGroup implements
 								mes.what =0;
 								handler.sendMessage(mes);
 							}
-							if (requestnum+1 >= itemList1.size()) {
+							if (requestnum+1 >= searchResultBeans.size()) {
 								isrequest = false;
 							}
 							requestnum++;
@@ -1906,7 +1676,8 @@ public class SearchMainActivity extends ActivityGroup implements
 		});
 		thread.start();
 	}
-	@SuppressLint("HandlerLeak")
+
+
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
 			if (isrequest == true){
@@ -1917,23 +1688,24 @@ public class SearchMainActivity extends ActivityGroup implements
 						JSONObject object = new JSONObject(str);
 						switch (object.optString("type")) {
 							case "0":
-								itemList.remove(i-removenum);
+								searchResultBeans.remove(i-removenum);
 								listAdapter.notifyDataSetChanged();
 								gridviewadapter.notifyDataSetChanged();
 								removenum++;
 								if (currentPageIndex == 1 && i%12 == 0 && removenum >6) {
 									if (canLoadMore) {
 										currentPageIndex++;
-										loadData();
+										x = 2;
+										initData();
 									}
 								}
 								break;
 							case "1":
 								String price = object.optString("price");
 								String saleinfo = object.optString("saleinfo");
-								if (itemList.size()!= 0){
-									itemList.get(i-removenum).put("price", price);
-									itemList.get(i-removenum).put("saleinfo", saleinfo);
+								if (searchResultBeans.size()!= 0){
+									searchResultBeans.get(i-removenum).setPrice(price);
+									searchResultBeans.get(i-removenum).setSaleinfo(saleinfo);
 									listAdapter.notifyDataSetChanged();
 									gridviewadapter.notifyDataSetChanged();
 								}
@@ -1946,8 +1718,8 @@ public class SearchMainActivity extends ActivityGroup implements
 						e.printStackTrace();
 					}
 				}else if(msg.what == 1){
-					listAdapter.notifyDataSetChanged();
-					gridviewadapter.notifyDataSetChanged();
+					listAdapter.notifyData(searchResultBeans);
+					gridviewadapter.notifyData(searchResultBeans);
 				}
 			}
 		}
@@ -1965,23 +1737,8 @@ public class SearchMainActivity extends ActivityGroup implements
 					String url = Constants.MAIN_BASE_URL_MOBILE+"checkService/parseTmall";
 					params.put("content", content);
 					String str = HttpUtil.getHttp(params, url, SearchMainActivity.this);
-					JSONArray arr = new JSONArray(str);
-					for (int i = 0; i < arr.length(); i++) {
-						HashMap<String, Object> itemMap = new HashMap<String, Object>();
-						itemMap.put("img", arr.optJSONObject(i).optString("imgUrl"));
-						itemMap.put("title",
-								arr.optJSONObject(i).optString("title").replace("<span>", "").replace("</span>", ""));
-						String price = arr.optJSONObject(i).optString("price");
-						itemMap.put("price", price);
-						itemMap.put("hnumber", arr.optJSONObject(i).optString("comnum"));
-						itemMap.put("androidurl",  arr.optJSONObject(i).optString("url"));
-						itemMap.put("domain1",  "tmall");
-						itemMap.put("isxianshi", "0");
-						itemList.add(itemMap);
-					}
-					Message mes = handler.obtainMessage();
-					mes.what =1;
-					handler.sendMessage(mes);
+					searchResultBeans = JSON.parseArray(str,SearchResultBean.class);
+					handlerMessage.sendEmptyMessageDelayed(3,0);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1994,78 +1751,8 @@ public class SearchMainActivity extends ActivityGroup implements
 		try {
 			switch (requestCode) {
 				case 1:
-					Log.i("content",content);
 				break;
 				case 2:
-					xrefresh.stopLoadMore();
-					xrefresh1.stopLoadMore();
-					JSONObject jo1 = new JSONObject(content);
-					String tmallSearchUrl1 = jo1.optString("tmallSearchUrl");
-					if (currentPageIndex == 1) {
-						ViewGone();
-						switch (jo1.optString("isBland")) {
-							case "1":
-
-								break;
-							case "2":
-
-								String tj = jo1.optString("tuijian");
-								if (!TextUtils.isEmpty(tj)) {
-									String[] tjs = tj.split(",");
-									initChildViews(tjs);
-									mflowlayout.setVisibility(View.VISIBLE);
-									henggang.setVisibility(View.VISIBLE);
-									correctLayout1.setVisibility(View.VISIBLE);
-								} else {
-									tipsLayout.setVisibility(View.VISIBLE);
-								}
-								break;
-							case "3":
-
-								keyword = jo1.optString("blandkey");
-								correctTv.setText("没有找到相关的商品， 推荐“" + keyword + "”的搜索结果,试试");
-								tuijianText.setText(keyword);
-								tuijianText.setVisibility(View.VISIBLE);
-								tuijianText.setOnClickListener(new OnClickListener() {
-
-									@Override
-									public void onClick(View arg0) {
-										if (view_box!=null) {
-											view_box.removeAllViews();
-										}
-										if (shopbox!=null) {
-											shopbox.removeAllViews();
-										}
-										currentPageIndex=1;
-										initData();
-										correctLayout.setVisibility(View.GONE);
-									}
-								});
-								correctLayout.setVisibility(View.VISIBLE);
-								break;
-						}
-					}
-					JSONObject info1 = jo1.getJSONObject("info");
-					String tmp = info1.optString("page");
-					int totalCount = info1.optInt("totalCount");
-					if (totalCount%12 == 0) {
-						pagenum = totalCount/12;
-					}else{
-						pagenum = (int)(totalCount/12)+1;
-					}
-					if (pagenum <= currentPageIndex) {
-						canLoadMore = false;
-						xrefresh.setLoadComplete(true);
-						xrefresh1.setLoadComplete(true);
-						inittmallmore(tmallSearchUrl1);
-					} else {
-						canLoadMore = true;
-					}
-					JSONArray arr = new JSONArray(tmp);
-					addmap(arr, itemList,0,arr.length());
-					listAdapter.notifyDataSetChanged();
-					gridviewadapter.notifyDataSetChanged();
-					isrequest = true;
 					break;
 				case 4:
 					data.clear();
@@ -2140,38 +1827,6 @@ public class SearchMainActivity extends ActivityGroup implements
 		super.onBackPressed();
 	}
 
-	private Handler handler1 = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			switch (msg.what) {
-				case 0:
-					String dataStr = (String) msg.obj;
-					try {
-						JSONObject data = new JSONObject(dataStr);
-//						Log.e("=====lable", data.optString("status").equals("1")+"============");
-						if (data.optString("status").equals("1")){
-							JSONArray array = data.getJSONArray("content");
-							for (int i = 0; i < array.length(); i++) {
-								JSONObject object = array.getJSONObject(i);
-								String lable = object.getString("label");
-//								Log.e("=====lable======", lable+"");
-								dataList.add(lable);
-							}
-							if (mlistView.getAdapter() != null){
-								adapter1.notifyDataSetChanged();
-							}
-						}
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					break;
-				default:
-					break;
-			}
-		}
-	};
 	@Override
 	protected void onDestroy() {
 		setContentView(R.layout.view_null);
@@ -2245,69 +1900,7 @@ public class SearchMainActivity extends ActivityGroup implements
 		}
 	}
 
-	/**
-	 * 复制弹窗
-	 */
-	private void openPopupWindowCars(View v,int i) {
-		//防止重复按按钮
-		if (popupWindow != null && popupWindow.isShowing()) {
-			return;
-		}
-		//设置PopupWindow的View
-		View view = LayoutInflater.from(this).inflate(R.layout.copy_layout,null);
-		popupWindow = new PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		//设置背景,这个没什么效果，不添加会报错
-		popupWindow.setBackgroundDrawable(new BitmapDrawable());
-		//设置点击弹窗外隐藏自身
-		popupWindow.setFocusable(true);
-		popupWindow.setOutsideTouchable(true);
-		//设置动画
-		popupWindow.setAnimationStyle(R.style.AlertDialogStyle);
-		//设置位置
-		popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-		//设置消失监听
-		popupWindow.setOnDismissListener(this);
-		//设置PopupWindow的View点击事件
-		setOnPopupCarsViewClick(view,i);
-		//设置背景色
-		setBackgroundAlpha(0.5f);
-	}
 
-	private void setOnPopupCarsViewClick(View view, final int i) {
-		TextView copy_title,copy_url;
-		copy_title = view.findViewById(R.id.copy_title);
-		copy_url = view.findViewById(R.id.copy_url);
-		copy_title.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				ClipboardManager cm = (ClipboardManager)getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
-				cm.setText(itemList.get(i).get("title").toString());
-				StringUtil.showToast(SearchMainActivity.this,"复制成功");
-				popupWindow.dismiss();
-			}
-		});
-		copy_url.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				ClipboardManager cm = (ClipboardManager)getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
-				cm.setText(itemList.get(i).get("url").toString());
-				StringUtil.showToast(SearchMainActivity.this,"复制成功");
-				popupWindow.dismiss();
-			}
-		});
-	}
-	//设置屏幕背景透明效果
-	public void setBackgroundAlpha(float alpha) {
-		WindowManager.LayoutParams lp = getWindow().getAttributes();
-		lp.alpha = alpha;
-		getWindow().setAttributes(lp);
-	}
-
-	@Override
-	public void onDismiss() {
-		setBackgroundAlpha(1);
-	}
 
     /***
      * 广播接收keyword
@@ -2347,14 +1940,8 @@ public class SearchMainActivity extends ActivityGroup implements
 					try {
 						requestnum = 0;
 						removenum = 0;
-						xrefresh.setAutoLoadMore(true);
-						xrefresh1.setAutoLoadMore(true);
 						data.clear();
-						itemList.clear();
-						itemList1.clear();
 						topbar_search_input.setText(keyword);
-						xrefresh.stopRefresh();
-						xrefresh1.stopRefresh();
 						JSONObject jo11 = new JSONObject(content);
 						String tmallSearchUrl = jo11.optString("tmallSearchUrl");
 						if (!jo11.optString("sortAddtion").isEmpty()) {
@@ -2399,6 +1986,7 @@ public class SearchMainActivity extends ActivityGroup implements
 												shopbox.removeAllViews();
 											}
 											currentPageIndex=1;
+											x=1;
 											initData();
 										}
 									});
@@ -2414,17 +2002,25 @@ public class SearchMainActivity extends ActivityGroup implements
 						String tmp1 = info.optString("page");
 						String gridtype = info.optString("gridtype");
 						if (!tmp1.isEmpty()) {
-							initListViewData(info);
+//							initListViewData(info);//放数据
+							if ( x == 1){
+								searchResultBeans = JSON.parseArray(tmp1,SearchResultBean.class);
+								listAdapter = new ResultMyListAdapter(searchResultBeans, SearchMainActivity.this);
+								result_list.setAdapter(listAdapter);
+								gridviewadapter = new ResultMyGridAdapter(searchResultBeans, SearchMainActivity.this);
+								mgridView_main.setAdapter(gridviewadapter);
+								if (isloadShaixuan == true) {
+									mshaixuanbox.setVisibility(View.VISIBLE);
+									loadFilterBrand(info);
+									loadFilterCheckView(info);
+									loadThirdSort(info);
+								}
+							}else {
+								searchResultBeans = JSON.parseArray(tmp1,SearchResultBean.class);
+								listAdapter.notifyData(searchResultBeans);
+								gridviewadapter.notifyData(searchResultBeans);
+							}
 							isrequest = true;
-							if (isloadShaixuan == true) {
-								mshaixuanbox.setVisibility(View.VISIBLE);
-								loadFilterBrand(info);
-								loadFilterCheckView(info);
-								loadThirdSort(info);
-							}
-							if (thread == null) {
-								NowPrice();
-							}
 							int totalCount = info.optInt("totalCount");
 							if (totalCount%12 == 0) {
 								pagenum = totalCount/12;
@@ -2433,13 +2029,12 @@ public class SearchMainActivity extends ActivityGroup implements
 							}
 							if (pagenum <=currentPageIndex) {
 								canLoadMore = false;
-								xrefresh.setLoadComplete(true);
-								xrefresh1.setLoadComplete(true);
 								inittmallmore(tmallSearchUrl);//当数据小于12条时加载天猫数据
 							} else {
 								canLoadMore = true;
-								xrefresh.setLoadComplete(false);
-								xrefresh1.setLoadComplete(false);
+							}
+							if (thread == null) {
+								NowPrice();
 							}
 						}else{
 							tipsLayout.setVisibility(View.VISIBLE);
@@ -2466,14 +2061,11 @@ public class SearchMainActivity extends ActivityGroup implements
 					break;
 				case 2:
 					try {
-						xrefresh2.finishLoadMore();
-						xrefresh2.finishRefresh();
 						JSONObject jo = new JSONObject(contentCzg);
 						String isBlandCzg = jo.optString("isBland");
 						//  isBland为1 表示有数据 isBland为-1表示无数据
 						if (isBlandCzg.equals("1")){
 							NewConstants.Flag = "2";
-							isbland = "isBland";
 							JSONObject info = jo.getJSONObject("info");
 							String tmpCzg = info.optString("page");
 							xrefresh2.setVisibility(View.VISIBLE);
@@ -2496,8 +2088,6 @@ public class SearchMainActivity extends ActivityGroup implements
 								}
 							}
 						}else if(isBlandCzg.equals("-1") && x ==2 && NewConstants.Flag.equals("2")){
-							xrefresh2.finishLoadMore();
-							xrefresh2.finishRefresh();
 							StringUtil.showToast(SearchMainActivity.this,"没有更多了");
 						}else {
 							NewConstants.Flag = "1";
@@ -2516,17 +2106,23 @@ public class SearchMainActivity extends ActivityGroup implements
 						e.printStackTrace();
 					}
 					break;
+				case 3:
+					listAdapter.notifyData(searchResultBeans);
+					gridviewadapter.notifyData(searchResultBeans);
+					break;
 			}
 		}
 	};
 	@Override
 	public void doRequestData() {
 		if (Flag.equals("1")){
-			isclear = true;
 			isloadShaixuan = true;
+			x = 1;
+			currentPageIndex = 1;
 			initData();
 		}else {
-			isclear = true;
+			x = 1;
+			currentPageIndex = 1;
 			initDataCzg();
 		}
 	}
@@ -2557,6 +2153,10 @@ public class SearchMainActivity extends ActivityGroup implements
 						result_list.setVisibility(View.VISIBLE);
 						mgridView_main.setVisibility(View.VISIBLE);
 						zLoadingView.loadSuccess();
+						xrefresh.finishLoadMore();
+						xrefresh1.finishLoadMore();
+						xrefresh.finishRefresh();
+						xrefresh1.finishRefresh();
 					}
 
 					@Override
@@ -2566,10 +2166,13 @@ public class SearchMainActivity extends ActivityGroup implements
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						Log.e("Exception", e.getMessage());
 						zLoadingView.loadError();
 						result_list.setVisibility(View.GONE);
 						mgridView_main.setVisibility(View.GONE);
+						xrefresh.finishLoadMore();
+						xrefresh1.finishLoadMore();
+						xrefresh.finishRefresh();
+						xrefresh1.finishRefresh();
 						StringUtil.showToast(SearchMainActivity.this, "网络异常");
 					}
 				});
@@ -2591,7 +2194,6 @@ public class SearchMainActivity extends ActivityGroup implements
 						try {
 							mCzgListview.setVisibility(View.VISIBLE);
 							JSONObject jsonObject = new JSONObject(s);
-							Log.i("---===",jsonObject+"---");
 							if (jsonObject.optString("status").equals("1")) {
 								contentCzg = jsonObject.optString("content");
 								handlerMessage.sendEmptyMessageDelayed(2, 0);
@@ -2603,6 +2205,8 @@ public class SearchMainActivity extends ActivityGroup implements
 					@Override
 					protected void hideDialog() {
 						zLoadingView.loadSuccess();
+						xrefresh2.finishLoadMore();
+						xrefresh2.finishRefresh();
 					}
 
 					@Override
@@ -2621,9 +2225,51 @@ public class SearchMainActivity extends ActivityGroup implements
 				});
 	}
 
-	private void initData1() {
-		Map<String, String> paramsMap = params();
-		dataFlow1.requestData(1, "apiService/getPageList", paramsMap, this,true);
+	//获取搜索词
+	private void getHttpData() {
+		String text = searchText.getText().toString();
+		final HashMap<String, String> params = new HashMap<String, String>();
+		params.put("key", text);
+		RetrofitClient.getInstance(this).createBaseApi().getAutoApp(
+				params, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								try {
+									JSONObject data = new JSONObject(s);
+									if (data.optString("status").equals("1")){
+										JSONArray array = data.getJSONArray("content");
+										for (int i = 0; i < array.length(); i++) {
+											JSONObject object = array.getJSONObject(i);
+											String lable = object.getString("label");
+											dataList.add(lable);
+										}
+										if (mlistView.getAdapter() != null){
+											adapter1.notifyDataSetChanged();
+										}
+									}
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+					}
+					@Override
+					protected void showDialog() {
+					}
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(SearchMainActivity.this, "网络异常");
+					}
+				});
 	}
 
 	/**

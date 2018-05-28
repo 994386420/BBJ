@@ -36,8 +36,6 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.internal.framed.Variant;
-
 /**
  * Created by rtj on 2018/3/5.
  */

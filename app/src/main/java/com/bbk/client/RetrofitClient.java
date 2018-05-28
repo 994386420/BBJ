@@ -185,6 +185,27 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void getAutoApp(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getAutoApp(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void querySysMessage(Map<String, String> parameters, Observer<?> observer) {
+        apiService.querySysMessage(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void readSysmsg(Map<String, String> parameters, Observer<?> observer) {
+        apiService.readSysmsg(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

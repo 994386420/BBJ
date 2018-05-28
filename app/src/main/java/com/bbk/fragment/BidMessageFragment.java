@@ -44,17 +44,13 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
     private View mView;
     private DataFlow6 dataFlow;
     private ImageView msgUnread;
-//    private List<TextView> tlist = new ArrayList<>();
-//    private List<View> vlist = new ArrayList<>();
     private TextView mtext2,mtext1;
     private RelativeLayout meverydayjb,mmorejb;
     private View henggang1,henggang2;
-    private int curclick = 0;
     private CustomViewPager mViewPager;
     private MyFragmentPagerAdapter mPagerAdapter;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     private ImageView topbar_goback_btn;
-    private View data_head;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -84,8 +80,6 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
             return mView;
         }
         mView = inflater.inflate(R.layout.fragment_bid_message, container,false);
-//        data_head = mView.findViewById(R.id.data_head);
-//        ImmersionUtil.initstateView(getActivity(),data_head);
         dataFlow = new DataFlow6(getActivity());
         initView();
         initData();

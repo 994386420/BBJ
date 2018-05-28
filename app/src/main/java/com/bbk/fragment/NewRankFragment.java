@@ -51,6 +51,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.SystemBarTintManager;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bumptech.glide.Glide;
@@ -73,16 +74,15 @@ import java.util.Map;
  *
  * 新版发现页面
  */
-public class NewRankFragment extends BaseViewPagerFragment {
+public class NewRankFragment extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler {
 	private View rank_head, mView;
-	private DataFlow dataFlow;
 	private ListView mlistView;
-	private LinearLayout mbox;
 	private int x= 1;
 	private FindListAdapter listadapter;
 	private SmartRefreshLayout xrefresh;
 	private int topicpage = 1;
 	private List<NewFxBean> fxBeans;
+	private CommonLoadingView zLoadingView;//加载框
 
 
 	@Override
@@ -102,7 +102,6 @@ public class NewRankFragment extends BaseViewPagerFragment {
 		if (null == mView) {
 			mView = inflater.inflate(R.layout.fragment_rank, null);
 			rank_head = mView.findViewById(R.id.rank_head);
-			dataFlow = new DataFlow(getActivity());
 			ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(getActivity().getWindow(),true);
 			ImmersedStatusbarUtils.MIUISetStatusBarLightMode(getActivity(),true);
 			initstateView();
@@ -111,7 +110,7 @@ public class NewRankFragment extends BaseViewPagerFragment {
 
 		return mView;
 	}
-	private void initData(boolean is) {
+	private void initData() {
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("page", topicpage+"");
 		maps.put("type", "比比鲸原创");
@@ -122,8 +121,6 @@ public class NewRankFragment extends BaseViewPagerFragment {
 						try {
 							JSONObject jsonObject = new JSONObject(s);
 							if (jsonObject.optString("status").equals("1")) {
-								xrefresh.finishLoadMore();
-								xrefresh.finishRefresh();
 								fxBeans = JSON.parseArray(jsonObject.optString("content"), NewFxBean.class);
 								if (x == 1) {
 									listadapter = new FindListAdapter(fxBeans, getActivity());
@@ -142,28 +139,34 @@ public class NewRankFragment extends BaseViewPagerFragment {
 					}
 					@Override
 					protected void hideDialog() {
-						DialogSingleUtil.dismiss(0);
+						zLoadingView.loadSuccess();
+						xrefresh.finishLoadMore();
+						xrefresh.finishRefresh();
+						mlistView.setVisibility(View.VISIBLE);
 					}
 
 					@Override
 					protected void showDialog() {
-						DialogSingleUtil.show(getActivity());
+						zLoadingView.load();
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						Log.e("Exception", e.getMessage());
+						zLoadingView.loadError();
+						mlistView.setVisibility(View.GONE);
+						xrefresh.finishLoadMore();
+						xrefresh.finishRefresh();
 						StringUtil.showToast(getActivity(), "网络异常");
 					}
 				});
 	}
 
 	private void initView() {
+		zLoadingView = mView.findViewById(R.id.progress);
+		zLoadingView.setLoadingHandler(this);
 		xrefresh =  mView.findViewById(R.id.xrefresh);
 		refreshAndloda();
 		mlistView =  mView.findViewById(R.id.mlistview);
-		mbox = mView.findViewById(R.id.mbox);
-
 	}
 	private void refreshAndloda() {
 		xrefresh.setOnRefreshListener(new OnRefreshListener() {
@@ -171,7 +174,7 @@ public class NewRankFragment extends BaseViewPagerFragment {
 			public void onRefresh(final RefreshLayout refreshlayout) {
 					topicpage = 1;
 					x = 1;
-					initData(true);
+					initData();
 			}
 		});
 		xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -179,7 +182,7 @@ public class NewRankFragment extends BaseViewPagerFragment {
 			public void onLoadMore(RefreshLayout refreshlayout) {
 				topicpage++;
 				x = 2;
-				initData(true);
+				initData();
 			}
 		});
 	}
@@ -230,8 +233,12 @@ public class NewRankFragment extends BaseViewPagerFragment {
 
 	@Override
 	protected void loadLazyData() {
-		initData(true);
+		initData();
 	}
 
 
+	@Override
+	public void doRequestData() {
+		initData();
+	}
 }

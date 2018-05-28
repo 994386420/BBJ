@@ -73,7 +73,6 @@ import com.sina.weibo.sdk.api.share.WeiboShareSDK;
 import com.sina.weibo.sdk.constant.WBConstants;
 import com.umeng.analytics.MobclickAgent;
 
-import okhttp3.internal.framed.Variant;
 
 public class HomeActivity extends BaseFragmentActivity implements Response, ResultEvent {
 
@@ -194,34 +193,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		mimg = $(R.id.home_img_btn);
 		mzhezhao = $(R.id.mzhezhao);
 		mNumImageView = findViewById(R.id.rank_img_btn);
-//		//首页引导页只显示一次
-//		String isFirstResultUse = SharedPreferencesUtil.getSharedData(HomeActivity.this,"isFirstHomeUse", "isFirstHomeUserUse");
-//		if (TextUtils.isEmpty(isFirstResultUse)) {
-//			isFirstResultUse = "yes";
-//		}
-//		if (isFirstResultUse.equals("yes")) {
-//			SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstHomeUse","isFirstHomeUserUse", "no");
-//			HomeActivity.mHomeGudieImage.setVisibility(View.VISIBLE);
-//			HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.new_guide_biaoju);
-//		}
-//		mHomeGudieImage.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				try {
-//
-//					if (isHomeGudie) {
-//						mHomeGudieImage.setVisibility(View.GONE);
-//					}else{
-//						mHomeGudieImage.setImageResource(R.mipmap.new_guide_bijia);
-//						isHomeGudie = true;
-//
-//					}
-//				} catch (Exception e) {
-//					// TODO: handle exception
-//				}
-//			}
-//		});
 	}
 
 	public void initData() {
@@ -234,13 +205,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		dataFlow.requestData(1, "newService/queryIndexMenu", paramsMap, this, false);
 
 	}
-	//获取未读消息
-//	public void initMsg(){
-//		HashMap<String, String> paramsMap = new HashMap<>();
-//		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-//		paramsMap.put("userid",userID);
-//		dataFlow.requestData(2, "bid/queryMyBiaoMsg", paramsMap, this,false);
-//	}
 	public void initViewPager() {
 		fragments.clear();
 		mPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager(), fragments);
@@ -342,39 +306,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 				@Override
 				public void onClick(View v) {
 					 if (index == 4) {
-//						 try {
-//						 	 //我的引导页只显示一次
-//							 String isFirstResultUse = SharedPreferencesUtil.getSharedData(HomeActivity.this,"isFirstMyUse", "isFirstMyUserUse");
-//								if (TextUtils.isEmpty(isFirstResultUse)) {
-//									isFirstResultUse = "yes";
-//								}
-//								if (isFirstResultUse.equals("yes")) {
-//									SharedPreferencesUtil.putSharedData(HomeActivity.this, "isFirstMyUse","isFirstMyUserUse", "no");
-//									HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
-//									HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
-//								}
-//							 mzhezhao.setOnClickListener(new OnClickListener() {
-//
-//								 @Override
-//								 public void onClick(View v) {
-//									 try {
-//
-//										 if (isuserzhezhao) {
-//											 mzhezhao.setVisibility(View.GONE);
-//										 }else{
-//											 mzhezhao.setImageResource(R.mipmap.app_qiandao);
-//											 isuserzhezhao = true;
-//
-//										 }
-//									 } catch (Exception e) {
-//										 // TODO: handle exception
-//									 }
-//								 }
-//							 });
-//						} catch (Exception e) {
-//							// TODO: handle exception
-//						}
-//
 					 }
 					 if (index == 2){
 					 	 Flag = "home";

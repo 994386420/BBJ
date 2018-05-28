@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context="com.bbk.chat.ui.ConversationFragment">
 
-        <com.bbk.view.MyXRefreshView
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/xrefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -16,5 +16,5 @@
                     android:layout_height="match_parent">
 
                 </ListView>
-        </com.bbk.view.MyXRefreshView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

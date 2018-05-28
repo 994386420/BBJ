@@ -1,18 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.bbk.chat.ui.ConversationFragment">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
         <include
             layout="@layout/activity_no_message_layout"/>
-        <com.bbk.view.MyXRefreshView
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/xrefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -22,7 +24,15 @@
                 android:layout_height="match_parent">
 
             </ListView>
-        </com.bbk.view.MyXRefreshView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </RelativeLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+    <com.bbk.view.CommonLoadingView
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

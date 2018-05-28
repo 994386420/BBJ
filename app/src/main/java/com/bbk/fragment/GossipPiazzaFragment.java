@@ -40,6 +40,7 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.google.gson.Gson;
@@ -63,19 +64,16 @@ import java.util.Map;
  * Created by rtj on 2017/11/23.
  * 爆料
  */
-public class GossipPiazzaFragment extends BaseViewPagerFragment{
-    private DataFlow dataFlow;
+public class GossipPiazzaFragment extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler {
     private SmartRefreshLayout mrefresh;
     private RecyclerView mrecyclerview;
     private GossipPiazzaAdapter adapter;
-    private List<Map<String, String>> list;
     private int page = 1,x = 1;
-    private boolean isclear = false;
     private View mView;
     private View data_head;
     private FloatingActionButton float_btn;
-    private TextView mchongshi;
     private List<BiaoLiaoBean> biaoLiaoBeans;
+    private CommonLoadingView zLoadingView;//加载框
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -92,7 +90,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (null == mView) {
             mView = inflater.inflate(R.layout.activity_gossip_piazza, null);
-            dataFlow = new DataFlow(getActivity());
             data_head = mView.findViewById(R.id.data_head);
             initstateView();
             initView();
@@ -112,8 +109,6 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment{
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
-                                mrefresh.finishLoadMore();
-                                mrefresh.finishRefresh();
                                 biaoLiaoBeans = JSON.parseArray(jsonObject.optString("content"),BiaoLiaoBean.class);
                                 if (x == 1) {
                                     adapter = new GossipPiazzaAdapter(getActivity(), biaoLiaoBeans);
@@ -132,24 +127,31 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment{
                     }
                     @Override
                     protected void hideDialog() {
-                        DialogSingleUtil.dismiss(0);
+                       zLoadingView.loadSuccess();
+                        mrefresh.finishLoadMore();
+                        mrefresh.finishRefresh();
+                        mrecyclerview.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     protected void showDialog() {
-                        DialogSingleUtil.show(getActivity());
+                        zLoadingView.load();
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        Log.e("Exception", e.getMessage());
+                        zLoadingView.loadError();
+                        mrecyclerview.setVisibility(View.GONE);
+                        mrefresh.finishLoadMore();
+                        mrefresh.finishRefresh();
                         StringUtil.showToast(getActivity(), "网络异常");
                     }
                 });
     }
 
     private void initView() {
-        list = new ArrayList<>();
+        zLoadingView = mView.findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
         mrefresh =  mView.findViewById(R.id.mrefresh);
         mrecyclerview =  mView.findViewById(R.id.mrecyclerview);
         float_btn = mView.findViewById(R.id.float_btn);
@@ -238,6 +240,11 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment{
 
     @Override
     protected void loadLazyData() {
+        initData();
+    }
+
+    @Override
+    public void doRequestData() {
         initData();
     }
 }
