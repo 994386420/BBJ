@@ -11,15 +11,27 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
+import com.bbk.Bean.PuDaoListBean;
+import com.bbk.Bean.WoYaoBean;
 import com.bbk.adapter.BidListDetailAdapter;
 import com.bbk.adapter.BidMyListDetailAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,22 +44,19 @@ import java.util.Map;
 /**
  * 我的_02_接镖
  */
-public class BidMyListDetailActivity extends BaseActivity implements ResultEvent {
+public class BidMyListDetailActivity extends BaseActivity implements CommonLoadingView.LoadingHandler{
 
     private TabLayout tablayout;
     private ListView mlistview;
-    private XRefreshView xrefresh;
+    private SmartRefreshLayout xrefresh;
     private String userID;
-    private List<Map<String, String>> list;
     private int status = -1;
-    private boolean isclear = true;
-    private int page = 1;
+    private int page = 1,x = 1;
     private BidMyListDetailAdapter adapter;
-    private DataFlow6 dataFlow;
     private ImageView topbar_goback_btn;
-    private LinearLayout mNoMessageLayout;//无数据显示页面
-    private RelativeLayout mNoNetWorkLayout;//链接异常页面
-    private TextView mchongshi,mTitle;
+    private TextView mTitle;
+    private List<PuDaoListBean> puDaoListBeans;
+    private CommonLoadingView zLoadingView;//加载框
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +65,14 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
         View topView = findViewById(R.id.topbar_layout);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-        dataFlow = new DataFlow6(this);
         initVeiw();
         initData();
     }
     private void initVeiw() {
-        mNoMessageLayout = findViewById(R.id.no_message_layout);
-        mNoNetWorkLayout = findViewById(R.id.mzhanwei_layout);
-        mchongshi = findViewById(R.id.mchongshi);
-        mchongshi.setOnClickListener(onClickListener);
+        zLoadingView = findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
         mTitle = findViewById(R.id.title);
         mTitle.setText("扑倒的");
-        list = new ArrayList<>();
         userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +89,6 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
         tablayout.addTab(tablayout.newTab().setText("待评论"));
         tablayout.addTab(tablayout.newTab().setText("完成"));
         tablayout.setTabMode(TabLayout.MODE_FIXED);
-        xrefresh.setCustomHeaderView(new HeaderView(this));
         refreshAndloda();
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -99,8 +103,8 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
                 }else if(j==3){
                     status = 3;
                 }
-                isclear = true;
                 page = 1;
+                x = 1;
                 loadData();
             }
 
@@ -116,15 +120,6 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
         });
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            isclear = true;
-            page = 1;
-            loadData();
-        }
-    };
-
     private void initData() {
         if (getIntent().getStringExtra("status")!=null) {
             String status1 = getIntent().getStringExtra("status");
@@ -137,131 +132,89 @@ public class BidMyListDetailActivity extends BaseActivity implements ResultEvent
     }
 
     private void loadData() {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("status",status+"");
-        paramsMap.put("userid", userID);
-        paramsMap.put("page", page+"");
-        dataFlow.requestData(1, "bid/queryJBiaoMsgByStatus", paramsMap, this,true);
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("status",status+"");
+        maps.put("userid", userID);
+        maps.put("page", page+"");
+        RetrofitClient.getInstance(this).createBaseApi().queryJBiaoMsgByStatuss(
+                maps, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            if (jsonObject.optString("status").equals("1")) {
+                                puDaoListBeans = JSON.parseArray(content, PuDaoListBean.class);
+                                if (x == 1){
+                                    if (puDaoListBeans != null && puDaoListBeans.size() > 0) {
+                                        xrefresh.setEnableLoadMore(true);
+                                        adapter = new BidMyListDetailAdapter(BidMyListDetailActivity.this, puDaoListBeans);
+                                        mlistview.setAdapter(adapter);
+                                        mlistview.setVisibility(View.VISIBLE);
+                                        zLoadingView.loadSuccess();
+                                    }else {
+                                        mlistview.setVisibility(View.GONE);
+                                        zLoadingView.loadSuccess(true);
+                                        xrefresh.setEnableLoadMore(false);
+                                    }
+                                }else {
+                                    mlistview.setVisibility(View.VISIBLE);
+                                    zLoadingView.loadSuccess();
+                                    if (puDaoListBeans != null && puDaoListBeans.size() > 0) {
+                                        adapter.notifyData(puDaoListBeans);
+                                    } else {
+                                        StringUtil.showToast(BidMyListDetailActivity.this, "没有更多了");
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        xrefresh.finishLoadMore();
+                        xrefresh.finishRefresh();
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        zLoadingView.load();
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        zLoadingView.loadError();
+                        mlistview.setVisibility(View.GONE);
+                        xrefresh.finishLoadMore();
+                        xrefresh.finishRefresh();
+                        StringUtil.showToast(BidMyListDetailActivity.this, "网络异常");
+                    }
+                });
     }
 
     private void refreshAndloda() {
-        xrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
-
-
+        xrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRelease(float direction) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onRefresh(boolean isPullDown) {
-                isclear = true;
+            public void onRefresh(final RefreshLayout refreshlayout) {
                 page = 1;
-                initData();
-
-            }
-
-            @Override
-            public void onRefresh() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                page++;
-                initData();
-            }
-
-            @Override
-            public void onHeaderMove(double headerMovePercent, int offsetY) {
-                // TODO Auto-generated method stub
-
+                x = 1;
+                loadData();
             }
         });
-        MyFootView footView = new MyFootView(this);
-        xrefresh.setCustomFooterView(footView);
+        xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                page++;
+                x = 2;
+                loadData();
+            }
+        });
     }
 
-    public void addList(JSONArray array) throws JSONException {
-        if (array.length()<10) {
-            xrefresh.setPullLoadEnable(false);
-        }else{
-            xrefresh.setPullLoadEnable(true);
-        }
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("endtime",object.optString("endtime"));
-            map.put("id",object.optString("id"));
-            map.put("title",object.optString("title"));
-            map.put("price",object.optString("price"));
-            map.put("bidstatus",object.optString("bidstatus"));//判断功能按钮
-            map.put("extra",object.optString("extra"));
-            map.put("img",object.optString("img"));
-            map.put("number",object.optString("number"));
-            map.put("bidnum",object.optString("bidnum"));
-            map.put("url",object.optString("url"));
-            map.put("bidprice",object.optString("bidprice"));
-            map.put("bidid",object.optString("bidid"));
-            list.add(map);
-        }
-        if (adapter != null){
-            if (list != null && list.size() > 0){
-                adapter.notifyDataSetChanged();
-                mlistview.setVisibility(View.VISIBLE);
-                mNoMessageLayout.setVisibility(View.GONE);
-            }else {
-                mlistview.setVisibility(View.GONE);
-                mNoMessageLayout.setVisibility(View.VISIBLE);
-            }
-        }else {
-            if (list != null && list.size() > 0){
-                adapter = new BidMyListDetailAdapter(this,list);
-                mlistview.setAdapter(adapter);
-                mlistview.setOnItemClickListener(onItemClickListener);
-                adapter.notifyDataSetChanged();
-                mlistview.setVisibility(View.VISIBLE);
-                mNoMessageLayout.setVisibility(View.GONE);
-            }else {
-                mlistview.setVisibility(View.GONE);
-                mNoMessageLayout.setVisibility(View.VISIBLE);
-            }
-        }
-        isclear = false;
-    }
+
     @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        xrefresh.stopRefresh();
-        xrefresh.stopLoadMore();
-            switch (requestCode){
-                case 1:
-                    if (isclear){
-                        list.clear();
-                    }
-                    try {
-                    JSONArray array = new JSONArray(content);
-                    addList(array);
-                  }catch (Exception e){
-                mNoNetWorkLayout.setVisibility(View.VISIBLE);
-                mlistview.setVisibility(View.GONE);
-                mNoMessageLayout.setVisibility(View.GONE);
-            }
+    public void doRequestData() {
 
-                    break;
-                default:
-                    break;
-            }
     }
-    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent = new Intent(BidMyListDetailActivity.this,BidMyBillDetailActivity.class);
-            intent.putExtra("fbid",list.get(i).get("id"));
-            intent.putExtra("bidid",list.get(i).get("bidid"));
-            intent.putExtra("bidstatus",list.get(i).get("bidstatus"));
-            startActivity(intent);
-        }
-    };
 }

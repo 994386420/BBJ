@@ -71,7 +71,7 @@ public class CommonLoadingView extends FrameLayout {
         super.onFinishInflate();
         loadingView = inflate(mContext, R.layout.loading_dialog, null);
         loadingErrorView = inflate(mContext, R.layout.no_network_layout, null);
-        emptyView = inflate(mContext, R.layout.no_network_layout, null);
+        emptyView = inflate(mContext, R.layout.activity_no_message_layout, null);
         this.addView(loadingView);
         this.addView(loadingErrorView);
         this.addView(emptyView);

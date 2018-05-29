@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +17,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
+import com.bbk.Bean.PuDaoBean;
 import com.bbk.adapter.BidAcceptanceAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,22 +50,21 @@ import java.util.Map;
 /**
  * 正在接镖
  */
-public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
+public class BidAcceptanceActivity extends BaseActivity implements CommonLoadingView.LoadingHandler{
     private ListView mlistview;
-    private XRefreshView mrefresh;
+    private SmartRefreshLayout mrefresh;
     private LinearLayout mbox;
     private ImageView topbar_goback_btn;
     private String type = "";
     private String describe = "";
-    private DataFlow6 dataFlow;
-    private int page = 1;
-    private List<Map<String,String>> list;
+    private int page = 1, x = 1;
     private boolean isclear = false;
     private BidAcceptanceAdapter adapter;
     private List<Map<String, String>> titlelist;
     private int currentIndex = 1;
     private EditText search_edit;
-    private LinearLayout mNoMessageLayout;//无数据显示页面
+    private CommonLoadingView zLoadingView;//加载框
+    private List<PuDaoBean> puDaoBeans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +73,6 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         View topView = findViewById(R.id.topbar_layout);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-        dataFlow = new DataFlow6(this);
         initView();
         if (getIntent().getStringExtra("type")!= null){
             type = getIntent().getStringExtra("type");
@@ -68,7 +80,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         initData(type,1);
     }
     public void initView(){
-        list = new ArrayList<>();
+        zLoadingView =findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
         titlelist = new ArrayList<>();
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -78,10 +91,9 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             }
         });
         mbox = (LinearLayout)findViewById(R.id.mbox);
-        mrefresh = (XRefreshView)findViewById(R.id.mrefresh);
+        mrefresh = (SmartRefreshLayout) findViewById(R.id.mrefresh);
         search_edit = (EditText) findViewById(R.id.search_edit);
         mlistview = (ListView)findViewById(R.id.mlistview);
-        mrefresh.setCustomHeaderView(new HeaderView(this));
         refreshAndloda();
         search_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -97,52 +109,90 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                 return false;
             }
         });
-        mNoMessageLayout = findViewById(R.id.no_message_layout);
     }
-    public void initData(String type,int requestCode){
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("describe",describe);
-        paramsMap.put("type",type);
-        paramsMap.put("page",page+"");
-        dataFlow.requestData(requestCode, "bid/queryBidList", paramsMap, this,true);
+    public void initData(String type, final int search){
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("describe",describe);
+        maps.put("type",type);
+        maps.put("page",page+"");
+        RetrofitClient.getInstance(this).createBaseApi().queryBidList(
+                maps, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")){
+                                String content = jsonObject.optString("content");
+                                JSONObject object = new JSONObject(content);
+                                String moren = object.optString("moren");
+                                if (search == 2){
+                                    puDaoBeans = JSON.parseArray(moren,PuDaoBean.class);
+                                    handler.sendEmptyMessageDelayed(1,0);
+                                    handler.sendEmptyMessageDelayed(2,0);
+                                }else {
+                                    if (titlelist.size() == 0){
+                                        JSONArray typelist = object.getJSONArray("typelist");
+                                        loadtitlekeywords(typelist);
+                                    }
+                                    puDaoBeans = JSON.parseArray(moren,PuDaoBean.class);
+                                    if (x==1){
+                                        handler.sendEmptyMessageDelayed(2,0);
+                                    }else {
+                                        if (puDaoBeans != null && puDaoBeans.size() > 0) {
+                                            adapter.notifyData(puDaoBeans);
+                                            zLoadingView.loadSuccess();
+                                            mlistview.setVisibility(View.VISIBLE);
+                                        } else {
+                                            zLoadingView.loadSuccess();
+                                            mlistview.setVisibility(View.VISIBLE);
+                                            StringUtil.showToast(BidAcceptanceActivity.this, "没有更多了");
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        mrefresh.finishLoadMore();
+                        mrefresh.finishRefresh();
+                    }
+                    @Override
+                    protected void showDialog() {
+                        zLoadingView.load();
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        zLoadingView.loadError();
+                        mlistview.setVisibility(View.GONE);
+                        mrefresh.finishLoadMore();
+                        mrefresh.finishRefresh();
+                        if (BidAcceptanceActivity.class != null){
+                            StringUtil.showToast(BidAcceptanceActivity.this, "网络异常");
+                        }
+                    }
+                });
     }
     private void refreshAndloda() {
-        mrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
-
+        mrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRelease(float direction) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onRefresh(boolean isPullDown) {
-                    isclear = true;
-                    page = 1;
-                    initData(type,1);
-            }
-
-            @Override
-            public void onRefresh() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                    page++;
-                    initData(type,1);
-
-            }
-
-            @Override
-            public void onHeaderMove(double headerMovePercent, int offsetY) {
-                // TODO Auto-generated method stub
-
+            public void onRefresh(final RefreshLayout refreshlayout) {
+                page = 1;
+                x = 1;
+                initData(type,1);
             }
         });
-        MyFootView footView = new MyFootView(this);
-        mrefresh.setCustomFooterView(footView);
+        mrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                page++;
+                x = 2;
+                initData(type,1);
+            }
+        });
     }
     private void dosearch(){
         if (search_edit.getText().toString().isEmpty()) {
@@ -156,6 +206,8 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             }
             type = "";
             describe = search_edit.getText().toString();
+            x = 1;
+            page = 1;
             initData(type,2);
         }
     }
@@ -179,10 +231,12 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             isclear = true;
             type = "";
             page = 1;
+            x = 1;
             initData(type,1);
         } else {
             isclear = true;
             page = 1;
+            x = 1;
             type = titlelist.get(position).get("keyword");
             initData(type,1);
         }
@@ -220,6 +274,7 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
         });
         mbox.addView(view);
     }
+
     private void loadtitlekeywords(JSONArray searchwords) throws JSONException {
         Map<String, String> map = new HashMap<>();
         map.put("keyword", "我的搜索");
@@ -241,90 +296,18 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
             }
         }
     }
-    public void addList(JSONArray array) throws JSONException {
-        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        if (array.length()<10) {
-            mrefresh.setPullLoadEnable(false);
-        }else{
-            mrefresh.setPullLoadEnable(true);
-        }
-        for (int i = 0; i < array.length() ; i++) {
-            JSONObject object = array.getJSONObject(i);
-            Map<String,String> map = new HashMap<>();
-            map.put("endtime",object.optString("endtime"));
-            map.put("id",object.optString("id"));
-            map.put("img",object.optString("img"));
-            map.put("title",object.optString("title"));
-            map.put("price",object.optString("price"));
-            map.put("bidprice",object.optString("bidprice"));
-            map.put("number",object.optString("number"));
-            map.put("type",object.optString("type"));
-            map.put("url",object.optString("url"));
-            map.put("status",object.optString("status"));
-            map.put("userid",object.optString("userid"));
-            list.add(map);
-        }
-        if (adapter != null){
-            if (list != null && list.size() > 0){
-                adapter.notifyDataSetChanged();
-                mlistview.setVisibility(View.VISIBLE);
-                mNoMessageLayout.setVisibility(View.GONE);
-            }else {
-                mlistview.setVisibility(View.GONE);
-                mNoMessageLayout.setVisibility(View.VISIBLE);
-            }
-        }else {
-            if (list != null && list.size() > 0){
-                adapter = new BidAcceptanceAdapter(this,list);
-                mlistview.setAdapter(adapter);
-                mlistview.setVisibility(View.VISIBLE);
-                mNoMessageLayout.setVisibility(View.GONE);
-            }else {
-                mlistview.setVisibility(View.GONE);
-                mNoMessageLayout.setVisibility(View.VISIBLE);
-            }
-            mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        if (list.get(position).get("userid").equals(userID)){
-                            Intent intent = new Intent(BidAcceptanceActivity.this,BidBillDetailActivity.class);
-                            intent.putExtra("fbid",list.get(position).get("id"));
-                            startActivity(intent);
-                        }else {
-                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
-                            intent.putExtra("id",list.get(position).get("id"));
-                            intent.putExtra("status",list.get(position).get("status"));
-                            startActivity(intent);
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-        isclear = false;
-    }
+
     @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        mrefresh.stopLoadMore();
-        mrefresh.stopRefresh();
-        try {
-            switch (requestCode){
+    public void doRequestData() {
+        initData(type,1);
+    }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
                 case 1:
-                    JSONObject object = new JSONObject(content);
-                    if (isclear){
-                        list.clear();
-                    }
-                    if (titlelist.size() == 0){
-                        JSONArray typelist = object.getJSONArray("typelist");
-                        loadtitlekeywords(typelist);
-                    }
-                    JSONArray array = object.getJSONArray("moren");
-                    addList(array);
-                    break;
-                case 2:
-                    list.clear();
                     mbox.getChildAt(0).setVisibility(View.VISIBLE);
                     titlelist.get(currentIndex).put("isselect", "0");
                     titlelist.get(0).put("isselect", "1");
@@ -333,40 +316,27 @@ public class BidAcceptanceActivity extends BaseActivity implements ResultEvent{
                     View henggang1 = view.findViewById(R.id.bottom_view);
                     title1.setTextColor(Color.parseColor("#b40000"));
                     henggang1.setBackgroundColor(Color.parseColor("#b40000"));
-
                     View view4 = mbox.getChildAt(currentIndex);
                     TextView title3 = (TextView) view4.findViewById(R.id.item_title);
                     View henggang3 = view4.findViewById(R.id.bottom_view);
                     title3.setTextColor(Color.parseColor("#666666"));
                     henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
-                    // mhscrollview.scrollTo(view.getLeft() - 200, 0);
                     currentIndex = 0;
-                    JSONObject object1 = new JSONObject(content);
-                    JSONArray array1 = object1.getJSONArray("moren");
-                    addList(array1);
-//                    if (list != null && list.size() > 0){
-//                        adapter = new BidAcceptanceAdapter(this,list);
-//                        mlistview.setAdapter(adapter);
-//                        adapter.notifyDataSetChanged();
-//                        mlistview.setVisibility(View.VISIBLE);
-//                        mNoMessageLayout.setVisibility(View.GONE);
-//                    }else {
-//                        mlistview.setVisibility(View.GONE);
-//                        mNoMessageLayout.setVisibility(View.VISIBLE);
-//                    }
-//                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            Intent intent = new Intent(BidAcceptanceActivity.this, BidDetailActivity.class);
-//                            intent.putExtra("id",list.get(position).get("id"));
-//                            startActivity(intent);
-//                        }
-//                    });
+                    break;
+                case 2:
+                    if (puDaoBeans != null && puDaoBeans.size() > 0) {
+                        mrefresh.setEnableLoadMore(true);
+                        adapter = new BidAcceptanceAdapter(BidAcceptanceActivity.this, puDaoBeans);
+                        mlistview.setAdapter(adapter);
+                        zLoadingView.loadSuccess();
+                        mlistview.setVisibility(View.VISIBLE);
+                    }else {
+                        zLoadingView.loadSuccess(true);
+                        mlistview.setVisibility(View.GONE);
+                        mrefresh.setEnableLoadMore(false);
+                    }
                     break;
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-    }
+    };
 }

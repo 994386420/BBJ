@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:background="#ffffff"
     android:focusableInTouchMode="true"
     android:layout_height="match_parent">
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="5dp"/>-->
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,27 +14,37 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:background="#ffffff"
-        android:layout_height="wrap_content">
-
-            <include layout="@layout/home_click_layout"/>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/mrecycler"
-                android:background="#f3f3f3"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:descendantFocusability="afterDescendants"
                 android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:background="#ffffff"
+                    android:layout_height="match_parent">
 
-            </android.support.v7.widget.RecyclerView>
+                    <include layout="@layout/home_click_layout"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/mrecycler"
+                        android:background="#f3f3f3"
+                        android:layout_width="match_parent"
+                        android:descendantFocusability="afterDescendants"
+                        android:layout_height="match_parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="#f3f3f3" />
-        </LinearLayout>
+                    </android.support.v7.widget.RecyclerView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:background="#f3f3f3" />
+                </LinearLayout>
+                <com.bbk.view.CommonLoadingView
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </FrameLayout>
     <RelativeLayout
@@ -56,48 +63,6 @@
             android:layout_marginRight="15dp"
             android:visibility="gone" />
     </RelativeLayout>
-
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/progress"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@drawable/bg_progress_dialog"-->
-        <!--android:orientation="vertical"-->
-        <!--android:paddingLeft="18dp"-->
-        <!--android:paddingRight="18dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:visibility="gone"-->
-        <!--android:paddingTop="8dp"-->
-        <!--android:paddingBottom="8dp">-->
-
-        <!--<com.zyao89.view.zloading.ZLoadingView-->
-            <!--android:id="@+id/dialog_img"-->
-            <!--android:layout_width="60dp"-->
-            <!--android:layout_height="60dp"-->
-            <!--app:z_color="@color/white"-->
-            <!--app:z_type="DoubleCircleBuilder"-->
-            <!--app:z_duration_percent="0.5"/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/tips_tv"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="20dp"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text="加载中..."-->
-            <!--android:textColor="#FFFFFF"-->
-            <!--android:textSize="14sp" />-->
-
-    <!--</LinearLayout>-->
-    <com.bbk.view.CommonLoadingView
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"/>
 
     <ImageButton
         android:id="@+id/to_top_btn"

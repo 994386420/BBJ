@@ -138,6 +138,7 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
             view = inflater.inflate(R.layout.fragment_bid_chat_ytx, container, false);
             listView = (ListView) view.findViewById(R.id.list);
             xrefresh = view.findViewById(R.id.xrefresh);
+            xrefresh.setEnableLoadMore(false);
             refreshAndloda();
             friendshipManagerPresenter = new FriendshipManagerPresenter(this);
             groupManagerPresenter = new GroupManagerPresenter(this);
@@ -152,15 +153,6 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         xrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                Collections.sort(conversationList);
-                handler.sendEmptyMessageDelayed(1,0);
-                if (getParentFragment() instanceof BidMessageFragment)
-                    ((BidMessageFragment)getParentFragment()).setMsgUnread(getTotalUnreadNum() == 0);
-            }
-        });
-        xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
                 Collections.sort(conversationList);
                 handler.sendEmptyMessageDelayed(1,0);
                 if (getParentFragment() instanceof BidMessageFragment)

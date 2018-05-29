@@ -1,14 +1,21 @@
 package com.bbk.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bbk.Bean.PuDaoBean;
 import com.bbk.activity.BaseActivity;
+import com.bbk.activity.BidBillDetailActivity;
+import com.bbk.activity.BidDetailActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -24,20 +31,20 @@ import java.util.Map;
  */
 
 public class BidAcceptanceAdapter extends BaseAdapter{
-    private List<Map<String,String>> list;
+    private List<PuDaoBean> puDaoBeans;
     private Context context;
-    public BidAcceptanceAdapter(Context context,List<Map<String,String>> list){
-        this.list = list;
+    public BidAcceptanceAdapter(Context context,List<PuDaoBean> list){
+        this.puDaoBeans = list;
         this.context = context;
     }
     @Override
     public int getCount() {
-        return list.size();
+        return puDaoBeans.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return puDaoBeans.get(position);
     }
 
     @Override
@@ -45,12 +52,12 @@ public class BidAcceptanceAdapter extends BaseAdapter{
         return position;
     }
 
-    public void notifyData(List<Map<String,String>> List){
-        this.list.addAll(List);
+    public void notifyData(List<PuDaoBean> List){
+        this.puDaoBeans.addAll(List);
         notifyDataSetChanged();
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
             if (convertView == null) {
                 viewHolder = new ViewHolder();
@@ -64,22 +71,24 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                 viewHolder.mbackground = convertView.findViewById(R.id.item_image_background);
                 viewHolder.mStatus = convertView.findViewById(R.id.status_text);
                 viewHolder.mTimeStatus = convertView.findViewById(R.id.time_status_text);
+                viewHolder.itemlayout = convertView.findViewById(R.id.result_item);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
           try {
-            Map<String,String> map = list.get(position);
-            String endtime = map.get("endtime");
-            String img = map.get("img");
-            String id = map.get("id");
-            String title = map.get("title");
-            String price = map.get("price");
-            String bidprice = map.get("bidprice");
-            String number = map.get("number");
-            String type = map.get("type");
-            String url = map.get("url");
-            String status = map.get("status");
+            final PuDaoBean puDaoBean = puDaoBeans.get(position);
+            String endtime = puDaoBean.getEndtime();
+            String img = puDaoBean.getImg();
+            String id = puDaoBean.getId();
+            String title = puDaoBean.getTitle();
+            String price = puDaoBean.getPrice();
+            String bidprice = puDaoBean.getBidprice();
+            String number = puDaoBean.getNumber();
+            String type = puDaoBean.getType();
+            String url = puDaoBean.getUrl();
+            String status = puDaoBean.getStatus();
+            final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
             if (status != null){
                 if (status.equals("1")){
                 viewHolder.mStatus.setText("扑倒");
@@ -94,7 +103,6 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                 viewHolder.mtime.setVisibility(View.GONE);
                 }
             }
-//            viewHolder.mtime.start();
             viewHolder.item_title.setText(title);
             viewHolder.mbidprice.setText("扑倒价  "+bidprice);
             viewHolder.mprice.setText("¥"+price);
@@ -104,6 +112,25 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                     .priority(Priority.HIGH)
                     .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.item_img);
+              viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View view) {
+                      try {
+                          if (puDaoBean.getUserid().equals(userID)){
+                              Intent intent = new Intent(context,BidBillDetailActivity.class);
+                              intent.putExtra("fbid",puDaoBean.getId());
+                              context.startActivity(intent);
+                          }else {
+                              Intent intent = new Intent(context, BidDetailActivity.class);
+                              intent.putExtra("id",puDaoBean.getId());
+                              intent.putExtra("status",puDaoBean.getStatus());
+                              context.startActivity(intent);
+                          }
+                      }catch (Exception e){
+                          e.printStackTrace();
+                      }
+                  }
+              });
             return convertView;
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,6 +142,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
         TextView item_title,mbidprice,mcount,mprice,mStatus;
         RushBuyCountDownTimerView mtime;
         TextView mTimeStatus;//根据时间是否完成显示状态
+        LinearLayout itemlayout;
     }
 
 }

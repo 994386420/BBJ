@@ -12,8 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bbk.Bean.PuDaoListBean;
+import com.bbk.Bean.WoYaoBean;
 import com.bbk.activity.BidActivity;
+import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidMyBillDetailActivity;
+import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.BidMyPlActivity;
 import com.bbk.activity.BidMyWantPLActivity;
 import com.bbk.activity.R;
@@ -37,26 +41,29 @@ import java.util.Map;
 
 public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
     private Context context;
-    private List<Map<String,String>> list;
+    private List<PuDaoListBean> puDaoListBeans;
     private int curposition;
     private DataFlow6 dataFlow;
 
 
 
-    public BidMyListDetailAdapter(Context context, List<Map<String,String>> list){
+    public BidMyListDetailAdapter(Context context, List<PuDaoListBean> list){
         this.context = context;
-        this.list = list;
+        this.puDaoListBeans = list;
         this.dataFlow = new DataFlow6(context);
     }
-
+    public void notifyData(List<PuDaoListBean> beans){
+        this.puDaoListBeans.addAll(beans);
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
-        return list.size();
+        return puDaoListBeans.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return puDaoListBeans.get(position);
     }
 
     @Override
@@ -84,21 +91,20 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
             vh.mpricebox = (LinearLayout) convertView.findViewById(R.id.mpricebox);
             vh.mtextbox = (LinearLayout) convertView.findViewById(R.id.mtextbox);
             vh.mhenggang = convertView.findViewById(R.id.mhenggang);
+            vh.itemlayout = convertView.findViewById(R.id.result_item);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
         try {
-            if (list.size()>0){
-                Map<String,String> map = list.get(position);
-                String bidstatus = map.get("bidstatus");
-                final String id = map.get("bidid");
-                final String fbid = map.get("id");
-                final String endtime = map.get("endtime");
+                final PuDaoListBean puDaoListBean = puDaoListBeans.get(position);
+                String bidstatus = puDaoListBean.getBidstatus();
+                final String id = puDaoListBean.getBidid();
+                final String fbid = puDaoListBean.getId();
+                final String endtime = puDaoListBean.getEndtime();
 //                vh.mtime.start();
-                initData(vh,map);
+                initData(vh,puDaoListBean);
                 vh.mtext1.setVisibility(View.GONE);
-                Log.i("===","===="+bidstatus);
                 switch (bidstatus){
                     case "-3":
                         vh.mtypetext.setText("已失效");
@@ -200,9 +206,18 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                             }
                         });
                         break;
-                }
 
             }
+            vh.itemlayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context,BidMyBillDetailActivity.class);
+                    intent.putExtra("fbid",puDaoListBean.getId());
+                    intent.putExtra("bidid",puDaoListBean.getBidid());
+                    intent.putExtra("bidstatus",puDaoListBean.getBidstatus());
+                    context.startActivity(intent);
+                }
+            });
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -213,20 +228,20 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
         paramsMap.put("jbid",id);
         dataFlow.requestData(i, "bid/cancelBid", paramsMap, this,true);
     }
-    public void initData(BidMyListDetailAdapter.ViewHolder vh, Map<String, String> map){
+    public void initData(BidMyListDetailAdapter.ViewHolder vh, PuDaoListBean puDaoListBean){
         try {
-            String title = map.get("title");
-            String price = map.get("price");
-            String img = map.get("img");
-            String number = map.get("number");
-            String bidnum = map.get("bidnum");
-            String bidprice = map.get("bidprice");
-            String url = map.get("url");
+            String title = puDaoListBean.getTitle();
+            String price = puDaoListBean.getPrice();
+            String img = puDaoListBean.getImg();
+            String number = puDaoListBean.getNumber();
+            String bidnum = puDaoListBean.getBidnum();
+            String bidprice = puDaoListBean.getBidprice();
+            String url = puDaoListBean.getUrl();
             vh.item_title.setText(title);
             vh.mcount.setText("x"+number);
             vh.mbidnum.setText("扑倒 "+bidnum+" 人");
-            vh.mprice.setText(price);
-            vh.mendprice.setText("￥"+bidprice);
+            vh.mprice.setText("¥"+price);
+            vh.mendprice.setText("¥"+bidprice);
             Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);
         }catch (Exception e){
             e.printStackTrace();
@@ -241,7 +256,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                 if(dataJo.optInt("status")<=0){
                     StringUtil.showToast(context, "取消失败");
                 }else{
-                    list.remove(curposition);
+                    puDaoListBeans.remove(curposition);
                     notifyDataSetChanged();
                     StringUtil.showToast(context, "取消成功");
                 }
@@ -258,5 +273,6 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
         ImageView item_img;
         LinearLayout mpricebox,mtextbox;
         View mhenggang;
+        LinearLayout itemlayout;
     }
 }

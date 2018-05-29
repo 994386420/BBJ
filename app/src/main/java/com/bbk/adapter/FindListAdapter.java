@@ -129,14 +129,14 @@ public class FindListAdapter extends BaseAdapter implements ResultEvent{
 			params.put("wzid", fxBeans.get(position).getId());
 			params.put("token", token);
 			params.put("type", "2");
-			dataFlow.requestData(1, "newService/insertWenzhangGuanzhu", params, this);
+			dataFlow.requestData(1, "newService/insertWenzhangGuanzhu", params, this,false);
 		} else {
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("userid", "-1");
 			params.put("token", token);
 			params.put("wzid", fxBeans.get(position).getId());
 			params.put("type", "2");
-			dataFlow.requestData(1, "newService/insertWenzhangGuanzhu", params, this);
+			dataFlow.requestData(1, "newService/insertWenzhangGuanzhu", params, this,false);
 		}
 
 	}

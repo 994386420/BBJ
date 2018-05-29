@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 public class StringUtil {
 	private static RelativeLayout inflater;
+	static Toast toast;
+	static TextView title;
 	public static String getResultNum(String str) {
 		char[] a = str.toCharArray();
 		StringBuffer sb = new StringBuffer();
@@ -87,16 +89,27 @@ public class StringUtil {
 	//提示消息自定义弹窗
 	public static void showToast(Context context,String tishi) {
 // TODO Auto-generated method stub
+		if (toast == null){
+		toast = new Toast(context);
 		View layout = inflater.inflate(context, R.layout.toast_layout, null);
-		TextView title = layout.findViewById(R.id.toast_title);
-		title.setText(tishi);
-		Toast toast = new Toast(context);
+		title = layout.findViewById(R.id.toast_title);
 		toast.setDuration(Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.setView(layout);
+		}
+		title.setText(tishi);
 		toast.show();
 	}
-
+	public static void showToast(Context ctx, int stringId) {
+		showToast(ctx, ctx.getString(stringId));
+	}
+	public static void cancelToast() {
+		if (toast != null) {
+			toast.cancel();
+			toast = null;
+			title = null;
+		}
+	}
 	public  static List removeDuplicate(List list)  {
 		for  ( int  i  =   0 ; i  <  list.size()  -   1 ; i ++ )  {
 			for  ( int  j  =  list.size()  -   1 ; j  >  i; j -- )  {

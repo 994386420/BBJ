@@ -193,21 +193,21 @@ public class BidHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         try {
                 switch (imgs.length()){
                     case 1:
-                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg1);
+                        Glide.with(context).load(imgs.getString(0)).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg1);
 //                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg2);
                         viewHolder.mimg2.setImageResource(R.color.white);
                         viewHolder.mimg3.setImageResource(R.color.white);
 //                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg3);
                         break;
                     case 2:
-                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg1);
-                        Glide.with(context).load(imgs.getString(1)).into(viewHolder.mimg2);
+                        Glide.with(context).load(imgs.getString(0)).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg1);
+                        Glide.with(context).load(imgs.getString(1)).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg2);
                         viewHolder.mimg3.setImageResource(R.color.white);
                         break;
                     case 3:
-                        Glide.with(context).load(imgs.getString(0)).into(viewHolder.mimg1);
-                        Glide.with(context).load(imgs.getString(1)).into(viewHolder.mimg2);
-                        Glide.with(context).load(imgs.getString(2)).into(viewHolder.mimg3);
+                        Glide.with(context).load(imgs.getString(0)).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg1);
+                        Glide.with(context).load(imgs.getString(1)).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg2);
+                        Glide.with(context).load(imgs.getString(2)).placeholder(R.mipmap.zw_img_300).into(viewHolder.mimg3);
                         break;
                 }
 //            for (int j = 0; j < 3; j++) {

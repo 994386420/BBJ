@@ -206,6 +206,53 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void queryIndex(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryIndex(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryBidList(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryBidList(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryBidByStatus(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryBidByStatus(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryJBiaoMsgByStatuss(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryJBiaoMsgByStatus(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void querySysTMessage(Map<String, String> parameters, Observer<?> observer) {
+        apiService.querySysTMessage(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryPLMyRe(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryPLMyRe(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryPLOtherRe(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryPLOtherRe(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

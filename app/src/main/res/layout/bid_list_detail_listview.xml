@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:id="@+id/result_item"
     android:orientation="vertical">
 
     <LinearLayout
@@ -75,7 +76,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:lines="2"
-                android:text="Apple iPhone 5s 16G 金色Apple iPhone 5s 16G 金色 Apple iPhone 5s 16G 金色 "
+                android:text=" "
                 android:textColor="#111111"
                 android:textSize="14dp" />
 
@@ -114,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="5456"
+                    android:text=""
                     android:textColor="#b40000"
                     android:textSize="25dp" />
 

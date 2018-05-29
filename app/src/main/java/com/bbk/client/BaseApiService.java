@@ -37,5 +37,23 @@ public interface BaseApiService<T> {
     //读取消息
     @POST("bid/readSysmsg")
     Observable<String> readSysmsg(@QueryMap Map<String, String> map);
-
+    //扑吧首页数据
+    @POST("bid/queryIndex")
+    Observable<String> queryIndex(@QueryMap Map<String, String> map);
+    //扑倒数据
+    @POST("bid/queryBidList")
+    Observable<String> queryBidList(@QueryMap Map<String, String> map);
+    //我要的list列表数据
+    @POST("bid/queryBidByStatus")
+    Observable<String> queryBidByStatus(@QueryMap Map<String, String> map);
+    //扑倒的list列表数据
+    @POST("bid/queryJBiaoMsgByStatus")
+    Observable<String> queryJBiaoMsgByStatus(@QueryMap Map<String, String> map);
+    //消息中心接口
+    @POST("newService/querySysTMessage")
+    Observable<String> querySysTMessage(@QueryMap Map<String, String> map);
+    @POST("newService/queryPLMyRe")
+    Observable<String> queryPLMyRe(@QueryMap Map<String, String> map);
+    @POST("newService/queryPLOtherRe")
+    Observable<String> queryPLOtherRe(@QueryMap Map<String, String> map);
 }

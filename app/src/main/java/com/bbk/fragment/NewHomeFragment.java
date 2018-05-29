@@ -463,7 +463,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                                 Refresh("2");
                             }else if (x == 2) {
-                                if (content != null && !content.toString().equals("[]")){
+                                if (pubaBeans != null && pubaBeans.size()>0){
                                     pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                                     homeadapter.notifyBjData(pubaBeans);
                                 }else {
@@ -475,7 +475,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 blBeans = JSON.parseArray(content, NewHomeBlBean.class);
                                 Refresh("3");
                             }else if (x == 2) {
-                                if (content != null && !content.toString().equals("[]")){
+                                if (blBeans != null && blBeans.size() > 0){
                                     blBeans = JSON.parseArray(content, NewHomeBlBean.class);
                                     homeadapter.notifyBlData(blBeans);
                                 }else {
@@ -487,7 +487,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
                                 Refresh("4");
                             }else if (x == 2) {
-                                if (content != null && !content.toString().equals("[]")){
+                                if (fxBeans != null && fxBeans.size() > 0){
                                     fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
                                     homeadapter.notifyFxData(fxBeans);
                                 }else {
@@ -499,7 +499,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
                                 Refresh("1");
                             }else if (x == 2) {
-                                if (content != null && !content.toString().equals("[]")){
+                                if (czgBeans != null && czgBeans.size() > 0){
                                     czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
                                     homeadapter.notifyData(czgBeans);
                                 }else {

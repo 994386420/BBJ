@@ -62,15 +62,16 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CircleImageView1;
 import com.bbk.view.HeaderView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 
 public class UserFragment extends BaseViewPagerFragment implements OnClickListener ,ResultEvent{
 
 	private View mView;
-	private Context context;
-	private RelativeLayout helpLayout,newpinglun;
-	public TextView isLoginTv;
-	private TextView hasNewTv,sign,mjb,mcollectnum,mfootnum,mnewmsg,mJlzText;
+	private RelativeLayout newpinglun;
+	private TextView sign,mjb,mcollectnum,mfootnum,mnewmsg,mJlzText;
 	private View user_head;
 	private ImageView mjbimg;
 	private LinearLayout mbackground;
@@ -87,7 +88,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	private int num;
 	private TextView mchongshi,mtaobaouser,mtaobaotext;
 	private RelativeLayout mzhanwei;
-	private XRefreshView xrefresh;
+	private SmartRefreshLayout xrefresh;
 	private boolean isTaoBaoLogin = false;
 	private boolean isuserzhezhao = false;
 
@@ -178,34 +179,13 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		mcollection.setOnClickListener(this);
 		user_name.setOnClickListener(this);
 		mtaobaologin.setOnClickListener(this);
-		xrefresh.setCustomHeaderView(new HeaderView(getActivity()));
-		xrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
+		xrefresh.setEnableLoadMore(false);
+		xrefresh.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRefresh() {
-
-			}
-
-			@Override
-			public void onRefresh(boolean isPullDown) {
+			public void onRefresh(final RefreshLayout refreshlayout) {
 				initData();
 			}
-
-			@Override
-			public void onLoadMore(boolean isSilence) {
-
-			}
-
-			@Override
-			public void onRelease(float direction) {
-
-			}
-
-			@Override
-			public void onHeaderMove(double headerMovePercent, int offsetY) {
-
-			}
 		});
-
 	}
 
 	private int getStatusBarHeight() {
@@ -681,7 +661,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
 		JSONObject object;
-		xrefresh.stopRefresh();
+		xrefresh.finishRefresh();
 		switch (requestCode) {
 		case 1:
 			try {
@@ -723,7 +703,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 					imgurl);
 			SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "nickname",
 					username);
-//			initsigntext(continuous_day,jinbi);
 			if (!messages.equals("0")) {
 				mnewmsg.setVisibility(View.VISIBLE);
 			}else{

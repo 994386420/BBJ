@@ -126,7 +126,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 									listadapter = new FindListAdapter(fxBeans, getActivity());
 									mlistView.setAdapter(listadapter);
 								} else if (x == 2) {
-									if (jsonObject.optString("content") != null && !jsonObject.optString("content").toString().equals("[]")) {
+									if (fxBeans != null && fxBeans.size() > 0) {
 										listadapter.notifyData(fxBeans);
 									} else {
 										StringUtil.showToast(getActivity(), "没有更多了");

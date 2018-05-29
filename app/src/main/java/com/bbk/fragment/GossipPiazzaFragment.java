@@ -114,7 +114,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
                                     adapter = new GossipPiazzaAdapter(getActivity(), biaoLiaoBeans);
                                     mrecyclerview.setAdapter(adapter);
                                 }else if (x == 2) {
-                                    if (jsonObject.optString("content") != null && !jsonObject.optString("content").toString().equals("[]")){
+                                    if (biaoLiaoBeans != null && biaoLiaoBeans.size() > 0){
                                         adapter.notifyData(biaoLiaoBeans);
                                     }else {
                                         StringUtil.showToast(getActivity(),"没有更多了");
