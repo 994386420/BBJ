@@ -57,7 +57,6 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
     private BidMsgInformAdapter adapter;
     private SmartRefreshLayout xrefresh;
     private int topicpage = 1,x = 1;
-    private LinearLayout mNoMessageLayout;//无数据显示页面
     private List<PubaMessageBean> pubaMessageBeans;
     private CommonLoadingView zLoadingView;//加载框
 
@@ -85,7 +84,6 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
     private void initView() {
         zLoadingView = mView.findViewById(R.id.progress);
         zLoadingView.setLoadingHandler(this);
-        mNoMessageLayout = mView.findViewById(R.id.no_message_layout);
         listView =  mView.findViewById(R.id.list);
         xrefresh = mView.findViewById(R.id.xrefresh);
         refreshAndloda();
@@ -125,10 +123,21 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
                             if (jsonObject.optString("status").equals("1")) {
                                 pubaMessageBeans = JSON.parseArray(content, PubaMessageBean.class);
                                  if (x == 1){
-                                     adapter = new BidMsgInformAdapter(getActivity(), pubaMessageBeans);
-                                     listView.setAdapter(adapter);
+                                     if (pubaMessageBeans != null && pubaMessageBeans.size() > 0) {
+                                         xrefresh.setEnableLoadMore(true);
+                                         adapter = new BidMsgInformAdapter(getActivity(), pubaMessageBeans);
+                                         listView.setAdapter(adapter);
+                                         listView.setVisibility(View.VISIBLE);
+                                         zLoadingView.loadSuccess();
+                                     }else {
+                                         listView.setVisibility(View.GONE);
+                                         zLoadingView.loadSuccess(true);
+                                         xrefresh.setEnableLoadMore(false);
+                                     }
                                  }else {
-                                    if (content != null && !content.equals("[]")) {
+                                     listView.setVisibility(View.VISIBLE);
+                                     zLoadingView.loadSuccess();
+                                    if (pubaMessageBeans != null && pubaMessageBeans.size() > 0) {
                                         adapter.notifyData(pubaMessageBeans);
                                     } else {
                                         StringUtil.showToast(getActivity(), "没有更多了");
@@ -141,8 +150,6 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
                     }
                     @Override
                     protected void hideDialog() {
-                        listView.setVisibility(View.VISIBLE);
-                        zLoadingView.loadSuccess();
                         xrefresh.finishLoadMore();
                         xrefresh.finishRefresh();
                     }

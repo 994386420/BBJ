@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
+import com.bbk.Bean.NewFxBean;
 import com.bbk.Decoration.TwoDecoration;
 import com.bbk.Decoration.TwoDecoration2;
 import com.bbk.activity.BidAcceptanceActivity;
@@ -20,12 +22,22 @@ import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.adapter.BidHomeAdapter;
+import com.bbk.adapter.FindListAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +53,7 @@ import java.util.Map;
  * 发镖首页
  */
 
-public class BidHomeFragment extends BaseViewPagerFragment implements View.OnClickListener, ResultEvent {
+public class BidHomeFragment extends BaseViewPagerFragment implements View.OnClickListener,CommonLoadingView.LoadingHandler {
     private DataFlow6 dataFlow;
     private View mView;
     private RecyclerView mrecyclerview;
@@ -49,12 +61,12 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     private BidHomeAdapter adapter;
     private JSONArray list3array = new JSONArray();
     private JSONArray list4array = new JSONArray();
-    private View data_head;
     private View mzhuangtai;
-    private XRefreshView mrefresh;
+    private SmartRefreshLayout mrefresh;
     private boolean isclear = true;
     private ImageView topbar_goback_btn;
     private LinearLayout ll_search_layout;
+    private CommonLoadingView zLoadingView;//加载框
 
 
     @Override
@@ -75,19 +87,16 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
             dataFlow = new DataFlow6(getActivity());
             getActivity().getWindow().setBackgroundDrawable(null);
             mView = inflater.inflate(R.layout.fragment_bid_home, null);
-//            View topView = mView.findViewById(R.id.lin1);
-//            // 实现沉浸式状态栏
-//            ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
             initView();
             mzhuangtai = mView.findViewById(R.id.mzhuangtai);
-//            initstateView();
-//            initstateView();
             initData();
         }
         return mView;
     }
 
     public void initView(){
+        zLoadingView = mView.findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
         ll_search_layout = mView.findViewById(R.id.search_layout);
         ll_search_layout.setOnClickListener(this);
        list = new ArrayList<>();
@@ -99,8 +108,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
             }
         });
         mrecyclerview = (RecyclerView)mView.findViewById(R.id.mrecyclerview);
-        mrefresh = (XRefreshView) mView.findViewById(R.id.mrefresh);
-        mrefresh.setCustomHeaderView(new HeaderView(getActivity()));
+        mrefresh = (SmartRefreshLayout) mView.findViewById(R.id.mrefresh);
         refreshAndloda();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -117,90 +125,74 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     }
     public void initData(){
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("userid",userID);
-        dataFlow.requestData(1, "bid/queryIndex", paramsMap, this,true);
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid",userID);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().queryIndex(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (isclear){
+                                list.clear();
+                            }
+                            Map<String,String> map = new HashMap<>();
+                            JSONObject json = new JSONObject(jsonObject.optString("content"));
+                            String list1 = json.optString("list1");
+                            String list2 = json.optString("list2");
+                            String list3 = json.optString("list3");
+                            String list4 = json.optString("list4");
+                            list3array = new JSONArray(list3);
+                            list4array = new JSONArray(list4);
+                            map.put("list1",list1);
+                            map.put("list2",list2);
+                            map.put("list3",list3);
+                            map.put("list4",list4);
+                            list.add(map);
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        zLoadingView.loadSuccess();
+                        mrefresh.finishLoadMore();
+                        mrefresh.finishRefresh();
+                        mrecyclerview.setVisibility(View.VISIBLE);
+                    }
+                    @Override
+                    protected void showDialog() {
+                        zLoadingView.load();
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        zLoadingView.loadError();
+                        mrecyclerview.setVisibility(View.GONE);
+                        mrefresh.finishLoadMore();
+                        mrefresh.finishRefresh();
+                        StringUtil.showToast(getActivity(), "网络异常");
+                    }
+                });
     }
 
     private void refreshAndloda() {
-        mrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
-
-
+        mrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRelease(float direction) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onRefresh(boolean isPullDown) {
+            public void onRefresh(final RefreshLayout refreshlayout) {
                 isclear = true;
                 initData();
-
-            }
-
-            @Override
-            public void onRefresh() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                initData();
-            }
-
-            @Override
-            public void onHeaderMove(double headerMovePercent, int offsetY) {
-                // TODO Auto-generated method stub
-
             }
         });
-        MyFootView footView = new MyFootView(getActivity());
-        mrefresh.setCustomFooterView(footView);
-    }
-    // 状态栏高度
-    private int getStatusBarHeight() {
-        Class<?> c = null;
-
-        Object obj = null;
-
-        Field field = null;
-
-        int x = 0, sbar = 0;
-
-        try {
-
-            c = Class.forName("com.android.internal.R$dimen");
-
-            obj = c.newInstance();
-
-            field = c.getField("status_bar_height");
-
-            x = Integer.parseInt(field.get(obj).toString());
-
-            sbar = getContext().getResources().getDimensionPixelSize(x);
-
-        } catch (Exception e1) {
-
-            e1.printStackTrace();
-
-        }
-
-        return sbar;
+        mrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                initData();
+            }
+        });
     }
 
-    // 沉浸式状态栏
-    private void initstateView() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            mzhuangtai.setVisibility(View.VISIBLE);
-        }
-        int result = getStatusBarHeight();
-        ViewGroup.LayoutParams layoutParams = mzhuangtai.getLayoutParams();
-        layoutParams.height = result;
-        mzhuangtai.setLayoutParams(layoutParams);
-
-    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -218,31 +210,13 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     }
 
     @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        try {
-            mrefresh.stopLoadMore();
-            mrefresh.stopRefresh();
-            if (isclear){
-                list.clear();
-            }
-            Map<String,String> map = new HashMap<>();
-            JSONObject json = new JSONObject(content);
-            String list1 = json.optString("list1");
-            String list2 = json.optString("list2");
-            String list3 = json.optString("list3");
-            String list4 = json.optString("list4");
-            list3array = new JSONArray(list3);
-            list4array = new JSONArray(list4);
-            map.put("list1",list1);
-            map.put("list2",list2);
-            map.put("list3",list3);
-            map.put("list4",list4);
-            list.add(map);
-            adapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void onDestroy() {
+        super.onDestroy();
+        StringUtil.cancelToast();
     }
 
-
+    @Override
+    public void doRequestData() {
+        initData();
+    }
 }
