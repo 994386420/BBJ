@@ -37,6 +37,9 @@ import android.widget.Toast;
 
 import com.baidu.mobstat.StatService;
 import com.bbk.adapter.CustomFragmentPagerAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.entity.XGMessageEntity;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
@@ -74,10 +77,9 @@ import com.sina.weibo.sdk.constant.WBConstants;
 import com.umeng.analytics.MobclickAgent;
 
 
-public class HomeActivity extends BaseFragmentActivity implements Response, ResultEvent {
+public class HomeActivity extends BaseFragmentActivity implements Response {
 
 	private static final int TAB_SIZE = 5;
-	private int screenWidth = 0;
 	private static CustomViewPager mViewPager;
 	private CustomFragmentPagerAdapter mPagerAdapter;
 	private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
@@ -86,26 +88,16 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 			R.mipmap.new_bottom_news_btn, R.mipmap.bottom_find02, R.mipmap.bottom_my02 };
 	private int[] tabImgGray = { R.mipmap.bottom_home01,R.mipmap.bottom_baoliao01,
 			R.mipmap.new_bottom_news_normal, R.mipmap.bottom_find01, R.mipmap.bottom_my01 };
-//	private int[] tabImgBlue = { R.mipmap.bottom_home02,R.mipmap.bottom_find02,R.mipmap.bottom_baoliao02
-//			,R.mipmap.bottom_data02 , R.mipmap.bottom_my02 };
-//	private int[] tabImgGray = { R.mipmap.bottom_home01,R.mipmap.bottom_find01,R.mipmap.bottom_baoliao01 ,
-//			R.mipmap.bottom_data01, R.mipmap.bottom_my01 };
 	private List<String> tabImgBlue2 = new ArrayList<>();
 	private List<String> tabImgGray2 = new ArrayList<>();
 	private boolean isshow = false;
 	private int currentIndex = 0;
 	private IWeiboShareAPI mWeiboShareAPI = null;
-	private TextView mtext;
-	private ImageView mimg;
-	private int k = 0;
-	private boolean iscli = false;
-	private DataFlow dataFlow;
 	public static ImageView mzhezhao;
-	private boolean isuserzhezhao = false,isHomeGudie = false;
 	public static Activity instance = null;
 	private String bcolor = "#ffffff";
 	private String tcolor = "#444444";
-	public static boolean firstFlag = true,isAlertUpdate = false;
+	public static boolean isAlertUpdate = false;
 	private String ctcolor = "#ff7d41";
 	private UpdateVersionService updateVersionService;
 	private final String mPageName = "HomeActivity";
@@ -121,10 +113,8 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		instance = this;
 		mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, Constants.WEIBO_APP_KEY);
 		mWeiboShareAPI.registerApp();
-		dataFlow = new DataFlow(this);
 		initView();
 		initData();
-//		initMsg();
 	}
 
 	@Override
@@ -189,8 +179,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		mViewPager = $(R.id.main_layout);
 		mViewPager.setScanScroll(false);
 		tabParentLayout = $(R.id.tab_layout);
-		mtext = $(R.id.mtext);
-		mimg = $(R.id.home_img_btn);
 		mzhezhao = $(R.id.mzhezhao);
 		mNumImageView = findViewById(R.id.rank_img_btn);
 	}
@@ -201,9 +189,74 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		clickTab();
 		mViewPager.setOffscreenPageLimit(4);
 		mViewPager.setCurrentItem(0);
-		HashMap<String, String> paramsMap = new HashMap<>();
-		dataFlow.requestData(1, "newService/queryIndexMenu", paramsMap, this, false);
+		Map<String, String> paramsMap = new HashMap<>();
+		RetrofitClient.getInstance(this).createBaseApi().queryIndexMenu(
+				paramsMap, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							String content = jsonObject.optString("content");
+							if (jsonObject.optString("status").equals("1")) {
+								JSONObject object = new JSONObject(content);
+								if ("1".equals(object.optString("isshow"))){
+									isshow = true;
+									JSONArray img = object.optJSONArray("img");
+									JSONArray imgs = object.optJSONArray("imgs");
+									for (int i = 0; i < 5; i++) {
+										tabImgBlue2.add(imgs.optString(i));
+										tabImgGray2.add(img.optString(i));
+									}
+									ctcolor = object.optString("ccolors");
+									tcolor = object.optString("ccolor");
+									bcolor = object.optString("bcolor");
+									tabParentLayout.setBackgroundColor(Color.parseColor(bcolor));
+									for (int i = 0; i < 5; i++) {
+										LinearLayout nextLayout = ((LinearLayout) tabParentLayout.getChildAt(i));
+										ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
+										if (isshow){
+											Glide.with(HomeActivity.this).load(tabImgGray2.get(i)).placeholder(tabImgGray[i]).into(nextIV);
+										}else {
+											nextIV.setImageResource(tabImgGray[i]);
+										}
+										TextView nextTV = (TextView) nextLayout.getChildAt(1);
+										nextTV.setTextColor(Color.parseColor(tcolor));
+									}
+									LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
+									ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
+									if (isshow){
+										Log.e("==================",""+tabImgGray2.get(currentIndex));
+										Glide.with(HomeActivity.this).
+												load(tabImgBlue2.get(currentIndex))
+												.placeholder(tabImgBlue[0]).
+												into(currentIV);
+									}else {
+										currentIV.setImageResource(tabImgBlue[currentIndex]);
+									}
+									TextView currentTV = (TextView) currentLayout.getChildAt(1);
+									currentTV.setTextColor(Color.parseColor(ctcolor));
+								}else {
+									isshow = false;
+									switchTab(currentIndex);
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+					}
 
+					@Override
+					protected void showDialog() {
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(HomeActivity.this, "网络异常");
+					}
+				});
 	}
 	public void initViewPager() {
 		fragments.clear();
@@ -227,9 +280,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 
 	public void initViewPagerData() {
 		NewHomeFragment homeFragment = new NewHomeFragment();
-//		HomeFragment2 homeFragment = new HomeFragment2();
 		NewRankFragment rankFragment = new NewRankFragment();
-//		DataFragment dataFragment = new DataFragment();
 		HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
 		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();
 		UserFragment userFragment = new UserFragment();
@@ -238,11 +289,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		fragments.add(bidMessageFragment);//消息
 		fragments.add(rankFragment);//发现
 		fragments.add(userFragment);//我的
-//		fragments.add(homeFragment);//首页
-//		fragments.add(rankFragment);//发现
-//		fragments.add(gossipPiazzaFragment);//爆料
-//		fragments.add(dataFragment);//数据
-//		fragments.add(userFragment);//我的
 		mPagerAdapter.notifyDataSetChanged();
 
 	}
@@ -253,7 +299,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 			LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
 			ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
 			if (isshow){
-//				Log.e("==================",""+tabImgGray2.get(currentIndex));
 				Glide.with(this).
 						load(tabImgGray2.get(currentIndex)).
 						into(currentIV);
@@ -345,7 +390,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		switch (arg0.errCode) {
 		case WBConstants.ErrorCode.ERR_OK:
 			Toast.makeText(this, "分享成功", Toast.LENGTH_LONG).show();
-			loadData();
+//			loadData();
 			break;
 		case WBConstants.ErrorCode.ERR_CANCEL:
 			Toast.makeText(this, "分享取消", Toast.LENGTH_LONG).show();
@@ -357,14 +402,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 
 	}
 
-	private void loadData() {
-//		Map<String, String> paramsMap = new HashMap<String, String>();
-//		paramsMap.put("userid", SharedPreferencesUtil.getSharedData(getApplicationContext(), "userInfor", "userID"));
-//		dataFlow.requestData(1, "newService/checkIsShare", paramsMap, this, false);
-//		 HttpUtil.getHttp(paramsMap, Constants.MAIN_BASE_URL_MOBILE +
-//		 "newService/checkIsShare",
-//		 HomeActivity.this);
-	}
 
 	/**
 	 * 菜单、返回键响应
@@ -432,64 +469,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 		mViewPager.setCurrentItem(4);
 	}
 
-	@Override
-	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		try {
-			switch (requestCode){
-                case 1:
-					JSONObject object = new JSONObject(content);
-					if ("1".equals(object.optString("isshow"))){
-						isshow = true;
-						JSONArray img = object.optJSONArray("img");
-						JSONArray imgs = object.optJSONArray("imgs");
-						for (int i = 0; i < 5; i++) {
-							tabImgBlue2.add(imgs.optString(i));
-							tabImgGray2.add(img.optString(i));
-						}
-						ctcolor = object.optString("ccolors");
-						tcolor = object.optString("ccolor");
-						bcolor = object.optString("bcolor");
-						tabParentLayout.setBackgroundColor(Color.parseColor(bcolor));
-						for (int i = 0; i < 5; i++) {
-							LinearLayout nextLayout = ((LinearLayout) tabParentLayout.getChildAt(i));
-							ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
-							if (isshow){
-								Glide.with(this).load(tabImgGray2.get(i)).placeholder(tabImgGray[i]).into(nextIV);
-							}else {
-								nextIV.setImageResource(tabImgGray[i]);
-							}
-							TextView nextTV = (TextView) nextLayout.getChildAt(1);
-							nextTV.setTextColor(Color.parseColor(tcolor));
-						}
-						LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
-						ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
-						if (isshow){
-							Log.e("==================",""+tabImgGray2.get(currentIndex));
-							Glide.with(this).
-									load(tabImgBlue2.get(currentIndex))
-									.placeholder(tabImgBlue[0]).
-									into(currentIV);
-						}else {
-							currentIV.setImageResource(tabImgBlue[currentIndex]);
-						}
-						TextView currentTV = (TextView) currentLayout.getChildAt(1);
-						currentTV.setTextColor(Color.parseColor(ctcolor));
-					}else {
-                		isshow = false;
-                		switchTab(currentIndex);
-					}
-                    break;
-
-				case 2:
-//					JSONObject objectMeaage = new JSONObject(content);
-//					BidUserFragment.mMessage = objectMeaage.optInt("sysmsg");
-//					mNumImageView.setNum(BidUserFragment.mMessage);
-					break;
-            }
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
 	 public interface MyTouchListener
 	 {
 	         public void onTouchEvent(MotionEvent event);
@@ -529,7 +508,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response, Resu
 	@Override
 	protected void onStart() {
 		super.onStart();
-//		initMsg();
 	}
 }
 

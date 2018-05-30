@@ -90,7 +90,7 @@
             		android:scrollbars="none"  
             		android:layout_weight="1.0"  
             		android:background="#fff" />   
-            	<ScrollView 
+            	<com.bbk.view.MyScrollViewNew
             	    android:background="#fff"
         			android:layout_weight="3.0"
         			android:layout_width="0dp"
@@ -109,7 +109,6 @@
         					android:layout_height="match_parent">
     					</com.bbk.view.MyListView>
             	    </LinearLayout>
-            	</ScrollView>
-
+            	</com.bbk.view.MyScrollViewNew>
     </LinearLayout>  
 </LinearLayout>

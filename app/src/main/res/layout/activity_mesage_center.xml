@@ -45,7 +45,10 @@
                 android:text="消息中心"
                 android:textSize="21dp" />
         </RelativeLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line" />
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
@@ -57,55 +60,35 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#cbcbcb" />
+            android:layout_height="1dp"
+            android:background="@color/color_line" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <LinearLayout
-                android:id="@+id/mzhanwei"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="#fff"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:visibility="gone" >
-
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="130dp"
-                    android:src="@mipmap/zw_img_330" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="这里什么都没有"
-                    android:layout_marginTop="10dp"
-                    android:textColor="#999999"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="去看看别的"
-                    android:layout_marginTop="10dp"
-                    android:textColor="#999999"
-                    android:textSize="16dp" />
-            </LinearLayout>
-            <com.andview.refreshview.XRefreshView
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/xrefresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
-                <ListView
-                    android:id="@+id/mlistview"
+                android:background="@color/color_line">
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-                </ListView>
-            </com.andview.refreshview.XRefreshView>
+                    android:layout_height="match_parent">
+                    <ListView
+                        android:id="@+id/mlistview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@color/color_line"
+                        android:dividerHeight="1dp">
+                    </ListView>
+                    <com.bbk.view.CommonLoadingView
+                        android:id="@+id/progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"/>
+                </RelativeLayout>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         </RelativeLayout>
     </LinearLayout>
 

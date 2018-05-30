@@ -11,14 +11,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.NewFxBean;
+import com.bbk.Bean.PubaDetailBean;
 import com.bbk.adapter.BidDetailListAdapter;
 import com.bbk.adapter.BidDetailListPLAdapter;
+import com.bbk.adapter.FindListAdapter;
 import com.bbk.chat.ui.ChatActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyListView;
 import com.tencent.imsdk.TIMConversationType;
 import com.youth.banner.Banner;
@@ -38,7 +47,7 @@ import lecho.lib.hellocharts.model.Line;
 /**
  * 接镖_02_详情
  */
-public class BidDetailActivity extends BaseActivity implements ResultEvent {
+public class BidDetailActivity extends BaseActivity implements CommonLoadingView.LoadingHandler {
 
     private DataFlow6 dataFlow;
     private String fbid,status;
@@ -53,7 +62,9 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     private BidDetailListPLAdapter pladapter;
     private ImageView topbar_goback_btn;
     private String userid = "";
-    private LinearLayout isJiebiaoLayout;
+    private LinearLayout pubaDetailLayout;
+    private PubaDetailBean pubaDetailBean;
+    private CommonLoadingView zLoadingView;//加载框
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +80,14 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
     }
 
     private void initView() {
+        zLoadingView = findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
         mJieBiaojiaText = findViewById(R.id.tv_jbj);
         mFabiaoLayout = findViewById(R.id.fabiao_layout);
         mFabiaoLayout.setVisibility(View.GONE);
         mGoJbText =findViewById(R.id.gojb_text);
         mGoJbTextStaus =findViewById(R.id.gojb_text_status);
-        isJiebiaoLayout = findViewById(R.id.isJiebiao_layout);
+        pubaDetailLayout = findViewById(R.id.puba_detail_layout);
         list = new ArrayList<>();
         listpl = new ArrayList<>();
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
@@ -126,9 +139,7 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(BidDetailActivity.this,BidFilterPriceActivity.class);
                 intent.putExtra("bidid",list.get(position).get("bidid"));
-//                intent.putExtra("biduserid",list.get(position).get("biduserid"));
                 intent.putExtra("fbid",fbid);
-//                intent.putExtra("type","1");
                 startActivity(intent);
             }
         });
@@ -139,7 +150,6 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             public void onClick(View v) {
                 Intent intent = new Intent(BidDetailActivity.this,BidHistoryActivity.class);
                 intent.putExtra("fbid",fbid);
-//                intent.putExtra("type","2");
                 startActivity(intent);
             }
         });
@@ -159,11 +169,129 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
         });
     }
     private void initData() {
-        HashMap<String, String> paramsMap = new HashMap<>();
+        Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("fbid",fbid);
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         paramsMap.put("userid",userID);
-        dataFlow.requestData(1, "bid/queryBidDetail", paramsMap, this,true);
+        RetrofitClient.getInstance(this).createBaseApi().queryBidDetail(
+                paramsMap, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                pubaDetailBean = JSON.parseObject(jsonObject.optString("content"), PubaDetailBean.class);
+                                //接镖价有则显示，没有显示待定
+                                if (!pubaDetailBean.getFinalprice().equals("") && pubaDetailBean.getFinalprice() != null){
+                                    mJieBiaojiaText.setText("￥"+pubaDetailBean.getFinalprice());
+                                }else {
+                                    mJieBiaojiaText.setText("待定");
+                                }
+                                mtitle.setText(pubaDetailBean.getTitle());
+                                String endtime = pubaDetailBean.getEndtime();
+                                    //根据status判断状态显示
+                                    switch (pubaDetailBean.getStatus()){
+                                        case "1":
+                                            mendtimetop.setText("待扑倒   "+endtime+" 结束");
+                                            break;
+                                        case "2":
+                                            mendtimetop.setText("待评论 "+endtime);
+                                            break;
+                                        case "3":
+                                            mendtimetop.setText("已取消 "+endtime);
+                                            break;
+                                        case "4":
+                                            mendtimetop.setText("未审核通过 "+endtime);
+                                            break;
+                                        case "5":
+                                            mendtimetop.setText("已失效 "+endtime);
+                                            break;
+                                        case "6":
+                                            mendtimetop.setText("已完成 "+endtime);
+                                            break;
+                                    }
+                                    mprice.setText("￥"+pubaDetailBean.getPrice());
+                                    mprice2.setText("￥"+pubaDetailBean.getPrice());
+                                    mcount.setText("x"+pubaDetailBean.getNumber());
+                                    mspectatornum.setText("围观 "+pubaDetailBean.getSpectator()+"  人");
+                                    mbidnum.setText("扑倒 "+pubaDetailBean.getBidnum()+"  人");
+                                    mbidnum2.setText(pubaDetailBean.getBidnum()+" 条");
+                                    mstarttime.setText(pubaDetailBean.getBegintime());
+                                    mendtime.setText(endtime);
+                                    mextra.setText(pubaDetailBean.getExtra());
+                                    //userid与登陆userid一样时，隐藏去接镖
+                                    if (pubaDetailBean.getUserid().equals(userID)){
+                                        mgobid.setClickable(false);
+                                        mGoJbText.setText("不能扑倒自己");
+                                        mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                                        mGoJbTextStaus.setVisibility(View.GONE);
+                                        mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
+                                    }else {
+                                        mgobid.setClickable(true);
+                                        mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                                    }
+                                    //从我的接镖列表获取返回值status，如果status = 1，可接镖；其他为不可接镖
+                                    if (getIntent().getStringExtra("status") != null) {
+                                        status = getIntent().getStringExtra("status");
+                                        if (status.equals("1")) {
+                                            mgobid.setClickable(true);
+                                            mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                                        } else {
+                                            mgobid.setClickable(false);
+                                            mGoJbText.setText("已结束");
+                                            mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
+                                            mGoJbTextStaus.setVisibility(View.GONE);
+                                            mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
+                                        }
+                                    }
+                            }
+                            /**
+                             * 加载banner
+                             */
+                            List<Object> imgUrlList = new ArrayList<>();
+                            JSONArray imgs = new JSONArray(pubaDetailBean.getImgs());
+                            for (int i = 0; i < imgs.length(); i++) {
+                                String imgUrl = imgs.getString(i);
+                                imgUrlList.add(imgUrl);
+                            }
+                            mbanner.setImages(imgUrlList)
+                                    .setImageLoader(new GlideImageLoader())
+                                    .setOnBannerListener(new OnBannerListener() {
+                                        @Override
+                                        public void OnBannerClick(int position) {
+
+                                        }
+                                    })
+                                    .setDelayTime(3000)
+                                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                                    .setIndicatorGravity(BannerConfig.CENTER)
+                                    .start();
+                            JSONArray bidarr = new JSONArray(pubaDetailBean.getBidarr());
+                            JSONArray plarr = new JSONArray(pubaDetailBean.getPlarr());
+                            addList(bidarr);
+                            addPLList(plarr);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        zLoadingView.loadSuccess();
+                        pubaDetailLayout.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        zLoadingView.load();
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        zLoadingView.loadError();
+                        pubaDetailLayout.setVisibility(View.GONE);
+                        StringUtil.showToast(BidDetailActivity.this, "网络异常");
+                    }
+                });
     }
     public void addList(JSONArray bidarr) throws JSONException {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -180,15 +308,12 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             map.put("bidurl",object.optString("bidurl"));
             if (i<3){
                 list.add(map);
-                //            Log.i("status是否可接镖",object.optString("bidstatus"));
                 //判断如果用户ID跟biduserid有一样的，如果bidstatus状态为-1则可以接镖
                 if (list.get(i).get("biduserid").toString().equals(userID)){
                     if (object.optString("bidstatus").equals("-1")){
-//                    isJiebiaoLayout.setVisibility(View.VISIBLE);
                         mgobid.setClickable(true);
                         mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
                     }else {
-//                    isJiebiaoLayout.setVisibility(View.GONE);
                         mgobid.setClickable(false);
                         mGoJbText.setText("已扑倒");
                         mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
@@ -234,123 +359,10 @@ public class BidDetailActivity extends BaseActivity implements ResultEvent {
             pladapter.notifyDataSetChanged();
         }
     }
-    @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        try {
-            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-            JSONObject object  = new JSONObject(content);
-            String  endtime =object.optString("endtime");
-            String  beginlong =object.optString("beginlong");
-            String  begintime =object.optString("begintime");
-            String  extra =object.optString("extra");
-            String  chixutime =object.optString("chixutime");
-            String  number =object.optString("number");
-            String  spectator =object.optString("spectator");
-            String  url =object.optString("url");
-            String  id =object.optString("id");
-            String  endlong =object.optString("endlong");
-            String  title =object.optString("title");
-            String  price =object.optString("price");
-            String  bidnum =object.optString("bidnum");
-            String finalPrice = object.optString("finalprice");//接镖价
-            String mStatus = object.optString("status");//判断发镖详情页状态
-            userid =object.optString("userid");
-            JSONArray imgs = object.getJSONArray("imgs");
-            JSONArray bidarr = object.getJSONArray("bidarr");
-            JSONArray plarr = object.getJSONArray("plarr");
-            //接镖价有则显示，没有显示待定
-            if (!finalPrice.equals("") && finalPrice != null){
-                mJieBiaojiaText.setText("￥"+finalPrice);
-            }else {
-                mJieBiaojiaText.setText("待定");
-            }
-            try {
-                mtitle.setText(title);
-                //根据status判断状态显示
-                switch (mStatus){
-                    case "1":
-                        mendtimetop.setText("待扑倒   "+endtime+" 结束");
-                        break;
-                    case "2":
-                        mendtimetop.setText("待评论 "+endtime);
-                        break;
-                    case "3":
-                        mendtimetop.setText("已取消 "+endtime);
-                        break;
-                    case "4":
-                        mendtimetop.setText("未审核通过 "+endtime);
-                        break;
-                    case "5":
-                        mendtimetop.setText("已失效 "+endtime);
-                        break;
-                    case "6":
-                        mendtimetop.setText("已完成 "+endtime);
-                        break;
-                }
-                mprice.setText("￥"+price);
-                mprice2.setText("￥"+price);
-                mcount.setText("x"+number);
-                mspectatornum.setText("围观 "+spectator+"  人");
-                mbidnum.setText("扑倒 "+bidnum+"  人");
-                mbidnum2.setText(bidnum+" 条");
-                mstarttime.setText(begintime);
-                mendtime.setText(endtime);
-                mextra.setText(extra);
-                //userid与登陆userid一样时，隐藏去接镖
-                if (userid.equals(userID )){
-                    mgobid.setClickable(false);
-                    mGoJbText.setText("不能扑倒自己");
-                    mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
-                    mGoJbTextStaus.setVisibility(View.GONE);
-                    mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
-                }else {
-//                    isJiebiaoLayout.setVisibility(View.GONE);
-                    mgobid.setClickable(true);
-                    mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
-                }
-                //从我的接镖列表获取返回值status，如果status = 1，可接镖；其他为不可接镖
-                if (getIntent().getStringExtra("status") != null){
-                    status = getIntent().getStringExtra("status");
-                    if (status.equals("1")){
-                        mgobid.setClickable(true);
-                        mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
-                    }else {
-//                    isJiebiaoLayout.setVisibility(View.GONE);
-                        mgobid.setClickable(false);
-                        mGoJbText.setText("已结束");
-                        mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
-                        mGoJbTextStaus.setVisibility(View.GONE);
-                        mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            try {
-                addList(bidarr);
-                addPLList(plarr);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            List<Object> imgUrlList = new ArrayList<>();
-             for (int i = 0; i < imgs.length(); i++) {
-                    String imgUrl = imgs.getString(i);
-                    imgUrlList.add(imgUrl);
-             }
-            mbanner.setImages(imgUrlList)
-                    .setImageLoader(new GlideImageLoader())
-                    .setOnBannerListener(new OnBannerListener() {
-                        @Override
-                        public void OnBannerClick(int position) {
 
-                        }
-                    })
-                    .setDelayTime(3000)
-                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                    .setIndicatorGravity(BannerConfig.CENTER)
-                    .start();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+    @Override
+    public void doRequestData() {
+
     }
 }

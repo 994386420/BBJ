@@ -157,7 +157,6 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
     }
     public void notifyData(List<NewHomeCzgBean> newHomeCzgBeans){
         if (newHomeCzgBeans != null){
-//            mCzgAdapter.notifyData(newHomeCzgBeans);
             this.newHomeCzgBean.addAll(newHomeCzgBeans);
             notifyDataSetChanged();
         }
@@ -170,43 +169,16 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
     }
     public void notifyBlData(List<NewHomeBlBean> blBeans){
         if (blBeans != null) {
-//            mBlAdapter.notifyData(blBeans);
             this.newHomeBlBean.addAll(blBeans);
             notifyDataSetChanged();
         }
     }
     public void notifyFxData(List<NewHomeFxBean> fxBeans){
         if (fxBeans != null) {
-//            mFxAdapter.notifyData(fxBeans);
             this.fxBeans.addAll(fxBeans);
             notifyDataSetChanged();
         }
     }
-//    public void notifyData1(List<NewHomeCzgBean> czgBean){
-//        if (mlistview != null && czgBean != null) {
-//            mCzgAdapter = new NewCzgAdapter(context, czgBean);
-//            mlistview.setAdapter(mCzgAdapter);
-//        }
-//    }
-//    public void notifyBjData1(List<NewHomePubaBean> newHomePubaBeans){
-//        if (mlistview != null && newHomePubaBeans != null) {
-//            adapter = new NewBjAdapter(context, newHomePubaBeans);
-//            mlistview.setAdapter(adapter);
-//        }
-//    }
-//    public void notifyBlData1(List<NewHomeBlBean> blBeans){
-//        if (mlistview != null && blBeans != null) {
-//            mBlAdapter = new NewBlAdapter(context, blBeans);
-//            mlistview.setAdapter(mBlAdapter);
-//        }
-//    }
-//    public void notifyFxData1(List<NewHomeFxBean> fxBeans){
-//        if (mlistview != null && fxBeans != null) {
-//            mFxAdapter = new NewFxAdapter(context, fxBeans);
-//            mlistview.setAdapter(mFxAdapter);
-//        }
-//    }
-
     //define interface
     public static interface OnItemClickListener {
         void onItemClick(View view, int position);

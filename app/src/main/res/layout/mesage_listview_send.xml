@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@color/white"
+    android:id="@+id/result_item"
     android:orientation="horizontal" >
 
     <RelativeLayout
@@ -16,6 +18,7 @@
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
             android:layout_marginLeft="10dp" />
     </RelativeLayout>
 

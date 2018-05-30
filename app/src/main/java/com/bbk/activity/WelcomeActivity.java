@@ -37,6 +37,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.NewFxBean;
+import com.bbk.adapter.FindListAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.entity.XGMessageEntity;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
@@ -48,6 +54,7 @@ import com.bbk.util.HttpUtil;
 import com.bbk.util.NetworkUtils;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
@@ -56,15 +63,13 @@ import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
 
-public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
+public class WelcomeActivity extends BaseActivity2{
 	private XGMessageEntity xgMessage;
 	private TextView mbtn;
 	private final static String ALBUM_PATH
 			= Environment.getExternalStorageDirectory() + "/download_image/";
 	private ImageView mimg;
-	private DataFlow dataFlow;
 	protected String url = Constants.MAIN_BASE_URL_MOBILE+ "apiService/queryAppGuanggao" ;
-	@SuppressLint("StaticFieldLeak")
 	public static Activity instance = null;
 	protected Map<String, String> map = new HashMap<>();
 	//倒计时
@@ -90,55 +95,12 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 			}
 		};
 	};
-	@SuppressLint("HandlerLeak")
-	private Handler handler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			switch (msg.what) {
-				case 0:
-					String dataStr = (String) msg.obj;
-					try {
-						final JSONObject data = new JSONObject(dataStr);
-						final JSONObject content = data.getJSONObject("content");
-						String img = content.optString("img");
-						Glide.with(WelcomeActivity.this)
-								.load(img)
-								.placeholder(R.mipmap.qidong)
-								.into(mimg);
-						final String eventId = content.optString("eventId");
-						//点击跳转活动页
-						mimg.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View arg0) {
-								Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
-								intent.putExtra("content", content.toString());
-								startActivity(intent);
-								finish();
-							}
-						});
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-
-					break;
-
-				default:
-					break;
-			}
-		};
-	};
 	private int time = 3;
-	private Object htmlUrl;
-	// Storage Permissions
 	private static final int REQUEST_EXTERNAL_STORAGE = 1;
 	private static String[] PERMISSIONS_STORAGE = {
 			Manifest.permission.READ_EXTERNAL_STORAGE,
 			Manifest.permission.WRITE_EXTERNAL_STORAGE ,
 			Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
-	private Thread thread;
 
 	/**
 	 * Checks if the app has permission to write to device storage
@@ -194,7 +156,6 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 		//启动后台服务
 		Intent service=new Intent(this, FloatingWindowService.class);
 		startService(service);
-		dataFlow = new DataFlow(this);
 		SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
 		init();
 
@@ -253,9 +214,8 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 							|| text.contains("gp/aw") || text.contains("style/index") || text.contains("sku-") || text.contains("goods")
 							|| text.contains("Detail") || text.contains("proDetail") || text.contains("Goods")) {
 						SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-						Map<String, String> paramsMap = new HashMap<String, String>();
-						paramsMap.put("url", text);
-						dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap, WelcomeActivity.this,false);
+					    checkExsistProduct(text);
+//						dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap, WelcomeActivity.this,false);
 					}
 				}
 			}
@@ -291,24 +251,58 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 		if (null == networkInfo) {
-			mimg.setBackgroundResource(R.mipmap.qidong);
+			Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
+			startActivity(intent);
+			finish();
 		}else{
-			thread = new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					Looper.prepare();
-					String dataStr = HttpUtil.getHttp(map, url, WelcomeActivity.this);
-//					Log.e("====进入线程了=======", ""+dataStr);
-					Message mes = handler.obtainMessage();
-					mes.obj = dataStr;
-					mes.what =0;
-					handler.sendMessage(mes);
-					Looper.loop();
-				}
-			});
-			thread.start();
+			getGuangGao();
 		}
+	}
+
+	private void getGuangGao(){
+		RetrofitClient.getInstance(this).createBaseApi().queryAppGuanggao(
+				map, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								final JSONObject content = jsonObject.getJSONObject("content");
+								String img = content.optString("img");
+								Glide.with(WelcomeActivity.this)
+										.load(img)
+										.placeholder(R.mipmap.qidong)
+										.into(mimg);
+								final String eventId = content.optString("eventId");
+								//点击跳转活动页
+								mimg.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View arg0) {
+										Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
+										intent.putExtra("content", content.toString());
+										startActivity(intent);
+										finish();
+									}
+								});
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+					}
+
+					@Override
+					protected void showDialog() {
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+					}
+				});
 	}
 	@Override
 	protected void onResume() {
@@ -348,17 +342,9 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		XGPushManager.onActivityStoped(this);
+		XGPushManager.unregisterPush(this);
 	}
 
-	public static String getPicNameFromPath(String picturePath){
-		String temp[] = picturePath.replaceAll("\\\\","/").split("/");
-		String fileName = "";
-		if(temp.length > 1){
-			fileName = temp[temp.length - 1];
-		}
-		return fileName;
-	}
 
 	//是否跳转引导页
 	public void startHome() {
@@ -377,11 +363,7 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (thread!= null){
-			handler.removeCallbacks(thread);
-		}
-
-
+		XGPushManager.unregisterPush(this);
 	}
 	/**
 	 * 初始化分类数据和热度搜索词
@@ -389,74 +371,175 @@ public class WelcomeActivity extends BaseActivity2 implements ResultEvent{
 	private void loadData() {
 		TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 		String token = TelephonyMgr.getDeviceId();
+		queryIndexSeeByToken(token);
+		queryIndexTuijianByToken(token);
+		loadhotKeyword("1");
+	}
+	private void queryIndexSeeByToken(String token) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("token", token);
-		String hometuijian = HttpUtil.getHttp(params,
-				Constants.MAIN_BASE_URL_MOBILE
-						+ "newService/queryIndexTuijianByToken", null);
-		if (hometuijian != null && !"".equals(hometuijian)) {
-			SharedPreferencesUtil.putSharedData(
-					getApplicationContext(), "homedata",
-					"hometuijian", hometuijian);
-		}
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("token", token);
-		param.put("page", "1");
-		String seelike = HttpUtil.getHttp(param,
-				Constants.MAIN_BASE_URL_MOBILE
-						+ "newService/queryIndexSeeByToken", null);
-		if (seelike != null && !"".equals(seelike)) {
-			SharedPreferencesUtil.putSharedData(
-					getApplicationContext(), "homedata",
-					"seelike", seelike);
-		}
+		params.put("page", "1");
+		RetrofitClient.getInstance(this).createBaseApi().queryIndexSeeByToken(
+				params, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								String content = jsonObject.optString("content");
+								if (content!= null && !"".equals(content)) {
+									SharedPreferencesUtil.putSharedData(
+											getApplicationContext(), "homedata",
+											"seelike", content);
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+
+					}
+
+					@Override
+					protected void showDialog() {
+
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+					}
+				});
+	}
+	private void queryIndexTuijianByToken(String token) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("token", token);
+		RetrofitClient.getInstance(this).createBaseApi().queryIndexTuijianByToken(
+				params, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								String content = jsonObject.optString("content");
+								if (content!= null && !"".equals(content)) {
+										SharedPreferencesUtil.putSharedData(
+												getApplicationContext(), "homedata",
+												"hometuijian", content);
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+
+					}
+
+					@Override
+					protected void showDialog() {
+
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+					}
+				});
+
+	}
+	/**
+	 * 搜索关键词加载
+	 * @param type
+	 */
+	private void loadhotKeyword(final String type) {
 		String hotKeyword = SharedPreferencesUtil.getSharedData(getApplicationContext(), "hotKeyword", "hotKeyword");
 		if (hotKeyword == null || "".equals(hotKeyword)) {
 			hotKeyword = "[{\"name\":\"iphone se\",\"productType\":\"\"},{\"name\":\"衬衫\",\"productType\":\"240201\"},{\"name\":\"电炖锅\",\"productType\":\"030313\"},{\"name\":\"情侣睡衣\",\"productType\":\"240313\"},{\"name\":\"空调\",\"productType\":\"030102\"},{\"name\":\"风扇\",\"productType\":\"030201\"},{\"name\":\"T恤\",\"productType\":\"160209\"},{\"name\":\"奶粉\",\"productType\":\"1701\"}]";
 			SharedPreferencesUtil.putSharedData(getApplicationContext(),
 					"hotKeyword", "hotKeyword", hotKeyword);
 		} else {
-			Map<String, String> paramsMap = new HashMap<String, String>();
-			paramsMap.put("number", "10");
-			String hKeyword = HttpUtil.getHttp(paramsMap,
-					Constants.MAIN_BASE_URL_MOBILE
-							+ "apiService/getSearchHotWord", null);
-			if (hKeyword != null && !"".equals(hKeyword)) {
-				try {
-					JSONObject jo = new JSONObject(hKeyword);
-					hKeyword = jo.getString("content");
-					SharedPreferencesUtil.putSharedData(
-							getApplicationContext(), "hotKeyword",
-							"hotKeyword", hKeyword);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	@Override
-	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		switch (requestCode) {
-			case 1:
-				if (!content.isEmpty()) {
-					try {
-						JSONObject jsonObject = new JSONObject(content);
-//						Log.i("网络请求返回数据===dataflow：",jsonObject+"------------------------");
-						if (!jsonObject.optString("rowkey").isEmpty()) {
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "1");
-							SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "object", content);
+			Map<String, String> maps = new HashMap<String, String>();
+			maps.put("type",type);
+			RetrofitClient.getInstance(this).createBaseApi().getSearchHotWord(
+					maps, new BaseObserver<String>(this) {
+						@Override
+						public void onNext(String s) {
+							try {
+								JSONObject jsonObject = new JSONObject(s);
+								if (jsonObject.optString("status").equals("1")) {
+									String content = jsonObject.optString("content");
+									if (content!= null && !"".equals(content)) {
+											if (type.equals("1")) {
+												SharedPreferencesUtil.putSharedData(
+														getApplicationContext(), "hotKeyword",
+														"hotKeyword", content);
+											}
+									}
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 						}
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				break;
+						@Override
+						protected void hideDialog() {
 
-			default:
-				break;
+						}
+
+						@Override
+						protected void showDialog() {
+
+						}
+
+						@Override
+						public void onError(ExceptionHandle.ResponeThrowable e) {
+							StringUtil.showToast(WelcomeActivity.this, "网络异常");
+						}
+			});
 		}
 	}
 
+	private void checkExsistProduct(String text) {
+		Map<String, String> paramsMap = new HashMap<String, String>();
+		paramsMap.put("url", text);
+		RetrofitClient.getInstance(this).createBaseApi().checkExsistProduct(
+				paramsMap, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								String content = jsonObject.optString("content");
+								JSONObject json = new JSONObject(content);
+//						Log.i("网络请求返回数据===dataflow：",jsonObject+"------------------------");
+								if (!json.optString("rowkey").isEmpty()) {
+									SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "1");
+									SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "object", content);
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+
+					}
+
+					@Override
+					protected void showDialog() {
+
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+					}
+				});
+
+	}
 
 }

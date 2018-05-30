@@ -12,9 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.PubaDetailBean;
 import com.bbk.adapter.BidDetailListAdapter;
 import com.bbk.adapter.BidDetailListPLAdapter;
 import com.bbk.chat.ui.ChatActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.GlideImageLoader;
@@ -22,6 +27,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CircleImageView1;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyListView;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
@@ -45,23 +51,25 @@ import mtopsdk.common.util.StringUtils;
  * 我的_接镖_详情
  */
 
-public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent {
+public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent,CommonLoadingView.LoadingHandler{
 
     private DataFlow6 dataFlow;
     private TextView mtext1,mtext2,mTitle;
     private LinearLayout mtextbox;
     private ImageView topbar_goback_btn;
-    private String  bidurl,userid,fbid,bidid,bidstatus;
-    private String status;
+    private String fbid,bidid,bidstatus;
     private Banner mbanner;
     private TextView mtitle,mendtimetop,mprice,mcount,mspectatornum,mbidnum
-            ,mbidnum2,mstarttime,mendtime,mprice2,mextra,mplnum,mallpl;
+            ,mbidnum2,mstarttime,mendtime,mprice2,mextra,mplnum,mallpl,mJieBiaojiaText;
     private MyListView mlistview,mlistviewpl;
     private List<Map<String,String>> list;
     private List<Map<String,String>> listpl;
     private BidDetailListAdapter adapter;
     private LinearLayout malllist,mplbox;
     private BidDetailListPLAdapter pladapter;
+    private LinearLayout pubaDetailLayout;
+    private PubaDetailBean pubaDetailBean;
+    private CommonLoadingView zLoadingView;//加载框
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +89,10 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
         initData();
     }
     public void initView(){
+        mJieBiaojiaText = findViewById(R.id.tv_jbj);
+        zLoadingView = findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
+        pubaDetailLayout = findViewById(R.id.puba_detail_layout);
         mTitle = findViewById(R.id.title);
         mTitle.setText("扑倒详情");
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
@@ -152,11 +164,117 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
         paramsMap.put("fbid",fbid);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         paramsMap.put("userid",userID);
-        dataFlow.requestData(1, "bid/queryBidDetail", paramsMap, this,true);
+        RetrofitClient.getInstance(this).createBaseApi().queryBidDetail(
+                paramsMap, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                pubaDetailBean = JSON.parseObject(jsonObject.optString("content"), PubaDetailBean.class);
+                                String endtime = pubaDetailBean.getEndtime();
+                                String begintime = pubaDetailBean.getBegintime();
+                                String extra = pubaDetailBean.getExtra();
+                                String number = pubaDetailBean.getNumber();
+                                String spectator = pubaDetailBean.getSpectator();
+                                String title = pubaDetailBean.getTitle();
+                                String price = pubaDetailBean.getPrice();
+                                String bidnum = pubaDetailBean.getBidnum();
+                                String mStatus = pubaDetailBean.getStatus();//判断发镖详情页状态
+                                JSONArray imgs = new JSONArray(pubaDetailBean.getImgs());
+                                JSONArray bidarr = new JSONArray(pubaDetailBean.getBidarr());
+                                JSONArray plarr = new JSONArray(pubaDetailBean.getPlarr());
+                                //接镖价有则显示，没有显示待定
+                                if (!pubaDetailBean.getFinalprice().equals("") && pubaDetailBean.getFinalprice() != null){
+                                    mJieBiaojiaText.setText("￥"+pubaDetailBean.getFinalprice());
+                                }else {
+                                    mJieBiaojiaText.setText("待定");
+                                }
+                                try {
+                                    mtitle.setText(title);
+                                    //根据status判断状态显示
+                                    switch (mStatus) {
+                                        case "1":
+                                            mendtimetop.setText("待扑倒   " + endtime + " 结束");
+                                            mtextbox.setVisibility(View.GONE);
+                                            break;
+                                        case "2":
+                                            mendtimetop.setText("待评论 " + endtime);
+                                            break;
+                                        case "3":
+                                            mendtimetop.setText("已取消 " + endtime);
+                                            break;
+                                        case "4":
+                                            mendtimetop.setText("未审核通过 " + endtime);
+                                            break;
+                                        case "5":
+                                            mendtimetop.setText("已失效 " + endtime);
+                                            break;
+                                        case "6":
+                                            mendtimetop.setText("已完成 " + endtime);
+                                            break;
+                                    }
+                                    mprice.setText("￥" + price);
+                                    mprice2.setText("￥" + price);
+                                    mcount.setText("x" + number);
+                                    mspectatornum.setText("围观 " + spectator + "  人");
+                                    mbidnum.setText("扑倒 " + bidnum + "  人");
+                                    mbidnum2.setText(bidnum + " 条");
+                                    mstarttime.setText(begintime);
+                                    mendtime.setText(endtime);
+                                    mextra.setText(extra);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    addList(bidarr);
+                                    addPLList(plarr);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                List<Object> imgUrlList = new ArrayList<>();
+                                for (int i = 0; i < imgs.length(); i++) {
+                                    String imgUrl = imgs.getString(i);
+                                    imgUrlList.add(imgUrl);
+                                }
+                                mbanner.setImages(imgUrlList)
+                                        .setImageLoader(new GlideImageLoader())
+                                        .setOnBannerListener(new OnBannerListener() {
+                                            @Override
+                                            public void OnBannerClick(int position) {
+
+                                            }
+                                        })
+                                        .setDelayTime(3000)
+                                        .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                                        .setIndicatorGravity(BannerConfig.CENTER)
+                                        .start();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        zLoadingView.loadSuccess();
+                        pubaDetailLayout.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        zLoadingView.load();
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        zLoadingView.loadError();
+                        pubaDetailLayout.setVisibility(View.GONE);
+                        StringUtil.showToast(BidMyBillDetailActivity.this, "网络异常");
+                    }
+                });
     }
 
     public void addList(JSONArray bidarr) throws JSONException {
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         for (int i = 0; i < bidarr.length(); i++) {
             JSONObject object = bidarr.getJSONObject(i);
             Map<String,String> map = new HashMap<>();
@@ -179,15 +297,6 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                 bidstatus = object.optString("bidstatus");//功能键判断
                 initbutton();
             }
-//            Log.i("status是否可接镖",object.optString("bidstatus"));
-            //判断如果用户ID跟biduserid有一样的，如果bidstatus状态为-1则可以接镖
-//            if (list.get(i).get("biduserid").toString().equals(userID)){
-//                if (object.optString("bidstatus").equals("-1")){
-//                    isJiebiaoLayout.setVisibility(View.VISIBLE);
-//                }else {
-//                    isJiebiaoLayout.setVisibility(View.GONE);
-//                }
-//            }
         }
         adapter.notifyDataSetChanged();
 
@@ -289,95 +398,6 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         switch (requestCode){
             case 1:
-                try {
-                    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                    JSONObject object  = new JSONObject(content);
-                    String  endtime =object.optString("endtime");
-                    String  beginlong =object.optString("beginlong");
-                    String  begintime =object.optString("begintime");
-                    String  extra =object.optString("extra");
-                    String  chixutime =object.optString("chixutime");
-                    String  number =object.optString("number");
-                    String  spectator =object.optString("spectator");
-                    String  url =object.optString("url");
-                    String  id =object.optString("id");
-                    String  endlong =object.optString("endlong");
-                    String  title =object.optString("title");
-                    String  price =object.optString("price");
-                    String  bidnum =object.optString("bidnum");
-                    String mStatus = object.optString("status");//判断发镖详情页状态
-                    userid =object.optString("userid");
-                    JSONArray imgs = object.getJSONArray("imgs");
-                    JSONArray bidarr = object.getJSONArray("bidarr");
-                    JSONArray plarr = object.getJSONArray("plarr");
-                    try {
-                        mtitle.setText(title);
-                        //根据status判断状态显示
-                        switch (mStatus){
-                            case "1":
-                                mendtimetop.setText("待扑倒   "+endtime+" 结束");
-                                mtextbox.setVisibility(View.GONE);
-                                break;
-                            case "2":
-                                mendtimetop.setText("待评论 "+endtime);
-                                break;
-                            case "3":
-                                mendtimetop.setText("已取消 "+endtime);
-                                break;
-                            case "4":
-                                mendtimetop.setText("未审核通过 "+endtime);
-                                break;
-                            case "5":
-                                mendtimetop.setText("已失效 "+endtime);
-                                break;
-                            case "6":
-                                mendtimetop.setText("已完成 "+endtime);
-                                break;
-                        }
-                        mprice.setText("￥"+price);
-                        mprice2.setText("￥"+price);
-                        mcount.setText("x"+number);
-                        mspectatornum.setText("围观 "+spectator+"  人");
-                        mbidnum.setText("扑倒 "+bidnum+"  人");
-                        mbidnum2.setText(bidnum+" 条");
-                        mstarttime.setText(begintime);
-                        mendtime.setText(endtime);
-                        mextra.setText(extra);
-                        //userid与登陆userid一样时，隐藏去接镖
-//                        if (userid.equals(userID )){
-//                            isJiebiaoLayout.setVisibility(View.GONE);
-//                        }else {
-//                            isJiebiaoLayout.setVisibility(View.VISIBLE);
-//                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    try {
-                        addList(bidarr);
-                        addPLList(plarr);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    List<Object> imgUrlList = new ArrayList<>();
-                    for (int i = 0; i < imgs.length(); i++) {
-                        String imgUrl = imgs.getString(i);
-                        imgUrlList.add(imgUrl);
-                    }
-                    mbanner.setImages(imgUrlList)
-                            .setImageLoader(new GlideImageLoader())
-                            .setOnBannerListener(new OnBannerListener() {
-                                @Override
-                                public void OnBannerClick(int position) {
-
-                                }
-                            })
-                            .setDelayTime(3000)
-                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                            .setIndicatorGravity(BannerConfig.CENTER)
-                            .start();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 break;
             case 3:
                 if(dataJo.optInt("status")<=0){
@@ -391,43 +411,9 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                 break;
         }
     }
-    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent = new Intent(BidMyBillDetailActivity.this,BidFilterPriceActivity.class);
-            intent.putExtra("bidid",list.get(i).get("bidid"));
-            intent.putExtra("fbid",fbid);
-            intent.putExtra("type","1");
-            startActivity(intent);
-        }
-    };
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent;
-            switch (view.getId()){
-                case R.id.mintentbuy:
-                    intent = new Intent(BidMyBillDetailActivity.this,WebViewActivity.class);
-                    intent.putExtra("url",bidurl);
-                    startActivity(intent);
-                    break;
-                case R.id.mcontact:
-                    intent = new Intent(BidMyBillDetailActivity.this,ChatActivity.class);
-                    if (userid != null){
-                        intent.putExtra("identify","bbj"+userid);
-                        intent.putExtra("type", TIMConversationType.C2C);
-                        startActivity(intent);
-                    }
-                    break;
-                case R.id.malllist:
-                    intent = new Intent(BidMyBillDetailActivity.this,BidHistoryActivity.class);
-                    intent.putExtra("fbid",fbid);
-                    intent.putExtra("type","1");
-                    startActivity(intent);
-                    break;
-            }
-        }
-    };
-
+    @Override
+    public void doRequestData() {
+        initData();
+    }
 }

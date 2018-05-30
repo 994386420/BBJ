@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.bbk.activity.R;
 import com.bbk.activity.ResultMainActivity;
+import com.bbk.activity.SearchMainActivity;
 import com.bbk.view.MyGridView;
 
 import android.content.Context;
@@ -95,7 +96,7 @@ public class SortRightFragmentListviewAdapter extends BaseAdapter{
 					try {
 						JSONObject object = array.getJSONObject(position1);
 						String text = object.optString("name");
-							Intent intent = new Intent(context, ResultMainActivity.class);
+							Intent intent = new Intent(context, SearchMainActivity.class);
 							intent.putExtra("keyword", text);
 							context.startActivity(intent);
 	

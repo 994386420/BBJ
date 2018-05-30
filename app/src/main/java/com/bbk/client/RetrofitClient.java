@@ -253,6 +253,87 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void insertMessageRead(Map<String, String> parameters, Observer<?> observer) {
+        apiService.insertMessageRead(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void insertWenzhangGuanzhu(Map<String, String> parameters, Observer<?> observer) {
+        apiService.insertWenzhangGuanzhu(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void insertPL(Map<String, String> parameters, Observer<?> observer) {
+        apiService.insertPL(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryArticlesFootAndCollect(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryArticlesFootAndCollect(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryBidDetail(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryBidDetail(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryCatagTree(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCatagTree(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryYouhuilist(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryYouhuilist(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryAppGuanggao(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryAppGuanggao(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryIndexMenu(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryIndexMenu(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryIndexSeeByToken(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryIndexSeeByToken(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryIndexTuijianByToken(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryIndexTuijianByToken(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void checkExsistProduct(Map<String, String> parameters, Observer<?> observer) {
+        apiService.checkExsistProduct(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

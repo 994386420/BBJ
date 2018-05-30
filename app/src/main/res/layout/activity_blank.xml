@@ -51,7 +51,10 @@
                 android:textSize="15dp"
                 android:visibility="gone" />
         </RelativeLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -119,18 +122,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#cbcbcb" />
+            android:background="@color/color_line" />
 
-        <com.andview.refreshview.XRefreshView
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/xrefresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/color_line"
             android:layout_weight="1" >
 
             <com.andview.refreshview.XScrollView
                 android:id="@+id/mscroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" 
+                android:layout_height="match_parent"
                 >
 
                 <LinearLayout
@@ -147,37 +151,30 @@
                             android:layout_marginTop="130dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="#fff"
+                              android:background="@color/color_line"
                             android:layout_centerInParent="true"
                             android:gravity="center"
                             android:orientation="vertical"
                             android:visibility="gone" >
 
-                            <ImageView
-                                android:layout_width="120dp"
-                                android:layout_height="120dp"
-                                android:src="@mipmap/zw_img_330" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="这里什么都没有"
-                                android:layout_marginTop="10dp"
-                                android:textColor="#999999"
-                                android:textSize="16dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="去看看别的"
-                                android:layout_marginTop="10dp"
-                                android:textColor="#999999"
-                                android:textSize="16dp" />
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginBottom="10dp"
+                                  android:background="@mipmap/zw_img_330"/>
+                              <TextView
+                                  android:gravity="center"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="@string/app_no_message_text"
+                                  android:layout_marginTop="16dp"
+                                  android:textSize="14dp"/>
                         </LinearLayout>
                         <com.bbk.view.MyListView
                             android:id="@+id/topiclistview"
                             android:layout_width="match_parent"
-                            android:divider="@null"
+                            android:divider="@color/color_line"
+                            android:dividerHeight="7dp"
                             android:layout_height="match_parent" >
                         </com.bbk.view.MyListView>
 
@@ -185,13 +182,15 @@
                             android:id="@+id/domainlistview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:divider="@color/color_line"
+                            android:dividerHeight="2dp"
                             android:visibility="gone" >
                         </com.bbk.view.MyListView>
 
                     </RelativeLayout>
                 </LinearLayout>
             </com.andview.refreshview.XScrollView>
-        </com.andview.refreshview.XRefreshView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <RelativeLayout
             android:id="@+id/mselectanddelete"

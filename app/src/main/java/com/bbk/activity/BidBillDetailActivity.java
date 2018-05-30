@@ -13,21 +13,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.PubaDetailBean;
 import com.bbk.adapter.BidDetailListAdapter;
 import com.bbk.adapter.BidListDetailAdapter;
 import com.bbk.adapter.XjppAdapter;
 import com.bbk.chat.ui.ChatActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.CommonLoadingView;
 import com.bbk.view.HorizontalListView;
 import com.bbk.view.MyListView;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
 import com.tencent.imsdk.TIMConversationType;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +51,7 @@ import java.util.Map;
 /**
  * 发镖_03_详情
  */
-public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
+public class BidBillDetailActivity extends BaseActivity implements ResultEvent,CommonLoadingView.LoadingHandler {
 
     private DataFlow6 dataFlow;
     private String fbid;
@@ -65,6 +74,9 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     private LinearLayout xjpp_layout;//小鲸扑扑
     private LinearLayout xjpp_view_layout;//小鲸扑扑
     private ImageView xjpp_iamge;//小鲸扑扑
+    private LinearLayout pubaDetailLayout;
+    private PubaDetailBean pubaDetailBean;
+    private CommonLoadingView zLoadingView;//加载框
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +91,9 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         initData();
     }
     public void initView(){
+        zLoadingView = findViewById(R.id.progress);
+        zLoadingView.setLoadingHandler(this);
+        pubaDetailLayout = findViewById(R.id.puba_detail_layout);
         xjpp_layout = findViewById(R.id.xjpp_layout);
         xjpp_view_layout = findViewById(R.id.xjpp_view_layout);
         xjpp_layout.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +108,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
         list = new ArrayList<>();
         mXjppList = new ArrayList<>();
         mTitle = findViewById(R.id.title);
-        mTitle.setText("扑倒详情");
+        mTitle.setText("我要详情");
         tv_status = findViewById(R.id.tv_statuus);
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -137,14 +152,98 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     }
 
 
-
     public void initData(){
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("fbid",fbid);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         paramsMap.put("userid",userID);
-        Log.i("===",fbid+userID);
-        dataFlow.requestData(1, "bid/queryBidDetail", paramsMap, this,true);
+        RetrofitClient.getInstance(this).createBaseApi().queryBidDetail(
+                paramsMap, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                pubaDetailBean = JSON.parseObject(jsonObject.optString("content"), PubaDetailBean.class);
+                                if (pubaDetailBean.getTjList() != null) {
+                                    JSONArray tjlistArray = new JSONArray(pubaDetailBean.getTjList());
+                                    addListXjpp(tjlistArray);
+                                }
+                                status = pubaDetailBean.getStatus();
+                                initbutton(pubaDetailBean.getEndtime());
+                                JSONArray bidarr = new JSONArray(pubaDetailBean.getBidarr());
+                                if (!"".equals(pubaDetailBean.getBidindex())) {
+                                    int i = Integer.parseInt(pubaDetailBean.getBidindex());
+                                    String bidprice = bidarr.getJSONObject(i).optString("bidprice");
+                                    String biddesc = bidarr.getJSONObject(i).optString("biddesc");
+                                    final String bidurl = bidarr.getJSONObject(i).optString("bidurl");
+                                    mendprice.setText("￥" + bidprice);
+                                    murltext.setText(bidurl);
+                                    mintentbuy.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(BidBillDetailActivity.this, WebViewActivity.class);
+                                            intent.putExtra("url", bidurl);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    mbidesc.setText("留言:" + biddesc);
+                                } else {
+                                    mbox.setVisibility(View.GONE);
+                                }
+                                item_title.setText(pubaDetailBean.getTitle());
+                                mprice.setText("￥" + pubaDetailBean.getPrice());
+                                mcount.setText("x" + pubaDetailBean.getNumber());
+                                mspectatornum.setText("围观 " + pubaDetailBean.getSpectator() + "  人");
+                                mbidnum.setText("扑倒 " + pubaDetailBean.getBidnum() + "  人");
+                                mbidnum2.setText(pubaDetailBean.getBidnum() + " 条");
+                                mordernum.setText("订单编号:" + pubaDetailBean.getOrdernum());
+                                mbegintime.setText("创建时间:" + pubaDetailBean.getBeginlong());
+                                mendtime.setText("结束时间:" + pubaDetailBean.getEndlong());
+                                if (bidarr.length() > 0) {
+                                    addList(bidarr);
+                                } else {
+                                    isGlobalMenuShow = true;
+                                    xjpp_iamge.setImageResource(R.mipmap.xjpp_top);
+                                    xjpp_view_layout.setVisibility(View.VISIBLE);
+                                }
+                                adapter = new BidDetailListAdapter(BidBillDetailActivity.this, list);
+                                mlistview.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                                mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent intent = new Intent(BidBillDetailActivity.this, BidFilterPriceActivity.class);
+                                        intent.putExtra("bidid", list.get(position).get("bidid"));
+                                        intent.putExtra("fbid", fbid);
+                                        intent.putExtra("type", "1");
+                                        startActivity(intent);
+                                    }
+                                });
+                                Glide.with(BidBillDetailActivity.this).load(pubaDetailBean.getImg()).placeholder(R.mipmap.zw_img_300).into(item_img);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        zLoadingView.loadSuccess();
+                        pubaDetailLayout.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        zLoadingView.load();
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        zLoadingView.loadError();
+                        pubaDetailLayout.setVisibility(View.GONE);
+                        StringUtil.showToast(BidBillDetailActivity.this, "网络异常");
+                    }
+                });
     }
     private void initbutton(String time) {
         switch (status){
@@ -366,89 +465,6 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         switch (requestCode){
             case 1:
-                try {
-                    Log.i("====",content);
-                    JSONObject object = new JSONObject(content);
-                    String  endtime =object.optString("endtime");
-                    String  beginlong =object.optString("beginlong");
-                    String  begintime =object.optString("begintime");
-                    String  extra =object.optString("extra");
-                    String  ordernum =object.optString("ordernum");
-                    String  img =object.optString("img");
-                    String  number =object.optString("number");
-                    String  spectator =object.optString("spectator");
-                    final String  id =object.optString("id");
-                    String  endlong =object.optString("endlong");
-                    String  title =object.optString("title");
-                    String  price =object.optString("price");
-                    String  bidnum =object.optString("bidnum");
-                    final String  userid =object.optString("userid");
-                    if (object.has("imgs")){
-                        JSONArray imgs = object.getJSONArray("imgs");
-                    }
-                    if (object.has("tjList")) {
-                        JSONArray tjlistArray = object.getJSONArray("tjList");
-                        addListXjpp(tjlistArray);
-                    }
-                    status =object.optString("status");
-                    initbutton(endtime);
-                    JSONArray bidarr = object.getJSONArray("bidarr");
-                    if (!"".equals(object.optString("bidindex"))){
-                        int i = object.optInt("bidindex");
-                        String  bidprice =bidarr.getJSONObject(i).optString("bidprice");
-                        String  biddesc =bidarr.getJSONObject(i).optString("biddesc");
-                        final String  bidurl =bidarr.getJSONObject(i).optString("bidurl");
-                        mendprice.setText("￥"+bidprice);
-                        murltext.setText(bidurl);
-                        mintentbuy.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(BidBillDetailActivity.this,WebViewActivity.class);
-                                intent.putExtra("url",bidurl);
-                                startActivity(intent);
-                            }
-                        });
-                        mbidesc.setText("留言:"+biddesc);
-                    }else {
-                        mbox.setVisibility(View.GONE);
-                    }
-                    item_title.setText(title);
-                    mprice.setText("￥"+price);
-                    mcount.setText("x"+number);
-//                    mtime.addsum(endlong,"#999999");
-//                    mtime.start();
-                    mspectatornum.setText("围观 "+spectator+"  人");
-                    mbidnum.setText("扑倒 "+bidnum+"  人");
-                    mbidnum2.setText(bidnum+" 条");
-
-                    mordernum.setText("订单编号:"+ordernum);
-                    mbegintime.setText("创建时间:"+beginlong);
-                    mendtime.setText("结束时间:"+endlong);
-//                    Log.i("--------",bidarr.length()+"====");
-                    if (bidarr.length() > 0){
-                        addList(bidarr);
-                    }else {
-                        isGlobalMenuShow = true;
-                        xjpp_iamge.setImageResource(R.mipmap.xjpp_top);
-                        xjpp_view_layout.setVisibility(View.VISIBLE);
-                    }
-                    adapter = new BidDetailListAdapter(this,list);
-                    mlistview.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(BidBillDetailActivity.this,BidFilterPriceActivity.class);
-                            intent.putExtra("bidid",list.get(position).get("bidid"));
-                            intent.putExtra("fbid",fbid);
-                            intent.putExtra("type","1");
-                            startActivity(intent);
-                        }
-                    });
-                    Glide.with(this).load(img).placeholder(R.mipmap.zw_img_300).into(item_img);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
             case 2:
                 switch (content){
@@ -509,6 +525,11 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent {
                 }
             }, durationAlpha);
         }
+
+    }
+
+    @Override
+    public void doRequestData() {
 
     }
 }

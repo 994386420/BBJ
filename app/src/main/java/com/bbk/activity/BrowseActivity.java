@@ -25,6 +25,10 @@ import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bbk.view.MyListView;
 import com.bumptech.glide.Glide;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -62,7 +66,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	private List<TextView> tlist = new ArrayList<>();
 	private List<View> vlist = new ArrayList<>();
 	private LinearLayout mzhanwei;
-	private XRefreshView xrefresh;
+	private SmartRefreshLayout xrefresh;
 	private boolean isclear = true;
 	private boolean topicloadmore = false;
 	private boolean domainloadmore = false;
@@ -97,8 +101,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 		domainlistview = (MyListView) findViewById(R.id.domainlistview);
 		mscroll = (XScrollView) findViewById(R.id.mscroll);
 		mzhanwei = (LinearLayout) findViewById(R.id.mzhanwei);
-		xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
-		xrefresh.setCustomHeaderView(new HeaderView(this));
+		xrefresh = (SmartRefreshLayout) findViewById(R.id.xrefresh);
 		refreshAndloda();
 		mtext1 = (TextView) findViewById(R.id.mtext1);
 		mtext2 = (TextView) findViewById(R.id.mtext2);
@@ -131,60 +134,42 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 		dataFlow.requestData(2, "newService/queryProductFootAndCollect", params, this,is);
 	}
 	private void refreshAndloda() {
-		xrefresh.setXRefreshViewListener(new XRefreshViewListener() {
+		xrefresh.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRelease(float direction) {
-				// TODO Auto-generated method stub
-
-			}
-			@Override
-			public void onRefresh(boolean isPullDown) {
+			public void onRefresh(final RefreshLayout refreshlayout) {
 				isclear = true;
 				switch (curclick) {
-				case 0:
-					topicpage = 1;
-					initTopicData(false);
-					break;
-				case 1:
-					domainpage = 1;
-					initDomainData(false);
-					break;
-				}
-			}
-
-			@Override
-			public void onRefresh() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onLoadMore(boolean isSilence) {
-				switch (curclick) {
-				case 0:
-					if (topicloadmore) {
-						topicpage++;
+					case 0:
+						topicpage = 1;
 						initTopicData(false);
-					}
-					break;
-				case 1:
-					if (domainloadmore) {
-						domainpage++;
+						break;
+					case 1:
+						domainpage = 1;
 						initDomainData(false);
-					}
-					break;
-
+						break;
 				}
-			}
-
-			@Override
-			public void onHeaderMove(double headerMovePercent, int offsetY) {
-				// TODO Auto-generated method stub
-
 			}
 		});
-		MyFootView footView = new MyFootView(this);
-		xrefresh.setCustomFooterView(footView);
+		xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+			@Override
+			public void onLoadMore(RefreshLayout refreshlayout) {
+				switch (curclick) {
+					case 0:
+						if (topicloadmore) {
+							topicpage++;
+							initTopicData(false);
+						}
+						break;
+					case 1:
+						if (domainloadmore) {
+							domainpage++;
+							initDomainData(false);
+						}
+						break;
+
+				}
+			}
+		});
 		mscroll.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
@@ -281,10 +266,10 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 			int j = Integer.valueOf(topiccount);
 			if (list.length()<10 || (Integer.valueOf(topiccount)%10 == 0 && j/10 == topicpage)) {
 				topicloadmore = false;
-				xrefresh.setLoadComplete(true);
+				xrefresh.setEnableLoadMore(false);
 			}else{
 				topicloadmore = true;
-				xrefresh.setAutoLoadMore(true);
+				xrefresh.setEnableLoadMore(true);
 			}
 			for (int i = 0; i < list.length(); i++) {
 				JSONObject object = list.getJSONObject(i);
@@ -338,10 +323,10 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 			if (list.length()<10 || (Integer.valueOf(domaincount)%10 == 0 && j/10 == domainpage)) {
 				
 				domainloadmore = false;
-				xrefresh.setLoadComplete(true);
+				xrefresh.setEnableLoadMore(false);
 			}else{
 				domainloadmore = true;
-				xrefresh.setAutoLoadMore(true);
+				xrefresh.setEnableLoadMore(true);
 			}
 			for (int i = 0; i < list.length(); i++) {
 				JSONObject object = list.getJSONObject(i);
@@ -381,8 +366,8 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	}
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		xrefresh.stopLoadMore();
-		xrefresh.stopRefresh();
+		xrefresh.finishLoadMore();
+		xrefresh.finishRefresh();
 		switch (requestCode) {
 		case 1:
 			

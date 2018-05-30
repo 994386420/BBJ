@@ -24,6 +24,10 @@ import com.bbk.resource.Constants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyFootView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import android.R.integer;
 import android.annotation.SuppressLint;
@@ -49,7 +53,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GossipActivity extends BaseActivity implements OnClickListener,ResultEvent,OnItemClickListener{
-	private XRefreshView xrefresh;
+	private SmartRefreshLayout xrefresh;
 	private boolean isclear = false;
 	//当前选择（全部，待审核，通过审核，未通过审核）
 	private int curclick = 0;
@@ -86,7 +90,7 @@ public class GossipActivity extends BaseActivity implements OnClickListener,Resu
 		mlistview = (ListView) findViewById(R.id.mlistview);
 		mydraft = (TextView) findViewById(R.id.mydraft);
 		tablayout = (TabLayout) findViewById(R.id.tablayout);
-		xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
+		xrefresh = (SmartRefreshLayout) findViewById(R.id.xrefresh);
 		tablayout.addTab(tablayout.newTab().setText("全部"));
 		tablayout.addTab(tablayout.newTab().setText("待审核"));
 		tablayout.addTab(tablayout.newTab().setText("通过审核"));
@@ -177,43 +181,21 @@ public class GossipActivity extends BaseActivity implements OnClickListener,Resu
 	}
 
 	private void refreshAndloda() {
-		xrefresh.setXRefreshViewListener(new XRefreshViewListener() {
-
-
+		xrefresh.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRelease(float direction) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onRefresh(boolean isPullDown) {
+			public void onRefresh(final RefreshLayout refreshlayout) {
 				isclear = true;
 				page = 1;
 				refresh();
-
 			}
-
+		});
+		xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
 			@Override
-			public void onRefresh() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onLoadMore(boolean isSilence) {
+			public void onLoadMore(RefreshLayout refreshlayout) {
 				page++;
 				refresh();
 			}
-
-			@Override
-			public void onHeaderMove(double headerMovePercent, int offsetY) {
-				// TODO Auto-generated method stub
-
-			}
 		});
-		MyFootView footView = new MyFootView(this);
-		xrefresh.setCustomFooterView(footView);
 	}
 
 	private void refresh(){
@@ -280,8 +262,8 @@ public class GossipActivity extends BaseActivity implements OnClickListener,Resu
 
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		xrefresh.stopRefresh();
-		xrefresh.stopLoadMore();
+		xrefresh.finishLoadMore();
+		xrefresh.finishRefresh();
 		switch (requestCode){
 			case 1:
 				if (isclear) {
@@ -290,9 +272,9 @@ public class GossipActivity extends BaseActivity implements OnClickListener,Resu
 				try {
 					JSONArray arr = new JSONArray(content);
 					if (arr.length() < 10) {
-						xrefresh.setLoadComplete(true);
+						xrefresh.setEnableLoadMore(false);
 					} else {
-						xrefresh.setAutoLoadMore(true);
+						xrefresh.setEnableLoadMore(true);
 					}
 					for (int i = 0; i < arr.length(); i++) {
 						JSONObject object = arr.getJSONObject(i);

@@ -49,11 +49,46 @@ public interface BaseApiService<T> {
     //扑倒的list列表数据
     @POST("bid/queryJBiaoMsgByStatus")
     Observable<String> queryJBiaoMsgByStatus(@QueryMap Map<String, String> map);
-    //消息中心接口
+    /**
+     *  消息中心接口
+     */
     @POST("newService/querySysTMessage")
     Observable<String> querySysTMessage(@QueryMap Map<String, String> map);
     @POST("newService/queryPLMyRe")
     Observable<String> queryPLMyRe(@QueryMap Map<String, String> map);
     @POST("newService/queryPLOtherRe")
     Observable<String> queryPLOtherRe(@QueryMap Map<String, String> map);
+    @POST("newService/insertMessageRead")
+    Observable<String> insertMessageRead(@QueryMap Map<String, String> map);
+    @POST("newService/insertWenzhangGuanzhu")
+    Observable<String> insertWenzhangGuanzhu(@QueryMap Map<String, String> map);
+    @POST("newService/insertPL")
+    Observable<String> insertPL(@QueryMap Map<String, String> map);
+    /**
+     * 收藏接口
+     */
+    @POST("newService/queryArticlesFootAndCollect")
+    Observable<String> queryArticlesFootAndCollect(@QueryMap Map<String, String> map);
+    //去扑到详情
+    @POST("bid/queryBidDetail")
+    Observable<String> queryBidDetail(@QueryMap Map<String, String> map);
+    //商品分类
+    @POST("newApp/queryCatagTree")
+    Observable<String> queryCatagTree(@QueryMap Map<String, String> map);
+    //优惠券
+    @POST("newService/queryYouhuilist")
+    Observable<String> queryYouhuilist(@QueryMap Map<String, String> map);
+    //获取广告图
+    @POST("apiService/queryAppGuanggao")
+    Observable<String> queryAppGuanggao(@QueryMap Map<String, String> map);
+    //获取menu图
+    @POST("newService/queryIndexMenu")
+    Observable<String> queryIndexMenu(@QueryMap Map<String, String> map);
+    //获取分类数据
+    @POST("newService/queryIndexTuijianByToken")
+    Observable<String> queryIndexTuijianByToken(@QueryMap Map<String, String> map);
+    @POST("newService/queryIndexSeeByToken")
+    Observable<String> queryIndexSeeByToken(@QueryMap Map<String, String> map);
+    @POST("newService/checkExsistProduct")
+    Observable<String> checkExsistProduct(@QueryMap Map<String, String> map);
 }

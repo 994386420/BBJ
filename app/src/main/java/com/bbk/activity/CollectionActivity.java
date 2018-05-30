@@ -26,6 +26,10 @@ import com.bbk.view.HeaderView;
 import com.bbk.view.MyFootView;
 import com.bbk.view.MyListView;
 import com.bumptech.glide.Glide;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -70,7 +74,7 @@ public class CollectionActivity extends BaseFragmentActivity implements ResultEv
 	private LinearLayout mallselect;
 	private ImageView mallselectimg;
 	private String ids = "";
-	private XRefreshView xrefresh;
+	private SmartRefreshLayout xrefresh;
 	private LinearLayout mzhanwei;
 	private boolean topicloadmore = false;
 	private boolean domainloadmore = false;
@@ -113,8 +117,7 @@ public class CollectionActivity extends BaseFragmentActivity implements ResultEv
 		mscroll = (XScrollView) findViewById(R.id.mscroll);
 		mallselectimg = (ImageView) findViewById(R.id.mallselectimg);
 		mallselect = (LinearLayout) findViewById(R.id.mallselect);
-		xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
-		xrefresh.setCustomHeaderView(new HeaderView(this));
+		xrefresh = (SmartRefreshLayout) findViewById(id.xrefresh);
 		refreshAndloda();
 
 		mtext1 = (TextView) findViewById(R.id.mtext1);
@@ -166,59 +169,38 @@ public class CollectionActivity extends BaseFragmentActivity implements ResultEv
 	}
 
 	private void refreshAndloda() {
-		xrefresh.setXRefreshViewListener(new XRefreshViewListener() {
-
+		xrefresh.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRelease(float direction) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onRefresh(boolean isPullDown) {
+			public void onRefresh(final RefreshLayout refreshlayout) {
 				isclear = true;
 				switch (curclick) {
-				case 0:
-					topicpage = 1;
-					initTopicData();
-					break;
-				case 1:
-					domainpage = 1;
-					initDomainData();
-					break;
+					case 0:
+						topicpage = 1;
+						initTopicData();
+						break;
+					case 1:
+						domainpage = 1;
+						initDomainData();
+						break;
 				}
-			}
-
-			@Override
-			public void onRefresh() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onLoadMore(boolean isSilence) {
-
-				switch (curclick) {
-				case 0:
-					topicpage++;
-					initTopicData();
-					break;
-				case 1:
-					domainpage++;
-					initDomainData();
-					break;
-
-				}
-			}
-
-			@Override
-			public void onHeaderMove(double headerMovePercent, int offsetY) {
-				// TODO Auto-generated method stub
-
 			}
 		});
-		MyFootView footView = new MyFootView(this);
-		xrefresh.setCustomFooterView(footView);
+		xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+			@Override
+			public void onLoadMore(RefreshLayout refreshlayout) {
+				switch (curclick) {
+					case 0:
+						topicpage++;
+						initTopicData();
+						break;
+					case 1:
+						domainpage++;
+						initDomainData();
+						break;
+
+				}
+			}
+		});
 		mscroll.setOnScrollListener(new OnScrollListener() {
 
 			@Override
@@ -434,10 +416,10 @@ public class CollectionActivity extends BaseFragmentActivity implements ResultEv
 			int j = Integer.valueOf(topiccount);
 			if (list.length() < 10 || (Integer.valueOf(topiccount) % 10 == 0 && j / 10 == topicpage)) {
 				topicloadmore = false;
-				xrefresh.setLoadComplete(true);
+				xrefresh.setEnableLoadMore(false);
 			} else {
 				topicloadmore = true;
-				xrefresh.setAutoLoadMore(true);
+				xrefresh.setEnableLoadMore(true);
 			}
 			for (int i = 0; i < list.length(); i++) {
 				JSONObject object = list.getJSONObject(i);
@@ -518,10 +500,10 @@ public class CollectionActivity extends BaseFragmentActivity implements ResultEv
 			int j = Integer.valueOf(domaincount);
 			if (list.length() < 10 || (Integer.valueOf(domaincount) % 10 == 0 && j / 10 == domainpage)) {
 				domainloadmore = false;
-				xrefresh.setLoadComplete(true);
+				xrefresh.setEnableLoadMore(false);
 			} else {
 				domainloadmore = true;
-				xrefresh.setAutoLoadMore(true);
+				xrefresh.setEnableLoadMore(true);
 			}
 			for (int i = 0; i < list.length(); i++) {
 				JSONObject object = list.getJSONObject(i);
@@ -590,8 +572,8 @@ public class CollectionActivity extends BaseFragmentActivity implements ResultEv
 
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		xrefresh.stopLoadMore();
-		xrefresh.stopRefresh();
+		xrefresh.finishRefresh();
+		xrefresh.finishLoadMore();
 		switch (requestCode) {
 		case 1:
 

@@ -459,48 +459,44 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         refreshLayout.finishLoadmore();
                         refreshLayout.finishRefresh();
                         if (type.equals("2")){
+                            pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                             if (x == 1) {
-                                pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                                 Refresh("2");
                             }else if (x == 2) {
                                 if (pubaBeans != null && pubaBeans.size()>0){
-                                    pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                                     homeadapter.notifyBjData(pubaBeans);
                                 }else {
                                     StringUtil.showToast(getActivity(),"没有更多了");
                                 }
                             }
                         }else if (type.equals("3")){
+                            blBeans = JSON.parseArray(content, NewHomeBlBean.class);
                             if (x == 1) {
-                                blBeans = JSON.parseArray(content, NewHomeBlBean.class);
                                 Refresh("3");
                             }else if (x == 2) {
                                 if (blBeans != null && blBeans.size() > 0){
-                                    blBeans = JSON.parseArray(content, NewHomeBlBean.class);
                                     homeadapter.notifyBlData(blBeans);
                                 }else {
                                     StringUtil.showToast(getActivity(),"没有更多了");
                                 }
                             }
                         }else if (type.equals("4")){
+                            fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
                             if (x == 1) {
-                                fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
                                 Refresh("4");
                             }else if (x == 2) {
                                 if (fxBeans != null && fxBeans.size() > 0){
-                                    fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
                                     homeadapter.notifyFxData(fxBeans);
                                 }else {
                                     StringUtil.showToast(getActivity(),"没有更多了");
                                 }
                             }
                         }else if (type.equals("1")){
+                            czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
                             if (x == 1) {
-                                czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
                                 Refresh("1");
                             }else if (x == 2) {
                                 if (czgBeans != null && czgBeans.size() > 0){
-                                    czgBeans = JSON.parseArray(content,NewHomeCzgBean.class);
                                     homeadapter.notifyData(czgBeans);
                                 }else {
                                     StringUtil.showToast(getActivity(),"没有更多了");

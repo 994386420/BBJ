@@ -1,26 +1,19 @@
 package com.bbk.activity;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -32,60 +25,39 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 
-import com.andview.refreshview.XRefreshView;
-import com.andview.refreshview.XRefreshView.XRefreshViewListener;
-import com.bbk.activity.BaseActivity;
-import com.bbk.activity.R;
-import com.bbk.activity.ResultMainActivity;
-import com.bbk.activity.WebViewActivity;
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.NewFxBean;
 import com.bbk.adapter.CouponListAdapter;
+import com.bbk.adapter.FindListAdapter;
 import com.bbk.adapter.HomeTitleGridAdapter;
-import com.bbk.adapter.ListViewAdapter;
-import com.bbk.dao.SearchHistoryDao;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
-import com.bbk.flow.ResultEvent;
-import com.bbk.resource.Constants;
-import com.bbk.util.DensityUtil;
-import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
-import com.bbk.util.ValidatorUtil;
-import com.bbk.view.HeaderView;
-import com.bbk.view.MyFootView;
-import com.bumptech.glide.Glide;
-import com.iflytek.cloud.ErrorCode;
-import com.iflytek.cloud.InitListener;
-import com.iflytek.cloud.RecognizerResult;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechError;
-import com.iflytek.cloud.SpeechRecognizer;
-import com.iflytek.cloud.SpeechUtility;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.bbk.util.StringUtil;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-public class CouponActivity extends BaseActivity implements OnClickListener, ResultEvent {
+public class CouponActivity extends BaseActivity implements OnClickListener{
 
     private DataFlow dataFlow;
-
     private List<Map<String, String>> list;
-    private View search_head;
     private LinearLayout mbox;
     private CouponListAdapter adapter;
     private ListView mlistview;
-    private int page = 1;
-
-    private XRefreshView xrefresh;
+    private int page = 1,x= 1;
+    private SmartRefreshLayout xrefresh;
     private boolean isloadmore = false;
     private List<Map<String, String>> titlelist;
     private HomeTitleGridAdapter titleadapter;
-
     private PopupWindow window;
-
     private LinearLayout monclickimg;
-
     private ImageView unfold_img;
     private ImageButton goBackBtn;
 
@@ -97,10 +69,6 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
         View topView = findViewById(R.id.search_head);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-//        search_head = findViewById(R.id.);
-//        ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(getWindow(),true);
-//        ImmersedStatusbarUtils.MIUISetStatusBarLightMode(this,true);
-//        initstateView();
         initView();
         initData();
     }
@@ -127,86 +95,104 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
         unfold_img = (ImageView) findViewById(R.id.unfold_img);
         mbox = (LinearLayout) findViewById(R.id.mbox);
         mlistview = (ListView) findViewById(R.id.mlistview);
-        mlistview.setOnScrollListener(new OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(AbsListView arg0, int scrollState) {
-                switch (scrollState) {
-                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
-                        // 当ListView处于滑动状态时，停止加载图片，保证操作界面流畅
-                        Glide.with(CouponActivity.this).pauseRequests();
-                        break;
-                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
-                        // 当ListView处于静止状态时，继续加载图片
-                        Glide.with(CouponActivity.this).resumeRequests();
-                        break;
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-        xrefresh = (XRefreshView) findViewById(R.id.xrefresh);
+//        mlistview.setOnScrollListener(new OnScrollListener() {
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView arg0, int scrollState) {
+//                switch (scrollState) {
+//                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+//                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
+//                        // 当ListView处于滑动状态时，停止加载图片，保证操作界面流畅
+//                        Glide.with(CouponActivity.this).pauseRequests();
+//                        break;
+//                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+//                        // 当ListView处于静止状态时，继续加载图片
+//                        Glide.with(CouponActivity.this).resumeRequests();
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+//                // TODO Auto-generated method stub
+//
+//            }
+//        });
+        xrefresh = (SmartRefreshLayout) findViewById(R.id.xrefresh);
         refreshAndloda();
-        xrefresh.setCustomHeaderView(new HeaderView(this));
     }
 
     private void refreshAndloda() {
-        xrefresh.setXRefreshViewListener(new XRefreshViewListener() {
-
+        xrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRelease(float direction) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onRefresh(boolean isPullDown) {
+            public void onRefresh(final RefreshLayout refreshlayout) {
                 page = 1;
+                x = 1;
                 initData();
-
-            }
-
-            @Override
-            public void onRefresh() {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                if (isloadmore) {
-                    page++;
-                    loadData();
-                }
-            }
-
-            @Override
-            public void onHeaderMove(double headerMovePercent, int offsetY) {
-                // TODO Auto-generated method stub
-
             }
         });
-        MyFootView footView = new MyFootView(this);
-        xrefresh.setCustomFooterView(footView);
+        xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                if (isloadmore) {
+                    page++;
+                    x = 2;
+                    initData();
+                }
+            }
+        });
     }
 
     private void initData() {
-        HashMap<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("page", page + "");
-        dataFlow.requestData(1, "newService/queryYouhuilist", params, this);
-        initPopupWindow();
+        RetrofitClient.getInstance(this).createBaseApi().queryYouhuilist(
+                params, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            if (jsonObject.optString("status").equals("1")) {
+                                JSONObject object = new JSONObject(content);
+                                if (x == 1) {
+                                    if (mbox != null) {
+                                        mbox.removeAllViews();
+                                    }
+                                    list.clear();
+                                    JSONArray list = object.getJSONArray("list");
+                                    JSONArray typelist = object.getJSONArray("typelist");
+                                    loadbox(typelist);
+                                    loaglist(list);
+                                }else {
+                                    JSONArray list = object.getJSONArray("list");
+                                    loaglist(list);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        initPopupWindow();
+                        xrefresh.finishLoadMore();
+                        xrefresh.finishRefresh();
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        xrefresh.finishLoadMore();
+                        xrefresh.finishRefresh();
+                        StringUtil.showToast(CouponActivity.this, "网络异常");
+                    }
+                });
     }
 
-    private void loadData() {
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("page", page + "");
-        dataFlow.requestData(2, "newService/queryYouhuilist", params, this);
-    }
 
     private void initPopupWindow() {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -259,12 +245,12 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
     }
 
     private void loaglist(JSONArray arr) throws JSONException {
-        if (arr.length() < 20) {
+        if (arr.length() < 10) {
             isloadmore = false;
-            xrefresh.setLoadComplete(true);
+            xrefresh.setEnableLoadMore(false);
         } else {
             isloadmore = true;
-            xrefresh.setAutoLoadMore(true);
+            xrefresh.setEnableLoadMore(true);
         }
         for (int i = 0; i < arr.length(); i++) {
             JSONObject object = arr.getJSONObject(i);
@@ -313,7 +299,7 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
             map.put("isselect", "0");
             titlelist.add(map);
         }
-        titleadapter.notifyDataSetChanged();
+//        titleadapter.notifyDataSetChanged();
     }
 
     private void addbox(final JSONObject object) {
@@ -332,86 +318,6 @@ public class CouponActivity extends BaseActivity implements OnClickListener, Res
         });
         mbox.addView(view);
     }
-
-    @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        xrefresh.stopLoadMore();
-        xrefresh.stopRefresh();
-        switch (requestCode) {
-            case 1:
-                try {
-                    if (mbox != null) {
-                        mbox.removeAllViews();
-                    }
-                    list.clear();
-                    JSONObject object = new JSONObject(content);
-                    JSONArray list = object.getJSONArray("list");
-                    JSONArray typelist = object.getJSONArray("typelist");
-                    loadbox(typelist);
-                    loaglist(list);
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                break;
-            case 2:
-                JSONObject object;
-                try {
-                    object = new JSONObject(content);
-                    JSONArray list = object.getJSONArray("list");
-                    loaglist(list);
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                break;
-            default:
-                break;
-        }
-
-    }
-
-    private int getStatusBarHeight() {
-        Class<?> c = null;
-
-        Object obj = null;
-
-        Field field = null;
-
-        int x = 0, sbar = 0;
-
-        try {
-
-            c = Class.forName("com.android.internal.R$dimen");
-
-            obj = c.newInstance();
-
-            field = c.getField("status_bar_height");
-
-            x = Integer.parseInt(field.get(obj).toString());
-
-            sbar = getResources().getDimensionPixelSize(x);
-
-        } catch (Exception e1) {
-
-            e1.printStackTrace();
-
-        }
-
-        return sbar;
-    }
-
-//    private void initstateView() {
-//        if (Build.VERSION.SDK_INT >= 19) {
-//            search_head.setVisibility(View.VISIBLE);
-//        }
-//        int result = getStatusBarHeight();
-//        LayoutParams layoutParams = search_head.getLayoutParams();
-//        layoutParams.height = result;
-//        search_head.setLayoutParams(layoutParams);
-//    }
     @Override
     public void onResume() {
         super.onResume();

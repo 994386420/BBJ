@@ -1,38 +1,55 @@
 package com.bbk.adapter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bbk.Bean.SystemMessageBean;
+import com.bbk.Bean.WoYaoBean;
+import com.bbk.activity.BidBillDetailActivity;
+import com.bbk.activity.MesageCenterActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
+import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MesageCListSysAdapter extends BaseAdapter{
-	private List<Map<String, String>> list;
+	private List<SystemMessageBean> systemMessageBeans;
 	private Context context;
 	
-	public MesageCListSysAdapter(List<Map<String, String>> list,Context context){
-		this.list = list;
+	public MesageCListSysAdapter(List<SystemMessageBean> list, Context context){
+		this.systemMessageBeans = list;
 		this.context =context;
 	}
-	
+	public void notifyData(List<SystemMessageBean> beans){
+		this.systemMessageBeans.addAll(beans);
+		notifyDataSetChanged();
+	}
 	@Override
 	public int getCount() {
-		return list.size();
+		return systemMessageBeans.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return list.get(position);
+		return systemMessageBeans.get(position);
 	}
 
 	@Override
@@ -49,14 +66,15 @@ public class MesageCListSysAdapter extends BaseAdapter{
 			vh.mtime = (TextView) convertView.findViewById(R.id.mtime);
 			vh.mcontent = (TextView) convertView.findViewById(R.id.mcontent);
 			vh.notread = (RelativeLayout) convertView.findViewById(R.id.notread);
+			vh.itemlayout =  convertView.findViewById(R.id.result_item);
 			convertView.setTag(vh);
 		} else {
 			vh = (ViewHolder) convertView.getTag();
 		}
-		Map<String, String> map = list.get(position);
-		String message = map.get("message");
-		String dtime = map.get("dtime");
-		String isread = map.get("isread");
+		final SystemMessageBean systemMessageBean = systemMessageBeans.get(position);
+		String message = systemMessageBean.getMessage();
+		String dtime =systemMessageBean.getDtime();
+		String isread = systemMessageBean.getIsread();
 		if ("1".equals(isread)) {
 			vh.notread.setVisibility(View.GONE);
 		}else{
@@ -64,11 +82,45 @@ public class MesageCListSysAdapter extends BaseAdapter{
 		}
 		vh.mtime.setText(dtime);
 		vh.mcontent.setText(message);
+		vh.itemlayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (!systemMessageBean.getIsread().equals("1")) {
+					systemMessageBean.setIsread("1");
+					notifyDataSetChanged();
+					insertMessageRead(systemMessageBean.getMid());
+				}
+			}
+		});
 		return convertView;
 	}
 	class ViewHolder {
 		TextView mtime,mcontent;
 		RelativeLayout notread;
+		LinearLayout itemlayout;
 	}
+	private void insertMessageRead(String mid) {
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("userid", userID);
+		maps.put("mid", mid);
+		RetrofitClient.getInstance(context).createBaseApi().insertMessageRead(
+				maps, new BaseObserver<String>(context) {
+					@Override
+					public void onNext(String s) {
+						Log.e("===",s);
+					}
+					@Override
+					protected void hideDialog() {
+					}
 
+					@Override
+					protected void showDialog() {
+					}
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(context, "网络异常");
+					}
+				});
+	}
 }

@@ -1,48 +1,61 @@
 package com.bbk.adapter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bbk.Bean.ReceiceMsgBean;
+import com.bbk.activity.MesageCenterActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.SortActivity;
-import com.bbk.adapter.DomainMoreListAdapter.setMyOnClickListener;
-import com.bbk.adapter.MesageCListSendAdapter.ViewHolder;
-
+import com.bbk.activity.WebViewWZActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
+import com.bbk.resource.Constants;
+import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
-
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 public class MesageCListReceiveAdapter extends BaseAdapter {
-	private List<Map<String, String>> list;
+	private List<ReceiceMsgBean> receiceMsgBeans;
 	private Context context;
 	private MyClickListener mListener;
 	private int position1;
+	private String wztitle = "";
 
     //写一个设置接口监听的方法
     public void setOnClickListener(MyClickListener listener) {
         mListener = listener;
     }
-	public MesageCListReceiveAdapter(List<Map<String, String>> list, Context context) {
-		this.list = list;
+	public MesageCListReceiveAdapter(List<ReceiceMsgBean> list, Context context) {
+		this.receiceMsgBeans = list;
 		this.context = context;
 	}
-
+	public void notifyData(List<ReceiceMsgBean> beans){
+		this.receiceMsgBeans.addAll(beans);
+		notifyDataSetChanged();
+	}
 	@Override
 	public int getCount() {
-		return list.size();
+		return receiceMsgBeans.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return list.get(position);
+		return receiceMsgBeans.get(position);
 	}
 
 	@Override
@@ -62,15 +75,16 @@ public class MesageCListReceiveAdapter extends BaseAdapter {
 			vh.mtitle = (TextView) convertView.findViewById(R.id.mtitle);
 			vh.mname = (TextView) convertView.findViewById(R.id.mname);
 			vh.mreply = (TextView) convertView.findViewById(R.id.mreply);
+			vh.itemlayout =  convertView.findViewById(R.id.result_item);
 			convertView.setTag(vh);
 		} else {
 			vh = (ViewHolder) convertView.getTag();
 		}
-		Map<String, String> map = list.get(position);
-		vh.mname.setText(map.get("nickname"));
-		vh.mtime.setText(map.get("dt"));
-		vh.mtitle.setText(map.get("title"));
-		vh.mcontent.setText(map.get("content"));
+		final ReceiceMsgBean receiceMsgBean = receiceMsgBeans.get(position);
+		vh.mname.setText(receiceMsgBean.getNickname());
+		vh.mtime.setText(receiceMsgBean.getDt());
+		vh.mtitle.setText(receiceMsgBean.getTitle());
+		vh.mcontent.setText(receiceMsgBean.getContent());
 		position1 = position;
 		vh.mreply.setOnClickListener(new OnClickListener() {
 			
@@ -79,18 +93,75 @@ public class MesageCListReceiveAdapter extends BaseAdapter {
 				mListener.onClick(position1);
 			}
 		});
-		Glide.with(context).load(map.get("imgurl")).into(vh.mimg);
+		Glide.with(context).load(receiceMsgBean.getImgurl()).into(vh.mimg);
+		vh.itemlayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				wztitle = receiceMsgBean.getTitle();
+				String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor",
+						"userID");
+				String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor",
+						"token");
+				if (receiceMsgBean.getWenzhangid().contains("B")){
+					String wenzhangid = receiceMsgBean.getWenzhangid();
+					String blid = wenzhangid.substring(1, wenzhangid.length());
+					String url = Constants.MAIN_BASE_URL_MOBILE +"mobile/blbar?blid="+blid+"&userid="+userID;
+					Intent intent = new Intent(context, WebViewWZActivity.class);
+					intent.putExtra("url",url);
+					intent.putExtra("title",wztitle);
+					context.startActivity(intent);
+				}else {
+					insertWenzhangGuanzhu(userID,receiceMsgBean.getWenzhangid(),token,wztitle);
+				}
+			}
+		});
 		return convertView;
 	}
 
 	class ViewHolder {
 		TextView mtime, mcontent, mtitle, mreply, mname;
 		ImageView mimg;
+		LinearLayout itemlayout;
 	}
 	  //自定义接口，用于回调按钮点击事件到Activity
 	  public interface MyClickListener{
 	      public void onClick(int position);
 	  }
 
-	
+	private void insertWenzhangGuanzhu(String userid, String wz, String token, final String wztitle) {
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("userid", userid);
+		maps.put("wzid", wz);
+		maps.put("token", token);
+		maps.put("type", "2");
+		RetrofitClient.getInstance(context).createBaseApi().insertWenzhangGuanzhu(
+				maps, new BaseObserver<String>(context) {
+					@Override
+					public void onNext(String s) {
+						Log.e("===",s);
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								Intent intent = new Intent(context, WebViewWZActivity.class);
+								intent.putExtra("title", wztitle);
+								intent.putExtra("url", jsonObject.optString("content"));
+								context.startActivity(intent);
+							}
+						}catch (Exception e){
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+					}
+
+					@Override
+					protected void showDialog() {
+					}
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(context, "网络异常");
+					}
+				});
+	}
 }

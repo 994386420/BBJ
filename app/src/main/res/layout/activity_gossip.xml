@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#cbcbcb" />
-		<com.andview.refreshview.XRefreshView
+		<com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/xrefresh"
             android:layout_below="@+id/henggang213"
             android:layout_width="match_parent"
@@ -73,5 +73,5 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </ListView>
-        </com.andview.refreshview.XRefreshView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>
