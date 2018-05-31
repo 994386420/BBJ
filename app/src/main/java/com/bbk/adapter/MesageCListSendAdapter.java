@@ -14,6 +14,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
@@ -146,13 +147,16 @@ public class MesageCListSendAdapter extends BaseAdapter{
 					}
 					@Override
 					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
 					}
 
 					@Override
 					protected void showDialog() {
+						DialogSingleUtil.show(context);
 					}
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
 						StringUtil.showToast(context, "网络异常");
 					}
 				});

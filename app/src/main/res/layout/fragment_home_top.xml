@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal" >
 
@@ -48,7 +47,6 @@
                     android:id="@+id/msearch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
                     android:layout_weight="1"
                     android:background="@drawable/text_view_border_5dp"
                     android:orientation="horizontal"
@@ -68,6 +66,8 @@
                     android:id="@+id/msort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
                     android:orientation="vertical" >
 
                     <ImageView

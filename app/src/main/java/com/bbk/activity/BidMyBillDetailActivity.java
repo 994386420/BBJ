@@ -22,6 +22,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -256,17 +257,21 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                     }
                     @Override
                     protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
                         zLoadingView.loadSuccess();
                         pubaDetailLayout.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     protected void showDialog() {
+                        DialogSingleUtil.show(BidMyBillDetailActivity.this);
                         zLoadingView.load();
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         pubaDetailLayout.setVisibility(View.GONE);
                         StringUtil.showToast(BidMyBillDetailActivity.this, "网络异常");
@@ -414,6 +419,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
 
     @Override
     public void doRequestData() {
+        zLoadingView.setVisibility(View.GONE);
         initData();
     }
 }

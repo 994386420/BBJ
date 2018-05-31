@@ -22,7 +22,9 @@ import com.bumptech.glide.Priority;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -38,10 +40,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ResultMyGridAdapter extends BaseAdapter{
-//	private List<Map<String, Object>> list;
+public class ResultMyGridAdapter extends RecyclerView.Adapter{
 	private Activity context;
-	ViewHolder vh;
 	private List<SearchResultBean> searchResultBeans;
 	public ResultMyGridAdapter( List<SearchResultBean> searchResultBeans,Activity context){
 		this.searchResultBeans = searchResultBeans;
@@ -51,14 +51,22 @@ public class ResultMyGridAdapter extends BaseAdapter{
 		this.searchResultBeans.addAll(beans);
 		notifyDataSetChanged();
 	}
+
 	@Override
-	public int getCount() {
-		return searchResultBeans.size();
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		ViewHolder ViewHolder = new ViewHolder(
+				LayoutInflater.from(context).inflate(R.layout.listview_item_result4, parent, false));
+		return ViewHolder;
 	}
 
 	@Override
-	public Object getItem(int arg0) {
-		return searchResultBeans.get(arg0);
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		try {
+			ViewHolder viewHolder = (ViewHolder) holder;
+			init(viewHolder,position);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -67,176 +75,45 @@ public class ResultMyGridAdapter extends BaseAdapter{
 	}
 
 	@Override
-	public View getView(final int position, View convertView, ViewGroup arg2) {
-			if (convertView == null) {
-				vh = new ViewHolder();
-				convertView = View.inflate(context, R.layout.listview_item_result4, null);
-				vh.img = (ImageView) convertView.findViewById(R.id.item_img);
-				vh.title = (TextView) convertView.findViewById(R.id.item_title);
-				vh.item_offer = (TextView) convertView.findViewById(R.id.item_offer);
-				vh.mlittleprice = (TextView) convertView.findViewById(R.id.mlittleprice);
-				vh.mbigprice = (TextView) convertView.findViewById(R.id.mbigprice);
-				vh.juan = (TextView) convertView.findViewById(R.id.juan);
-				vh.domainLayout = (LinearLayout) convertView.findViewById(R.id.domain_layout);
-				vh.mmoredomain = (RelativeLayout) convertView.findViewById(R.id.mmoredomain);
-				vh.intentbuy = (RelativeLayout) convertView.findViewById(R.id.intentbuy);
-				vh.itemlayout =  convertView.findViewById(R.id.result_item);
-				convertView.setTag(vh);
-			}else{
-				vh = (ViewHolder) convertView.getTag();
-			}
-			try {
-				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-				int width = wm.getDefaultDisplay().getWidth();
-				LayoutParams params = vh.img.getLayoutParams();
-				params.height = width/2;
-				vh.img.setLayoutParams(params);
-				final SearchResultBean dataSet = searchResultBeans.get(position);
-//	        final String url = dataSet.get("url").toString();
-				String title = dataSet.getTitle();
-				String img = dataSet.getImgUrl();
-				String price = dataSet.getPrice();
-				String hnumber = dataSet.getComnum();
-				vh.title.setText(title);
-				String bigprice;
-				String littleprice;
-				if (price.contains(".")) {
-					int end = price.indexOf(".");
-					bigprice = price.substring(0, end);
-					littleprice = price.substring(end, price.length());
-				}else{
-					bigprice = price;
-					littleprice = ".0";
-				}
-				vh.mbigprice.setText(bigprice);
-				vh.mlittleprice.setText(littleprice);
-				if (dataSet.getTarr() != null) {
-					JSONArray array = new JSONArray(dataSet.getTarr());
-					addList(array);
-				}
-				if (Integer.valueOf(hnumber)>10000) {
-					if (Integer.valueOf(hnumber)>100000000) {
-						DecimalFormat df = new DecimalFormat("###.0");
-						String num = df.format(Double.valueOf(hnumber)/100000000);
-						vh.item_offer.setText("全网总评"+num+"亿条  ");
-					}else{
-						DecimalFormat df = new DecimalFormat("###.0");
-						String num = df.format(Double.valueOf(hnumber)/10000);
-						vh.item_offer.setText("全网总评"+num+"万条  ");
-					}
-				}else{
-					vh.item_offer.setText("全网总评"+hnumber+"条  ");
-				}
-//				if ("1".equals(dataSet.get("isxianshi"))) {
-					final String groupRowKey = dataSet.getGroupRowkey();
-					vh.mmoredomain.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View arg0) {
-							Intent intent = new Intent(context, ResultDialogActivity.class);
-//						intent.putExtra("tarr",dataSet.get("tarr").toString() );
-							intent.putExtra("keyword",dataSet.getKeyword());
-							intent.putExtra("rowkey",groupRowKey );
-							context.startActivity(intent);
-						}
-					});
-					vh.intentbuy.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View arg0) {
-//						Intent intent = new Intent(context, CompareActivity.class);
-//						intent.putExtra("rowkey",groupRowKey );
-							//二级页面去发标
-							Intent intent = new Intent(context, BidActivity.class);
-							intent.putExtra("rowkey",groupRowKey);
-							intent.putExtra("type","1");
-							context.startActivity(intent);
-						}
-					});
-
-//			}else{
-//					vh.mmoredomain.setVisibility(View.GONE);
-//					vh.intentbuy.setVisibility(View.GONE);
-//				}
-				if (dataSet.getYjson() != null){
-					if ("-1".equals(dataSet.getSaleinfo())){
-						vh.juan.setVisibility(View.GONE);
-					}else {
-						vh.juan.setVisibility(View.VISIBLE);
-						vh.juan.setText("劵");
-					}
-				}else {
-					try {
-						if (dataSet.getYjson() != null) {
-							vh.juan.setVisibility(View.VISIBLE);
-							String yjson = dataSet.getYjson();
-							final JSONObject object = new JSONObject(yjson);
-							vh.juan.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									new ResultDialog(context).buildDiloag(object, v, context);
-								}
-							});
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-				Glide.with(context)
-						.load(img)
-						.placeholder(R.mipmap.zw_img_300)
-						.priority(Priority.HIGH)
-						.into(vh.img);
-				vh.itemlayout.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						notifyDataSetChanged();
-						Intent intent;
-						if (JumpIntentUtil.isJump4(searchResultBeans, position)) {
-							intent = new Intent(context, IntentActivity.class);
-							if (searchResultBeans.get(position).getAndroidurl() != null) {
-								intent.putExtra("url", searchResultBeans.get(position).getUrl());
-							} else {
-								intent.putExtra("url", searchResultBeans.get(position).getAndroidurl());
-							}
-							if (searchResultBeans.get(position).getTitle() != null) {
-								intent.putExtra("title", searchResultBeans.get(position).getTitle());
-							}
-							if (searchResultBeans.get(position).getDomain() != null) {
-								intent.putExtra("domain", searchResultBeans.get(position).getDomain());
-							}
-							if (searchResultBeans.get(position).getGroupRowkey() != null) {
-								intent.putExtra("groupRowKey", searchResultBeans.get(position).getGroupRowkey());
-							}
-						} else {
-							intent = new Intent(context, WebViewActivity.class);
-							if (searchResultBeans.get(position).getAndroidurl() != null) {
-								intent.putExtra("url", searchResultBeans.get(position).getUrl());
-							} else {
-								intent.putExtra("url", searchResultBeans.get(position).getUrl());
-							}
-							if (searchResultBeans.get(position).getGroupRowkey() != null) {
-								intent.putExtra("groupRowKey", searchResultBeans.get(position).getGroupRowkey());
-							}
-						}
-						context.startActivity(intent);
-					}
-			});
-			}catch (Exception e){
-				e.printStackTrace();
-			}
-		return convertView;
+	public int getItemCount() {
+		return searchResultBeans.size();
 	}
-	class ViewHolder {
+
+
+	class ViewHolder extends RecyclerView.ViewHolder {
 		ImageView img;
 		TextView title,item_offer,mbigprice,mlittleprice,juan;
 		LinearLayout domainLayout;
 		RelativeLayout intentbuy,mmoredomain;
 		RelativeLayout itemlayout;
+		public ViewHolder(View mView) {
+			super(mView);
+			img = (ImageView) mView.findViewById(R.id.item_img);
+			title = (TextView) mView.findViewById(R.id.item_title);
+			item_offer = (TextView) mView.findViewById(R.id.item_offer);
+			mlittleprice = (TextView) mView.findViewById(R.id.mlittleprice);
+			mbigprice = (TextView) mView.findViewById(R.id.mbigprice);
+			juan = (TextView) mView.findViewById(R.id.juan);
+			domainLayout = (LinearLayout) mView.findViewById(R.id.domain_layout);
+			mmoredomain = (RelativeLayout) mView.findViewById(R.id.mmoredomain);
+			intentbuy = (RelativeLayout)mView.findViewById(R.id.intentbuy);
+			itemlayout = mView.findViewById(R.id.result_item);
+		}
 	}
-	public void addList(JSONArray array) throws JSONException {
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject object = array.getJSONObject(i);
-			String price = object.optString("price");
+
+	private void init(final ViewHolder vh, final int position) {
+		try {
+			WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+			int width = wm.getDefaultDisplay().getWidth();
+			LayoutParams params = vh.img.getLayoutParams();
+			params.height = width/2;
+			vh.img.setLayoutParams(params);
+			final SearchResultBean dataSet = searchResultBeans.get(position);
+			String title = dataSet.getTitle();
+			String img = dataSet.getImgUrl();
+			String price = dataSet.getPrice();
+			String hnumber = dataSet.getComnum();
+			vh.title.setText(title);
 			String bigprice;
 			String littleprice;
 			if (price.contains(".")) {
@@ -247,9 +124,130 @@ public class ResultMyGridAdapter extends BaseAdapter{
 				bigprice = price;
 				littleprice = ".0";
 			}
-//			Log.i("-----",bigprice+"---------"+littleprice);
 			vh.mbigprice.setText(bigprice);
 			vh.mlittleprice.setText(littleprice);
+			if (dataSet.getTarr() != null) {
+				JSONArray array = new JSONArray(dataSet.getTarr());
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject object = array.getJSONObject(i);
+					String price1 = object.optString("price");
+					if (price1.contains(".")) {
+						int end = price1.indexOf(".");
+						bigprice = price1.substring(0, end);
+						littleprice = price1.substring(end, price1.length());
+					}else{
+						bigprice = price1;
+						littleprice = ".0";
+					}
+					vh.mbigprice.setText(bigprice);
+					vh.mlittleprice.setText(littleprice);
+				}
+			}
+			if (Integer.valueOf(hnumber)>10000) {
+				if (Integer.valueOf(hnumber)>100000000) {
+					DecimalFormat df = new DecimalFormat("###.0");
+					String num = df.format(Double.valueOf(hnumber)/100000000);
+					vh.item_offer.setText("全网总评"+num+"亿条  ");
+				}else{
+					DecimalFormat df = new DecimalFormat("###.0");
+					String num = df.format(Double.valueOf(hnumber)/10000);
+					vh.item_offer.setText("全网总评"+num+"万条  ");
+				}
+			}else{
+				vh.item_offer.setText("全网总评"+hnumber+"条  ");
+			}
+//				if ("1".equals(dataSet.get("isxianshi"))) {
+			final String groupRowKey = dataSet.getGroupRowkey();
+			vh.mmoredomain.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(context, ResultDialogActivity.class);
+//						intent.putExtra("tarr",dataSet.get("tarr").toString() );
+					intent.putExtra("keyword",dataSet.getKeyword());
+					intent.putExtra("rowkey",groupRowKey );
+					context.startActivity(intent);
+				}
+			});
+			vh.intentbuy.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+//						Intent intent = new Intent(context, CompareActivity.class);
+//						intent.putExtra("rowkey",groupRowKey );
+					//二级页面去发标
+					Intent intent = new Intent(context, BidActivity.class);
+					intent.putExtra("rowkey",groupRowKey);
+					intent.putExtra("type","1");
+					context.startActivity(intent);
+				}
+			});
+
+			if (dataSet.getYjson() != null){
+				if ("-1".equals(dataSet.getSaleinfo())){
+					vh.juan.setVisibility(View.GONE);
+				}else {
+					vh.juan.setVisibility(View.VISIBLE);
+					vh.juan.setText("劵");
+				}
+			}else {
+				try {
+					if (dataSet.getYjson() != null) {
+						vh.juan.setVisibility(View.VISIBLE);
+						String yjson = dataSet.getYjson();
+						final JSONObject object = new JSONObject(yjson);
+						vh.juan.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								new ResultDialog(context).buildDiloag(object, v, context);
+							}
+						});
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			Glide.with(context)
+					.load(img)
+					.placeholder(R.mipmap.zw_img_300)
+					.priority(Priority.HIGH)
+					.into(vh.img);
+			vh.itemlayout.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					notifyDataSetChanged();
+					Intent intent;
+					if (JumpIntentUtil.isJump4(searchResultBeans, position)) {
+						intent = new Intent(context, IntentActivity.class);
+						if (searchResultBeans.get(position).getAndroidurl() != null) {
+							intent.putExtra("url", searchResultBeans.get(position).getUrl());
+						} else {
+							intent.putExtra("url", searchResultBeans.get(position).getAndroidurl());
+						}
+						if (searchResultBeans.get(position).getTitle() != null) {
+							intent.putExtra("title", searchResultBeans.get(position).getTitle());
+						}
+						if (searchResultBeans.get(position).getDomain() != null) {
+							intent.putExtra("domain", searchResultBeans.get(position).getDomain());
+						}
+						if (searchResultBeans.get(position).getGroupRowkey() != null) {
+							intent.putExtra("groupRowKey", searchResultBeans.get(position).getGroupRowkey());
+						}
+					} else {
+						intent = new Intent(context, WebViewActivity.class);
+						if (searchResultBeans.get(position).getAndroidurl() != null) {
+							intent.putExtra("url", searchResultBeans.get(position).getUrl());
+						} else {
+							intent.putExtra("url", searchResultBeans.get(position).getUrl());
+						}
+						if (searchResultBeans.get(position).getGroupRowkey() != null) {
+							intent.putExtra("groupRowKey", searchResultBeans.get(position).getGroupRowkey());
+						}
+					}
+					context.startActivity(intent);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

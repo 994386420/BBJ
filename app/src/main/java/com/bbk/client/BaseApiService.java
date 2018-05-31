@@ -91,4 +91,8 @@ public interface BaseApiService<T> {
     Observable<String> queryIndexSeeByToken(@QueryMap Map<String, String> map);
     @POST("newService/checkExsistProduct")
     Observable<String> checkExsistProduct(@QueryMap Map<String, String> map);
+    //获取比价信息
+    @POST("newService/getBijiaArr")
+    Observable<String> getBijiaArr(@QueryMap Map<String, String> map);
+
 }

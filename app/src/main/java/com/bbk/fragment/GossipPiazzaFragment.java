@@ -114,7 +114,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
                                     adapter = new GossipPiazzaAdapter(getActivity(), biaoLiaoBeans);
                                     mrecyclerview.setAdapter(adapter);
                                 }else if (x == 2) {
-                                    if (biaoLiaoBeans != null && biaoLiaoBeans.size() > 0){
+                                    if (biaoLiaoBeans != null && biaoLiaoBeans.size() > 0 && adapter != null){
                                         adapter.notifyData(biaoLiaoBeans);
                                     }else {
                                         StringUtil.showToast(getActivity(),"没有更多了");
@@ -127,7 +127,8 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
                     }
                     @Override
                     protected void hideDialog() {
-                       zLoadingView.loadSuccess();
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.loadSuccess();
                         mrefresh.finishLoadMore();
                         mrefresh.finishRefresh();
                         mrecyclerview.setVisibility(View.VISIBLE);
@@ -135,11 +136,14 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
 
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
+//                        zLoadingView.load();
+                        DialogSingleUtil.show(getActivity());
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
                         mrefresh.finishLoadMore();
@@ -151,6 +155,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
 
     private void initView() {
         zLoadingView = mView.findViewById(R.id.progress);
+        zLoadingView.setVisibility(View.GONE);
         zLoadingView.setLoadingHandler(this);
         mrefresh =  mView.findViewById(R.id.mrefresh);
         mrecyclerview =  mView.findViewById(R.id.mrecyclerview);
@@ -240,11 +245,19 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
 
     @Override
     protected void loadLazyData() {
-        initData();
+        mrefresh.autoRefresh();
+//        initData();
     }
 
     @Override
     public void doRequestData() {
+        zLoadingView.setVisibility(View.GONE);
         initData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DialogSingleUtil.dismiss(0);
     }
 }

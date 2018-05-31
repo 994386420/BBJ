@@ -3,7 +3,15 @@ package com.bbk.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +38,7 @@ public class CommonLoadingView extends FrameLayout {
     private View loadingErrorView;
     //数据为空
     private View emptyView;
+    private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
 
 
     public CommonLoadingView(Context context, AttributeSet attrs) {
@@ -88,6 +97,14 @@ public class CommonLoadingView extends FrameLayout {
 
     private void initView(View rootView) {
         mLoadingTextTv = (TextView) rootView.findViewById(R.id.tips_tv);
+        ImageView imageView = (ImageView) findViewById(R.id.dialog_img);
+        final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(1000);
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.RESTART);
+        animation.setInterpolator(LINEAR_INTERPOLATOR);
+        imageView.setAnimation(animation);
+        animation.startNow();
         mLoadErrorLl = rootView.findViewById(R.id.mzhanwei_layout);
         mLoadErrorLl.setOnClickListener(new OnClickListener() {
             @Override

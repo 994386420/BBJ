@@ -884,7 +884,7 @@ public class ResultMainActivity extends BaseActivity
 					addmap(arr, itemList,0,arr.length());	
 				}
 //			listAdapter = new ResultMyListAdapter(itemList, this);
-			result_list.setAdapter(listAdapter);
+//			result_list.setAdapter(listAdapter);
 			result_list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -914,7 +914,7 @@ public class ResultMainActivity extends BaseActivity
 				}
 			});
 //			gridviewadapter = new ResultMyGridAdapter(itemList, this);
-			mgridView_main.setAdapter(gridviewadapter);
+//			mgridView_main.setAdapter(gridviewadapter);
 			mgridView_main.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override

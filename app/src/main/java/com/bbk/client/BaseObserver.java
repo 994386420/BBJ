@@ -15,7 +15,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
     }
     @Override
     public void onError(Throwable e) {
-        Log.e("lvr", e.getMessage());
+//        Log.e("lvr", e.getMessage());
         // todo error somthing
 
         if(e instanceof ExceptionHandle.ResponeThrowable){

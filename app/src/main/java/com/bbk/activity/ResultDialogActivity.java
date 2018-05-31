@@ -9,15 +9,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.NewFxBean;
+import com.bbk.adapter.FindListAdapter;
 import com.bbk.adapter.ResultDialogAdapter1;
 import com.bbk.adapter.ResultDialogAdapter2;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow3;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyListView;
 import com.tencent.qcloud.sdk.Constant;
 import com.zyao89.view.zloading.ZLoadingView;
@@ -43,7 +51,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-public class ResultDialogActivity extends BaseActivity implements ResultEvent {
+public class ResultDialogActivity extends BaseActivity {
 	private MyListView mlistview1,mlistview2;
 	private ResultDialogAdapter1 adapter1;
 	private ResultDialogAdapter2 adapter2;
@@ -67,7 +75,6 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_result_dialog);
 		dataFlow = new DataFlow3(this);
-//		String tarr = getIntent().getStringExtra("tarr");
 		keyword = getIntent().getStringExtra("keyword");
 		rowkey = getIntent().getStringExtra("rowkey");
 		initView();
@@ -79,7 +86,6 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 		list1 = new ArrayList<>();
 		list2 = new ArrayList<>();
 		try {
-//			JSONArray array = new JSONArray(tarr);
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject object = array.getJSONObject(i);
 				if (object.optString("price").isEmpty()) {
@@ -115,7 +121,100 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 	private void getBijiaArr() {
 		HashMap<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("rowkey",rowkey);
-		dataFlow.requestData(1, Constants.getBijiaArr, paramsMap, this);
+		RetrofitClient.getInstance(this).createBaseApi().getBijiaArr(
+				paramsMap, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							String content = jsonObject.optString("content");
+							if (jsonObject.optString("status").equals("1")) {
+								JSONArray array = new JSONArray(content);
+								initlist(array);
+								if (list2.isEmpty()) {
+									wantdomain.setVisibility(View.GONE);
+									henggang.setVisibility(View.GONE);
+								}
+								mclose = (ImageView) findViewById(R.id.mclose);
+								mclose.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View arg0) {
+
+										finish();
+									}
+								});
+								adapter1 = new ResultDialogAdapter1(list1, ResultDialogActivity.this);
+								adapter2 = new ResultDialogAdapter2(list2, ResultDialogActivity.this);
+								mlistview1.setAdapter(adapter1);
+								mlistview2.setAdapter(adapter2);
+
+								mlistview1.setOnItemClickListener(new OnItemClickListener() {
+
+									@Override
+									public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+										Map<String, Object> map = list1.get(arg2);
+										final String url = map.get("url").toString();
+										final String title = map.get("title").toString();
+										final String domain1 = map.get("domain").toString();
+										final String groupRowKey = map.get("groupRowKey").toString();
+										Intent intent;
+										if (JumpIntentUtil.isJump(list1,arg2,"domain")) {
+											intent = new Intent(ResultDialogActivity.this,IntentActivity.class);
+											intent.putExtra("title", title);
+											intent.putExtra("domain", domain1);
+											intent.putExtra("url", url);
+											intent.putExtra("groupRowKey", groupRowKey);
+										}else{
+											intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
+											if (null!= getIntent().getStringExtra("isweb")) {
+												WebViewActivity.instance.finish();
+											}
+											intent.putExtra("url", url);
+											intent.putExtra("groupRowKey", groupRowKey);
+										}
+										startActivity(intent);
+										finish();
+									}
+								});
+								mlistview2.setOnItemClickListener(new OnItemClickListener() {
+
+									@Override
+									public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+										Map<String, Object> map = list2.get(arg2);
+										final String url = map.get("url").toString();
+										Intent intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
+										if (null!= getIntent().getStringExtra("isweb")) {
+											WebViewActivity.instance.finish();
+										}
+										intent.putExtra("url", url);
+										startActivity(intent);
+										finish();
+									}
+								});
+								if (thread == null) {
+									NowPrice();
+								}
+								mloadingView.setVisibility(View.GONE);
+								sll_bijia.setVisibility(View.VISIBLE);
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+					}
+
+					@Override
+					protected void showDialog(){
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(ResultDialogActivity.this, "网络异常");
+					}
+				});
 	}
 
 	private void initView() {
@@ -224,85 +323,5 @@ public class ResultDialogActivity extends BaseActivity implements ResultEvent {
 		isrun = false;
 		super.onDestroy();
 
-	}
-
-	@Override
-	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		switch (requestCode){
-			case 1:
-				try {
-					JSONArray array = new JSONArray(content);
-					initlist(array);
-					if (list2.isEmpty()) {
-						wantdomain.setVisibility(View.GONE);
-						henggang.setVisibility(View.GONE);
-					}
-					mclose = (ImageView) findViewById(R.id.mclose);
-					mclose.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View arg0) {
-
-							finish();
-						}
-					});
-					adapter1 = new ResultDialogAdapter1(list1, this);
-					adapter2 = new ResultDialogAdapter2(list2, this);
-					mlistview1.setAdapter(adapter1);
-					mlistview2.setAdapter(adapter2);
-
-					mlistview1.setOnItemClickListener(new OnItemClickListener() {
-
-						@Override
-						public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-							Map<String, Object> map = list1.get(arg2);
-							final String url = map.get("url").toString();
-							final String title = map.get("title").toString();
-							final String domain1 = map.get("domain").toString();
-							final String groupRowKey = map.get("groupRowKey").toString();
-							Intent intent;
-							if (JumpIntentUtil.isJump(list1,arg2,"domain")) {
-								intent = new Intent(ResultDialogActivity.this,IntentActivity.class);
-								intent.putExtra("title", title);
-								intent.putExtra("domain", domain1);
-								intent.putExtra("url", url);
-								intent.putExtra("groupRowKey", groupRowKey);
-							}else{
-								intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
-								if (null!= getIntent().getStringExtra("isweb")) {
-									WebViewActivity.instance.finish();
-								}
-								intent.putExtra("url", url);
-								intent.putExtra("groupRowKey", groupRowKey);
-							}
-							startActivity(intent);
-							finish();
-						}
-					});
-					mlistview2.setOnItemClickListener(new OnItemClickListener() {
-
-						@Override
-						public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-							Map<String, Object> map = list2.get(arg2);
-							final String url = map.get("url").toString();
-							Intent intent = new Intent(ResultDialogActivity.this,WebViewActivity.class);
-							if (null!= getIntent().getStringExtra("isweb")) {
-								WebViewActivity.instance.finish();
-							}
-							intent.putExtra("url", url);
-							startActivity(intent);
-							finish();
-						}
-					});
-					if (thread == null) {
-						NowPrice();
-					}
-					mloadingView.setVisibility(View.GONE);
-					sll_bijia.setVisibility(View.VISIBLE);
-				}catch (Exception e){
-					e.printStackTrace();
-				}
-				break;
-		}
 	}
 }

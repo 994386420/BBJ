@@ -56,6 +56,7 @@ import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -269,10 +270,10 @@ public class WelcomeActivity extends BaseActivity2{
 							if (jsonObject.optString("status").equals("1")) {
 								final JSONObject content = jsonObject.getJSONObject("content");
 								String img = content.optString("img");
-								Glide.with(WelcomeActivity.this)
-										.load(img)
-										.placeholder(R.mipmap.qidong)
-										.into(mimg);
+									Glide.with(getApplicationContext())
+											.load(img)
+											.placeholder(R.mipmap.qidong)
+											.into(mimg);
 								final String eventId = content.optString("eventId");
 								//点击跳转活动页
 								mimg.setOnClickListener(new OnClickListener() {

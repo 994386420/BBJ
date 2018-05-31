@@ -56,6 +56,9 @@ import com.bbk.activity.SortActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewWZActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
@@ -95,7 +98,7 @@ import java.util.Map;
  * Created by rtj on 2017/12/1.
  */
 
-public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent, View.OnClickListener{
+public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClickListener{
     private Context context;
     private List<Map<String, String>> taglist,list,mList,mAddList;
     private JSONArray tag, gongneng,fabiao,banner;
@@ -394,21 +397,21 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
             e.printStackTrace();
         }
     }
-    //超值购等数据
-    private void mIdex(String str,int code,boolean is){
-        type = str;
-        x=1;
-        page=1;
-        isclear = true;
-        getIndexByType(is,code);
-    }
-    //首页分类数据
-    private void getIndexByType(boolean is,int code) {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("type",type);
-        paramsMap.put("page",page+"");
-        dataFlow.requestData(code, Constants.GetQueryAppIndexByType, paramsMap, this, is);
-    }
+//    //超值购等数据
+//    private void mIdex(String str,int code,boolean is){
+//        type = str;
+//        x=1;
+//        page=1;
+//        isclear = true;
+//        getIndexByType(is,code);
+//    }
+//    //首页分类数据
+//    private void getIndexByType(boolean is,int code) {
+//        HashMap<String, String> paramsMap = new HashMap<>();
+//        paramsMap.put("type",type);
+//        paramsMap.put("page",page+"");
+//        dataFlow.requestData(code, Constants.GetQueryAppIndexByType, paramsMap, this, is);
+//    }
     private void setView(TopViewHolder topViewHolder){
         topViewHolder.mCzgText.setTextColor(context.getResources().getColor(R.color.color_line_text));
         topViewHolder.mCzgView.setVisibility(View.GONE);
@@ -996,17 +999,6 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
         }
     }
 
-    @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        switch (requestCode){
-            case 4:
-                Intent intent = new Intent(context, WebViewWZActivity.class);
-                intent.putExtra("url", content);
-                intent.putExtra("title", wztitle);
-                context.startActivity(intent);
-                break;
-        }
-    }
     /**
      * 发现数据
      */
@@ -1092,28 +1084,79 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements ResultEvent,
     /**
      * 发现点击事件
      */
+//    private void insertWenzhangGuanzhu(int position) {
+//        try {
+//            wztitle  =fxBeans.get(position).getTitle();
+//            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+//            String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "token");
+//            if (!TextUtils.isEmpty(userID)) {
+//                HashMap<String, String> params = new HashMap<String, String>();
+//                params.put("userid", userID);
+//                params.put("wzid",  fxBeans.get(position).getId());
+//                params.put("token", token);
+//                params.put("type", "2");
+//                dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
+//            } else {
+//                HashMap<String, String> params = new HashMap<String, String>();
+//                params.put("userid", "-1");
+//                params.put("token", token);
+//                params.put("wzid",  fxBeans.get(position).getId());
+//                params.put("type", "2");
+//                dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
     private void insertWenzhangGuanzhu(int position) {
-        try {
-            wztitle  =fxBeans.get(position).getTitle();
-            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-            String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "token");
-            if (!TextUtils.isEmpty(userID)) {
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", userID);
-                params.put("wzid",  fxBeans.get(position).getId());
-                params.put("token", token);
-                params.put("type", "2");
-                dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
-            } else {
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "-1");
-                params.put("token", token);
-                params.put("wzid",  fxBeans.get(position).getId());
-                params.put("type", "2");
-                dataFlow.requestData(4, "newService/insertWenzhangGuanzhu", params, this);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        wztitle  = fxBeans.get(position).getTitle();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        String token = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "token");
+        if (!TextUtils.isEmpty(userID)) {
+            insertWenzhangGuanzhu(userID,fxBeans.get(position).getId(),token,wztitle);
+        } else {
+            insertWenzhangGuanzhu("-1",fxBeans.get(position).getId(),token,wztitle);
         }
+
+    }
+
+    private void insertWenzhangGuanzhu(String userid, String wz, String token, final String wztitle) {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userid);
+        maps.put("wzid", wz);
+        maps.put("token", token);
+        maps.put("type", "2");
+        RetrofitClient.getInstance(context).createBaseApi().insertWenzhangGuanzhu(
+                maps, new BaseObserver<String>(context) {
+                    @Override
+                    public void onNext(String s) {
+                        Log.e("===",s);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                Intent intent = new Intent(context, WebViewWZActivity.class);
+                                intent.putExtra("title", wztitle);
+                                intent.putExtra("url", jsonObject.optString("content"));
+                                context.startActivity(intent);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(context);
+                    }
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(context, "网络异常");
+                    }
+                });
     }
 }

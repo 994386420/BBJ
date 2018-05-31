@@ -39,6 +39,7 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.ImmersionUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -149,6 +150,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Comm
                                 String content = jsonObject.optString("content");
                                 JSONObject object = new JSONObject(content);
                                 String moren = object.optString("moren");
+                                DialogSingleUtil.dismiss(0);
                                 if (search == 2){
                                     puDaoBeans = JSON.parseArray(moren,PuDaoBean.class);
                                     handler.sendEmptyMessageDelayed(1,0);
@@ -183,11 +185,14 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Comm
                     }
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
+//                        zLoadingView.load();
+                        DialogSingleUtil.show(getActivity());
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mlistview.setVisibility(View.GONE);
                         mrefresh.finishLoadMore();
@@ -319,6 +324,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Comm
 
     @Override
     public void doRequestData() {
+        zLoadingView.setVisibility(View.GONE);
         initData(type,1);
     }
 
@@ -351,6 +357,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Comm
                         zLoadingView.loadSuccess();
                         mlistview.setVisibility(View.VISIBLE);
                     }else {
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadSuccess(true);
                         mlistview.setVisibility(View.GONE);
                         mrefresh.setEnableLoadMore(false);

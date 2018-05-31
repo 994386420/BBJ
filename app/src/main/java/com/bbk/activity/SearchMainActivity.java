@@ -22,6 +22,7 @@ import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -166,8 +167,8 @@ public class SearchMainActivity extends ActivityGroup implements
 	private int currentPageIndex = 1;
 	private Map<String, List<Map<String, Object>>> filterMap;;
 	private RelativeLayout mComposite,mnumber,mprice,mfilter,henggang,biankuang1,biankuang2;
-	private ListView result_list;
-	private GridView mgridView_main;
+	private RecyclerView result_list;
+	private RecyclerView mgridView_main;
 	private List<Map<String, Object>> itemList,itemList1;
 	private LinearLayout correctLayout,view_box,third_hei,third_bai,second_hei,second,third,correctLayout1,shopbox;
 	private TextView correctTv,ensure,request,correctTv1;
@@ -369,8 +370,12 @@ public class SearchMainActivity extends ActivityGroup implements
 
 		filter_price = (TextView) findViewById(R.id.filter_price);
 		compositerank = (TextView) findViewById(R.id.compositerank);
-		mgridView_main = (GridView) findViewById(R.id.mgridView_main);
-		result_list = (ListView) findViewById(R.id.result_list);
+		mgridView_main = (RecyclerView) findViewById(R.id.mgridView_main);
+		mgridView_main.setLayoutManager(new GridLayoutManager(this,2));
+		mgridView_main.setHasFixedSize(true);
+		result_list = (RecyclerView) findViewById(R.id.result_list);
+		result_list.setHasFixedSize(true);
+		result_list.setLayoutManager(new LinearLayoutManager(this));
 		to_top_btn = (ImageButton) findViewById(R.id.to_top_btn);
 		correctLayout = findViewById(R.id.correct_layout);
 		correctLayout1 = findViewById(R.id.correct_layout1);
@@ -1891,16 +1896,19 @@ public class SearchMainActivity extends ActivityGroup implements
 						}
 						@Override
 						protected void hideDialog() {
+							DialogSingleUtil.dismiss(0);
 							zLoadingView.loadSuccess();
 						}
 
 						@Override
 						protected void showDialog() {
-                            zLoadingView.load();
+							DialogSingleUtil.show(SearchMainActivity.this);
 						}
 
 						@Override
 						public void onError(ExceptionHandle.ResponeThrowable e) {
+							DialogSingleUtil.dismiss(0);
+							zLoadingView.setVisibility(View.VISIBLE);
 							zLoadingView.loadError();
 							StringUtil.showToast(SearchMainActivity.this, "网络异常");
 						}
@@ -2123,15 +2131,22 @@ public class SearchMainActivity extends ActivityGroup implements
 	};
 	@Override
 	public void doRequestData() {
-		if (Flag.equals("1")){
-			isloadShaixuan = true;
-			x = 1;
-			currentPageIndex = 1;
-			initData();
+		zLoadingView.setVisibility(View.GONE);
+		if (getIntent().getStringExtra("keyword") != null){
+			keyword = getIntent().getStringExtra("keyword");
+			if (Flag.equals("1")){
+				isloadShaixuan = true;
+				x = 1;
+				currentPageIndex = 1;
+				initData();
+			}else {
+				x = 1;
+				currentPageIndex = 1;
+				initDataCzg();
+			}
 		}else {
-			x = 1;
-			currentPageIndex = 1;
-			initDataCzg();
+			loadhotKeyword(type);
+			dao = new SearchHistoryDao(this);
 		}
 	}
 
@@ -2158,6 +2173,7 @@ public class SearchMainActivity extends ActivityGroup implements
 					}
 					@Override
 					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
 						result_list.setVisibility(View.VISIBLE);
 						mgridView_main.setVisibility(View.VISIBLE);
 						zLoadingView.loadSuccess();
@@ -2169,11 +2185,13 @@ public class SearchMainActivity extends ActivityGroup implements
 
 					@Override
 					protected void showDialog() {
-						zLoadingView.load();
+						DialogSingleUtil.show(SearchMainActivity.this);
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						result_list.setVisibility(View.GONE);
 						mgridView_main.setVisibility(View.GONE);
@@ -2212,6 +2230,7 @@ public class SearchMainActivity extends ActivityGroup implements
 					}
 					@Override
 					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
 						zLoadingView.loadSuccess();
 						xrefresh2.finishLoadMore();
 						xrefresh2.finishRefresh();
@@ -2219,11 +2238,13 @@ public class SearchMainActivity extends ActivityGroup implements
 
 					@Override
 					protected void showDialog() {
-						zLoadingView.load();
+						DialogSingleUtil.show(SearchMainActivity.this);
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mCzgListview.setVisibility(View.GONE);
 						xrefresh2.finishLoadMore();

@@ -28,6 +28,7 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -125,6 +126,7 @@ public class BidAcceptanceActivity extends BaseActivity implements CommonLoading
                                 String content = jsonObject.optString("content");
                                 JSONObject object = new JSONObject(content);
                                 String moren = object.optString("moren");
+                                DialogSingleUtil.dismiss(0);
                                 if (search == 2){
                                     puDaoBeans = JSON.parseArray(moren,PuDaoBean.class);
                                     handler.sendEmptyMessageDelayed(1,0);
@@ -161,11 +163,13 @@ public class BidAcceptanceActivity extends BaseActivity implements CommonLoading
                     }
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
+                        DialogSingleUtil.show(BidAcceptanceActivity.this);
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mlistview.setVisibility(View.GONE);
                         mrefresh.finishLoadMore();
@@ -299,6 +303,7 @@ public class BidAcceptanceActivity extends BaseActivity implements CommonLoading
 
     @Override
     public void doRequestData() {
+        zLoadingView.setVisibility(View.GONE);
         initData(type,1);
     }
 
@@ -331,6 +336,7 @@ public class BidAcceptanceActivity extends BaseActivity implements CommonLoading
                         zLoadingView.loadSuccess();
                         mlistview.setVisibility(View.VISIBLE);
                     }else {
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadSuccess(true);
                         mlistview.setVisibility(View.GONE);
                         mrefresh.setEnableLoadMore(false);

@@ -22,6 +22,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -145,6 +146,7 @@ public class BidMyListDetailActivity extends BaseActivity implements CommonLoadi
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
                                 puDaoListBeans = JSON.parseArray(content, PuDaoListBean.class);
+                                DialogSingleUtil.dismiss(0);
                                 if (x == 1){
                                     if (puDaoListBeans != null && puDaoListBeans.size() > 0) {
                                         xrefresh.setEnableLoadMore(true);
@@ -153,11 +155,13 @@ public class BidMyListDetailActivity extends BaseActivity implements CommonLoadi
                                         mlistview.setVisibility(View.VISIBLE);
                                         zLoadingView.loadSuccess();
                                     }else {
+                                        zLoadingView.setVisibility(View.VISIBLE);
                                         mlistview.setVisibility(View.GONE);
                                         zLoadingView.loadSuccess(true);
                                         xrefresh.setEnableLoadMore(false);
                                     }
                                 }else {
+
                                     mlistview.setVisibility(View.VISIBLE);
                                     zLoadingView.loadSuccess();
                                     if (puDaoListBeans != null && puDaoListBeans.size() > 0) {
@@ -179,11 +183,14 @@ public class BidMyListDetailActivity extends BaseActivity implements CommonLoadi
 
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
+//                        zLoadingView.load();
+                        DialogSingleUtil.show(BidMyListDetailActivity.this);
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mlistview.setVisibility(View.GONE);
                         xrefresh.finishLoadMore();
@@ -215,6 +222,9 @@ public class BidMyListDetailActivity extends BaseActivity implements CommonLoadi
 
     @Override
     public void doRequestData() {
-
+        zLoadingView.setVisibility(View.GONE);
+        page = 1;
+        x = 1;
+        loadData();
     }
 }

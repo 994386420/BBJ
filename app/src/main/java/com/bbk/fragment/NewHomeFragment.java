@@ -54,6 +54,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.model.BaseService;
 import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -304,16 +305,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     @Override
                     protected void hideDialog() {
                         zLoadingView.loadSuccess();
+                        DialogSingleUtil.dismiss(0);
                     }
 
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        Log.e("Exception", e.getMessage());
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
                         mSuspensionBar.setVisibility(View.GONE);
@@ -349,16 +351,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     @Override
                     protected void hideDialog() {
                         zLoadingView.loadSuccess();
+                        DialogSingleUtil.dismiss(0);
                     }
 
                     @Override
                     protected void showDialog() {
-//                        zLoadingView.load();
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        Log.e("Exception", e.getMessage());
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
                         mSuspensionBar.setVisibility(View.GONE);
@@ -583,15 +586,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //超值购等数据
     private void mIdex(String str){
+        DialogSingleUtil.show(getActivity());
         type = str;
         x=1;
         page=1;
-        zLoadingView.load();
+//        zLoadingView.load();
         getIndexByType();
     }
     @Override
     protected void loadLazyData() {
-        mViewLoad();
+        refreshLayout.autoRefresh();
+//        mViewLoad();
         //首页引导页只显示一次
         String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
         if (TextUtils.isEmpty(isFirstResultUse)) {
@@ -663,7 +668,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
     @Override
     public void doRequestData() {
+        DialogSingleUtil.show(getActivity());
+        zLoadingView.setVisibility(View.GONE);
         initData();
         getIndexByType();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DialogSingleUtil.dismiss(0);
     }
 }

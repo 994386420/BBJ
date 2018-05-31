@@ -28,6 +28,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -158,6 +159,7 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
                                 woYaoBeans = JSON.parseArray(content, WoYaoBean.class);
+                                DialogSingleUtil.dismiss(0);
                                 if (x == 1){
                                     if (woYaoBeans != null && woYaoBeans.size() > 0) {
                                         xrefresh.setEnableLoadMore(true);
@@ -166,6 +168,7 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
                                         mlistview.setVisibility(View.VISIBLE);
                                         zLoadingView.loadSuccess();
                                     }else {
+                                        zLoadingView.setVisibility(View.VISIBLE);
                                         mlistview.setVisibility(View.GONE);
                                         zLoadingView.loadSuccess(true);
                                         xrefresh.setEnableLoadMore(false);
@@ -192,11 +195,14 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
 
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
+//                        zLoadingView.load();
+                        DialogSingleUtil.show(BidListDetailActivity.this);
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mlistview.setVisibility(View.GONE);
                         xrefresh.finishLoadMore();
@@ -227,6 +233,9 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
 
     @Override
     public void doRequestData() {
-        initData();
+        zLoadingView.setVisibility(View.GONE);
+        page = 1;
+        x = 1;
+        loadData();
     }
 }

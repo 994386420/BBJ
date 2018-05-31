@@ -26,6 +26,7 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
@@ -122,6 +123,7 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
                                 pubaMessageBeans = JSON.parseArray(content, PubaMessageBean.class);
+                                DialogSingleUtil.dismiss(0);
                                  if (x == 1){
                                      if (pubaMessageBeans != null && pubaMessageBeans.size() > 0) {
                                          xrefresh.setEnableLoadMore(true);
@@ -130,6 +132,7 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
                                          listView.setVisibility(View.VISIBLE);
                                          zLoadingView.loadSuccess();
                                      }else {
+                                         zLoadingView.setVisibility(View.VISIBLE);
                                          listView.setVisibility(View.GONE);
                                          zLoadingView.loadSuccess(true);
                                          xrefresh.setEnableLoadMore(false);
@@ -156,11 +159,13 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
 
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
+//                        DialogSingleUtil.show(getActivity());
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         listView.setVisibility(View.GONE);
                         xrefresh.finishLoadMore();
@@ -185,6 +190,7 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
 
     @Override
     public void doRequestData() {
+        zLoadingView.setVisibility(View.GONE);
         initData();
     }
 }

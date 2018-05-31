@@ -13,6 +13,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
@@ -90,7 +91,7 @@ public class MesageCListReceiveAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View arg0) {
-				mListener.onClick(position1);
+				mListener.onClick(position1,receiceMsgBean.getWenzhangid(),receiceMsgBean.getPlid(),receiceMsgBean.getUid());
 			}
 		});
 		Glide.with(context).load(receiceMsgBean.getImgurl()).into(vh.mimg);
@@ -125,7 +126,7 @@ public class MesageCListReceiveAdapter extends BaseAdapter {
 	}
 	  //自定义接口，用于回调按钮点击事件到Activity
 	  public interface MyClickListener{
-	      public void onClick(int position);
+	      public void onClick(int position,String weid,String plid,String uid);
 	  }
 
 	private void insertWenzhangGuanzhu(String userid, String wz, String token, final String wztitle) {
@@ -138,7 +139,6 @@ public class MesageCListReceiveAdapter extends BaseAdapter {
 				maps, new BaseObserver<String>(context) {
 					@Override
 					public void onNext(String s) {
-						Log.e("===",s);
 						try {
 							JSONObject jsonObject = new JSONObject(s);
 							if (jsonObject.optString("status").equals("1")) {
@@ -153,13 +153,16 @@ public class MesageCListReceiveAdapter extends BaseAdapter {
 					}
 					@Override
 					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
 					}
 
 					@Override
 					protected void showDialog() {
+						DialogSingleUtil.show(context);
 					}
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
 						StringUtil.showToast(context, "网络异常");
 					}
 				});

@@ -26,6 +26,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.SoftHideKeyBoardUtil;
@@ -280,6 +281,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
 									systemMessageBeans = JSON.parseArray(content,SystemMessageBean.class);
+									DialogSingleUtil.dismiss(0);
 								if (x == 1){
 									if (systemMessageBeans != null && systemMessageBeans.size() > 0) {
 										xrefresh.setEnableLoadMore(true);
@@ -289,6 +291,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 										mlistview.setVisibility(View.VISIBLE);
 										zLoadingView.loadSuccess();
 									}else {
+										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
 										zLoadingView.loadSuccess(true);
 										xrefresh.setEnableLoadMore(false);
@@ -315,11 +318,14 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 
 					@Override
 					protected void showDialog() {
-						zLoadingView.load();
+//						zLoadingView.load();
+						DialogSingleUtil.show(MesageCenterActivity.this);
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
@@ -344,6 +350,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
 								sendMsgBeans = JSON.parseArray(content,SendMsgBean.class);
+								DialogSingleUtil.dismiss(0);
 								if (x == 1){
 									if (sendMsgBeans != null && sendMsgBeans.size() > 0) {
 										xrefresh.setEnableLoadMore(true);
@@ -353,6 +360,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 										mlistview.setVisibility(View.VISIBLE);
 										zLoadingView.loadSuccess();
 									}else {
+										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
 										zLoadingView.loadSuccess(true);
 										xrefresh.setEnableLoadMore(false);
@@ -379,11 +387,13 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 
 					@Override
 					protected void showDialog() {
-						zLoadingView.load();
+						DialogSingleUtil.show(MesageCenterActivity.this);
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
@@ -409,6 +419,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
 								receiceMsgBeans = JSON.parseArray(content,ReceiceMsgBean.class);
+								DialogSingleUtil.dismiss(0);
 								if (x == 1){
 									if (receiceMsgBeans != null && receiceMsgBeans.size() > 0) {
 										xrefresh.setEnableLoadMore(true);
@@ -418,6 +429,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 										mlistview.setVisibility(View.VISIBLE);
 										zLoadingView.loadSuccess();
 									}else {
+										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
 										zLoadingView.loadSuccess(true);
 										xrefresh.setEnableLoadMore(false);
@@ -432,14 +444,12 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 									}
 								}
 								if (receiveadapter != null) {
-									receiceMsgBeans.addAll(receiceMsgBeans);
 									receiveadapter.setOnClickListener(new MyClickListener() {
 										@Override
-										public void onClick(int position) {
-											if (receiceMsgBeans != null) {
-												msgwenzhangid = receiceMsgBeans.get(position).getWenzhangid();
-												msgreid = receiceMsgBeans.get(position).getUid();
-												msgplid = receiceMsgBeans.get(position).getPlid();
+										public void onClick(int position,String wzid,String plid,String uid) {
+												msgwenzhangid = wzid;
+												msgreid = uid;
+												msgplid = plid;
 												sendtext.setVisibility(View.VISIBLE);
 												sendhenggang.setVisibility(View.VISIBLE);
 												msgEdittext.requestFocus();
@@ -447,7 +457,6 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 												imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);// 开启或者关闭软键盘
 												imm.showSoftInput(msgEdittext, InputMethodManager.SHOW_FORCED);// 弹出软键盘时，焦点定位在输入框中
 											}
-										}
 									});
 								}
 							}
@@ -463,11 +472,13 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 
 					@Override
 					protected void showDialog() {
-						zLoadingView.load();
+						DialogSingleUtil.show(MesageCenterActivity.this);
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
@@ -537,11 +548,13 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 
 					@Override
 					protected void showDialog() {
-						zLoadingView.load();
+						DialogSingleUtil.show(MesageCenterActivity.this);
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
 						StringUtil.showToast(MesageCenterActivity.this, "网络异常");
@@ -615,6 +628,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 
 	@Override
 	public void doRequestData() {
+		zLoadingView.setVisibility(View.GONE);
 		switch (curclick) {
 			case 0:
 				systempage = 1;

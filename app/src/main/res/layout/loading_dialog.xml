@@ -4,7 +4,6 @@
     android:id="@+id/dialog_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_progress_dialog"
     android:orientation="vertical"
     android:paddingLeft="18dp"
     android:paddingRight="18dp"
@@ -12,16 +11,24 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
-    <com.zyao89.view.zloading.ZLoadingView
-        android:id="@+id/dialog_img"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:z_color="@color/white"
-        app:z_type="DoubleCircleBuilder"
-        app:z_duration_percent="0.5"/>
-
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+        <ImageView
+            android:id="@+id/dialog_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/loading2"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/loading1"/>
+    </RelativeLayout>
     <TextView
         android:id="@+id/tips_tv"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:gravity="center"

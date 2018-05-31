@@ -28,6 +28,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -156,6 +157,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
                     }
                     @Override
                     protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
                         zLoadingView.loadSuccess();
                         mrefresh.finishLoadMore();
                         mrefresh.finishRefresh();
@@ -163,11 +165,14 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
                     }
                     @Override
                     protected void showDialog() {
-                        zLoadingView.load();
+//                        zLoadingView.load();
+                        DialogSingleUtil.show(getActivity());
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
                         mrefresh.finishLoadMore();
@@ -217,6 +222,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
 
     @Override
     public void doRequestData() {
+        zLoadingView.setVisibility(View.GONE);
         initData();
     }
 }

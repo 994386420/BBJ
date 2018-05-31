@@ -139,6 +139,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 					}
 					@Override
 					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
 						zLoadingView.loadSuccess();
 						xrefresh.finishLoadMore();
 						xrefresh.finishRefresh();
@@ -147,11 +148,13 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 
 					@Override
 					protected void showDialog() {
-						zLoadingView.load();
+						DialogSingleUtil.show(getActivity());
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistView.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
@@ -233,12 +236,19 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 
 	@Override
 	protected void loadLazyData() {
-		initData();
+		xrefresh.autoRefresh();
 	}
 
 
 	@Override
 	public void doRequestData() {
+		zLoadingView.setVisibility(View.GONE);
 		initData();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		DialogSingleUtil.dismiss(0);
 	}
 }

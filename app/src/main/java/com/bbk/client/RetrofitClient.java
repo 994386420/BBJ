@@ -334,6 +334,13 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void getBijiaArr(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getBijiaArr(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

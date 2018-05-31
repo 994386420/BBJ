@@ -28,6 +28,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,11 +48,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ResultMyListAdapter extends BaseAdapter  implements PopupWindow.OnDismissListener {
-	private List<Map<String, Object>> list;
-	private List<Map<String, String>> list1;
+public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWindow.OnDismissListener {
 	private Activity context;
-	ViewHolder vh;
 	private PopupWindow popupWindow;
 	private List<SearchResultBean> searchResultBeans;
 	public ResultMyListAdapter( List<SearchResultBean> searchResultBeans,Activity context){
@@ -62,52 +61,39 @@ public class ResultMyListAdapter extends BaseAdapter  implements PopupWindow.OnD
 		this.searchResultBeans.addAll(beans);
 		notifyDataSetChanged();
 	}
+
 	@Override
-	public int getCount() {
-		return searchResultBeans.size();
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		ViewHolder ViewHolder = new ViewHolder(
+				LayoutInflater.from(context).inflate(R.layout.listview_result, parent, false));
+		return ViewHolder;
 	}
 
 	@Override
-	public Object getItem(int arg0) {
-		return searchResultBeans.get(arg0);
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		try {
+			ViewHolder viewHolder = (ViewHolder) holder;
+			init(viewHolder,position);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public long getItemId(int arg0) {
 		return arg0;
 	}
-	
+
 	@Override
-	public View getView(final int position, View convertView, ViewGroup arg2) {
-		if (convertView == null) {
-			vh = new ViewHolder();
-			convertView = View.inflate(context, R.layout.listview_result, null);
-			vh.img = (ImageView) convertView.findViewById(R.id.item_img);
-			vh.mcouponimg = (ImageView) convertView.findViewById(R.id.mcouponimg);
-			vh.title = (TextView) convertView.findViewById(R.id.item_title);
-			vh.mlingjuan = (TextView) convertView.findViewById(R.id.mlingjuan);
-			vh.item_offer = (TextView) convertView.findViewById(R.id.item_offer);
-			vh.mcoupontext = (TextView) convertView.findViewById(R.id.mcoupontext);
-			vh.mlittleprice = (TextView) convertView.findViewById(R.id.mlittleprice);
-			vh.mbigprice = (TextView) convertView.findViewById(R.id.mbigprice);
-			vh.myouhuitext = (TextView) convertView.findViewById(R.id.myouhuitext);
-			vh.domainLayout = (LinearLayout) convertView.findViewById(R.id.domain_layout);
-			vh.mcoupon = (LinearLayout) convertView.findViewById(R.id.mcoupon);
-			vh.findsimilar = (RelativeLayout) convertView.findViewById(R.id.findsimilar);
-			vh.intentbuy = (RelativeLayout) convertView.findViewById(R.id.intentbuy);
-			vh.mfengexian = convertView.findViewById(R.id.mfengexian);
-			vh.lingjuanzhanwei = convertView.findViewById(R.id.lingjuanzhanwei);
-			vh.itemlayout =  convertView.findViewById(R.id.result_item);
-			convertView.setTag(vh);
-		}else{
-			vh = (ViewHolder) convertView.getTag();
-		}
+	public int getItemCount() {
+		return searchResultBeans.size();
+	}
+
+	private void init(final ViewHolder vh, final int position) {
 		try {
 			final SearchResultBean dataSet = searchResultBeans.get(position);
-//			Log.e("====",position+"   "+dataSet);
 			final String title = dataSet.getTitle();
 			String img = dataSet.getImgUrl();
-//			String price = dataSet.get("price").toString();
 			String hnumber = dataSet.getComnum();
 			vh.title.setText(title);
 			String price = dataSet.getPrice();
@@ -125,7 +111,20 @@ public class ResultMyListAdapter extends BaseAdapter  implements PopupWindow.OnD
 			vh.mlittleprice.setText(littleprice);
 			if (dataSet.getTarr() != null) {
 				JSONArray array = new JSONArray(dataSet.getTarr());
-				addList(array);
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject object = array.getJSONObject(i);
+					String price1 = object.optString("price");
+					if (price1.contains(".")) {
+						int end = price1.indexOf(".");
+						bigprice = price1.substring(0, end);
+						littleprice = price1.substring(end, price1.length());
+					}else{
+						bigprice = price1;
+						littleprice = ".0";
+					}
+					vh.mbigprice.setText(bigprice);
+					vh.mlittleprice.setText(littleprice);
+				}
 			}
 			if (Integer.valueOf(hnumber)>10000) {
 				if (Integer.valueOf(hnumber)>100000000) {
@@ -140,43 +139,32 @@ public class ResultMyListAdapter extends BaseAdapter  implements PopupWindow.OnD
 			}else{
 				vh.item_offer.setText("全网总评"+hnumber+"条  ");
 			}
-//			if ("1".equals(dataSet.get("isxianshi"))) {
-				final String domain1 = dataSet.getDomain();
-				final String rowkey = dataSet.getGroupRowkey();
-				vh.intentbuy.setOnClickListener(new OnClickListener() {
+			final String domain1 = dataSet.getDomain();
+			final String rowkey = dataSet.getGroupRowkey();
+			vh.intentbuy.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View arg0) {
-						Intent intent = new Intent(context, ResultDialogActivity.class);
-//    				intent.putExtra("tarr",dataSet.get("tarr").toString() );
-						intent.putExtra("keyword",dataSet.getKeyword() );
-						intent.putExtra("rowkey",rowkey );
-						context.startActivity(intent);
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(context, ResultDialogActivity.class);
+					intent.putExtra("keyword",dataSet.getKeyword() );
+					intent.putExtra("rowkey",rowkey );
+					context.startActivity(intent);
 
-					}
-				});
-				vh.findsimilar.setOnClickListener(new OnClickListener() {
+				}
+			});
+			vh.findsimilar.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View arg0) {
+				@Override
+				public void onClick(View arg0) {
 //    				Intent intent = new Intent(context, CompareActivity.class);
-						//二级页面去发标
-						Intent intent = new Intent(context, BidActivity.class);
-						intent.putExtra("rowkey",rowkey);
-						intent.putExtra("type","1");
-						context.startActivity(intent);
-					}
-				});
-//			}
-//			else{
-//				vh.intentbuy.setVisibility(View.GONE);
-//				vh.findsimilar.setVisibility(View.GONE);
-//			}
+					//二级页面去发标
+					Intent intent = new Intent(context, BidActivity.class);
+					intent.putExtra("rowkey",rowkey);
+					intent.putExtra("type","1");
+					context.startActivity(intent);
+				}
+			});
 			if ("0".equals(dataSet.getYjson())){
-//				vh.mcouponimg.setVisibility(View.VISIBLE);
-//				vh.myouhuitext.setVisibility(View.VISIBLE);
-//				vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
-//				Log.i("newsalefino",dataSet.get("newsaleinfo").toString()+"=====");
 				//新增nessaleinfo字段，当url存在时直接跳转，不存在则隐藏跳转只显示优惠信息
 				if (dataSet.getNewsaleinfo() == null){
 					vh.mcoupon.setVisibility(View.GONE);
@@ -195,7 +183,6 @@ public class ResultMyListAdapter extends BaseAdapter  implements PopupWindow.OnD
 						vh.mlingjuan.setVisibility(View.VISIBLE);
 						vh.mcouponimg.setVisibility(View.VISIBLE);
 						vh.lingjuanzhanwei.setVisibility(View.VISIBLE);
-//						Log.i("newsalefino",desc+"====="+url);
 						vh.mcoupontext.setText(desc);
 						vh.mcoupon.setOnClickListener(new OnClickListener() {
 							@Override
@@ -247,8 +234,8 @@ public class ResultMyListAdapter extends BaseAdapter  implements PopupWindow.OnD
 			vh.itemlayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					    notifyDataSetChanged();
-					    Intent intent;
+					notifyDataSetChanged();
+					Intent intent;
 					if (JumpIntentUtil.isJump4(searchResultBeans,position)) {
 						intent = new Intent(context,IntentActivity.class);
 						if (searchResultBeans.get(position).getAndroidurl() != null) {
@@ -288,40 +275,39 @@ public class ResultMyListAdapter extends BaseAdapter  implements PopupWindow.OnD
 					return true;
 				}
 			});
-		}catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return convertView;
 	}
-	class ViewHolder {
+	class ViewHolder extends RecyclerView.ViewHolder {
 		ImageView img,mcouponimg;
 		TextView title,item_offer,mbigprice,mlittleprice,mcoupontext,mlingjuan,myouhuitext;
 		LinearLayout domainLayout,mcoupon;
 		RelativeLayout intentbuy,findsimilar;
 		View mfengexian,lingjuanzhanwei;
 		LinearLayout itemlayout;
-
-
-	}
-
-	public void addList(JSONArray array) throws JSONException {
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject object = array.getJSONObject(i);
-			String price = object.optString("price");
-			String bigprice;
-			String littleprice;
-			if (price.contains(".")) {
-				int end = price.indexOf(".");
-				bigprice = price.substring(0, end);
-				littleprice = price.substring(end, price.length());
-			}else{
-				bigprice = price;
-				littleprice = ".0";
-			}
-//			Log.i("-----",bigprice+"---------"+littleprice);
-			vh.mbigprice.setText(bigprice);
-			vh.mlittleprice.setText(littleprice);
+		public ViewHolder(View mView) {
+			super(mView);
+			img = (ImageView) mView.findViewById(R.id.item_img);
+			mcouponimg = (ImageView) mView.findViewById(R.id.mcouponimg);
+			title = (TextView) mView.findViewById(R.id.item_title);
+			mlingjuan = (TextView)mView.findViewById(R.id.mlingjuan);
+			item_offer = (TextView) mView.findViewById(R.id.item_offer);
+			mcoupontext = (TextView) mView.findViewById(R.id.mcoupontext);
+			mlittleprice = (TextView) mView.findViewById(R.id.mlittleprice);
+			mbigprice = (TextView) mView.findViewById(R.id.mbigprice);
+			myouhuitext = (TextView) mView.findViewById(R.id.myouhuitext);
+			domainLayout = (LinearLayout) mView.findViewById(R.id.domain_layout);
+			mcoupon = (LinearLayout)mView.findViewById(R.id.mcoupon);
+			findsimilar = (RelativeLayout) mView.findViewById(R.id.findsimilar);
+			intentbuy = (RelativeLayout) mView.findViewById(R.id.intentbuy);
+			mfengexian =mView.findViewById(R.id.mfengexian);
+			lingjuanzhanwei = mView.findViewById(R.id.lingjuanzhanwei);
+			itemlayout = mView.findViewById(R.id.result_item);
 		}
+	}
+	public void addList(JSONArray array) throws JSONException {
+
 	}
 
 	/**

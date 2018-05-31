@@ -412,13 +412,13 @@
                 android:visibility="gone"
                 android:layout_below="@id/home_layout_bar"
                  >
-                        <ListView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/result_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="#FFFFFF"
                             android:listSelector="@drawable/bg_item" >
-                        </ListView>
+                        </android.support.v7.widget.RecyclerView>
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/xrefresh1"
@@ -427,16 +427,16 @@
                 android:visibility="visible"
                 android:layout_below="@id/home_layout_bar"
                  >
-                        <GridView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/mgridView_main"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="#f3f3f3"
                             android:horizontalSpacing="1dp"
                             android:numColumns="2"
                             android:verticalSpacing="1dp"
                             >
-                        </GridView>
+                        </android.support.v7.widget.RecyclerView>
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
                 <RelativeLayout
                     android:id="@+id/tips_layout"
