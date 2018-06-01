@@ -1,5 +1,6 @@
 package com.bbk.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -54,6 +55,14 @@ import com.bbk.activity.UserAccountActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.UserSuggestionActivity;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.component.HomeAllComponent;
+import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeAllComponent2;
+import com.bbk.component.HomeAllComponent3;
+import com.bbk.component.HomeBijiaComponent;
+import com.bbk.component.JingbiComponent;
+import com.bbk.component.QiandaoComponent;
+import com.bbk.component.SimpleComponent;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.BaseTools;
@@ -62,6 +71,8 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CircleImageView1;
 import com.bbk.view.HeaderView;
+import com.blog.www.guideview.Guide;
+import com.blog.www.guideview.GuideBuilder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -91,6 +102,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	private SmartRefreshLayout xrefresh;
 	private boolean isTaoBaoLogin = false;
 	private boolean isuserzhezhao = false;
+	private int showTimes = 0;
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -749,36 +761,109 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 	@Override
 	protected void loadLazyData() {
 		try {
-			//我的引导页只显示一次
-			String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstMyUse", "isFirstMyUserUse");
-			if (TextUtils.isEmpty(isFirstResultUse)) {
-				isFirstResultUse = "yes";
-			}
-			if (isFirstResultUse.equals("yes")) {
-				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse","isFirstMyUserUse", "no");
-				HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
-				HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
-			}
-			HomeActivity.mzhezhao.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					try {
-
-						if (isuserzhezhao) {
-							HomeActivity.mzhezhao.setVisibility(View.GONE);
-						}else{
-							HomeActivity.mzhezhao.setImageResource(R.mipmap.app_qiandao);
-							isuserzhezhao = true;
-
+			if (showTimes == 0) {
+				msign.post(new Runnable() {
+					@Override public void run() {
+						//我的引导页只显示一次
+						String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstMyUse", "isFirstMyUserUse");
+						if (TextUtils.isEmpty(isFirstResultUse)) {
+							isFirstResultUse = "yes";
 						}
-					} catch (Exception e) {
-						// TODO: handle exception
+						if (isFirstResultUse.equals("yes")) {
+							showGuideView(msign, msign);
+						}
 					}
-				}
-			});
+				});
+			}
+//			//我的引导页只显示一次
+//			String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstMyUse", "isFirstMyUserUse");
+//			if (TextUtils.isEmpty(isFirstResultUse)) {
+//				isFirstResultUse = "yes";
+//			}
+//			if (isFirstResultUse.equals("yes")) {
+//				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse","isFirstMyUserUse", "no");
+//				HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
+//				HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
+//			}
+//			HomeActivity.mzhezhao.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					try {
+//
+//						if (isuserzhezhao) {
+//							HomeActivity.mzhezhao.setVisibility(View.GONE);
+//						}else{
+//							HomeActivity.mzhezhao.setImageResource(R.mipmap.app_qiandao);
+//							isuserzhezhao = true;
+//
+//						}
+//					} catch (Exception e) {
+//						// TODO: handle exception
+//					}
+//				}
+//			});
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	/**
+	 * 个人中心引导图层
+	 * @param targetView
+	 * @param targetView1
+	 */
+	public void showGuideView(View targetView, final View targetView1) {
+		showTimes++;
+		GuideBuilder builder = new GuideBuilder();
+		builder.setTargetView(msign)
+//                .setFullingViewId(R.id.ll_view_group)
+				.setAlpha(150)
+				.setHighTargetCorner(20)
+				.setHighTargetPaddingBottom(70)
+				.setHighTargetPaddingRight(10)
+				.setHighTargetPaddingLeft(10)
+				.setOverlayTarget(false)
+				.setOutsideTouchable(false);
+		builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+			@Override public void onShown() {
+			}
+
+			@Override public void onDismiss() {
+				showGuideViewBijia(targetView1);
+			}
+		});
+
+		builder.addComponent(new QiandaoComponent()).addComponent(new HomeAllComponent2());
+		Guide guide = builder.createGuide();
+		guide.setShouldCheckLocInWindow(true);
+		guide.show(getActivity());
+	}
+	public void showGuideViewBijia(View targetView) {
+		showTimes++;
+		GuideBuilder builder = new GuideBuilder();
+		builder.setTargetView(mjingbi)
+//                .setFullingViewId(R.id.ll_view_group)
+				.setAlpha(150)
+				.setHighTargetCorner(20)
+				.setHighTargetPaddingBottom(50)
+				.setHighTargetPaddingRight(10)
+				.setHighTargetPaddingLeft(10)
+				.setExitAnimationId(android.R.anim.fade_out)
+				.setOverlayTarget(false)
+				.setOutsideTouchable(false);
+		builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+			@Override public void onShown() {
+			}
+
+			@Override public void onDismiss() {
+//				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
+			}
+		});
+
+		builder.addComponent(new JingbiComponent()).addComponent(new HomeAllComponent3());
+		Guide guide = builder.createGuide();
+		guide.setShouldCheckLocInWindow(true);
+		guide.show(getActivity());
 	}
 }

@@ -190,6 +190,7 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                                 }
                                 mtitle.setText(pubaDetailBean.getTitle());
                                 String endtime = pubaDetailBean.getEndtime();
+                                userid = pubaDetailBean.getUserid();
                                     //根据status判断状态显示
                                     switch (pubaDetailBean.getStatus()){
                                         case "1":

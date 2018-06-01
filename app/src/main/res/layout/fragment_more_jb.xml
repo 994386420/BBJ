@@ -5,7 +5,7 @@
     android:background="#b31614"
     android:orientation="vertical" >
 
-    <ScrollView
+    <com.bbk.view.MyScrollViewNew
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" >
@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/bg_yaoqing" />
+                android:src="@mipmap/bj_yaoqing" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -166,6 +166,6 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.bbk.view.MyScrollViewNew>
 
 </LinearLayout>

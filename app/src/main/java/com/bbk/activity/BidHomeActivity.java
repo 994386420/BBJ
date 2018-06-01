@@ -15,6 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bbk.adapter.CustomFragmentPagerAdapter;
+import com.bbk.component.BidHomeComponent;
+import com.bbk.component.BidHomeComponent1;
+import com.bbk.component.HomeAllComponent;
+import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeBijiaComponent;
+import com.bbk.component.SimpleComponent;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.BaseViewPagerFragment;
@@ -29,6 +35,8 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.CustomViewPager;
 import com.bbk.view.NumImageView;
+import com.blog.www.guideview.Guide;
+import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
@@ -74,6 +82,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     public static String Flag = "";
     public static NumImageView mNumImage;//带数字角标的自定义view
     private String currentItem;
+    private LinearLayout woyaoLayout,pudaoLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +97,8 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         initData();
     }
     public void initView() {
+        woyaoLayout  = findViewById(R.id.woyao_layout);
+        pudaoLayout = findViewById(R.id.pudao_layout);
         TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         String token = TelephonyMgr.getDeviceId();
         SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
@@ -105,31 +116,32 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                 isFirstResultUse = "yes";
             }
             if (isFirstResultUse.equals("yes")) {
-                SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstBidUse","isFirstBidUserUse", "bidno");
-                BidHomeActivity.mzhezhao.setVisibility(View.VISIBLE);
-                BidHomeActivity.mzhezhao.setImageResource(R.mipmap.woyaobid);
+//                SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstBidUse","isFirstBidUserUse", "bidno");
+//                BidHomeActivity.mzhezhao.setVisibility(View.VISIBLE);
+//                BidHomeActivity.mzhezhao.setImageResource(R.mipmap.woyaobid);
+                showGuideView();
             }
         } catch (Exception e) {
             // TODO: handle exception
         }
-        mzhezhao.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                try {
-
-                    if (isuserzhezhao) {
-                        mzhezhao.setVisibility(View.GONE);
-                    }else{
-                        mzhezhao.setImageResource(R.mipmap.pudaobid);
-                        isuserzhezhao = true;
-
-                    }
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-            }
-        });
+//        mzhezhao.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//
+//                    if (isuserzhezhao) {
+//                        mzhezhao.setVisibility(View.GONE);
+//                    }else{
+//                        mzhezhao.setImageResource(R.mipmap.pudaobid);
+//                        isuserzhezhao = true;
+//
+//                    }
+//                } catch (Exception e) {
+//                    // TODO: handle exception
+//                }
+//            }
+//        });
     }
 
     public void initData() {
@@ -265,7 +277,59 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
 
         }
     }
+    /**
+     * 首页引导图层
+     *
+     */
+    public void showGuideView() {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(woyaoLayout)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingLeft(10)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingBottom(30)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override public void onShown() {
+            }
 
+            @Override public void onDismiss() {
+                showGuideViewBijia();
+            }
+        });
+
+        builder.addComponent(new BidHomeComponent());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show(BidHomeActivity.this);
+    }
+    public void showGuideViewBijia() {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(pudaoLayout)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingLeft(10)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingBottom(30)
+                .setExitAnimationId(android.R.anim.fade_out)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override public void onShown() {
+            }
+
+            @Override public void onDismiss() {
+            }
+        });
+
+        builder.addComponent(new BidHomeComponent1()).addComponent(new HomeAllComponent1());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show(BidHomeActivity.this);
+    }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
         switch (requestCode){

@@ -128,7 +128,7 @@
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
-    
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/xrefresh"
         android:layout_width="match_parent"
@@ -670,6 +670,7 @@
                 android:background="#f3f3f3" />
             <LinearLayout
                 android:id="@+id/maddress"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -701,6 +702,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
+                android:visibility="gone"
                 android:background="#f3f3f3" />
         </LinearLayout>
     </com.andview.refreshview.XScrollView>

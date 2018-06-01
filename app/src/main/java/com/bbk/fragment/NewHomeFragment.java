@@ -87,7 +87,7 @@ import com.zyao89.view.zloading.ZLoadingView;
 import com.zyao89.view.zloading.Z_TYPE;
 
 
-public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,OnClickListioner,CommonLoadingView.LoadingHandler {
+public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent,OnClickListioner,CommonLoadingView.LoadingHandler{
     private DataFlow6 dataFlow;
     private View mView;
     /**
@@ -239,7 +239,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         mBlView.setVisibility(View.GONE);
                         mFxText.setTextColor(getResources().getColor(R.color.color_line_text));
                         mFxView.setVisibility(View.GONE);
-                        mIdex("1");
+//                        mIdex("1");
                         refreshlayout.finishRefresh(2000);
             }
         });
@@ -415,6 +415,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
 
     private void setView(){
+            DialogSingleUtil.show(getActivity());
             mCzgText.setTextColor(getResources().getColor(R.color.color_line_text));
             mCzgView.setVisibility(View.GONE);
             mBjText.setTextColor(getResources().getColor(R.color.color_line_text));
@@ -538,9 +539,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     fabiao = object.optJSONArray("fabiao");
                     mrecyclerview.addItemDecoration(new TwoDecoration(0,"#f3f3f3",3+banner.length()+tag.length()));
                     mrecyclerview.setHasFixedSize(true);
-                    homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans);
-                    mrecyclerview.setAdapter(homeadapter);
-                    homeadapter.setOnClickListioner(NewHomeFragment.this);
+                    mIdex("1");
+//                    homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans);
+//                    mrecyclerview.setAdapter(homeadapter);
+//                    homeadapter.setOnClickListioner(NewHomeFragment.this);
                     if (object.has("guanggao")) {
                         if (isshowzhezhao) {
                             jo = object.optJSONObject("guanggao");
@@ -567,7 +569,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     break;
                 case 5:
                     initData();
-                    getIndexByType();
                     break;
             }
         }
@@ -575,7 +576,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
     public void Refresh(String type){
         mSuspensionBar.setVisibility(View.GONE);
-        homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans);
+        homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans,jo);
         mrecyclerview.setAdapter(homeadapter);
         homeadapter.setOnClickListioner(NewHomeFragment.this);
         homeadapter.notifyDataSetChanged();
@@ -586,7 +587,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //超值购等数据
     private void mIdex(String str){
-        DialogSingleUtil.show(getActivity());
         type = str;
         x=1;
         page=1;
@@ -595,47 +595,28 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     @Override
     protected void loadLazyData() {
-        refreshLayout.autoRefresh();
-//        mViewLoad();
-        //首页引导页只显示一次
-        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
-        if (TextUtils.isEmpty(isFirstResultUse)) {
-            isFirstResultUse = "yes";
-        }
-        if (isFirstResultUse.equals("yes")) {
-            HomeActivity.mHomeGudieImage.setVisibility(View.VISIBLE);
-            HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.yaoma);
-        }
-        HomeActivity.mHomeGudieImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (isHomeGudie) {
-                        HomeActivity.mHomeGudieImage.setVisibility(View.GONE);
-                        SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
-                    }else{
-                        HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.new_guide_bijia);
-                        isHomeGudie = true;
-                    }
-                    String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
-                    if (isFirstResultUse.equals("no")){
-                        if (isshowzhezhao) {
-                            new HomeAlertDialog(getActivity()).builder()
-                                    .setimag(jo.optString("img"))
-                                    .setonclick(new OnClickListener() {
-                                        @Override
-                                        public void onClick(View arg0) {
-                                            EventIdIntentUtil.EventIdIntent(getActivity(), jo);
-                                        }
-                                    }).show();
-                                isshowzhezhao = false;
-                            }
-                    }
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-            }
-        });
+//        refreshLayout.autoRefresh();
+        DialogSingleUtil.show(getActivity());
+        mViewLoad();
+//        //首页引导页只显示一次
+//        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+//        if (TextUtils.isEmpty(isFirstResultUse)) {
+//            isFirstResultUse = "yes";
+//        }
+//        if (isFirstResultUse.equals("yes")) {
+//            HomeActivity.mHomeGudieImage.setVisibility(View.VISIBLE);
+//            HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.yaoma);
+//        }
+//        HomeActivity.mHomeGudieImage.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//
+//                } catch (Exception e) {
+//                    // TODO: handle exception
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -664,6 +645,30 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         setView();
         mIdex("4");
         setText(mFxText,mFxView);
+    }
+
+    @Override
+    public void onDissmissClick() {
+//        if (isHomeGudie) {
+//            SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
+//        }else{
+//            isHomeGudie = true;
+//        }
+        SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
+        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+        if (isFirstResultUse.equals("no")){
+            if (isshowzhezhao) {
+                new HomeAlertDialog(getActivity()).builder()
+                        .setimag(jo.optString("img"))
+                        .setonclick(new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                            }
+                        }).show();
+                isshowzhezhao = false;
+            }
+        }
     }
 
     @Override

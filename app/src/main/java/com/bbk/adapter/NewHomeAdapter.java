@@ -59,6 +59,10 @@ import com.bbk.activity.WebViewWZActivity;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.component.HomeAllComponent;
+import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeBijiaComponent;
+import com.bbk.component.SimpleComponent;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
@@ -76,6 +80,8 @@ import com.bbk.view.MyXRefresh;
 import com.bbk.view.RollHeaderView3;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bbk.view.selecttableview.SelectableTextView;
+import com.blog.www.guideview.Guide;
+import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.youth.banner.Banner;
@@ -124,10 +130,16 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     List<NewHomePubaBean> newHomePubaBeans;
     private List<NewHomeBlBean> newHomeBlBean;
     private List<NewHomeFxBean> fxBeans;
+    //第一次引导页是否显示隐藏
+    private boolean isshowzhezhao = true;
+    private boolean isHomeGudie = false;
+    Guide guide;
+    private int showTimes = 0;
+
 
 
     public NewHomeAdapter(Context context, List<Map<String, String>> taglist, JSONArray banner,JSONArray tag,JSONArray fabiao,JSONArray gongneng,String type,
-                          List<NewHomeCzgBean> newHomeCzgBean,List<NewHomePubaBean> newHomePubaBeans,List<NewHomeBlBean> newHomeBlBean,List<NewHomeFxBean> fxBeans) {
+                          List<NewHomeCzgBean> newHomeCzgBean,List<NewHomePubaBean> newHomePubaBeans,List<NewHomeBlBean> newHomeBlBean,List<NewHomeFxBean> fxBeans,JSONObject jo) {
         this.context = context;
         this.tag =tag;
         this.gongneng = gongneng;
@@ -269,7 +281,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         try {
             if (holder instanceof TopViewHolder) {
                 TopViewHolder viewHolder = (TopViewHolder) holder;
-                initTop(viewHolder);
+                initTop(viewHolder,position);
             } else if (holder instanceof ViewHolderCzg) {
                     ViewHolderCzg viewHolder = (ViewHolderCzg) holder;
                     initTop(viewHolder, position-1);
@@ -288,7 +300,61 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         }
     }
 
-    private void initTop(final TopViewHolder viewHolder)  {
+    /**
+     * 首页引导图层
+     * @param targetView
+     * @param targetView1
+     */
+    public void showGuideView(View targetView, final View targetView1) {
+        showTimes++;
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPadding(15)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override public void onShown() {
+            }
+
+            @Override public void onDismiss() {
+                showGuideViewBijia(targetView1);
+            }
+        });
+
+        builder.addComponent(new SimpleComponent()).addComponent(new HomeAllComponent());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show((Activity) context);
+    }
+    public void showGuideViewBijia(View targetView) {
+        showTimes++;
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPadding(15)
+                .setExitAnimationId(android.R.anim.fade_out)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override public void onShown() {
+            }
+
+            @Override public void onDismiss() {
+                onClickListioner.onDissmissClick();
+            }
+        });
+
+        builder.addComponent(new HomeBijiaComponent()).addComponent(new HomeAllComponent1());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show((Activity) context);
+    }
+    private void initTop(final TopViewHolder viewHolder,int positon)  {
         try {
             //判断传过来数据是否为null
             if (banner != null && banner.length() >0){
@@ -300,7 +366,6 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             if (fabiao !=null && fabiao.length()>0){
                 loadViewflipper(fabiao,viewHolder);
             }
-
             viewHolder.compareutil.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -393,6 +458,23 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     context.startActivity(intent);
                 }
             });
+
+            if (positon == 0 && showTimes == 0) {
+                final View finalView = viewHolder.compareutil;
+                final View finalView1 = viewHolder.queryhistory;
+                viewHolder.compareutil.post(new Runnable() {
+                    @Override public void run() {
+                        //首页引导页只显示一次
+                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(context, "isFirstHomeUse", "isFirstHomeUserUse");
+                        if (TextUtils.isEmpty(isFirstResultUse)) {
+                            isFirstResultUse = "yes";
+                        }
+                        if (isFirstResultUse.equals("yes")) {
+                            showGuideView(finalView, finalView1);
+                        }
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

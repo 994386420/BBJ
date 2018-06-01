@@ -521,6 +521,7 @@ public class SearchMainActivity extends ActivityGroup implements
 			StringUtil.showToast(this, "搜索内容为空");
 			return;
 		}
+		dao = new SearchHistoryDao(this);
 		if (!dao.exsistHistory(keyword)) {
 			dao.addHistory(keyword);
 		}
