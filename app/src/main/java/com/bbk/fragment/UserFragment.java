@@ -820,7 +820,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                .setFullingViewId(R.id.ll_view_group)
 				.setAlpha(150)
 				.setHighTargetCorner(20)
-				.setHighTargetPaddingBottom(70)
+				.setHighTargetPaddingBottom(55)
 				.setHighTargetPaddingRight(10)
 				.setHighTargetPaddingLeft(10)
 				.setOverlayTarget(false)
@@ -857,7 +857,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 			}
 
 			@Override public void onDismiss() {
-//				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
+				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse","isFirstMyUserUse", "no");
 			}
 		});
 

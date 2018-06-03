@@ -31,11 +31,11 @@ public class HomeAllComponent3 implements Component {
 
   @Override
   public int getXOffset() {
-    return 140;
+    return 110;
   }
 
   @Override
   public int getYOffset() {
-    return 180;
+    return 110;
   }
 }

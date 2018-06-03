@@ -31,7 +31,7 @@ public class QiandaoComponent implements Component {
 
   @Override
   public int getXOffset() {
-    return -40;
+    return -65;
   }
 
   @Override

@@ -12,9 +12,8 @@
     <!--android:text="@string/add_friend" />-->
 
   <ImageView
-    android:layout_width="200dp"
+    android:layout_width="240dp"
     android:layout_height="120dp"
-    android:paddingRight="20dp"
     android:src="@mipmap/pudao_yingdao" />
 
 </LinearLayout>

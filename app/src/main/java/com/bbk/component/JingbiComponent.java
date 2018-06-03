@@ -31,11 +31,11 @@ public class JingbiComponent implements Component {
 
   @Override
   public int getXOffset() {
-    return 100;
+    return 120;
   }
 
   @Override
   public int getYOffset() {
-    return 5;
+    return 0;
   }
 }

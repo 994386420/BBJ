@@ -19,6 +19,7 @@ import com.bbk.component.BidHomeComponent;
 import com.bbk.component.BidHomeComponent1;
 import com.bbk.component.HomeAllComponent;
 import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeAllComponent4;
 import com.bbk.component.HomeBijiaComponent;
 import com.bbk.component.SimpleComponent;
 import com.bbk.flow.DataFlow;
@@ -110,17 +111,23 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
         mzhezhao = $(R.id.mzhezhao);
         mNumImage = findViewById(R.id.data_img_btn);
 //        mNumImage.setNum((int) BidChatFragment.mChatMessage);
-        try {
-            String isFirstResultUse = SharedPreferencesUtil.getSharedData(BidHomeActivity.this,"isFirstBidUse", "isFirstBidUserUse");
-            if (TextUtils.isEmpty(isFirstResultUse)) {
-                isFirstResultUse = "yes";
-            }
-            if (isFirstResultUse.equals("yes")) {
+        woyaoLayout.post(new Runnable() {
+            @Override public void run() {
+                //我的引导页只显示一次
+                String isFirstResultUse = SharedPreferencesUtil.getSharedData(BidHomeActivity.this,"isFirstBidUse", "isFirstBidUserUse");
+                if (TextUtils.isEmpty(isFirstResultUse)) {
+                    isFirstResultUse = "yes";
+                }
+                if (isFirstResultUse.equals("yes")) {
 //                SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstBidUse","isFirstBidUserUse", "bidno");
 //                BidHomeActivity.mzhezhao.setVisibility(View.VISIBLE);
 //                BidHomeActivity.mzhezhao.setImageResource(R.mipmap.woyaobid);
-                showGuideView();
+                    showGuideView();
+                }
             }
+        });
+        try {
+
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -208,7 +215,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
             LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
             ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
             if (isshow){
-                Log.e("==================",""+tabImgGray2.get(currentIndex));
+//                Log.e("==================",""+tabImgGray2.get(currentIndex));
                 Glide.with(this).
                         load(tabImgGray2.get(currentIndex)).
                         into(currentIV);
@@ -288,7 +295,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
                 .setHighTargetCorner(20)
                 .setHighTargetPaddingLeft(10)
                 .setHighTargetPaddingRight(10)
-                .setHighTargetPaddingBottom(30)
+                .setHighTargetPaddingBottom(20)
                 .setOverlayTarget(false)
                 .setOutsideTouchable(false);
         builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
@@ -300,7 +307,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
             }
         });
 
-        builder.addComponent(new BidHomeComponent());
+        builder.addComponent(new BidHomeComponent()).addComponent(new HomeAllComponent4());
         Guide guide = builder.createGuide();
         guide.setShouldCheckLocInWindow(true);
         guide.show(BidHomeActivity.this);
@@ -322,10 +329,11 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
             }
 
             @Override public void onDismiss() {
+                SharedPreferencesUtil.putSharedData(BidHomeActivity.this, "isFirstBidUse","isFirstBidUserUse", "bidno");
             }
         });
 
-        builder.addComponent(new BidHomeComponent1()).addComponent(new HomeAllComponent1());
+        builder.addComponent(new BidHomeComponent1()).addComponent(new HomeAllComponent4());
         Guide guide = builder.createGuide();
         guide.setShouldCheckLocInWindow(true);
         guide.show(BidHomeActivity.this);

@@ -36,6 +36,6 @@ public class HomeAllComponent implements Component {
 
   @Override
   public int getYOffset() {
-    return 60;
+    return 50;
   }
 }

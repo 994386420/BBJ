@@ -312,7 +312,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
 //                .setFullingViewId(R.id.ll_view_group)
                 .setAlpha(150)
                 .setHighTargetCorner(20)
-                .setHighTargetPadding(15)
+                .setHighTargetPaddingBottom(20)
                 .setOverlayTarget(false)
                 .setOutsideTouchable(false);
         builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
@@ -336,7 +336,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
 //                .setFullingViewId(R.id.ll_view_group)
                 .setAlpha(150)
                 .setHighTargetCorner(20)
-                .setHighTargetPadding(15)
+                .setHighTargetPaddingBottom(20)
                 .setExitAnimationId(android.R.anim.fade_out)
                 .setOverlayTarget(false)
                 .setOutsideTouchable(false);
