@@ -84,7 +84,7 @@ public class GossipPiazzaAdapter extends RecyclerView.Adapter implements ResultE
         void onItemClick(View view , int position);
     }
     public void notifyData(List<BiaoLiaoBean> biaoLiaoBeans){
-        if (biaoLiaoBeans != null){
+        if (biaoLiaoBeans != null && biaoLiaoBeans.size() > 0){
             this.biaoLiaoBeans.addAll(biaoLiaoBeans);
             notifyDataSetChanged();
         }

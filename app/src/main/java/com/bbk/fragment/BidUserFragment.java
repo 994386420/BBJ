@@ -251,7 +251,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
             String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
             if (TextUtils.isEmpty(userID)){
                 musername.setText("请登录");
-                CircleImageView1.getImg(getActivity(),R.mipmap.logo_01,muserimg);
+//                CircleImageView1.getImg(getActivity(),R.mipmap.logo_01,muserimg);
             }else {
                 String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "imgUrl");
                 String nickname = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "nickname");

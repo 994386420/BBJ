@@ -143,6 +143,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter{
                             context.startActivity(intent);
                         }else {
                             TaoBaoLoginandLogout();//淘宝授权登陆
+                            DialogSingleUtil.dismiss(0);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

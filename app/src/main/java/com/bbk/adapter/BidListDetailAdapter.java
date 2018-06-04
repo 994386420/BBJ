@@ -106,6 +106,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                 String endtime = woYaoBean.getEndtime();
                 switch (status){
                     case "0":
+                        vh.mpricebox.setVisibility(View.GONE);
                         vh.mtimebefor.setText("距结束");
                         vh.mtypetext.setText("待审核");
                         vh.mtime.friendly_time(endtime,"#999999");
@@ -135,6 +136,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         });
                         break;
                     case "1":
+                        vh.mpricebox.setVisibility(View.GONE);
                         vh.mtimebefor.setText("距结束");
                         vh.mtypetext.setText("待扑倒");
                         initStartData(vh,woYaoBean);
@@ -200,6 +202,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         });
                         break;
                     case "3":
+                        vh.mpricebox.setVisibility(View.GONE);
                         vh.mtypetext.setText("已取消");
                         vh.mtimebefor.setText(endtime);
                         vh.mtime.setVisibility(View.GONE);
@@ -208,6 +211,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         rebid(vh,id);
                         break;
                     case "4":
+                        vh.mpricebox.setVisibility(View.GONE);
                         vh.mtypetext.setText("未通过审核");
                         vh.mtimebefor.setText(endtime);
                         vh.mtime.setVisibility(View.GONE);
@@ -244,6 +248,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         });
                         break;
                     case "5":
+                        vh.mpricebox.setVisibility(View.GONE);
                         vh.mtypetext.setText("已失效");
                         vh.mtimebefor.setText(endtime);
                         vh.mtime.setVisibility(View.GONE);

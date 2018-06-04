@@ -345,7 +345,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             }
 
             @Override public void onDismiss() {
-                onClickListioner.onDissmissClick();
+                if (onClickListioner != null) {
+                    onClickListioner.onDissmissClick();
+                }
             }
         });
 
@@ -411,7 +413,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     setView(viewHolder);
 //                    mIdex("1",2,true);
                     setText(viewHolder.mCzgText,viewHolder.mCzgView);
-                    onClickListioner.onCzgClick();
+                    if (onClickListioner != null) {
+                        onClickListioner.onCzgClick();
+                    }
                 }
             });
             viewHolder. mLlbjLayout.setOnClickListener(new View.OnClickListener() {
@@ -421,7 +425,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     setView(viewHolder);
 //                    mIdex("2",2,true);
                     setText(viewHolder.mBjText,viewHolder.mBjView);
-                    onClickListioner.onBjClick();
+                    if (onClickListioner != null) {
+                        onClickListioner.onBjClick();
+                    }
                 }
             });
             viewHolder.mLlblLayout.setOnClickListener(new View.OnClickListener() {
@@ -431,7 +437,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     setView(viewHolder);
 //                    mIdex("3",2,true);
                     setText(viewHolder.mBlText,viewHolder.mBlView);
-                    onClickListioner.onBlClick();
+                    if (onClickListioner != null) {
+                        onClickListioner.onBlClick();
+                    }
                 }
             });
             viewHolder.mLlfxLayout.setOnClickListener(new View.OnClickListener() {
@@ -441,7 +449,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     setView(viewHolder);
 //                    mIdex("4",2,true);
                     setText(viewHolder.mFxText,viewHolder.mFxView);
-                    onClickListioner.onFxClick();
+                    if (onClickListioner != null) {
+                        onClickListioner.onFxClick();
+                    }
                 }
             });
             viewHolder.mSearch.setOnClickListener(new View.OnClickListener() {
@@ -820,6 +830,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                             context.startActivity(intent);
                         }else {
                             TaoBaoLoginandLogout();//淘宝授权登陆
+                            DialogSingleUtil.dismiss(0);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

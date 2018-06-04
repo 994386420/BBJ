@@ -58,8 +58,10 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 	}
 
 	public void notifyData(List<SearchResultBean> beans){
-		this.searchResultBeans.addAll(beans);
-		notifyDataSetChanged();
+		if (beans != null && beans.size() > 0){
+			this.searchResultBeans.addAll(beans);
+			notifyDataSetChanged();
+		}
 	}
 
 	@Override

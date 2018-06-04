@@ -12,10 +12,17 @@ import com.bbk.activity.R;
 import com.bbk.activity.ResultDialogActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.adapter.ListViewAdapter2.ViewHolder;
+import com.bbk.component.HomeAllComponent;
+import com.bbk.component.HomeAllComponent5;
+import com.bbk.component.SearchComponent;
+import com.bbk.component.SimpleComponent;
 import com.bbk.dialog.ResultDialog;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.JumpIntentUtil;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.BaseViewHolder;
+import com.blog.www.guideview.Guide;
+import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
@@ -23,6 +30,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,13 +51,16 @@ import org.json.JSONObject;
 public class ResultMyGridAdapter extends RecyclerView.Adapter{
 	private Activity context;
 	private List<SearchResultBean> searchResultBeans;
+	private int showTimes = 0;
 	public ResultMyGridAdapter( List<SearchResultBean> searchResultBeans,Activity context){
 		this.searchResultBeans = searchResultBeans;
 		this.context =context;
 	}
 	public void notifyData(List<SearchResultBean> beans){
-		this.searchResultBeans.addAll(beans);
-		notifyDataSetChanged();
+		if (beans != null && beans.size() > 0){
+			this.searchResultBeans.addAll(beans);
+			notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -116,6 +127,24 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter{
 			vh.title.setText(title);
 			String bigprice;
 			String littleprice;
+			/**
+			 * 引导图层
+			 */
+			if (position == 0 && showTimes == 0) {
+				final View finalView = vh.intentbuy;
+				vh.intentbuy.post(new Runnable() {
+					@Override public void run() {
+						String isFirstResultUse = SharedPreferencesUtil.getSharedData(context,"isFirstUse", "isFirstResultUse");
+						if (TextUtils.isEmpty(isFirstResultUse)) {
+							isFirstResultUse = "yes";
+						}
+						if (isFirstResultUse.equals("yes")) {
+							SharedPreferencesUtil.putSharedData(context, "isFirstUse","isFirstResultUse", "no");
+							showGuideView(finalView);
+						}
+					}
+				});
+			}
 			if (price.contains(".")) {
 				int end = price.indexOf(".");
 				bigprice = price.substring(0, end);
@@ -249,5 +278,34 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 首页引导图层
+	 * @param targetView
+	 */
+	public void showGuideView(View targetView) {
+		showTimes++;
+		GuideBuilder builder = new GuideBuilder();
+		builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+				.setAlpha(150)
+				.setHighTargetCorner(20)
+				.setHighTargetPaddingBottom(40)
+				.setOverlayTarget(false)
+				.setOutsideTouchable(false);
+		builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+			@Override public void onShown() {
+			}
+
+			@Override public void onDismiss() {
+
+			}
+		});
+
+		builder.addComponent(new SearchComponent()).addComponent(new HomeAllComponent5());
+		Guide guide = builder.createGuide();
+		guide.setShouldCheckLocInWindow(true);
+		guide.show((Activity) context);
 	}
 }

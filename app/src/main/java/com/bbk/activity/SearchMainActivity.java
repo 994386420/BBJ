@@ -526,7 +526,28 @@ public class SearchMainActivity extends ActivityGroup implements
 			dao.addHistory(keyword);
 		}
 		if (Flag.equals("1")){
-			isloadShaixuan = true;
+			isloadShaixuan = false;
+			try {
+				data.clear();
+				if (view_box!=null) {
+					view_box.removeAllViews();
+				}
+				if (shopbox!=null) {
+					shopbox.removeAllViews();
+				}
+				istv1 = false;
+				tv1.setTextColor(Color.parseColor("#222222"));
+				biankuang1.setBackgroundResource(R.drawable.shaixuan_textview);
+				istv2 = false;
+				tv2.setTextColor(Color.parseColor("#222222"));
+				biankuang2.setBackgroundResource(R.drawable.shaixuan_textview);
+				loadFilterBrand(oldinfo);
+				loadfilterMap();
+				loadFilterCheckView(info);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			x = 1;
 			currentPageIndex = 1;
 			initData();
@@ -847,9 +868,9 @@ public class SearchMainActivity extends ActivityGroup implements
 				second.setVisibility(View.GONE);
 				break;
 			case R.id.to_top_btn:
-				result_list.smoothScrollToPosition(0);
-				mCzgListview.smoothScrollToPosition(0);
-				mgridView_main.smoothScrollToPosition(0);
+				result_list.scrollToPosition(0);
+				mCzgListview.scrollToPosition(0);
+				mgridView_main.scrollToPosition(0);
 //			scrollView_home.fullScroll(ScrollView.FOCUS_UP);
 				break;
 			case R.id.mfilter:

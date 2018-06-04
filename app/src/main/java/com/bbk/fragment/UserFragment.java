@@ -140,7 +140,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 		xrefresh =  mView.findViewById(R.id.xrefresh);
 		mzhanwei = mView.findViewById(R.id.mzhanwei);
 		user_img =  mView.findViewById(R.id.user_img);
-		CircleImageView1.getImg(getActivity(), R.mipmap.logo_01, user_img);
+//		CircleImageView1.getImg(getActivity(), R.mipmap.logo_01, user_img);
 		mbackground =  mView.findViewById(R.id.mbackground);
 		sign = mView.findViewById(R.id.sign);
 		user_name = mView.findViewById(R.id.user_name);
@@ -331,6 +331,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 					StringUtil.showToast(getActivity(), "登录失败 ");
 				}
 			});
+			DialogSingleUtil.dismiss(0);
 		}
 	}
 	@Override

@@ -137,7 +137,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="45dp"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/logo_01"/>
         <View
             android:layout_width="1dp"
             android:layout_height="40dp"

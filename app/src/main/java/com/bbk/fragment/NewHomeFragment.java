@@ -152,6 +152,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     List<NewHomeFxBean> fxBeans;//发现数据
     private ImageButton imageButton;
     private String content;
+    String isFirstResultUse;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -256,7 +257,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             @Override
             public void onClick(View view) {
                 //滑动到顶部
-                mrecyclerview.smoothScrollToPosition(0);
+                mrecyclerview.scrollToPosition(0);
             }
         });
         mrecyclerview.setHasFixedSize(true);
@@ -596,27 +597,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     @Override
     protected void loadLazyData() {
 //        refreshLayout.autoRefresh();
-        DialogSingleUtil.show(getActivity());
-        mViewLoad();
-//        //首页引导页只显示一次
-//        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
-//        if (TextUtils.isEmpty(isFirstResultUse)) {
-//            isFirstResultUse = "yes";
-//        }
-//        if (isFirstResultUse.equals("yes")) {
-//            HomeActivity.mHomeGudieImage.setVisibility(View.VISIBLE);
-//            HomeActivity.mHomeGudieImage.setImageResource(R.mipmap.yaoma);
-//        }
-//        HomeActivity.mHomeGudieImage.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//
-//                } catch (Exception e) {
-//                    // TODO: handle exception
-//                }
-//            }
-//        });
+        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+        if (isFirstResultUse.equals("no")) {
+            refreshLayout.autoRefresh();
+        }else {
+            DialogSingleUtil.show(getActivity());
+            mViewLoad();
+        }
     }
 
     @Override
@@ -655,7 +642,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 //            isHomeGudie = true;
 //        }
         SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
-        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
         if (isFirstResultUse.equals("no")){
             if (isshowzhezhao) {
                 new HomeAlertDialog(getActivity()).builder()
