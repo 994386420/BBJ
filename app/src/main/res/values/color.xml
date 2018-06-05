@@ -82,5 +82,9 @@
     <color name="text_dark">#454545</color>
     <color name="address_color">#EF250F</color>
     <color name="address_color1">#2C2C2C</color>
-
+    //推广颜色值
+    <color name="tuiguang_color1">#EF250F</color>
+    <color name="tuiguang_color2">#FE9321</color>
+    <color name="tuiguang_color3">#333333</color>
+    <color name="tuiguang_color4">#999999</color>
 </resources>
