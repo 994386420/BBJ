@@ -7,7 +7,8 @@ import retrofit2.http.QueryMap;
 
 public interface BaseApiService<T> {
 
-    public static final String Base_URL = "http://www.bibijing.com/";
+//    public static final String Base_URL = "http://www.bibijing.com/";
+    public static final String Base_URL = "http://192.168.20.165/APIService/";
     //新版首页超值购等分类模块
     @POST("newService/queryAppIndexByType")
     Observable<String> queryAppIndexByType(@QueryMap Map<String, String> map);
@@ -94,5 +95,13 @@ public interface BaseApiService<T> {
     //获取比价信息
     @POST("newService/getBijiaArr")
     Observable<String> getBijiaArr(@QueryMap Map<String, String> map);
-
+    //成为合作伙伴 参数userid
+    @POST("newService/updateCooperationByUserid")
+    Observable<String> updateCooperationByUserid(@QueryMap Map<String, String> map);
+    //字段hzinfo中取type（是否为合作伙伴：0为不是 1 为是）
+    @POST("newService/queryUserInfoMain")
+    Observable<String> queryUserInfoMain(@QueryMap Map<String, String> map);
+    //查询用户收益页面
+    @POST("newService/queryUserBrokerage")
+    Observable<String> queryUserBrokerage(@QueryMap Map<String, String> map);
 }

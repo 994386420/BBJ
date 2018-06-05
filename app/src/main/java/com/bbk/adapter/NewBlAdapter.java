@@ -8,25 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.bbk.Bean.NewHomeBlBean;
 import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.R;
-import com.bbk.activity.WebViewActivity;
 import com.bbk.util.StringUtil;
-import com.bbk.view.RushBuyCountDownTimerView;
-import com.bbk.view.selecttableview.SelectableTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-
-import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rtj on 2018/3/7.

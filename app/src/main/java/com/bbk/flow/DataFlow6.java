@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bbk.client.BaseApiService;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.resource.Constants;
 import com.bbk.util.DialogSingleUtil;
@@ -39,7 +40,7 @@ public class DataFlow6 {
 			params = new HashMap<String,String>();
 		else
 			params = paramsMap;
-		final String url = Constants.MAIN_BASE_URL_MOBILE+api;
+		final String url = BaseApiService.Base_URL+api;
 		new Thread(){
 			@Override
 			public void run() {

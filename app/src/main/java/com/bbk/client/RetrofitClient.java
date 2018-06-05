@@ -341,6 +341,26 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void updateCooperationByUserid(Map<String, String> parameters, Observer<?> observer) {
+        apiService.updateCooperationByUserid(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryUserInfoMain(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryUserInfoMain(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryUserBrokerage(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryUserBrokerage(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

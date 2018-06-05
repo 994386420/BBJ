@@ -1,14 +1,19 @@
 package com.bbk.util;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.support.design.widget.TabLayout;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bbk.activity.R;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -144,6 +149,39 @@ public class StringUtil {
 				return false;
 			}
 		}
+
+	}
+
+	public static void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
+		Class<?> tabLayout = tabs.getClass();
+		Field tabStrip = null;
+		try {
+			tabStrip = tabLayout.getDeclaredField("mTabStrip");
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+
+		tabStrip.setAccessible(true);
+		LinearLayout llTab = null;
+		try {
+			llTab = (LinearLayout) tabStrip.get(tabs);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
+		int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
+
+		for (int i = 0; i < llTab.getChildCount(); i++) {
+			View child = llTab.getChildAt(i);
+			child.setPadding(0, 0, 0, 0);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+			params.leftMargin = left;
+			params.rightMargin = right;
+			child.setLayoutParams(params);
+			child.invalidate();
+		}
+
 
 	}
 }

@@ -20,6 +20,7 @@ import com.bbk.dialog.ResultDialog;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.BaseViewHolder;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
@@ -27,11 +28,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +45,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,9 +53,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ResultMyGridAdapter extends RecyclerView.Adapter{
+public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWindow.OnDismissListener{
 	private Activity context;
 	private List<SearchResultBean> searchResultBeans;
+	private PopupWindow popupWindow;
 	private int showTimes = 0;
 	public ResultMyGridAdapter( List<SearchResultBean> searchResultBeans,Activity context){
 		this.searchResultBeans = searchResultBeans;
@@ -275,13 +281,20 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter{
 					context.startActivity(intent);
 				}
 			});
+			vh.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View view) {
+					openPopupWindowCars(view,position);
+					return true;
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * 首页引导图层
+	 * 引导图层
 	 * @param targetView
 	 */
 	public void showGuideView(View targetView) {
@@ -307,5 +320,69 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter{
 		Guide guide = builder.createGuide();
 		guide.setShouldCheckLocInWindow(true);
 		guide.show((Activity) context);
+	}
+
+	/**
+	 * 复制弹窗
+	 */
+	private void openPopupWindowCars(View v,int i) {
+		//防止重复按按钮
+		if (popupWindow != null && popupWindow.isShowing()) {
+			return;
+		}
+		//设置PopupWindow的View
+		View view = LayoutInflater.from(context).inflate(R.layout.copy_layout,null);
+		popupWindow = new PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		//设置背景,这个没什么效果，不添加会报错
+		popupWindow.setBackgroundDrawable(new BitmapDrawable());
+		//设置点击弹窗外隐藏自身
+		popupWindow.setFocusable(true);
+		popupWindow.setOutsideTouchable(true);
+		//设置动画
+		popupWindow.setAnimationStyle(R.style.AlertDialogStyle);
+		//设置位置
+		popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+		//设置消失监听
+		popupWindow.setOnDismissListener(this);
+		//设置PopupWindow的View点击事件
+		setOnPopupCarsViewClick(view,i);
+		//设置背景色
+		setBackgroundAlpha(0.5f);
+	}
+
+	private void setOnPopupCarsViewClick(View view, final int i) {
+		TextView copy_title,copy_url;
+		copy_title = view.findViewById(R.id.copy_title);
+		copy_url = view.findViewById(R.id.copy_url);
+		copy_title.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+				cm.setText(searchResultBeans.get(i).getTitle());
+				StringUtil.showToast(context,"复制成功");
+				popupWindow.dismiss();
+			}
+		});
+		copy_url.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+				cm.setText(searchResultBeans.get(i).getUrl());
+				StringUtil.showToast(context,"复制成功");
+				popupWindow.dismiss();
+			}
+		});
+	}
+	//设置屏幕背景透明效果
+	public void setBackgroundAlpha(float alpha) {
+		WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+		lp.alpha = alpha;
+		context.getWindow().setAttributes(lp);
+	}
+
+	@Override
+	public void onDismiss() {
+		setBackgroundAlpha(1);
 	}
 }

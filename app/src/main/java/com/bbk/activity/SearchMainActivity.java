@@ -256,6 +256,9 @@ public class SearchMainActivity extends ActivityGroup implements
 		Timer timer = new Timer();
 		final InputMethodManager inputManager =
 				(InputMethodManager)searchText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		/***
+		 * 根据传入的keyword判断是否显示列表还是热门词
+		 */
 		if (getIntent().getStringExtra("keyword") != null){
 			//对于刚跳到一个新的界面就要弹出软键盘的情况上述代码可能由于界面为加载完全而无法弹出软键盘。此时应该适当的延迟弹出软键盘如998毫秒（保证界面的数据加载完成）
 			timer.schedule(new TimerTask()

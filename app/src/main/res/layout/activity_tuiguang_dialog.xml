@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/tuiguang_04"
+            android:scaleType="fitCenter"
+            app:riv_corner_radius="15dip"
+            app:riv_mutate_background="true"
+           />
+        <TextView
+            android:id="@+id/tv_hehuo_person"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:text="成为合伙人"
+            android:textColor="@color/white"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/bg_tuiguang1"
+            android:layout_gravity="bottom"/>
+    </FrameLayout>
+    <LinearLayout 
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+         <ImageView 
+        android:id="@+id/mclose"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/close"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

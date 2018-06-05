@@ -6,37 +6,25 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.content.ClipboardManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.bbk.Bean.NewHomeCzgBean;
-import com.bbk.activity.BidBillDetailActivity;
-import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
-import com.bbk.view.RushBuyCountDownTimerView;
-import com.bbk.view.selecttableview.SelectableTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-
-import org.json.JSONObject;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rtj on 2018/3/7.

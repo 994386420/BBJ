@@ -236,6 +236,44 @@
                 android:layout_height="8dp"
                 android:background="#f3f3f3" />
 
+            //推广合伙人
+            <LinearLayout
+                android:id="@+id/ll_tuiguang_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="15dp" >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/tuiguang_05" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/tuiguang_color1"
+                    android:text="成为合伙人" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/enter01" />
+            </LinearLayout>
+            <include
+                android:id="@+id/tuiguang_user"
+                layout="@layout/tuiguang_user_layout"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="#f3f3f3" />
             <LinearLayout
                 android:id="@+id/mphonechongzhi"
                 android:layout_width="match_parent"
@@ -257,6 +295,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="手机充值" />
 
                 <TextView
@@ -303,6 +342,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginLeft="5dp"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="购物车" />
 
                 <ImageView
@@ -406,6 +446,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="我要的" />
 
                 <ImageView
@@ -440,6 +481,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="扑倒的" />
 
                 <ImageView
@@ -474,6 +516,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="我的评论" />
 
                 <ImageView
@@ -509,6 +552,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginLeft="5dp"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="我的爆料" />
 
                 <ImageView
@@ -544,6 +588,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginLeft="5dp"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="淘宝授权登录" />
                 <TextView
                     android:id="@+id/mtaobaouser"
@@ -585,6 +630,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="意见反馈" />
 
                 <ImageView
@@ -620,6 +666,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="联系客服" />
 
                 <ImageView
@@ -655,6 +702,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
                     android:text="关于比比鲸" />
 
                 <ImageView

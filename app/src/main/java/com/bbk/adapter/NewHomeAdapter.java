@@ -79,7 +79,6 @@ import com.bbk.util.StringUtil;
 import com.bbk.view.MyXRefresh;
 import com.bbk.view.RollHeaderView3;
 import com.bbk.view.RushBuyCountDownTimerView;
-import com.bbk.view.selecttableview.SelectableTextView;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;

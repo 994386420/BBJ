@@ -9,16 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
-import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.WebViewActivity;
-import com.bbk.util.DialogSingleUtil;
-import com.bbk.util.SharedPreferencesUtil;
-import com.bbk.util.StringUtil;
-import com.bbk.view.selecttableview.SelectableTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 

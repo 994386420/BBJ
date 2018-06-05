@@ -14,32 +14,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.bbk.Bean.NewHomeFxBean;
-import com.bbk.Decoration.TwoDecoration;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewWZActivity;
-import com.bbk.dialog.HomeAlertDialog;
-import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
-import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
-import com.bbk.view.selecttableview.SelectableTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rtj on 2018/3/7.
