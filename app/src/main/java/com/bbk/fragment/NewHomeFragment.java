@@ -33,12 +33,14 @@ import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.NewHomeFxBean;
 import com.bbk.Bean.NewHomePubaBean;
 import com.bbk.Decoration.TwoDecoration;
+import com.bbk.activity.BidListDetailActivity;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.SortActivity;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewWZActivity;
 import com.bbk.adapter.NewBjAdapter;
 import com.bbk.adapter.NewBlAdapter;
@@ -136,7 +138,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private boolean isshowzhezhao = true;
     final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     private boolean isHomeGudie = false;
-    JSONObject jo;
+    JSONObject jo,preguanggao;
     private RecyclerView mrecyclerview;
     private  RefreshLayout refreshLayout;
     JSONObject object;
@@ -544,23 +546,46 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 //                    homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans);
 //                    mrecyclerview.setAdapter(homeadapter);
 //                    homeadapter.setOnClickListioner(NewHomeFragment.this);
-                    if (object.has("guanggao")) {
-                        if (isshowzhezhao) {
-                            jo = object.optJSONObject("guanggao");
-                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
-                            if (isFirstResultUse.equals("no")){
-                                new HomeAlertDialog(getActivity()).builder()
-                                        .setimag(jo.optString("img"))
-                                        .setonclick(new OnClickListener() {
-                                            @Override
-                                            public void onClick(View arg0) {
-                                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
-                                            }
-                                        }).show();
-                                isshowzhezhao = false;
+                    /**
+                     * eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao
+                     未登录 显示preguanggao
+                     */
+                    if (TextUtils.isEmpty(userID)) {
+                        if (object.has("preguanggao")) {
+                            if (isshowzhezhao) {
+                                preguanggao = object.optJSONObject("preguanggao");
+                                String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
+                                if (isFirstResultUse.equals("no")) {
+                                    new HomeAlertDialog(getActivity()).builder()
+                                            .setimag(preguanggao.optString("img"))
+                                            .setonclick(new OnClickListener() {
+                                                @Override
+                                                public void onClick(View arg0) {
+                                                    EventIdIntentUtil.EventIdIntent(getActivity(), preguanggao);
+                                                }
+                                            }).show();
+                                    isshowzhezhao = false;
+                                }
                             }
                         }
-
+                    } else {
+                        if (object.has("guanggao")) {
+                            if (isshowzhezhao) {
+                                jo = object.optJSONObject("guanggao");
+                                String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+                                if (isFirstResultUse.equals("no")){
+                                    new HomeAlertDialog(getActivity()).builder()
+                                            .setimag(jo.optString("img"))
+                                            .setonclick(new OnClickListener() {
+                                                @Override
+                                                public void onClick(View arg0) {
+                                                    EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                                                }
+                                            }).show();
+                                    isshowzhezhao = false;
+                                }
+                            }
+                       }
                     }
                     break;
                 case 4:
@@ -579,8 +604,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mSuspensionBar.setVisibility(View.GONE);
         homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans,jo);
         mrecyclerview.setAdapter(homeadapter);
-        homeadapter.setOnClickListioner(NewHomeFragment.this);
-        homeadapter.notifyDataSetChanged();
+//        homeadapter.notifyDataSetChanged();
+        if (homeadapter != null) {
+            homeadapter.setOnClickListioner(NewHomeFragment.this);
+        }
     }
     //首页视图数据加载
     private void mViewLoad(){
@@ -645,15 +672,47 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
         if (isFirstResultUse.equals("no")){
             if (isshowzhezhao) {
-                new HomeAlertDialog(getActivity()).builder()
-                        .setimag(jo.optString("img"))
-                        .setonclick(new OnClickListener() {
-                            @Override
-                            public void onClick(View arg0) {
-                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                /**
+                 * eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao
+                 未登录 显示preguanggao
+                 */
+                if (TextUtils.isEmpty(userID)) {
+                    if (object.has("preguanggao")) {
+                        if (isshowzhezhao) {
+                            preguanggao = object.optJSONObject("preguanggao");
+                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
+                            if (isFirstResultUse.equals("no")) {
+                                new HomeAlertDialog(getActivity()).builder()
+                                        .setimag(preguanggao.optString("img"))
+                                        .setonclick(new OnClickListener() {
+                                            @Override
+                                            public void onClick(View arg0) {
+                                                EventIdIntentUtil.EventIdIntent(getActivity(), preguanggao);
+                                            }
+                                        }).show();
+                                isshowzhezhao = false;
                             }
-                        }).show();
-                isshowzhezhao = false;
+                        }
+                    }
+                } else {
+                    if (object.has("guanggao")) {
+                        if (isshowzhezhao) {
+                            jo = object.optJSONObject("guanggao");
+                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstHomeUse", "isFirstHomeUserUse");
+                            if (isFirstResultUse.equals("no")){
+                                new HomeAlertDialog(getActivity()).builder()
+                                        .setimag(jo.optString("img"))
+                                        .setonclick(new OnClickListener() {
+                                            @Override
+                                            public void onClick(View arg0) {
+                                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                                            }
+                                        }).show();
+                                isshowzhezhao = false;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

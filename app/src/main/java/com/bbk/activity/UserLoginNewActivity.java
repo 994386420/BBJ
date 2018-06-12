@@ -336,8 +336,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "identifier", jsonObject.optString("u_iden"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", jsonObject.optString("u_sig"));
 							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "login_STATE", "1");
-							intent = new Intent();
-							setResult(3, intent);
 							TencentLoginUtil.Login(this);
 							if (DataFragment.login_remind != null) {
 								DataFragment.login_remind.setVisibility(View.GONE);
@@ -353,6 +351,17 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								Intent.putExtra("url", wzurl + "&mid=" + jsonObject.optString("u_mdid")
 										+ "&userid=" + jsonObject.optString("u_id"));
 								startActivity(Intent);
+							}
+							if (JumpDetailActivty.Flag.equals("home")) {
+								intent = new Intent(this, HomeActivity.class);
+								intent.putExtra("type", "4");
+								if (DataFragmentActivity.login_remind != null) {
+									DataFragmentActivity.login_remind.setVisibility(View.GONE);
+								}
+								startActivity(intent);
+							}else {
+								intent = new Intent();
+								setResult(3, intent);
 							}
 							finish();
 						}else {
@@ -394,8 +403,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 									SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", inforJsonObj.optString("u_sig"));
 									SharedPreferencesUtil.putSharedData(getApplicationContext(),
 											"userInfor", "login_STATE","1");
-									intent = new Intent();
-									setResult(3, intent);
 									TencentLoginUtil.Login(this);
 									if (DataFragment.login_remind!= null) {
 										DataFragment.login_remind.setVisibility(View.GONE);
@@ -411,6 +418,17 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 										Intent.putExtra("url",wzurl+"&mid="+inforJsonObj.optString("u_mdid")+
 												"&userid="+inforJsonObj.optString("u_id"));
 										startActivity(Intent);
+									}
+									if (JumpDetailActivty.Flag.equals("home")) {
+										intent = new Intent(this, HomeActivity.class);
+										intent.putExtra("type", "4");
+										if (DataFragmentActivity.login_remind != null) {
+											DataFragmentActivity.login_remind.setVisibility(View.GONE);
+										}
+										startActivity(intent);
+									}else {
+										intent = new Intent();
+										setResult(3, intent);
 									}
 									finish();
 								}else if("0".equals(jsonObj.optString("status"))){
@@ -488,7 +506,11 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				intent = new Intent(this, HomeActivity.class);
 				setResult(1,intent);
 				finish();
-			} else {
+			}else if (JumpDetailActivty.Flag.equals("home")) {
+				intent = new Intent(this, JumpDetailActivty.class);
+				setResult(1,intent);
+				finish();
+			}else {
 				finish();
 			}
 			break;

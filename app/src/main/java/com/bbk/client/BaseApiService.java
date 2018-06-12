@@ -7,8 +7,9 @@ import retrofit2.http.QueryMap;
 
 public interface BaseApiService<T> {
 
-//    public static final String Base_URL = "http://www.bibijing.com/";
-    public static final String Base_URL = "http://192.168.20.165/APIService/";
+//    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
+//    public static final String Base_URL = "http://125.64.92.222:8097/APIService/";//正式测试接口
+    public static final String Base_URL = "http://192.168.20.188/APIService/";//内网测试接口
     //新版首页超值购等分类模块
     @POST("newService/queryAppIndexByType")
     Observable<String> queryAppIndexByType(@QueryMap Map<String, String> map);
@@ -104,4 +105,19 @@ public interface BaseApiService<T> {
     //查询用户收益页面
     @POST("newService/queryUserBrokerage")
     Observable<String> queryUserBrokerage(@QueryMap Map<String, String> map);
+    //查询返利金币列表 （页面显示状态：0为未领1为已领）
+    @POST("newService/querySignFanLi")
+    Observable<String> querySignFanLi(@QueryMap Map<String, String> map);
+    //领取返利金币
+    @POST("newService/getMoneySignFanLi")
+    Observable<String> getMoneySignFanLi(@QueryMap Map<String, String> map);
+    //跳转页面
+    @POST("newApp/getJumpUrl")
+    Observable<String> getJumpUrl(@QueryMap Map<String, String> map);
+    //收益报表详情
+    @POST("newService/queryBrokerageDetail")
+    Observable<String> queryBrokerageDetail(@QueryMap Map<String, String> map);
+    //跳转详情分享
+    @POST("newService/shareCpsInfo")
+    Observable<String> shareCpsInfo(@QueryMap Map<String, String> map);
 }

@@ -34,6 +34,7 @@ import com.bbk.activity.BrokerageActivity;
 import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.ContactActivity;
+import com.bbk.activity.FensiActivity;
 import com.bbk.activity.LogisticsQueryActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
@@ -57,6 +58,7 @@ import com.bbk.component.JingbiComponent;
 import com.bbk.component.QiandaoComponent;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -83,6 +85,10 @@ import butterknife.OnClick;
 
 
 public class UserFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent {
+    @BindView(R.id.tv_shouyi)
+    TextView tvShouyi;
+    @BindView(R.id.tv_hongbao)
+    TextView tvHongbao;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -160,7 +166,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     @Override
                     public void onNext(String s) {
                         try {
-                            Log.i("是否合伙人", s);
+//                            Log.i("是否合伙人", s);
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                             } else {
@@ -340,6 +346,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             user_name.setText("请登录");
             user_img.setImageResource(R.mipmap.logo_01);
             mjb.setText("0");
+            llTuiguang_user.setVisibility(View.VISIBLE);
+            llTuiguang.setVisibility(View.GONE);
         }
 
 
@@ -408,8 +416,14 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         Intent intent;
         switch (v.getId()) {
             case R.id.ll_tuiguang_user:
-                intent = new Intent(getActivity(), TuiguangDialogActivity.class);
-                startActivity(intent);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    NewConstants.logFlag = "3";
+                    intent = new Intent(getActivity(), TuiguangDialogActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.mtaobaologin:
                 TaoBaoLoginandLogout();
@@ -754,7 +768,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             case 1:
                 try {
                     object = new JSONObject(content);
-                    Log.i("是否合伙人", content);
+//                    Log.i("是否合伙人", content);
                     String footprint = String.valueOf(object.optInt("footprint"));
                     String messages = String.valueOf(object.optInt("messages"));
                     String collect = String.valueOf(object.optInt("collect"));
@@ -767,15 +781,29 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     String exp = object.optString("exp");//鲸力值
                     SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "footprint", object.optString("footprint"));
                     SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "collect", object.optString("collect"));
-                    JSONObject jsonObject = new JSONObject(object.optString("hzinfo"));
-                    if (jsonObject.length() > 0) {
-                        String type = jsonObject.optString("type");
-                        if (type.equals("1")) {
-                            llTuiguang.setVisibility(View.VISIBLE);
-                            llTuiguang_user.setVisibility(View.GONE);
-                        } else {
-                            llTuiguang.setVisibility(View.GONE);
-                            llTuiguang_user.setVisibility(View.VISIBLE);
+                    if (object.has("hzinfo")) {
+                        JSONObject jsonObject = new JSONObject(object.optString("hzinfo"));
+                        if (jsonObject.length() > 0) {
+                            String type = jsonObject.optString("type");
+                            String totalmoney = jsonObject.optString("totalmoney");//佣金收益总金额
+                            String rebate = jsonObject.optString("rebate");//邀请好友未领红包个数
+                            if (totalmoney != null && !totalmoney.equals("")) {
+                                tvShouyi.setText(totalmoney);
+                            } else {
+                                tvShouyi.setText("¥ 0.0");
+                            }
+                            if (rebate != null && !rebate.equals("")) {
+                                tvHongbao.setText(rebate);
+                            } else {
+                                tvHongbao.setText("0");
+                            }
+                            if (type.equals("1")) {
+                                llTuiguang.setVisibility(View.VISIBLE);
+                                llTuiguang_user.setVisibility(View.GONE);
+                            } else {
+                                llTuiguang.setVisibility(View.GONE);
+                                llTuiguang_user.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                     signnum = "+" + str;
@@ -956,7 +984,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     }
 
 
-    @OnClick({R.id.tv_tuiguang_tule,R.id.ll_brokerage, R.id.ll_fensi})
+    @OnClick({R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.ll_fensi})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -972,6 +1000,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 startActivity(intent);
                 break;
             case R.id.ll_fensi:
+                intent = new Intent(getActivity(), FensiActivity.class);
+                startActivity(intent);
                 break;
         }
     }

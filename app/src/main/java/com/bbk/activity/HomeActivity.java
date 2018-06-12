@@ -374,6 +374,9 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
 			case 1:
 				mViewPager.setCurrentItem(1);
 				break;
+			case 2:
+				mViewPager.setCurrentItem(0);
+				break;
 		    }
 		super.onActivityResult(arg0, arg1, arg2);
 	}

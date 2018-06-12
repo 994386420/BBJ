@@ -2,17 +2,23 @@ package com.bbk.activity;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.bbk.chat.utils.Foreground;
 import com.bbk.util.CrashHandler;
+import com.kepler.jd.Listener.AsyncInitListener;
+import com.kepler.jd.login.KeplerApiManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -30,6 +36,10 @@ import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.qalsdk.sdk.MsfSdkUtils;
 import com.tencent.qcloud.sdk.Constant;
 import com.umeng.commonsdk.UMConfigure;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 
 public class MyApplication extends Application {
@@ -63,6 +73,22 @@ public class MyApplication extends Application {
 				return new ClassicsFooter(context).setDrawableSize(20);
 			}
 		});
+
+		KeplerApiManager.asyncInitSdk(this, "581b75d36bd0443cb50b68ae316c7e93", "6938c582f809437dacd59c286c3191a6",
+				new AsyncInitListener() {
+					@Override
+					public void onSuccess() {
+// TODO Auto-generated method stub
+						Log.e("Kepler", "Kepler asyncInitSdk onSuccess ");
+					}
+					@Override
+					public void onFailure() {
+// TODO Auto-generated method stub
+						Log.e("Kepler",
+								"Kepler asyncInitSdk 授权失败，请检查lib 工程资源引用；包名,签名证书是否和注册一致");
+
+					}
+				});
         /**
          * 友盟统计初始化
          */
@@ -88,6 +114,7 @@ public class MyApplication extends Application {
 			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
 			StrictMode.setVmPolicy(builder.build());
 		}
+//		getSignMd5Str();
 		AlibcTradeSDK.asyncInit(this, new AlibcTradeInitCallback() {
 			@Override
 			public void onSuccess() {
@@ -133,5 +160,77 @@ public class MyApplication extends Application {
 
 		//初始化SDK
 		TIMManager.getInstance().init(getApplicationContext(), config);
+	}
+
+	/**
+	 * MD5加密
+	 * @param byteStr 需要加密的内容
+	 * @return 返回 byteStr的md5值
+	 */
+	public static String encryptionMD5(byte[] byteStr) {
+		MessageDigest messageDigest = null;
+		StringBuffer md5StrBuff = new StringBuffer();
+		try {
+			messageDigest = MessageDigest.getInstance("MD5");
+			messageDigest.reset();
+			messageDigest.update(byteStr);
+			byte[] byteArray = messageDigest.digest();
+//            return Base64.encodeToString(byteArray,Base64.NO_WRAP);
+			for (int i = 0; i < byteArray.length; i++) {
+				if (Integer.toHexString(0xFF & byteArray[i]).length() == 1) {
+					md5StrBuff.append("0").append(Integer.toHexString(0xFF & byteArray[i]));
+				} else {
+					md5StrBuff.append(Integer.toHexString(0xFF & byteArray[i]));
+				}
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return md5StrBuff.toString();
+	}
+
+	/**
+	 * 获取app签名md5值,与“keytool -list -keystore D:\Desktop\app_key”‘keytool -printcert     *file D:\Desktop\CERT.RSA’获取的md5值一样
+	 */
+	public String getSignMd5Str() {
+		try {
+			PackageInfo packageInfo = getPackageManager().getPackageInfo(
+					getPackageName(), PackageManager.GET_SIGNATURES);
+			Signature[] signs = packageInfo.signatures;
+			Signature sign = signs[0];
+			String signStr = encryptionMD5(sign.toByteArray());
+			Log.i("=======",signStr);
+			sHA1(context);
+			return signStr;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public static String sHA1(Context context) {
+		try {
+			PackageInfo info = context.getPackageManager().getPackageInfo(
+					context.getPackageName(), PackageManager.GET_SIGNATURES);
+			byte[] cert = info.signatures[0].toByteArray();
+			MessageDigest md = MessageDigest.getInstance("SHA1");
+			byte[] publicKey = md.digest(cert);
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < publicKey.length; i++) {
+				String appendString = Integer.toHexString(0xFF & publicKey[i])
+						.toUpperCase(Locale.US);
+				if (appendString.length() == 1)
+					hexString.append("0");
+				hexString.append(appendString);
+				hexString.append(":");
+			}
+			String result = hexString.toString();
+			return result.substring(0, result.length()-1);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

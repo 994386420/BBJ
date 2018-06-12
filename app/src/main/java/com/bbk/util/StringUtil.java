@@ -1,6 +1,7 @@
 package com.bbk.util;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
 import android.util.TypedValue;
@@ -18,11 +19,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
+
 
 public class StringUtil {
 	private static RelativeLayout inflater;
 	static Toast toast;
 	static TextView title;
+	static Context context;
 	public static String getResultNum(String str) {
 		char[] a = str.toCharArray();
 		StringBuffer sb = new StringBuffer();
@@ -182,6 +186,46 @@ public class StringUtil {
 			child.invalidate();
 		}
 
+
+	}
+
+
+	/**
+
+	 * 检测该包名所对应的应用是否存在
+
+	 * @param packageName
+
+	 * @return
+
+	 */
+
+	public static boolean checkPackage(Context context,String packageName)
+
+	{
+
+		if (packageName == null || "".equals(packageName))
+
+			return false;
+
+		try
+
+		{
+
+			context.getPackageManager().getApplicationInfo(packageName, PackageManager
+					.GET_UNINSTALLED_PACKAGES);
+
+			return true;
+
+		}
+
+		catch (PackageManager.NameNotFoundException e)
+
+		{
+
+			return false;
+
+		}
 
 	}
 }

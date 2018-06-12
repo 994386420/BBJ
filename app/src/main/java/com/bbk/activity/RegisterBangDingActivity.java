@@ -8,11 +8,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bbk.activity.UserFindPasswordActivity.TimeCount;
+import com.bbk.client.BaseApiService;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.DataFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -158,15 +160,12 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", inforJsonObj.optString("u_sig"));
 							SharedPreferencesUtil.putSharedData(getApplicationContext(),
 									"userInfor", "login_STATE","1");
-								intent = new Intent();
-								setResult(3, intent);
-							    TencentLoginUtil.Login(RegisterBangDingActivity.this);
-								if (DataFragment.login_remind!= null) {
-									DataFragment.login_remind.setVisibility(View.GONE);
-								}
-								finish();
+							NewConstants.logFlag = "2";
+							TencentLoginUtil.Login(RegisterBangDingActivity.this);
 							    //友盟登录
-							    MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
+							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
+							intent = new Intent(RegisterBangDingActivity.this, TuiguangDialogActivity.class);
+							startActivity(intent);
 							}else {
 								StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
 							}
@@ -322,7 +321,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			addr = bangding_account.getText().toString();
 			final Map<String, String> paramsMap = new HashMap<String, String>();
 			paramsMap.put("phone", addr);
-			final String url = Constants.MAIN_BASE_URL_MOBILE + "apiService/exsistPhone";
+			final String url = BaseApiService.Base_URL + "apiService/exsistPhone";
 			new Thread(new Runnable() {
 				
 				@Override
@@ -360,7 +359,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 				params.put("imgUrl", imgUrl);
 			    params.put("mesgCode", mesgCode);
 			    params.put("client", "android");
-				final String url1 = Constants.MAIN_BASE_URL_MOBILE + "apiService/registBandOpenid";
+				final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
 				new Thread(new Runnable() {
 					
 					@Override

@@ -85,6 +85,7 @@
                         android:textSize="13dp"
                         android:text="余额 : "/>
                     <TextView
+                        android:id="@+id/tv_shouyi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tuiguang_color1"
@@ -140,6 +141,7 @@
                         android:textSize="13dp"
                         android:text="可领 "/>
                     <TextView
+                        android:id="@+id/tv_hongbao"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tuiguang_color1"

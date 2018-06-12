@@ -5,19 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.SearchResultBean;
 import com.bbk.activity.BidActivity;
 import com.bbk.activity.BidFbActivity;
 import com.bbk.activity.CompareActivity;
 import com.bbk.activity.IntentActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.ResultDialogActivity;
 import com.bbk.activity.SearchMainActivity;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.dialog.ResultDialog;
 import com.bbk.util.JumpIntentUtil;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.MyListView;
 import com.bumptech.glide.Glide;
@@ -30,6 +32,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -159,11 +162,19 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 				@Override
 				public void onClick(View arg0) {
 //    				Intent intent = new Intent(context, CompareActivity.class);
-					//二级页面去发标
-					Intent intent = new Intent(context, BidActivity.class);
-					intent.putExtra("rowkey",rowkey);
-					intent.putExtra("type","1");
-					context.startActivity(intent);
+					String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+					Intent intent;
+					if (TextUtils.isEmpty(userID)) {
+						intent = new Intent(context, UserLoginNewActivity.class);
+						context.startActivityForResult(intent, 2);
+					} else {
+						//二级页面去发标
+						//二级页面去发标
+					    intent = new Intent(context, BidActivity.class);
+						intent.putExtra("rowkey",rowkey);
+						intent.putExtra("type","1");
+						context.startActivity(intent);
+					}
 				}
 			});
 			if ("0".equals(dataSet.getYjson())){
@@ -253,6 +264,9 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 						}
 						if (searchResultBeans.get(position).getGroupRowkey() != null){
 							intent.putExtra("groupRowKey", searchResultBeans.get(position).getGroupRowkey());
+						}
+						if (searchResultBeans.get(position).getPrice() != null) {
+							intent.putExtra("bprice", searchResultBeans.get(position).getPrice());
 						}
 					}else{
 						intent = new Intent(context,WebViewActivity.class);

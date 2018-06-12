@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 public class SuperScrollView extends XScrollView{
-	
+    private OnScrollListener mOnScrollListener;
 	public SuperScrollView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -30,14 +30,14 @@ public class SuperScrollView extends XScrollView{
       
 
            
-    /** 
-     * 设置滚动接口 
-     * @param onScrollListener 
-     */  
-    public void setOnScrollListener(OnScrollListener onScrollListener) {  
-        this.onScrollListener = onScrollListener;  
-    }  
-  
+//    /**
+//     * 设置滚动接口
+//     * @param onScrollListener
+//     */
+//    public void setOnScrollListener(OnScrollListener onScrollListener) {
+//        this.onScrollListener = onScrollListener;
+//    }
+//
   
     /** 
      * 用于用户手指离开MyScrollView的时候获取MyScrollView滚动的Y距离，然后回调给onScroll方法中 
@@ -58,8 +58,29 @@ public class SuperScrollView extends XScrollView{
               
         };  
   
-    };   
-  
+    };
+
+    /**
+     * 设置滚动接口
+     *
+     * @param listener
+     */
+    public void setOnScrollListener(OnScrollListener listener) {
+        this.mOnScrollListener = listener;
+    }
+
+    /**
+     * 滚动的回调接口
+     */
+    public interface OnScrollListener {
+        /**
+         * MyScrollView滑动的Y方向距离变化时的回调方法
+         *
+         * @param scrollY
+         */
+        void onScroll(int scrollY);
+
+    }
     /** 
      * 重写onTouchEvent， 当用户的手在MyScrollView上面的时候， 
      * 直接将MyScrollView滑动的Y方向距离回调给onScroll方法中，当用户抬起手的时候， 
@@ -77,22 +98,36 @@ public class SuperScrollView extends XScrollView{
             break;  
         }  
         return super.onTouchEvent(ev);  
-    }  
-  
-  
-    /** 
-     *  
-     * 滚动的回调接口 
-     *  
-     * @author xiaanming 
-     * 
-     */  
-    public interface OnScrollListener{  
-        /** 
-         * 回调方法， 返回MyScrollView滑动的Y方向距离 
-         * @param scrollY 
-         *              、 
-         */  
-        public void onScroll(int scrollY);  
-    }  
+    }
+    /**
+     * 监听ScroView的滑动情况
+     *
+     * @param l    变化后的X轴位置
+     * @param t    变化后的Y轴的位置
+     * @param oldl 原先的X轴的位置
+     * @param oldt 原先的Y轴的位置
+     */
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (null != mOnScrollListener) {
+            mOnScrollListener.onScroll(t);
+        }
+
+//    /**
+//     *
+//     * 滚动的回调接口
+//     *
+//     * @author xiaanming
+//     *
+//     */
+//    public interface OnScrollListener{
+//        /**
+//         * 回调方法， 返回MyScrollView滑动的Y方向距离
+//         * @param scrollY
+//         *              、
+//         */
+//        public void onScroll(int scrollY);
+//    }
+    }
 }

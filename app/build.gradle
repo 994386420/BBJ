@@ -106,6 +106,8 @@ dependencies {
     compile 'com.android.support:support-v4:26.1.0'
     compile files('libs/Baidu_Mtj_3.7.2.0.jar')
 //    compile files('libs/gson-2.2.4.jar')
+    compile files('libs/jd_crash_lib_release_210.jar')
+    compile files('libs/JDSDK_h.jar')
     compile files('libs/jg_filter_sdk_1.1.jar')
     compile files('libs/mail.jar')
     compile files('libs/mhvp-core.jar')
@@ -199,6 +201,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.google.code.gson:gson:2.7'
     compile project(':guideview')
+    compile project(':jdlmm')
     compile 'com.makeramen:roundedimageview:2.3.0'
     //view注入框架
     compile 'com.jakewharton:butterknife:8.4.0'

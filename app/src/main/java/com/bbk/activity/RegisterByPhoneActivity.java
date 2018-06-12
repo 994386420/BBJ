@@ -20,9 +20,11 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bbk.client.BaseApiService;
 import com.bbk.flow.DataFlow;
 import com.bbk.fragment.DataFragment;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -148,17 +150,12 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 							SharedPreferencesUtil.putSharedData(getApplicationContext(),
 									"userInfor", "login_STATE","1");
 							StringUtil.showToast(RegisterByPhoneActivity.this,"注册成功");
-								intent = new Intent(RegisterByPhoneActivity.this,HomeActivity.class);
-//								setResult(3, intent);
-							    intent.putExtra("type","4");
-							    TencentLoginUtil.Login(RegisterByPhoneActivity.this);
-								if (DataFragmentActivity.login_remind!= null) {
-									DataFragmentActivity.login_remind.setVisibility(View.GONE);
-								}
-								startActivity(intent);
-								finish();
-							    //友盟登录
-							    MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
+							//友盟登录
+							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
+							TencentLoginUtil.Login(RegisterByPhoneActivity.this);
+							NewConstants.logFlag = "1";
+							intent = new Intent(RegisterByPhoneActivity.this, TuiguangDialogActivity.class);
+							startActivity(intent);
 							}else {
 								StringUtil.showToast(RegisterByPhoneActivity.this, data1.optString("errmsg"));
 							}
@@ -296,12 +293,12 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 			addr = bangding_account.getText().toString();
 			final Map<String, String> paramsMap = new HashMap<String, String>();
 			paramsMap.put("phone", addr);
-			final String url = Constants.MAIN_BASE_URL_MOBILE + "apiService/exsistPhone";
+			final String url = BaseApiService.Base_URL + "apiService/exsistPhone";
 			new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
-					Log.e("=====dataJo======","=========");
+//					Log.e("=====dataJo======","=========");
 					String dataStr = HttpUtil.getHttp(paramsMap, url, context);
 					Message mes = handler.obtainMessage();
 					mes.obj = dataStr;
@@ -339,7 +336,7 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 						params.put("imgUrl", imgUrl);
 						params.put("mesgCode", mesgCode);
 						params.put("client", "android");
-						final String url1 = Constants.MAIN_BASE_URL_MOBILE + Constants.registUserByPhoneNumber;
+						final String url1 = BaseApiService.Base_URL + Constants.registUserByPhoneNumber;
 						new Thread(new Runnable() {
 
 							@Override

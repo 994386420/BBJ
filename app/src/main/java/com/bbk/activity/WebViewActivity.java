@@ -6,12 +6,23 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.AlibcTaokeParams;
+import com.alibaba.baichuan.android.trade.model.OpenType;
+import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.dialog.WebViewAlertDialog;
 import com.bbk.flow.DataFlow4;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyWebView;
+import com.kepler.jd.Listener.OpenAppAction;
+import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KeplerAttachParameter;
 import com.tamic.jswebview.browse.JsWeb.CustomWebChromeClient;
 import com.tamic.jswebview.browse.JsWeb.CustomWebViewClient;
 import com.tamic.jswebview.view.NumberProgressBar;
@@ -21,23 +32,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class WebViewActivity extends BaseActivity implements OnClickListener, ResultEvent{
 
@@ -51,7 +56,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 	private boolean isintent = false;
 	private ImageView topbar_goback_btn, collectimg;
 	private TextView mtitle;
-	private String token;
+	private String token,domain;
 	private String content1 = "";
 	private String rowkey = "";
 	private String srowkey = "";
@@ -61,11 +66,19 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 	private boolean ishis = true;
 //	private int rowkeynum = 0;
 	public static Activity instance = null;
+//	private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
+//	private Map<String, String> exParams;//yhhpass参数
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.web_view_activity);
+//		alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+//		alibcShowParams.setClientType("taobao_scheme");
+//		exParams = new HashMap<>();
+//		exParams.put("isv_code", "appisvcode");
+//		exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+
 		dataFlow = new DataFlow4(this);
 		instance = this;
 		getWindow().setBackgroundDrawable(null);
@@ -79,7 +92,25 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			hrowkey = getIntent().getStringExtra("rowkey");
 		}
 		url = getIntent().getStringExtra("url");
-
+//		domain = getIntent().getStringExtra("domain");
+//		if (domain != null && url != null){
+//			if (domain.equals("jd")){
+//				// 通过url呼京东主站
+//                // url 通过url呼京东主站的地址
+//				// mKeplerAttachParameter 存储第三方传入参数
+//                // mOpenAppAction  呼京东主站回调
+//				KeplerApiManager.getWebViewService().openAppWebViewPage(this,
+//						url,
+//						mKeplerAttachParameter,
+//						mOpenAppAction);
+//			}else if (domain.equals("tmall") || domain.equals("taobao")){
+//				if(StringUtil.checkPackage(this,"com.taobao.taobao")) {
+//					showUrl();
+//				}else {
+//					StringUtil.showToast(WebViewActivity.this,"未安装淘宝app");
+//				}
+//			}
+//		}
 		// url = "https://pages.tmall.com/wow/rais/act/tmall-choice";
 		if (url != null){
 		if (url.contains("item.jd.com")) {// 京东
@@ -154,7 +185,17 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		// 设置setWebChromeClient对象
 		webViewLayout.setWebChromeClient(wvcc);
 	}
-
+//	/**
+//	 * 打开指定链接
+//	 */
+//	public void showUrl() {
+//		String text = url;
+//		if(TextUtils.isEmpty(text)) {
+//			StringUtil.showToast(this, "URL为空");
+//			return;
+//		}
+//		AlibcTrade.show(this, new AlibcPage(text), alibcShowParams, null, exParams , new DemoTradeCallback());
+//	}
 	private void queryCompareByUrl() {
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> params = new HashMap<>();
@@ -216,7 +257,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		// "openID");
 		// urlmd5=url+"&openID="+openID;
 		// }
-
 		loadWebPage(url);
 	}
 
@@ -401,7 +441,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			} else {
 				Intent intent14 = new Intent(this, UserLoginNewActivity.class);
 				startActivity(intent14);
-				Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
+				StringUtil.showToast(this, "请先登录！");
 			}
 
 			break;
@@ -555,7 +595,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			content1 = content;
 			break;
 		case 4:
-
 			collectimg.setImageResource(R.mipmap.three_05);
 			shoucang.setEnabled(false);
 			break;
@@ -574,4 +613,35 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+
+//	private KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
+//
+//	OpenAppAction mOpenAppAction = new OpenAppAction() {
+//		@Override
+//		public void onStatus(final int status, final String url) {
+////			mHandler.post(new Runnable() {
+////				@Override
+////				public void run() {
+//					if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+//						DialogSingleUtil.show(WebViewActivity.this);
+//					}else {
+////						mKelperTask = null;
+//						DialogSingleUtil.dismiss(0);
+//					}
+//					if(status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+//						StringUtil.showToast(WebViewActivity.this,"未安装京东");
+//						//未安装京东
+//					}else if(status == OpenAppAction.OpenAppAction_result_BlackUrl){
+//						//不在白名单
+//					}else if(status == OpenAppAction.OpenAppAction_result_ErrorScheme){
+//						//协议错误
+//					}else if(status == OpenAppAction.OpenAppAction_result_APP){
+//						//呼京东成功
+//					}else if(status == OpenAppAction.OpenAppAction_result_NetError){
+//						//网络异常
+//					}
+////				}
+////			});
+//		}
+//	};
 }

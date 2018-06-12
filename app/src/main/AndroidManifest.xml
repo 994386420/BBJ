@@ -182,6 +182,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- 直接回呼 -->
+        <activity android:exported="true" android:name="com.kepler.jd.sdk.KeplerBackActivity" android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="sdkback581b75d36bd0443cb50b68ae316c7e93"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".MesageCenterActivity"
             android:launchMode="singleTask"
@@ -431,6 +441,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".BrokerageActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FensiActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".JumpDetailActivty"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".BrokerageDetailActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <meta-data

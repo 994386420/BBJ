@@ -7,12 +7,51 @@ package com.bbk.Bean;
 public class NewHomeCzgBean {
     private String id;
     private String title;
-    private String price;
+    private String price;//券后价
     private String dianpu;
     private String youhui;
     private String hislowprice;
     private String url;
+    private String quan;//满减
+    private String zuan;//赚
+    private String bprice;//原价
     private String imgurl;
+    private String domain;
+    private String rowkey;
+    private String requestUrl;
+    private String sale;
+
+    public String getSale() {
+        return sale;
+    }
+
+    public void setSale(String sale) {
+        this.sale = sale;
+    }
+
+    public String getRequestUrl() {
+        return requestUrl;
+    }
+
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
+    }
+
+    public String getRowkey() {
+        return rowkey;
+    }
+
+    public void setRowkey(String rowkey) {
+        this.rowkey = rowkey;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
     public String getId() {
         return id;
@@ -76,6 +115,30 @@ public class NewHomeCzgBean {
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
+    }
+
+    public String getBprice() {
+        return bprice;
+    }
+
+    public void setBprice(String bprice) {
+        this.bprice = bprice;
+    }
+
+    public String getQuan() {
+        return quan;
+    }
+
+    public void setQuan(String quan) {
+        this.quan = quan;
+    }
+
+    public String getZuan() {
+        return zuan;
+    }
+
+    public void setZuan(String zuan) {
+        this.zuan = zuan;
     }
 
     @Override

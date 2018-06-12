@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.bbk.Bean.AddressMangerBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.OnAddressListioner;

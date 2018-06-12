@@ -138,8 +138,8 @@ public class EventIdIntentUtil {
 			break;
 			case "108":
 //				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "2");
-//				Intent intent = new Intent(context, BidHomeActivity.class);
-//				context.startActivity(intent);
+				Intent intent = new Intent(context, UserLoginNewActivity.class);
+				context.startActivity(intent);
 
 				break;
 		case "666":

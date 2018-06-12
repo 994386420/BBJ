@@ -8,8 +8,11 @@ import com.bbk.Bean.SearchResultBean;
 import com.bbk.activity.BidActivity;
 import com.bbk.activity.CompareActivity;
 import com.bbk.activity.IntentActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.ResultDialogActivity;
+import com.bbk.activity.TuiguangDialogActivity;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.adapter.ListViewAdapter2.ViewHolder;
 import com.bbk.component.HomeAllComponent;
@@ -209,11 +212,18 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
 				public void onClick(View arg0) {
 //						Intent intent = new Intent(context, CompareActivity.class);
 //						intent.putExtra("rowkey",groupRowKey );
-					//二级页面去发标
-					Intent intent = new Intent(context, BidActivity.class);
-					intent.putExtra("rowkey",groupRowKey);
-					intent.putExtra("type","1");
-					context.startActivity(intent);
+					    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+					    Intent intent;
+						if (TextUtils.isEmpty(userID)) {
+							intent = new Intent(context, UserLoginNewActivity.class);
+							context.startActivityForResult(intent, 2);
+						} else {
+							//二级页面去发标
+							intent = new Intent(context, BidActivity.class);
+							intent.putExtra("rowkey", groupRowKey);
+							intent.putExtra("type", "1");
+							context.startActivity(intent);
+						}
 				}
 			});
 
@@ -266,6 +276,9 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
 						}
 						if (searchResultBeans.get(position).getGroupRowkey() != null) {
 							intent.putExtra("groupRowKey", searchResultBeans.get(position).getGroupRowkey());
+						}
+						if (searchResultBeans.get(position).getPrice() != null) {
+							intent.putExtra("bprice", searchResultBeans.get(position).getPrice());
 						}
 					} else {
 						intent = new Intent(context, WebViewActivity.class);

@@ -222,15 +222,17 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                                     mendtime.setText(endtime);
                                     mextra.setText(pubaDetailBean.getExtra());
                                     //userid与登陆userid一样时，隐藏去接镖
-                                    if (pubaDetailBean.getUserid().equals(userID)){
-                                        mgobid.setClickable(false);
-                                        mGoJbText.setText("不能扑倒自己");
-                                        mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
-                                        mGoJbTextStaus.setVisibility(View.GONE);
-                                        mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
-                                    }else {
-                                        mgobid.setClickable(true);
-                                        mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                                    if (pubaDetailBean.getUserid() != null) {
+                                        if (pubaDetailBean.getUserid().equals(userID)) {
+                                            mgobid.setClickable(false);
+                                            mGoJbText.setText("不能扑倒自己");
+                                            mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                                            mGoJbTextStaus.setVisibility(View.GONE);
+                                            mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
+                                        } else {
+                                            mgobid.setClickable(true);
+                                            mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                                        }
                                     }
                                     //从我的接镖列表获取返回值status，如果status = 1，可接镖；其他为不可接镖
                                     if (getIntent().getStringExtra("status") != null) {

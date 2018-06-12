@@ -159,7 +159,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@id/filter_price"
-                            android:src="@mipmap/gaodi_01" />
+                            android:src="@mipmap/tuiguang_11"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -256,7 +256,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="8dp"
                             android:layout_toRightOf="@id/filter_price_czg"
-                            android:src="@mipmap/gaodi_01" />
+                            android:src="@mipmap/tuiguang_11" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -271,18 +271,68 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="淘宝关注度"
+                            android:text="全部"
                             android:textColor="#222222"
                             android:textSize="14sp" />
+                        <ImageView
+                            android:id="@+id/mall_shaixuan_image"
+                            android:layout_width="8dp"
+                            android:layout_height="6dp"
+                            android:layout_toRightOf="@+id/filter_czg"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:background="@mipmap/tuiguang_10"/>
                     </RelativeLayout>
                 </LinearLayout>
+
 
                 <View
                     android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="#DCDCDC" />
+                <LinearLayout
+                    android:id="@+id/ll_all_mall"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:background="@color/white">
 
+                    <TextView
+                        android:id="@+id/tv_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:text="全部"
+                        android:textColor="@color/tuiguang_color3"/>
+                    <TextView
+                        android:id="@+id/tv_jd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:text="京东"
+                        android:textColor="@color/tuiguang_color3"/>
+                    <TextView
+                        android:id="@+id/tv_tmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:text="天猫"
+                        android:textColor="@color/tuiguang_color3"/>
+                    <TextView
+                        android:id="@+id/tv_taobao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:text="淘宝"
+                        android:textColor="@color/tuiguang_color3"/>
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/correct_layout"
                     android:layout_width="match_parent"

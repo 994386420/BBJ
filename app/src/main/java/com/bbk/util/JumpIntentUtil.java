@@ -1,5 +1,6 @@
 package com.bbk.util;
 
+import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.SearchBean;
 import com.bbk.Bean.SearchResultBean;
 
@@ -37,6 +38,14 @@ public class JumpIntentUtil {
     }
 
     public static boolean isJump4(List<SearchResultBean> itemList, int position){
+        if("beibei".equals(itemList.get(position).getDomain())
+                ||"jd".equals(itemList.get(position).getDomain()) ||"taobao".equals(itemList.get(position).getDomain())
+                ||"tmall".equals(itemList.get(position).getDomain()) ||"suning".equals(itemList.get(position).getDomain())){
+            return true;
+        }
+        return false;
+    }
+    public static boolean isJump5 (List<NewHomeCzgBean> itemList, int position){
         if("beibei".equals(itemList.get(position).getDomain())
                 ||"jd".equals(itemList.get(position).getDomain()) ||"taobao".equals(itemList.get(position).getDomain())
                 ||"tmall".equals(itemList.get(position).getDomain()) ||"suning".equals(itemList.get(position).getDomain())){
