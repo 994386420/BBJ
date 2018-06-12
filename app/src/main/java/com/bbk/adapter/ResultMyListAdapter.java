@@ -51,6 +51,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWindow.OnDismissListener {
 	private Activity context;
 	private PopupWindow popupWindow;
@@ -131,6 +134,19 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 					vh.mlittleprice.setText(littleprice);
 				}
 			}
+			if (dataSet.getYongjin() != null && !dataSet.getYongjin().equals("")) {
+				vh.zuan.setVisibility(View.VISIBLE);
+				vh.zuan.setText(dataSet.getYongjin());
+			} else {
+				vh.zuan.setVisibility(View.GONE);
+			}
+			if (dataSet.getQuan() != null && !dataSet.getQuan().equals("")) {
+				vh.llQuan.setVisibility(View.VISIBLE);
+				vh.quan.setText(dataSet.getQuan());
+			} else {
+				vh.llQuan.setVisibility(View.GONE);
+			}
+
 			if (Integer.valueOf(hnumber)>10000) {
 				if (Integer.valueOf(hnumber)>100000000) {
 					DecimalFormat df = new DecimalFormat("###.0");
@@ -302,8 +318,16 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 		RelativeLayout intentbuy,findsimilar;
 		View mfengexian,lingjuanzhanwei;
 		LinearLayout itemlayout;
+		@BindView(R.id.quan)
+		TextView quan;
+		@BindView(R.id.zuan)
+		TextView zuan;
+		@BindView(R.id.ll_quan)
+		LinearLayout llQuan;
+
 		public ViewHolder(View mView) {
 			super(mView);
+			ButterKnife.bind(this, mView);
 			img = (ImageView) mView.findViewById(R.id.item_img);
 			mcouponimg = (ImageView) mView.findViewById(R.id.mcouponimg);
 			title = (TextView) mView.findViewById(R.id.item_title);

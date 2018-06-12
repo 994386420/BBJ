@@ -78,12 +78,12 @@ public class MyApplication extends Application {
 				new AsyncInitListener() {
 					@Override
 					public void onSuccess() {
-// TODO Auto-generated method stub
+                        // TODO Auto-generated method stub
 						Log.e("Kepler", "Kepler asyncInitSdk onSuccess ");
 					}
 					@Override
 					public void onFailure() {
-// TODO Auto-generated method stub
+                        // TODO Auto-generated method stub
 						Log.e("Kepler",
 								"Kepler asyncInitSdk 授权失败，请检查lib 工程资源引用；包名,签名证书是否和注册一致");
 

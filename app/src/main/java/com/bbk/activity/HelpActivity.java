@@ -35,12 +35,12 @@ public class HelpActivity extends BaseActivity implements OnClickListener {
 			"由于比比鲸是比价软件，不参与报价与售卖。进入第三方商城后订单问题，请与第三方商城协商。"};
 //	Html.fromHtml(“<font size='20'>网页内容</font>”)
 	private int[] imgArr = {
-			R.mipmap.img_password,
-			R.mipmap.img_phone,
-			R.mipmap.img_email,
-			0,
-			0,
-			R.mipmap.img_shop,
+//			R.mipmap.img_password,
+//			R.mipmap.img_phone,
+//			R.mipmap.img_email,
+//			0,
+//			0,
+//			R.mipmap.img_shop,
 			0,
 			0};
 	

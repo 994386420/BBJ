@@ -57,6 +57,7 @@ import com.bbk.adapter.ResultExpandableListViewAdapter;
 import com.bbk.adapter.ResultMyGridAdapter;
 import com.bbk.adapter.ResultMyListAdapter;
 import com.bbk.adapter.SecondAdapter5;
+import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -1675,6 +1676,9 @@ public class SearchMainActivity extends ActivityGroup implements
                                 String content;
                                 params.put("domain", searchResultBeans.get(requestnum).getDomain());
                                 params.put("rowkey", searchResultBeans.get(requestnum).getGroupRowkey());
+                                params.put("url", searchResultBeans.get(requestnum).getUrl());
+                                params.put("title", searchResultBeans.get(requestnum).getTitle());
+                                params.put("bprice", searchResultBeans.get(requestnum).getPrice());
                                 params.put("fromwhere", "android" + keyword);
                                 if (searchResultBeans.get(requestnum).getPurl().contains("||")) {
                                     String url = searchResultBeans.get(requestnum).getPurl();
@@ -1682,11 +1686,11 @@ public class SearchMainActivity extends ActivityGroup implements
                                     String referrer = split[1];
                                     content = HttpUtil.getHttp1(params, split[0], SearchMainActivity.this, referrer);
                                     params.put("pcontent", content);
-                                    str = HttpUtil.getHttp(params, Constants.MAIN_BASE_URL_MOBILE + "checkService/checkProduct", SearchMainActivity.this);
+                                    str = HttpUtil.getHttp(params, BaseApiService.Base_URL + "checkService/checkProduct", SearchMainActivity.this);
                                 } else {
                                     content = HttpUtil.getHttp1(params, searchResultBeans.get(requestnum).getPurl(), SearchMainActivity.this, null);
                                     params.put("pcontent", content);
-                                    str = HttpUtil.getHttp(params, Constants.MAIN_BASE_URL_MOBILE + "checkService/checkProduct", SearchMainActivity.this);
+                                    str = HttpUtil.getHttp(params, BaseApiService.Base_URL+ "checkService/checkProduct", SearchMainActivity.this);
                                 }
                                 JSONObject object = new JSONObject(str);
                                 if ("3".equals(object.optString("type"))) {
@@ -1696,7 +1700,7 @@ public class SearchMainActivity extends ActivityGroup implements
                                         content = HttpUtil.getHttp1(params, object.optString("url"), SearchMainActivity.this, null);
                                     }
                                     params.put("pcontent", content);
-                                    String url = Constants.MAIN_BASE_URL_MOBILE + "checkService/checkProduct";
+                                    String url =BaseApiService.Base_URL + "checkService/checkProduct";
                                     str = HttpUtil.getHttp(params, url, SearchMainActivity.this);
                                 }
                                 Message mes = handler.obtainMessage();
@@ -1778,7 +1782,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 try {
                     Map<String, String> params = new HashMap<>();
                     String content = HttpUtil.getHttp1(params, tmallSearchUrl, SearchMainActivity.this, null);
-                    String url = Constants.MAIN_BASE_URL_MOBILE + "checkService/parseTmall";
+                    String url = BaseApiService.Base_URL + "checkService/parseTmall";
                     params.put("content", content);
                     String str = HttpUtil.getHttp(params, url, SearchMainActivity.this);
                     searchResultBeans = JSON.parseArray(str, SearchResultBean.class);
@@ -2056,6 +2060,7 @@ public class SearchMainActivity extends ActivityGroup implements
                         }
                         String tmp1 = info.optString("page");
                         String gridtype = info.optString("gridtype");
+//                        Log.i("商品比价数据",tmp1);
                         if (!tmp1.isEmpty()) {
 //							initListViewData(info);//放数据
                             if (x == 1) {
@@ -2072,8 +2077,10 @@ public class SearchMainActivity extends ActivityGroup implements
                                 }
                             } else {
                                 searchResultBeans = JSON.parseArray(tmp1, SearchResultBean.class);
-                                listAdapter.notifyData(searchResultBeans);
-                                gridviewadapter.notifyData(searchResultBeans);
+                                if (searchResultBeans.size() > 0 && searchResultBeans != null) {
+                                    listAdapter.notifyData(searchResultBeans);
+                                    gridviewadapter.notifyData(searchResultBeans);
+                                }
                             }
                             isrequest = true;
                             int totalCount = info.optInt("totalCount");
@@ -2116,7 +2123,7 @@ public class SearchMainActivity extends ActivityGroup implements
                     break;
                 case 2:
                     try {
-                        Log.i("======",contentCzg);
+//                        Log.i("======",contentCzg);
                         JSONObject jo = new JSONObject(contentCzg);
                         String isBlandCzg = jo.optString("isBland");
                         //  isBland为1 表示有数据 isBland为-1表示无数据

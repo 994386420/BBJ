@@ -105,7 +105,7 @@ public class JumpDetailActivty extends BaseActivity {
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
-    private String url, rowkey, domain;
+    private String url, rowkey, domain,quans;
     String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
@@ -150,7 +150,12 @@ public class JumpDetailActivty extends BaseActivity {
         url = jumpBean.getUrl();
         rowkey = jumpBean.getRowkey();
         domain = jumpBean.getDomain();
-        quan.setText("领券减" + jumpBean.getQuan());
+        quans = jumpBean.getQuan();
+        if (quans != null && !quans.equals("")&& !quans.equals("0")){
+            quan.setText("领券减" + jumpBean.getQuan());
+        }else {
+            quan.setVisibility(View.GONE);
+        }
         tvTitle.setText(jumpBean.getTitle());
         tvDianpu.setText(jumpBean.getService());
         tvSale.setText(jumpBean.getSale() + "人付款");

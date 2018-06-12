@@ -28,9 +28,9 @@ import com.tencent.tauth.Tencent;
 public class WelcomeGuideActivity extends BaseActivity {
 
 	private int[] pics = { 
-			R.mipmap.splash_01,
-			R.mipmap.splash_02,
-			R.mipmap.puba };
+			R.mipmap.splash1,
+			R.mipmap.splash2,
+			R.mipmap.splash3 };
 	private ViewPager pager;
 	private List<View> mListViews;
 	private MyViewPagerAdapter mAdapter;

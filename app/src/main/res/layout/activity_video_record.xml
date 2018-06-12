@@ -140,6 +140,7 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/record_beautiful"
             android:onClick="onClick"
+            android:visibility="gone"
             android:padding="5dp" />
     </RelativeLayout>
 

@@ -24,6 +24,24 @@ public class SearchResultBean {
     private String androidurl;
     private String purl;
     private String keyword;
+    private String yongjin;
+    private String quan;
+
+    public String getYongjin() {
+        return yongjin;
+    }
+
+    public void setYongjin(String yongjin) {
+        this.yongjin = yongjin;
+    }
+
+    public String getQuan() {
+        return quan;
+    }
+
+    public void setQuan(String quan) {
+        this.quan = quan;
+    }
 
     public String getImgUrl() {
         return imgUrl;
