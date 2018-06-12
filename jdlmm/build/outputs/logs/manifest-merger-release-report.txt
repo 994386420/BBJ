@@ -1,0 +1,51 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:1:39-18:12
+INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:1:39-18:12
+INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:1:39-18:12
+	package
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:1:108-130
+		INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+		INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:1:49-107
+application
+ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:4:5-14:19
+	android:allowBackup
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:4:18-44
+activity#com.kepler.jd.sdk.KeplerBackActivity
+ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:7:9-13:20
+	android:exported
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:7:19-42
+	android:theme
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:7:95-143
+	android:name
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:7:43-94
+intent-filter#android.intent.action.VIEW+android.intent.category.DEFAULT
+ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:8:13-12:29
+action#android.intent.action.VIEW
+ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:9:17-68
+	android:name
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:9:25-66
+category#android.intent.category.DEFAULT
+ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:10:17-75
+	android:name
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:10:27-73
+data
+ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:11:17-81
+	android:scheme
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml:11:23-79
+uses-sdk
+INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+		INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+		ADDED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml
+		INJECTED from E:\bibijing\bibijing\jdlmm\src\main\AndroidManifest.xml

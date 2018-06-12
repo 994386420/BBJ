@@ -1,0 +1,7 @@
+﻿<resources>
+
+    <string name="app_name">sdk</string>
+    <string name="Illegal_info"> Illegal application ,check init !</string>
+    <string name="kepler_check_net">请检查您的网络环境</string>
+
+</resources>
