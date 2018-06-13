@@ -95,8 +95,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     /**
      * Banner
      */
-//    private Banner mBanner;//首页banner
-//    private LinearLayout mSort,mSearch;//搜索，分类;
     private JSONArray banner = new JSONArray();
     /**
      * 中间布局
@@ -322,7 +320,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
                         mSuspensionBar.setVisibility(View.GONE);
-                        StringUtil.showToast(getActivity(), "网络异常");
+                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }
@@ -368,7 +366,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
                         mSuspensionBar.setVisibility(View.GONE);
-                        StringUtil.showToast(getActivity(), "网络异常");
+                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }

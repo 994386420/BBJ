@@ -148,6 +148,13 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void userSign(Map<String, String> parameters, Observer<?> observer) {
+        apiService.userSign(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     public  void queryAppIndexInfo(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryAppIndexInfo(parameters)
                 .compose(schedulersTransformer)

@@ -170,7 +170,7 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
                         listView.setVisibility(View.GONE);
                         xrefresh.finishLoadMore();
                         xrefresh.finishRefresh();
-                        StringUtil.showToast(getActivity(), "网络异常");
+                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }

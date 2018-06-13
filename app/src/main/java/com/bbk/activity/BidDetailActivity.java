@@ -297,7 +297,7 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         pubaDetailLayout.setVisibility(View.GONE);
-                        StringUtil.showToast(BidDetailActivity.this, "网络异常");
+                        StringUtil.showToast(BidDetailActivity.this, e.message);
                     }
                 });
     }

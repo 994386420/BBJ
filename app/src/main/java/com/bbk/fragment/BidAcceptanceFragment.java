@@ -198,7 +198,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Comm
                         mrefresh.finishLoadMore();
                         mrefresh.finishRefresh();
                         if (getActivity() != null){
-                            StringUtil.showToast(getActivity(), "网络异常");
+                            StringUtil.showToast(getActivity(), e.message);
                     }
              }
         });

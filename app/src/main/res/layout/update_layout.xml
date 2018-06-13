@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="25dp"
+    android:paddingBottom="45dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/text_view_border">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/wujeiguo"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="新版上线啦!"
+        android:textSize="19dp"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/tuiguang_color3"/>
+
+    <TextView
+        android:id="@+id/tv_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="15dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/tuiguang_color4"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:id="@+id/tv_update_refuse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_update1"
+            android:textSize="14dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="残忍拒绝"
+            android:textColor="@color/tuiguang_color4"/>
+
+        <TextView
+            android:id="@+id/tv_update_gengxin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="下载更新"
+            android:textSize="14dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:background="@drawable/bg_update"
+            android:textColor="@color/update_color"/>
+    </FrameLayout>
+</LinearLayout>

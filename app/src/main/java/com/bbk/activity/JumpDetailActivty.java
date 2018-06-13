@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +28,6 @@ import com.bbk.adapter.NewCzgGridAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
-import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -100,12 +100,14 @@ public class JumpDetailActivty extends BaseActivity {
     ImageView imageFenxiang;
     @BindView(R.id.refresh)
     SmartRefreshLayout refresh;
+    @BindView(R.id.tv_qhj)
+    TextView tvQhj;
     private String content;
     List<NewHomeCzgBean> czgBeans;//超值购数据
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
-    private String url, rowkey, domain,quans;
+    private String url, rowkey, domain, quans;
     String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
@@ -121,11 +123,11 @@ public class JumpDetailActivty extends BaseActivity {
         refresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-             if (getIntent().getStringExtra("content") != null) {
-               content = getIntent().getStringExtra("content");
-               initview();
-             }
-             getIndexByType();
+                if (getIntent().getStringExtra("content") != null) {
+                    content = getIntent().getStringExtra("content");
+                    initview();
+                }
+                getIndexByType();
             }
         });
         if (getIntent().getStringExtra("content") != null) {
@@ -151,16 +153,28 @@ public class JumpDetailActivty extends BaseActivity {
         rowkey = jumpBean.getRowkey();
         domain = jumpBean.getDomain();
         quans = jumpBean.getQuan();
-        if (quans != null && !quans.equals("")&& !quans.equals("0")){
+        if (quans != null && !quans.equals("") && !quans.equals("0")) {
             quan.setText("领券减" + jumpBean.getQuan());
-        }else {
+        } else {
             quan.setVisibility(View.GONE);
+        }
+        if (domain != null){
+            if (domain.equals("jd")){
+                tvQhj.setVisibility(View.GONE);
+            }else {
+                tvQhj.setVisibility(View.VISIBLE);
+            }
         }
         tvTitle.setText(jumpBean.getTitle());
         tvDianpu.setText(jumpBean.getService());
         tvSale.setText(jumpBean.getSale() + "人付款");
         price.setText(jumpBean.getPrice());
-        bprice.setText("¥" + jumpBean.getBprice());
+        if (jumpBean.getBprice() != null && !jumpBean.getBprice().equals("null")) {
+            bprice.setVisibility(View.VISIBLE);
+            bprice.setText("¥" + jumpBean.getBprice());
+        }else {
+            bprice.setVisibility(View.GONE);
+        }
         tvMall.setText(jumpBean.getDomainCh());
         tvZuan.setText("赚" + jumpBean.getYongjin() + "元");
         bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -238,7 +252,7 @@ public class JumpDetailActivty extends BaseActivity {
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
                         refresh.finishRefresh();
-                        StringUtil.showToast(JumpDetailActivty.this, "网络异常");
+                        StringUtil.showToast(JumpDetailActivty.this, e.message);
                     }
                 });
     }
@@ -303,10 +317,10 @@ public class JumpDetailActivty extends BaseActivity {
                 exParams = new HashMap<>();
                 exParams.put("isv_code", "appisvcode");
                 exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-                if (domain != null){
-                    if (domain.equals("tmall") || domain.equals("taobao")){
+                if (domain != null) {
+                    if (domain.equals("tmall") || domain.equals("taobao")) {
                         showUrl();
-                    }else if (domain.equals("jd")){
+                    } else if (domain.equals("jd")) {
                         // 通过url呼京东主站
                         // url 通过url呼京东主站的地址
                         // mKeplerAttachParameter 存储第三方传入参数
@@ -316,7 +330,7 @@ public class JumpDetailActivty extends BaseActivity {
                                 mKeplerAttachParameter,
                                 mOpenAppAction);
                         DialogSingleUtil.dismiss(100);
-                    }else {
+                    } else {
                         intent = new Intent(this, WebViewActivity.class);
                         if (url != null) {
                             intent.putExtra("url", url);
@@ -331,18 +345,20 @@ public class JumpDetailActivty extends BaseActivity {
                 break;
         }
     }
+
     /**
      * 打开指定链接
      */
     public void showUrl() {
         String text = url;
-        if(TextUtils.isEmpty(text)) {
+        if (TextUtils.isEmpty(text)) {
             StringUtil.showToast(this, "URL为空");
             return;
         }
-        AlibcTrade.show(this, new AlibcPage(text), alibcShowParams, null, exParams , new DemoTradeCallback());
+        AlibcTrade.show(this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
         DialogSingleUtil.dismiss(100);
     }
+
     /**
      * 分享图片文字及连接
      */
@@ -380,7 +396,7 @@ public class JumpDetailActivty extends BaseActivity {
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
-                        StringUtil.showToast(JumpDetailActivty.this, "网络异常");
+                        StringUtil.showToast(JumpDetailActivty.this, e.message);
                     }
                 });
     }
@@ -397,12 +413,12 @@ public class JumpDetailActivty extends BaseActivity {
             Intent intent;
             if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
                 DialogSingleUtil.show(JumpDetailActivty.this);
-            }else {
+            } else {
 //						mKelperTask = null;
                 DialogSingleUtil.dismiss(0);
             }
-            if(status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-                StringUtil.showToast(JumpDetailActivty.this,"未安装京东");
+            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+                StringUtil.showToast(JumpDetailActivty.this, "未安装京东");
                 intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
                 if (url != null) {
                     intent.putExtra("url", url);
@@ -412,22 +428,23 @@ public class JumpDetailActivty extends BaseActivity {
                 }
                 startActivity(intent);
                 //未安装京东
-            }else if(status == OpenAppAction.OpenAppAction_result_BlackUrl){
-                StringUtil.showToast(JumpDetailActivty.this,"不在白名单");
+            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+                StringUtil.showToast(JumpDetailActivty.this, "不在白名单");
                 //不在白名单
-            }else if(status == OpenAppAction.OpenAppAction_result_ErrorScheme){
-                StringUtil.showToast(JumpDetailActivty.this,"协议错误");
+            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+                StringUtil.showToast(JumpDetailActivty.this, "协议错误");
                 //协议错误
-            }else if(status == OpenAppAction.OpenAppAction_result_APP){
+            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
                 //呼京东成功
-            }else if(status == OpenAppAction.OpenAppAction_result_NetError){
-                StringUtil.showToast(JumpDetailActivty.this,"网络异常");
+            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+                StringUtil.showToast(JumpDetailActivty.this, "网络异常");
                 //网络异常
             }
 //				}
 //			});
         }
     };
+
     @Override
     protected void onActivityResult(int arg0, int arg1, Intent arg2) {
         switch (arg0) {

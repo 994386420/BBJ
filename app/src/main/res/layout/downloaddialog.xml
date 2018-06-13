@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+	android:gravity="center"
+    android:orientation="vertical"
+	android:padding="10dp"
+	android:background="@drawable/text_view_border">
 
-    <ProgressBar
+	<ImageView
+		android:layout_width="70dp"
+		android:layout_height="70dp"
+		android:layout_centerHorizontal="true"
+		android:src="@mipmap/wujeiguo"
+		/>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="新版本正在更新，请稍等"
+		android:textSize="15dp"
+		android:layout_marginTop="10dp"
+		android:textColor="@color/update_color2"/>
+	<com.bbk.view.ProgressBar
         android:id="@+id/updateProgress"
         android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		style="?android:attr/progressBarStyleHorizontal"
-         />
-
+		android:layout_marginTop="5dp"
+		style="@style/InitProgressBar" />
+	<TextView
+		android:id="@+id/tv_update_cancle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:text="取消更新"
+		android:textSize="12dp"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:paddingBottom="5dp"
+		android:paddingTop="5dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/bg_update1"
+		android:textColor="@color/tuiguang_color4"/>
 </LinearLayout>

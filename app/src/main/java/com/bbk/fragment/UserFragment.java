@@ -26,6 +26,8 @@ import android.widget.TextView;
 import com.ali.auth.third.login.callback.LogoutCallback;
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.UserBean;
 import com.bbk.activity.AboutUsActivity;
 import com.bbk.activity.AddressMangerActivity;
 import com.bbk.activity.BidListDetailActivity;
@@ -84,11 +86,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class UserFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent {
+public class UserFragment extends BaseViewPagerFragment implements OnClickListener {
     @BindView(R.id.tv_shouyi)
     TextView tvShouyi;
     @BindView(R.id.tv_hongbao)
     TextView tvHongbao;
+    @BindView(R.id.tv_level)
+    TextView tvLevel;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -128,6 +132,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     LinearLayout llBrokerage;
     @BindView(R.id.ll_fensi)
     LinearLayout llFensi;
+    String isFirstResultUse;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -157,18 +162,30 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     }
 
     /**
-     * 字段hzinfo中取type（是否为合作伙伴：0为不是 1 为是）
+     * 签到
      */
-    private void queryUserInfoMain() {
-        Map<String, String> maps = new HashMap<String, String>();
-        RetrofitClient.getInstance(getActivity()).createBaseApi().queryUserInfoMain(
-                maps, new BaseObserver<String>(getActivity()) {
+    private void  userSign() {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Map<String, String> params = new HashMap<>();
+        params.put("userid", userID);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().userSign(
+                params, new BaseObserver<String>(getActivity()) {
                     @Override
                     public void onNext(String s) {
                         try {
-//                            Log.i("是否合伙人", s);
                             JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
+                                if (content.equals("-1")) {
+                                    sign.setText("已签到");
+                                    mjbimg.setVisibility(View.GONE);
+                                    issign = false;
+                                } else if (content.equals("-2")) {
+                                    StringUtil.showToast(getActivity(), "签到异常");
+                                } else {
+                                    mjb.setText(content);
+                                    sign();
+                                }
                             } else {
                                 StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
                             }
@@ -179,6 +196,115 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
                     @Override
                     protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(getActivity());
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), e.message);
+                    }
+                });
+    }
+    /**
+     * 字段hzinfo中取type（是否为合作伙伴：0为不是 1 为是）
+     */
+    private void queryUserInfoMain() {
+        Map<String, String> maps = new HashMap<String, String>();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        TelephonyManager TelephonyMgr = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
+        String token = TelephonyMgr.getDeviceId();
+        SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
+        maps.put("userid", userID);
+        maps.put("token", token);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().queryUserInfoMain(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            Log.i("是否合伙人", s);
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+//                                    JSONObject object = new JSONObject(jsonObject.optString("content"));
+                                UserBean userBean = JSON.parseObject(jsonObject.optString("content"),UserBean.class);
+                                    String footprint = String.valueOf(userBean.getFootprint());
+                                    String messages = String.valueOf(userBean.getMessages());
+                                    String collect = String.valueOf(userBean.getCollect());
+                                    String sign = userBean.getSign();
+                                    String jinbi = String.valueOf(userBean.getJinbi());
+                                    String username = userBean.getUsername();
+                                    String imgurl = userBean.getImgurl();
+                                    String str = userBean.getAddjinbi();
+                                    String exp = userBean.getExp();//鲸力值
+                                    SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "footprint", userBean.getFootprint()+"");
+                                    SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "collect", userBean.getCollect()+"");
+                                    if (userBean.getHzinfo() != null) {
+                                        JSONObject json = new JSONObject(userBean.getHzinfo());
+                                        if (json.length() > 0) {
+                                            String type = json.optString("type");
+                                            String totalmoney = json.optString("totalmoney");//佣金收益总金额
+                                            String rebate = json.optString("rebate");//邀请好友未领红包个数
+                                            if (totalmoney != null && !totalmoney.equals("")) {
+                                                tvShouyi.setText(totalmoney);
+                                            } else {
+                                                tvShouyi.setText("¥ 0.0");
+                                            }
+                                            if (rebate != null && !rebate.equals("")) {
+                                                tvHongbao.setText(rebate);
+                                            } else {
+                                                tvHongbao.setText("0");
+                                            }
+                                            tvLevel.setVisibility(View.VISIBLE);
+                                            if (type.equals("0")) {
+                                                llTuiguang.setVisibility(View.GONE);
+                                                llTuiguang_user.setVisibility(View.VISIBLE);
+                                                tvLevel.setText("普通会员");
+                                            } else if (type.equals("1")){
+                                                llTuiguang.setVisibility(View.VISIBLE);
+                                                llTuiguang_user.setVisibility(View.GONE);
+                                                tvLevel.setText("合作伙伴");
+                                            }else if (type.equals("2")){
+                                                llTuiguang.setVisibility(View.VISIBLE);
+                                                llTuiguang_user.setVisibility(View.GONE);
+                                                tvLevel.setText("超级伙伴");
+                                            }
+                                        }
+                                    }
+                                    signnum = "+" + str;
+                                    num = Integer.valueOf(jinbi) + Integer.valueOf(str);
+                                    mjb.setText(jinbi);
+                                    mcollectnum.setText(collect);
+                                    mfootnum.setText(footprint);
+                                    mnewmsg.setText(messages);
+                                    user_name.setText(username);
+                                    mJlzText.setText("鲸力值" + exp);
+                                    CircleImageView1.getImg(getActivity(), imgurl, user_img);
+                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "imgUrl",
+                                            imgurl);
+                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "nickname",
+                                            username);
+                                    if (!messages.equals("0")) {
+                                        mnewmsg.setVisibility(View.VISIBLE);
+                                    } else {
+                                        mnewmsg.setVisibility(View.GONE);
+                                    }
+                                    initsignnum(sign);
+                            } else {
+                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        xrefresh.finishRefresh();
                     }
 
                     @Override
@@ -187,7 +313,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        StringUtil.showToast(getActivity(), "网络异常");
+                        xrefresh.finishRefresh();
+                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }
@@ -335,19 +462,15 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         String token = TelephonyMgr.getDeviceId();
         SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
         if (!TextUtils.isEmpty(userID)) {
-            Map<String, String> params = new HashMap<>();
-            params.put("userid", userID);
-            params.put("token", token);
-            dataFlow.requestData(1, "newService/queryUserInfoMain", params, this, false);
+            queryUserInfoMain();
         } else {
-            Map<String, String> params = new HashMap<>();
-            params.put("token", token);
-            dataFlow.requestData(2, "newService/queryUserInfoMain", params, this, false);
             user_name.setText("请登录");
             user_img.setImageResource(R.mipmap.logo_01);
             mjb.setText("0");
             llTuiguang_user.setVisibility(View.VISIBLE);
             llTuiguang.setVisibility(View.GONE);
+            tvLevel.setVisibility(View.GONE);
+            xrefresh.finishRefresh();
         }
 
 
@@ -447,8 +570,13 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 }
                 break;
             case R.id.mfoot:
-                intent = new Intent(getActivity(), BrowseActivity.class);
-                startActivity(intent);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BrowseActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.mphonechongzhi:
                 intent = new Intent(getActivity(), WebViewActivity.class);
@@ -544,9 +672,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             case R.id.msign:
                 if (!TextUtils.isEmpty(userID)) {
                     if (issign) {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("userid", userID);
-                        dataFlow.requestData(3, "newService/userSign", params, this, false);
+//                        Map<String, String> params = new HashMap<>();
+//                        params.put("userid", userID);
+//                        dataFlow.requestData(3, "newService/userSign", params, this, false);
+                        userSign();
                         issign = false;
                     } else {
 
@@ -761,116 +890,20 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     }
 
     @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        JSONObject object;
-        xrefresh.finishRefresh();
-        switch (requestCode) {
-            case 1:
-                try {
-                    object = new JSONObject(content);
-//                    Log.i("是否合伙人", content);
-                    String footprint = String.valueOf(object.optInt("footprint"));
-                    String messages = String.valueOf(object.optInt("messages"));
-                    String collect = String.valueOf(object.optInt("collect"));
-                    String sign = object.optString("sign");
-                    String jinbi = String.valueOf(object.optInt("jinbi"));
-                    String continuous_day = object.optString("continuous_day");
-                    String username = object.optString("username");
-                    String imgurl = object.optString("imgurl");
-                    String str = object.optString("addjinbi");
-                    String exp = object.optString("exp");//鲸力值
-                    SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "footprint", object.optString("footprint"));
-                    SharedPreferencesUtil.putSharedData(getActivity(), "userInfor", "collect", object.optString("collect"));
-                    if (object.has("hzinfo")) {
-                        JSONObject jsonObject = new JSONObject(object.optString("hzinfo"));
-                        if (jsonObject.length() > 0) {
-                            String type = jsonObject.optString("type");
-                            String totalmoney = jsonObject.optString("totalmoney");//佣金收益总金额
-                            String rebate = jsonObject.optString("rebate");//邀请好友未领红包个数
-                            if (totalmoney != null && !totalmoney.equals("")) {
-                                tvShouyi.setText(totalmoney);
-                            } else {
-                                tvShouyi.setText("¥ 0.0");
-                            }
-                            if (rebate != null && !rebate.equals("")) {
-                                tvHongbao.setText(rebate);
-                            } else {
-                                tvHongbao.setText("0");
-                            }
-                            if (type.equals("1")) {
-                                llTuiguang.setVisibility(View.VISIBLE);
-                                llTuiguang_user.setVisibility(View.GONE);
-                            } else {
-                                llTuiguang.setVisibility(View.GONE);
-                                llTuiguang_user.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
-                    signnum = "+" + str;
-                    num = Integer.valueOf(jinbi) + Integer.valueOf(str);
-                    mjb.setText(jinbi);
-                    mcollectnum.setText(collect);
-                    mfootnum.setText(footprint);
-                    mnewmsg.setText(messages);
-                    user_name.setText(username);
-                    mJlzText.setText("鲸力值" + exp);
-                    CircleImageView1.getImg(getActivity(), imgurl, user_img);
-                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "imgUrl",
-                            imgurl);
-                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "nickname",
-                            username);
-                    if (!messages.equals("0")) {
-                        mnewmsg.setVisibility(View.VISIBLE);
-                    } else {
-                        mnewmsg.setVisibility(View.GONE);
-                    }
-                    initsignnum(sign);
-                } catch (JSONException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                break;
-            case 2:
-                try {
-                    object = new JSONObject(content);
-                    String footprint = String.valueOf(object.optInt("footprint"));
-                    String messages = String.valueOf(object.optInt("messages"));
-                    String collect = String.valueOf(object.optInt("collect"));
-                    mcollectnum.setText(collect);
-                    mfootnum.setText(footprint);
-                    mnewmsg.setText(messages);
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                break;
-            case 3:
-                if (content.equals("-1")) {
-                    sign.setText("已签到");
-                    mjbimg.setVisibility(View.GONE);
-                    issign = false;
-                } else if (content.equals("-2")) {
-                    StringUtil.showToast(getActivity(), "签到异常");
-                } else {
-                    mjb.setText(content);
-                    sign();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    @Override
     protected void loadLazyData() {
+        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstMyUse", "isFirstMyUserUse");
+        if (isFirstResultUse.equals("no")) {
+            xrefresh.autoRefresh();
+        }else {
+            initData();
+        }
         try {
             if (showTimes == 0) {
                 msign.post(new Runnable() {
                     @Override
                     public void run() {
                         //我的引导页只显示一次
-                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse");
+                        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse");
                         if (TextUtils.isEmpty(isFirstResultUse)) {
                             isFirstResultUse = "yes";
                         }
@@ -880,34 +913,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     }
                 });
             }
-//			//我的引导页只显示一次
-//			String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(),"isFirstMyUse", "isFirstMyUserUse");
-//			if (TextUtils.isEmpty(isFirstResultUse)) {
-//				isFirstResultUse = "yes";
-//			}
-//			if (isFirstResultUse.equals("yes")) {
-//				SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse","isFirstMyUserUse", "no");
-//				HomeActivity.mzhezhao.setVisibility(View.VISIBLE);
-//				HomeActivity.mzhezhao.setImageResource(R.mipmap.app_jingbi);
-//			}
-//			HomeActivity.mzhezhao.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View v) {
-//					try {
-//
-//						if (isuserzhezhao) {
-//							HomeActivity.mzhezhao.setVisibility(View.GONE);
-//						}else{
-//							HomeActivity.mzhezhao.setImageResource(R.mipmap.app_qiandao);
-//							isuserzhezhao = true;
-//
-//						}
-//					} catch (Exception e) {
-//						// TODO: handle exception
-//					}
-//				}
-//			});
         } catch (Exception e) {
             // TODO: handle exception
         }

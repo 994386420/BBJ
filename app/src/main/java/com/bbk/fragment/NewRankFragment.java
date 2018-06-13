@@ -159,7 +159,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 						mlistView.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
 						xrefresh.finishRefresh();
-						StringUtil.showToast(getActivity(), "网络异常");
+						StringUtil.showToast(getActivity(), e.message);
 					}
 				});
 	}

@@ -254,7 +254,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(HomeActivity.this, "网络异常");
+						StringUtil.showToast(HomeActivity.this, e.message);
 					}
 				});
 	}

@@ -119,7 +119,7 @@ public class MesageCListSysAdapter extends BaseAdapter{
 					}
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(context, "网络异常");
+						StringUtil.showToast(context, e.message);
 					}
 				});
 	}

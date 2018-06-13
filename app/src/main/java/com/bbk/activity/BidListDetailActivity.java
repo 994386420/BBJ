@@ -207,7 +207,7 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
                         mlistview.setVisibility(View.GONE);
                         xrefresh.finishLoadMore();
                         xrefresh.finishRefresh();
-                        StringUtil.showToast(BidListDetailActivity.this, "网络异常");
+                        StringUtil.showToast(BidListDetailActivity.this, e.message);
                     }
                 });
     }

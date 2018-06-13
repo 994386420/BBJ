@@ -93,6 +93,8 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
         TextView price;
         @BindView(R.id.bprice)
         TextView bprice;
+        @BindView(R.id.ll_quan)
+        LinearLayout llQuan;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -130,8 +132,18 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
             viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
             viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG| Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
             viewHolder.price.setText(price);
-            viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
-            viewHolder.zuan.setText(newHomeCzgBean.get(position).getZuan());
+            if (newHomeCzgBean.get(position).getQuan() !=null){
+                viewHolder.llQuan.setVisibility(View.VISIBLE);
+                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
+            }else {
+                viewHolder.llQuan.setVisibility(View.GONE);
+            }
+            if (newHomeCzgBean.get(position).getZuan() != null) {
+                viewHolder.zuan.setVisibility(View.VISIBLE);
+                viewHolder.zuan.setText(newHomeCzgBean.get(position).getZuan());
+            } else {
+                viewHolder.zuan.setVisibility(View.GONE);
+            }
             viewHolder.mprice.setText("¥"+price);
             viewHolder.youhui.setText(youhui);
             Glide.with(context)

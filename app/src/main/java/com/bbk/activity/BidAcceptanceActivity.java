@@ -175,7 +175,7 @@ public class BidAcceptanceActivity extends BaseActivity implements CommonLoading
                         mrefresh.finishLoadMore();
                         mrefresh.finishRefresh();
                         if (BidAcceptanceActivity.class != null){
-                            StringUtil.showToast(BidAcceptanceActivity.this, "网络异常");
+                            StringUtil.showToast(BidAcceptanceActivity.this, e.message);
                         }
                     }
                 });

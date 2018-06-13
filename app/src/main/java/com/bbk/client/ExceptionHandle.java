@@ -1,7 +1,10 @@
 package com.bbk.client;
 
+import android.content.Context;
 import android.net.ParseException;
+import android.util.Log;
 
+import com.bbk.util.StringUtil;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
@@ -21,6 +24,7 @@ public class ExceptionHandle {
     private static final int BAD_GATEWAY = 502;
     private static final int SERVICE_UNAVAILABLE = 503;
     private static final int GATEWAY_TIMEOUT = 504;
+    public static Context context;
 
     public static ResponeThrowable handleException(Throwable e) {
         ResponeThrowable ex;
@@ -113,13 +117,53 @@ public class ExceptionHandle {
         public int code;
         public String message;
 
-        public ResponeThrowable(Throwable throwable, int code) {
-            super(throwable);
+        public ResponeThrowable(Throwable e, int code) {
+            super(e);
             this.code = code;
-
+            if (e instanceof HttpException) {
+                HttpException httpException = (HttpException) e;
+                switch (httpException.code()) {
+                    case UNAUTHORIZED:
+                    case FORBIDDEN:
+                    case NOT_FOUND:
+                    case REQUEST_TIMEOUT:
+                    case GATEWAY_TIMEOUT:
+                    case INTERNAL_SERVER_ERROR:
+                    case BAD_GATEWAY:
+                    case SERVICE_UNAVAILABLE:
+                    default:
+                        message = "网络错误,请检查网络连接";
+                        break;
+                }
+                return;
+            } else if (e instanceof ServerException) {
+                ServerException resultException = (ServerException) e;
+                message = resultException.message;
+                return;
+            } else if (e instanceof JsonParseException
+                    || e instanceof JSONException
+                    || e instanceof ParseException) {
+                message = "解析错误";
+                return;
+            } else if (e instanceof ConnectException) {
+                message = "连接失败";
+                return;
+            } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
+                message = "证书验证失败";
+                return;
+            } else if (e instanceof ConnectTimeoutException){
+                message = "连接超时";
+                return;
+            } else if (e instanceof java.net.SocketTimeoutException) {
+                message = "连接超时";
+                return;
+            }
+            else {
+                message = "未知错误";
+                return ;
+            }
         }
     }
-
     public class ServerException extends RuntimeException {
         public int code;
         public String message;

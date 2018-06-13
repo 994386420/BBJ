@@ -74,7 +74,7 @@
     <color name="bottom_back_color">#EDEDED</color>
     <color name="color8">#B6B6B6</color>
     <color name="gray">#dedede</color>
-    <color name="transparent2">#58000000</color>
+    <color name="transparent2">#38000000</color>
 
     <color name="white_transtion">#90ffffff</color>
     <color name="biao_color">#b40000</color>
@@ -82,6 +82,10 @@
     <color name="text_dark">#454545</color>
     <color name="address_color">#EF250F</color>
     <color name="address_color1">#2C2C2C</color>
+    <color name="update_color">#28C78D</color>
+    <color name="update_color1">#DEDEDE</color>
+    <color name="update_color2">#68C78D</color>
+
     //推广颜色值
     <color name="tuiguang_color1">#EF250F</color>
     <color name="tuiguang_color2">#FE9321</color>

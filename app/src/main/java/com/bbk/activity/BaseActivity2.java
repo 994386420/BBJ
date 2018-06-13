@@ -21,6 +21,7 @@ import com.baidu.mobstat.StatService;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -75,8 +76,7 @@ public class BaseActivity2 extends Activity {
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
 		if (null == networkInfo) {
-			Toast toast = Toast.makeText(this, "没有网络连接,请设置！", Toast.LENGTH_LONG);
-			toast.show();
+			StringUtil.showToast(this, "没有网络连接,请设置！");
 			return false;
 		} else if (!wifiInfo.isConnected()) {
 //			Toast toast = Toast.makeText(this, "您的WIFI未连接，正在使用流量",

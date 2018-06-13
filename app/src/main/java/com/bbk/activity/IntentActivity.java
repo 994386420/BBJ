@@ -227,7 +227,7 @@ public class IntentActivity extends BaseActivity {
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
 //						DialogSingleUtil.dismiss(0);
-						StringUtil.showToast(IntentActivity.this, "网络异常");
+						StringUtil.showToast(IntentActivity.this, e.message);
 					}
 				});
 	}

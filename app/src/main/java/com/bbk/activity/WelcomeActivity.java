@@ -301,7 +301,7 @@ public class WelcomeActivity extends BaseActivity2{
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+						StringUtil.showToast(WelcomeActivity.this, e.message);
 					}
 				});
 	}
@@ -410,7 +410,7 @@ public class WelcomeActivity extends BaseActivity2{
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+						StringUtil.showToast(WelcomeActivity.this, e.message);
 					}
 				});
 	}
@@ -447,7 +447,7 @@ public class WelcomeActivity extends BaseActivity2{
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+						StringUtil.showToast(WelcomeActivity.this, e.message);
 					}
 				});
 
@@ -497,7 +497,7 @@ public class WelcomeActivity extends BaseActivity2{
 
 						@Override
 						public void onError(ExceptionHandle.ResponeThrowable e) {
-							StringUtil.showToast(WelcomeActivity.this, "网络异常");
+							StringUtil.showToast(WelcomeActivity.this, e.message);
 						}
 			});
 		}
@@ -537,7 +537,7 @@ public class WelcomeActivity extends BaseActivity2{
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(WelcomeActivity.this, "网络异常");
+						StringUtil.showToast(WelcomeActivity.this, e.message);
 					}
 				});
 

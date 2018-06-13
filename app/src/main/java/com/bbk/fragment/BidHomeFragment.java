@@ -177,7 +177,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
                         mrecyclerview.setVisibility(View.GONE);
                         mrefresh.finishLoadMore();
                         mrefresh.finishRefresh();
-                        StringUtil.showToast(getActivity(), "网络异常");
+                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }

@@ -170,7 +170,7 @@ public class BrokerageActivity extends BaseActivity {
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
-                        StringUtil.showToast(BrokerageActivity.this, "网络异常");
+                        StringUtil.showToast(BrokerageActivity.this, e.message);
                     }
                 });
     }

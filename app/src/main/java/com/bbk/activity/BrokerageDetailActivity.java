@@ -161,7 +161,7 @@ public class BrokerageDetailActivity extends BaseActivity implements CommonLoadi
                         brokerageDetailList.setVisibility(View.GONE);
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadMore();
-                        StringUtil.showToast(BrokerageDetailActivity.this, "网络异常");
+                        StringUtil.showToast(BrokerageDetailActivity.this, e.message);
                     }
                 });
     }

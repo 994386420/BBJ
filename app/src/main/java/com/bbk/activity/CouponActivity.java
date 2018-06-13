@@ -188,7 +188,7 @@ public class CouponActivity extends BaseActivity implements OnClickListener{
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         xrefresh.finishLoadMore();
                         xrefresh.finishRefresh();
-                        StringUtil.showToast(CouponActivity.this, "网络异常");
+                        StringUtil.showToast(CouponActivity.this, e.message);
                     }
                 });
     }

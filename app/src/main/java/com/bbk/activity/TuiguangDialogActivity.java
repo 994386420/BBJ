@@ -119,7 +119,7 @@ public class TuiguangDialogActivity extends BaseActivity {
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        StringUtil.showToast(TuiguangDialogActivity.this, "网络异常");
+                        StringUtil.showToast(TuiguangDialogActivity.this, e.message);
                     }
                 });
     }

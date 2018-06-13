@@ -1953,7 +1953,7 @@ public class SearchMainActivity extends ActivityGroup implements
                             DialogSingleUtil.dismiss(0);
                             zLoadingView.setVisibility(View.VISIBLE);
                             zLoadingView.loadError();
-                            StringUtil.showToast(SearchMainActivity.this, "网络异常");
+                            StringUtil.showToast(SearchMainActivity.this, e.message);
                         }
                     });
         }
@@ -2248,7 +2248,7 @@ public class SearchMainActivity extends ActivityGroup implements
                         xrefresh1.finishLoadMore();
                         xrefresh.finishRefresh();
                         xrefresh1.finishRefresh();
-                        StringUtil.showToast(SearchMainActivity.this, "网络异常");
+                        StringUtil.showToast(SearchMainActivity.this, e.message);
                     }
                 });
     }
@@ -2300,7 +2300,7 @@ public class SearchMainActivity extends ActivityGroup implements
                         mCzgListview.setVisibility(View.GONE);
                         xrefresh2.finishLoadMore();
                         xrefresh2.finishRefresh();
-                        StringUtil.showToast(SearchMainActivity.this, "网络异常");
+                        StringUtil.showToast(SearchMainActivity.this, e.message);
                     }
                 });
     }
@@ -2350,7 +2350,7 @@ public class SearchMainActivity extends ActivityGroup implements
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        StringUtil.showToast(SearchMainActivity.this, "网络异常");
+                        StringUtil.showToast(SearchMainActivity.this, e.message);
                     }
                 });
     }

@@ -171,7 +171,7 @@ public class FindListAdapter extends BaseAdapter{
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
 						DialogSingleUtil.dismiss(0);
-						StringUtil.showToast(context, "网络异常");
+						StringUtil.showToast(context, e.message);
 					}
 				});
 	}

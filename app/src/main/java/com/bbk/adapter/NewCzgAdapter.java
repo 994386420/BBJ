@@ -101,6 +101,8 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
         TextView tvMall;
         @BindView(R.id.tv_sale)
         TextView tvSale;
+        @BindView(R.id.ll_quan)
+        LinearLayout llQuan;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -125,7 +127,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
             String dianpu = newHomeCzgBean.get(position).getDianpu();
             String youhui = newHomeCzgBean.get(position).getYouhui();
             String mbidprice = newHomeCzgBean.get(position).getHislowprice();//最低价
-            viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale()+"人付款");
+            viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale() + "人付款");
             viewHolder.item_title.setText("             " + title);
             try {
                 if (mbidprice != null) {
@@ -149,8 +151,18 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
             viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
             viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
             viewHolder.price.setText(price);
-            viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
-            viewHolder.zuan.setText(newHomeCzgBean.get(position).getZuan());
+            if (newHomeCzgBean.get(position).getQuan() !=null){
+                viewHolder.llQuan.setVisibility(View.VISIBLE);
+                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
+            }else {
+                viewHolder.llQuan.setVisibility(View.GONE);
+            }
+            if (newHomeCzgBean.get(position).getZuan() != null) {
+                viewHolder.zuan.setVisibility(View.VISIBLE);
+                viewHolder.zuan.setText(newHomeCzgBean.get(position).getZuan());
+            } else {
+                viewHolder.zuan.setVisibility(View.GONE);
+            }
             viewHolder.dianpuText.setText(dianpu);
             viewHolder.mprice.setText("¥" + price);
             viewHolder.youhui.setText(youhui);

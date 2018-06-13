@@ -157,7 +157,7 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                         progress.loadError();
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadMore();
-                        StringUtil.showToast(FensiActivity.this, "网络异常");
+                        StringUtil.showToast(FensiActivity.this, e.message);
                     }
                 });
     }

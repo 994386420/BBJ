@@ -212,7 +212,7 @@ public class ResultDialogActivity extends BaseActivity {
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(ResultDialogActivity.this, "网络异常");
+						StringUtil.showToast(ResultDialogActivity.this, e.message);
 					}
 				});
 	}

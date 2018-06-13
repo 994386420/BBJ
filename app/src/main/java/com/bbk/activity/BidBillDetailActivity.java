@@ -245,7 +245,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         pubaDetailLayout.setVisibility(View.GONE);
-                        StringUtil.showToast(BidBillDetailActivity.this, "网络异常");
+                        StringUtil.showToast(BidBillDetailActivity.this, e.message);
                     }
                 });
     }

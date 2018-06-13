@@ -330,7 +330,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 						mlistview.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
 						xrefresh.finishRefresh();
-						StringUtil.showToast(MesageCenterActivity.this, "网络异常");
+						StringUtil.showToast(MesageCenterActivity.this, e.message);
 					}
 				});
 	}
@@ -398,7 +398,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 						mlistview.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
 						xrefresh.finishRefresh();
-						StringUtil.showToast(MesageCenterActivity.this, "网络异常");
+						StringUtil.showToast(MesageCenterActivity.this, e.message);
 					}
 				});
 	}
@@ -483,7 +483,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 						mlistview.setVisibility(View.GONE);
 						xrefresh.finishLoadMore();
 						xrefresh.finishRefresh();
-						StringUtil.showToast(MesageCenterActivity.this, "网络异常");
+						StringUtil.showToast(MesageCenterActivity.this, e.message);
 					}
 				});
 	}
@@ -557,7 +557,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
-						StringUtil.showToast(MesageCenterActivity.this, "网络异常");
+						StringUtil.showToast(MesageCenterActivity.this, e.message);
 					}
 				});
 	}

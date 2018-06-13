@@ -787,6 +787,8 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         TextView tvMall;
         @BindView(R.id.tv_sale)
         TextView tvSale;
+        @BindView(R.id.ll_quan)
+        LinearLayout llQuan;
 
         public ViewHolderCzg(View mView) {
             super(mView);
@@ -836,8 +838,18 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
             viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG| Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
             viewHolder.price.setText(price);
-            viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
-            viewHolder.zuan.setText(newHomeCzgBean.get(position).getZuan());
+            if (newHomeCzgBean.get(position).getQuan() !=null){
+                viewHolder.llQuan.setVisibility(View.VISIBLE);
+                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
+            }else {
+                viewHolder.llQuan.setVisibility(View.GONE);
+            }
+            if (newHomeCzgBean.get(position).getZuan() != null) {
+                viewHolder.zuan.setVisibility(View.VISIBLE);
+                viewHolder.zuan.setText(newHomeCzgBean.get(position).getZuan());
+            } else {
+                viewHolder.zuan.setVisibility(View.GONE);
+            }
             viewHolder.dianpuText.setText(dianpu);
             viewHolder.youhui.setText(youhui);
             Glide.with(context)
@@ -1305,7 +1317,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
-                        StringUtil.showToast(context, "网络异常");
+                        StringUtil.showToast(context, e.message);
                     }
                 });
     }

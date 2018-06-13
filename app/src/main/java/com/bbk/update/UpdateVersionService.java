@@ -15,10 +15,16 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -31,6 +37,7 @@ import com.bbk.activity.R;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.UpdataDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +76,7 @@ public class UpdateVersionService implements ResultEvent {
     DataFlow dataFlow = null;
     private File mFile;
     AppVersion appVersion;
+    private UpdataDialog updataDialog;
     /**
      * 构造方法
      *
@@ -173,32 +181,87 @@ public class UpdateVersionService implements ResultEvent {
     }
 
     public void showUpdateDialog(final AppVersion appVersion) {
-
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-        builder.setTitle("更新提示");
-        builder.setMessage(appVersion.getUpdateMessage().replace("。", "\n"));
-        builder.setPositiveButton("下载", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int whichButton) {
-                showDownloadDialog();
-            }
-        });
-        if ("1".equals(appVersion.getForceupdate())){
-            builder.setCancelable(false);
-            builder.setNegativeButton("关闭APP", new DialogInterface.OnClickListener() {
+        if(updataDialog == null || !updataDialog.isShowing()) {
+            //初始化弹窗 布局 点击事件的id
+            updataDialog = new UpdataDialog(context,R.layout.update_layout,
+                    new int[]{R.id.tv_update_gengxin});
+            updataDialog.show();
+            TextView tv_update = updataDialog.findViewById(R.id.tv_update);
+            TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
+            TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+            tv_update.setText(appVersion.getUpdateMessage().replace("。", "\n"));
+            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
+                public void onClick(View v) {
                     System.exit(0);
                 }
             });
-        }else {
-            builder.setNegativeButton("忽略", new DialogInterface.OnClickListener() {
+//            builder.setCancelable(false);
+            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int whichButton) {
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                    showDownloadDialog();
                 }
             });
+//        }
+//            final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, R.style.dialog);
+//            LayoutInflater inflater = LayoutInflater.from(context);
+//            View view = inflater.inflate(R.layout.update_layout, null);
+//            TextView tv_update = view.findViewById(R.id.tv_update);
+//            TextView tv_update_refuse = view.findViewById(R.id.tv_update_refuse);
+//            TextView tv_update_gengxin = view.findViewById(R.id.tv_update_gengxin);
+//            tv_update.setText(appVersion.getUpdateMessage().replace("。", "\n"));
+//            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showDownloadDialog();
+//                }
+//            });
+////            builder.setCancelable(false);
+//            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    System.exit(0);
+//                }
+//            });
+//            alertDialog = builder.create();
+////            alertDialog.setCanceledOnTouchOutside(false);
+//            Window window = alertDialog.getWindow();
+//            WindowManager.LayoutParams params = window.getAttributes();
+//            params.gravity = Gravity.CENTER;
+////            //设置浮动窗口不可聚焦（实现操作除浮动窗口外的其他可见窗口的操作）
+////            params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+//            window.setAttributes(params);
+//            window.setWindowAnimations(R.style.dialog_style);
+//            alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//全局弹窗
+//            alertDialog.show();
+//        }
+//        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+//        builder.setTitle("更新提示");
+//        builder.setMessage(appVersion.getUpdateMessage().replace("。", "\n"));
+//        builder.setPositiveButton("下载", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                showDownloadDialog();
+//            }
+//        });
+//        if ("1".equals(appVersion.getForceupdate())){
+//            builder.setCancelable(false);
+//            builder.setNegativeButton("关闭APP", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//                    System.exit(0);
+//                }
+//            });
+//        }else {
+//            builder.setNegativeButton("忽略", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//                }
+//            });
         }
-        builder.show();
+//        builder.show();
     }
     // 更新
     View.OnClickListener mUpdateClick = new View.OnClickListener() {
@@ -239,21 +302,30 @@ public class UpdateVersionService implements ResultEvent {
         {
             // 构造软件下载对话框
             Builder builder = new Builder(context);
-            builder.setTitle("正在更新");
+//            builder.setTitle("正在更新");
             // 给下载对话框增加进度条
             final LayoutInflater inflater = LayoutInflater.from(context);
             View v = inflater.inflate(R.layout.downloaddialog, null);
             progressBar = (ProgressBar) v.findViewById(R.id.updateProgress);
-            builder.setView(v);
-            // 取消更新
-            builder.setNegativeButton("取消", new OnClickListener() {
+            TextView tv_update_cancle = v.findViewById(R.id.tv_update_cancle);
+            tv_update_cancle.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    // 设置取消状态
+                public void onClick(View v) {
+                    downLoadDialog.dismiss();
+                   // 设置取消状态
                     cancelUpdate = true;
                 }
             });
+            builder.setView(v);
+//            // 取消更新
+//            builder.setNegativeButton("取消", new OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                    // 设置取消状态
+//                    cancelUpdate = true;
+//                }
+//            });
             builder.setCancelable(false);
             downLoadDialog = builder.create();
             downLoadDialog.show();

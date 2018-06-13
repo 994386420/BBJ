@@ -148,7 +148,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
                         mrecyclerview.setVisibility(View.GONE);
                         mrefresh.finishLoadMore();
                         mrefresh.finishRefresh();
-                        StringUtil.showToast(getActivity(), "网络异常");
+                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }

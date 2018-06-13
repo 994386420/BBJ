@@ -110,7 +110,7 @@ public class SortActivity extends BaseActivity implements OnItemClickListener,On
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
 						DialogSingleUtil.dismiss(0);
-						StringUtil.showToast(SortActivity.this, "网络异常");
+						StringUtil.showToast(SortActivity.this, e.message);
 				}
 		});
 	}
