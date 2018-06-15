@@ -146,6 +146,7 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
     }
 
     private void loadData() {
+        xrefresh.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("status",status+"");
         maps.put("userid", userID);
@@ -179,7 +180,8 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
                                     if (woYaoBeans != null && woYaoBeans.size() > 0) {
                                         adapter.notifyData(woYaoBeans);
                                     } else {
-                                        StringUtil.showToast(BidListDetailActivity.this, "没有更多了");
+//                                        StringUtil.showToast(BidListDetailActivity.this, "没有更多了");
+                                        xrefresh.finishLoadMoreWithNoMoreData();
                                     }
                                 }
                             }

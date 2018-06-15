@@ -108,7 +108,7 @@ public class BidActivity extends BaseActivity implements ResultEvent{
     private ScrollView mscrollview;
     private String id = "";
     private String type = "1";
-    private String rowkey;//二级页面去发镖rowkey
+    private String rowkey,price,imags,title;//二级页面去发镖rowkey
     private ImageView magrement;
     private boolean isagrement = true;
     private ImageView topbar_goback_btn;
@@ -134,8 +134,17 @@ public class BidActivity extends BaseActivity implements ResultEvent{
             }
             if (getIntent().getStringExtra("rowkey") != null){
                 rowkey = getIntent().getStringExtra("rowkey");
-                initDataFabiaoMsg();
+//                initDataFabiaoMsg();
             }
+        if (getIntent().getStringExtra("price") != null){
+            price = getIntent().getStringExtra("price");
+        }
+        if (getIntent().getStringExtra("title") != null){
+            title = getIntent().getStringExtra("title");
+        }
+        if (getIntent().getStringExtra("imags") != null){
+            imags = getIntent().getStringExtra("imags");
+        }
 //            initstateView();
             initView();
     }
@@ -233,7 +242,38 @@ public class BidActivity extends BaseActivity implements ResultEvent{
                 }
             }
         });
-
+        mname.setText(title);
+        mprice.setText(price);
+        mcount.setText("1");
+        mdetail.setText("");
+        String mins = "72";
+        if ("24".equals(mins)){
+            mradioGroup.check(R.id.mbtn1);
+        }else if("48".equals(mins)){
+            mradioGroup.check(R.id.mbtn2);
+        }else {
+            mradioGroup.check(R.id.mbtn3);
+        }
+        try {
+            JSONArray imgs = new JSONArray(imags);
+            list.remove(list.size() - 1);
+            if (imgs.length() < 3 && imgs.length() >0) {
+                for (int i = 0; i < imgs.length(); i++) {
+                   list.add(imgs.optString(i));
+                }
+            }
+            else {
+                list.add(imgs.optString(0));
+                list.add(imgs.optString(1));
+                list.add(imgs.optString(2));
+            }
+            if (list.size() < 3) {
+                list.add("add");
+            }
+            adapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public void photo() {
         captureManager = new ImageCaptureManager(this);

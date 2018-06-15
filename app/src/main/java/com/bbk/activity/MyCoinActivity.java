@@ -47,6 +47,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -55,7 +56,7 @@ import android.widget.Toast;
 public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClickListener,OnItemClickListener{
 	private View data_head;
 	private RelativeLayout mbackground, msign;
-	private MyListView mlistview;
+	private ListView mlistview;
 //	private String[] str1 = { "邀请好友下载APP", "签到打卡", "新注册用户", "完善资料", "查历史价", "收藏奖励", "爆料奖励", "评论奖励", "意见反馈" };
 //	private String[] str2 = { "+500鲸币", "+5至50鲸币", "+800鲸币", "+5鲸币", "+15鲸币", "+5鲸币", "+50鲸币", "+10鲸币", "+50鲸币" };
 //	private String[] str3 = { "每邀请一个好友注册成功", "连续签到7天+50鲸币，每轮7天", "新用户注册成功", "完善个人资料", "查询商品历史价格一次(限10次/日)", "每日收藏商品一件",
@@ -81,7 +82,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 	private boolean issign = true;
 	private String signnum = "";
 	private ViewGroup anim_mask_layout;
-	private LinearLayout morezhuanpan; 
+	private LinearLayout morezhuanpan;
 	private int thisday = 0;
 	private ImageButton topbar_goback_btn;
 	private TextView textjingbi;
@@ -106,14 +107,14 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 
 	private void initView() {
 		list = new ArrayList<>();
-		anim_mask_layout = createAnimLayout(); 
+		anim_mask_layout = createAnimLayout();
 		topbar_goback_btn = (ImageButton) findViewById(R.id.topbar_goback_btn);
 		morezhuanpan = (LinearLayout) findViewById(R.id.morezhuanpan);
 		jinbinow = (LinearLayout) findViewById(R.id.jinbinow);
 		mbackground = (RelativeLayout) findViewById(R.id.mbackground);
 		msign = (RelativeLayout) findViewById(R.id.msign);
 		mscroll = (ScrollView) findViewById(R.id.mscroll);
-		mlistview = (MyListView) findViewById(R.id.mlistview);
+		mlistview =  findViewById(R.id.mlistview);
 		mjbcoin = (TextView) findViewById(R.id.mjbcoin);
 		mjbdetail = (TextView) findViewById(R.id.mjbdetail);
 		textjingbi = (TextView) findViewById(R.id.textjingbi);
@@ -177,6 +178,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 		adapter = new MyCoinAdapter(list, this);
 		mlistview.setAdapter(adapter);
 		mlistview.setOnItemClickListener(this);
+		setHeight();
 		mscroll.fullScroll(View.FOCUS_UP);
 		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		if (!TextUtils.isEmpty(userID)) {
@@ -184,6 +186,20 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 			paramsMap.put("userid", userID);
 			dataFlow.requestData(1, "newService/queryUserJngbiMainByUserid", paramsMap, this);
 		}
+	}
+
+	public void setHeight(){
+		int height = 0;
+		int count = adapter.getCount();
+		for(int i=0;i<count;i++){
+			View temp = adapter.getView(i,null,mlistview);
+			temp.measure(0,0);
+			height += temp.getMeasuredHeight();
+		}
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) this.mlistview.getLayoutParams();
+		params.width = LinearLayout.LayoutParams.FILL_PARENT;
+		params.height = height;
+		mlistview.setLayoutParams(params);
 	}
 	private void initdata(){
 		if (!TextUtils.isEmpty(userID)) {
@@ -234,7 +250,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 
 	/**
 	 * @Description: 创建动画层 @param @return void @throws
-	 * 
+	 *
 	 */
 	private ViewGroup createAnimLayout() {
 		ViewGroup rootView = (ViewGroup) getWindow().getDecorView();
@@ -300,7 +316,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 
 	/**
 	 * 平移动画
-	 * 
+	 *
 	 * @return
 	 */
 	private TranslateAnimation initAnimations_One() {
@@ -336,9 +352,9 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 				}
 				adapter.notifyDataSetChanged();
 //				mscroll.smoothScrollTo(0, 0);
-				mbackground.setFocusable(true);  
-				mbackground.setFocusableInTouchMode(true);  
-				mbackground.requestFocus();  
+				mbackground.setFocusable(true);
+				mbackground.setFocusableInTouchMode(true);
+				mbackground.requestFocus();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -347,7 +363,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 		case 3:
 			textjingbi.setText("今天获得"+content+"鲸币");
 			sign();
-			
+
 			break;
 		default:
 			break;
@@ -444,53 +460,53 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 
 	}
 	private void sign() {
-		 View view = addViewToAnimLayout(anim_mask_layout); 
-		 int[] end_location = new int[2];   
-		 Animation mTranslateAnimation = new TranslateAnimation 
+		 View view = addViewToAnimLayout(anim_mask_layout);
+		 int[] end_location = new int[2];
+		 Animation mTranslateAnimation = new TranslateAnimation
 				 (TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.ABSOLUTE,
-						 800, TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.ABSOLUTE, -1000);// 移动  
-		 mTranslateAnimation.setDuration(500); 
+						 800, TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.ABSOLUTE, -1000);// 移动
+		 mTranslateAnimation.setDuration(500);
 		 final View view2 = addTViewToAnimLayout(anim_mask_layout);
-		 Animation mHiddenAction = AnimationUtils.loadAnimation(this, R.anim.pingyi_shang);  
+		 Animation mHiddenAction = AnimationUtils.loadAnimation(this, R.anim.pingyi_shang);
 		 view2.setAnimation(mHiddenAction);
 		 mHiddenAction.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				view2.setVisibility(View.GONE);
 			}
 		});
 		 mHiddenAction.start();
-		 AnimationSet mAnimationSet=new AnimationSet(false); //这块要注意，必须设为false,不然组件动画结束后，不会归位。 
-		 mAnimationSet.setFillAfter(false);   
-		 mAnimationSet.addAnimation(mTranslateAnimation); 
+		 AnimationSet mAnimationSet=new AnimationSet(false); //这块要注意，必须设为false,不然组件动画结束后，不会归位。
+		 mAnimationSet.setFillAfter(false);
+		 mAnimationSet.addAnimation(mTranslateAnimation);
 		 view.startAnimation(mAnimationSet);
 		 mAnimationSet.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				anim_mask_layout.getChildAt(0).setVisibility(View.GONE);
@@ -498,13 +514,13 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 			}
 		});
 		 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-		 msigntext.setText("已签到"); 
+		 msigntext.setText("已签到");
 		 textjingbi.setVisibility(View.VISIBLE);
 		 mjbcoin.setText(num+"");
 		 inithenggang(thisday);
 		 list.get(1).put("isgo", "1");
 		 adapter.notifyDataSetChanged();
-		 
+
 	}
 	@Override
 	public void onClick(View v) {
@@ -624,7 +640,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent ,OnClick
 				break;
 			}
 		}
-		
+
 	}
 	@Override
 	protected void onResume() {

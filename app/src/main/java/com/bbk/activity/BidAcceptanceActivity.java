@@ -112,6 +112,7 @@ public class BidAcceptanceActivity extends BaseActivity implements CommonLoading
         });
     }
     public void initData(String type, final int search){
+        mrefresh.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("describe",describe);
         maps.put("type",type);
@@ -147,7 +148,8 @@ public class BidAcceptanceActivity extends BaseActivity implements CommonLoading
                                         } else {
                                             zLoadingView.loadSuccess();
                                             mlistview.setVisibility(View.VISIBLE);
-                                            StringUtil.showToast(BidAcceptanceActivity.this, "没有更多了");
+//                                            StringUtil.showToast(BidAcceptanceActivity.this, "没有更多了");
+                                            mrefresh.finishLoadMoreWithNoMoreData();
                                         }
                                     }
                                 }

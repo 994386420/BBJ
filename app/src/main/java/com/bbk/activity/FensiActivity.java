@@ -99,6 +99,7 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
      * 查询返利金币列表 （页面显示状态：0为未领1为已领）
      */
     private void queryUserBrokerage() {
+        refreshLayout.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid", userID);
         maps.put("page", page + "");
@@ -127,7 +128,8 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                                     if (fensiBeans.size() > 0 && fensiBeans != null) {
                                         fenSiAdapter.notifyData(fensiBeans);
                                     } else {
-                                        StringUtil.showToast(FensiActivity.this, "没有更多了");
+//                                        StringUtil.showToast(FensiActivity.this, "没有更多了");
+                                        refreshLayout.finishLoadMoreWithNoMoreData();
                                     }
                                 }
                             } else {

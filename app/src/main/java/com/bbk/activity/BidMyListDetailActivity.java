@@ -133,6 +133,7 @@ public class BidMyListDetailActivity extends BaseActivity implements CommonLoadi
     }
 
     private void loadData() {
+        xrefresh.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("status",status+"");
         maps.put("userid", userID);
@@ -167,7 +168,8 @@ public class BidMyListDetailActivity extends BaseActivity implements CommonLoadi
                                     if (puDaoListBeans != null && puDaoListBeans.size() > 0) {
                                         adapter.notifyData(puDaoListBeans);
                                     } else {
-                                        StringUtil.showToast(BidMyListDetailActivity.this, "没有更多了");
+//                                        StringUtil.showToast(BidMyListDetailActivity.this, "没有更多了");
+                                        xrefresh.finishLoadMoreWithNoMoreData();
                                     }
                                 }
                             }

@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,6 +101,8 @@ public class JumpDetailActivty extends BaseActivity {
     SmartRefreshLayout refresh;
     @BindView(R.id.tv_qhj)
     TextView tvQhj;
+    @BindView(R.id.tv_zuan1)
+    TextView tvZuan1;
     private String content;
     List<NewHomeCzgBean> czgBeans;//超值购数据
     private int durationRotate = 700;// 旋转动画时间
@@ -158,10 +159,10 @@ public class JumpDetailActivty extends BaseActivity {
         } else {
             quan.setVisibility(View.GONE);
         }
-        if (domain != null){
-            if (domain.equals("jd")){
+        if (domain != null) {
+            if (domain.equals("jd")) {
                 tvQhj.setVisibility(View.GONE);
-            }else {
+            } else {
                 tvQhj.setVisibility(View.VISIBLE);
             }
         }
@@ -172,11 +173,12 @@ public class JumpDetailActivty extends BaseActivity {
         if (jumpBean.getBprice() != null && !jumpBean.getBprice().equals("null")) {
             bprice.setVisibility(View.VISIBLE);
             bprice.setText("¥" + jumpBean.getBprice());
-        }else {
+        } else {
             bprice.setVisibility(View.GONE);
         }
         tvMall.setText(jumpBean.getDomainCh());
-        tvZuan.setText("赚" + jumpBean.getYongjin() + "元");
+        tvZuan.setText(jumpBean.getYongjin());
+        tvZuan1.setText(jumpBean.getYongjin());
         bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
         List<Object> DetailimgUrlList = new ArrayList<>();
         /**

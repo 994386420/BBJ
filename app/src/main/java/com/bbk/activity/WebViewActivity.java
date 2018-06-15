@@ -78,7 +78,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 //		exParams = new HashMap<>();
 //		exParams.put("isv_code", "appisvcode");
 //		exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-
 		dataFlow = new DataFlow4(this);
 		instance = this;
 		getWindow().setBackgroundDrawable(null);

@@ -135,15 +135,6 @@ public class ResultDialogActivity extends BaseActivity {
 									wantdomain.setVisibility(View.GONE);
 									henggang.setVisibility(View.GONE);
 								}
-								mclose = (ImageView) findViewById(R.id.mclose);
-								mclose.setOnClickListener(new OnClickListener() {
-
-									@Override
-									public void onClick(View arg0) {
-
-										finish();
-									}
-								});
 								adapter1 = new ResultDialogAdapter1(list1, ResultDialogActivity.this);
 								adapter2 = new ResultDialogAdapter2(list2, ResultDialogActivity.this);
 								mlistview1.setAdapter(adapter1);
@@ -231,6 +222,14 @@ public class ResultDialogActivity extends BaseActivity {
 	    params.height = (int) (height*0.8);
 	    msize.setLayoutParams(params);
 		henggang = findViewById(R.id.henggang);
+		mclose = (ImageView) findViewById(R.id.mclose);
+		mclose.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				finish();
+			}
+		});
 	}
 	private void NowPrice(){
     	thread = new Thread(new Runnable() {

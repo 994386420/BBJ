@@ -269,6 +269,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	 * 系统消息
 	 */
 	private void initsystemData() {
+		xrefresh.setNoMoreData(false);
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(systempage));
@@ -302,7 +303,8 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 									if (systemMessageBeans != null && systemMessageBeans.size() > 0) {
 										systemadapter.notifyData(systemMessageBeans);
 									} else {
-										StringUtil.showToast(MesageCenterActivity.this, "没有更多了");
+//										StringUtil.showToast(MesageCenterActivity.this, "没有更多了");
+										xrefresh.finishLoadMoreWithNoMoreData();
 									}
 								}
 							}
@@ -338,6 +340,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	 * 发出的消息
 	 */
 	private void initsendData() {
+		xrefresh.setNoMoreData(false);
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(sendpage));
@@ -371,7 +374,8 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 									if (sendMsgBeans != null && sendMsgBeans.size() > 0) {
 										sendadapter.notifyData(sendMsgBeans);
 									} else {
-										StringUtil.showToast(MesageCenterActivity.this, "没有更多了");
+//										StringUtil.showToast(MesageCenterActivity.this, "没有更多了");
+										xrefresh.finishLoadMoreWithNoMoreData();
 									}
 								}
 							}
@@ -407,6 +411,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	 * 收到的消息
 	 */
 	private void initreceiveData() {
+		xrefresh.setNoMoreData(false);
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(receivepage));
@@ -440,7 +445,8 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 									if (receiceMsgBeans != null && receiceMsgBeans.size() > 0) {
 										receiveadapter.notifyData(receiceMsgBeans);
 									} else {
-										StringUtil.showToast(MesageCenterActivity.this, "没有更多了");
+//										StringUtil.showToast(MesageCenterActivity.this, "没有更多了");
+										xrefresh.finishLoadMoreWithNoMoreData();
 									}
 								}
 								if (receiveadapter != null) {
