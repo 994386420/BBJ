@@ -110,6 +110,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
         });
         mrecyclerview = (RecyclerView)mView.findViewById(R.id.mrecyclerview);
         mrefresh = (SmartRefreshLayout) mView.findViewById(R.id.mrefresh);
+        mrefresh.finishLoadMoreWithNoMoreData();
         refreshAndloda();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -125,6 +126,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
         mrecyclerview.setAdapter(adapter);
     }
     public void initData(){
+//        mrefresh.setNoMoreData(false);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid",userID);

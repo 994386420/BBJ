@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +29,14 @@ import com.bbk.activity.R;
 import com.bbk.activity.ResultDialogActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.component.HomeAllComponent5;
 import com.bbk.component.SearchComponent;
 import com.bbk.dialog.ResultDialog;
+import com.bbk.dialog.WebViewAlertDialog;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -44,7 +50,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -212,15 +220,37 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
             }
 //				if ("1".equals(dataSet.get("isxianshi"))) {
             final String groupRowKey = dataSet.getGroupRowkey();
+            if (dataSet.getHidebutton() != null){
+                switch (dataSet.getHidebutton()){
+                    case "1":
+                        vh.intentbuy.setVisibility(View.VISIBLE);
+                        vh.mmoredomain.setVisibility(View.VISIBLE);
+                        break;
+                    case "2":
+                        vh.intentbuy.setVisibility(View.VISIBLE);
+                        vh.mmoredomain.setVisibility(View.GONE);
+                        break;
+                    case "3":
+                        vh.intentbuy.setVisibility(View.GONE);
+                        vh.mmoredomain.setVisibility(View.GONE);
+                        break;
+                    case "4":
+                        vh.intentbuy.setVisibility(View.GONE);
+                        vh.mmoredomain.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
             vh.mmoredomain.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
-                    Intent intent = new Intent(context, ResultDialogActivity.class);
-//						intent.putExtra("tarr",dataSet.get("tarr").toString() );
-                    intent.putExtra("keyword", dataSet.getKeyword());
-                    intent.putExtra("rowkey", groupRowKey);
-                    context.startActivity(intent);
+//                    Intent intent = new Intent(context, ResultDialogActivity.class);
+////						intent.putExtra("tarr",dataSet.get("tarr").toString() );
+//                    intent.putExtra("keyword", dataSet.getKeyword());
+//                    intent.putExtra("rowkey", groupRowKey);
+//                    context.startActivity(intent);
+                    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                    queryCompareByUr(dataSet.getTitle(),dataSet.getUrl(),userID,dataSet.getGroupRowkey());
                 }
             });
             vh.intentbuy.setOnClickListener(new OnClickListener() {
@@ -238,13 +268,16 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
                         intent = new Intent(context, BidActivity.class);
                         intent.putExtra("rowkey", groupRowKey);
                         intent.putExtra("type", "1");
+                        intent.putExtra("price",dataSet.getPrice());
+                        intent.putExtra("title",dataSet.getTitle());
+                        intent.putExtra("imags",dataSet.getDetailImages());
                         context.startActivity(intent);
                     }
                 }
             });
 
             if (dataSet.getYjson() != null) {
-                if ("-1".equals(dataSet.getSaleinfo())) {
+                if (dataSet.getSaleinfo() == null) {
                     vh.juan.setVisibility(View.GONE);
                 } else {
                     vh.juan.setVisibility(View.VISIBLE);
@@ -419,5 +452,42 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
         setBackgroundAlpha(1);
     }
 
+    private void queryCompareByUr(String webtitle,String weburl,String userID,String hrowkey) {
+        Map<String, String> params = new HashMap<>();
+        params.put("title", webtitle);
+        params.put("url", weburl);
+        params.put("userid", userID);
+        params.put("rowkey", hrowkey);
+        RetrofitClient.getInstance(context).createBaseApi().queryCompareByUrl(
+                params, new BaseObserver<String>(context) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            if (jsonObject.optString("status").equals("1")) {
+                                new WebViewAlertDialog(context).builder(content, "0",true,"webview").show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog(){
+                        DialogSingleUtil.show(context);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(context, e.message);
+                    }
+                });
+    }
 
 }

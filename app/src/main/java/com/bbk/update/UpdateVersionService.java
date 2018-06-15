@@ -193,7 +193,8 @@ public class UpdateVersionService implements ResultEvent {
             tv_update_refuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.exit(0);
+                    updataDialog.dismiss();
+//                    System.exit(0);
                 }
             });
 //            builder.setCancelable(false);

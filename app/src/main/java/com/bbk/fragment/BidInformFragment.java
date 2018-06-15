@@ -110,6 +110,7 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
     }
 
     private void initData() {
+        xrefresh.setNoMoreData(false);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid",userID);
@@ -143,7 +144,7 @@ public class BidInformFragment extends Fragment implements CommonLoadingView.Loa
                                     if (pubaMessageBeans != null && pubaMessageBeans.size() > 0) {
                                         adapter.notifyData(pubaMessageBeans);
                                     } else {
-                                        StringUtil.showToast(getActivity(), "没有更多了");
+                                        xrefresh.finishLoadMoreWithNoMoreData();
                                     }
                                 }
                             }

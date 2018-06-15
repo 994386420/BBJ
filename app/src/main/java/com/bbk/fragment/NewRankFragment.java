@@ -111,6 +111,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 		return mView;
 	}
 	private void initData() {
+		xrefresh.setNoMoreData(false);
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("page", topicpage+"");
 		maps.put("type", "比比鲸原创");
@@ -129,7 +130,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 									if (fxBeans != null && fxBeans.size() > 0) {
 										listadapter.notifyData(fxBeans);
 									} else {
-										StringUtil.showToast(getActivity(), "没有更多了");
+										xrefresh.finishLoadMoreWithNoMoreData();
 									}
 								}
 							}

@@ -13,6 +13,6 @@
   <ImageView
     android:layout_width="130dp"
     android:layout_height="130dp"
-    android:src="@mipmap/jingbi_yingdao" />
+    android:src="@mipmap/yingdao_hehuoren" />
 
 </LinearLayout>

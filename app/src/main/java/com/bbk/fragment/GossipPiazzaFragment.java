@@ -98,6 +98,7 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
     }
 
     private void initData() {
+        mrefresh.setNoMoreData(false);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid", userID);
@@ -117,7 +118,8 @@ public class GossipPiazzaFragment extends BaseViewPagerFragment implements Commo
                                     if (biaoLiaoBeans != null && biaoLiaoBeans.size() > 0 && adapter != null){
                                         adapter.notifyData(biaoLiaoBeans);
                                     }else {
-                                        StringUtil.showToast(getActivity(),"没有更多了");
+//                                        StringUtil.showToast(getActivity(),"没有更多了");
+                                        mrefresh.finishLoadMoreWithNoMoreData();
                                     }
                                 }
                             }

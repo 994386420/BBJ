@@ -226,7 +226,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         //设置 Header 为 贝塞尔雷达 样式
         refreshLayout.setRefreshHeader(new BezierCircleHeader(getActivity()));
       //设置 Footer 为 球脉冲 样式
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale).setNormalColor(getActivity().getResources().getColor(R.color.button_color)).setAnimatingColor(getActivity().getResources().getColor(R.color.button_color)));
+//        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale).setNormalColor(getActivity().getResources().getColor(R.color.button_color)).setAnimatingColor(getActivity().getResources().getColor(R.color.button_color)));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
@@ -331,6 +331,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     }
     //首页分类数据
     private void getIndexByType() {
+        refreshLayout.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("type",type);
         maps.put("page",page+"");
@@ -351,6 +352,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     }
                     @Override
                     protected void hideDialog() {
+                        refreshLayout.finishLoadMore();
+                        refreshLayout.finishRefresh();
                         zLoadingView.loadSuccess();
                         DialogSingleUtil.dismiss(0);
                     }
@@ -361,6 +364,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        refreshLayout.finishLoadMore();
+                        refreshLayout.finishRefresh();
                         DialogSingleUtil.dismiss(0);
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
@@ -461,8 +466,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     break;
                 case 2:
                     try {
-                        refreshLayout.finishLoadmore();
-                        refreshLayout.finishRefresh();
                         if (type.equals("2")){
                             pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
                             if (x == 1) {
@@ -471,7 +474,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 if (pubaBeans != null && pubaBeans.size()>0){
                                     homeadapter.notifyBjData(pubaBeans);
                                 }else {
-                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                 refreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                         }else if (type.equals("3")){
@@ -482,7 +485,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 if (blBeans != null && blBeans.size() > 0){
                                     homeadapter.notifyBlData(blBeans);
                                 }else {
-                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                    refreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                         }else if (type.equals("4")){
@@ -493,7 +496,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 if (fxBeans != null && fxBeans.size() > 0){
                                     homeadapter.notifyFxData(fxBeans);
                                 }else {
-                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                    refreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                         }else if (type.equals("1")){
@@ -504,7 +507,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                 if (czgBeans != null && czgBeans.size() > 0){
                                     homeadapter.notifyData(czgBeans);
                                 }else {
-                                    StringUtil.showToast(getActivity(),"没有更多了");
+                                    refreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                         }

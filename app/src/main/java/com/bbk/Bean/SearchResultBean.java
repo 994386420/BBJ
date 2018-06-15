@@ -26,6 +26,24 @@ public class SearchResultBean {
     private String keyword;
     private String yongjin;
     private String quan;
+    private String detailImages;
+    private String hidebutton;
+
+    public String getDetailImages() {
+        return detailImages;
+    }
+
+    public void setDetailImages(String detailImages) {
+        this.detailImages = detailImages;
+    }
+
+    public String getHidebutton() {
+        return hidebutton;
+    }
+
+    public void setHidebutton(String hidebutton) {
+        this.hidebutton = hidebutton;
+    }
 
     public String getYongjin() {
         return yongjin;

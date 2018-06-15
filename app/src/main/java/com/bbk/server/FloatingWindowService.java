@@ -7,9 +7,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bbk.activity.MyApplication;
+import com.bbk.activity.WelcomeActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -18,6 +23,7 @@ import android.content.ClipboardManager.OnPrimaryClipChangedListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 public class FloatingWindowService extends Service implements ResultEvent {
 
@@ -40,11 +46,12 @@ public class FloatingWindowService extends Service implements ResultEvent {
 			@Override
 			public void onPrimaryClipChanged() {
 					String text = clipboardManager.getText().toString();
-					if (text.contains("http")) {
+					if (text != null) {
 							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-							Map<String, String> paramsMap = new HashMap<String, String>();
-							paramsMap.put("url", text);
-							dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap,FloatingWindowService.this,false);
+//							Map<String, String> paramsMap = new HashMap<String, String>();
+//							paramsMap.put("url", text);
+//							dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap,FloatingWindowService.this,false);
+						checkExsistProduct(text);
 				}
 				// //获得当前activity的名字
 				// Intent intent = new Intent(getApplicationContext(),
@@ -84,5 +91,43 @@ public class FloatingWindowService extends Service implements ResultEvent {
 			break;
 		}
 	}
+	private void checkExsistProduct(String text) {
+		Map<String, String> paramsMap = new HashMap<String, String>();
+		paramsMap.put("url", text);
+		RetrofitClient.getInstance(this).createBaseApi().checkExsistProduct(
+				paramsMap, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								String content = jsonObject.optString("content");
+								JSONObject json = new JSONObject(content);
+//						Log.i("checkprice：",jsonObject+"------------------------");
+								if (!json.optString("rowkey").isEmpty()) {
+									SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "1");
+									SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "object", content);
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
 
+					}
+
+					@Override
+					protected void showDialog() {
+
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(FloatingWindowService.this, e.message);
+					}
+				});
+
+	}
 }

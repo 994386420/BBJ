@@ -3,13 +3,19 @@
     android:id="@+id/result_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#fff" >
+    android:layout_marginLeft="5px"
+    android:layout_marginRight="5px"
+    android:layout_marginBottom="10px"
+    android:layout_marginTop="10px"
+    android:background="@drawable/bg_bijia_grid">
 
     <ImageView
         android:id="@+id/item_img"
         android:layout_width="match_parent"
         android:layout_height="206dp"
         android:scaleType="centerCrop"
+        android:layout_marginLeft="5px"
+        android:layout_marginRight="5px"
         android:src="@mipmap/zw_img_300"
         />
 
@@ -40,11 +46,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
                 android:orientation="horizontal">
             <TextView
                 android:id="@+id/item_offer"
                 android:layout_width="wrap_content"
+                android:layout_weight="1"
                 android:layout_height="20dp"
                 android:text="共0条报价"
                 android:textColor="#999999"
@@ -52,20 +60,19 @@
             <TextView
                 android:id="@+id/zuan"
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:background="@drawable/bg_czg2"
-                android:paddingBottom="2dp"
+                android:paddingBottom="3dp"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
-                android:paddingTop="2dp"
-                android:text="111"
+                android:paddingTop="3dp"
+                android:text=""
                 android:layout_marginLeft="5dp"
-                android:textColor="@color/tuiguang_color5"
-                android:textSize="10dp" />
+                android:textColor="@color/white"
+                android:textSize="11dp" />
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:gravity="center_vertical"
                 android:layout_height="wrap_content"
@@ -74,8 +81,8 @@
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="22dp"
-                android:layout_marginTop="3dp" >
+                android:layout_marginTop="2dp"
+                android:layout_height="22dp">
 
                 <TextView
                     android:id="@+id/myuan"
@@ -127,12 +134,13 @@
                     android:textSize="12dp" />
                 <LinearLayout
                     android:id="@+id/ll_quan"
+                    android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="16dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@+id/juan"
                     android:background="@drawable/bg_czg1"
                     android:orientation="horizontal">
                     <TextView
@@ -140,11 +148,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
                         android:textColor="@color/white"
                         android:text="领券减0"
-                        android:textSize="10dp"/>
+                        android:textSize="11dp"/>
 
                     <TextView
                         android:layout_width="3dp"

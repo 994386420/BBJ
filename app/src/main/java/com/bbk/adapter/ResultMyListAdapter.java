@@ -17,7 +17,12 @@ import com.bbk.activity.ResultDialogActivity;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.ResultDialog;
+import com.bbk.dialog.WebViewAlertDialog;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -40,6 +45,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -162,15 +168,36 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 			}
 			final String domain1 = dataSet.getDomain();
 			final String rowkey = dataSet.getGroupRowkey();
+			if (dataSet.getHidebutton() != null){
+				switch (dataSet.getHidebutton()){
+					case "1":
+						vh.intentbuy.setVisibility(View.VISIBLE);
+						vh.findsimilar.setVisibility(View.VISIBLE);
+						break;
+					case "2":
+						vh.intentbuy.setVisibility(View.GONE);
+						vh.findsimilar.setVisibility(View.VISIBLE);
+						break;
+					case "3":
+						vh.intentbuy.setVisibility(View.GONE);
+						vh.findsimilar.setVisibility(View.GONE);
+						break;
+					case "4":
+						vh.intentbuy.setVisibility(View.VISIBLE);
+						vh.findsimilar.setVisibility(View.GONE);
+						break;
+				}
+			}
 			vh.intentbuy.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
-					Intent intent = new Intent(context, ResultDialogActivity.class);
-					intent.putExtra("keyword",dataSet.getKeyword() );
-					intent.putExtra("rowkey",rowkey );
-					context.startActivity(intent);
-
+//					Intent intent = new Intent(context, ResultDialogActivity.class);
+//					intent.putExtra("keyword",dataSet.getKeyword() );
+//					intent.putExtra("rowkey",rowkey );
+//					context.startActivity(intent);
+					String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+					queryCompareByUr(dataSet.getTitle(),dataSet.getUrl(),userID,dataSet.getGroupRowkey());
 				}
 			});
 			vh.findsimilar.setOnClickListener(new OnClickListener() {
@@ -185,15 +212,17 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 						context.startActivityForResult(intent, 2);
 					} else {
 						//二级页面去发标
-						//二级页面去发标
 					    intent = new Intent(context, BidActivity.class);
 						intent.putExtra("rowkey",rowkey);
 						intent.putExtra("type","1");
+						intent.putExtra("price",dataSet.getPrice());
+						intent.putExtra("title",dataSet.getTitle());
+						intent.putExtra("imags",dataSet.getDetailImages());
 						context.startActivity(intent);
 					}
 				}
 			});
-			if ("0".equals(dataSet.getYjson())){
+			if (dataSet.getYjson() == null){
 				//新增nessaleinfo字段，当url存在时直接跳转，不存在则隐藏跳转只显示优惠信息
 				if (dataSet.getNewsaleinfo() == null){
 					vh.mcoupon.setVisibility(View.GONE);
@@ -412,5 +441,44 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 	@Override
 	public void onDismiss() {
 		setBackgroundAlpha(1);
+	}
+
+
+	private void queryCompareByUr(String webtitle,String weburl,String userID,String hrowkey) {
+		Map<String, String> params = new HashMap<>();
+		params.put("title", webtitle);
+		params.put("url", weburl);
+		params.put("userid", userID);
+		params.put("rowkey", hrowkey);
+		RetrofitClient.getInstance(context).createBaseApi().queryCompareByUrl(
+				params, new BaseObserver<String>(context) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							String content = jsonObject.optString("content");
+							if (jsonObject.optString("status").equals("1")) {
+								new WebViewAlertDialog(context).builder(content, "0",true,"webview").show();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+					@Override
+					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
+					}
+
+					@Override
+					protected void showDialog(){
+						DialogSingleUtil.show(context);
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						StringUtil.showToast(context, e.message);
+					}
+				});
 	}
 }

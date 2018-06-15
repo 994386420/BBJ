@@ -136,6 +136,7 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Comm
         mHorizontalScrollView = mView.findViewById(R.id.mhscrollview);
     }
     public void initData(String type, final int search){
+        mrefresh.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("describe",describe);
         maps.put("type",type);
@@ -169,7 +170,8 @@ public class BidAcceptanceFragment extends BaseViewPagerFragment implements Comm
                                         if (puDaoBeans != null && puDaoBeans.size() > 0) {
                                             adapter.notifyData(puDaoBeans);
                                         } else {
-                                            StringUtil.showToast(getActivity(), "没有更多了");
+//                                            StringUtil.showToast(getActivity(), "没有更多了");
+                                            mrefresh.finishLoadMoreWithNoMoreData();
                                         }
                                     }
                                 }

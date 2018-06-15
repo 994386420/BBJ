@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,11 +39,12 @@ import butterknife.ButterKnife;
  * Created by rtj on 2018/3/7.
  */
 
-public class NewCzgGridAdapter extends RecyclerView.Adapter{
-//    private List<Map<String,String>> list;
+public class NewCzgGridAdapter extends RecyclerView.Adapter {
+    //    private List<Map<String,String>> list;
     private Context context;
     List<NewHomeCzgBean> newHomeCzgBean;
-    public NewCzgGridAdapter(Context context, List<NewHomeCzgBean> newHomeCzgBean){
+
+    public NewCzgGridAdapter(Context context, List<NewHomeCzgBean> newHomeCzgBean) {
 //        this.list = list;
         this.context = context;
         this.newHomeCzgBean = newHomeCzgBean;
@@ -50,7 +52,7 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        NewCzgGridAdapter.ViewHolder ViewHolder = new NewCzgGridAdapter.ViewHolder(
+        ViewHolder ViewHolder = new ViewHolder(
                 LayoutInflater.from(context).inflate(R.layout.czg_grid_item_layout, parent, false));
         return ViewHolder;
     }
@@ -58,8 +60,8 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         try {
-            NewCzgGridAdapter.ViewHolder viewHolder = (NewCzgGridAdapter.ViewHolder) holder;
-            initTop(viewHolder,position);
+            ViewHolder viewHolder = (ViewHolder) holder;
+            initTop(viewHolder, position);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,16 +77,16 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
         return newHomeCzgBean.size();
     }
 
-    public void notifyData(List<NewHomeCzgBean> beans){
+    public void notifyData(List<NewHomeCzgBean> beans) {
         this.newHomeCzgBean.addAll(beans);
         notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView item_img;
-        TextView mbidprice,mprice,youhui;
-        TextView item_title,copy_title,copy_url;
-        LinearLayout itemlayout,mCopyLayout;
+        TextView mbidprice, mprice, youhui;
+        TextView item_title, copy_title, copy_url;
+        LinearLayout itemlayout, mCopyLayout;
         @BindView(R.id.quan)
         TextView quan;
         @BindView(R.id.zuan)
@@ -95,14 +97,16 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
         TextView bprice;
         @BindView(R.id.ll_quan)
         LinearLayout llQuan;
+        @BindView(R.id.tv_sale)
+        TextView tvSale;
 
         public ViewHolder(View mView) {
             super(mView);
             ButterKnife.bind(this, mView);
-           item_img = mView.findViewById(R.id.item_img);
+            item_img = mView.findViewById(R.id.item_img);
             item_title = mView.findViewById(R.id.item_title);
-            mbidprice =mView.findViewById(R.id.mbidprice);
-           mprice =mView.findViewById(R.id.mprice);
+            mbidprice = mView.findViewById(R.id.mbidprice);
+            mprice = mView.findViewById(R.id.mprice);
             youhui = mView.findViewById(R.id.youhui_text);
             itemlayout = mView.findViewById(R.id.result_item);
             mCopyLayout = mView.findViewById(R.id.copy_layout);
@@ -110,7 +114,8 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
             copy_url = mView.findViewById(R.id.copy_url);
         }
     }
-    private void initTop(final NewCzgGridAdapter.ViewHolder viewHolder, final int position) {
+
+    private void initTop(final ViewHolder viewHolder, final int position) {
         try {
 //            final Map<String,String> map = list.get(position);
 //            Log.i("-------", newHomeCzgBean.get(position).getImgurl()+"=====");
@@ -119,23 +124,24 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
             String price = newHomeCzgBean.get(position).getPrice();
 //        String bidprice = map.get("bidprice");
             String dianpu = newHomeCzgBean.get(position).getDianpu();
-            String youhui =newHomeCzgBean.get(position).getYouhui();
+            String youhui = newHomeCzgBean.get(position).getYouhui();
             String mbidprice = newHomeCzgBean.get(position).getHislowprice();//最低价
             viewHolder.item_title.setText(title);
+            viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale()+"人付款");
             try {
-                if (mbidprice != null){
-                    viewHolder.mbidprice.setText("最低价 "+mbidprice);
+                if (mbidprice != null) {
+                    viewHolder.mbidprice.setText("最低价 " + mbidprice);
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
             viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
-            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG| Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
             viewHolder.price.setText(price);
-            if (newHomeCzgBean.get(position).getQuan() !=null){
+            if (newHomeCzgBean.get(position).getQuan() != null) {
                 viewHolder.llQuan.setVisibility(View.VISIBLE);
                 viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
-            }else {
+            } else {
                 viewHolder.llQuan.setVisibility(View.GONE);
             }
             if (newHomeCzgBean.get(position).getZuan() != null) {
@@ -144,7 +150,7 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
             } else {
                 viewHolder.zuan.setVisibility(View.GONE);
             }
-            viewHolder.mprice.setText("¥"+price);
+            viewHolder.mprice.setText("¥" + price);
             viewHolder.youhui.setText(youhui);
             Glide.with(context)
                     .load(img)
@@ -158,30 +164,30 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
                     Intent intent;
                     try {
 //                        if (AlibcLogin.getInstance().isLogin() == true){
-                            if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
-                                intent = new Intent(context, IntentActivity.class);
-                                if (newHomeCzgBean.get(position).getUrl() != null) {
-                                    intent.putExtra("url", newHomeCzgBean.get(position).getRequestUrl());
-                                }
-                                if (newHomeCzgBean.get(position).getTitle() != null) {
-                                    intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
-                                }
-                                if (newHomeCzgBean.get(position).getDomain() != null) {
-                                    intent.putExtra("domain", newHomeCzgBean.get(position).getDomain());
-                                }
-                                if (newHomeCzgBean.get(position).getRowkey() != null) {
-                                    intent.putExtra("groupRowKey", newHomeCzgBean.get(position).getRowkey());
-                                }
-                                intent.putExtra("isczg", "1");
-                                if (newHomeCzgBean.get(position).getBprice() != null) {
-                                    intent.putExtra("bprice", newHomeCzgBean.get(position).getBprice());
-                                }
-                            }else {
-                                intent = new Intent(context, WebViewActivity.class);
-                                intent.putExtra("url", newHomeCzgBean.get(position).getUrl());
+                        if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
+                            intent = new Intent(context, IntentActivity.class);
+                            if (newHomeCzgBean.get(position).getUrl() != null) {
+                                intent.putExtra("url", newHomeCzgBean.get(position).getRequestUrl());
+                            }
+                            if (newHomeCzgBean.get(position).getTitle() != null) {
                                 intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
                             }
-                            context.startActivity(intent);
+                            if (newHomeCzgBean.get(position).getDomain() != null) {
+                                intent.putExtra("domain", newHomeCzgBean.get(position).getDomain());
+                            }
+                            if (newHomeCzgBean.get(position).getRowkey() != null) {
+                                intent.putExtra("groupRowKey", newHomeCzgBean.get(position).getRowkey());
+                            }
+                            intent.putExtra("isczg", "1");
+                            if (newHomeCzgBean.get(position).getBprice() != null) {
+                                intent.putExtra("bprice", newHomeCzgBean.get(position).getBprice());
+                            }
+                        } else {
+                            intent = new Intent(context, WebViewActivity.class);
+                            intent.putExtra("url", newHomeCzgBean.get(position).getUrl());
+                            intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
+                        }
+                        context.startActivity(intent);
 //                        }else {
 //                            TaoBaoLoginandLogout();//淘宝授权登陆
 //                            DialogSingleUtil.dismiss(0);
@@ -213,18 +219,18 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
             viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                     cm.setText(title);
-                    StringUtil.showToast(context,"复制成功");
+                    StringUtil.showToast(context, "复制成功");
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
             viewHolder.copy_url.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                     cm.setText(newHomeCzgBean.get(position).getUrl());
-                    StringUtil.showToast(context,"复制成功");
+                    StringUtil.showToast(context, "复制成功");
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
@@ -236,8 +242,8 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
     /**
      * 淘宝授权登录
      */
-    private void TaoBaoLoginandLogout(){
-        DialogSingleUtil.show(context,"授权中...");
+    private void TaoBaoLoginandLogout() {
+        DialogSingleUtil.show(context, "授权中...");
         final AlibcLogin alibcLogin = AlibcLogin.getInstance();
         alibcLogin.showLogin((Activity) context, new AlibcLoginCallback() {
 
@@ -246,9 +252,10 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter{
                 DialogSingleUtil.dismiss(0);
                 StringUtil.showToast(context, "登录成功 ");
                 SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String date = sDateFormat.format(new java.util.Date());
-                SharedPreferencesUtil.putSharedData(MyApplication.getApplication(),"taobao","taobaodata",date);
+                String date = sDateFormat.format(new Date());
+                SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "taobao", "taobaodata", date);
             }
+
             @Override
             public void onFailure(int code, String msg) {
                 DialogSingleUtil.dismiss(0);

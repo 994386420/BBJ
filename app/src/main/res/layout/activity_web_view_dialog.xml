@@ -61,10 +61,16 @@
                 android:background="#ffffff"/>
             </LinearLayout>
         </LinearLayout>
+        <com.bbk.view.MyScrollViewNew
+            android:id="@+id/mwebview_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" >
 		    <com.bbk.view.MyWebView
 		        android:id="@+id/mwebview"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"/>
+        </com.bbk.view.MyScrollViewNew>
         <lecho.lib.hellocharts.view.LineChartView
             android:id="@+id/history_price_chart"
             android:layout_width="match_parent"
@@ -73,10 +79,10 @@
             android:paddingRight="10dp"
             android:background="#FFFFFF" />
 
-        <ScrollView
+        <com.bbk.view.MyScrollViewNew
             android:id="@+id/mscroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scrollbars="none" >
 
             <LinearLayout
@@ -84,13 +90,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <com.bbk.view.MyListView
+                <ListView
                     android:id="@+id/mlistview1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@null"
                     android:listSelector="#f3f3f3" >
-                </com.bbk.view.MyListView>
+                </ListView>
 
                 <View
                     android:layout_width="match_parent"
@@ -126,15 +132,15 @@
                     android:layout_height="1dp"
                     android:background="#f3f3f3" />
 
-                <com.bbk.view.MyListView
+                <ListView
                     android:id="@+id/mlistview2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@null"
                     android:listSelector="#f3f3f3" >
-                </com.bbk.view.MyListView>
+                </ListView>
             </LinearLayout>
-        </ScrollView>
+        </com.bbk.view.MyScrollViewNew>
     </LinearLayout>
 
     <LinearLayout

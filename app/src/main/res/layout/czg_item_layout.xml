@@ -52,6 +52,7 @@
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
                         android:background="@drawable/bg_tuiguang3"
+                        android:layout_marginTop="2dp"
                         android:textSize="10dp"/>
                     <TextView
                         android:id="@+id/item_title"
@@ -89,7 +90,7 @@
                         <LinearLayout
                             android:id="@+id/ll_quan"
                             android:layout_width="wrap_content"
-                            android:layout_height="16dp"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
                             android:background="@drawable/bg_czg1"
                             android:orientation="horizontal">
@@ -98,11 +99,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:gravity="center"
                                 android:textColor="@color/white"
                                 android:text="领券减0"
-                                android:textSize="10dp"/>
+                                android:textSize="11dp"/>
 
                             <TextView
                                 android:layout_width="3dp"
@@ -121,16 +125,16 @@
                         <TextView
                             android:id="@+id/zuan"
                             android:layout_width="wrap_content"
-                            android:layout_height="16dp"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
                             android:background="@drawable/bg_czg2"
-                            android:paddingBottom="2dp"
+                            android:paddingBottom="3dp"
                             android:paddingLeft="3dp"
                             android:paddingRight="3dp"
-                            android:paddingTop="2dp"
+                            android:paddingTop="3dp"
                             android:text=""
                             android:layout_marginLeft="5dp"
-                            android:textColor="@color/tuiguang_color5"
+                            android:textColor="@color/white"
                             android:textSize="10dp" />
                         <TextView
                             android:id="@+id/mbidprice"
@@ -138,7 +142,7 @@
                             android:layout_height="wrap_content"
                             android:text=""
                             android:visibility="gone"
-                            android:textSize="12dp"/>
+                            android:textSize="11dp"/>
 
                     </LinearLayout>
                 </LinearLayout>

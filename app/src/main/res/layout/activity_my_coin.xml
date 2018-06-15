@@ -51,7 +51,7 @@
             android:textSize="15dp" />
     </RelativeLayout>
 
-    <ScrollView
+    <com.bbk.view.MyScrollViewNew
         android:id="@+id/mscroll"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -359,14 +359,14 @@
                 android:layout_height="10dp"
                 android:background="#f3f3f3" />
 
-            <com.bbk.view.MyListView
+            <ListView
                 android:id="@+id/mlistview"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:divider="@null" >
-            </com.bbk.view.MyListView>
+            </ListView>
         </LinearLayout>
-    </ScrollView>
+    </com.bbk.view.MyScrollViewNew>
 
 </LinearLayout>

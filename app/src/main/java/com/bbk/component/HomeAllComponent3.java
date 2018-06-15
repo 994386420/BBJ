@@ -26,12 +26,12 @@ public class HomeAllComponent3 implements Component {
 
   @Override
   public int getFitPosition() {
-    return Component.FIT_END;
+    return Component.FIT_CENTER;
   }
 
   @Override
   public int getXOffset() {
-    return 110;
+    return 0;
   }
 
   @Override

@@ -123,4 +123,9 @@ public interface BaseApiService<T> {
     //跳转详情分享
     @POST("newService/shareCpsInfo")
     Observable<String> shareCpsInfo(@QueryMap Map<String, String> map);
+
+    //看比价
+    @POST("newService/queryCompareByUrl")
+    Observable<String> queryCompareByUrl(@QueryMap Map<String, String> map);
+
 }

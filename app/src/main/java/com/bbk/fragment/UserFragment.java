@@ -943,7 +943,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
             @Override
             public void onDismiss() {
-                showGuideViewBijia(targetView1);
+                showGuideViewHehuoren(targetView1);
             }
         });
 
@@ -953,14 +953,14 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         guide.show(getActivity());
     }
 
-    public void showGuideViewBijia(View targetView) {
+    public void showGuideViewHehuoren(View targetView) {
         showTimes++;
         GuideBuilder builder = new GuideBuilder();
-        builder.setTargetView(mjingbi)
+        builder.setTargetView(llTuiguang_user)
 //                .setFullingViewId(R.id.ll_view_group)
                 .setAlpha(150)
                 .setHighTargetCorner(20)
-                .setHighTargetPaddingBottom(50)
+                .setHighTargetPaddingBottom(30)
                 .setHighTargetPaddingRight(10)
                 .setHighTargetPaddingLeft(10)
                 .setExitAnimationId(android.R.anim.fade_out)

@@ -277,6 +277,7 @@
                 android:id="@+id/guess_like_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/__picker_common_primary"
                 android:divider="@null"/>
             <View
                 android:layout_width="match_parent"
@@ -313,20 +314,48 @@
             android:orientation="horizontal"
             android:layout_weight="1"
             android:gravity="center"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
             android:background="@drawable/bg_cicyle3">
+
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@mipmap/tuiguang_08"/>
-            <TextView
-                android:id="@+id/tv_zuan"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
-                android:text="赚 0.0"/>
+                android:gravity="center"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="10dp"
+                        android:text="¥"/>
+                    <TextView
+                        android:id="@+id/tv_zuan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="2dp"
+                        android:textSize="14dp"
+                        android:text="0.0"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="11dp"
+                    android:text="分享赚"/>
+            </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_lingquan"
@@ -335,16 +364,42 @@
             android:orientation="horizontal"
             android:layout_weight="1"
             android:layout_marginLeft="0.5dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
             android:gravity="center"
             android:background="@drawable/bg_cicyle4">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:layout_marginLeft="10dp"
-                android:textSize="16dp"
-                android:text="领券购买"/>
+                android:gravity="center"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="10dp"
+                        android:text="¥"/>
+                    <TextView
+                        android:id="@+id/tv_zuan1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="2dp"
+                        android:textSize="14dp"
+                        android:text="0.0"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="11dp"
+                    android:text="自买省"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
