@@ -771,6 +771,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 loadhotKeyword(type);
                 setView();
                 setText(czg_view);
+                second.setVisibility(View.GONE);
                 if (keyword != null && !keyword.equals("")) {
                     currentPageIndex = 1;
                     x = 1;

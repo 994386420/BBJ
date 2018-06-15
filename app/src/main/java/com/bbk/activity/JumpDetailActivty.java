@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.baichuan.android.trade.AlibcTrade;
@@ -103,6 +104,10 @@ public class JumpDetailActivty extends BaseActivity {
     TextView tvQhj;
     @BindView(R.id.tv_zuan1)
     TextView tvZuan1;
+    @BindView(R.id.rl_detail)
+    RelativeLayout rlDetail;
+    @BindView(R.id.view)
+    View view;
     private String content;
     List<NewHomeCzgBean> czgBeans;//超值购数据
     private int durationRotate = 700;// 旋转动画时间
@@ -192,7 +197,16 @@ public class JumpDetailActivty extends BaseActivity {
                 String imgUrl = detailImags.getString(i);
                 DetailimgUrlList.add(imgUrl);
             }
-            detailImageList.setAdapter(new DetailImageAdapter(this, DetailimgUrlList));
+            if (DetailimgUrlList.size() > 0) {
+                detailImageList.setAdapter(new DetailImageAdapter(this, DetailimgUrlList));
+                rlDetail.setVisibility(View.VISIBLE);
+                detailImageList.setVisibility(View.VISIBLE);
+                view.setVisibility(View.VISIBLE);
+            } else {
+                rlDetail.setVisibility(View.GONE);
+                detailImageList.setVisibility(View.GONE);
+                view.setVisibility(View.GONE);
+            }
             imgs = new JSONArray(jumpBean.getImgs());
             for (int i = 0; i < imgs.length(); i++) {
                 String imgUrl = imgs.getString(i);
