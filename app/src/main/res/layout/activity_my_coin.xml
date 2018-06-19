@@ -53,7 +53,7 @@
 
     <com.bbk.view.MyScrollViewNew
         android:id="@+id/mscroll"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" >
@@ -265,7 +265,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:background="#f3f3f3" />
+            <LinearLayout
+                android:id="@+id/ll_hongbao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp" >
 
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/jingbi_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="好友红包"
+                    android:textColor="#333333"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/enter01" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
             <LinearLayout
                 android:id="@+id/jinbinow"
                 android:layout_width="match_parent"

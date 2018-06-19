@@ -293,7 +293,7 @@ public class WebViewAlertDialog {
                     Map<String, Object> map = list2.get(arg2);
                     final String url = map.get("url").toString();
                     Intent intent = new Intent(context, WebViewActivity.class);
-                    WebViewActivity.instance.finish();
+//                    WebViewActivity.instance.finish();
                     intent.putExtra("url", url);
                     context.startActivity(intent);
 //					finish();
