@@ -59,23 +59,24 @@ public class ShareJumpUtil {
     private String content;
     private String url;
     private String type = "";
-    private String imageurl;
+    private String imageurl,wenan;
 
 
-    public ShareJumpUtil(final Activity activity, String title, String content, String url, String type,String imageurl) {
+    public ShareJumpUtil(final Activity activity, String title, String content, String url, String type,String imageurl,String wenan) {
         this.title = title;
         this.content = content;
         this.url = url;
         this.activity = activity;
         this.type = type;
         this.imageurl = imageurl;
+        this.wenan = wenan;
     }
     public static void showShareDialog(View view, Activity activity) {
         ShareUtil shareUtil = new ShareUtil(activity,null,null,null,"");
         shareUtil.showShareDialog(view);
     }
-    public static void showShareDialog(View view, Activity activity, String title, String content, String url, String imgurl,String type, ImageView imageView) {
-        ShareJumpUtil shareUtil = new ShareJumpUtil(activity,title,content,url,imgurl,type);
+    public static void showShareDialog(View view, Activity activity, String title, String content, String url, String imgurl,String type, ImageView imageView,String wenan) {
+        ShareJumpUtil shareUtil = new ShareJumpUtil(activity,title,content,url,imgurl,type,wenan);
         shareUtil.showShareDialog(view,imageView);
     }
 
@@ -102,7 +103,10 @@ public class ShareJumpUtil {
                     @Override
                     public void onClick(View v) {
                         share2weixin(1,imageView);
+                        ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setText(wenan);
                         popupWindow.dismiss();
+                        StringUtil.showToast(activity,"文案复制成功");
                     }
                 });
         dialogView.findViewById(R.id.share_weixin1).setOnClickListener(

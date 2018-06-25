@@ -23,6 +23,10 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.CircleImageView;
 import com.bbk.view.MyFootView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -46,7 +50,7 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 	private DataFlow dataFlow;
 	private String userID;
 	private CoinWithdrawListAdapter adapter;
-	private XRefreshView xrefresh;
+	private SmartRefreshLayout xrefresh;
 	private boolean isoncreat = false;
 	private int page = 1;
 	private boolean isclear = true;
@@ -66,7 +70,7 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 	private void initView() {
 		list = new ArrayList<Map<String,String>>();
 
-		xrefresh = (XRefreshView)mView.findViewById(R.id.xrefresh);
+		xrefresh = (SmartRefreshLayout) mView.findViewById(R.id.xrefresh);
 		mviewflipper = (ViewFlipper)mView.findViewById(R.id.mviewflipper);
 		mjbcoin = (TextView)mView.findViewById(R.id.mjbcoin);
 		mwithdrawnum = (TextView)mView.findViewById(R.id.mwithdrawnum);
@@ -84,43 +88,21 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 				
 			}
 		});
-		xrefresh.setXRefreshViewListener(new XRefreshView.XRefreshViewListener() {
-
-
+		xrefresh.setOnRefreshListener(new OnRefreshListener() {
 			@Override
-			public void onRelease(float direction) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onRefresh(boolean isPullDown) {
+			public void onRefresh(final RefreshLayout refreshlayout) {
 				isclear = true;
 				page = 1;
 				initData();
-
 			}
-
+		});
+		xrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
 			@Override
-			public void onRefresh() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onLoadMore(boolean isSilence) {
+			public void onLoadMore(RefreshLayout refreshLayout) {
 				page++;
 				initData();
 			}
-
-			@Override
-			public void onHeaderMove(double headerMovePercent, int offsetY) {
-				// TODO Auto-generated method stub
-
-			}
 		});
-		MyFootView footView = new MyFootView(getActivity());
-		xrefresh.setCustomFooterView(footView);
 	}
 
 	private void initDialog1(){
@@ -181,9 +163,9 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 			isclear = false;
 		}
 		if (list2.length()<10){
-			xrefresh.setPullLoadEnable(false);
+			xrefresh.setEnableLoadMore(false);
 		}else {
-			xrefresh.setPullLoadEnable(true);
+			xrefresh.setEnableLoadMore(true);
 		}
 		for (int i = 0; i < list2.length(); i++) {
 			JSONObject object = list2.getJSONObject(i);
@@ -203,8 +185,8 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 	}
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		xrefresh.stopLoadMore();
-		xrefresh.stopRefresh();
+		xrefresh.finishRefresh();
+		xrefresh.finishLoadMore();
 		switch (requestCode) {
 		case 1:
 			try {

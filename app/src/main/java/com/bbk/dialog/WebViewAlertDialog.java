@@ -276,9 +276,9 @@ public class WebViewAlertDialog {
                         intent.putExtra("bprice", map.get("price").toString());
                     } else {
                         intent = new Intent(context, WebViewActivity.class);
-                        WebViewActivity.instance.finish();
+//                        WebViewActivity.instance.finish();
                         intent.putExtra("url", url);
-                        intent.putExtra("groupRowKey", groupRowKey);
+                        intent.putExtra("rowkey", groupRowKey);
                     }
                     context.startActivity(intent);
                     dialog.dismiss();

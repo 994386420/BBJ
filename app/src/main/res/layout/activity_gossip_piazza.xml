@@ -27,15 +27,16 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#dbdbdb"/>
+        android:background="@color/__picker_common_primary"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/__picker_common_primary">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/mrefresh"
             android:layout_width="match_parent"
-            android:background="#fff"
+            android:background="@color/__picker_common_primary"
             android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"

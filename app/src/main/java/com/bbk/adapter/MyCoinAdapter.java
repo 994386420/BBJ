@@ -83,7 +83,7 @@ public class MyCoinAdapter extends BaseAdapter{
 		if (position == 8) {
 			vh.mhenggong.setVisibility(View.GONE);
 		}
-		if (position == 2){
+		if (position == 3){
 			vh.mgo.setVisibility(View.GONE);
 			vh.mbiankuang.setVisibility(View.GONE);
 		}else {

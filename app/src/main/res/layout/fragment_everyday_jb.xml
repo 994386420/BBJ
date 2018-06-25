@@ -91,7 +91,7 @@
                 android:text="鲸币明细"
                 android:textSize="15dp"
                 android:textColor="#333333"/>
-            <com.andview.refreshview.XRefreshView
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/xrefresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 </ListView>
-            </com.andview.refreshview.XRefreshView>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         </LinearLayout>
 
     <TextView

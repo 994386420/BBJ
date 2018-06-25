@@ -83,7 +83,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.iflytek.cloud.util.ResourceUtil.RESOURCE_TYPE.path;
 
 /**
  *

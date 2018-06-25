@@ -27,7 +27,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#dbdbdb"/>
+        android:background="@color/__picker_common_primary"/>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/xrefresh"
         android:layout_width="match_parent"

@@ -21,7 +21,7 @@ import com.bbk.activity.R;
 import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.ResultMainActivity;
 import com.bbk.dao.SearchHistoryDao;
-import com.bbk.fragment.SearchFragment;
+//import com.bbk.fragment.SearchFragment;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -183,7 +183,7 @@ public class SearchRecommendView extends LinearLayout {
 				@Override
 				public void onClick(View v) {  
 					Intent intent = new Intent(mContext, ResultMainActivity.class);
-					intent.putExtra("stype", SearchFragment.stypeWay);
+//					intent.putExtra("stype", SearchFragment.stypeWay);
 					intent.putExtra("keyword", v.getTag().toString());
 					mContext.startActivity(intent);
 				}

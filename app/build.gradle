@@ -10,8 +10,8 @@ android {
         applicationId "com.bbk.activity"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 40
-        versionName '5.0.4'
+        versionCode 41
+        versionName '5.0.6'
         multiDexEnabled true
     }
     android {
@@ -42,9 +42,17 @@ android {
     }
     buildTypes {
         debug {
+            debuggable true
+            zipAlignEnabled false
+            buildConfigField "boolean", "LOG_DEBUG", "true"  // 显示Log
             signingConfig signingConfigs.debugConfig
         }
         release {
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            buildConfigField "boolean", "LOG_DEBUG", "false"  // 不显示Log
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
         }
     }
@@ -94,117 +102,162 @@ android {
     }
 }
 
+//allprojects {
+//    gradle.projectsEvaluated {
+//        tasks.withType(JavaCompile) {
+//            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//        }
+//    }
+//}
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.alibaba:fastjson:1.2.41'
+    implementation 'com.alibaba:fastjson:1.2.41'
+
     //    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
+
     //noinspection GradleCompatible,GradleCompatible
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile files('libs/activation.jar')
-    compile files('libs/additionnal.jar')
-    compile 'com.android.support:support-v4:26.1.0'
-    compile files('libs/Baidu_Mtj_3.7.2.0.jar')
-//    compile files('libs/gson-2.2.4.jar')
-    compile files('libs/jd_crash_lib_release_210.jar')
-    compile files('libs/JDSDK_h.jar')
-    compile files('libs/jg_filter_sdk_1.1.jar')
-    compile files('libs/mail.jar')
-    compile files('libs/mhvp-core.jar')
-    compile files('libs/mid-core-sdk-3.7.2.jar')
-    compile files('libs/Msc.jar')
-    compile files('libs/nineoldandroids.jar')
-    compile files('libs/weibosdk.jar')
-    compile files('libs/weiboSDKCore_3.1.2.jar')
-    compile files('libs/wup-1.0.0.E-SNAPSHOT.jar')
-    compile files('libs/Xg_sdk_v3.0_20170301_1733.jar')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation files('libs/Baidu_Mtj_3.7.2.0.jar')
+
+    //    compile files('libs/gson-2.2.4.jar')
+    implementation files('libs/jd_crash_lib_release_210.jar')
+    implementation files('libs/JDSDK_h.jar')
+    implementation files('libs/jg_filter_sdk_1.1.jar')
+    implementation files('libs/mail.jar')
+    implementation files('libs/mhvp-core.jar')
+    implementation files('libs/mid-core-sdk-3.7.2.jar')
+
+    //    implementation files('libs/Msc.jar')
+    implementation files('libs/nineoldandroids.jar')
+    implementation files('libs/weibosdk.jar')
+    implementation files('libs/weiboSDKCore_3.1.2.jar')
+    implementation files('libs/wup-1.0.0.E-SNAPSHOT.jar')
+    implementation files('libs/Xg_sdk_v3.0_20170301_1733.jar')
+    implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1249_43610_sharewithdownload_withoutGame_obfs_20180608_114954.jar')
+
     //刷新控件
-    compile 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
-    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+
     //    compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:multidex:1.0.1'
-    compile('com.alibaba.android:vlayout:1.2.2@aar') {
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation('com.alibaba.android:vlayout:1.2.2@aar') {
         transitive = true
     }
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-    compile 'com.github.chrisbanes:PhotoView:v1.2.5'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    implementation 'com.github.chrisbanes:PhotoView:v1.2.5'
     implementation files('libs/glide-3.7.0.jar')
     implementation files('libs/glide-okhttp3-integration-1.4.0.jar')
     implementation files('libs/glide-okhttp-integration-1.4.0.jar')
+
     //登陆
-    compile 'com.ali.auth.sdk:alibabauth_core:1.1.4@jar'
-    compile 'com.ali.auth.sdk:alibabauth_ui:1.1.4@aar'
-    compile 'com.ali.auth.sdk:alibabauth_ext:1.1.4@jar'
+    implementation 'com.ali.auth.sdk:alibabauth_core:1.1.4@jar'
+    implementation 'com.ali.auth.sdk:alibabauth_ui:1.1.4@aar'
+    implementation 'com.ali.auth.sdk:alibabauth_ext:1.1.4@jar'
+
     //安全基础
-    compile 'com.taobao.android:securityguardaar3:5.1.81@aar'
+    implementation 'com.taobao.android:securityguardaar3:5.1.81@aar'
+
     //【可选】安全高级，如使用了发放红包、优惠券高级功能，则必须引入
-    compile 'com.taobao.android:securitybodyaar3:5.1.25@aar'
+    implementation 'com.taobao.android:securitybodyaar3:5.1.25@aar'
+
     //Mtop网关
-    compile 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
+    implementation 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
+
     //applink
-    compile 'com.taobao.android:alibc_applink:2.0.0.9@jar'
+    implementation 'com.taobao.android:alibc_applink:2.0.0.9@jar'
+
     //UT
-    compile 'com.taobao.android:utdid4all:1.1.5.3_proguard@jar'
-    compile 'com.alibaba.mtl:app-monitor-sdk:2.5.1.3_for_bc_proguard@jar'
+    implementation 'com.taobao.android:utdid4all:1.1.5.3_proguard@jar'
+    implementation 'com.alibaba.mtl:app-monitor-sdk:2.5.1.3_for_bc_proguard@jar'
+
     //电商SDK
-    compile 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
+    implementation 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.11@aar'
+
     //deviceID，主要用于计算设备的uttid， 设备唯一标识 （67kb）
-    compile 'com.taobao.android:utdid4all:1.1.5'
+    implementation 'com.taobao.android:utdid4all:1.1.5'
+
     // UT，用于组件、接口可用性统计（337kb）
-    compile 'com.alibaba.mtl:app-monitor-sdk:2.5.1_for_bc@jar'
-    compile 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.0.7@aar'
-    compile 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
-    compile 'com.taobao.android:alibc_applink:2.0.0.2@jar'
-    compile 'com.ali.auth.sdk:alibabauth_accountlink:1.0.9.7@jar'
-    compile 'com.youth.banner:banner:1.4.10'
+    implementation 'com.alibaba.mtl:app-monitor-sdk:2.5.1_for_bc@jar'
+    implementation 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.0.7@aar'
+    implementation 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
+    implementation 'com.taobao.android:alibc_applink:2.0.0.2@jar'
+    implementation 'com.ali.auth.sdk:alibabauth_accountlink:1.0.9.7@jar'
+    implementation 'com.youth.banner:banner:1.4.10'
+
     //最新版本
     implementation project(':presentation')
     implementation project(':sdk')
     implementation project(':tlslibrary')
     implementation project(':ui')
-//    implementation files('libs/okio-1.6.0.jar')
-//    implementation files('libs/okhttp-3.2.0.jar')
+
+    //    implementation files('libs/okio-1.6.0.jar')
+
+    //    implementation files('libs/okhttp-3.2.0.jar')
     provided files('libs/open_sdk.jar')
-    compile 'me.zhanghai.android.materialratingbar:library:1.2.0'
+    implementation 'me.zhanghai.android.materialratingbar:library:1.2.0'
+
     //第三方webview
-    compile 'com.tamic:browse:1.0.0'
+    implementation 'com.tamic:browse:1.0.0'
+
     //友盟依赖
+
     //友盟依赖
-    compile 'com.umeng.sdk:common:1.5.0'
-    compile 'com.umeng.sdk:analytics:7.5.0'
+    implementation 'com.umeng.sdk:common:1.5.0'
+    implementation 'com.umeng.sdk:analytics:7.5.0'
+
     //第三方loading
-    compile 'com.zyao89:zloading:1.1.2'
+    implementation 'com.zyao89:zloading:1.1.2'
+
     //1.0.5 当1.1.0出现问题可以回退到1.0.5.1
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
-    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'//没有使用特殊Header，可以不加这行
-//    compile 'com.android.support:appcompat-v7:25.3.1'//版本 23以上（必须）
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
+
+    //没有使用特殊Header，可以不加这行
+
+    //    compile 'com.android.support:appcompat-v7:25.3.1'//版本 23以上（必须）
+
     //第三方地址选择
-    compile 'com.smartTop:jd-address:1.0.3'
+    implementation 'com.smartTop:jd-address:1.0.3'
+
     //引入okhttp
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.5.0'
+
     //引入retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+
     //引入rxjava
-    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.4'
+
     //引入Log拦截器，方便DEBUG模式输出log信息
-    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+
     //引入rxjava适配器，方便rxjava与retrofit的结合
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+
     //引入json转换器，方便将返回的数据转换为json格式
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.retrofit2:converter-scalars:2.0.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.0.0'
+
     //引入rxandroid
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.google.code.gson:gson:2.7'
-    compile project(':guideview')
-    compile project(':jdlmm')
-    compile 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation project(':guideview')
+    implementation project(':jdlmm')
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
     //view注入框架
-    compile 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'//必须加上，不然报空异常
+    implementation 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    //必须加上，不然报空异常
 }
 

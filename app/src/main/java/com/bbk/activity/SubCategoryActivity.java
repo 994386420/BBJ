@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
-import com.bbk.fragment.SearchFragment;
+//import com.bbk.fragment.SearchFragment;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.LoadImgUtil;
@@ -293,7 +293,7 @@ public class SubCategoryActivity extends BaseFragmentActivity implements OnClick
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(SubCategoryActivity.this, ResultMainActivity.class);
-						SearchFragment.stypeWay = 0;
+//						SearchFragment.stypeWay = 0;
 						intent.putExtra("addition", addtion);
 			    		intent.putExtra("keyword", title);
 			    		startActivity(intent);

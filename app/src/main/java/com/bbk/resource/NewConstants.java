@@ -14,6 +14,7 @@ public class NewConstants {
     public static HashMap<String, Object> mChatNickMameMap = new HashMap<>();
     public static String Flag;
     public static String logFlag;
+    public static String copyText;
 
     public static HashMap<String, Object> getJsonObject(String json) {
         HashMap<String, Object> map = new HashMap<String, Object>();

@@ -38,6 +38,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.DataFragment;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -276,6 +277,10 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 						if("1".equals(dataJo.optString("status"))) {
 							JSONObject inforJsonObj = new JSONObject(content);
 							String userID = inforJsonObj.optString("u_id");
+							String isPartner = "";
+							if (inforJsonObj.has("isPartner")){
+								isPartner = inforJsonObj.optString("isPartner");
+							}
 //							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor","password", inforJsonObj.optString("u_pass"));
 							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "userID", userID);
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userLogin", inforJsonObj.optString("u_name"));
@@ -319,6 +324,11 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 								setResult(3, intent);
 							}
 							finish();
+							if (isPartner != null && isPartner.equals("0")){
+								NewConstants.logFlag = "4";
+								intent = new Intent(this, TuiguangDialogActivity.class);
+								startActivity(intent);
+							}
 						}else {
 							StringUtil.showToast(getApplicationContext(), jsonObj.optString("msg"));
 							loginBtn.setEnabled(true);

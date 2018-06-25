@@ -19,14 +19,18 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical" >
-
+            <!--<ImageView-->
+            <!--android:id="@+id/home_image"-->
+            <!--android:layout_width="42dp"-->
+            <!--android:layout_height="42dp"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:src="@mipmap/bottom_01" />-->
             <ImageView
-                android:layout_marginTop="2dp"
                 android:id="@+id/home_img_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_home02" />
+                android:src="@mipmap/bottom_01" />
 
             <TextView
                 android:id="@+id/mtext"
@@ -34,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="@string/home_new_text"
-                android:textColor="#ff7d41"
+                android:visibility="gone"
+                android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
 
@@ -51,7 +56,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_baoliao01" />
+                android:src="@mipmap/bottom_12" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,7 +80,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/new_bottom_news_normal" />
+                android:src="@mipmap/bottom_13" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -99,7 +104,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_find01" />
+                android:src="@mipmap/bottom_14" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -123,7 +128,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_my01" />
+                android:src="@mipmap/bottom_15" />
 
             <TextView
                 android:layout_width="wrap_content"

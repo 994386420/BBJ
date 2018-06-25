@@ -20,6 +20,9 @@ import com.bbk.activity.WebViewRechargeActivity;
 import com.bbk.activity.WebViewWZActivity;
 import com.bbk.activity.WebViewXGActivity;
 import com.bbk.activity.WelcomeActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,21 +30,22 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-public class EventIdIntentUtil {
+import java.util.HashMap;
+import java.util.Map;
 
+public class EventIdIntentUtil {
 	public static void main(String[] args) {
 
 	}
 	public static void EventIdIntent(Context context,JSONObject jo){
 		String eventId = jo.optString("eventId");
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		switch (eventId) {
 		case "5":
 			String htmlUrl = jo.optString("htmlUrl");
 			Intent intent4;
 			if (htmlUrl.contains("@@")){
 				if (htmlUrl.contains("user")){
-					String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-
 					if (TextUtils.isEmpty(userID)){
 						intent4= new Intent(context, UserLoginNewActivity.class);
 						intent4.putExtra("url", htmlUrl);
@@ -102,7 +106,6 @@ public class EventIdIntentUtil {
 			context.startActivity(intent13);
 			break;
 		case "14":
-			String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 			Intent intent14;
 			if (TextUtils.isEmpty(userID)){
 				intent14 = new Intent(context, UserLoginNewActivity.class);
@@ -142,6 +145,29 @@ public class EventIdIntentUtil {
 				context.startActivity(intent);
 
 				break;
+			/**
+			 * eventID 109
+			 *newService/ parseCpsDomainMainUrl   参数 userid domain="jd"
+			 *eventID 110
+			 *newService/ parseCpsDomainMainUrl   参数 userid domain="taobao"
+			 *跳转webview   ，返回url
+			 */
+			case "109":
+				if (TextUtils.isEmpty(userID)){
+					intent14 = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent14);
+				}else {
+					parseCpsDomainMainUrl(context,userID,"jd");
+				}
+				break;
+			case "110":
+				if (TextUtils.isEmpty(userID)){
+					intent14 = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent14);
+				}else {
+					parseCpsDomainMainUrl(context,userID,"taobao");
+				}
+				break;
 		case "666":
 			String url = jo.optString("url");
 			Intent intent666 = new Intent(context, WebViewActivity_copy.class);
@@ -155,5 +181,48 @@ public class EventIdIntentUtil {
 		if (WelcomeActivity.instance!= null){
 			WelcomeActivity.instance.finish();
 		}
+	}
+
+	public static void parseCpsDomainMainUrl(final Context context,String userid, String domain) {
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("userid", userid);
+		maps.put("domain", domain);
+		RetrofitClient.getInstance(context).createBaseApi().parseCpsDomainMainUrl(
+				maps, new BaseObserver<String>(context) {
+					@Override
+					public void onNext(String s) {
+//						Log.e("===", s);
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								Intent intent = new Intent(context, WebViewActivity.class);
+								if (jsonObject.optString("content") != null) {
+									intent.putExtra("url", jsonObject.optString("content"));
+								}
+								context.startActivity(intent);
+							}else {
+								StringUtil.showToast(context, jsonObject.optString("errmsg"));
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
+					}
+
+					@Override
+					protected void showDialog() {
+						DialogSingleUtil.show(context);
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						StringUtil.showToast(context, e.message);
+					}
+				});
 	}
 }

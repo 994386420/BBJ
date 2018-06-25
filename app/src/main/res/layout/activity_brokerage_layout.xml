@@ -4,10 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">//用户收益
-
     <include layout="@layout/title_layout"/>
 
-    <com.bbk.view.MyScrollViewNew
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/__picker_common_primary">
@@ -262,12 +266,24 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:orientation="vertical">
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="昨天"
-            android:textSize="15dp"
-            android:textColor="@color/tuiguang_color3"/>
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@mipmap/tuiguang_18"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="今日"
+                android:textSize="15dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/tuiguang_color3"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -288,7 +304,7 @@
                         android:text="付款笔数" />
 
                 <TextView
-                    android:id="@+id/tv_fukuang_number"
+                    android:id="@+id/tv_fukuang_number_jinri"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15dp"
@@ -310,6 +326,89 @@
                         android:layout_marginLeft="5dp"
                         android:text="预估佣金（元）" />
                 <TextView
+                    android:id="@+id/tv_yongjin_jinri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textSize="15dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/tuiguang_color4"
+                    android:text="0" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/__picker_common_primary"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@mipmap/tuiguang_19"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昨日"
+                android:layout_marginLeft="5dp"
+                android:textSize="15dp"
+                android:textColor="@color/tuiguang_color3"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textColor="@color/tuiguang_color4"
+                    android:layout_marginLeft="5dp"
+                    android:text="付款笔数" />
+
+                <TextView
+                    android:id="@+id/tv_fukuang_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/tuiguang_color4"
+                    android:text="0" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textColor="@color/tuiguang_color4"
+                    android:layout_marginLeft="5dp"
+                    android:text="预估佣金（元）" />
+                <TextView
                     android:id="@+id/tv_yongjin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -330,5 +429,7 @@
                 android:visibility="gone"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
-    </com.bbk.view.MyScrollViewNew>
+    </ScrollView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

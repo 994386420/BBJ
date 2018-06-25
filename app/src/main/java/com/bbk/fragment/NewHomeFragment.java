@@ -28,6 +28,7 @@ import android.widget.ViewFlipper;
 
 import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XScrollView;
+import com.bbk.Bean.FenXiangListBean;
 import com.bbk.Bean.NewHomeBlBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.NewHomeFxBean;
@@ -148,7 +149,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private CommonLoadingView zLoadingView;//加载框
     List<NewHomeCzgBean> czgBeans;//超值购数据
     List<NewHomePubaBean> pubaBeans;//扑吧数据
-    List<NewHomeBlBean> blBeans;//爆料数据
+    List<FenXiangListBean> blBeans;//爆料数据
     List<NewHomeFxBean> fxBeans;//发现数据
     private ImageButton imageButton;
     private String content;
@@ -288,6 +289,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     //首页数据请求
     private void initData() {
         Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid",userID);
         RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexInfo(
                  maps, new BaseObserver<String>(getActivity()) {
                     @Override
@@ -335,6 +337,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("type",type);
         maps.put("page",page+"");
+        maps.put("userid",userID);
         RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexByType(
                 maps, new BaseObserver<String>(getActivity()) {
                     @Override
@@ -395,7 +398,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             case R.id.ll_bl_layout:
                 flag ="3";
                 setView();
-                mIdex("3");
+                mIdex("5");
                 setText(mBlText,mBlView);
                 break;
             case R.id.ll_fx_layout:
@@ -477,10 +480,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                  refreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
-                        }else if (type.equals("3")){
-                            blBeans = JSON.parseArray(content, NewHomeBlBean.class);
+                        }else if (type.equals("5")){
+                            blBeans = JSON.parseArray(content, FenXiangListBean.class);
                             if (x == 1) {
-                                Refresh("3");
+                                Refresh("5");
                             }else if (x == 2) {
                                 if (blBeans != null && blBeans.size() > 0){
                                     homeadapter.notifyBlData(blBeans);
@@ -603,7 +606,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
     public void Refresh(String type){
         mSuspensionBar.setVisibility(View.GONE);
-        homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans,jo);
+        homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans,blBeans,jo);
         mrecyclerview.setAdapter(homeadapter);
 //        homeadapter.notifyDataSetChanged();
         if (homeadapter != null) {
@@ -651,7 +654,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     @Override
     public void onBlClick() {
         setView();
-        mIdex("3");
+        mIdex("5");
         setText(mBlText,mBlView);
     }
 

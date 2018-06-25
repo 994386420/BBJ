@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.NoFastClickUtils;
 import com.bbk.util.ShareJumpUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -133,14 +135,13 @@ public class JumpDetailActivty extends BaseActivity {
                     content = getIntent().getStringExtra("content");
                     initview();
                 }
-                getIndexByType();
+//                getIndexByType();
             }
         });
         if (getIntent().getStringExtra("content") != null) {
             content = getIntent().getStringExtra("content");
             initview();
         }
-        getIndexByType();
     }
 
     private void initview() {
@@ -159,6 +160,9 @@ public class JumpDetailActivty extends BaseActivity {
         rowkey = jumpBean.getRowkey();
         domain = jumpBean.getDomain();
         quans = jumpBean.getQuan();
+        if (rowkey != null && jumpBean.getTitle() != null) {
+            getIndexByType(rowkey,jumpBean.getTitle());
+        }
         if (quans != null && !quans.equals("") && !quans.equals("0")) {
             quan.setText("领券减" + jumpBean.getQuan());
         } else {
@@ -181,7 +185,15 @@ public class JumpDetailActivty extends BaseActivity {
         } else {
             bprice.setVisibility(View.GONE);
         }
-        tvMall.setText(jumpBean.getDomainCh());
+        if (domain != null){
+            if (domain.equals("taobao")){
+                tvMall.setText("淘宝");
+            }else if (domain.equals("tmall")){
+                tvMall.setText("天猫");
+            }else if (domain.equals("jd")){
+                tvMall.setText("京东");
+            }
+        }
         tvZuan.setText(jumpBean.getYongjin());
         tvZuan1.setText(jumpBean.getYongjin());
         bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -230,10 +242,17 @@ public class JumpDetailActivty extends BaseActivity {
         }
     }
 
-    private void getIndexByType() {
+    /**
+     * 猜你喜欢
+     * @param rowkey
+     */
+    private void getIndexByType(String rowkey,String title) {
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("type", "1");
         maps.put("page", 1 + "");
+        maps.put("rowkey",rowkey);
+        maps.put("title", title);
+        maps.put("userid",userID);
         RetrofitClient.getInstance(this).createBaseApi().queryAppIndexByType(
                 maps, new BaseObserver<String>(this) {
                     @Override
@@ -323,7 +342,11 @@ public class JumpDetailActivty extends BaseActivity {
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    shareCpsInfo();
+                    if (NoFastClickUtils.isFastClick()){
+                        StringUtil.showToast(this,"对不起，您的点击太快了，请休息一下");
+                    }else {
+                        shareCpsInfo();
+                    }
                 }
                 break;
             case R.id.ll_lingquan:
@@ -391,8 +414,10 @@ public class JumpDetailActivty extends BaseActivity {
                             if (jsonObject.optString("status").equals("1")) {
                                 content = jsonObject.optString("content");
                                 ShareBean shareBean = JSON.parseObject(content, ShareBean.class);
-                                Glide.with(JumpDetailActivty.this).load(shareBean.getImgUrl()).priority(Priority.HIGH).into(imageFenxiang);
-                                ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang);
+                                if (shareBean.getImgUrl() != null) {
+                                    Glide.with(JumpDetailActivty.this).load(shareBean.getImgUrl()).priority(Priority.HIGH).into(imageFenxiang);
+                                }
+                                ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang,shareBean.getWenan().replace("|","\n"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

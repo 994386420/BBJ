@@ -50,7 +50,10 @@
             android:text="鲸币明细"
             android:textSize="15dp" />
     </RelativeLayout>
-
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.bbk.view.MyScrollViewNew
         android:id="@+id/mscroll"
         android:visibility="visible"
@@ -402,5 +405,5 @@
             </ListView>
         </LinearLayout>
     </com.bbk.view.MyScrollViewNew>
-
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

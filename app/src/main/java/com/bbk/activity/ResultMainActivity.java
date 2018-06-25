@@ -26,7 +26,7 @@ import com.bbk.adapter.SecondAdapter5;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow3;
 import com.bbk.flow.ResultEvent;
-import com.bbk.fragment.SearchFragment;
+//import com.bbk.fragment.SearchFragment;
 import com.bbk.resource.Constants;
 import com.bbk.util.AppJsonFileReader;
 import com.bbk.util.HttpUtil;
@@ -463,7 +463,7 @@ public class ResultMainActivity extends BaseActivity
 	}
 	private void loadData() {
 		Map<String, String> paramsMap = new HashMap<String, String>();
-		paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
+//		paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
 		paramsMap.put("keyword", keyword);
 		paramsMap.put("productType", addition);
 		paramsMap.put("brand", brand);

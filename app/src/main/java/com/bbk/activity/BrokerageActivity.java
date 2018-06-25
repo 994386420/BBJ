@@ -20,6 +20,9 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.json.JSONObject;
 
@@ -75,6 +78,12 @@ public class BrokerageActivity extends BaseActivity {
     LinearLayout llThree;
     @BindView(R.id.ll_four)
     LinearLayout llFour;
+    @BindView(R.id.tv_fukuang_number_jinri)
+    TextView tvFukuangNumberJinri;
+    @BindView(R.id.tv_yongjin_jinri)
+    TextView tvYongjinJinri;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +92,7 @@ public class BrokerageActivity extends BaseActivity {
         View topView = findViewById(R.id.topbar_layout);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         ButterKnife.bind(this);
+        refreshLayout.setEnableLoadMore(false);
         titleText.setText("收益报表");
         tablayout.addTab(tablayout.newTab().setText("淘宝收益"));
         tablayout.addTab(tablayout.newTab().setText("京东收益"));
@@ -90,8 +100,16 @@ public class BrokerageActivity extends BaseActivity {
         tablayout.addOnTabSelectedListener(tabSelectedListener);
         StringUtil.setIndicator(tablayout, 50, 50);
         queryUserBrokerage();
+        refreshAndloda();
     }
-
+    private void refreshAndloda() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(final RefreshLayout refreshlayout) {
+                queryUserBrokerage();
+            }
+        });
+    }
     /**
      * table点击事件
      */
@@ -144,11 +162,21 @@ public class BrokerageActivity extends BaseActivity {
                                 tvMoney4.setText(brokerageBean.getFour());
                                 tvFukuangNumber.setText(brokerageBean.getPayCount());
                                 if (brokerageBean.getYesYongjinSum() != null && !brokerageBean.getYesYongjinSum().equals("")) {
-                                    tvYongjin.setText(brokerageBean.getYesYongjinSum());
+                                    tvYongjin.setText("¥ "+brokerageBean.getYesYongjinSum());
                                 } else {
                                     tvYongjin.setText("¥ 0.0");
                                 }
 
+                                if (brokerageBean.getJinYongjinSum() != null && !brokerageBean.getJinYongjinSum().equals("")) {
+                                    tvYongjinJinri.setText("¥ "+brokerageBean.getJinYongjinSum());
+                                } else {
+                                    tvYongjinJinri.setText("¥ 0.0");
+                                }
+                                if (brokerageBean.getJinpayCount() != null && !brokerageBean.getJinpayCount().equals("")) {
+                                    tvFukuangNumberJinri.setText(brokerageBean.getJinpayCount());
+                                } else {
+                                    tvFukuangNumberJinri.setText("0");
+                                }
                             } else {
                                 StringUtil.showToast(BrokerageActivity.this, jsonObject.optString("errmsg"));
                             }
@@ -160,6 +188,8 @@ public class BrokerageActivity extends BaseActivity {
                     @Override
                     protected void hideDialog() {
                         DialogSingleUtil.dismiss(0);
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadMore();
                     }
 
                     @Override
@@ -170,6 +200,8 @@ public class BrokerageActivity extends BaseActivity {
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadMore();
                         StringUtil.showToast(BrokerageActivity.this, e.message);
                     }
                 });
@@ -179,7 +211,7 @@ public class BrokerageActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout,R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four})
+    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -204,37 +236,37 @@ public class BrokerageActivity extends BaseActivity {
             case R.id.tablayout:
                 break;
             case R.id.ll_one:
-                intent = new Intent(this,BrokerageDetailActivity.class);
-                if (type.equals("1")){
+                intent = new Intent(this, BrokerageDetailActivity.class);
+                if (type.equals("1")) {
                     intent.putExtra("type", "t1");
-                }else {
+                } else {
                     intent.putExtra("type", "j1");
                 }
                 startActivity(intent);
                 break;
             case R.id.ll_two:
-                intent = new Intent(this,BrokerageDetailActivity.class);
-                if (type.equals("1")){
+                intent = new Intent(this, BrokerageDetailActivity.class);
+                if (type.equals("1")) {
                     intent.putExtra("type", "t2");
-                }else {
+                } else {
                     intent.putExtra("type", "j2");
                 }
                 startActivity(intent);
                 break;
             case R.id.ll_three:
-                intent = new Intent(this,BrokerageDetailActivity.class);
-                if (type.equals("1")){
+                intent = new Intent(this, BrokerageDetailActivity.class);
+                if (type.equals("1")) {
                     intent.putExtra("type", "t3");
-                }else {
+                } else {
                     intent.putExtra("type", "j3");
                 }
                 startActivity(intent);
                 break;
             case R.id.ll_four:
-                intent = new Intent(this,BrokerageDetailActivity.class);
-                if (type.equals("1")){
+                intent = new Intent(this, BrokerageDetailActivity.class);
+                if (type.equals("1")) {
                     intent.putExtra("type", "t4");
-                }else {
+                } else {
                     intent.putExtra("type", "j4");
                 }
                 startActivity(intent);

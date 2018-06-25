@@ -108,8 +108,12 @@ public class IntentActivity extends BaseActivity {
 				finish();
 			}
 		});
-		int drawS = getResources().getIdentifier(domain,"mipmap", getPackageName());
-		img3.setImageResource(drawS);
+		try {
+			int drawS = getResources().getIdentifier(domain,"mipmap", getPackageName());
+			img3.setImageResource(drawS);
+		}catch (Exception E){
+			E.printStackTrace();
+		}
 	}
 	@Override
 	protected void onDestroy() {
@@ -124,14 +128,22 @@ public class IntentActivity extends BaseActivity {
 	private void getJumpUrl() {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("userid", userID);
-		params.put("title", title);
-		params.put("url", url);
-		params.put("domain", domain);
+		if (title != null) {
+			params.put("title", title);
+		}
+		if (url != null) {
+			params.put("url", url);
+		}
+		if (domain != null) {
+			params.put("domain", domain);
+		}
 		params.put("client", "andorid");
 		if (isczg != null) {
 			params.put("isczg", isczg);// 如果是从超值购请求的   新增参数  isczg=1,否则可以不传
 		}
-		params.put("bprice",bprice);
+		if (bprice != null) {
+			params.put("bprice", bprice);
+		}
 		params.put("client", "andorid");
 		RetrofitClient.getInstance(this).createBaseApi().getJumpUrl(
 				params, new BaseObserver<String>(this) {

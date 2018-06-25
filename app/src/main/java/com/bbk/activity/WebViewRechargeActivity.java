@@ -5,8 +5,11 @@ import org.json.JSONObject;
 
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.view.MyWebView;
+import com.bbk.view.X5WebView;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,15 +21,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class WebViewRechargeActivity extends BaseActivity {
 	
-	private MyWebView webViewLayout;
+	private X5WebView webViewLayout;
 	private String htmlUrl = "";
 	protected ProgressBar bar;
 	private ImageButton topbar_goback_btn;
@@ -61,14 +62,14 @@ public class WebViewRechargeActivity extends BaseActivity {
 				  }
 			}
 		});
-		//支持JS
-        WebSettings settings = webViewLayout.getSettings();
-        settings.setJavaScriptEnabled(true);
-        //支持屏幕缩放
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-      //不显示webview缩放按钮
-        settings.setDisplayZoomControls(false);
+//		//支持JS
+//        WebSettings settings = webViewLayout.getSettings();
+//        settings.setJavaScriptEnabled(true);
+//        //支持屏幕缩放
+//        settings.setSupportZoom(true);
+//        settings.setBuiltInZoomControls(true);
+//      //不显示webview缩放按钮
+//        settings.setDisplayZoomControls(false);
 		loadWebPage(htmlUrl);
 	}
 	
@@ -77,8 +78,8 @@ public class WebViewRechargeActivity extends BaseActivity {
 			return ;
 		}
 		
-		WebSettings wSet = webViewLayout.getSettings();
-		wSet.setJavaScriptEnabled(true);
+//		WebSettings wSet = webViewLayout.getSettings();
+//		wSet.setJavaScriptEnabled(true);
 		
 		webViewLayout.setWebViewClient(new WebViewClient() {
 			@Override
@@ -94,21 +95,21 @@ public class WebViewRechargeActivity extends BaseActivity {
 //				return true;
 			}
 		});
-		webViewLayout.setWebChromeClient(new WebChromeClient() {
-	          @Override
-	          public void onProgressChanged(WebView view, int newProgress) {
-	              if (newProgress == 100) {
-	                  bar.setVisibility(View.GONE);
-	              } else {
-	                  if (View.GONE == bar.getVisibility()) {
-	                      bar.setVisibility(View.VISIBLE);
-	                  }
-	                  bar.setProgress(newProgress);
-	              }
-	              super.onProgressChanged(view, newProgress);
-	          }
-	          
-	      });
+//		webViewLayout.setWebChromeClient(new WebChromeClient() {
+//	          @Override
+//	          public void onProgressChanged(WebView view, int newProgress) {
+//	              if (newProgress == 100) {
+//	                  bar.setVisibility(View.GONE);
+//	              } else {
+//	                  if (View.GONE == bar.getVisibility()) {
+//	                      bar.setVisibility(View.VISIBLE);
+//	                  }
+//	                  bar.setProgress(newProgress);
+//	              }
+//	              super.onProgressChanged(view, newProgress);
+//	          }
+//
+//	      });
 		webViewLayout.loadUrl(pageUrl);
 	}
 	

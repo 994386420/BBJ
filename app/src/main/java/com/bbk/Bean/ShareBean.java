@@ -8,6 +8,15 @@ public class ShareBean {
     private String imgUrl;
     private String shareUrl;
     private String title;
+    private String wenan;//分享文案
+
+    public String getWenan() {
+        return wenan;
+    }
+
+    public void setWenan(String wenan) {
+        this.wenan = wenan;
+    }
 
     public String getTitle() {
         return title;

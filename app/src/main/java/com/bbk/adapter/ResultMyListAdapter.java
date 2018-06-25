@@ -173,10 +173,61 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 					case "1":
 						vh.intentbuy.setVisibility(View.VISIBLE);
 						vh.findsimilar.setVisibility(View.VISIBLE);
+						vh.intentbuy.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View arg0) {
+								String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+								queryCompareByUr(dataSet.getTitle(),dataSet.getUrl(),userID,dataSet.getGroupRowkey());
+							}
+						});
+						vh.findsimilar.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View arg0) {
+								String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+								Intent intent;
+								if (TextUtils.isEmpty(userID)) {
+									intent = new Intent(context, UserLoginNewActivity.class);
+									context.startActivityForResult(intent, 2);
+								} else {
+									//二级页面去发标
+									intent = new Intent(context, BidActivity.class);
+									intent.putExtra("rowkey",rowkey);
+									intent.putExtra("type","1");
+									intent.putExtra("price",dataSet.getPrice());
+									intent.putExtra("title",dataSet.getTitle());
+									intent.putExtra("imags",dataSet.getDetailImages());
+									context.startActivity(intent);
+								}
+							}
+						});
 						break;
 					case "2":
-						vh.intentbuy.setVisibility(View.GONE);
+						vh.intentbuy.setVisibility(View.VISIBLE);
 						vh.findsimilar.setVisibility(View.VISIBLE);
+						vh.tvQubuy.setText("去购买");
+						vh.findsimilar.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View arg0) {
+								String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+								Intent intent;
+								if (TextUtils.isEmpty(userID)) {
+									intent = new Intent(context, UserLoginNewActivity.class);
+									context.startActivityForResult(intent, 2);
+								} else {
+									//二级页面去发标
+									intent = new Intent(context, BidActivity.class);
+									intent.putExtra("rowkey",rowkey);
+									intent.putExtra("type","1");
+									intent.putExtra("price",dataSet.getPrice());
+									intent.putExtra("title",dataSet.getTitle());
+									intent.putExtra("imags",dataSet.getDetailImages());
+									context.startActivity(intent);
+								}
+							}
+						});
 						break;
 					case "3":
 						vh.intentbuy.setVisibility(View.GONE);
@@ -185,43 +236,18 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 					case "4":
 						vh.intentbuy.setVisibility(View.VISIBLE);
 						vh.findsimilar.setVisibility(View.GONE);
+						vh.intentbuy.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View arg0) {
+								String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+								queryCompareByUr(dataSet.getTitle(),dataSet.getUrl(),userID,dataSet.getGroupRowkey());
+							}
+						});
 						break;
 				}
 			}
-			vh.intentbuy.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View arg0) {
-//					Intent intent = new Intent(context, ResultDialogActivity.class);
-//					intent.putExtra("keyword",dataSet.getKeyword() );
-//					intent.putExtra("rowkey",rowkey );
-//					context.startActivity(intent);
-					String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-					queryCompareByUr(dataSet.getTitle(),dataSet.getUrl(),userID,dataSet.getGroupRowkey());
-				}
-			});
-			vh.findsimilar.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-//    				Intent intent = new Intent(context, CompareActivity.class);
-					String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-					Intent intent;
-					if (TextUtils.isEmpty(userID)) {
-						intent = new Intent(context, UserLoginNewActivity.class);
-						context.startActivityForResult(intent, 2);
-					} else {
-						//二级页面去发标
-					    intent = new Intent(context, BidActivity.class);
-						intent.putExtra("rowkey",rowkey);
-						intent.putExtra("type","1");
-						intent.putExtra("price",dataSet.getPrice());
-						intent.putExtra("title",dataSet.getTitle());
-						intent.putExtra("imags",dataSet.getDetailImages());
-						context.startActivity(intent);
-					}
-				}
-			});
 			if (dataSet.getYjson() == null){
 				//新增nessaleinfo字段，当url存在时直接跳转，不存在则隐藏跳转只显示优惠信息
 				if (dataSet.getNewsaleinfo() == null){
@@ -353,6 +379,8 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
 		TextView zuan;
 		@BindView(R.id.ll_quan)
 		LinearLayout llQuan;
+		@BindView(R.id.tv_qubuy)
+		TextView tvQubuy;
 
 		public ViewHolder(View mView) {
 			super(mView);

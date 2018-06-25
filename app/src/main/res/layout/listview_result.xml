@@ -164,6 +164,7 @@
                         android:paddingTop="5dp" >
 
                         <TextView
+                            android:id="@+id/tv_qubuy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="看比价"

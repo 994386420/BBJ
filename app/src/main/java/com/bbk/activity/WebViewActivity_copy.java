@@ -2,19 +2,20 @@ package com.bbk.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -27,19 +28,25 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyWebView;
-import com.tamic.jswebview.browse.JsWeb.CustomWebChromeClient;
-import com.tamic.jswebview.browse.JsWeb.CustomWebViewClient;
-import com.tamic.jswebview.view.ProgressBarWebView;
+import com.bbk.view.X5WebView;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class WebViewActivity_copy extends BaseActivity implements OnClickListener, ResultEvent{
 
-	private ProgressBarWebView mPbWebview;
+	private X5WebView mPbWebview;
 	private String url = "";
 //	protected ProgressBar bar;
 	private LinearLayout gongnenglan, home, shoucang, lookhistory, lookcompare;
@@ -59,6 +66,7 @@ public class WebViewActivity_copy extends BaseActivity implements OnClickListene
 	private boolean ishis = true;
 //	private int rowkeynum = 0;
 	public static Activity instance = null;
+	private ProgressBar progressbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +107,22 @@ public class WebViewActivity_copy extends BaseActivity implements OnClickListene
 		}
 
 		initView();
-		CustomWebChromeClient wvcc = new CustomWebChromeClient(mPbWebview.getProgressBar()) {
+		progressbar = new android.widget.ProgressBar(this, null,
+				android.R.attr.progressBarStyleHorizontal);
+		// 设置进度条的大小
+		progressbar.setLayoutParams(new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.FILL_PARENT,
+				5, 0, 0));
+		// 可以改变颜色
+		ClipDrawable d = new ClipDrawable(new ColorDrawable(getResources().getColor(R.color.tuiguang_color5)),
+				Gravity.LEFT, ClipDrawable.HORIZONTAL);
+		progressbar.setProgressDrawable(d);
+		progressbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+		// progressbar.setProgressDrawable(context.getResources().getDrawable(
+		// R.drawable.barbgimg));
+
+		mPbWebview.addView(progressbar);
+		WebChromeClient wvcc = new WebChromeClient() {
 			@Override
 			public void onReceivedTitle(WebView view, String title) {
 				webtitle = title;
@@ -137,12 +160,11 @@ public class WebViewActivity_copy extends BaseActivity implements OnClickListene
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				if (newProgress == 100) {
-					mPbWebview.getProgressBar().setVisibility(View.GONE);
+					progressbar.setVisibility(GONE);
 				} else {
-					if (View.GONE ==  mPbWebview.getProgressBar().getVisibility()) {
-						mPbWebview.getProgressBar().setVisibility(View.VISIBLE);
-					}
-					mPbWebview.getProgressBar().setProgress(newProgress);
+					if (progressbar.getVisibility() == GONE)
+						progressbar.setVisibility(VISIBLE);
+					progressbar.setProgress(newProgress);
 				}
 				super.onProgressChanged(view, newProgress);
 			}
@@ -230,7 +252,7 @@ public class WebViewActivity_copy extends BaseActivity implements OnClickListene
 
 	private void loadWebPage(String pageUrl) {
 		mPbWebview.loadUrl(pageUrl);
-		mPbWebview.setWebViewClient(new CustomWebViewClient(null) {
+		mPbWebview.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				if (!isintent) {
@@ -359,16 +381,16 @@ public class WebViewActivity_copy extends BaseActivity implements OnClickListene
 
 			}
 
-			@Override
-			public String onPageError(String url) {
-				return null;
-			}
-
-			@NonNull
-			@Override
-			public Map<String, String> onPageHeaders(String url) {
-				return null;
-			}
+//			@Override
+//			public String onPageError(String url) {
+//				return null;
+//			}
+//
+//			@NonNull
+//			@Override
+//			public Map<String, String> onPageHeaders(String url) {
+//				return null;
+//			}
 		});
 
 	}
@@ -459,9 +481,32 @@ public class WebViewActivity_copy extends BaseActivity implements OnClickListene
 //
 //			}
 //		}
-		if (mPbWebview.getWebView() != null) {
-			mPbWebview.setVisibility(View.GONE);
-			mPbWebview.getWebView().destroy();
+//		if (mPbWebview != null) {
+//			mPbWebview .destroy();
+////			mFl_web_view_layout.removeView(mWebView);
+//			ViewParent parent = mPbWebview .getParent();
+//			if (parent != null) {
+//				((ViewGroup) parent).removeView(mPbWebview );
+//			}
+//			mPbWebview  = null;
+//		}
+		if(null!=mPbWebview) {
+			if (null != this.mPbWebview.getView()) {
+				this.mPbWebview.getView().setVisibility(View.GONE);
+				long  timeout
+						= ViewConfiguration.getZoomControlsTimeout();
+
+				new Timer().schedule(new TimerTask(){
+					@Override
+					public void run() {
+						try {
+							((WebView)mPbWebview.getView()).destroy();
+						}catch (Exception e){
+
+						}
+					}
+				}, timeout+1000L);
+			}
 		}
 		super.onDestroy();
 	}

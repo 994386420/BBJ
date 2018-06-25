@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <com.tamic.jswebview.view.ProgressBarWebView
+        <com.bbk.view.X5WebView
         android:id="@+id/web_view_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

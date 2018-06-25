@@ -13,6 +13,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 
@@ -46,12 +47,18 @@ public class FloatingWindowService extends Service implements ResultEvent {
 			@Override
 			public void onPrimaryClipChanged() {
 					String text = clipboardManager.getText().toString();
-					if (text != null) {
-							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+					if (text != null && !text.equals("") && !text.equals("null")) {
+									if (text.contains("bbj")) {
+										NewConstants.copyText = text;
+									}
+
 //							Map<String, String> paramsMap = new HashMap<String, String>();
 //							paramsMap.put("url", text);
 //							dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap,FloatingWindowService.this,false);
-						checkExsistProduct(text);
+						if (!text.contains("标题:")){
+							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+						    checkExsistProduct(text);
+					}
 				}
 				// //获得当前activity的名字
 				// Intent intent = new Intent(getApplicationContext(),

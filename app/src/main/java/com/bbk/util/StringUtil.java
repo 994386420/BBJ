@@ -1,6 +1,9 @@
 package com.bbk.util;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
@@ -227,5 +230,50 @@ public class StringUtil {
 
 		}
 
+	}
+
+	public static boolean isWeixinAvilible(Context context) {
+		final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+		List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+		if (pinfo != null) {
+			for (int i = 0; i < pinfo.size(); i++) {
+				String pn = pinfo.get(i).packageName;
+				if (pn.equals("com.tencent.mm")) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+	 */
+	public static int dip2px(Context context, float dpValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
+	}
+
+	/**
+	 * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+	 */
+	public static int px2dip(Context context, float pxValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
+
+	/**
+	 * 设置缩放动画
+	 *
+	 * @param view
+	 */
+	public static void setScalse(View view) {
+		AnimatorSet set = new AnimatorSet();
+		ObjectAnimator animator_x = ObjectAnimator.ofFloat(view, "scaleX", 1.2f, 1.1f, 0.9f, 0.8f, 0.9f,1f);
+		ObjectAnimator animator_y = ObjectAnimator.ofFloat(view, "scaleY", 1.2f, 1.1f, 0.9f, 0.8f, 0.9f,1f);
+		set.play(animator_x).with(animator_y);
+		set.setDuration(500);
+		set.start();
 	}
 }

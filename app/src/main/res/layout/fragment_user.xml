@@ -5,6 +5,15 @@
     android:layout_height="wrap_content"
     android:background="#ffffff"
     android:orientation="vertical" >
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/xrefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <com.andview.refreshview.XScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -153,15 +162,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/xrefresh"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    <com.andview.refreshview.XScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none" >
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -199,7 +200,10 @@
                         android:text="鲸币"
                         android:textColor="#999999" />
                 </LinearLayout>
-
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#f3f3f3" />
                 <LinearLayout
                     android:id="@+id/mcollection"
                     android:layout_width="0dp"
@@ -207,6 +211,7 @@
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     android:padding="5dp" >
 
                     <TextView
@@ -553,6 +558,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="gone"
                 android:background="#f3f3f3" />
 
             <LinearLayout
@@ -564,6 +570,7 @@
                 android:paddingBottom="15dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="10dp"
+                android:visibility="gone"
                 android:paddingTop="15dp" >
 
                 <ImageView
@@ -739,6 +746,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
+                android:visibility="gone"
                 android:background="#f3f3f3" />
             <LinearLayout
                 android:id="@+id/maddress"
@@ -777,8 +785,9 @@
                 android:visibility="gone"
                 android:background="#f3f3f3" />
         </LinearLayout>
-    </com.andview.refreshview.XScrollView>
+    </LinearLayout>
+
+        </com.andview.refreshview.XScrollView>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-    </LinearLayout>
 </RelativeLayout>

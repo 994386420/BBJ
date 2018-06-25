@@ -35,6 +35,7 @@ import com.tencent.imsdk.TIMOfflinePushNotification;
 import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.qalsdk.sdk.MsfSdkUtils;
 import com.tencent.qcloud.sdk.Constant;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 
 import java.security.MessageDigest;
@@ -47,14 +48,21 @@ public class MyApplication extends Application {
 	 * 应用启动后是否是第一次打开排行榜单页面
 	 */
 	private boolean firstStartActivityRank = true;
-	 private static MyApplication app;
+	private static MyApplication app;
 	private static Context context;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		app = this;
+
+		//解决android N（>=24）系统以上分享 路径为file://时的 android.os.FileUriExposedException异常
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+			StrictMode.setVmPolicy(builder.build());
+		}
 		initTXYun();
+		initX5();
 		Foreground.init(this);
 		context = getApplicationContext();
 		//设置全局的Header构建器
@@ -149,6 +157,22 @@ public class MyApplication extends Application {
 	protected void attachBaseContext(Context base) {
 		super.attachBaseContext(base);
 		MultiDex.install(this);
+	}
+	/**
+	 * 初始化X5
+	 */
+	private void initX5() {
+		QbSdk.initX5Environment(this, new QbSdk.PreInitCallback() {
+			@Override
+			public void onCoreInitFinished() {
+
+			}
+
+			@Override
+			public void onViewInitFinished(boolean b) {
+
+			}
+		});
 	}
 	public void initTXYun(){
 		//初始化SDK基本配置

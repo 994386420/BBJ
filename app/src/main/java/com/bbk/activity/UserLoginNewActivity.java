@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.DataFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -317,10 +319,15 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				switch (requestCode) {
 					case 1:
 						if (dataJo.optString("status").equals("1")) {
+							Log.i("====",content);
 							JSONObject jsonObject = new JSONObject(content);
 							loginBtn.setText("立即登录");
 							loginBtn.setEnabled(true);
+							String isPartner = "";
 							String userID = jsonObject.optString("u_id");
+							if (jsonObject.has("isPartner")){
+								isPartner = jsonObject.optString("isPartner");
+							}
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "password", jsonObject.optString("u_pass"));
 							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "userID", userID);
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userLogin", jsonObject.optString("u_name"));
@@ -364,6 +371,11 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								setResult(3, intent);
 							}
 							finish();
+							if (isPartner != null && isPartner.equals("0")){
+								NewConstants.logFlag = "4";
+								intent = new Intent(this, TuiguangDialogActivity.class);
+								startActivity(intent);
+							}
 						}else {
 							StringUtil.showToast(UserLoginNewActivity.this,dataJo.optString("errmsg"));
 							loginBtn.setText("立即登录");

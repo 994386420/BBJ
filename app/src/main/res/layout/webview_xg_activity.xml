@@ -44,8 +44,9 @@
         android:layout_height="5dp"
         style="?android:attr/progressBarStyleHorizontal"
         android:max="100"
+			android:visibility="gone"
         />
-    <com.bbk.view.MyWebView
+    <com.bbk.view.X5WebView
         android:layout_below="@id/mProgressBar"
         android:id="@+id/web_view_layout"
         android:layout_width="match_parent"

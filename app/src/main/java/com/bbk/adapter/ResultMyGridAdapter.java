@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import com.bbk.activity.BidActivity;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.ResultDialogActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.client.BaseObserver;
@@ -115,6 +113,8 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
         TextView zuan;
         @BindView(R.id.ll_quan)
         LinearLayout llQuan;
+        @BindView(R.id.tv_qubuy)
+        TextView tvQubuy;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -220,15 +220,73 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
             }
 //				if ("1".equals(dataSet.get("isxianshi"))) {
             final String groupRowKey = dataSet.getGroupRowkey();
-            if (dataSet.getHidebutton() != null){
-                switch (dataSet.getHidebutton()){
+            if (dataSet.getHidebutton() != null) {
+                switch (dataSet.getHidebutton()) {
                     case "1":
                         vh.intentbuy.setVisibility(View.VISIBLE);
                         vh.mmoredomain.setVisibility(View.VISIBLE);
+                        vh.mmoredomain.setOnClickListener(new OnClickListener() {
+
+                            @Override
+                            public void onClick(View arg0) {
+//                    Intent intent = new Intent(context, ResultDialogActivity.class);
+////						intent.putExtra("tarr",dataSet.get("tarr").toString() );
+//                    intent.putExtra("keyword", dataSet.getKeyword());
+//                    intent.putExtra("rowkey", groupRowKey);
+//                    context.startActivity(intent);
+                                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                                queryCompareByUr(dataSet.getTitle(), dataSet.getUrl(), userID, dataSet.getGroupRowkey());
+                            }
+                        });
+                        vh.intentbuy.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+//						Intent intent = new Intent(context, CompareActivity.class);
+//						intent.putExtra("rowkey",groupRowKey );
+                                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                                Intent intent;
+                                if (TextUtils.isEmpty(userID)) {
+                                    intent = new Intent(context, UserLoginNewActivity.class);
+                                    context.startActivityForResult(intent, 2);
+                                } else {
+                                    //二级页面去发标
+                                    intent = new Intent(context, BidActivity.class);
+                                    intent.putExtra("rowkey", groupRowKey);
+                                    intent.putExtra("type", "1");
+                                    intent.putExtra("price", dataSet.getPrice());
+                                    intent.putExtra("title", dataSet.getTitle());
+                                    intent.putExtra("imags", dataSet.getDetailImages());
+                                    context.startActivity(intent);
+                                }
+                            }
+                        });
                         break;
                     case "2":
                         vh.intentbuy.setVisibility(View.VISIBLE);
-                        vh.mmoredomain.setVisibility(View.GONE);
+                        vh.mmoredomain.setVisibility(View.VISIBLE);
+                        vh.tvQubuy.setText("去购买");
+                        vh.intentbuy.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+//						Intent intent = new Intent(context, CompareActivity.class);
+//						intent.putExtra("rowkey",groupRowKey );
+                                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                                Intent intent;
+                                if (TextUtils.isEmpty(userID)) {
+                                    intent = new Intent(context, UserLoginNewActivity.class);
+                                    context.startActivityForResult(intent, 2);
+                                } else {
+                                    //二级页面去发标
+                                    intent = new Intent(context, BidActivity.class);
+                                    intent.putExtra("rowkey", groupRowKey);
+                                    intent.putExtra("type", "1");
+                                    intent.putExtra("price", dataSet.getPrice());
+                                    intent.putExtra("title", dataSet.getTitle());
+                                    intent.putExtra("imags", dataSet.getDetailImages());
+                                    context.startActivity(intent);
+                                }
+                            }
+                        });
                         break;
                     case "3":
                         vh.intentbuy.setVisibility(View.GONE);
@@ -237,44 +295,16 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
                     case "4":
                         vh.intentbuy.setVisibility(View.GONE);
                         vh.mmoredomain.setVisibility(View.VISIBLE);
+                        vh.mmoredomain.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                                queryCompareByUr(dataSet.getTitle(), dataSet.getUrl(), userID, dataSet.getGroupRowkey());
+                            }
+                        });
                         break;
                 }
             }
-            vh.mmoredomain.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-//                    Intent intent = new Intent(context, ResultDialogActivity.class);
-////						intent.putExtra("tarr",dataSet.get("tarr").toString() );
-//                    intent.putExtra("keyword", dataSet.getKeyword());
-//                    intent.putExtra("rowkey", groupRowKey);
-//                    context.startActivity(intent);
-                    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                    queryCompareByUr(dataSet.getTitle(),dataSet.getUrl(),userID,dataSet.getGroupRowkey());
-                }
-            });
-            vh.intentbuy.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-//						Intent intent = new Intent(context, CompareActivity.class);
-//						intent.putExtra("rowkey",groupRowKey );
-                    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                    Intent intent;
-                    if (TextUtils.isEmpty(userID)) {
-                        intent = new Intent(context, UserLoginNewActivity.class);
-                        context.startActivityForResult(intent, 2);
-                    } else {
-                        //二级页面去发标
-                        intent = new Intent(context, BidActivity.class);
-                        intent.putExtra("rowkey", groupRowKey);
-                        intent.putExtra("type", "1");
-                        intent.putExtra("price",dataSet.getPrice());
-                        intent.putExtra("title",dataSet.getTitle());
-                        intent.putExtra("imags",dataSet.getDetailImages());
-                        context.startActivity(intent);
-                    }
-                }
-            });
 
             if (dataSet.getYjson() != null) {
                 if (dataSet.getSaleinfo() == null) {
@@ -452,7 +482,7 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
         setBackgroundAlpha(1);
     }
 
-    private void queryCompareByUr(String webtitle,String weburl,String userID,String hrowkey) {
+    private void queryCompareByUr(String webtitle, String weburl, String userID, String hrowkey) {
         Map<String, String> params = new HashMap<>();
         params.put("title", webtitle);
         params.put("url", weburl);
@@ -466,19 +496,20 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
                             JSONObject jsonObject = new JSONObject(s);
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
-                                new WebViewAlertDialog(context).builder(content, "0",true,"webview").show();
+                                new WebViewAlertDialog(context).builder(content, "0", true, "webview").show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     protected void hideDialog() {
                         DialogSingleUtil.dismiss(0);
                     }
 
                     @Override
-                    protected void showDialog(){
+                    protected void showDialog() {
                         DialogSingleUtil.show(context);
                     }
 

@@ -1,6 +1,7 @@
 package com.bbk.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -54,6 +55,7 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 	private RelativeLayout mLoginLayout,mConfirmLayout;
 	private EditText mLoginEt,mConfirmEt;
 	private TextView mDescribr,mTitle;
+	private ClipboardManager clipboardManager;
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg) {
@@ -200,6 +202,10 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 		bangding_account = (EditText) findViewById(R.id.bangding_account);
 		bangding_code = (EditText) findViewById(R.id.bangding_code);
 		bangding_tjm = (EditText) findViewById(R.id.bangding_password);
+		clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+					if (NewConstants.copyText != null) {
+						bangding_tjm.setText(NewConstants.copyText);
+					}
 		bangding_goback_btn = (ImageButton) findViewById(R.id.bangding_goback_btn);
 		bangding_register = (TextView) findViewById(R.id.bangding_register);
 		bangding_register.setText("注册");

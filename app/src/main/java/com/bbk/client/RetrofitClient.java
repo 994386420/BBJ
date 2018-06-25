@@ -409,6 +409,26 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+    public  void parseCpsDomainMainUrl(Map<String, String> parameters, Observer<?> observer) {
+        apiService.parseCpsDomainMainUrl(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryCpsShareList(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCpsShareList(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void shareCpsInfos(Map<String, String> parameters, Observer<?> observer) {
+        apiService.shareCpsInfos(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

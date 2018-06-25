@@ -57,8 +57,8 @@
                         android:id="@+id/czg_view"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_gravity="center_horizontal|bottom"
                         android:background="@color/color_line_top" />
                 </LinearLayout>
@@ -86,8 +86,8 @@
                         android:id="@+id/bj_view"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@color/color_line_top"
                         android:visibility="gone" />
@@ -108,7 +108,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:padding="10dp"
-                        android:text="爆料"
+                        android:text="@string/home_baoliao_text"
                         android:textColor="@color/color_line_text"
                         android:textSize="14dp" />
 
@@ -116,8 +116,8 @@
                         android:id="@+id/bl_view"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@color/color_line_top"
                         android:visibility="gone" />
@@ -144,8 +144,8 @@
                         android:id="@+id/fx_view"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@color/color_line_top"
                         android:visibility="gone" />

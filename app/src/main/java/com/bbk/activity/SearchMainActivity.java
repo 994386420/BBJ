@@ -66,7 +66,7 @@ import com.bbk.dao.SearchHistoryDao;
 import com.bbk.evaluator.BGAlphaEvaluator;
 import com.bbk.flow.DataFlow3;
 import com.bbk.flow.ResultEvent;
-import com.bbk.fragment.SearchFragment;
+//import com.bbk.fragment.SearchFragment;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.AppJsonFileReader;
 import com.bbk.util.ClipDialogUtil;
@@ -596,20 +596,20 @@ public class SearchMainActivity extends ActivityGroup implements
         addView(SEARCH_MAIN_PROMPT, SearchPromptActivity.class);
     }
 
-    private void goBack() {
-        View view = getWindow().peekDecorView();
-        if (view != null) {
-            InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-        finish();
-    }
+//    private void goBack() {
+//        View view = getWindow().peekDecorView();
+//        if (view != null) {
+//            InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//        }
+//        finish();
+//    }
 
-    @Override
-    public void finish() {
-        closeKeybord(searchText, SearchMainActivity.this);
-        super.finish();
-    }
+//    @Override
+//    public void finish() {
+//        closeKeybord(searchText, SearchMainActivity.this);
+//        super.finish();
+//    }
 
 
     @Override
@@ -667,7 +667,7 @@ public class SearchMainActivity extends ActivityGroup implements
     }
     private void loadData() {
         Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
+//        paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
         paramsMap.put("keyword", keyword);
         paramsMap.put("productType", addition);
         paramsMap.put("brand", brand);
@@ -779,7 +779,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 }
                 break;
             case R.id.topbar_goback_btn:
-                goBack();
+                finish();
                 break;
             case R.id.topbar_search_btn:
                 StatService.onEvent(SearchMainActivity.this, "search", "搜索产品:搜索页面");
@@ -1691,49 +1691,52 @@ public class SearchMainActivity extends ActivityGroup implements
                     if (isrequest == true) {
                         try {
                             Map<String, String> params = new HashMap<>();
-                            if (searchResultBeans.get(requestnum).getPurl() != null) {
-                                String str;
-                                String content;
-                                params.put("domain", searchResultBeans.get(requestnum).getDomain());
-                                params.put("rowkey", searchResultBeans.get(requestnum).getGroupRowkey());
-                                params.put("url", searchResultBeans.get(requestnum).getUrl());
-                                params.put("title", searchResultBeans.get(requestnum).getTitle());
-                                params.put("bprice", searchResultBeans.get(requestnum).getPrice());
-                                params.put("fromwhere", "android" + keyword);
-                                if (searchResultBeans.get(requestnum).getPurl().contains("||")) {
-                                    String url = searchResultBeans.get(requestnum).getPurl();
-                                    String[] split = url.split("\\|\\|");
-                                    String referrer = split[1];
-                                    content = HttpUtil.getHttp1(params, split[0], SearchMainActivity.this, referrer);
-                                    params.put("pcontent", content);
-                                    str = HttpUtil.getHttp(params, BaseApiService.Base_URL + "checkService/checkProduct", SearchMainActivity.this);
-                                } else {
-                                    content = HttpUtil.getHttp1(params, searchResultBeans.get(requestnum).getPurl(), SearchMainActivity.this, null);
-                                    params.put("pcontent", content);
-                                    str = HttpUtil.getHttp(params, BaseApiService.Base_URL + "checkService/checkProduct", SearchMainActivity.this);
-                                }
-//                                Log.i("===========", str + requestnum);
-                                JSONObject object = new JSONObject(str);
-                                if ("3".equals(object.optString("type"))) {
-                                    if ("".equals(object.optString("url"))) {
-                                        content = HttpUtil.getHttp1(params, searchResultBeans.get(requestnum).getUrl(), SearchMainActivity.this, null);
+                            if (searchResultBeans != null && searchResultBeans.size() > 0) {
+                                if (searchResultBeans.get(requestnum).getPurl() != null) {
+                                    String str;
+                                    String content;
+                                    params.put("domain", searchResultBeans.get(requestnum).getDomain());
+                                    params.put("rowkey", searchResultBeans.get(requestnum).getGroupRowkey());
+                                    params.put("url", searchResultBeans.get(requestnum).getUrl());
+                                    params.put("title", searchResultBeans.get(requestnum).getTitle());
+                                    params.put("bprice", searchResultBeans.get(requestnum).getPrice());
+                                    params.put("fromwhere", "android" + keyword);
+                                    if (searchResultBeans.get(requestnum).getPurl().contains("||")) {
+                                        String url = searchResultBeans.get(requestnum).getPurl();
+                                        String[] split = url.split("\\|\\|");
+                                        String referrer = split[1];
+                                        content = HttpUtil.getHttp1(params, split[0], SearchMainActivity.this, referrer);
+                                        params.put("pcontent", content);
+                                        str = HttpUtil.getHttp(params, BaseApiService.Base_URL + "checkService/checkProduct", SearchMainActivity.this);
                                     } else {
-                                        content = HttpUtil.getHttp1(params, object.optString("url"), SearchMainActivity.this, null);
+                                        content = HttpUtil.getHttp1(params, searchResultBeans.get(requestnum).getPurl(), SearchMainActivity.this, null);
+                                        params.put("pcontent", content);
+                                        str = HttpUtil.getHttp(params, BaseApiService.Base_URL + "checkService/checkProduct", SearchMainActivity.this);
                                     }
-                                    params.put("pcontent", content);
-                                    String url = BaseApiService.Base_URL + "checkService/checkProduct";
-                                    str = HttpUtil.getHttp(params, url, SearchMainActivity.this);
+//                                Log.i("===========", str + requestnum);
+                                    JSONObject object = new JSONObject(str);
+                                    if ("3".equals(object.optString("type"))) {
+                                        if ("".equals(object.optString("url"))) {
+                                            content = HttpUtil.getHttp1(params, searchResultBeans.get(requestnum).getUrl(), SearchMainActivity.this, null);
+                                        } else {
+                                            content = HttpUtil.getHttp1(params, object.optString("url"), SearchMainActivity.this, null);
+                                        }
+                                        params.put("pcontent", content);
+                                        String url = BaseApiService.Base_URL + "checkService/checkProduct";
+                                        str = HttpUtil.getHttp(params, url, SearchMainActivity.this);
+                                    }
+                                    Message mes = handler.obtainMessage();
+                                    mes.obj = str;
+                                    mes.arg1 = requestnum;
+                                    mes.what = 0;
+                                    handler.sendMessage(mes);
                                 }
-                                Message mes = handler.obtainMessage();
-                                mes.obj = str;
-                                mes.arg1 = requestnum;
-                                mes.what = 0;
-                                handler.sendMessage(mes);
+
+                                if (requestnum + 1 >= searchResultBeans.size()) {
+                                    isrequest = false;
+                                }
+                                requestnum++;
                             }
-                            if (requestnum + 1 >= searchResultBeans.size()) {
-                                isrequest = false;
-                            }
-                            requestnum++;
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -2152,6 +2155,10 @@ public class SearchMainActivity extends ActivityGroup implements
                         mshaixuanbox.setVisibility(View.VISIBLE);
                         msuccessLayout.setVisibility(View.VISIBLE);
                         mlistView.setVisibility(View.GONE);
+                        if (tmp1.equals("[]")){
+                            tipsLayout.setVisibility(View.VISIBLE);
+                            tipsKeys.setText("没有找到相关商品");
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

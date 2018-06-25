@@ -12,6 +12,25 @@ public class BrokerageBean {
     private String four;  // 上个月付款预估
     private String payCount;  //昨日购买数量
     private String yesYongjinSum;  //昨日获得佣金
+    private String jinpayCount;  //今日购买数量
+    private String jinYongjinSum;  //今日获得佣金
+
+
+    public String getJinpayCount() {
+        return jinpayCount;
+    }
+
+    public void setJinpayCount(String jinpayCount) {
+        this.jinpayCount = jinpayCount;
+    }
+
+    public String getJinYongjinSum() {
+        return jinYongjinSum;
+    }
+
+    public void setJinYongjinSum(String jinYongjinSum) {
+        this.jinYongjinSum = jinYongjinSum;
+    }
 
     public String getFour() {
         return four;

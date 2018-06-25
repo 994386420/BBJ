@@ -180,7 +180,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
 //                        if (AlibcLogin.getInstance().isLogin() == true) {
                         if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
                             intent = new Intent(context, IntentActivity.class);
-                            if (newHomeCzgBean.get(position).getUrl() != null) {
+                            if (newHomeCzgBean.get(position).getRequestUrl() != null) {
                                 intent.putExtra("url", newHomeCzgBean.get(position).getRequestUrl());
                             }
                             if (newHomeCzgBean.get(position).getTitle() != null) {

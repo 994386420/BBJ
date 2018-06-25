@@ -2,51 +2,48 @@ package com.bbk.activity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.alibaba.baichuan.android.trade.AlibcTrade;
-import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
-import com.alibaba.baichuan.android.trade.model.AlibcTaokeParams;
-import com.alibaba.baichuan.android.trade.model.OpenType;
-import com.alibaba.baichuan.android.trade.page.AlibcPage;
-import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.dialog.WebViewAlertDialog;
 import com.bbk.flow.DataFlow4;
 import com.bbk.flow.ResultEvent;
-import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
-import com.bbk.view.MyWebView;
-import com.kepler.jd.Listener.OpenAppAction;
-import com.kepler.jd.login.KeplerApiManager;
-import com.kepler.jd.sdk.bean.KeplerAttachParameter;
-import com.tamic.jswebview.browse.JsWeb.CustomWebChromeClient;
-import com.tamic.jswebview.browse.JsWeb.CustomWebViewClient;
+import com.bbk.view.X5WebView;
 import com.tamic.jswebview.view.NumberProgressBar;
-import com.tamic.jswebview.view.ProgressBarWebView;
-
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebViewClient;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.tencent.smtt.sdk.WebView;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class WebViewActivity extends BaseActivity implements OnClickListener, ResultEvent{
 
-	private ProgressBarWebView webViewLayout;
+	private X5WebView webViewLayout;
 	private String url = "";
 	protected NumberProgressBar bar;
 	private LinearLayout gongnenglan, home, shoucang, lookhistory, lookcompare;
@@ -68,16 +65,12 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 	public static Activity instance = null;
 //	private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
 //	private Map<String, String> exParams;//yhhpass参数
+   private ProgressBar progressbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.web_view_activity);
-//		alibcShowParams = new AlibcShowParams(OpenType.Native, false);
-//		alibcShowParams.setClientType("taobao_scheme");
-//		exParams = new HashMap<>();
-//		exParams.put("isv_code", "appisvcode");
-//		exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
 		dataFlow = new DataFlow4(this);
 		instance = this;
 		getWindow().setBackgroundDrawable(null);
@@ -132,7 +125,23 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		}
 		}
 		initView();
-		CustomWebChromeClient wvcc = new CustomWebChromeClient(webViewLayout.getProgressBar()) {
+
+		progressbar = new android.widget.ProgressBar(this, null,
+				android.R.attr.progressBarStyleHorizontal);
+		// 设置进度条的大小
+		progressbar.setLayoutParams(new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.FILL_PARENT,
+				5, 0, 0));
+		// 可以改变颜色
+		ClipDrawable d = new ClipDrawable(new ColorDrawable(getResources().getColor(R.color.tuiguang_color5)),
+				Gravity.LEFT, ClipDrawable.HORIZONTAL);
+		progressbar.setProgressDrawable(d);
+		progressbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+		// progressbar.setProgressDrawable(context.getResources().getDrawable(
+		// R.drawable.barbgimg));
+
+		webViewLayout.addView(progressbar);
+		WebChromeClient wvcc = new WebChromeClient() {
 			@Override
 			public void onReceivedTitle(WebView view, String title) {
 				webtitle = title;
@@ -144,7 +153,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 							queryCompareByUrl();
 							reurl1 = weburl;
 						} else {
-							gongnenglan.setVisibility(View.GONE);
+							gongnenglan.setVisibility(GONE);
 						}
 					} else {
 						if (weburl.contains("product") || weburl.contains("Product") || weburl.contains("detail")
@@ -155,14 +164,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 								queryCompareByUrl();
 								reurl1 = weburl;
 							} else {
-								gongnenglan.setVisibility(View.GONE);
+								gongnenglan.setVisibility(GONE);
 							}
 
 						} else {
-							gongnenglan.setVisibility(View.GONE);
+							gongnenglan.setVisibility(GONE);
 						}
 					}
-
+//
 				}
 				super.onReceivedTitle(view, title);
 			}
@@ -170,15 +179,15 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				if (newProgress == 100) {
-					webViewLayout.getProgressBar().setVisibility(View.GONE);
+					progressbar.setVisibility(GONE);
 				} else {
-					if (View.GONE == webViewLayout.getProgressBar().getVisibility()) {
-						webViewLayout.getProgressBar().setVisibility(View.VISIBLE);
-					}
-					webViewLayout.getProgressBar().setProgress(newProgress);
+					if (progressbar.getVisibility() == GONE)
+						progressbar.setVisibility(VISIBLE);
+					progressbar.setProgress(newProgress);
 				}
 				super.onProgressChanged(view, newProgress);
 			}
+
 
 		};
 		// 设置setWebChromeClient对象
@@ -223,9 +232,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		lookhistory = $(R.id.lookhistory);
 		String showis = SharedPreferencesUtil.getSharedData(this, "isshowhis", "showhis");
 		if (!TextUtils.isEmpty(showis) && "1".equals(showis)) {
-			lookhistory.setVisibility(View.VISIBLE);
+			lookhistory.setVisibility(VISIBLE);
 		} else {
-			lookhistory.setVisibility(View.GONE);
+			lookhistory.setVisibility(GONE);
 		}
 		home.setOnClickListener(this);
 		shoucang.setOnClickListener(this);
@@ -263,13 +272,18 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		if (pageUrl != null){
 			webViewLayout.loadUrl(pageUrl);
 		}
-		webViewLayout.setWebViewClient(new CustomWebViewClient(null) {
+		webViewLayout.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				if (!isintent) {
 					if (url.contains("bbjtech://")) {
+						//跳转到邀请好友页面
+						if (url.contains("yaoqing")){
+						Intent intent = new Intent(WebViewActivity.this, CoinGoGoGoActivity.class);
+						intent.putExtra("type", "1");
+						startActivity(intent);
+					    }
 						Uri uri = Uri.parse(url);
-
 						try {
 							JSONObject jsonObject = new JSONObject();
 							// String host = uri.getHost();
@@ -301,11 +315,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 					}
 
 				}
+				weburl = url;
+//				view.loadUrl(url);
 				if (!url.startsWith("http:") && !url.startsWith("https:")) {
 					return true;
 				}
-				weburl = url;
-
 				return super.shouldOverrideUrlLoading(view, url);
 			}
 
@@ -344,7 +358,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 									queryCompareByUrl();
 									reurl1 = weburl;
 								} else {
-									gongnenglan.setVisibility(View.GONE);
+									gongnenglan.setVisibility(GONE);
 								}
 							}else{
 
@@ -358,11 +372,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 										queryCompareByUrl();
 										reurl1 = weburl;
 									} else {
-										gongnenglan.setVisibility(View.GONE);
+										gongnenglan.setVisibility(GONE);
 									}
 
 								} else {
-									gongnenglan.setVisibility(View.GONE);
+									gongnenglan.setVisibility(GONE);
 								}
 
 							}
@@ -390,17 +404,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 					}
 				}
 
-			}
-
-			@Override
-			public String onPageError(String url) {
-				return null;
-			}
-
-			@NonNull
-			@Override
-			public Map<String, String> onPageHeaders(String url) {
-				return null;
 			}
 		});
 
@@ -455,7 +458,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			// startActivity(intent);
 			break;
 			case R.id.topbar_goback_btn:
-				finish();
+				if(webViewLayout.canGoBack()){
+					webViewLayout.goBack();
+				}else{
+					finish();
+				}
 				break;
 		default:
 			break;
@@ -464,17 +471,46 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		// TODO Auto-generated method stub
+		if(keyCode == KeyEvent.KEYCODE_BACK && webViewLayout.canGoBack()){
+			webViewLayout.goBack();
+			return true;
+		}else{
 			finish();
 		}
-		return super.onKeyDown(keyCode, event);
+		return true;
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (webViewLayout.getWebView() != null) {
-			webViewLayout.setVisibility(View.GONE);
-			webViewLayout.getWebView().destroy();
+//		if (webViewLayout != null) {
+//			webViewLayout.destroy();
+////			mFl_web_view_layout.removeView(mWebView);
+//			ViewParent parent = webViewLayout.getParent();
+//			if (parent != null) {
+//				((ViewGroup) parent).removeView(webViewLayout);
+//			}
+//			webViewLayout = null;
+//		}
+
+		if(null!=webViewLayout) {
+			if (null != this.webViewLayout.getView()) {
+				this.webViewLayout.getView().setVisibility(View.GONE);
+				long  timeout
+						= ViewConfiguration.getZoomControlsTimeout();
+
+				new Timer().schedule(new TimerTask(){
+					@Override
+					public void run() {
+						try {
+							((WebView)webViewLayout.getView()).destroy();
+						}catch (Exception e){
+
+						}
+					}
+				}, timeout+1000L);
+			}
+		}
 			// 如果先调用destroy()方法，则会命中if (isDestroyed())
 			// return;这一行代码，需要先onDetachedFromWindow()，再
 			// destory()
@@ -497,7 +533,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 //
 //				}
 //			}
-		}
+//		}
 		super.onDestroy();
 	}
 //	@Override
@@ -566,18 +602,18 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		case 3:
 			try {
 				if (dataJo.optInt("status") <= 0) {
-					gongnenglan.setVisibility(View.GONE);
+					gongnenglan.setVisibility(GONE);
 				} else {
 					JSONObject jsonObject = new JSONObject(content);
 					int iscollect = jsonObject.optInt("iscollect");
 					if (!jsonObject.has("hisurl")) {
-						lookhistory.setVisibility(View.GONE);
+						lookhistory.setVisibility(GONE);
 						ishis   = false;
 					}else {
-						lookhistory.setVisibility(View.VISIBLE);
+						lookhistory.setVisibility(VISIBLE);
 						ishis   = true;
 					}
-					gongnenglan.setVisibility(View.VISIBLE);
+					gongnenglan.setVisibility(VISIBLE);
 					if (iscollect == 1) {
 						collectimg.setImageResource(R.mipmap.three_05);
 						shoucang.setEnabled(false);
@@ -643,4 +679,5 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 ////			});
 //		}
 //	};
+
 }

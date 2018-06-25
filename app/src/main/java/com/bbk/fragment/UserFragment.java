@@ -276,7 +276,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                         }
                                     }
                                     signnum = "+" + str;
-                                    num = Integer.valueOf(jinbi) + Integer.valueOf(str);
+                                    if (jinbi != null && str != null) {
+                                        num = Integer.valueOf(jinbi) + Integer.valueOf(str);
+                                    }
                                     mjb.setText(jinbi);
                                     mcollectnum.setText(collect);
                                     mfootnum.setText(footprint);
@@ -293,7 +295,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     } else {
                                         mnewmsg.setVisibility(View.GONE);
                                     }
-                                    initsignnum(sign);
+                                    if (sign != null) {
+                                        initsignnum(sign);
+                                    }
                             } else {
                                 StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
                             }

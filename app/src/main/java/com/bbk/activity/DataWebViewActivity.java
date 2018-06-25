@@ -10,8 +10,11 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.MD5Util;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyWebView;
+import com.bbk.view.X5WebView;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.tencent.tauth.Tencent;
 
 import android.content.Intent;
@@ -23,10 +26,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,7 +41,7 @@ public class DataWebViewActivity extends BaseActivity{
 
 
 	private ProgressBar bar;
-	private MyWebView webViewLayout;
+	private X5WebView webViewLayout;
 	private String htmlUrl = "";
 	private ImageButton topbar_goback_btn;
 	private TextView title;
@@ -78,14 +80,14 @@ public class DataWebViewActivity extends BaseActivity{
 				  }
 			}
 		});
-		//支持JS
-        WebSettings settings = webViewLayout.getSettings();
-        settings.setJavaScriptEnabled(true);
-        //支持屏幕缩放
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-      //不显示webview缩放按钮
-        settings.setDisplayZoomControls(false);
+//		//支持JS
+//        WebSettings settings = webViewLayout.getSettings();
+//        settings.setJavaScriptEnabled(true);
+//        //支持屏幕缩放
+//        settings.setSupportZoom(true);
+//        settings.setBuiltInZoomControls(true);
+//      //不显示webview缩放按钮
+//        settings.setDisplayZoomControls(false);
 		loadWebPage(htmlUrl);
 	}
 	
@@ -94,38 +96,38 @@ public class DataWebViewActivity extends BaseActivity{
 			return ;
 		}
 		
-		WebSettings wSet = webViewLayout.getSettings();
-		wSet.setJavaScriptEnabled(true);
-		
+//		WebSettings wSet = webViewLayout.getSettings();
+//		wSet.setJavaScriptEnabled(true);
+
 		webViewLayout.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				
+
 				if(!url.startsWith("http:") && !url.startsWith("https:")) {
 					return true;
 				}
 				return super.shouldOverrideUrlLoading(view, url);
-				
+
 //				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //				startActivity(intent);
 //				return true;
 			}
 		});
-		webViewLayout.setWebChromeClient(new WebChromeClient() {
-	          @Override
-	          public void onProgressChanged(WebView view, int newProgress) {
-	              if (newProgress == 100) {
-	                  bar.setVisibility(View.GONE);
-	              } else {
-	                  if (View.GONE == bar.getVisibility()) {
-	                      bar.setVisibility(View.VISIBLE);
-	                  }
-	                  bar.setProgress(newProgress);
-	              }
-	              super.onProgressChanged(view, newProgress);
-	          }
-	          
-	      });
+//		webViewLayout.setWebChromeClient(new WebChromeClient() {
+//	          @Override
+//	          public void onProgressChanged(WebView view, int newProgress) {
+//	              if (newProgress == 100) {
+//	                  bar.setVisibility(View.GONE);
+//	              } else {
+//	                  if (View.GONE == bar.getVisibility()) {
+//	                      bar.setVisibility(View.VISIBLE);
+//	                  }
+//	                  bar.setProgress(newProgress);
+//	              }
+//	              super.onProgressChanged(view, newProgress);
+//	          }
+//
+//	      });
 		webViewLayout.loadUrl(pageUrl);
 	}
 	
@@ -174,15 +176,24 @@ public class DataWebViewActivity extends BaseActivity{
 	}
 	@Override
 	protected void onDestroy() {
-		setContentView(R.layout.view_null);
-		System.gc();
+//		setContentView(R.layout.view_null);
+//		System.gc();
+		if (webViewLayout != null) {
+			webViewLayout .destroy();
+//			mFl_web_view_layout.removeView(mWebView);
+			ViewParent parent = webViewLayout .getParent();
+			if (parent != null) {
+				((ViewGroup) parent).removeView(webViewLayout );
+			}
+			webViewLayout  = null;
+		}
 		super.onDestroy();
 	}
-	@Override
-	public void finish() {
-		ViewGroup view = (ViewGroup) getWindow().getDecorView();
-		view.removeAllViews();
-		super.finish();
-	}
+//	@Override
+//	public void finish() {
+//		ViewGroup view = (ViewGroup) getWindow().getDecorView();
+//		view.removeAllViews();
+//		super.finish();
+//	}
 	
 }

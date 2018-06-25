@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -14,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +26,9 @@ import android.widget.ViewFlipper;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.FenXiangItemBean;
+import com.bbk.Bean.FenXiangListBean;
 import com.bbk.Bean.NewHomeBlBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.NewHomeFxBean;
@@ -38,6 +44,7 @@ import com.bbk.activity.QueryHistoryActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.SortActivity;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewWZActivity;
 import com.bbk.client.BaseObserver;
@@ -53,8 +60,12 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.JumpIntentUtil;
+import com.bbk.util.NoFastClickUtils;
+import com.bbk.util.ShareFenXiangUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.CircleImageView1;
+import com.bbk.view.MyGridView;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
@@ -107,17 +118,19 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     String typee;
     List<NewHomeCzgBean> czgBeans;
     List<NewHomePubaBean> newHomePubaBeans;
-    private List<NewHomeBlBean> newHomeBlBean;
+    private List<FenXiangListBean> fenXiangListBeans;
+//    private List<FenXiangListBean> newHomeBlBean;
     private List<NewHomeFxBean> fxBeans;
     //第一次引导页是否显示隐藏
     private boolean isshowzhezhao = true;
     private boolean isHomeGudie = false;
     Guide guide;
     private int showTimes = 0;
+    private ShareFenXiangUtil shareFenXiangUtil;
 
 
     public NewHomeAdapter(Context context, List<Map<String, String>> taglist, JSONArray banner, JSONArray tag, JSONArray fabiao, JSONArray gongneng, String type,
-                          List<NewHomeCzgBean> newHomeCzgBean, List<NewHomePubaBean> newHomePubaBeans, List<NewHomeBlBean> newHomeBlBean, List<NewHomeFxBean> fxBeans, JSONObject jo) {
+                          List<NewHomeCzgBean> newHomeCzgBean, List<NewHomePubaBean> newHomePubaBeans, List<FenXiangListBean> newHomeBlBean, List<NewHomeFxBean> fxBeans,List<FenXiangListBean> fenXiangListBeans, JSONObject jo) {
         this.context = context;
         this.tag = tag;
         this.gongneng = gongneng;
@@ -128,8 +141,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         this.typee = type;
         this.newHomeCzgBean = newHomeCzgBean;
         this.newHomePubaBeans = newHomePubaBeans;
-        this.newHomeBlBean = newHomeBlBean;
+//        this.newHomeBlBean = newHomeBlBean;
         this.fxBeans = fxBeans;
+        this.fenXiangListBeans = fenXiangListBeans;
 //        this.mlistview = recyclerView;
     }
 
@@ -150,28 +164,33 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     }
 
     public void notifyData(List<NewHomeCzgBean> newHomeCzgBeans) {
-        if (newHomeCzgBeans != null) {
+        if (newHomeCzgBeans != null && newHomeCzgBeans.size() > 0) {
             this.newHomeCzgBean.addAll(newHomeCzgBeans);
             notifyDataSetChanged();
         }
     }
 
     public void notifyBjData(List<NewHomePubaBean> newHomePubaBeans) {
-        if (newHomePubaBeans != null) {
+        if (newHomePubaBeans != null&& newHomePubaBeans.size() > 0) {
             this.newHomePubaBeans.addAll(newHomePubaBeans);
             notifyDataSetChanged();
         }
     }
 
-    public void notifyBlData(List<NewHomeBlBean> blBeans) {
-        if (blBeans != null) {
-            this.newHomeBlBean.addAll(blBeans);
+//    public void notifyBlData(List<NewHomeBlBean> blBeans) {
+//        if (blBeans != null&& blBeans.size() > 0) {
+//            this.newHomeBlBean.addAll(blBeans);
+//            notifyDataSetChanged();
+//        }
+//    }
+    public void notifyBlData(List<FenXiangListBean> fenXiangListBeans) {
+        if (fenXiangListBeans != null&& fenXiangListBeans.size() > 0) {
+            this.fenXiangListBeans.addAll(fenXiangListBeans);
             notifyDataSetChanged();
         }
     }
-
     public void notifyFxData(List<NewHomeFxBean> fxBeans) {
-        if (fxBeans != null) {
+        if (fxBeans != null&& fxBeans.size() > 0) {
             this.fxBeans.addAll(fxBeans);
             notifyDataSetChanged();
         }
@@ -208,9 +227,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                 ViewHolderBj ViewHolder = new ViewHolderBj(
                         LayoutInflater.from(context).inflate(R.layout.bid_acceptance_listview, parent, false));
                 return ViewHolder;
-            } else if (typee.equals("3")) {
-                ViewHolderBl ViewHolder = new ViewHolderBl(
-                        LayoutInflater.from(context).inflate(R.layout.bl_item_layout, parent, false));
+            } else if (typee.equals("5")) {
+                ViewHolder ViewHolder = new ViewHolder(
+                        LayoutInflater.from(context).inflate(R.layout.fenxiang_list_layout, parent, false));
                 return ViewHolder;
             } else if (typee.equals("4")) {
                 ViewHolderFx ViewHolder = new ViewHolderFx(
@@ -228,25 +247,25 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     @Override
     public int getItemCount() {
         if (typee.equals("1")) {
-            if (newHomeCzgBean != null) {
+            if (newHomeCzgBean != null && newHomeCzgBean.size() > 0) {
                 return 1 + newHomeCzgBean.size();
             } else {
                 return 1;
             }
         } else if (typee.equals("2")) {
-            if (newHomePubaBeans != null) {
+            if (newHomePubaBeans != null && newHomePubaBeans.size() >0) {
                 return 1 + newHomePubaBeans.size();
             } else {
                 return 1;
             }
-        } else if (typee.equals("3")) {
-            if (newHomeBlBean != null) {
-                return 1 + newHomeBlBean.size();
+        } else if (typee.equals("5")) {
+            if (fenXiangListBeans != null && fenXiangListBeans.size() >0) {
+                return 1 + fenXiangListBeans.size();
             } else {
                 return 1;
             }
         } else if (typee.equals("4")) {
-            if (fxBeans != null) {
+            if (fxBeans != null&& fxBeans.size() >0) {
                 return 1 + fxBeans.size();
             } else {
                 return 1;
@@ -268,8 +287,8 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             } else if (holder instanceof ViewHolderBj) {
                 ViewHolderBj viewHolderBj = (ViewHolderBj) holder;
                 initTop(viewHolderBj, position - 1);
-            } else if (holder instanceof ViewHolderBl) {
-                ViewHolderBl viewHolderBl = (ViewHolderBl) holder;
+            } else if (holder instanceof ViewHolder) {
+                ViewHolder viewHolderBl = (ViewHolder) holder;
                 initTop(viewHolderBl, position - 1);
             } else if (holder instanceof ViewHolderFx) {
                 ViewHolderFx viewHolderFx = (ViewHolderFx) holder;
@@ -384,7 +403,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     setView(viewHolder);
                     setText(viewHolder.mBjText, viewHolder.mBjView);
                     break;
-                case "3":
+                case "5":
                     setView(viewHolder);
                     setText(viewHolder.mBlText, viewHolder.mBlView);
                     break;
@@ -1057,104 +1076,104 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         }
     }
 
-    /**
-     * 爆料数据
-     */
-    class ViewHolderBl extends RecyclerView.ViewHolder {
-        ImageView item_img;
-        TextView item_title, mbidprice, mExtr, time, mlike, mcomment;
-        TextView copy_title, copy_url;
-        LinearLayout itemlayout, mCopyLayout;
+//    /**
+//     * 爆料数据
+//     */
+//    class ViewHolderBl extends RecyclerView.ViewHolder {
+//        ImageView item_img;
+//        TextView item_title, mbidprice, mExtr, time, mlike, mcomment;
+//        TextView copy_title, copy_url;
+//        LinearLayout itemlayout, mCopyLayout;
+//
+//        public ViewHolderBl(View mView) {
+//            super(mView);
+//            item_img = (ImageView) mView.findViewById(R.id.item_img);
+//            item_title = (TextView) mView.findViewById(R.id.item_title);
+//            mExtr = (TextView) mView.findViewById(R.id.mExtra);
+//            time = (TextView) mView.findViewById(R.id.bl_time);
+//            mlike = mView.findViewById(R.id.mlike);
+//            mcomment = mView.findViewById(R.id.mcomment);
+//            itemlayout = mView.findViewById(R.id.result_item);
+//            mCopyLayout = mView.findViewById(R.id.copy_layout);
+//            copy_title = mView.findViewById(R.id.copy_title);
+//            copy_url = mView.findViewById(R.id.copy_url);
+//        }
+//    }
 
-        public ViewHolderBl(View mView) {
-            super(mView);
-            item_img = (ImageView) mView.findViewById(R.id.item_img);
-            item_title = (TextView) mView.findViewById(R.id.item_title);
-            mExtr = (TextView) mView.findViewById(R.id.mExtra);
-            time = (TextView) mView.findViewById(R.id.bl_time);
-            mlike = mView.findViewById(R.id.mlike);
-            mcomment = mView.findViewById(R.id.mcomment);
-            itemlayout = mView.findViewById(R.id.result_item);
-            mCopyLayout = mView.findViewById(R.id.copy_layout);
-            copy_title = mView.findViewById(R.id.copy_title);
-            copy_url = mView.findViewById(R.id.copy_url);
-        }
-    }
-
-    private void initTop(final ViewHolderBl viewHolder, final int position) {
-        try {
-//            final Map<String,String> map = list.get(position);
-            String mExtr = newHomeBlBean.get(position).getExtra();
-            String img = newHomeBlBean.get(position).getImg();
-            String time = newHomeBlBean.get(position).getDtime();
-            final String title = newHomeBlBean.get(position).getTitle();
-            String count = newHomeBlBean.get(position).getPlnum();
-            String readnum = newHomeBlBean.get(position).getReadnum();//阅读数
-            String zan = newHomeBlBean.get(position).getZannum();
-            final String content = newHomeBlBean.get(position).getContent();
-            viewHolder.item_title.setText(content);
-            viewHolder.time.setText(time);
-            viewHolder.mExtr.setText("¥" + newHomeBlBean.get(position).getPrice() + ", " + mExtr);
-            viewHolder.mlike.setText(zan);
-            viewHolder.mcomment.setText(readnum);
-            Glide.with(context)
-                    .load(img)
-                    .priority(Priority.HIGH)
-                    .placeholder(R.mipmap.zw_img_300)
-                    .into(viewHolder.item_img);
-            viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        Intent intent = new Intent(context, GossipPiazzaDetailActivity.class);
-                        intent.putExtra("blid", newHomeBlBean.get(position).getBlid());
-                        context.startActivity(intent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            viewHolder.mCopyLayout.setVisibility(View.GONE);
-                        }
-                    }, 2500);
-                    return true;
-                }
-            });
-            viewHolder.mCopyLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    viewHolder.mCopyLayout.setVisibility(View.GONE);
-                }
-            });
-            viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(title);
-                    StringUtil.showToast(context, "复制成功");
-                    viewHolder.mCopyLayout.setVisibility(View.GONE);
-                }
-            });
-            viewHolder.copy_url.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(newHomeBlBean.get(position).getUrl());
-                    StringUtil.showToast(context, "复制成功");
-                    viewHolder.mCopyLayout.setVisibility(View.GONE);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void initTop(final ViewHolderBl viewHolder, final int position) {
+//        try {
+////            final Map<String,String> map = list.get(position);
+//            String mExtr = newHomeBlBean.get(position).getExtra();
+//            String img = newHomeBlBean.get(position).getImg();
+//            String time = newHomeBlBean.get(position).getDtime();
+//            final String title = newHomeBlBean.get(position).getTitle();
+//            String count = newHomeBlBean.get(position).getPlnum();
+//            String readnum = newHomeBlBean.get(position).getReadnum();//阅读数
+//            String zan = newHomeBlBean.get(position).getZannum();
+//            final String content = newHomeBlBean.get(position).getContent();
+//            viewHolder.item_title.setText(content);
+//            viewHolder.time.setText(time);
+//            viewHolder.mExtr.setText("¥" + newHomeBlBean.get(position).getPrice() + ", " + mExtr);
+//            viewHolder.mlike.setText(zan);
+//            viewHolder.mcomment.setText(readnum);
+//            Glide.with(context)
+//                    .load(img)
+//                    .priority(Priority.HIGH)
+//                    .placeholder(R.mipmap.zw_img_300)
+//                    .into(viewHolder.item_img);
+//            viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    try {
+//                        Intent intent = new Intent(context, GossipPiazzaDetailActivity.class);
+//                        intent.putExtra("blid", newHomeBlBean.get(position).getBlid());
+//                        context.startActivity(intent);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//            viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View view) {
+//                    viewHolder.mCopyLayout.setVisibility(View.VISIBLE);
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            viewHolder.mCopyLayout.setVisibility(View.GONE);
+//                        }
+//                    }, 2500);
+//                    return true;
+//                }
+//            });
+//            viewHolder.mCopyLayout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+//                }
+//            });
+//            viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+//                    cm.setText(title);
+//                    StringUtil.showToast(context, "复制成功");
+//                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+//                }
+//            });
+//            viewHolder.copy_url.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+//                    cm.setText(newHomeBlBean.get(position).getUrl());
+//                    StringUtil.showToast(context, "复制成功");
+//                    viewHolder.mCopyLayout.setVisibility(View.GONE);
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * 发现数据
@@ -1321,5 +1340,181 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     }
                 });
     }
+
+
+    /**
+     * 鲸港圈
+     * @param viewHolder
+     * @param fenXiangItemBeans
+     */
+    private void recyGrid(ViewHolder viewHolder, final List<FenXiangItemBean> fenXiangItemBeans) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();
+        ViewGroup.LayoutParams layoutParams = viewHolder.mrecy.getLayoutParams();
+        //根据图片个数来设置布局
+        if (fenXiangItemBeans.size() == 1) {
+            viewHolder.mrecy.setNumColumns(1);
+            layoutParams.width = width / 2;
+        } else if (fenXiangItemBeans.size() == 2) {
+            viewHolder.mrecy.setNumColumns(2);
+            layoutParams.width = GridLayoutManager.LayoutParams.MATCH_PARENT;
+        } else if (fenXiangItemBeans.size() == 4) {
+            viewHolder.mrecy.setNumColumns(2);
+            layoutParams.width = width * 2 / 3;
+        } else {
+            viewHolder.mrecy.setNumColumns(3);
+            layoutParams.width = GridLayoutManager.LayoutParams.MATCH_PARENT;
+        }
+        viewHolder.mrecy.setLayoutParams(layoutParams);
+        FenXiangImageAdapter adapter = new FenXiangImageAdapter(context, fenXiangItemBeans);
+        viewHolder.mrecy.setAdapter(adapter);
+        viewHolder.mrecy.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, IntentActivity.class);
+                if (fenXiangItemBeans.get(position).getRequestUrl() != null) {
+                    intent.putExtra("url", fenXiangItemBeans.get(position).getRequestUrl());
+                }
+                if (fenXiangItemBeans.get(position).getTitle() != null) {
+                    intent.putExtra("title", fenXiangItemBeans.get(position).getTitle());
+                }
+                if (fenXiangItemBeans.get(position).getDomain() != null) {
+                    intent.putExtra("domain", fenXiangItemBeans.get(position).getDomain());
+                }
+                if (fenXiangItemBeans.get(position).getRowkey() != null) {
+                    intent.putExtra("groupRowKey", fenXiangItemBeans.get(position).getRowkey());
+                }
+                intent.putExtra("isczg", "1");
+                if (fenXiangItemBeans.get(position).getBprice() != null) {
+                    intent.putExtra("bprice", fenXiangItemBeans.get(position).getBprice());
+                }
+                context.startActivity(intent);
+
+            }
+        });
+    }
+
+
+        private void initTop(final ViewHolder viewHolder, final int position) {
+        try {
+            final FenXiangListBean fenXiangListBean = fenXiangListBeans.get(position);
+            //将position保存在itemView的Tag中，以便点击时进行获取
+            viewHolder.itemView.setTag(position);
+            if (fenXiangListBean.getNickname() != null) {
+                viewHolder.mname.setText(fenXiangListBean.getNickname());
+            }
+            if (fenXiangListBean.getTime() != null) {
+                viewHolder.mtime.setText(fenXiangListBean.getTime());
+            }
+            if (fenXiangListBean.getTitle() != null) {
+                viewHolder.mcontent.setText(fenXiangListBean.getTitle());
+            }
+            if (fenXiangListBean.getHeadurl() != null) {
+                CircleImageView1.getImg(context, fenXiangListBean.getHeadurl(), viewHolder.mimg);
+            }
+            if (fenXiangListBean.getItems() != null) {
+                final List<FenXiangItemBean> fenXiangItemBeans = JSON.parseArray(fenXiangListBean.getItems(), FenXiangItemBean.class);
+                recyGrid(viewHolder, fenXiangItemBeans);
+                viewHolder.llShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                        if (TextUtils.isEmpty(userID)) {
+                            Intent intent = new Intent(context, UserLoginNewActivity.class);
+                            context.startActivity(intent);
+                        } else {
+                            if (NoFastClickUtils.isFastClick()){
+                                StringUtil.showToast(context,"对不起，您的点击太快了，请休息一下");
+                            }else {
+                                if (fenXiangListBean.getRowkeys() != null){
+                                    shareCpsInfos(v, fenXiangListBean.getRowkeys(), fenXiangListBean.getTitle());
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.mimg)
+        ImageView mimg;
+        @BindView(R.id.mname)
+        TextView mname;
+        @BindView(R.id.mtime)
+        TextView mtime;
+        @BindView(R.id.mcontent)
+        TextView mcontent;
+        @BindView(R.id.mrecy)
+        MyGridView mrecy;
+        @BindView(R.id.result_item)
+        LinearLayout resultItem;
+        @BindView(R.id.ll_share)
+        LinearLayout llShare;
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    /**
+     * 分享多张图片到朋友圈
+     * @param v
+     * @param rowkeys
+     * @param title
+     */
+    private void shareCpsInfos(final View v, String rowkeys, final String title) {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userID);
+        maps.put("rowkeys", rowkeys);
+        RetrofitClient.getInstance(context).createBaseApi().shareCpsInfos(
+                maps, new BaseObserver<String>(context) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                List<String> DetailimgUrlList = new ArrayList<>();
+                                JSONObject jsonObject1 = new JSONObject(jsonObject.optString("content"));
+                                if (jsonObject1.has("imgs")) {
+                                    JSONArray detailImags = new JSONArray(jsonObject1.optString("imgs"));
+                                    for (int i = 0; i < detailImags.length(); i++) {
+                                        String imgUrl = detailImags.getString(i);
+                                        DetailimgUrlList.add(imgUrl);
+                                    }
+                                    //调用转发微信功能类
+                                    shareFenXiangUtil = new ShareFenXiangUtil((Activity) context, v, title, DetailimgUrlList);
+                                }
+                            }else {
+                                StringUtil.showToast(context,jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(context);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(context, e.message);
+                    }
+                });
+    }
+
 
 }
