@@ -23,68 +23,7 @@
             app:indicator_drawable_selected="@drawable/banner_circle2"
             app:indicator_drawable_unselected="@drawable/banner_circle"
             />
-        <LinearLayout
-            android:id="@+id/lin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_home_yinying"
-            android:orientation="vertical" >
 
-            <View
-                android:id="@+id/mzhuangtai"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:id="@+id/msearch"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/text_view_border_5dp"
-                    android:orientation="horizontal"
-                    android:paddingBottom="7dp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="7dp" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="输入您相比价的商品"
-                        android:textColor="#999999"
-                        android:textSize="14dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/msort"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:orientation="vertical" >
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@mipmap/fenlei_white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="分类"
-                        android:textColor="@color/white"
-                        android:textSize="10dp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
 
     </RelativeLayout>
 
@@ -274,12 +213,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
+        android:visibility="gone"
         android:background="#f3f3f3" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:paddingBottom="6dp"
         android:paddingTop="6dp" >
 
@@ -392,145 +333,160 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="#f3f3f3" />
-    <LinearLayout
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingLeft="16dp"-->
+        <!--android:paddingRight="16dp">-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_czg_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/czg_text"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="超值购"-->
+                <!--android:textColor="@color/color_line_top"-->
+                <!--android:textSize="14dp" />-->
+
+            <!--<View-->
+                <!--android:id="@+id/czg_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_gravity="center_horizontal|bottom"-->
+                <!--android:background="@color/color_line_top" />-->
+        <!--</LinearLayout>-->
+
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_bj_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/bj_text"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="扑吧"-->
+                <!--android:textColor="@color/color_line_text"-->
+                <!--android:textSize="14dp" />-->
+
+            <!--<View-->
+                <!--android:id="@+id/bj_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:background="@color/color_line_top"-->
+                <!--android:visibility="gone" />-->
+        <!--</LinearLayout>-->
+
+        <!--&lt;!&ndash;<View&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="0.5px"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_marginBottom="10px"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_marginTop="10px"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:background="@color/line_color" />&ndash;&gt;-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_bl_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/bl_text"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="@string/home_baoliao_text"-->
+                <!--android:textColor="@color/color_line_text"-->
+                <!--android:textSize="14dp" />-->
+
+            <!--<View-->
+                <!--android:id="@+id/bl_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:background="@color/color_line_top"-->
+                <!--android:visibility="gone" />-->
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_fx_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/fx_text"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:padding="10dp"-->
+                <!--android:text="发现"-->
+                <!--android:textColor="@color/color_line_text"-->
+                <!--android:textSize="14dp" />-->
+
+            <!--<View-->
+                <!--android:id="@+id/fx_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:background="@color/color_line_top"-->
+                <!--android:visibility="gone" />-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <HorizontalScrollView
+        android:id="@+id/mhscrollview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:layout_height="41dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:visibility="visible" >
 
         <LinearLayout
-            android:id="@+id/ll_czg_layout"
+            android:id="@+id/mbox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/czg_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:text="超值购"
-                android:textColor="@color/color_line_top"
-                android:textSize="14dp" />
-
-            <View
-                android:id="@+id/czg_view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:background="@color/color_line_top" />
+            android:orientation="horizontal" >
         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/ll_bj_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/bj_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="扑吧"
-                android:textColor="@color/color_line_text"
-                android:textSize="14dp" />
-
-            <View
-                android:id="@+id/bj_view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/color_line_top"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <!--<View-->
-        <!--android:layout_width="0.5px"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginBottom="10px"-->
-        <!--android:layout_marginTop="10px"-->
-        <!--android:background="@color/line_color" />-->
-
-        <LinearLayout
-            android:id="@+id/ll_bl_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/bl_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:text="@string/home_baoliao_text"
-                android:textColor="@color/color_line_text"
-                android:textSize="14dp" />
-
-            <View
-                android:id="@+id/bl_view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/color_line_top"
-                android:visibility="gone" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_fx_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/fx_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:text="发现"
-                android:textColor="@color/color_line_text"
-                android:textSize="14dp" />
-
-            <View
-                android:id="@+id/fx_view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/color_line_top"
-                android:visibility="gone" />
-        </LinearLayout>
-    </LinearLayout>
-    </LinearLayout>
+    </HorizontalScrollView>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

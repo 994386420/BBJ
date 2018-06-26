@@ -23,8 +23,6 @@
                     android:layout_width="match_parent"
                     android:background="#ffffff"
                     android:layout_height="match_parent">
-
-                    <include layout="@layout/home_click_layout"/>
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/mrecycler"
                         android:background="#f3f3f3"
@@ -79,4 +77,158 @@
         android:gravity="center"
         android:scaleType="centerInside"
         android:src="@mipmap/back_01" />
+
+    <LinearLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_home_yinying"
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/mzhuangtai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/msearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/text_view_border_5dp"
+                android:orientation="horizontal"
+                android:paddingBottom="7dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="7dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="输入你想比价的商品"
+                    android:textColor="#999999"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/msort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/fenlei_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分类"
+                    android:textColor="@color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/lin"
+        android:id="@+id/ll_type"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:orientation="horizontal">
+    <HorizontalScrollView
+
+        android:id="@+id/mhscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:layout_weight="1"
+        android:visibility="visible" >
+        <LinearLayout
+            android:id="@+id/mbox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+    </HorizontalScrollView>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/__picker_common_primary"/>
+        <ImageView
+            android:id="@+id/type_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/xjpp_normal" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_below="@+id/lin"
+        android:id="@+id/fl_type"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@color/white">
+            <GridView
+                android:id="@+id/type_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:columnWidth="80dp"
+                android:horizontalSpacing="0dp"
+                android:numColumns="auto_fit"
+                android:paddingBottom="60dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="0dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_shouqi"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:gravity="center"
+            android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/bg_cicyle1"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#fff"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="收起"/>
+    </LinearLayout>
+    </FrameLayout>
+    <include
+        android:layout_below="@+id/lin"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        layout="@layout/home_click_layout"/>
 </RelativeLayout>

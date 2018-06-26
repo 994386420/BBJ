@@ -6,4 +6,5 @@ public interface OnClickListioner {
 	public abstract void onBlClick();
 	public abstract void onFxClick();
 	public abstract void onDissmissClick();
+	public abstract void onClick(String keyword);
 }

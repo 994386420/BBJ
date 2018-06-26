@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -19,6 +21,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,7 +32,6 @@ import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.FenXiangItemBean;
 import com.bbk.Bean.FenXiangListBean;
-import com.bbk.Bean.NewHomeBlBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.NewHomeFxBean;
 import com.bbk.Bean.NewHomePubaBean;
@@ -37,7 +39,6 @@ import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.DataFragmentActivity;
-import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.QueryHistoryActivity;
@@ -56,6 +57,7 @@ import com.bbk.component.HomeBijiaComponent;
 import com.bbk.component.SimpleComponent;
 import com.bbk.flow.DataFlow;
 import com.bbk.fragment.OnClickListioner;
+import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
@@ -97,7 +99,7 @@ import butterknife.ButterKnife;
 public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClickListener {
     private Context context;
     private List<Map<String, String>> taglist, list, mList, mAddList;
-    private JSONArray tag, gongneng, fabiao, banner;
+    private JSONArray tag, gongneng, fabiao, banner,chaozhigouTypes;
     private int ITEM_TYPE_TOP = 1; //顶部 banner,tag,util
     private int ITEM_TYPE_TUIJIAN = 2; //为你推荐
     private DataFlow dataFlow;
@@ -119,18 +121,22 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     List<NewHomeCzgBean> czgBeans;
     List<NewHomePubaBean> newHomePubaBeans;
     private List<FenXiangListBean> fenXiangListBeans;
-//    private List<FenXiangListBean> newHomeBlBean;
+    //    private List<FenXiangListBean> newHomeBlBean;
     private List<NewHomeFxBean> fxBeans;
     //第一次引导页是否显示隐藏
     private boolean isshowzhezhao = true;
     private boolean isHomeGudie = false;
     Guide guide;
     private int showTimes = 0;
+    private int showTime = 0;
     private ShareFenXiangUtil shareFenXiangUtil;
+    private int currentIndex = 0;
+    private List<Map<String, String>> titlelist;
+    RecyclerView czg_recyclerview;
 
 
-    public NewHomeAdapter(Context context, List<Map<String, String>> taglist, JSONArray banner, JSONArray tag, JSONArray fabiao, JSONArray gongneng, String type,
-                          List<NewHomeCzgBean> newHomeCzgBean, List<NewHomePubaBean> newHomePubaBeans, List<FenXiangListBean> newHomeBlBean, List<NewHomeFxBean> fxBeans,List<FenXiangListBean> fenXiangListBeans, JSONObject jo) {
+    public NewHomeAdapter(Context context, List<Map<String, String>> taglist, JSONArray banner, JSONArray tag, JSONArray fabiao, JSONArray gongneng, List<Map<String, String>> titlelist, String type,
+                          List<NewHomeCzgBean> newHomeCzgBean, List<NewHomePubaBean> newHomePubaBeans, List<FenXiangListBean> newHomeBlBean, List<NewHomeFxBean> fxBeans, List<FenXiangListBean> fenXiangListBeans, JSONObject jo) {
         this.context = context;
         this.tag = tag;
         this.gongneng = gongneng;
@@ -138,6 +144,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         this.dataFlow = new DataFlow(context);
         this.taglist = taglist;
         this.banner = banner;
+        this.titlelist = titlelist;
         this.typee = type;
         this.newHomeCzgBean = newHomeCzgBean;
         this.newHomePubaBeans = newHomePubaBeans;
@@ -171,26 +178,27 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     }
 
     public void notifyBjData(List<NewHomePubaBean> newHomePubaBeans) {
-        if (newHomePubaBeans != null&& newHomePubaBeans.size() > 0) {
+        if (newHomePubaBeans != null && newHomePubaBeans.size() > 0) {
             this.newHomePubaBeans.addAll(newHomePubaBeans);
             notifyDataSetChanged();
         }
     }
 
-//    public void notifyBlData(List<NewHomeBlBean> blBeans) {
+    //    public void notifyBlData(List<NewHomeBlBean> blBeans) {
 //        if (blBeans != null&& blBeans.size() > 0) {
 //            this.newHomeBlBean.addAll(blBeans);
 //            notifyDataSetChanged();
 //        }
 //    }
     public void notifyBlData(List<FenXiangListBean> fenXiangListBeans) {
-        if (fenXiangListBeans != null&& fenXiangListBeans.size() > 0) {
+        if (fenXiangListBeans != null && fenXiangListBeans.size() > 0) {
             this.fenXiangListBeans.addAll(fenXiangListBeans);
             notifyDataSetChanged();
         }
     }
+
     public void notifyFxData(List<NewHomeFxBean> fxBeans) {
-        if (fxBeans != null&& fxBeans.size() > 0) {
+        if (fxBeans != null && fxBeans.size() > 0) {
             this.fxBeans.addAll(fxBeans);
             notifyDataSetChanged();
         }
@@ -253,19 +261,19 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                 return 1;
             }
         } else if (typee.equals("2")) {
-            if (newHomePubaBeans != null && newHomePubaBeans.size() >0) {
+            if (newHomePubaBeans != null && newHomePubaBeans.size() > 0) {
                 return 1 + newHomePubaBeans.size();
             } else {
                 return 1;
             }
         } else if (typee.equals("5")) {
-            if (fenXiangListBeans != null && fenXiangListBeans.size() >0) {
+            if (fenXiangListBeans != null && fenXiangListBeans.size() > 0) {
                 return 1 + fenXiangListBeans.size();
             } else {
                 return 1;
             }
         } else if (typee.equals("4")) {
-            if (fxBeans != null&& fxBeans.size() >0) {
+            if (fxBeans != null && fxBeans.size() > 0) {
                 return 1 + fxBeans.size();
             } else {
                 return 1;
@@ -373,6 +381,11 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             }
             if (fabiao != null && fabiao.length() > 0) {
                 loadViewflipper(fabiao, viewHolder);
+            }
+            if (titlelist != null && titlelist.size() > 0) {
+                if (positon == 0 && showTime == 0) {
+                    loadtitlekeywords(titlelist, viewHolder);
+                }
             }
             viewHolder.compareutil.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -542,9 +555,14 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
         private View mCzgView, mBjView, mBlView, mFxView;
         private TextView mCzgText, mBjText, mBlText, mFxText;
         private LinearLayout mSort, mSearch;//搜索，分类;
+        @BindView(R.id.mbox)
+        LinearLayout mbox;
+        @BindView(R.id.mhscrollview)
+        HorizontalScrollView mhscrollview;
 
         public TopViewHolder(View mView) {
             super(mView);
+            ButterKnife.bind(this, mView);
 //            mgridView = (GridView) mView.findViewById(R.id.mgridView);
             mBanner = mView.findViewById(R.id.banner);
             mSearch = mView.findViewById(R.id.msearch);
@@ -789,7 +807,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
      */
     class ViewHolderCzg extends RecyclerView.ViewHolder {
         ImageView item_img;
-        TextView mbidprice,mprice, youhui;
+        TextView mbidprice, mprice, youhui;
         TextView item_title, copy_title, copy_url;
         LinearLayout itemlayout, mCopyLayout;
         @BindView(R.id.dianpu_text)
@@ -811,7 +829,6 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
 
         public ViewHolderCzg(View mView) {
             super(mView);
-            ButterKnife.bind(this, mView);
             item_img = mView.findViewById(R.id.item_img);
             item_title = mView.findViewById(R.id.item_title);
             mbidprice = mView.findViewById(R.id.mbidprice);
@@ -825,6 +842,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     }
 
     private void initTop(final ViewHolderCzg viewHolder, final int position) {
+
         try {
             String img = newHomeCzgBean.get(position).getImgurl();
             final String title = newHomeCzgBean.get(position).getTitle();
@@ -832,8 +850,8 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             String dianpu = newHomeCzgBean.get(position).getDianpu();
             String youhui = newHomeCzgBean.get(position).getYouhui();
             String mbidprice = newHomeCzgBean.get(position).getHislowprice();//最低价
-            viewHolder.item_title.setText("             "+title);
-            viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale()+"人付款");
+            viewHolder.item_title.setText("             " + title);
+            viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale() + "人付款");
             try {
                 if (mbidprice != null) {
                     viewHolder.mbidprice.setText("最低价 " + mbidprice);
@@ -841,26 +859,26 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-            if(newHomeCzgBean.get(position).getDomain() !=null){
+            if (newHomeCzgBean.get(position).getDomain() != null) {
                 String domin = newHomeCzgBean.get(position).getDomain();
-                if (domin.equals("taobao")){
+                if (domin.equals("taobao")) {
                     viewHolder.tvMall.setText("淘宝");
-                }else if (domin.equals("tmall")){
+                } else if (domin.equals("tmall")) {
                     viewHolder.tvMall.setText("天猫");
-                }else {
+                } else {
                     viewHolder.tvMall.setText("京东");
                 }
-            }else {
+            } else {
                 viewHolder.tvMall.setVisibility(View.GONE);
             }
             viewHolder.mprice.setText("¥" + price);
             viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
-            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG| Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
             viewHolder.price.setText(price);
-            if (newHomeCzgBean.get(position).getQuan() !=null){
+            if (newHomeCzgBean.get(position).getQuan() != null) {
                 viewHolder.llQuan.setVisibility(View.VISIBLE);
                 viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
-            }else {
+            } else {
                 viewHolder.llQuan.setVisibility(View.GONE);
             }
             if (newHomeCzgBean.get(position).getZuan() != null) {
@@ -882,30 +900,30 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                     Intent intent;
                     try {
 //                        if (AlibcLogin.getInstance().isLogin() == true) {
-                            if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
-                                intent = new Intent(context, IntentActivity.class);
-                                if (newHomeCzgBean.get(position).getUrl() != null) {
-                                    intent.putExtra("url", newHomeCzgBean.get(position).getRequestUrl());
-                                }
-                                if (newHomeCzgBean.get(position).getTitle() != null) {
-                                    intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
-                                }
-                                if (newHomeCzgBean.get(position).getDomain() != null) {
-                                    intent.putExtra("domain", newHomeCzgBean.get(position).getDomain());
-                                }
-                                if (newHomeCzgBean.get(position).getRowkey() != null) {
-                                    intent.putExtra("groupRowKey", newHomeCzgBean.get(position).getRowkey());
-                                }
-                                intent.putExtra("isczg", "1");
-                                if (newHomeCzgBean.get(position).getBprice() != null) {
-                                    intent.putExtra("bprice", newHomeCzgBean.get(position).getBprice());
-                                }
-                            } else {
-                                intent = new Intent(context, WebViewActivity.class);
-                                intent.putExtra("url", newHomeCzgBean.get(position).getUrl());
+                        if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
+                            intent = new Intent(context, IntentActivity.class);
+                            if (newHomeCzgBean.get(position).getUrl() != null) {
+                                intent.putExtra("url", newHomeCzgBean.get(position).getRequestUrl());
+                            }
+                            if (newHomeCzgBean.get(position).getTitle() != null) {
                                 intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
                             }
-                            context.startActivity(intent);
+                            if (newHomeCzgBean.get(position).getDomain() != null) {
+                                intent.putExtra("domain", newHomeCzgBean.get(position).getDomain());
+                            }
+                            if (newHomeCzgBean.get(position).getRowkey() != null) {
+                                intent.putExtra("groupRowKey", newHomeCzgBean.get(position).getRowkey());
+                            }
+                            intent.putExtra("isczg", "1");
+                            if (newHomeCzgBean.get(position).getBprice() != null) {
+                                intent.putExtra("bprice", newHomeCzgBean.get(position).getBprice());
+                            }
+                        } else {
+                            intent = new Intent(context, WebViewActivity.class);
+                            intent.putExtra("url", newHomeCzgBean.get(position).getUrl());
+                            intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
+                        }
+                        context.startActivity(intent);
 //                        } else {
 //                            DialogSingleUtil.show(context, "授权中...");
 //                            TaoBaoLoginandLogout();//淘宝授权登陆
@@ -1344,6 +1362,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
 
     /**
      * 鲸港圈
+     *
      * @param viewHolder
      * @param fenXiangItemBeans
      */
@@ -1395,7 +1414,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     }
 
 
-        private void initTop(final ViewHolder viewHolder, final int position) {
+    private void initTop(final ViewHolder viewHolder, final int position) {
         try {
             final FenXiangListBean fenXiangListBean = fenXiangListBeans.get(position);
             //将position保存在itemView的Tag中，以便点击时进行获取
@@ -1423,10 +1442,10 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                             Intent intent = new Intent(context, UserLoginNewActivity.class);
                             context.startActivity(intent);
                         } else {
-                            if (NoFastClickUtils.isFastClick()){
-                                StringUtil.showToast(context,"对不起，您的点击太快了，请休息一下");
-                            }else {
-                                if (fenXiangListBean.getRowkeys() != null){
+                            if (NoFastClickUtils.isFastClick()) {
+                                StringUtil.showToast(context, "对不起，您的点击太快了，请休息一下");
+                            } else {
+                                if (fenXiangListBean.getRowkeys() != null) {
                                     shareCpsInfos(v, fenXiangListBean.getRowkeys(), fenXiangListBean.getTitle());
                                 }
                             }
@@ -1463,6 +1482,7 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
 
     /**
      * 分享多张图片到朋友圈
+     *
      * @param v
      * @param rowkeys
      * @param title
@@ -1490,8 +1510,8 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
                                     //调用转发微信功能类
                                     shareFenXiangUtil = new ShareFenXiangUtil((Activity) context, v, title, DetailimgUrlList);
                                 }
-                            }else {
-                                StringUtil.showToast(context,jsonObject.optString("errmsg"));
+                            } else {
+                                StringUtil.showToast(context, jsonObject.optString("errmsg"));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1517,4 +1537,75 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
     }
 
 
+    // 一级菜单一
+    private void addtitle(final String text, final int i, final TopViewHolder topViewHolder) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.super_item_title, null);
+        //设置view的weight为1，保证导航铺满当前页面
+        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        final TextView title = (TextView) view.findViewById(R.id.item_title);
+        final View henggang = view.findViewById(R.id.bottom_view);
+        title.setText(text);
+        title.setTextColor(Color.parseColor("#666666"));
+        henggang.setBackgroundColor(Color.parseColor("#ffffff"));
+        view.setPadding(BaseTools.getPixelsFromDp(context, 0), 0, BaseTools.getPixelsFromDp(context, 0), 0);
+        if (i == 0) {
+            view.setVisibility(View.VISIBLE);
+            title.setTextColor(Color.parseColor("#FF7D41"));
+            henggang.setBackgroundColor(Color.parseColor("#FF7D41"));
+//            title.setText("超值购");
+        }
+//        if (i == 1) {
+//
+//        }
+        view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (i != currentIndex) {
+//                    topViewHolder.mbox.getChildAt(0).setVisibility(View.GONE);
+                    updateTitle(i,topViewHolder);
+                }
+            }
+
+        });
+        topViewHolder.mbox.addView(view);
+    }
+    private void updateTitle(int position,TopViewHolder topViewHolder) {
+        titlelist.get(currentIndex).put("isselect", "0");
+        titlelist.get(position).put("isselect", "1");
+        View view = topViewHolder.mbox.getChildAt(position);
+        TextView title1 = (TextView) view.findViewById(R.id.item_title);
+        View henggang1 = view.findViewById(R.id.bottom_view);
+        title1.setTextColor(Color.parseColor("#FF7D41"));
+        henggang1.setBackgroundColor(Color.parseColor("#FF7D41"));
+
+        View view4 = topViewHolder.mbox.getChildAt(currentIndex);
+        TextView title3 = (TextView) view4.findViewById(R.id.item_title);
+        View henggang3 = view4.findViewById(R.id.bottom_view);
+        title3.setTextColor(Color.parseColor("#666666"));
+        henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
+        // mhscrollview.scrollTo(view.getLeft() - 200, 0);
+        currentIndex = position;
+        if (position == 0) {
+            page = 1;
+            x = 1;
+            type = "";
+            onClickListioner.onClick(type);
+        } else {
+            x = 1;
+            page = 1;
+            type = titlelist.get(position).get("keyword");
+            onClickListioner.onClick(type);
+        }
+    }
+
+    private void loadtitlekeywords( List<Map<String, String>> titlelist,TopViewHolder topViewHolder) throws JSONException {
+        showTime++;
+        for (int i = 0; i < titlelist.size(); i++) {
+            Map<String, String> map1 = new HashMap<>();
+            String  keyword = titlelist.get(i).get("keyword");
+            addtitle(keyword, i,topViewHolder);
+        }
+    }
 }

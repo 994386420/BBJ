@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bbk.adapter.MyCoinAdapter;
+import com.bbk.client.BaseApiService;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
@@ -591,7 +592,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
                 String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
                 if (!TextUtils.isEmpty(userID)) {
                     intent = new Intent(this, WebViewActivity.class);
-                    String url = Constants.MAIN_BASE_URL_MOBILE + "mobile/user/lottery?mid=";
+                    String url = BaseApiService.Base_URL + "mobile/user/lottery?mid=";
                     intent.putExtra("url", url + mid);
                     startActivity(intent);
                 }
@@ -601,7 +602,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
                 break;
             case R.id.mrule:
                 intent = new Intent(this, WebViewActivity.class);
-                String url = Constants.MAIN_BASE_URL_MOBILE + "mobile/user/moneyRule";
+                String url = BaseApiService.Base_URL + "mobile/user/moneyRule";
                 intent.putExtra("url", url);
                 startActivity(intent);
                 break;
