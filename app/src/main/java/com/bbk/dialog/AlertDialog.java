@@ -82,7 +82,7 @@ public class AlertDialog {
 	public AlertDialog setTitle(String title) {
 		showTitle = true;
 		if ("".equals(title)) {
-			txt_title.setText("����");
+			txt_title.setText("");
 		} else {
 			txt_title.setText(title);
 		}

@@ -12,6 +12,7 @@
     android:background="@drawable/text_view_border">
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"

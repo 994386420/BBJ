@@ -35,7 +35,13 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_left_in</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_right_out</item>
     </style>
-    
+
+    <!-- 筛选弹窗动画 -->
+    <style name="popwindow_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_right_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_right_out</item>
+
+    </style>
     <!-- dialog动画 -->
     <style name="dialog_style" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
@@ -180,7 +186,7 @@
         <!--是否浮现在activity之上-->
         <item name="android:windowIsFloating">true</item>
         <!--是否模糊-->
-        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
         <!--是否半透明-->
         <item name="android:windowIsTranslucent">true</item>
 

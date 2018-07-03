@@ -106,7 +106,7 @@ public class ShareJumpUtil {
                         ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
                         cm.setText(wenan);
                         popupWindow.dismiss();
-                        StringUtil.showToast(activity,"文案复制成功");
+//                        StringUtil.showToast(activity,"文案复制成功");
                     }
                 });
         dialogView.findViewById(R.id.share_weixin1).setOnClickListener(

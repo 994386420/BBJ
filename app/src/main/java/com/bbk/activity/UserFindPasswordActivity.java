@@ -27,6 +27,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.JiaMiUtil;
+import com.bbk.util.RSAEncryptorAndroid;
 import com.bbk.util.StringUtil;
 import com.bbk.util.ValidatorUtil;
 
@@ -158,10 +159,10 @@ public class UserFindPasswordActivity extends BaseActivity implements
 			if (ValidatorUtil.isMobile(addr) || ValidatorUtil.isEmail(addr)) {
 				getCodeBtn.setEnabled(false);
 				Map<String, String> paramsMap1 = new HashMap<String, String>();
-				String cc = JiaMiUtil.jiami(addr);
+				String cc = RSAEncryptorAndroid.getSendCode(addr);
 				paramsMap1.put("phone", addr);
 				paramsMap1.put("code", cc);
-				dataFlow.requestData(1, "apiService/sendMcode", paramsMap1, this,true,"短信发送中...");
+				dataFlow.requestData(1, "apiService/sendMessage", paramsMap1, this,true,"短信发送中...");
 			} else {
 				StringUtil.showToast(getApplicationContext(),"您输入的不是手机号或者邮箱");
 			}

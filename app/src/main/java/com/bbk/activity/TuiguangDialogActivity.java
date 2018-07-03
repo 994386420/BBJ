@@ -100,7 +100,7 @@ public class TuiguangDialogActivity extends BaseActivity {
                                         finish();
                                     }
                                 }
-                                StringUtil.showToast(TuiguangDialogActivity.this,"成功成为合伙人");
+                                StringUtil.showToast(TuiguangDialogActivity.this,"恭喜成为合伙人");
                             } else {
                                 StringUtil.showToast(TuiguangDialogActivity.this, jsonObject.optString("errmsg"));
                             }

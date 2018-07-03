@@ -10,12 +10,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -24,18 +29,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.ViewFlipper;
 import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.ChaozhigouTypesBean;
 import com.bbk.Bean.FenXiangListBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.NewHomeFxBean;
 import com.bbk.Bean.NewHomePubaBean;
-import com.bbk.Decoration.TwoDecoration;
+import com.bbk.activity.BidBillDetailActivity;
+import com.bbk.activity.BidDetailActivity;
+import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.SortActivity;
-import com.bbk.adapter.NewHomeAdapter;
+import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.TypeGridAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
@@ -46,15 +54,20 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.model.BaseService;
 import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
+import com.bbk.util.AnimationUtil;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
+import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
+import com.bbk.view.MyScrollViewNew;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -63,44 +76,67 @@ import com.scwang.smartrefresh.layout.listener.OnMultiPurposeListener;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
+//OnClickListioner
 
-public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent, OnClickListioner, CommonLoadingView.LoadingHandler {
+public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent, CommonLoadingView.LoadingHandler, MyScrollViewNew.ScrollViewListener,OnMultiPurposeListener {
     @BindView(R.id.lin)
     LinearLayout lin;
     @BindView(R.id.mbox)
-    LinearLayout mbox;
+    LinearLayout mbox2;
     @BindView(R.id.mhscrollview)
     HorizontalScrollView mhscrollview;
     @BindView(R.id.ll_type)
     LinearLayout llType;
     @BindView(R.id.type_image)
-    ImageView typeImage;
+    LinearLayout typeImage;
     @BindView(R.id.type_grid)
     GridView typeGrid;
     @BindView(R.id.ll_shouqi)
     LinearLayout llShouqi;
     @BindView(R.id.fl_type)
     FrameLayout flType;
+    @BindView(R.id.msearch)
+    LinearLayout msearch;
+    @BindView(R.id.msort)
+    LinearLayout msort;
+    @BindView(R.id.scrollview)
+    MyScrollViewNew scrollview;
+    @BindView(R.id.ll_top)
+    LinearLayout llTop;
+    @BindView(R.id.mbox1)
+    LinearLayout mbox1;
+    @BindView(R.id.mhscrollview1)
+    HorizontalScrollView mhscrollview1;
+    @BindView(R.id.image_fenlei)
+    ImageView imageFenlei;
+    @BindView(R.id.tv_fenlei)
+    TextView tvFenlei;
+    @BindView(R.id.image_puba)
+    ImageView imagePuba;
     private DataFlow6 dataFlow;
     private View mView;
+    private ViewFlipper mviewflipper;//发标动态轮播
+    private ImageView mImageView1, mImageView2, mImageView3, mImageView4, mImageView5;
+    private TextView mTextView1, mTextView2, mTextView3, mTextView4, mTextView5;
+    private LinearLayout mLlLayout1, mLlLayout2, mLlLayout3, mLlLayout4, mLlLayout5;
     /**
      * Banner
      */
+    private Banner mBanner;//首页banner
     private JSONArray banner = new JSONArray();
     /**
      * 中间布局
@@ -125,19 +161,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
      */
     private LinearLayout mTopView;
     private LinearLayout layout;
-
     /**
      * 镖局,超值购...
      *
      * @param savedInstanceState
      */
-    private LinearLayout mLlCzgLayout, mLlbjLayout, mLlblLayout, mLlfxLayout;
-    private View mCzgView, mBjView, mBlView, mFxView;
-    private TextView mCzgText, mBjText, mBlText, mFxText;
-    private NewHomeAdapter homeadapter;
     private int page = 1, x = 1;
     private String type = "1", flag = "";
-    private String wztitle = "";
     private View view;
     private ImageView huodongimg;//活动按钮
     //第一次引导页是否显示隐藏
@@ -146,7 +176,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private boolean isHomeGudie = false;
     JSONObject jo, preguanggao;
     private RecyclerView mrecyclerview;
-    private RefreshLayout refreshLayout;
+    private SmartRefreshLayout refreshLayout;
     JSONObject object;
     private LinearLayout mSuspensionBar;
     private IWXAPI msgApi = null;
@@ -160,14 +190,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     List<NewHomeFxBean> fxBeans;//发现数据
     private ImageButton imageButton;
     private String content;
-    String isFirstResultUse;
-    int mDistanceY;
-    private int currentIndex = 0;
+    private int currentIndex = 0,currentIndexTop = 0;
     private List<Map<String, String>> titlelist;
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
     TypeGridAdapter typeGridAdapter;
+    NewCzgAdapter newCzgAdapter;
+    private int imageHeight, height;
+    private int showTime = 0;
+    private String keyword = "";
+    List<ChaozhigouTypesBean> chaozhigouTypesBeans;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -203,9 +236,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             dataFlow = new DataFlow6(getContext());
             mPayModel = BaseService.getPayModel(getActivity());
             View topView = mView.findViewById(R.id.lin);
+            imageFenlei.setBackgroundResource(R.mipmap.fenlei_white);
             // 实现沉浸式状态栏
             ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
             initView(mView);
+            initListeners();
         }
         return mView;
 
@@ -213,29 +248,30 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
     //控件实例化
     private void initView(View v) {
+        mLlLayout1 = mView.findViewById(R.id.box1);
+        mLlLayout2 = mView.findViewById(R.id.box2);
+        mLlLayout3 = mView.findViewById(R.id.box3);
+        mLlLayout4 = mView.findViewById(R.id.box4);
+        mLlLayout5 = mView.findViewById(R.id.box5);
+        mviewflipper = mView.findViewById(R.id.mviewflipper);
+        mBanner = v.findViewById(R.id.banner);
+        mTextView1 = mView.findViewById(R.id.text1);
+        mTextView2 = mView.findViewById(R.id.text2);
+        mTextView3 = mView.findViewById(R.id.text3);
+        mTextView4 = mView.findViewById(R.id.text4);
+        mTextView5 = mView.findViewById(R.id.text5);
+        mImageView1 = mView.findViewById(R.id.img1);
+        mImageView2 = mView.findViewById(R.id.img2);
+        mImageView3 = mView.findViewById(R.id.img3);
+        mImageView4 = mView.findViewById(R.id.img4);
+        mImageView5 = mView.findViewById(R.id.img5);
         imageButton = mView.findViewById(R.id.to_top_btn);
         zLoadingView = mView.findViewById(R.id.progress);
         zLoadingView.setLoadingHandler(this);
         huodongimg = mView.findViewById(R.id.huodongimg);
         view = v.findViewById(R.id.view);
         mTopView = mView.findViewById(R.id.tv_topView);
-        mLlCzgLayout = mView.findViewById(R.id.ll_czg_layout);
-        mLlbjLayout = mView.findViewById(R.id.ll_bj_layout);
-        mLlblLayout = mView.findViewById(R.id.ll_bl_layout);
-        mLlfxLayout = mView.findViewById(R.id.ll_fx_layout);
-        mCzgText = mView.findViewById(R.id.czg_text);
-        mBjText = mView.findViewById(R.id.bj_text);
-        mBlText = mView.findViewById(R.id.bl_text);
-        mFxText = mView.findViewById(R.id.fx_text);
-        mCzgView = mView.findViewById(R.id.czg_view);
-        mBjView = mView.findViewById(R.id.bj_view);
-        mBlView = mView.findViewById(R.id.bl_view);
-        mFxView = mView.findViewById(R.id.fx_view);
-        mLlCzgLayout.setOnClickListener(this);
-        mLlbjLayout.setOnClickListener(this);
-        mLlblLayout.setOnClickListener(this);
-        mLlfxLayout.setOnClickListener(this);
-        refreshLayout = (RefreshLayout) mView.findViewById(R.id.refresh_root);
+        refreshLayout = (SmartRefreshLayout) mView.findViewById(R.id.refresh_root);
         refreshLayout.setPrimaryColorsId(R.color.button_color, android.R.color.white);//全局设置主题颜色
         refreshLayout.setEnableFooterFollowWhenLoadFinished(true);
         refreshLayout.setEnableOverScrollDrag(true);
@@ -243,115 +279,16 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         refreshLayout.setEnableFooterTranslationContent(true);
         //设置 Header 为 贝塞尔雷达 样式
         refreshLayout.setRefreshHeader(new BezierCircleHeader(getActivity()));
+//        refreshLayout.setEnableClipHeaderWhenFixedBehind(true);
         //设置 Footer 为 球脉冲 样式
 //        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale).setNormalColor(getActivity().getResources().getColor(R.color.button_color)).setAnimatingColor(getActivity().getResources().getColor(R.color.button_color)));
-//        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-//            @Override
-//            public void onRefresh(final RefreshLayout refreshlayout) {
-//                x = 1;
-//                initData();
-//                mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
-//                mCzgView.setVisibility(View.VISIBLE);
-//                mBjText.setTextColor(getResources().getColor(R.color.color_line_text));
-//                mBjView.setVisibility(View.GONE);
-//                mBlText.setTextColor(getResources().getColor(R.color.color_line_text));
-//                mBlView.setVisibility(View.GONE);
-//                mFxText.setTextColor(getResources().getColor(R.color.color_line_text));
-//                mFxView.setVisibility(View.GONE);
-////                        mIdex("1");
-//                refreshlayout.finishRefresh(2000);
-//            }
-//        });
-//        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-//            @Override
-//            public void onLoadmore(RefreshLayout refreshlayout) {
-//
-////                refreshlayout.finishLoadmore(2000/*,false*/);//传入false表示加载失败
-//            }
-//        });
-        refreshLayout.setOnMultiPurposeListener(new OnMultiPurposeListener() {
-            @Override
-            public void onHeaderPulling(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
-                lin.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onHeaderReleased(RefreshHeader header, int headerHeight, int extendHeight) {
-                lin.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onHeaderReleasing(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
-                lin.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onHeaderStartAnimator(RefreshHeader header, int headerHeight, int extendHeight) {
-
-            }
-
-            @Override
-            public void onHeaderFinish(RefreshHeader header, boolean success) {
-                lin.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFooterPulling(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
-
-            }
-
-            @Override
-            public void onFooterReleased(RefreshFooter footer, int footerHeight, int extendHeight) {
-
-            }
-
-            @Override
-            public void onFooterReleasing(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
-
-            }
-
-            @Override
-            public void onFooterStartAnimator(RefreshFooter footer, int footerHeight, int extendHeight) {
-
-            }
-
-            @Override
-            public void onFooterFinish(RefreshFooter footer, boolean success) {
-            }
-
-            @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
-                handler.sendEmptyMessageDelayed(4, 100);
-                refreshLayout.finishLoadMore(1500);
-            }
-
-            @Override
-            public void onRefresh(RefreshLayout refreshLayout) {
-                x = 1;
-                initData();
-                mCzgText.setTextColor(getResources().getColor(R.color.color_line_top));
-                mCzgView.setVisibility(View.VISIBLE);
-                mBjText.setTextColor(getResources().getColor(R.color.color_line_text));
-                mBjView.setVisibility(View.GONE);
-                mBlText.setTextColor(getResources().getColor(R.color.color_line_text));
-                mBlView.setVisibility(View.GONE);
-                mFxText.setTextColor(getResources().getColor(R.color.color_line_text));
-                mFxView.setVisibility(View.GONE);
-//                        mIdex("1");
-                refreshLayout.finishRefresh(2000);
-            }
-
-            @Override
-            public void onStateChanged(RefreshLayout refreshLayout, RefreshState oldState, RefreshState newState) {
-
-            }
-        });
+        refreshLayout.setOnMultiPurposeListener(this);//刷新监听
         mrecyclerview = (RecyclerView) mView.findViewById(R.id.mrecycler);
         imageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 //滑动到顶部
-                mrecyclerview.scrollToPosition(0);
+                scrollview.scrollTo(0, 0);
             }
         });
         mrecyclerview.setHasFixedSize(true);
@@ -360,39 +297,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mSuspensionBar = mView.findViewById(R.id.layout_click);
         final LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
         mrecyclerview.setLayoutManager(gridLayoutManager);
-        mrecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //滑动的距离
-                mDistanceY += dy;
-                //toolbar的高度
-                int toolbarHeight = lin.getBottom();
-                //当滑动的距离 <= toolbar高度的时候，改变Toolbar背景色的透明度，达到渐变的效果
-                if (mDistanceY <= toolbarHeight) {
-                    float scale = (float) mDistanceY / toolbarHeight;
-                    float alpha = scale * 255;
-                    lin.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
-                } else {
-                    //将标题栏的颜色设置为完全不透明状态
-                    lin.setBackgroundResource(R.color.white);
-                }
-
-                int firstPosition = gridLayoutManager.findFirstVisibleItemPosition();
-                if (firstPosition > 0) {
-                    llType.setVisibility(View.VISIBLE);
-                    imageButton.setVisibility(View.VISIBLE);
-                } else {
-                    llType.setVisibility(View.GONE);
-                    imageButton.setVisibility(View.GONE);
-                }
-            }
-        });
     }
 
     //首页数据请求
@@ -456,9 +360,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     public void onNext(String s) {
                         try {
                             mrecyclerview.setVisibility(View.VISIBLE);
+                            scrollview.setVisibility(View.VISIBLE);
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 content = jsonObject.optString("content");
+//                                Log.i("=====", content);
                                 handler.sendEmptyMessageDelayed(2, 0);
                             }
                         } catch (JSONException e) {
@@ -483,6 +389,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         refreshLayout.finishLoadMore();
                         refreshLayout.finishRefresh();
                         DialogSingleUtil.dismiss(0);
+                        scrollview.setVisibility(View.GONE);
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
@@ -496,31 +403,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.ll_czg_layout:
-                flag = "1";
-                setView();
-                mIdex("1");
-                setText(mCzgText, mCzgView);
-//                initDataWx(true);
-                break;
-            case R.id.ll_bj_layout:
-                flag = "2";
-                setView();
-                mIdex("2");
-                setText(mBjText, mBjView);
-                break;
-            case R.id.ll_bl_layout:
-                flag = "3";
-                setView();
-                mIdex("5");
-                setText(mBlText, mBlView);
-                break;
-            case R.id.ll_fx_layout:
-                flag = "4";
-                setView();
-                mIdex("4");
-                setText(mFxText, mFxView);
-                break;
             case R.id.msort:
                 intent = new Intent(getActivity(), SortActivity.class);
                 startActivity(intent);
@@ -530,26 +412,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 startActivity(intent);
                 break;
         }
-    }
-
-    private void setText(TextView text, View view) {
-        text.setTextColor(getResources().getColor(R.color.color_line_top));
-        view.setVisibility(View.VISIBLE);
-    }
-
-    private void setView() {
-        DialogSingleUtil.show(getActivity());
-        mCzgText.setTextColor(getResources().getColor(R.color.color_line_text));
-        mCzgView.setVisibility(View.GONE);
-        mBjText.setTextColor(getResources().getColor(R.color.color_line_text));
-//            mQbText.setTextSize(TypedValue.COMPLEX_UNIT_PX,30);
-        mBjView.setVisibility(View.GONE);
-        mBlText.setTextColor(getResources().getColor(R.color.color_line_text));
-//            mDfkText.setTextSize(TypedValue.COMPLEX_UNIT_PX,30);
-        mBlView.setVisibility(View.GONE);
-        mFxText.setTextColor(getResources().getColor(R.color.color_line_text));
-//            mDfhText.setTextSize(TypedValue.COMPLEX_UNIT_PX,30);
-        mFxView.setVisibility(View.GONE);
     }
 
     @Override
@@ -585,49 +447,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     break;
                 case 2:
                     try {
-                        if (type.equals("2")) {
-                            pubaBeans = JSON.parseArray(content, NewHomePubaBean.class);
-                            if (x == 1) {
-                                Refresh("2");
-                            } else if (x == 2) {
-                                if (pubaBeans != null && pubaBeans.size() > 0) {
-                                    homeadapter.notifyBjData(pubaBeans);
-                                } else {
-                                    refreshLayout.finishLoadMoreWithNoMoreData();
-                                }
-                            }
-                        } else if (type.equals("5")) {
-                            blBeans = JSON.parseArray(content, FenXiangListBean.class);
-                            if (x == 1) {
-                                Refresh("5");
-                            } else if (x == 2) {
-                                if (blBeans != null && blBeans.size() > 0) {
-                                    homeadapter.notifyBlData(blBeans);
-                                } else {
-                                    refreshLayout.finishLoadMoreWithNoMoreData();
-                                }
-                            }
-                        } else if (type.equals("4")) {
-                            fxBeans = JSON.parseArray(content, NewHomeFxBean.class);
-                            if (x == 1) {
-                                Refresh("4");
-                            } else if (x == 2) {
-                                if (fxBeans != null && fxBeans.size() > 0) {
-                                    homeadapter.notifyFxData(fxBeans);
-                                } else {
-                                    refreshLayout.finishLoadMoreWithNoMoreData();
-                                }
-                            }
-                        } else if (type.equals("1")) {
-                            czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
-                            if (x == 1) {
-                                Refresh("1");
-                            } else if (x == 2) {
-                                if (czgBeans != null && czgBeans.size() > 0) {
-                                    homeadapter.notifyData(czgBeans);
-                                } else {
-                                    refreshLayout.finishLoadMoreWithNoMoreData();
-                                }
+                        czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
+                        if (x == 1) {
+                            newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
+                            mrecyclerview.setAdapter(newCzgAdapter);
+                        } else if (x == 2) {
+                            if (czgBeans != null && czgBeans.size() > 0) {
+                                newCzgAdapter.notifyData(czgBeans);
+                            } else {
+                                refreshLayout.finishLoadMoreWithNoMoreData();
                             }
                         }
                     } catch (Exception e) {
@@ -663,18 +491,34 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     //chaozhigouTypes
                     if (object.has("chaozhigouTypes")) {
                         chaozhigouTypes = object.optJSONArray("chaozhigouTypes");
+                        chaozhigouTypesBeans = JSON.parseArray(object.optString("chaozhigouTypes"), ChaozhigouTypesBean.class);
+                        typeGridAdapter = new TypeGridAdapter(getActivity(), chaozhigouTypesBeans);
+                        typeGrid.setAdapter(typeGridAdapter);
+                        typeGrid.setOnItemClickListener(onItemClickListener);
                         try {
-                            loadtitlekeywords(chaozhigouTypes);
+                            if (showTime == 0) {
+                                showTime++;
+                                loadtitlekeywords(chaozhigouTypes, mbox2);
+                                loadtitlekeywordsTop(chaozhigouTypes, mbox1);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                    mrecyclerview.addItemDecoration(new TwoDecoration(0, "#f3f3f3", 3 + banner.length() + tag.length()));
-                    mrecyclerview.setHasFixedSize(true);
-                    mIdex("1");
-//                    homeadapter = new NewHomeAdapter(getActivity(),taglist,banner, tag, fabiao,gongneng,type,czgBeans,pubaBeans,blBeans,fxBeans);
-//                    mrecyclerview.setAdapter(homeadapter);
-//                    homeadapter.setOnClickListioner(NewHomeFragment.this);
+                    try {
+                        //判断传过来数据是否为null
+                        if (banner != null && banner.length() > 0) {
+                            loadbanner(banner);
+                        }
+                        if (tag != null && tag.length() > 0) {
+                            loadTag(tag);
+                        }
+                        if (fabiao != null && fabiao.length() > 0) {
+                            loadViewflipper(fabiao);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     /**
                      * eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao
                      未登录 显示preguanggao
@@ -683,8 +527,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         if (object.has("preguanggao")) {
                             if (isshowzhezhao) {
                                 preguanggao = object.optJSONObject("preguanggao");
-                                String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-                                if (isFirstResultUse.equals("no")) {
                                     new HomeAlertDialog(getActivity()).builder()
                                             .setimag(preguanggao.optString("img"))
                                             .setonclick(new OnClickListener() {
@@ -695,14 +537,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                             }).show();
                                     isshowzhezhao = false;
                                 }
-                            }
                         }
                     } else {
                         if (object.has("guanggao")) {
                             if (isshowzhezhao) {
                                 jo = object.optJSONObject("guanggao");
-                                String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-                                if (isFirstResultUse.equals("no")) {
                                     new HomeAlertDialog(getActivity()).builder()
                                             .setimag(jo.optString("img"))
                                             .setonclick(new OnClickListener() {
@@ -712,7 +551,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                                                 }
                                             }).show();
                                     isshowzhezhao = false;
-                                }
                             }
                         }
                     }
@@ -729,132 +567,19 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         }
     };
 
-    public void Refresh(String type) {
-        mSuspensionBar.setVisibility(View.GONE);
-        homeadapter = new NewHomeAdapter(getActivity(), taglist, banner, tag, fabiao, gongneng, titlelist, type, czgBeans, pubaBeans, blBeans, fxBeans, blBeans, jo);
-        mrecyclerview.setAdapter(homeadapter);
-//        homeadapter.notifyDataSetChanged();
-        if (homeadapter != null) {
-            homeadapter.setOnClickListioner(NewHomeFragment.this);
-        }
-    }
-
-    //首页视图数据加载
-    private void mViewLoad() {
-        handler.sendEmptyMessageDelayed(5, 0);
-    }
-
-    //超值购等数据
+    //超值购
     private void mIdex(String str) {
         type = str;
         x = 1;
         page = 1;
-//        zLoadingView.load();
         getIndexByType();
     }
 
     @Override
     protected void loadLazyData() {
-//        refreshLayout.autoRefresh();
-        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-        if (isFirstResultUse.equals("no")) {
-            refreshLayout.autoRefresh();
-        } else {
-            DialogSingleUtil.show(getActivity());
-            mViewLoad();
-        }
-    }
-
-    @Override
-    public void onCzgClick() {
-        setView();
+        titlelist = new ArrayList<>();
         mIdex("1");
-        setText(mCzgText, mCzgView);
-    }
-
-    @Override
-    public void onBjClick() {
-        setView();
-        mIdex("2");
-        setText(mBjText, mBjView);
-    }
-
-    @Override
-    public void onBlClick() {
-        setView();
-        mIdex("5");
-        setText(mBlText, mBlView);
-    }
-
-    @Override
-    public void onFxClick() {
-        setView();
-        mIdex("4");
-        setText(mFxText, mFxView);
-    }
-
-    @Override
-    public void onDissmissClick() {
-//        if (isHomeGudie) {
-//            SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse","isFirstHomeUserUse", "no");
-//        }else{
-//            isHomeGudie = true;
-//        }
-        SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse", "no");
-        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-        if (isFirstResultUse.equals("no")) {
-            if (isshowzhezhao) {
-                /**
-                 * eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao
-                 未登录 显示preguanggao
-                 */
-                if (TextUtils.isEmpty(userID)) {
-                    if (object.has("preguanggao")) {
-                        if (isshowzhezhao) {
-                            preguanggao = object.optJSONObject("preguanggao");
-                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-                            if (isFirstResultUse.equals("no")) {
-                                new HomeAlertDialog(getActivity()).builder()
-                                        .setimag(preguanggao.optString("img"))
-                                        .setonclick(new OnClickListener() {
-                                            @Override
-                                            public void onClick(View arg0) {
-                                                EventIdIntentUtil.EventIdIntent(getActivity(), preguanggao);
-                                            }
-                                        }).show();
-                                isshowzhezhao = false;
-                            }
-                        }
-                    }
-                } else {
-                    if (object.has("guanggao")) {
-                        if (isshowzhezhao) {
-                            jo = object.optJSONObject("guanggao");
-                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-                            if (isFirstResultUse.equals("no")) {
-                                new HomeAlertDialog(getActivity()).builder()
-                                        .setimag(jo.optString("img"))
-                                        .setonclick(new OnClickListener() {
-                                            @Override
-                                            public void onClick(View arg0) {
-                                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
-                                            }
-                                        }).show();
-                                isshowzhezhao = false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onClick(String keyword) {
-        x = 1;
-        page = 1;
-        Log.i("----",keyword);
-        initDataCzg(keyword);
+        refreshLayout.autoRefresh();
     }
 
     @Override
@@ -862,7 +587,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         DialogSingleUtil.show(getActivity());
         zLoadingView.setVisibility(View.GONE);
         initData();
-        getIndexByType();
+//        getIndexByType();
+        mIdex("1");
     }
 
     @Override
@@ -878,7 +604,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
 
     // 一级菜单一
-    private void addtitle(final String text, final int i) {
+    private void addtitle(final String text, final int i, final LinearLayout mbox) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.super_item_title, null);
         //设置view的weight为1，保证导航铺满当前页面
@@ -903,8 +629,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             @Override
             public void onClick(View view) {
                 if (i != currentIndex) {
-//                    topViewHolder.mbox.getChildAt(0).setVisibility(View.GONE);
-                    updateTitle(i);
+                    updateTitle(i, mbox2,text);
+                    updateTitleTop(i, mbox1,text);
                 }
             }
 
@@ -912,63 +638,158 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         mbox.addView(view);
     }
 
-    private void updateTitle(int position) {
+    private void updateTitle(int position, LinearLayout mbox,String text) {
+        View view = mbox.getChildAt(position);
+        TextView title1 = (TextView) view.findViewById(R.id.item_title);
+        View henggang1 = view.findViewById(R.id.bottom_view);
+        if (position == currentIndex){
+            title1.setTextColor(Color.parseColor("#FF7D41"));
+            henggang1.setBackgroundColor(Color.parseColor("#FF7D41"));
+        }else {
+            title1.setTextColor(Color.parseColor("#FF7D41"));
+            henggang1.setBackgroundColor(Color.parseColor("#FF7D41"));
+        }
+        View view4 = mbox.getChildAt(currentIndex);
+        TextView title3 = (TextView) view4.findViewById(R.id.item_title);
+        View henggang3 = view4.findViewById(R.id.bottom_view);
+        if (position == currentIndex){
+            title3.setTextColor(Color.parseColor("#FF7D41"));
+            henggang3.setBackgroundColor(Color.parseColor("#FF7D41"));
+        }else {
+            title3.setTextColor(Color.parseColor("#666666"));
+            henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+         mhscrollview.scrollTo(view.getLeft() - 200, 0);
+        currentIndex = position;
+        if (position == 0) {
+            flag = "0";
+            keyword = "";
+            DialogSingleUtil.show(getActivity());
+            mIdex("1");
+        } else {
+            x = 1;
+            page = 1;
+            flag = "1";
+            keyword = text;
+            DialogSingleUtil.show(getActivity());
+            initDataCzg(keyword);
+        }
+    }
+    // 一级菜单一
+    private void addtitleTop(final String text, final int i, final LinearLayout mbox) {
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View view = inflater.inflate(R.layout.super_item_title, null);
+        //设置view的weight为1，保证导航铺满当前页面
+        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+        final TextView title = (TextView) view.findViewById(R.id.item_title);
+        final View henggang = view.findViewById(R.id.bottom_view);
+        title.setText(text);
+        title.setTextColor(Color.parseColor("#666666"));
+        henggang.setBackgroundColor(Color.parseColor("#ffffff"));
+        view.setPadding(BaseTools.getPixelsFromDp(getActivity(), 0), 0, BaseTools.getPixelsFromDp(getActivity(), 0), 0);
+        if (i == 0) {
+            view.setVisibility(View.VISIBLE);
+            title.setTextColor(Color.parseColor("#FF7D41"));
+            henggang.setBackgroundColor(Color.parseColor("#FF7D41"));
+            title.setText("超值购");
+        }
+        if (i == 1) {
+
+        }
+        view.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (i != currentIndexTop) {
+                    updateTitleTop(i, mbox1,text);
+                    updateTitle(i, mbox2,text);
+                }
+            }
+
+        });
+        mbox.addView(view);
+    }
+
+    private void updateTitleTop(int position, LinearLayout mbox,String text) {
         titlelist.get(currentIndex).put("isselect", "0");
         titlelist.get(position).put("isselect", "1");
         View view = mbox.getChildAt(position);
         TextView title1 = (TextView) view.findViewById(R.id.item_title);
         View henggang1 = view.findViewById(R.id.bottom_view);
-        title1.setTextColor(Color.parseColor("#FF7D41"));
-        henggang1.setBackgroundColor(Color.parseColor("#FF7D41"));
-
-        View view4 = mbox.getChildAt(currentIndex);
+        if (position == currentIndexTop){
+            title1.setTextColor(Color.parseColor("#FF7D41"));
+            henggang1.setBackgroundColor(Color.parseColor("#FF7D41"));
+        }else {
+            title1.setTextColor(Color.parseColor("#FF7D41"));
+            henggang1.setBackgroundColor(Color.parseColor("#FF7D41"));
+        }
+        View view4 = mbox.getChildAt(currentIndexTop);
         TextView title3 = (TextView) view4.findViewById(R.id.item_title);
         View henggang3 = view4.findViewById(R.id.bottom_view);
-        title3.setTextColor(Color.parseColor("#666666"));
-        henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
-        // mhscrollview.scrollTo(view.getLeft() - 200, 0);
-        currentIndex = position;
+        if (position == currentIndexTop){
+            title3.setTextColor(Color.parseColor("#FF7D41"));
+            henggang3.setBackgroundColor(Color.parseColor("#FF7D41"));
+        }else {
+            title3.setTextColor(Color.parseColor("#666666"));
+            henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+         mhscrollview1.scrollTo(view.getLeft() - 200, 0);
+        currentIndexTop = position;
         if (position == 0) {
-            page = 1;
-            x = 1;
-            type = "";
-            initDataCzg(type);
+            flag = "0";
+            keyword = "";
+            DialogSingleUtil.show(getActivity());
+            mIdex("1");
         } else {
             x = 1;
             page = 1;
-            type = titlelist.get(position).get("keyword");
-            initDataCzg(type);
+            flag = "1";
+            keyword = text;
+            DialogSingleUtil.show(getActivity());
+            initDataCzg(keyword);
         }
     }
-
-    private void loadtitlekeywords(JSONArray searchwords) throws JSONException {
-        titlelist = new ArrayList<>();
+    private void loadtitlekeywords(JSONArray searchwords, LinearLayout mbox) throws JSONException {
         Map<String, String> map = new HashMap<>();
         map.put("keyword", "超值购");
         map.put("isselect", "0");
         titlelist.add(map);
-        addtitle("超值购", 0);
+        addtitle("超值购", 0, mbox);
         for (int i = 0; i < searchwords.length(); i++) {
             Map<String, String> map1 = new HashMap<>();
             String keyword = searchwords.getJSONObject(i).optString("name");
             map1.put("keyword", keyword);
             map1.put("isselect", "0");
             titlelist.add(map1);
-            addtitle(keyword, i + 1);
+            addtitle(keyword, i + 1, mbox);
         }
-        typeGridAdapter = new TypeGridAdapter(getActivity(), titlelist);
-        typeGrid.setAdapter(typeGridAdapter);
-        typeGrid.setOnItemClickListener(onItemClickListener);
+    }
+    private void loadtitlekeywordsTop(JSONArray searchwords, LinearLayout mbox) throws JSONException {
+        addtitleTop("超值购", 0, mbox);
+        for (int i = 0; i < searchwords.length(); i++) {
+            Map<String, String> map1 = new HashMap<>();
+            String keyword = searchwords.getJSONObject(i).optString("name");
+            addtitleTop(keyword, i + 1, mbox);
+        }
     }
 
-    @OnClick({R.id.type_image,R.id.ll_shouqi})
+
+    @OnClick({R.id.type_image, R.id.ll_shouqi, R.id.msearch, R.id.msort})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.type_image:
                 showGlobalMenu();
-            break;
+                break;
             case R.id.ll_shouqi:
                 showGlobalMenu();
+                break;
+            case R.id.msearch:
+                Intent intent = new Intent(getActivity(), SearchMainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.msort:
+                Intent intent1 = new Intent(getActivity(), SortActivity.class);
+                startActivity(intent1);
                 break;
         }
     }
@@ -1012,7 +833,14 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             typeGridAdapter.setSeclection(position);
             typeGridAdapter.notifyDataSetChanged();
-            Log.i("点击了","++++++");
+                keyword = chaozhigouTypesBeans.get(position).getKeyword();
+                x = 1;
+                page = 1;
+                DialogSingleUtil.show(getActivity());
+                initDataCzg(keyword);
+                updateTitle(position+1, mbox2,keyword);
+                updateTitleTop(position+1, mbox1,keyword);
+            showGlobalMenu();
         }
     };
 
@@ -1020,9 +848,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
      * 超值购数据请求
      */
     private void initDataCzg(String keyword) {
+        refreshLayout.setNoMoreData(false);
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("keyword", keyword);
-        paramsMap.put("sortWay", "");
+        paramsMap.put("sortWay", "5");
         paramsMap.put("page", page + "");
         paramsMap.put("client", "android");
         paramsMap.put("domain", "");
@@ -1032,21 +861,28 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     public void onNext(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            Log.i("超值购数据",s+"=====");
+                            content = jsonObject.optString("content");
+                            JSONObject jo = new JSONObject(content);
+                            String isBlandCzg = jo.optString("isBland");
                             if (jsonObject.optString("status").equals("1")) {
-                                content = jsonObject.optString("content");
-                                JSONObject jo = new JSONObject(content);
-                                JSONObject info = jo.getJSONObject("info");
-                                String tmpCzg = info.optString("page");
-                                czgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
-                                if (x == 1) {
-                                    Refresh("1");
-                                } else if (x == 2) {
-                                    if (czgBeans != null && czgBeans.size() > 0) {
-                                        homeadapter.notifyData(czgBeans);
-                                    } else {
-                                        refreshLayout.finishLoadMoreWithNoMoreData();
+                                if (isBlandCzg.equals("1")) {
+                                    JSONObject info = jo.getJSONObject("info");
+                                    String tmpCzg = info.optString("page");
+                                    NewConstants.Flag = "3";
+                                    czgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
+                                    if (x == 1) {
+                                        newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
+                                        mrecyclerview.setAdapter(newCzgAdapter);
+                                    } else if (x == 2) {
+                                        if (tmpCzg != null && !tmpCzg.toString().equals("[]")) {
+                                            czgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
+                                            newCzgAdapter.notifyData(czgBeans);
+                                        } else {
+                                            refreshLayout.finishLoadMoreWithNoMoreData();
+                                        }
                                     }
+                                } else if (isBlandCzg.equals("-1") && x == 2 && NewConstants.Flag.equals("3")) {
+                                    refreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                         } catch (JSONException e) {
@@ -1062,7 +898,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
                     @Override
                     protected void showDialog() {
-                        DialogSingleUtil.show(getActivity());
+//                        DialogSingleUtil.show(getActivity());
                     }
 
                     @Override
@@ -1073,5 +909,353 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         StringUtil.showToast(getActivity(), e.message);
                     }
                 });
+    }
+
+
+    /***
+     * 加载中部图标
+     * @param tag
+     * @throws Exception
+     */
+    private void loadTag(final JSONArray tag) throws Exception {
+        taglist.clear();
+        for (int i = 0; i < tag.length(); i++) {
+            JSONObject object = tag.getJSONObject(i);
+            Map<String, String> map = new HashMap<>();
+            String htmlUrl = object.optString("htmlUrl");
+            String eventId = object.optString("eventId");
+            String img = object.optString("img");
+            String name = object.optString("name");
+            map.put("htmlUrl", htmlUrl);
+            map.put("eventId", eventId);
+            map.put("text", name);
+            map.put("imageUrl", img);
+            taglist.add(map);
+        }
+        List<ImageView> imglist = new ArrayList<>();
+        List<TextView> textlist = new ArrayList<>();
+        List<LinearLayout> boxlist = new ArrayList<>();
+        imglist.add(mImageView1);
+        imglist.add(mImageView2);
+        imglist.add(mImageView3);
+        imglist.add(mImageView4);
+        imglist.add(mImageView5);
+        textlist.add(mTextView1);
+        textlist.add(mTextView2);
+        textlist.add(mTextView3);
+        textlist.add(mTextView4);
+        textlist.add(mTextView5);
+        boxlist.add(mLlLayout1);
+        boxlist.add(mLlLayout2);
+        boxlist.add(mLlLayout3);
+        boxlist.add(mLlLayout4);
+        boxlist.add(mLlLayout5);
+        for (int i = 0; i < boxlist.size(); i++) {
+            final int position = i;
+            TextView textView = textlist.get(position);
+            ImageView imageView = imglist.get(position);
+            Map<String, String> map = taglist.get(position);
+            String text = map.get("text").toString();
+            textlist.get(position).setText(text);
+            TextPaint tp = textView.getPaint();
+            tp.setFakeBoldText(true);
+            String imageUrl = map.get("imageUrl").toString();
+            Glide.with(getActivity())
+                    .load(imageUrl)
+                    .placeholder(R.mipmap.zw_img_160)
+                    .thumbnail(0.5f)
+                    .into(imageView);
+            boxlist.get(i).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        EventIdIntentUtil.EventIdIntent(getActivity(), tag.getJSONObject(position));
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    /***
+     * 加载轮播
+     * @param fabiao
+     * @throws JSONException
+     */
+    private void loadViewflipper(JSONArray fabiao) throws JSONException {
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        for (int i = 0; i < fabiao.length(); i++) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.flipper_bidhome, null);
+            TextView mtitle = view.findViewById(R.id.mtitle);
+            TextView mbuyprice = view.findViewById(R.id.mbuyprice);
+            TextView msellprice = view.findViewById(R.id.msellprice);
+            TextView mcount = view.findViewById(R.id.mcount);
+            ImageView mimg = view.findViewById(R.id.mimg);
+            final JSONObject object = fabiao.getJSONObject(i);
+            final String id = object.optString("id");
+            String title = object.optString("title");
+            final String count = object.optString("count");
+            String buyprice = object.optString("buyprice");
+            String img = object.optString("img");
+            String sellprice = object.optString("sellprice");
+            final String url = object.optString("url");
+            mtitle.setText(title);
+            mbuyprice.setText("我要价 " + buyprice);
+            msellprice.setText("扑倒价 " + sellprice);
+            mcount.setText("扑倒中" + count + "人");
+            Glide.with(getActivity()).load(img).into(mimg);
+            view.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        if (object.get("userid").equals(userID)) {
+                            Intent intent = new Intent(getActivity(), BidBillDetailActivity.class);
+                            intent.putExtra("fbid", id);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(getActivity(), BidDetailActivity.class);
+                            intent.putExtra("id", id);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            mviewflipper.addView(view);
+        }
+        Animation ru = AnimationUtils.loadAnimation(getActivity(), R.anim.lunbo_ru);
+        Animation chu = AnimationUtils.loadAnimation(getActivity(), R.anim.lunbo_chu);
+        mviewflipper.setInAnimation(ru);
+        mviewflipper.setOutAnimation(chu);
+        mviewflipper.startFlipping();
+    }
+
+    /**
+     * 加载Banner
+     *
+     * @param banner
+     */
+    private void loadbanner(final JSONArray banner) {
+        List<Object> imgUrlList = new ArrayList<>();
+        try {
+            for (int i = 0; i < banner.length(); i++) {
+                JSONObject jo = banner.getJSONObject(i);
+                String imgUrl = jo.getString("img");
+                imgUrlList.add(imgUrl);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mBanner.setImages(imgUrlList)
+                .setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        try {
+                            EventIdIntentUtil.EventIdIntent(getActivity(), banner.getJSONObject(position));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setDelayTime(3000)
+                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setIndicatorGravity(BannerConfig.CENTER)
+                .start();
+        mBanner.setOnTouchListener(new View.OnTouchListener() {
+            public float startX;
+            public float startY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mBanner.requestDisallowInterceptTouchEvent(true);
+                        // 记录手指按下的位置
+                        startY = event.getY();
+                        startX = event.getX();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        // 获取当前手指位置
+                        float endY = event.getY();
+                        float endX = event.getX();
+                        float distanceX = Math.abs(endX - startX);
+                        float distanceY = Math.abs(endY - startY);
+                        mBanner.requestDisallowInterceptTouchEvent(true);
+//                        refreshLayout.setEnabled(false);
+                        // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
+                        if (distanceX + 500 < distanceY) {
+                            mBanner.requestDisallowInterceptTouchEvent(false);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+//                        refreshLayout.setEnabled(true);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onScrollChanged(MyScrollViewNew scrollView, int x, int y, int oldx, int oldy) {
+        if (y <= 0) {   //设置标题的背景颜色
+//            lin.setBackgroundColor(Color.argb((int) 0, 255, 255, 255));
+            lin.setBackgroundResource(R.drawable.bg_home_yinying);
+            llType.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            lin.setVisibility(View.VISIBLE);
+            imageFenlei.setBackgroundResource(R.mipmap.fenlei_white);
+            tvFenlei.setTextColor(getActivity().getResources().getColor(R.color.white));
+        } else if (y > 0 && y <= imageHeight) { //滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
+            float scale = (float) y / imageHeight;
+            float alpha = (255 * scale);
+            lin.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+            tvFenlei.setTextColor(getActivity().getResources().getColor(R.color.white));
+            llType.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            lin.setVisibility(View.VISIBLE);
+            imageFenlei.setBackgroundResource(R.mipmap.fenlei_white);
+        } else {
+            //滑动到banner下面设置普通颜色
+            //将标题栏的颜色设置为完全不透明状态
+            lin.setBackgroundResource(R.color.white);
+            lin.setVisibility(View.VISIBLE);
+            imageFenlei.setBackgroundResource(R.mipmap.tuiguang_21);
+            tvFenlei.setTextColor(getActivity().getResources().getColor(R.color.tuiguang_color3));
+        }
+        height = llTop.getHeight()-lin.getHeight();
+        if (y > 0 && y <= height) {
+            llType.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+        } else if (y <= 0) {
+            llType.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+        } else {
+            llType.setVisibility(View.VISIBLE);
+            imageButton.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    /**
+     * 获取顶部图片高度后，设置滚动监听
+     */
+    private void initListeners() {
+
+        ViewTreeObserver vto = mBanner.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mBanner.getViewTreeObserver().removeGlobalOnLayoutListener(
+                        this);
+                imageHeight = mBanner.getHeight();
+                scrollview.setScrollViewListener(NewHomeFragment.this);
+            }
+        });
+    }
+
+    @OnClick(R.id.image_puba)
+    public void onViewClicked() {
+        Intent intent = new Intent(getActivity(), BidHomeActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onHeaderPulling(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onHeaderReleased(RefreshHeader header, int headerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onHeaderReleasing(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onHeaderStartAnimator(RefreshHeader header, int headerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onHeaderFinish(RefreshHeader header, boolean success) {
+
+    }
+
+    @Override
+    public void onFooterPulling(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onFooterReleased(RefreshFooter footer, int footerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onFooterReleasing(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onFooterStartAnimator(RefreshFooter footer, int footerHeight, int extendHeight) {
+
+    }
+
+    @Override
+    public void onFooterFinish(RefreshFooter footer, boolean success) {
+
+    }
+
+    @Override
+    public void onLoadMore(RefreshLayout refreshLayout) {
+        if (flag != null) {
+            if (flag.equals("0") || flag.equals("")) {
+                handler.sendEmptyMessageDelayed(4, 100);
+            } else {
+                page++;
+                x = 2;
+                initDataCzg(keyword);
+            }
+        }
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshLayout) {
+        initData();
+        if (titlelist.size() > 0 && titlelist != null) {
+            updateTitle(0, mbox2,keyword);
+            updateTitleTop(0, mbox1,keyword);
+        }
+    }
+
+    @Override
+    public void onStateChanged(RefreshLayout refreshLayout, RefreshState oldState, RefreshState newState) {
+//        Log.i("=========",refreshLayout.getState()+"=====");
+        switch (refreshLayout.getState()){
+            case None:
+                AnimationUtil.with().topMoveToViewLocation(lin,500);
+                lin.setVisibility(View.VISIBLE);
+                break;
+            case PullDownCanceled:
+                AnimationUtil.with().topMoveToViewLocation(lin,500);
+                lin.setVisibility(View.VISIBLE);
+                break;
+            case Refreshing:
+            case RefreshFinish:
+            case RefreshReleased:
+            case PullDownToRefresh:
+                AnimationUtil.with().moveToViewTop(lin,500);
+                lin.setVisibility(View.GONE);
+                break;
+        }
     }
 }

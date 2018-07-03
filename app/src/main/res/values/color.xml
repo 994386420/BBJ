@@ -85,6 +85,7 @@
     <color name="update_color">#28C78D</color>
     <color name="update_color1">#DEDEDE</color>
     <color name="update_color2">#68C78D</color>
+    <color name="type_color">#EE240E</color>
 
     //推广颜色值
     <color name="tuiguang_color1">#EF250F</color>

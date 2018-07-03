@@ -1,6 +1,9 @@
 package com.bbk.activity;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -29,13 +32,16 @@ import com.bbk.adapter.NewCzgGridAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.dialog.AlertDialog;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.NoFastClickUtils;
+import com.bbk.util.ShareFenXiangUtil;
 import com.bbk.util.ShareJumpUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.util.UpdataDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.kepler.jd.Listener.OpenAppAction;
@@ -120,6 +126,8 @@ public class JumpDetailActivty extends BaseActivity {
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
     public static String Flag = "";
+    public static String flag = "";
+    private UpdataDialog updataDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -337,6 +345,7 @@ public class JumpDetailActivty extends BaseActivity {
                 showGlobalMenu();
                 break;
             case R.id.ll_share:
+                flag = "share";
                 if (TextUtils.isEmpty(userID)) {
                     Flag = "home";
                     intent = new Intent(this, UserLoginNewActivity.class);
@@ -345,40 +354,23 @@ public class JumpDetailActivty extends BaseActivity {
                     if (NoFastClickUtils.isFastClick()){
                         StringUtil.showToast(this,"对不起，您的点击太快了，请休息一下");
                     }else {
+                        llShare.setClickable(false);
                         shareCpsInfo();
                     }
                 }
                 break;
             case R.id.ll_lingquan:
-                DialogSingleUtil.show(this);
-                alibcShowParams = new AlibcShowParams(OpenType.Native, false);
-                alibcShowParams.setClientType("taobao_scheme");
-                exParams = new HashMap<>();
-                exParams.put("isv_code", "appisvcode");
-                exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-                if (domain != null) {
-                    if (domain.equals("tmall") || domain.equals("taobao")) {
-                        showUrl();
-                    } else if (domain.equals("jd")) {
-                        // 通过url呼京东主站
-                        // url 通过url呼京东主站的地址
-                        // mKeplerAttachParameter 存储第三方传入参数
-                        // mOpenAppAction  呼京东主站回调
-                        KeplerApiManager.getWebViewService().openAppWebViewPage(this,
-                                url,
-                                mKeplerAttachParameter,
-                                mOpenAppAction);
-                        DialogSingleUtil.dismiss(100);
-                    } else {
-                        intent = new Intent(this, WebViewActivity.class);
-                        if (url != null) {
-                            intent.putExtra("url", url);
-                        }
-                        if (rowkey != null) {
-                            intent.putExtra("rowkey", rowkey);
-                        }
-                        startActivity(intent);
-                        DialogSingleUtil.dismiss(50);
+                flag = "lingquan";
+                if (TextUtils.isEmpty(userID)) {
+                    Flag = "home";
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    if (NoFastClickUtils.isFastClick()){
+                        StringUtil.showToast(this,"对不起，您的点击太快了，请休息一下");
+                    }else {
+                        llLingquan.setClickable(false);
+                        shareCpsInfo();
                     }
                 }
                 break;
@@ -413,11 +405,62 @@ public class JumpDetailActivty extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 content = jsonObject.optString("content");
-                                ShareBean shareBean = JSON.parseObject(content, ShareBean.class);
-                                if (shareBean.getImgUrl() != null) {
-                                    Glide.with(JumpDetailActivty.this).load(shareBean.getImgUrl()).priority(Priority.HIGH).into(imageFenxiang);
+                                JSONObject jsonObject1 = new JSONObject(content);
+//                                Log.i("===",s);
+                                if (jsonObject1.has("errmsg")) {
+                                    if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
+                                        showMessageDialog(JumpDetailActivty.this,userID);
+//                                        StringUtil.showToast(JumpDetailActivty.this, jsonObject1.optString("errmsg"));
+                                    } else {
+                                        if (flag.equals("lingquan")) {
+                                            DialogSingleUtil.show(JumpDetailActivty.this);
+                                            alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+                                            alibcShowParams.setClientType("taobao_scheme");
+                                            exParams = new HashMap<>();
+                                            exParams.put("isv_code", "appisvcode");
+                                            exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+                                            if (domain != null) {
+                                                if (domain.equals("tmall") || domain.equals("taobao")) {
+                                                    showUrl();
+                                                } else if (domain.equals("jd")) {
+                                                    // 通过url呼京东主站
+                                                    // url 通过url呼京东主站的地址
+                                                    // mKeplerAttachParameter 存储第三方传入参数
+                                                    // mOpenAppAction  呼京东主站回调
+                                                    KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+                                                            url,
+                                                            mKeplerAttachParameter,
+                                                            mOpenAppAction);
+                                                    DialogSingleUtil.dismiss(100);
+                                                } else {
+                                                    Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+                                                    if (url != null) {
+                                                        intent.putExtra("url", url);
+                                                    }
+                                                    if (rowkey != null) {
+                                                        intent.putExtra("rowkey", rowkey);
+                                                    }
+                                                    startActivity(intent);
+                                                    DialogSingleUtil.dismiss(50);
+                                                }
+                                            }
+
+                                        } else if (flag.equals("share")) {
+                                            ShareBean shareBean = JSON.parseObject(content, ShareBean.class);
+                                            if (shareBean.getImgUrl() != null) {
+                                                Glide.with(JumpDetailActivty.this).load(shareBean.getImgUrl()).priority(Priority.HIGH).into(imageFenxiang);
+                                            }
+                                            String wenan = "";
+                                            if (shareBean.getWenan() != null) {
+                                                wenan = shareBean.getWenan().replace("|", "\n");
+                                            }
+                                            ClipboardManager cm = (ClipboardManager)JumpDetailActivty.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                            cm.setText(wenan);
+                                            StringUtil.showToast(JumpDetailActivty.this,"文案复制成功");
+                                            ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan);
+                                        }
+                                    }
                                 }
-                                ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang,shareBean.getWenan().replace("|","\n"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -427,6 +470,8 @@ public class JumpDetailActivty extends BaseActivity {
                     @Override
                     protected void hideDialog() {
                         DialogSingleUtil.dismiss(0);
+                        llShare.setClickable(true);
+                        llLingquan.setClickable(true);
                     }
 
                     @Override
@@ -493,5 +538,144 @@ public class JumpDetailActivty extends BaseActivity {
                 break;
         }
         super.onActivityResult(arg0, arg1, arg2);
+    }
+
+    /**
+     * 成为合伙人
+     */
+    private  void updateCooperationByUserid(final Context context, String userID) {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userID);
+        RetrofitClient.getInstance(context).createBaseApi().updateCooperationByUserid(
+                maps, new BaseObserver<String>(context) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            Intent intent;
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                StringUtil.showToast(context,"恭喜成为合伙人");
+                                if(flag.equals("lingquan")) {
+                                    DialogSingleUtil.show(JumpDetailActivty.this);
+                                    alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+                                    alibcShowParams.setClientType("taobao_scheme");
+                                    exParams = new HashMap<>();
+                                    exParams.put("isv_code", "appisvcode");
+                                    exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+                                    if (domain != null) {
+                                        if (domain.equals("tmall") || domain.equals("taobao")) {
+                                            showUrl();
+                                        } else if (domain.equals("jd")) {
+                                            // 通过url呼京东主站
+                                            // url 通过url呼京东主站的地址
+                                            // mKeplerAttachParameter 存储第三方传入参数
+                                            // mOpenAppAction  呼京东主站回调
+                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+                                                    url,
+                                                    mKeplerAttachParameter,
+                                                    mOpenAppAction);
+                                            DialogSingleUtil.dismiss(100);
+                                        } else {
+                                            intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+                                            if (url != null) {
+                                                intent.putExtra("url", url);
+                                            }
+                                            if (rowkey != null) {
+                                                intent.putExtra("rowkey", rowkey);
+                                            }
+                                            startActivity(intent);
+                                            DialogSingleUtil.dismiss(50);
+                                        }
+                                    }
+                                }
+                            } else {
+                                StringUtil.showToast(context, jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        StringUtil.showToast(context, e.message);
+                    }
+                });
+    }
+
+    /**
+     * 不是合伙人弹窗
+     * @param context
+     * @param useid
+     */
+    public void showMessageDialog(final Context context, final String useid) {
+        if(updataDialog == null || !updataDialog.isShowing()) {
+            //初始化弹窗 布局 点击事件的id
+            updataDialog = new UpdataDialog(context, R.layout.hehuo_dialog_layout,
+                    new int[]{R.id.tv_update_gengxin});
+            updataDialog.show();
+            TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
+            TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+            if (flag.equals("lingquan")){
+                tv_update_refuse.setText("任性购");
+            }
+            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (flag.equals("share")) {
+                        updataDialog.dismiss();
+                    } else if (flag.equals("lingquan")) {
+                        updataDialog.dismiss();
+                        Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+                        DialogSingleUtil.show(JumpDetailActivty.this);
+                        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+                        alibcShowParams.setClientType("taobao_scheme");
+                        exParams = new HashMap<>();
+                        exParams.put("isv_code", "appisvcode");
+                        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+                        if (domain != null) {
+                            if (domain.equals("tmall") || domain.equals("taobao")) {
+                                showUrl();
+                            } else if (domain.equals("jd")) {
+                                // 通过url呼京东主站
+                                // url 通过url呼京东主站的地址
+                                // mKeplerAttachParameter 存储第三方传入参数
+                                // mOpenAppAction  呼京东主站回调
+                                KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+                                        url,
+                                        mKeplerAttachParameter,
+                                        mOpenAppAction);
+                                DialogSingleUtil.dismiss(100);
+                            } else {
+                                intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+                                if (url != null) {
+                                    intent.putExtra("url", url);
+                                }
+                                if (rowkey != null) {
+                                    intent.putExtra("rowkey", rowkey);
+                                }
+                                startActivity(intent);
+                                DialogSingleUtil.dismiss(50);
+                            }
+                        }
+                    }
+                }
+            });
+            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                    updateCooperationByUserid(context,useid);
+                }
+            });
+        }
     }
 }

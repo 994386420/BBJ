@@ -175,6 +175,7 @@
             android:background="@drawable/webview_linearlayout_click"
             android:orientation="horizontal"
             android:paddingBottom="10dp"
+            android:visibility="gone"
             android:paddingTop="10dp" >
 
             <ImageView

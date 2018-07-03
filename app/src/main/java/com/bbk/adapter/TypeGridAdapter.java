@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.bbk.Bean.ChaozhigouTypesBean;
 import com.bbk.activity.R;
 
 import java.util.List;
@@ -15,11 +16,11 @@ import java.util.Map;
 public class TypeGridAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private List<Map<String, String>> titlelist;
+	private List<ChaozhigouTypesBean> titlelist;
 	private int clickTemp = -1;
 
 	public TypeGridAdapter(Context context,
-						    List<Map<String, String>> titlelist) {
+						    List<ChaozhigouTypesBean> titlelist) {
 		this.titlelist = titlelist;
 		this.mContext = context;
 	}
@@ -77,8 +78,11 @@ public class TypeGridAdapter extends BaseAdapter {
 		}
 //		if (!Constants.isNull(mList.get(position).get("color"))
 //				&& !Constants.isNull(mList.get(position).get("chima"))) {
-			mHolder.mTextView.setText(titlelist.get(position).get("keyword")
-					.toString());
+//		if (position == 0){
+//			mHolder.mTextView.setText("超值购");
+//		}else {
+			mHolder.mTextView.setText(titlelist.get(position).getName());
+//		}
 //		}
 		return convertView;
 	}

@@ -374,7 +374,7 @@ public class WelcomeActivity extends BaseActivity2{
 		String token = TelephonyMgr.getDeviceId();
 		queryIndexSeeByToken(token);
 		queryIndexTuijianByToken(token);
-		loadhotKeyword("1");
+		loadhotKeyword("2");
 	}
 	private void queryIndexSeeByToken(String token) {
 		Map<String, String> params = new HashMap<String, String>();

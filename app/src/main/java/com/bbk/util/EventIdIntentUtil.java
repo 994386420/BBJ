@@ -3,15 +3,26 @@ package com.bbk.util;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.OpenType;
+import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.CouponActivity;
+import com.bbk.activity.DataFragmentActivity;
 import com.bbk.activity.DetailsMainActivity22;
 import com.bbk.activity.HomeActivity;
+import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MyApplication;
+import com.bbk.activity.MyCoinActivity;
+import com.bbk.activity.QueryHistoryActivity;
+import com.bbk.activity.R;
 import com.bbk.activity.RankCategoryActivity;
 import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.SearchMainActivity;
+import com.bbk.activity.TuiguangDialogActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewActivity111;
@@ -20,23 +31,47 @@ import com.bbk.activity.WebViewRechargeActivity;
 import com.bbk.activity.WebViewWZActivity;
 import com.bbk.activity.WebViewXGActivity;
 import com.bbk.activity.WelcomeActivity;
+import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.dialog.AlertDialog;
+import com.bbk.resource.NewConstants;
+import com.kepler.jd.Listener.OpenAppAction;
+import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KeplerAttachParameter;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.bbk.util.ClipDialogUtil.url;
+
 public class EventIdIntentUtil {
+	private static AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
+	private static Map<String, String> exParams;//yhhpass参数
+	static String url;
+	private static UpdataDialog updataDialog;
 	public static void main(String[] args) {
 
 	}
+
+	/**
+	 * //按eventId跳转:    1超值购    2超爆款    3潮潮潮    4美味生鲜    5html活动页面(htmlUrl)        6三级页面(groupRowkey)
+	 * 7超市    8全球购    9服饰    10充值    11榜单(type) 12搜索
+	 * 101回复评论,103签到(鲸币界面) 104优惠券,105爆料,106发现,107数据频道 109跳京东返利web  110淘宝返利web 111大转盘 112查历史价格
+	 * @param context
+	 * @param jo
+	 */
 	public static void EventIdIntent(Context context,JSONObject jo){
 		String eventId = jo.optString("eventId");
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -124,7 +159,9 @@ public class EventIdIntentUtil {
 			context.startActivity(intent102);
 			break;
 		case "103":
-			HomeActivity.initfour();
+//			HomeActivity.initfour();
+			Intent intent103 = new Intent(context, MyCoinActivity.class);
+			context.startActivity(intent103);
 			break;
 		case "104":
 			Intent intent104 = new Intent(context, CouponActivity.class);
@@ -137,7 +174,8 @@ public class EventIdIntentUtil {
 			HomeActivity.initone();
 			break;
 		case "107":
-			HomeActivity.initThree();
+			Intent intent107 = new Intent(context, DataFragmentActivity.class);
+			context.startActivity(intent107);
 			break;
 			case "108":
 //				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "2");
@@ -168,6 +206,22 @@ public class EventIdIntentUtil {
 					parseCpsDomainMainUrl(context,userID,"taobao");
 				}
 				break;
+			case "111":
+				String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
+				if (!TextUtils.isEmpty(userID)) {
+					intent = new Intent(context, WebViewActivity.class);
+					String url = BaseApiService.Base_URL + "mobile/user/lottery?mid=";
+					intent.putExtra("url", url + mid);
+					context.startActivity(intent);
+				}else {
+					intent = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent);
+				}
+				break;
+			case "112":
+				intent = new Intent(context, QueryHistoryActivity.class);
+				context.startActivity(intent);
+				break;
 		case "666":
 			String url = jo.optString("url");
 			Intent intent666 = new Intent(context, WebViewActivity_copy.class);
@@ -183,7 +237,7 @@ public class EventIdIntentUtil {
 		}
 	}
 
-	public static void parseCpsDomainMainUrl(final Context context,String userid, String domain) {
+	public static void parseCpsDomainMainUrl(final Context context, final String userid, final String domain) {
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userid);
 		maps.put("domain", domain);
@@ -191,15 +245,46 @@ public class EventIdIntentUtil {
 				maps, new BaseObserver<String>(context) {
 					@Override
 					public void onNext(String s) {
-//						Log.e("===", s);
+						Log.e("===", s);
 						try {
 							JSONObject jsonObject = new JSONObject(s);
 							if (jsonObject.optString("status").equals("1")) {
-								Intent intent = new Intent(context, WebViewActivity.class);
-								if (jsonObject.optString("content") != null) {
-									intent.putExtra("url", jsonObject.optString("content"));
+//								Intent intent = new Intent(context, WebViewActivity.class);
+//								if (jsonObject.optString("content") != null) {
+//									intent.putExtra("url", jsonObject.optString("content"));
+//								}
+//								context.startActivity(intent);
+//								DialogSingleUtil.show(context);
+
+								String content = jsonObject.optString("content");
+								final JSONObject jsonObject1 = new JSONObject(content);
+								if (jsonObject1.has("errmsg")){
+								if (jsonObject1.optString("errmsg") != null&& !jsonObject1.optString("errmsg").equals("")){
+									showMessageDialog(context,userid,jsonObject1.optString("url"),domain);
+//									StringUtil.showToast(context, jsonObject1.optString("errmsg"));
+								}else {
+										alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+										alibcShowParams.setClientType("taobao_scheme");
+										exParams = new HashMap<>();
+										exParams.put("isv_code", "appisvcode");
+										exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+										if (domain != null) {
+											if (domain.equals("taobao")) {
+												showUrl(context, jsonObject1.optString("url"));
+											} else if (domain.equals("jd")) {
+												// 通过url呼京东主站
+												// url 通过url呼京东主站的地址
+												// mKeplerAttachParameter 存储第三方传入参数
+												// mOpenAppAction  呼京东主站回调
+												KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+														jsonObject1.optString("url"),
+														mKeplerAttachParameter,
+														mOpenAppAction);
+												DialogSingleUtil.dismiss(100);
+											}
+										}
+									}
 								}
-								context.startActivity(intent);
 							}else {
 								StringUtil.showToast(context, jsonObject.optString("errmsg"));
 							}
@@ -224,5 +309,143 @@ public class EventIdIntentUtil {
 						StringUtil.showToast(context, e.message);
 					}
 				});
+	}
+	/**
+	 * 打开指定链接
+	 */
+	public static void showUrl(Context context,String url) {
+		String text = url;
+		if (TextUtils.isEmpty(text)) {
+			StringUtil.showToast(context, "URL为空");
+			return;
+		}
+		AlibcTrade.show((Activity) context, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
+		DialogSingleUtil.dismiss(100);
+	}
+
+
+	private static KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
+
+	static OpenAppAction mOpenAppAction = new OpenAppAction() {
+		@Override
+		public void onStatus(final int status, final String url) {
+			if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+			} else {
+			}
+			if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+
+				//未安装京东
+			} else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+//				StringUtil.showToast(context, "不在白名单");
+				//不在白名单
+			} else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+//				StringUtil.showToast(context, "协议错误");
+				//协议错误
+			} else if (status == OpenAppAction.OpenAppAction_result_APP) {
+				//呼京东成功
+			} else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+//				StringUtil.showToast(context, "网络异常");
+				//网络异常
+			}
+		}
+	};
+
+
+	/**
+	 * 成为合伙人
+	 */
+	private static void updateCooperationByUserid(final Context context, String userID, final String url, final String domain) {
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("userid", userID);
+		RetrofitClient.getInstance(context).createBaseApi().updateCooperationByUserid(
+				maps, new BaseObserver<String>(context) {
+					@Override
+					public void onNext(String s) {
+						try {
+							Intent intent;
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								StringUtil.showToast(context,"恭喜成为合伙人");
+								alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+								alibcShowParams.setClientType("taobao_scheme");
+								exParams = new HashMap<>();
+								exParams.put("isv_code", "appisvcode");
+								exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+								if (domain != null) {
+									if (domain.equals("taobao")) {
+										showUrl(context, url);
+									} else if (domain.equals("jd")) {
+										KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+												url,
+												mKeplerAttachParameter,
+												mOpenAppAction);
+									}
+								}
+							} else {
+								StringUtil.showToast(context, jsonObject.optString("errmsg"));
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					protected void hideDialog() {
+					}
+
+					@Override
+					protected void showDialog() {
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(context, e.message);
+					}
+				});
+	}
+
+	/**
+	 * 不是合伙人弹窗
+	 * @param context
+	 * @param useid
+	 */
+	public static void showMessageDialog(final Context context, final String useid, final String url, final String domain) {
+		if(updataDialog == null || !updataDialog.isShowing()) {
+			//初始化弹窗 布局 点击事件的id
+			updataDialog = new UpdataDialog(context, R.layout.hehuo_dialog_layout,
+					new int[]{R.id.tv_update_gengxin});
+			updataDialog.show();
+			TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
+			TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+			tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					updataDialog.dismiss();
+					alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+					alibcShowParams.setClientType("taobao_scheme");
+					exParams = new HashMap<>();
+					exParams.put("isv_code", "appisvcode");
+					exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+					if (domain != null) {
+						if (domain.equals("taobao")) {
+							showUrl(context, url);
+						} else if (domain.equals("jd")) {
+							KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+									url,
+									mKeplerAttachParameter,
+									mOpenAppAction);
+							DialogSingleUtil.dismiss(100);
+						}
+					}
+				}
+			});
+			tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					updataDialog.dismiss();
+					updateCooperationByUserid(context,useid,url,domain);
+				}
+			});
+		}
 	}
 }

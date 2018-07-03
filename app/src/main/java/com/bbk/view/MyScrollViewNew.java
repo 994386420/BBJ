@@ -29,6 +29,43 @@ public class MyScrollViewNew extends ScrollView {
         super(context, attrs);
     }
 
+
+    public interface ScrollViewListener {
+
+        void onScrollChanged(MyScrollViewNew scrollView, int x, int y,
+                             int oldx, int oldy);
+
+    }
+
+    private ScrollViewListener scrollViewListener = null;
+
+    public MyScrollViewNew(Context context) {
+        super(context);
+    }
+
+    public MyScrollViewNew(Context context, AttributeSet attrs,
+                               int defStyle) {
+        super(context, attrs, defStyle);
+    }
+//		this.setOverScrollMode(View.OVER_SCROLL_NEVER);
+//		WindowManager wm= (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+//		DisplayMetrics metrics=new DisplayMetrics();
+//		wm.getDefaultDisplay().getMetrics(metrics);
+//		mScreenHeight=metrics.heightPixels;
+//		mTopViewHeight=mScreenHeight/2-(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90, context.getResources().getDisplayMetrics());
+
+    public void setScrollViewListener(ScrollViewListener scrollViewListener) {
+        this.scrollViewListener = scrollViewListener;
+    }
+
+    @Override
+    protected void onScrollChanged(int x, int y, int oldx, int oldy) {
+        super.onScrollChanged(x, y, oldx, oldy);
+        if (scrollViewListener != null) {
+            scrollViewListener.onScrollChanged(this, x, y, oldx, oldy);
+        }
+
+    }
     /***
      * 根据 XML 生成视图工作完成.该函数在生成视图的最后调用，在所有子视图添加完之后. 即使子类覆盖了 onFinishInflate
      * 方法，也应该调用父类的方法，使该方法得以执行.

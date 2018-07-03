@@ -101,7 +101,7 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
                     public void onNext(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            Log.i("分享",s);
+//                            Log.i("分享",s);
                             if (jsonObject.optString("status").equals("1")) {
                                 fenXiangListBeans = JSON.parseArray(jsonObject.optString("content"), FenXiangListBean.class);
                                 if (x == 1) {

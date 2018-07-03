@@ -30,6 +30,7 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.JiaMiUtil;
+import com.bbk.util.RSAEncryptorAndroid;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
@@ -88,9 +89,9 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 						get_code_btn.setEnabled(false);
 						time.start();
 						bangding_code.setSelection(bangding_code.getText().toString().length());
-						String v = JiaMiUtil.jiami(addr);
+						String v = RSAEncryptorAndroid.getSendCode(addr);
 						final Map<String, String> paramsMap = new HashMap<String, String>();
-						final String url = Constants.MAIN_BASE_URL_MOBILE + "apiService/sendMcode";
+						final String url = Constants.MAIN_BASE_URL_MOBILE + "apiService/sendMessage";
 						paramsMap.put("phone", addr);
 						paramsMap.put("code", v);
 						new Thread(new Runnable() {

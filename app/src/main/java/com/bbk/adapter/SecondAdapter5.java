@@ -59,7 +59,7 @@ public class SecondAdapter5 extends BaseAdapter{
 
 			textView.setText(text);
 			if ("yes".equals(map.get("item_selected").toString())) {
-				textView.setTextColor(Color.parseColor("#0098ff"));
+				textView.setTextColor(Color.parseColor("#EE240E"));
 				biankuang.setBackgroundResource(R.drawable.shaixuan_textview2);
 
 			}else{

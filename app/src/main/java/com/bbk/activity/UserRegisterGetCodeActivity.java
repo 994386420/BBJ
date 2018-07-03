@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.JiaMiUtil;
+import com.bbk.util.RSAEncryptorAndroid;
 import com.bbk.util.StringUtil;
 
 import static com.bbk.util.MD5Util.Md5;
@@ -253,12 +254,12 @@ public class UserRegisterGetCodeActivity extends BaseActivity implements
 		try {
 			if (requestCode == 1) {
                 if ("1".equals(dataJo.optString("status"))) {
-					String v = JiaMiUtil.jiami(userPhoneNum);
+					String v = 	RSAEncryptorAndroid.getSendCode(userPhoneNum);
                     Map<String, String> paramsMap = new HashMap<String, String>();
                     paramsMap.put("phone", userPhoneNum);
                     paramsMap.put("type", "0");
                     paramsMap.put("code", v);
-                    dataFlow.requestData(2, "apiService/sendMcode", paramsMap,this);
+                    dataFlow.requestData(2, "apiService/sendMessage", paramsMap,this);
                 } else {
                     Toast.makeText(getApplicationContext(), dataJo.optString("errmsg"),
                             Toast.LENGTH_SHORT).show();

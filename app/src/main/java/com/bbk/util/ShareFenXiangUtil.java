@@ -1,6 +1,8 @@
 package com.bbk.util;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -44,6 +46,10 @@ import java.util.List;
 						public void onClick(View v) {
 							if (StringUtil.isWeixinAvilible(context)) {// 判断是否安装微信客户端
 								DialogSingleUtil.show(context);
+//								ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+//								cm.setText(content);
+//								popupWindow.dismiss();
+//								StringUtil.showToast(context,"文案复制成功");
 								share(1,content);
 							} else {
 								StringUtil.showToast(context, "请安装微信客户端");

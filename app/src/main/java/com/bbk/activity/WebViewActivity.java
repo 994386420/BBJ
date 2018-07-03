@@ -24,6 +24,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -277,6 +278,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				if (!isintent) {
 					if (url.contains("bbjtech://")) {
+//						Log.i("===",url);
+						if (url.contains("goJump")){
+							String [] strings = url.split("=");
+//							Log.i("===",strings[2]);
+							Intent intent = new Intent(WebViewActivity.this, IntentActivity.class);
+							intent.putExtra("groupRowKey", strings[2]);
+							startActivity(intent);
+						}
 						//跳转到邀请好友页面
 						if (url.contains("yaoqing")){
 						Intent intent = new Intent(WebViewActivity.this, CoinGoGoGoActivity.class);

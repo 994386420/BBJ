@@ -68,6 +68,7 @@ import com.bbk.flow.DataFlow3;
 import com.bbk.flow.ResultEvent;
 //import com.bbk.fragment.SearchFragment;
 import com.bbk.resource.NewConstants;
+import com.bbk.typeshaixuan.view.FilterPopupWindow;
 import com.bbk.util.AppJsonFileReader;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.DialogSingleUtil;
@@ -80,6 +81,7 @@ import com.bbk.util.ValidatorUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyGridView;
 import com.bbk.view.XCFlowLayout;
+import com.google.gson.JsonArray;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -131,7 +133,7 @@ public class SearchMainActivity extends ActivityGroup implements
     private static final String SEARCH_MAIN_RECOMMEND = "recommemd";
     private static final String SEARCH_MAIN_PROMPT = "prompt";
     private List<String> dataList;
-    private String keyword = "", domain = "";
+    private String keyword = "", domain = "",dianpu = "",fenlei = "",bprice =  "",eprice="";
     private Typeface typeFace;
     private ListView mlistView;
     private ArrayAdapter<String> adapter1;
@@ -215,7 +217,7 @@ public class SearchMainActivity extends ActivityGroup implements
     private Thread threadtmall;
     private LinearLayout mshaixuanbox, mshaixuanCzg;
     private boolean isrun = true;
-    private String Flag = "1", type = "1";
+    private String Flag = "2", type = "2";
     private boolean isloadShaixuan = true;
     private CommonLoadingView zLoadingView;//加载框
     private String content, contentCzg;//服务器获取数据
@@ -242,6 +244,8 @@ public class SearchMainActivity extends ActivityGroup implements
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow;
+    private FilterPopupWindow popupWindow;
+    String[] strs,strfenlei,strsdomain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,6 +265,7 @@ public class SearchMainActivity extends ActivityGroup implements
         /***
          * 根据传入的keyword判断是否显示列表还是热门词
          */
+        keyword = getIntent().getStringExtra("keyword");
         if (getIntent().getStringExtra("keyword") != null) {
             //对于刚跳到一个新的界面就要弹出软键盘的情况上述代码可能由于界面为加载完全而无法弹出软键盘。此时应该适当的延迟弹出软键盘如998毫秒（保证界面的数据加载完成）
             timer.schedule(new TimerTask() {
@@ -270,7 +275,7 @@ public class SearchMainActivity extends ActivityGroup implements
                            },
                     998);
             keyword = getIntent().getStringExtra("keyword");
-            initData();
+            initDataCzg();
         } else {
             loadhotKeyword(type);
             dao = new SearchHistoryDao(this);
@@ -483,7 +488,7 @@ public class SearchMainActivity extends ActivityGroup implements
                         .getActivity(SEARCH_MAIN_PROMPT);
                 promptActivity.getHttpData(s.toString(), 1);
             } else {
-                showSearchRecommendView();
+                showSearchRecommendCzgView();
             }
         }
 
@@ -526,7 +531,7 @@ public class SearchMainActivity extends ActivityGroup implements
             dao.addHistory(keyword);
         }
         if (Flag.equals("1")) {
-            isloadShaixuan = false;
+            isloadShaixuan = true;
             try {
                 data.clear();
                 if (view_box != null) {
@@ -747,17 +752,27 @@ public class SearchMainActivity extends ActivityGroup implements
     @Override
     public void onClick(View v) {
         Intent intent;
-//		String search = searchText.getText().toString();
+//        keyword = searchText.getText().toString();
         switch (v.getId()) {
             case R.id.ll_bj_layout:
                 isGlobalMenuShow = false;
-                showGlobalMenu1();
-                isloadShaixuan = false;
+//                showGlobalMenu1();
+                if (popupWindow != null){
+                    popupWindow.dismiss();
+                }
+                if (view_box != null) {
+                    view_box.removeAllViews();
+                }
+                if (shopbox != null) {
+                    shopbox.removeAllViews();
+                }
+                isloadShaixuan = true;
                 Flag = "1";
                 type = "1";
-                loadhotKeyword(type);
+                loadhotKeyword("1");
                 setView();
                 setText(bijia_view);
+//                Log.i("========",keyword);
                 if (keyword != null && !keyword.equals("")) {
                     currentPageIndex = 1;
                     x = 1;
@@ -936,6 +951,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 initData();
                 break;
             case R.id.mpriceczg:
+                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
                 filter_price_czg.setTextColor(Color.parseColor("#f23030"));
                 paixu_czg_text.setTextColor(Color.parseColor("#222222"));
                 discount_czg_text.setTextColor(Color.parseColor("#222222"));
@@ -960,13 +976,73 @@ public class SearchMainActivity extends ActivityGroup implements
                 paixu_czg_text.setTextColor(Color.parseColor("#222222"));
                 discount_czg_text.setTextColor(Color.parseColor("#222222"));
                 filter_czg.setTextColor(Color.parseColor("#f23030"));
+                mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
 //                currentPageIndex = 1;
 //                sortway = "4";
 //                x = 1;
 //                initDataCzg();
-                showGlobalMenu();
+//                showGlobalMenu();
+//                String str  = "["
+//                    + "{\"nameId\":\"V2QASD\",\"saleVo\":["
+//                    + "{\"value\":\"手机\",\"goods\":null,\"goodsAndValId\":\"C6VOWQ\",\"checkStatus\":\"0\"},"
+//                    + "{\"value\":\"服装\",\"goods\":null,\"goodsAndValId\":\"C6VOWQ\",\"checkStatus\":\"0\"}"
+//                    + "],\"name\":\"店铺\"},"
+//                    + "{\"nameId\":\"V2QASD\",\"saleVo\":["
+//                    + "{\"value\":\"a旗舰店\",\"goods\":null,\"goodsAndValId\":\"C6VOWQ\",\"checkStatus\":\"0\"},"
+//                    + "{\"value\":\"b旗舰店\n\",\"goods\":null,\"goodsAndValId\":\"C6VOWQ\",\"checkStatus\":\"0\"}"
+//                    + "],\"name\":\"分类\"}"
+//                    + "]";
+                try {
+//                    for (int i = 0;i<strs.length;i++) {
+//                        JSONObject jsonObject = new JSONObject();
+//                        jsonObject.put("value", strs[0]);
+//                        jsonObject.put("goods", "");
+//                        jsonObject.put("goodsAndValId", "C6VOWQ");
+//                        jsonObject.put("checkStatus", "0");
+//                        JSONObject jsonObject2 = new JSONObject();
+//                        jsonObject2.put("value", strs[1]);
+//                        jsonObject2.put("goods", "");
+//                        jsonObject2.put("goodsAndValId", "C6VOWQ");
+//                        jsonObject2.put("checkStatus", "0");
+//                        JSONArray jsonArray1 = new JSONArray();
+//                        jsonArray1.put(jsonObject);
+//                        jsonArray1.put(jsonObject2);
+//                        JSONObject jsonObject1 = new JSONObject();
+//                        jsonObject1.put("nameId", "V2QASD");
+//                        jsonObject1.put("saleVo", jsonArray1.toString());
+//                        jsonObject1.put("name", "店铺");
+//
+//                    JSONObject jsonObject3 = new JSONObject();
+//                    jsonObject.put("value", strfenlei[0]);
+//                    jsonObject.put("goods", "");
+//                    jsonObject.put("goodsAndValId", "C6VOWQ");
+//                    jsonObject.put("checkStatus", "0");
+//                    JSONObject jsonObject4 = new JSONObject();
+//                    jsonObject2.put("value", strfenlei[1]);
+//                    jsonObject2.put("goods", "");
+//                    jsonObject2.put("goodsAndValId", "C6VOWQ");
+//                    jsonObject2.put("checkStatus", "0");
+//                    JSONArray jsonArray2 = new JSONArray();
+//                    jsonArray2.put(jsonObject3);
+//                    jsonArray2.put(jsonObject4);
+//                    JSONObject jsonObject5 = new JSONObject();
+//                    jsonObject5.put("nameId", "V2QASD");
+//                    jsonObject5.put("saleVo", jsonArray1.toString());
+//                    jsonObject5.put("name", "分类");
+////                    JSONArray jsonArray = new JSONArray(str);
+//                        JSONArray jsonArray = new JSONArray();
+//                        jsonArray.put(jsonObject1);
+//                        jsonArray.put(jsonObject5);
+//                    Log.i("===========",jsonArray+"=====");
+                    popupWindow = new FilterPopupWindow(SearchMainActivity.this,strsdomain,strs,strfenlei);
+                    popupWindow.showFilterPopup(searchBtn);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 break;
             case R.id.mComposite_czg:
+                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
                 filter_price_czg.setTextColor(Color.parseColor("#222222"));
                 paixu_czg_text.setTextColor(Color.parseColor("#f23030"));
@@ -979,6 +1055,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 initDataCzg();
                 break;
             case R.id.discount_czg:
+                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
                 filter_price_czg.setTextColor(Color.parseColor("#222222"));
                 paixu_czg_text.setTextColor(Color.parseColor("#222222"));
@@ -1996,23 +2073,36 @@ public class SearchMainActivity extends ActivityGroup implements
     public void registerBoradcastReceiver() {
         IntentFilter myIntentFilter = new IntentFilter();
         IntentFilter myIntentFilterCzg = new IntentFilter();
+        IntentFilter myIntentFiltetype = new IntentFilter();
         myIntentFilterCzg.addAction(SearchRecommendCzgActivity.ACTION_NAME);
         myIntentFilter.addAction(SearchRecommendActivity.ACTION_NAME);
+        myIntentFiltetype.addAction(FilterPopupWindow.ACTION_NAME);
         // 注册广播
         registerReceiver(mBroadcastReceiver, myIntentFilter);
         registerReceiver(mBroadcastReceiver, myIntentFilterCzg);
+        registerReceiver(mBroadcastReceiver, myIntentFiltetype);
     }
 
     // 广播接收
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            keyword = intent.getStringExtra("keyword");
+            if (intent.getStringExtra("keyword") != null && !intent.getStringExtra("keyword").equals("")) {
+                String key = intent.getStringExtra("keyword");
+                keyword = key;
+            }
+            domain = intent.getStringExtra("domain");
+            bprice = intent.getStringExtra("bprice");
+            eprice = intent.getStringExtra("eprice");
+            dianpu = intent.getStringExtra("dianpu");
+            fenlei = intent.getStringExtra("productType");
+            Log.i("=============",domain+"=="+bprice+"==="+eprice+"==="+dianpu+"==="+fenlei);
             if (Flag.equals("1")) {
                 initData();
             } else {
                 initDataCzg();
             }
+
         }
     };
 
@@ -2178,6 +2268,17 @@ public class SearchMainActivity extends ActivityGroup implements
                             }else {
                                 gridtype = "2";
                             }
+                            if (info.has("dianpus")){
+                                strs = info.optString("dianpus").split("\\|");
+//                                Log.i("===",strs[0]+strs[1]+"==="+info.optString("dianpus"));
+                            }
+                            if (info.has("domains")){
+                                strsdomain = info.optString("domains").split("\\|");
+                            }
+                            if (info.has("types")){
+                                strfenlei = info.optString("types").split("\\|");
+                            }
+
                            if (gridtype.equals("1")) {
                                     //显示块状
                                     xrefresh.setVisibility(View.GONE);
@@ -2399,6 +2500,12 @@ public class SearchMainActivity extends ActivityGroup implements
      * 商品比价数据请求
      */
     private void initData() {
+        if (view_box != null) {
+            view_box.removeAllViews();
+        }
+        if (shopbox != null) {
+            shopbox.removeAllViews();
+        }
         xrefresh.setNoMoreData(false);
         xrefresh1.setNoMoreData(false);
         isrequest = false;
@@ -2413,6 +2520,14 @@ public class SearchMainActivity extends ActivityGroup implements
                             if (jsonObject.optString("status").equals("1")) {
                                 content = jsonObject.optString("content");
                                 handlerMessage.sendEmptyMessageDelayed(1, 0);
+                            }else {
+                                mshaixuanCzg.setVisibility(View.GONE);
+                                mshaixuanbox.setVisibility(View.VISIBLE);
+                                msuccessLayout.setVisibility(View.VISIBLE);
+                                mlistView.setVisibility(View.GONE);
+                                tipsLayout.setVisibility(View.VISIBLE);
+                                tipsKeys.setText("没有找到相关商品");
+                                StringUtil.showToast(SearchMainActivity.this,jsonObject.optString("errmsg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -2454,16 +2569,42 @@ public class SearchMainActivity extends ActivityGroup implements
 
     /**
      * 超值购数据请求
+     * apiService/getPageListChaozhigou查询超值购接口新增传入参数：
+     * productType 分类   dianpu店铺  bprice开始价格 eprice结束价格
      */
     private void initDataCzg() {
+        Log.i("++++++++",keyword+domain+"=="+bprice+"==="+eprice+"==="+dianpu+"==="+fenlei);
         xrefreshCzgGrid.setNoMoreData(false);
         xrefresh2.setNoMoreData(false);
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("keyword", keyword);
+        if (keyword != null && !keyword.equals("")) {
+            paramsMap.put("keyword", keyword);
+        }
         paramsMap.put("sortWay", sortwayCzg);
         paramsMap.put("page", currentPageIndex + "");
         paramsMap.put("client", "android");
-        paramsMap.put("domain", domain);
+        if (domain != null && !domain.equals("")) {
+            if (domain.equals("天猫")){
+                domain = "tmall";
+            }else if (domain.equals("淘宝")){
+                domain = "taobao";
+            }else if (domain.equals("京东")){
+                domain = "jd";
+            }
+            paramsMap.put("domain", domain);
+        }
+        if (bprice != null && !bprice.equals("")) {
+            paramsMap.put("bprice", bprice);
+        }
+        if (eprice != null && !eprice.equals("")) {
+            paramsMap.put("eprice", eprice);
+        }
+        if (dianpu != null && !dianpu.equals("")) {
+            paramsMap.put("dianpu", dianpu);
+        }
+        if (fenlei != null && !fenlei.equals("")) {
+            paramsMap.put("productType", fenlei);
+        }
         RetrofitClient.getInstance(this).createBaseApi().getPageListChaozhigou(
                 paramsMap, new BaseObserver<String>(this) {
                     @Override
@@ -2474,6 +2615,8 @@ public class SearchMainActivity extends ActivityGroup implements
                             if (jsonObject.optString("status").equals("1")) {
                                 contentCzg = jsonObject.optString("content");
                                 handlerMessage.sendEmptyMessageDelayed(2, 0);
+                            }else {
+                                StringUtil.showToast(SearchMainActivity.this,jsonObject.optString("errmsg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -2571,11 +2714,27 @@ public class SearchMainActivity extends ActivityGroup implements
      */
     private void initDataCzg1() {
         Map<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("keyword", keyword);
+        if (keyword != null && !keyword.equals("")) {
+            paramsMap.put("keyword", keyword);
+        }
         paramsMap.put("sortWay", sortwayCzg);
         paramsMap.put("page", currentPageIndex + "");
         paramsMap.put("client", "android");
-        paramsMap.put("domain", domain);
+        if (domain != null && !domain.equals("")) {
+            paramsMap.put("domain", domain);
+        }
+        if (bprice != null && !bprice.equals("")) {
+            paramsMap.put("bprice", bprice);
+        }
+        if (eprice != null && !eprice.equals("")) {
+            paramsMap.put("eprice", eprice);
+        }
+        if (dianpu != null && !dianpu.equals("")) {
+            paramsMap.put("dianpu", dianpu);
+        }
+        if (fenlei != null && !fenlei.equals("")) {
+            paramsMap.put("productType", fenlei);
+        }
         RetrofitClient.getInstance(this).createBaseApi().getPageListChaozhigou(
                 paramsMap, new BaseObserver<String>(this) {
                     @Override

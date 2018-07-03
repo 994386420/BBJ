@@ -60,7 +60,7 @@ public class FilterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 				}
 				lastPostion = arg1;
 				
-				cheapViewHolder.itemText.setTextColor(Color.parseColor("#0098FF"));
+				cheapViewHolder.itemText.setTextColor(Color.parseColor("#EE240E"));
 			} else {
 				cheapViewHolder.itemImg.setVisibility(View.GONE);
 				cheapViewHolder.itemText.setTextColor(Color.parseColor("#464646"));

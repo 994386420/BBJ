@@ -144,6 +144,9 @@ public class IntentActivity extends BaseActivity {
 		if (bprice != null) {
 			params.put("bprice", bprice);
 		}
+		if (rowkey != null){
+			params.put("rowkey",rowkey);
+		}
 		params.put("client", "andorid");
 		RetrofitClient.getInstance(this).createBaseApi().getJumpUrl(
 				params, new BaseObserver<String>(this) {

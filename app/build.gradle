@@ -10,7 +10,7 @@ android {
         applicationId "com.bbk.activity"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 41
+        versionCode 42
         versionName '5.0.6'
         multiDexEnabled true
     }
@@ -130,7 +130,7 @@ dependencies {
     implementation files('libs/mail.jar')
     implementation files('libs/mhvp-core.jar')
     implementation files('libs/mid-core-sdk-3.7.2.jar')
-
+    implementation files('libs/BASE64.jar')
     //    implementation files('libs/Msc.jar')
     implementation files('libs/nineoldandroids.jar')
     implementation files('libs/weibosdk.jar')
@@ -259,5 +259,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
     //必须加上，不然报空异常
+
+//    compile 'com.github.jdsjlzx:LRecyclerView:1.5.0'
+    compile 'com.android.support:design:23.3.0'
 }
 

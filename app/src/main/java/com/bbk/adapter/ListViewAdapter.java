@@ -54,7 +54,7 @@ public class ListViewAdapter extends BaseAdapter{
 		vh.tv.setText(str[position]);
 		if (position == SortActivity.mPosition) {
 			convertView.setBackgroundColor(Color.parseColor("#f3f3f3"));
-			vh.tv.setTextColor(Color.parseColor("#0098ff"));
+			vh.tv.setTextColor(Color.parseColor("#EE240E"));
 			vh.fenge.setBackgroundColor(Color.parseColor("#f3f3f3"));
 		} else {
 			convertView.setBackgroundColor(Color.parseColor("#ffffff"));

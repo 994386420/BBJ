@@ -81,6 +81,8 @@
         android:layout_marginBottom="5dp"
         android:textSize="15dp"
         android:text="比比鲸"
+        android:lineSpacingMultiplier = "1.5"
+        android:textColor="@color/tuiguang_color3"
         android:layout_height="wrap_content"/>
     <com.bbk.view.MyGridView
         android:id="@+id/mrecy"

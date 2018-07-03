@@ -1674,7 +1674,7 @@ public class DetailsMainActivity22 extends BaseFragmentActivity
 				biankuang1.setBackgroundResource(R.drawable.shaixuan_textview);
 			}else{
 				istv1 = true;
-				tv1.setTextColor(Color.parseColor("#0098ff"));
+				tv1.setTextColor(Color.parseColor("#EE240E"));
 				biankuang1.setBackgroundResource(R.drawable.shaixuan_textview2);
 			}
 			break;
@@ -1685,7 +1685,7 @@ public class DetailsMainActivity22 extends BaseFragmentActivity
 				biankuang2.setBackgroundResource(R.drawable.shaixuan_textview);
 			}else{
 				istv2 = true;
-				tv2.setTextColor(Color.parseColor("#0098ff"));
+				tv2.setTextColor(Color.parseColor("#EE240E"));
 				biankuang2.setBackgroundResource(R.drawable.shaixuan_textview2);
 			}
 			break;

@@ -29,6 +29,7 @@ import com.bbk.entity.XGMessageEntity;
 import com.bbk.fragment.BaseViewPagerFragment;
 import com.bbk.fragment.FenXiangFragment;
 import com.bbk.fragment.HomeMessageFragment;
+import com.bbk.fragment.MesageCenteFragment;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.NewRankFragment;
 import com.bbk.fragment.UserFragment;
@@ -288,14 +289,15 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     public void initViewPagerData() {
         NewHomeFragment homeFragment = new NewHomeFragment();
         NewRankFragment rankFragment = new NewRankFragment();
-        HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
+//        HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
 //		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();
+        MesageCenteFragment mesageCenteFragment = new MesageCenteFragment();
         FenXiangFragment fenXiangFragment = new FenXiangFragment();
         UserFragment userFragment = new UserFragment();
         fragments.add(homeFragment);//首页
 //		fragments.add(gossipPiazzaFragment);//爆料
         fragments.add(fenXiangFragment);
-        fragments.add(bidMessageFragment);//消息
+        fragments.add(mesageCenteFragment);//消息
         fragments.add(rankFragment);//发现
         fragments.add(userFragment);//我的
         mPagerAdapter.notifyDataSetChanged();
