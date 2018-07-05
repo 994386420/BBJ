@@ -213,5 +213,10 @@
         <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
         <item name="android:progressDrawable">@drawable/progress</item>
     </style>
-
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">@dimen/tv_order</item>
+    </style>
+    <style name="TabLayoutTextStyle1">
+        <item name="android:textSize">@dimen/tv_order1</item>
+    </style>
 </resources>

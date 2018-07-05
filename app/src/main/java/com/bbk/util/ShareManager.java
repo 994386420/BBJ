@@ -5,12 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.bbk.activity.MyApplication;
+import com.bbk.client.BaseApiService;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Administrator on 2017/11/16.
+ * 金刚圈分享类
  */
 public class ShareManager {
 
@@ -23,11 +28,6 @@ public class ShareManager {
 
     public void setShareImage(final int flag, final List<String> stringList,final String Kdescription){
 
-//        if (!Tools.isWeixinAvilible(mContext)){
-//
-//            Toast.makeText(mContext, "您还没有安装微信", Toast.LENGTH_SHORT).show();
-//
-//        }else{
             try {
                 new Thread(new Runnable() {
                     @Override
@@ -37,11 +37,8 @@ public class ShareManager {
                             File file = Tools.saveImageToSdCard(mContext, stringList.get(i));
                             files.add(file);
                         }
-
-
                         Intent intent = new Intent();
                         ComponentName comp;
-
                         if (flag == 0) {
                             comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
                         } else {
@@ -51,23 +48,36 @@ public class ShareManager {
                         intent.setComponent(comp);
                         intent.setAction(Intent.ACTION_SEND_MULTIPLE);
                         intent.setType("image/*");
-
                         ArrayList<Uri> imageUris = new ArrayList<Uri>();
                         for (File f : files) {
                             imageUris.add(Uri.fromFile(f));
                         }
-
                         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
                         mContext.startActivity(intent);
                         DialogSingleUtil.dismiss(0);
-
+                        loadData();
                     }
                 }).start();
             }catch (Exception e){
                 DialogSingleUtil.dismiss(0);
                 StringUtil.showToast(mContext,"连接超时");
             }
-
     }
 
+    /**
+     * 检查鲸港圈是否分享
+     */
+    private void loadData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String userid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                String url1 = BaseApiService.Base_URL+"newService/checkIsShare";
+                Map<String, String> paramsMap = new HashMap<String, String>();
+                paramsMap.put("userid", userid);
+                paramsMap.put("type", "2");
+                String s = HttpUtil.getHttp(paramsMap, url1);
+            }
+        }).start();
+    }
 }

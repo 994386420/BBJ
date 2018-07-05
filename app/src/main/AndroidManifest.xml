@@ -456,7 +456,18 @@
             android:name=".BrokerageDetailActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".FanLiOrderActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FanLiOrderDetailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserShenSuActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.tencent.rdm.uuid"
             android:value="a2af72ec-a731-46eb-8501-0477e34702f3" />

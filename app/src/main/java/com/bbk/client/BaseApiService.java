@@ -7,9 +7,9 @@ import retrofit2.http.QueryMap;
 
 public interface BaseApiService<T> {
 
-    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
+//    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
 //    public static final String Base_URL = "http://125.64.92.222:8097/APIService/";//正式测试接口
-//    public static final String Base_URL = "http://192.168.20.192:8080/APIService/";//内网测试接口
+    public static final String Base_URL = "http://192.168.20.188/APIService/";//内网测试接口
     //新版首页超值购等分类模块
     @POST("newService/queryAppIndexByType")
     Observable<String> queryAppIndexByType(@QueryMap Map<String, String> map);
@@ -138,4 +138,14 @@ public interface BaseApiService<T> {
     //  分享一条分享圈的内容
     @POST("newService/shareCpsInfos")
     Observable<String> shareCpsInfos(@QueryMap Map<String, String> map);
+    //获取返利订单列表
+    @POST("newService/queryCpsOrderList")
+    Observable<String> queryCpsOrderList(@QueryMap Map<String, String> map);
+   // 查询cps详情
+    @POST(" newService/queryCpsOrderDetail")
+    Observable<String> queryCpsOrderDetail(@QueryMap Map<String, String> map);
+    // 插入反馈
+    @POST("newService/insertCpsOrderCheck")
+    Observable<String> insertCpsOrderCheck(@QueryMap Map<String, String> map);
+
 }

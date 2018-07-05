@@ -84,6 +84,8 @@ public class BrokerageActivity extends BaseActivity {
     TextView tvYongjinJinri;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.title_text1)
+    TextView titleText1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,8 @@ public class BrokerageActivity extends BaseActivity {
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         ButterKnife.bind(this);
         refreshLayout.setEnableLoadMore(false);
+        titleText1.setVisibility(View.VISIBLE);
+        titleText1.setText("我要申诉");
         titleText.setText("收益报表");
         tablayout.addTab(tablayout.newTab().setText("淘宝收益"));
         tablayout.addTab(tablayout.newTab().setText("京东收益"));
@@ -102,6 +106,7 @@ public class BrokerageActivity extends BaseActivity {
         queryUserBrokerage();
         refreshAndloda();
     }
+
     private void refreshAndloda() {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -110,6 +115,7 @@ public class BrokerageActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * table点击事件
      */
@@ -162,13 +168,13 @@ public class BrokerageActivity extends BaseActivity {
                                 tvMoney4.setText(brokerageBean.getFour());
                                 tvFukuangNumber.setText(brokerageBean.getPayCount());
                                 if (brokerageBean.getYesYongjinSum() != null && !brokerageBean.getYesYongjinSum().equals("")) {
-                                    tvYongjin.setText("¥ "+brokerageBean.getYesYongjinSum());
+                                    tvYongjin.setText("¥ " + brokerageBean.getYesYongjinSum());
                                 } else {
                                     tvYongjin.setText("¥ 0.0");
                                 }
 
                                 if (brokerageBean.getJinYongjinSum() != null && !brokerageBean.getJinYongjinSum().equals("")) {
-                                    tvYongjinJinri.setText("¥ "+brokerageBean.getJinYongjinSum());
+                                    tvYongjinJinri.setText("¥ " + brokerageBean.getJinYongjinSum());
                                 } else {
                                     tvYongjinJinri.setText("¥ 0.0");
                                 }
@@ -211,7 +217,7 @@ public class BrokerageActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four})
+    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four,R.id.title_text1})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -269,6 +275,10 @@ public class BrokerageActivity extends BaseActivity {
                 } else {
                     intent.putExtra("type", "j4");
                 }
+                startActivity(intent);
+                break;
+            case R.id.title_text1:
+                intent = new Intent(this,UserShenSuActivity.class);
                 startActivity(intent);
                 break;
         }

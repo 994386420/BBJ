@@ -42,8 +42,8 @@ import com.bbk.activity.BrokerageActivity;
 import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.ContactActivity;
+import com.bbk.activity.FanLiOrderActivity;
 import com.bbk.activity.FensiActivity;
-import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.LogisticsQueryActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
@@ -51,7 +51,6 @@ import com.bbk.activity.MyCoinActivity;
 import com.bbk.activity.MyGossipActivity;
 import com.bbk.activity.OrderListActivity;
 import com.bbk.activity.R;
-import com.bbk.activity.ShopCartActivity;
 import com.bbk.activity.TuiguangDialogActivity;
 import com.bbk.activity.UserAccountActivity;
 import com.bbk.activity.UserLoginNewActivity;
@@ -105,6 +104,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     LinearLayout mjdshopcart;
     @BindView(R.id.mTaobaoshopcart)
     LinearLayout mTaobaoshopcart;
+    @BindView(R.id.ll_fanli_order)
+    LinearLayout llFanliOrder;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -1008,7 +1009,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     }
 
 
-    @OnClick({R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.ll_fensi,R.id.mjdshopcart, R.id.mTaobaoshopcart})
+    @OnClick({R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.ll_fensi, R.id.mjdshopcart, R.id.mTaobaoshopcart,R.id.ll_fanli_order})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -1047,8 +1048,13 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     showCart();
                 }
                 break;
+            case R.id.ll_fanli_order:
+                intent = new Intent(getActivity(), FanLiOrderActivity.class);
+                startActivity(intent);
+                break;
         }
     }
+
     /**
      * 显示我的购物车
      */
@@ -1100,5 +1106,4 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //			});
         }
     };
-
 }

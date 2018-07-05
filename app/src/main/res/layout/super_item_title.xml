@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_weight="1"
     android:gravity="center"
+    android:background="@drawable/btn_seclecter"
     android:layout_height="match_parent" >
 
     <TextView

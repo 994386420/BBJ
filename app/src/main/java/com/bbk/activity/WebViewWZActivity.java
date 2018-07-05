@@ -367,7 +367,7 @@ public class WebViewWZActivity extends BaseActivity implements OnClickListener, 
 			if (!TextUtils.isEmpty(useid)) {
 				String[] userids = url.split("&userid");
 				String shareurl = userids[0];
-				ShareUtil.showShareDialog(v, this, "专业的网购比价、导购平台", title, shareurl,"");
+				ShareUtil.showShareDialog(v, this, "专业的网购比价、导购平台", title, shareurl,"3");
 			}else{
 				Intent intent14 = new Intent(this, UserLoginNewActivity.class);
 				intent14.putExtra("iswebyanzheng", "yes");

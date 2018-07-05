@@ -159,6 +159,12 @@ public class StringUtil {
 
 	}
 
+	/**
+	 * 设置tablayout下划线长度
+	 * @param tabs
+	 * @param leftDip
+	 * @param rightDip
+	 */
 	public static void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
 		Class<?> tabLayout = tabs.getClass();
 		Field tabStrip = null;

@@ -80,7 +80,7 @@ public class UserSuggestionActivity extends BaseActivity implements OnClickListe
 		String string =  SystemUtil.getDeviceBrand()+" "+SystemUtil.getSystemModel()+" android:"+SystemUtil.getSystemVersion();
 		Map<String, String> paramsMap = new HashMap<>();
 		paramsMap.put("userid", userID);
-		paramsMap.put("content", medit.getText().toString()+"来自："+string);
+		paramsMap.put("content", medit.getText().toString()+"--来自："+string);
 		dataFlow.requestData(1, "newService/insertFeedBack", paramsMap, this);
 		StringUtil.showToast(this, "发布成功");
 	}

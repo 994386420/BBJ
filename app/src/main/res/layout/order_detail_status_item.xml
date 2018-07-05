@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="90dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/order_detail_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/tuiguang_color3"
+        android:textSize="11dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_line1"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginTop="13dp"
+        android:layout_height="wrap_content">
+        <View
+            android:id="@+id/view1"
+            android:layout_width="45dp"
+            android:layout_height="2.2dp"
+            android:background="@color/tuiguang_color5"/>
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/bg_cicyle1"/>
+        <View
+            android:id="@+id/view2"
+            android:layout_width="45dp"
+            android:layout_height="2.2dp"
+            android:background="@color/tuiguang_color5"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_line2"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginTop="13dp"
+        android:layout_height="wrap_content">
+        <View
+            android:id="@+id/view3"
+            android:layout_width="45dp"
+            android:layout_height="2.2dp"
+            android:background="@color/__picker_common_primary"/>
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/bg_cicyle6"/>
+        <View
+            android:id="@+id/view4"
+            android:layout_width="45dp"
+            android:layout_height="2.2dp"
+            android:background="@color/__picker_common_primary"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/order_detail_status_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:text=""
+        android:textColor="@color/tuiguang_color4"
+        android:textSize="10dp"/>
+</LinearLayout>

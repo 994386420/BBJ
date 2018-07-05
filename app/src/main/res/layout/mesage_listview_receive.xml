@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@color/white"
+    android:background="@drawable/btn_seclecter"
     android:id="@+id/result_item"
     android:orientation="horizontal" >
 

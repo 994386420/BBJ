@@ -32,5 +32,20 @@
             android:text=""
             android:textColor="@color/address_color1"
             android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/title_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text=""
+            android:visibility="gone"
+            android:textColor="@color/tuiguang_color4"
+            android:textSize="14sp" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -604,4 +604,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"/>
+
+    <ViewFlipper
+        android:layout_below="@+id/lin"
+        android:id="@+id/viewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:flipInterval="5000"
+        android:visibility="gone">
+    </ViewFlipper>
+
 </RelativeLayout>

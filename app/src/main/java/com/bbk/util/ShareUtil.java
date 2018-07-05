@@ -20,6 +20,7 @@ import android.widget.PopupWindow.OnDismissListener;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.wxapi.WXEntryActivity;
+import com.bbk.client.BaseApiService;
 import com.bbk.flow.DataFlow;
 import com.bbk.resource.Constants;
 import com.sina.weibo.sdk.api.TextObject;
@@ -224,12 +225,16 @@ public class ShareUtil {
 		wxApi.sendReq(req);
 		loadData();
 	}
+
+	/**
+	 * type 1、查询历史价格	2、分享鲸港圈3、分享文章 4爆料
+	 */
 	private void loadData() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				String userid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-				String url1 = Constants.MAIN_BASE_URL_MOBILE+"newService/checkIsShare";
+				String url1 = BaseApiService.Base_URL+"newService/checkIsShare";
 				Map<String, String> paramsMap = new HashMap<String, String>();
 				paramsMap.put("userid", userid);
 				paramsMap.put("type", type);

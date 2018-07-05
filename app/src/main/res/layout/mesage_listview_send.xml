@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@color/white"
     android:id="@+id/result_item"
+    android:background="@drawable/btn_seclecter"
     android:orientation="horizontal" >
 
     <RelativeLayout

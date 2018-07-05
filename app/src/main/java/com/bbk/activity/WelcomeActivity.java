@@ -373,7 +373,7 @@ public class WelcomeActivity extends BaseActivity2{
 		TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 		String token = TelephonyMgr.getDeviceId();
 		queryIndexSeeByToken(token);
-		queryIndexTuijianByToken(token);
+//		queryIndexTuijianByToken(token);
 		loadhotKeyword("2");
 	}
 	private void queryIndexSeeByToken(String token) {
@@ -414,44 +414,44 @@ public class WelcomeActivity extends BaseActivity2{
 					}
 				});
 	}
-	private void queryIndexTuijianByToken(String token) {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("token", token);
-		RetrofitClient.getInstance(this).createBaseApi().queryIndexTuijianByToken(
-				params, new BaseObserver<String>(this) {
-					@Override
-					public void onNext(String s) {
-						try {
-							JSONObject jsonObject = new JSONObject(s);
-							if (jsonObject.optString("status").equals("1")) {
-								String content = jsonObject.optString("content");
-								if (content!= null && !"".equals(content)) {
-										SharedPreferencesUtil.putSharedData(
-												getApplicationContext(), "homedata",
-												"hometuijian", content);
-								}
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-					@Override
-					protected void hideDialog() {
-
-					}
-
-					@Override
-					protected void showDialog() {
-
-					}
-
-					@Override
-					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(WelcomeActivity.this, e.message);
-					}
-				});
-
-	}
+//	private void queryIndexTuijianByToken(String token) {
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put("token", token);
+//		RetrofitClient.getInstance(this).createBaseApi().queryIndexTuijianByToken(
+//				params, new BaseObserver<String>(this) {
+//					@Override
+//					public void onNext(String s) {
+//						try {
+//							JSONObject jsonObject = new JSONObject(s);
+//							if (jsonObject.optString("status").equals("1")) {
+//								String content = jsonObject.optString("content");
+//								if (content!= null && !"".equals(content)) {
+//										SharedPreferencesUtil.putSharedData(
+//												getApplicationContext(), "homedata",
+//												"hometuijian", content);
+//								}
+//							}
+//						} catch (JSONException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//					@Override
+//					protected void hideDialog() {
+//
+//					}
+//
+//					@Override
+//					protected void showDialog() {
+//
+//					}
+//
+//					@Override
+//					public void onError(ExceptionHandle.ResponeThrowable e) {
+//						StringUtil.showToast(WelcomeActivity.this, e.message);
+//					}
+//				});
+//
+//	}
 	/**
 	 * 搜索关键词加载
 	 * @param type

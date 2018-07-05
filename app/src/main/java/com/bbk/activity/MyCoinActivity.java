@@ -63,7 +63,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
     private ListView mlistview;
     private String[] str1 = {"邀请好友下载APP", "收益奖励", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享鲸港圈", "分享文章", "评论文章"};
     private String[] str2 = {"+500鲸币", "+5000鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币", "+20鲸币", "+10鲸币", "+10鲸币"};
-    private String[] str3 = {"每邀请一个好友注册成功", "月返利收入≥100元", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "文章评论内容大于10个字", "反馈有效意见或建议", "分享一条鲸港圈的商品（限10次/日）",
+    private String[] str3 = {"每邀请一个好友注册成功", "月返利收入≥100元", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日", "分享一条鲸港圈的商品（限10次/日）",
             "对“发现”文章进行分享（限10次/日）", "对“发现”文章进行评论"};
     private int[] drawable = {R.mipmap.rw_1, R.mipmap.jingbi_img14, R.mipmap.rw_7, R.mipmap.coin_weixin, R.mipmap.rw_4,
             R.mipmap.rw_10, R.mipmap.jinbi_clsj, R.mipmap.jingbi_img15, R.mipmap.jingbi_img16, R.mipmap.rw_8};

@@ -38,6 +38,7 @@
     <color name="__picker_item_photo_border_n">#33ffffff</color>
 
     <color name="background_gray1">#EBEBEB</color>
+    <color name="background_gray2">#EFEFF4</color>
     <color name="background_gray3">#D4D4D4</color>
     <color name="background_gray4">#EFEFF4</color>
     <color name="line">#DDDDDD</color>

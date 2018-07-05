@@ -45,7 +45,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="35dp"
-            android:text="10.0"
+            android:text=""
             android:layout_gravity="center"/>
 
         <TextView
@@ -94,6 +94,7 @@
             android:layout_marginTop="10dp">
             <LinearLayout
                 android:id="@+id/ll_one"
+                android:background="@drawable/btn_seclecter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,6 +130,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_two"
+                android:background="@drawable/btn_seclecter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                  android:layout_weight="1"
@@ -186,6 +188,7 @@
             android:layout_marginTop="10dp">
             <LinearLayout
                 android:id="@+id/ll_three"
+                android:background="@drawable/btn_seclecter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -220,6 +223,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_four"
+                android:background="@drawable/btn_seclecter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

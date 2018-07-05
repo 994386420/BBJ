@@ -14,6 +14,8 @@
     <!--h5-->
     <!--h6-->
     <dimen name="h6">14sp</dimen>
+    <dimen name="tv_order">17sp</dimen>
+    <dimen name="tv_order1">14sp</dimen>
     <!--h7-->
     <!--h8-->
     <!--h9-->

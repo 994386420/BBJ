@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_bobao"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_bobao1"/>
+            <TextView
+                android:id="@+id/mbuyprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
+                android:text="xxx   一秒前赚多少"/>
+            <ImageView
+                android:id="@+id/mimg"
+                android:layout_width="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@mipmap/bobao"/>
+        </LinearLayout>
+</LinearLayout>
