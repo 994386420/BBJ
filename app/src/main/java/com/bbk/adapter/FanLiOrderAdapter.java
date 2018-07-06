@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.OrderListBean;
 import com.bbk.activity.FanLiOrderDetailActivity;
+import com.bbk.activity.IntentActivity;
 import com.bbk.activity.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -111,6 +112,13 @@ public class FanLiOrderAdapter extends RecyclerView.Adapter {
                             intent.putExtra("money", orderListBean.getMoney());
                             intent.putExtra("dianpu", orderListBean.getDianpu());
                             intent.putExtra("state", orderListBean.getState());
+                            intent.putExtra("title", orderListBean.getTitle());
+                            intent.putExtra("url", orderListBean.getUrl());
+                            context.startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(context, IntentActivity.class);
+                            intent.putExtra("domain", orderListBean.getDomain());
+                            intent.putExtra("bprice", orderListBean.getMoney());
                             intent.putExtra("title", orderListBean.getTitle());
                             intent.putExtra("url", orderListBean.getUrl());
                             context.startActivity(intent);

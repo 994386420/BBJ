@@ -243,8 +243,8 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
 
     @Override
     protected void loadLazyData() {
-        mrefresh.autoRefresh();
-//        initData();
+//        mrefresh.autoRefresh();
+        queryCpsShareList();
     }
 
     @Override

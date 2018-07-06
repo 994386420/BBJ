@@ -435,7 +435,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_home_yinying"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical" >
 
         <View

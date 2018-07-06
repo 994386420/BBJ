@@ -288,7 +288,7 @@ public class JumpDetailActivty extends BaseActivity {
 
                     @Override
                     protected void showDialog() {
-                        DialogSingleUtil.show(JumpDetailActivty.this);
+                            DialogSingleUtil.show(JumpDetailActivty.this);
                     }
 
                     @Override
@@ -456,7 +456,7 @@ public class JumpDetailActivty extends BaseActivity {
                                             }
                                             ClipboardManager cm = (ClipboardManager)JumpDetailActivty.this.getSystemService(Context.CLIPBOARD_SERVICE);
                                             cm.setText(wenan);
-                                            StringUtil.showToast(JumpDetailActivty.this,"文案复制成功");
+//                                            StringUtil.showToast(JumpDetailActivty.this,"标题已复制，分享可直接粘贴");
                                             ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan);
                                         }
                                     }
@@ -481,6 +481,8 @@ public class JumpDetailActivty extends BaseActivity {
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        llShare.setClickable(true);
+                        llLingquan.setClickable(true);
                         DialogSingleUtil.dismiss(0);
                         StringUtil.showToast(JumpDetailActivty.this, e.message);
                     }
@@ -677,5 +679,13 @@ public class JumpDetailActivty extends BaseActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (JumpDetailActivty.this != null && JumpDetailActivty.this.isFinishing()) {
+            DialogSingleUtil.dismiss(0);
+        }
+        super.onDestroy();
     }
 }

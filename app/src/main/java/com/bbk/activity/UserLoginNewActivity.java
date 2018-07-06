@@ -319,7 +319,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				switch (requestCode) {
 					case 1:
 						if (dataJo.optString("status").equals("1")) {
-							Log.i("====",content);
+//							Log.i("====",content);
 							JSONObject jsonObject = new JSONObject(content);
 							loginBtn.setText("立即登录");
 							loginBtn.setEnabled(true);

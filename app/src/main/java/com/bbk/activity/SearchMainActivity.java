@@ -622,7 +622,9 @@ public class SearchMainActivity extends ActivityGroup implements
         super.onResume();
         String clipchange = SharedPreferencesUtil.getSharedData(this, "clipchange", "clipchange");
         if (clipchange.equals("1")) {
-            ClipDialogUtil.creatDialog(this);
+            if (SearchMainActivity.this != null) {
+                ClipDialogUtil.creatDialog(this);
+            }
         }
     }
 

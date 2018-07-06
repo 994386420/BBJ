@@ -230,8 +230,8 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                                                 wenan = jsonObject1.optString("wenan").replace("|", "\n");
                                             }
                                             ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-                                            cm.setText(title+wenan);
-                                            StringUtil.showToast(context,"文案复制成功");
+                                            cm.setText(title+"\n"+wenan);
+//                                            StringUtil.showToast(context,"标题已复制，分享可直接粘贴");
                                         }
                                         if (jsonObject1.has("imgs")) {
                                             JSONArray detailImags = new JSONArray(jsonObject1.optString("imgs"));
@@ -265,6 +265,7 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        viewHolder.llShare.setClickable(true);
                         DialogSingleUtil.dismiss(0);
                         StringUtil.showToast(context, e.message);
                     }

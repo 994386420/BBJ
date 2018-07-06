@@ -266,6 +266,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		// "openID");
 		// urlmd5=url+"&openID="+openID;
 		// }
+		Log.i("===",url);
 		loadWebPage(url);
 	}
 
@@ -284,6 +285,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 //							Log.i("===",strings[2]);
 							Intent intent = new Intent(WebViewActivity.this, IntentActivity.class);
 							intent.putExtra("groupRowKey", strings[2]);
+							intent.putExtra("domain", domain);
 							startActivity(intent);
 						}
 						//跳转到邀请好友页面

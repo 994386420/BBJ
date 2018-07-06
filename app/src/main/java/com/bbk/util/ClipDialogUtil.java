@@ -37,7 +37,7 @@ public class ClipDialogUtil {
 			final String object1 = SharedPreferencesUtil.getSharedData(context, "clipchange", "object");
 			final JSONObject[] jsonObject = new JSONObject[1];
 			jsonObject[0] = new JSONObject(object1);
-//							Log.i("==========",jsonObject+"====");
+//							Log.i("==========",jsonObject[0]+"====");
 			if (jsonObject[0].has("title")) {
 				title = jsonObject[0].optString("title");
 			}
@@ -119,6 +119,9 @@ public class ClipDialogUtil {
 								String url1 = BaseApiService.Base_URL + "mobile/user/history?rowkey=" + rowkey;
 								Intent intent = new Intent(context, WebViewActivity.class);
 								intent.putExtra("url", url1);
+								if (domain != null && !domain.equals("")) {
+									intent.putExtra("domain", domain);
+								}
 								context.startActivity(intent);
 							}
 						}).setNegativeButton("取消", new View.OnClickListener() {

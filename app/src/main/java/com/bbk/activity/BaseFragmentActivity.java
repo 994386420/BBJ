@@ -51,8 +51,10 @@ public class BaseFragmentActivity extends FragmentActivity {
 		MobclickAgent.onResume(this);
 		String clipchange = SharedPreferencesUtil.getSharedData(this, "clipchange", "clipchange");
 		if (clipchange.equals("1")) {
-			ClipDialogUtil.creatDialog(this);
-			SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "0");
+			if (BaseFragmentActivity.this != null) {
+				ClipDialogUtil.creatDialog(this);
+				SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "0");
+			}
 		}
 
 	}

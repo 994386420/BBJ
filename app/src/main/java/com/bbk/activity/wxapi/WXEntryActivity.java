@@ -92,7 +92,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler,Resu
 		        editor.putString("code",code);
 		        editor.commit();
 
-				StringUtil.showToast(context, result);
+//				StringUtil.showToast(context, result);
 				break;
 			case BaseResp.ErrCode.ERR_USER_CANCEL:
 				result += "取消";

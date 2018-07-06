@@ -4,7 +4,26 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/ll_copy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:visibility="visible"
+        android:gravity="center"
+        android:background="@color/white">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tuiguang_color2"
+            android:textSize="15dp"
+            android:text="标题已复制，分享可直接粘贴哦！"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/__picker_common_primary"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

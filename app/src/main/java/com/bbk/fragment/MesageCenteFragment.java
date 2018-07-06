@@ -663,6 +663,25 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 
 	@Override
 	protected void loadLazyData() {
-		xrefresh.autoRefresh();
+		switch (curclick) {
+			case 0:
+				systempage = 1;
+				x= 1;
+				initsystemData();
+				break;
+			case 1:
+				sendpage = 1;
+				x= 1;
+				initsendData();
+				break;
+			case 2:
+				receivepage = 1;
+				x= 1;
+				initreceiveData();
+				break;
+
+			default:
+				break;
+		}
 	}
 }

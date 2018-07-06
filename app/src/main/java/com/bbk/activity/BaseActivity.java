@@ -54,8 +54,10 @@ import org.json.JSONObject;
 		MobclickAgent.onResume(this);
 		String clipchange = SharedPreferencesUtil.getSharedData(this, "clipchange", "clipchange");
 		if (clipchange.equals("1")) {
-			ClipDialogUtil.creatDialog(this);
-			SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "0");
+			if (BaseActivity.this != null ){
+				ClipDialogUtil.creatDialog(this);
+			    SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "0");
+		    }
 		}
 //		//外部应用打开APP传递参数
 //		Intent intent = getIntent();
@@ -117,5 +119,5 @@ import org.json.JSONObject;
 		View view = inflater.inflate(id, null);
 		return view;
 	}
-	
+
 }

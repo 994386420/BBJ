@@ -89,6 +89,7 @@ public class ShareJumpUtil {
         //防止虚拟软键盘被弹出菜单遮住
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+        dialogView.findViewById(R.id.ll_copy).setVisibility(View.VISIBLE);
         dialogView.findViewById(R.id.share_qq).setOnClickListener(
                 new OnClickListener() {
                     @Override

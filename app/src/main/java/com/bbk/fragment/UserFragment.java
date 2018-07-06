@@ -276,6 +276,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                             tvHongbao.setText("0");
                                         }
                                         tvLevel.setVisibility(View.VISIBLE);
+                                        mJlzText.setVisibility(View.VISIBLE);
                                         if (type.equals("0")) {
                                             llTuiguang.setVisibility(View.GONE);
                                             llTuiguang_user.setVisibility(View.VISIBLE);
@@ -490,6 +491,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             llTuiguang_user.setVisibility(View.VISIBLE);
             llTuiguang.setVisibility(View.GONE);
             tvLevel.setVisibility(View.GONE);
+            mJlzText.setVisibility(View.GONE);
             xrefresh.finishRefresh();
         }
 
@@ -912,11 +914,11 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     @Override
     protected void loadLazyData() {
         isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse");
-        if (isFirstResultUse.equals("no")) {
-            xrefresh.autoRefresh();
-        } else {
+//        if (isFirstResultUse.equals("no")) {
+//            xrefresh.autoRefresh();
+//        } else {
             initData();
-        }
+//        }
         try {
             if (showTimes == 0) {
                 msign.post(new Runnable() {

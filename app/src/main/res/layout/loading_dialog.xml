@@ -7,24 +7,26 @@
     android:orientation="vertical"
     android:paddingLeft="18dp"
     android:paddingRight="18dp"
+    android:background="@drawable/bg_loading"
     android:gravity="center_horizontal"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingTop="18dp"
+    android:paddingBottom="18dp">
 
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:gravity="center"
+
         android:layout_gravity="center">
         <ImageView
             android:id="@+id/dialog_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/loading2"/>
+            android:background="@mipmap/loading_02"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/loading1"/>
+            android:background="@mipmap/loading_01"/>
     </RelativeLayout>
     <TextView
         android:id="@+id/tips_tv"

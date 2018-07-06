@@ -75,7 +75,7 @@ public class AlertDialog {
 		// ����dialog������С
 		lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
 				.getWidth() * 0.85), LayoutParams.WRAP_CONTENT));
-		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//全局弹窗
+//		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//全局弹窗
 		return this;
 	}
 

@@ -9,10 +9,13 @@ import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidHomeActivity;
+import com.bbk.activity.BrokerageActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.CouponActivity;
 import com.bbk.activity.DataFragmentActivity;
 import com.bbk.activity.DetailsMainActivity22;
+import com.bbk.activity.FanLiOrderActivity;
+import com.bbk.activity.FensiActivity;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MyApplication;
@@ -68,7 +71,7 @@ public class EventIdIntentUtil {
 	/**
 	 * //按eventId跳转:    1超值购    2超爆款    3潮潮潮    4美味生鲜    5html活动页面(htmlUrl)        6三级页面(groupRowkey)
 	 * 7超市    8全球购    9服饰    10充值    11榜单(type) 12搜索
-	 * 101回复评论,103签到(鲸币界面) 104优惠券,105爆料,106发现,107数据频道 109跳京东返利web  110淘宝返利web 111大转盘 112查历史价格
+	 * 101回复评论,103签到(鲸币界面) 104优惠券,105爆料,106发现,107数据频道 109跳京东返利web  110淘宝返利web 111大转盘 112查历史价格 113鲸港圈  114收益报表  115我的订单 116粉丝
 	 * @param context
 	 * @param jo
 	 */
@@ -220,6 +223,21 @@ public class EventIdIntentUtil {
 				break;
 			case "112":
 				intent = new Intent(context, QueryHistoryActivity.class);
+				context.startActivity(intent);
+				break;
+			case "113":
+			    HomeActivity.initone();
+				break;
+			case "114":
+				intent = new Intent(context, BrokerageActivity.class);
+				context.startActivity(intent);
+				break;
+			case "115":
+				intent = new Intent(context, FanLiOrderActivity.class);
+				context.startActivity(intent);
+				break;
+			case "116":
+				intent = new Intent(context, FensiActivity.class);
 				context.startActivity(intent);
 				break;
 		case "666":

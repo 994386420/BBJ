@@ -237,7 +237,7 @@ public class NewRankFragment extends BaseViewPagerFragment implements CommonLoad
 
 	@Override
 	protected void loadLazyData() {
-		xrefresh.autoRefresh();
+		initData();
 	}
 
 
