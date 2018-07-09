@@ -98,7 +98,7 @@ public class TiXianDetailActivity extends BaseActivity implements CommonLoadingV
     private void queryYongjinListByUserid() {
         refreshLayout.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
-        maps.put("userid", "662");
+        maps.put("userid", userID);
         maps.put("page", page + "");
         RetrofitClient.getInstance(this).createBaseApi().queryYongjinListByUserid(
                 maps, new BaseObserver<String>(this) {
@@ -111,10 +111,17 @@ public class TiXianDetailActivity extends BaseActivity implements CommonLoadingV
                             if (jsonObject.optString("status").equals("1")) {
                                 brokerageDetailList.setLayoutManager(new LinearLayoutManager(TiXianDetailActivity.this));
                                 brokerageDetailList.setHasFixedSize(true);
-                                tvJinbi.setText("¥"+jsonObject1.optString("total")+"元");
+                                if (jsonObject1.has("total")) {
+                                    if (jsonObject1.optString("total") != null && !jsonObject1.optString("total").equals("")) {
+                                        tvJinbi.setText(" ¥" + jsonObject1.optString("total") + "元");
+                                    }else {
+                                        tvJinbi.setText(" ¥" + "0.0" + "元");
+                                    }
+                                }
                                 tiXianDetailBeans = JSON.parseArray(jsonObject1.optString("list"), TiXianDetailBean.class);
                                 if (x == 1) {
                                     if (tiXianDetailBeans != null && tiXianDetailBeans.size() > 0) {
+                                        refreshLayout.setEnableLoadMore(true);
                                         tiXianDetailAdapter = new TiXianDetailAdapter(TiXianDetailActivity.this, tiXianDetailBeans);
                                         brokerageDetailList.setAdapter(tiXianDetailAdapter);
                                         brokerageDetailList.setVisibility(View.VISIBLE);
@@ -123,6 +130,7 @@ public class TiXianDetailActivity extends BaseActivity implements CommonLoadingV
                                         progress.setVisibility(View.VISIBLE);
                                         progress.loadSuccess(true);
                                         brokerageDetailList.setVisibility(View.GONE);
+                                        refreshLayout.setEnableLoadMore(false);
                                     }
                                 }else {
                                     brokerageDetailList.setVisibility(View.VISIBLE);

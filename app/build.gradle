@@ -48,10 +48,14 @@ android {
             signingConfig signingConfigs.debugConfig
         }
         release {
+            //启用代码混淆
             minifyEnabled true
+            //是否优化zip
             zipAlignEnabled true
+            // 移除无用的resource文件
             shrinkResources true
             buildConfigField "boolean", "LOG_DEBUG", "false"  // 不显示Log
+            //混淆规则配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
         }

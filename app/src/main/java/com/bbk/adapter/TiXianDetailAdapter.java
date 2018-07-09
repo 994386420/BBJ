@@ -16,9 +16,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by rtj on 2018/3/7.
- */
 
 public class TiXianDetailAdapter extends RecyclerView.Adapter {
     private List<TiXianDetailBean> tiXianDetailBeans;
