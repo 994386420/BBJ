@@ -86,6 +86,8 @@ public class BrokerageActivity extends BaseActivity {
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.title_text1)
     TextView titleText1;
+    @BindView(R.id.tv_tixian_detail)
+    TextView tvTixianDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,7 +219,7 @@ public class BrokerageActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four,R.id.title_text1})
+    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four, R.id.title_text1,R.id.tv_tixian_detail})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -278,7 +280,11 @@ public class BrokerageActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.title_text1:
-                intent = new Intent(this,UserShenSuActivity.class);
+                intent = new Intent(this, UserShenSuActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_tixian_detail:
+                intent = new Intent(this, TiXianDetailActivity.class);
                 startActivity(intent);
                 break;
         }

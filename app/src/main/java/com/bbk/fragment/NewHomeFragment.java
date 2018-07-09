@@ -61,6 +61,7 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.NoFastClickUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
@@ -986,7 +987,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 @Override
                 public void onClick(View v) {
                     try {
-                        EventIdIntentUtil.EventIdIntent(getActivity(), tag.getJSONObject(position));
+                        if (NoFastClickUtils.isFastClick()){
+                            StringUtil.showToast(getActivity(),"对不起，您的点击太快了，请休息一下");
+                        }else {
+                            EventIdIntentUtil.EventIdIntent(getActivity(), tag.getJSONObject(position));
+                        }
                     } catch (Exception e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();

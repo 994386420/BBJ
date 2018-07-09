@@ -128,6 +128,7 @@ public class JumpDetailActivty extends BaseActivity {
     public static String Flag = "";
     public static String flag = "";
     private UpdataDialog updataDialog;
+    private String isFirstClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -407,60 +408,24 @@ public class JumpDetailActivty extends BaseActivity {
                                 content = jsonObject.optString("content");
                                 JSONObject jsonObject1 = new JSONObject(content);
 //                                Log.i("===",s);
-                                if (jsonObject1.has("errmsg")) {
-                                    if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
-                                        showMessageDialog(JumpDetailActivty.this,userID);
+                                isFirstClick = SharedPreferencesUtil.getSharedData(JumpDetailActivty.this, "isFirstClick", "isFirstClick");
+                                if (TextUtils.isEmpty(isFirstClick)) {
+                                    isFirstClick = "yes";
+                                }
+                                if (isFirstClick.equals("yes")) {
+                                    if (jsonObject1.has("errmsg")) {
+                                        if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
+                                            showMessageDialog(JumpDetailActivty.this,userID);
 //                                        StringUtil.showToast(JumpDetailActivty.this, jsonObject1.optString("errmsg"));
-                                    } else {
-                                        if (flag.equals("lingquan")) {
-                                            DialogSingleUtil.show(JumpDetailActivty.this);
-                                            alibcShowParams = new AlibcShowParams(OpenType.Native, false);
-                                            alibcShowParams.setClientType("taobao_scheme");
-                                            exParams = new HashMap<>();
-                                            exParams.put("isv_code", "appisvcode");
-                                            exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-                                            if (domain != null) {
-                                                if (domain.equals("tmall") || domain.equals("taobao")) {
-                                                    showUrl();
-                                                } else if (domain.equals("jd")) {
-                                                    // 通过url呼京东主站
-                                                    // url 通过url呼京东主站的地址
-                                                    // mKeplerAttachParameter 存储第三方传入参数
-                                                    // mOpenAppAction  呼京东主站回调
-                                                    KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                                                            url,
-                                                            mKeplerAttachParameter,
-                                                            mOpenAppAction);
-                                                    DialogSingleUtil.dismiss(100);
-                                                } else {
-                                                    Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
-                                                    if (url != null) {
-                                                        intent.putExtra("url", url);
-                                                    }
-                                                    if (rowkey != null) {
-                                                        intent.putExtra("rowkey", rowkey);
-                                                    }
-                                                    startActivity(intent);
-                                                    DialogSingleUtil.dismiss(50);
-                                                }
-                                            }
-
-                                        } else if (flag.equals("share")) {
-                                            ShareBean shareBean = JSON.parseObject(content, ShareBean.class);
-                                            if (shareBean.getImgUrl() != null) {
-                                                Glide.with(JumpDetailActivty.this).load(shareBean.getImgUrl()).priority(Priority.HIGH).into(imageFenxiang);
-                                            }
-                                            String wenan = "";
-                                            if (shareBean.getWenan() != null) {
-                                                wenan = shareBean.getWenan().replace("|", "\n");
-                                            }
-                                            ClipboardManager cm = (ClipboardManager)JumpDetailActivty.this.getSystemService(Context.CLIPBOARD_SERVICE);
-                                            cm.setText(wenan);
-//                                            StringUtil.showToast(JumpDetailActivty.this,"标题已复制，分享可直接粘贴");
-                                            ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan);
+                                            SharedPreferencesUtil.putSharedData(JumpDetailActivty.this, "isFirstClick", "isFirstClick", "no");
+                                        } else {
+                                            shareOrjump();
                                         }
                                     }
+                                }else {
+                                  shareOrjump();
                                 }
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -678,6 +643,56 @@ public class JumpDetailActivty extends BaseActivity {
                     updateCooperationByUserid(context,useid);
                 }
             });
+        }
+    }
+
+    private void shareOrjump(){
+        if (flag.equals("lingquan")) {
+            DialogSingleUtil.show(JumpDetailActivty.this);
+            alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+            alibcShowParams.setClientType("taobao_scheme");
+            exParams = new HashMap<>();
+            exParams.put("isv_code", "appisvcode");
+            exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+            if (domain != null) {
+                if (domain.equals("tmall") || domain.equals("taobao")) {
+                    showUrl();
+                } else if (domain.equals("jd")) {
+                    // 通过url呼京东主站
+                    // url 通过url呼京东主站的地址
+                    // mKeplerAttachParameter 存储第三方传入参数
+                    // mOpenAppAction  呼京东主站回调
+                    KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+                            url,
+                            mKeplerAttachParameter,
+                            mOpenAppAction);
+                    DialogSingleUtil.dismiss(100);
+                } else {
+                    Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+                    if (url != null) {
+                        intent.putExtra("url", url);
+                    }
+                    if (rowkey != null) {
+                        intent.putExtra("rowkey", rowkey);
+                    }
+                    startActivity(intent);
+                    DialogSingleUtil.dismiss(50);
+                }
+            }
+
+        } else if (flag.equals("share")) {
+            ShareBean shareBean = JSON.parseObject(content, ShareBean.class);
+            if (shareBean.getImgUrl() != null) {
+                Glide.with(JumpDetailActivty.this).load(shareBean.getImgUrl()).priority(Priority.HIGH).into(imageFenxiang);
+            }
+            String wenan = "";
+            if (shareBean.getWenan() != null) {
+                wenan = shareBean.getWenan().replace("|", "\n");
+            }
+            ClipboardManager cm = (ClipboardManager)JumpDetailActivty.this.getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setText(wenan);
+//                                            StringUtil.showToast(JumpDetailActivty.this,"标题已复制，分享可直接粘贴");
+            ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan);
         }
     }
 

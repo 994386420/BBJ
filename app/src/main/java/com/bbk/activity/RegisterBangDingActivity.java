@@ -351,6 +351,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 				String username = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "username");
 				String openID = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "openID");
 				String imgUrl = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "thirdlogin", "imgUrl");
+			    String unionid = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "unionid");
 				addr = bangding_account.getText().toString();//手机号
 				final Map<String, String> params = new HashMap<String, String>();
 				params.put("phone", addr);
@@ -360,6 +361,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 				params.put("imgUrl", imgUrl);
 			    params.put("mesgCode", mesgCode);
 			    params.put("client", "android");
+			    params.put("unionid",unionid);
 				final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
 				new Thread(new Runnable() {
 					

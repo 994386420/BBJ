@@ -394,11 +394,12 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 							TencentLoginUtil.Loginout(getApplicationContext());
 							//清除用户信息
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "userInfor");
+							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "isFirstClick");
 							Intent intent = new Intent();
 							setResult(2, intent);
 //							DataFragment.login_remind.setVisibility(View.VISIBLE);
-							finish();
 							DialogSingleUtil.dismiss(0);
+							finish();
 						}
 					}).setNegativeButton("取消", new View.OnClickListener() {
 				@Override

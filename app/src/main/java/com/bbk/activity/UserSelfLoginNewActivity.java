@@ -752,6 +752,7 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 					openID = jsonObject.getString("unionid");
 					imgUrl = jsonObject.getString("headimgurl");
 					SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "imgUrl", imgUrl);
+					SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "unionid", jsonObject.getString("unionid"));
 					Message msg = Message.obtain();
 					msg.what = 4;
 					msg.obj = result;

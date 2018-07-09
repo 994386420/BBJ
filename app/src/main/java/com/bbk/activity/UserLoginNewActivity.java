@@ -49,6 +49,7 @@ import com.bbk.fragment.DataFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.DialogUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -370,6 +371,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								intent = new Intent();
 								setResult(3, intent);
 							}
+							DialogSingleUtil.dismiss(0);
 							finish();
 							if (isPartner != null && isPartner.equals("0")){
 								NewConstants.logFlag = "4";

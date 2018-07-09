@@ -60,6 +60,7 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
     private OnItemClickListener mOnItemClickListener = null;
     private ShareFenXiangUtil shareFenXiangUtil;
     private UpdataDialog updataDialog;
+    private String isFirstClick;
 
     public FenXiangListAdapter(Context context, List<FenXiangListBean> fenXiangListBeans) {
         this.context = context;
@@ -219,30 +220,41 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                             if (jsonObject.optString("status").equals("1")) {
                                 List<String> DetailimgUrlList = new ArrayList<>();
                                 JSONObject jsonObject1 = new JSONObject(jsonObject.optString("content"));
-                                if (jsonObject1.has("errmsg")) {
-                                    if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
-                                        showMessageDialog(context, userID);
-//                                        StringUtil.showToast(context, jsonObject1.optString("errmsg"));
-                                    } else {
-                                        if (jsonObject1.has("wenan")){
-                                            String wenan = jsonObject1.optString("wenan");
-                                            if (wenan != null &&!wenan.equals("")) {
-                                                wenan = jsonObject1.optString("wenan").replace("|", "\n");
-                                            }
-                                            ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-                                            cm.setText(title+"\n"+wenan);
-//                                            StringUtil.showToast(context,"标题已复制，分享可直接粘贴");
-                                        }
-                                        if (jsonObject1.has("imgs")) {
-                                            JSONArray detailImags = new JSONArray(jsonObject1.optString("imgs"));
-                                            for (int i = 0; i < detailImags.length(); i++) {
-                                                String imgUrl = detailImags.getString(i);
-                                                DetailimgUrlList.add(imgUrl);
-                                            }
-                                            //调用转发微信功能类
-                                            shareFenXiangUtil = new ShareFenXiangUtil((Activity) context, v, title, DetailimgUrlList);
+                                isFirstClick = SharedPreferencesUtil.getSharedData(
+                                        context, "isFirstClick", "isFirstClick");
+                                if (TextUtils.isEmpty(isFirstClick)) {
+                                    isFirstClick = "yes";
+                                }
+                                if (isFirstClick.equals("yes")) {
+                                    if (jsonObject1.has("errmsg")) {
+                                        if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
+                                            showMessageDialog(context, userID);
+                                            SharedPreferencesUtil.putSharedData(context, "isFirstClick", "isFirstClick", "no");
+                                        } else {
+                                            Share(v, title, DetailimgUrlList, jsonObject1);
                                         }
                                     }
+                                }else {
+//                                    Log.i("======",jsonObject1+"============");
+//                                    StringUtil.showToast(context,jsonObject1.optString("errmsg"));
+//                                    if (jsonObject1.has("wenan")){
+//                                        String wenan = jsonObject1.optString("wenan");
+//                                        if (wenan != null &&!wenan.equals("")) {
+//                                            wenan = jsonObject1.optString("wenan").replace("|", "\n");
+//                                        }
+//                                        ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+//                                        cm.setText(title+"\n"+wenan);
+//                                    }
+//                                    if (jsonObject1.has("imgs")) {
+//                                        JSONArray detailImags = new JSONArray(jsonObject1.optString("imgs"));
+//                                        for (int i = 0; i < detailImags.length(); i++) {
+//                                            String imgUrl = detailImags.getString(i);
+//                                            DetailimgUrlList.add(imgUrl);
+//                                        }
+//                                        //调用转发微信功能类
+//                                        shareFenXiangUtil = new ShareFenXiangUtil((Activity) context, v, title, DetailimgUrlList);
+//                                    }
+                                    Share(v,title,DetailimgUrlList,jsonObject1);
                                 }
                             }else {
                                 StringUtil.showToast(context,jsonObject.optString("errmsg"));
@@ -337,6 +349,37 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                     updateCooperationByUserid(context,useid);
                 }
             });
+        }
+    }
+
+    /**
+     * 微信分享
+     * @param v
+     * @param title
+     * @param DetailimgUrlList
+     * @param jsonObject1
+     */
+    private void Share( View v,String title,List<String> DetailimgUrlList,JSONObject jsonObject1){
+     try {
+        if (jsonObject1.has("wenan")){
+            String wenan = jsonObject1.optString("wenan");
+            if (wenan != null &&!wenan.equals("")) {
+                wenan = jsonObject1.optString("wenan").replace("|", "\n");
+            }
+            ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setText(title+"\n"+wenan);
+        }
+        if (jsonObject1.has("imgs")) {
+            JSONArray detailImags = new JSONArray(jsonObject1.optString("imgs"));
+            for (int i = 0; i < detailImags.length(); i++) {
+                String imgUrl = detailImags.getString(i);
+                DetailimgUrlList.add(imgUrl);
+            }
+            //调用转发微信功能类
+            shareFenXiangUtil = new ShareFenXiangUtil((Activity) context, v, title, DetailimgUrlList);
+        }
+    } catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

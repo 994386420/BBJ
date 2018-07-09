@@ -25,13 +25,17 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
         android:background="@mipmap/wdjb_bg">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +66,18 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/color_line_top"
             android:background="@drawable/bg_tuiguang2" />
-    </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_tixian_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="提现明细"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="13dp"
+            android:layout_gravity="right"/>
+    </FrameLayout>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayout"

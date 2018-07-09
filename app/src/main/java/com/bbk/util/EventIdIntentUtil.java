@@ -64,6 +64,7 @@ public class EventIdIntentUtil {
 	private static Map<String, String> exParams;//yhhpass参数
 	static String url;
 	private static UpdataDialog updataDialog;
+	private static String isFirstClick;
 	public static void main(String[] args) {
 
 	}
@@ -263,46 +264,30 @@ public class EventIdIntentUtil {
 				maps, new BaseObserver<String>(context) {
 					@Override
 					public void onNext(String s) {
-						Log.e("===", s);
+//						Log.e("===", s);
 						try {
 							JSONObject jsonObject = new JSONObject(s);
 							if (jsonObject.optString("status").equals("1")) {
-//								Intent intent = new Intent(context, WebViewActivity.class);
-//								if (jsonObject.optString("content") != null) {
-//									intent.putExtra("url", jsonObject.optString("content"));
-//								}
-//								context.startActivity(intent);
-//								DialogSingleUtil.show(context);
-
 								String content = jsonObject.optString("content");
 								final JSONObject jsonObject1 = new JSONObject(content);
-								if (jsonObject1.has("errmsg")){
-								if (jsonObject1.optString("errmsg") != null&& !jsonObject1.optString("errmsg").equals("")){
-									showMessageDialog(context,userid,jsonObject1.optString("url"),domain);
-//									StringUtil.showToast(context, jsonObject1.optString("errmsg"));
-								}else {
-										alibcShowParams = new AlibcShowParams(OpenType.Native, false);
-										alibcShowParams.setClientType("taobao_scheme");
-										exParams = new HashMap<>();
-										exParams.put("isv_code", "appisvcode");
-										exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-										if (domain != null) {
-											if (domain.equals("taobao")) {
-												showUrl(context, jsonObject1.optString("url"));
-											} else if (domain.equals("jd")) {
-												// 通过url呼京东主站
-												// url 通过url呼京东主站的地址
-												// mKeplerAttachParameter 存储第三方传入参数
-												// mOpenAppAction  呼京东主站回调
-												KeplerApiManager.getWebViewService().openAppWebViewPage(context,
-														jsonObject1.optString("url"),
-														mKeplerAttachParameter,
-														mOpenAppAction);
-												DialogSingleUtil.dismiss(100);
-											}
+								isFirstClick = SharedPreferencesUtil.getSharedData(
+										context, "isFirstClick", "isFirstClick");
+								if (TextUtils.isEmpty(isFirstClick)) {
+									isFirstClick = "yes";
+								}
+								if (isFirstClick.equals("yes")) {
+									if (jsonObject1.has("errmsg")){
+										if (jsonObject1.optString("errmsg") != null&& !jsonObject1.optString("errmsg").equals("")){
+											showMessageDialog(context,userid,jsonObject1.optString("url"),domain);
+											SharedPreferencesUtil.putSharedData(context, "isFirstClick", "isFirstClick", "no");
+										}else {
+											jumpUrl(domain,jsonObject1,context);
 										}
 									}
+								}else {
+									jumpUrl(domain,jsonObject1,context);
 								}
+
 							}else {
 								StringUtil.showToast(context, jsonObject.optString("errmsg"));
 							}
@@ -464,6 +449,35 @@ public class EventIdIntentUtil {
 					updateCooperationByUserid(context,useid,url,domain);
 				}
 			});
+		}
+	}
+
+	/**
+	 * 跳转京东淘宝APP
+	 * @param domain
+	 * @param jsonObject1
+	 * @param context
+	 */
+	public static void jumpUrl(String domain,JSONObject jsonObject1,Context context){
+		alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+		alibcShowParams.setClientType("taobao_scheme");
+		exParams = new HashMap<>();
+		exParams.put("isv_code", "appisvcode");
+		exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+		if (domain != null) {
+			if (domain.equals("taobao")) {
+				showUrl(context, jsonObject1.optString("url"));
+			} else if (domain.equals("jd")) {
+				// 通过url呼京东主站
+				// url 通过url呼京东主站的地址
+				// mKeplerAttachParameter 存储第三方传入参数
+				// mOpenAppAction  呼京东主站回调
+				KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+						jsonObject1.optString("url"),
+						mKeplerAttachParameter,
+						mOpenAppAction);
+				DialogSingleUtil.dismiss(100);
+			}
 		}
 	}
 }
