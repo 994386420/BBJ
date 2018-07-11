@@ -35,6 +35,19 @@
             app:tabTextColor="@color/tuiguang_color4"
             app:tabTextAppearance="@style/TabLayoutTextStyle"
             />
+
+        <ImageButton
+            android:id="@+id/title_back_btn_right"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:layout_marginRight="15dp"
+            android:background="@mipmap/tuiguang_30" />
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -53,8 +66,31 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/__picker_common_primary"/>
+        android:background="@color/color_line_top"/>
 
+    <FrameLayout
+        android:id="@+id/ll_shensu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:background="@color/color_line_top">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="成功付款了，没有看到订单？"
+            android:textSize="12dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/white"/>
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center_vertical|right"
+            android:background="@mipmap/bobao"/>
+    </FrameLayout>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"

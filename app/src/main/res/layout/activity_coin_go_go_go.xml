@@ -45,6 +45,7 @@
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:paddingLeft="5dp"
+        android:visibility="gone"
         android:paddingRight="5dp" >
 
         <RelativeLayout
@@ -103,7 +104,7 @@
                 android:background="#ffffff" />
         </RelativeLayout>
     </LinearLayout>
-	<android.support.v4.view.ViewPager
+	<com.bbk.view.CustomViewPager
         android:id="@+id/mviewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

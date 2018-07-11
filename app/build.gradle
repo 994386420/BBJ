@@ -266,5 +266,7 @@ dependencies {
 
 //    compile 'com.github.jdsjlzx:LRecyclerView:1.5.0'
     compile 'com.android.support:design:23.3.0'
+
+    implementation 'com.android.support:cardview-v7:23.1.1'
 }
 

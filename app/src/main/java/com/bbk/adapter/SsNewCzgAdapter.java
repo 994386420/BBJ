@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,41 +15,46 @@ import android.widget.TextView;
 
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
-import org.json.JSONObject;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by rtj on 2018/3/7.
  */
 
-public class SsNewCzgAdapter extends BaseAdapter{
-    private List<Map<String,String>> list;
+public class SsNewCzgAdapter extends BaseAdapter {
+    private List<NewHomeCzgBean> newHomeCzgBean;
     private Context context;
-    public SsNewCzgAdapter(Context context, List<Map<String,String>> list){
-        this.list = list;
+
+    public SsNewCzgAdapter(Context context, List<NewHomeCzgBean> list) {
+        this.newHomeCzgBean = list;
         this.context = context;
     }
+
     @Override
     public int getCount() {
-        return list.size();
+        return newHomeCzgBean.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return position;
     }
 
     @Override
@@ -57,24 +62,26 @@ public class SsNewCzgAdapter extends BaseAdapter{
         return position;
     }
 
-    public void notifyData(List<Map<String,String>> List){
-        this.list.addAll(List);
-        notifyDataSetChanged();
-    }
+    //
+//    public void notifyData(List<Map<String,String>> List){
+//        this.newHomeCzgBean.addAll(List);
+//        notifyDataSetChanged();
+//    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
         if (convertView == null) {
-            viewHolder = new ViewHolder();
             convertView = View.inflate(context, R.layout.czg_item_layout, null);
+            viewHolder = new ViewHolder(convertView);
+            ButterKnife.bind(this, convertView);
             viewHolder.item_img = convertView.findViewById(R.id.item_img);
             viewHolder.item_title = convertView.findViewById(R.id.item_title);
-            viewHolder.mbidprice =convertView.findViewById(R.id.mbidprice);
+            viewHolder.mbidprice = convertView.findViewById(R.id.mbidprice);
             viewHolder.dianpu = convertView.findViewById(R.id.dianpu_text);
             viewHolder.mprice = convertView.findViewById(R.id.mprice);
             viewHolder.youhui = convertView.findViewById(R.id.youhui_text);
-            viewHolder.itemlayout =  convertView.findViewById(R.id.result_item);
-            viewHolder. mCopyLayout =convertView.findViewById(R.id.copy_layout);
+            viewHolder.itemlayout = convertView.findViewById(R.id.result_item);
+            viewHolder.mCopyLayout = convertView.findViewById(R.id.copy_layout);
             viewHolder.copy_title = convertView.findViewById(R.id.copy_title);
             viewHolder.copy_url = convertView.findViewById(R.id.copy_url);
             convertView.setTag(viewHolder);
@@ -82,36 +89,93 @@ public class SsNewCzgAdapter extends BaseAdapter{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         try {
-        final Map<String,String> map = list.get(position);
-        String img = map.get("imgurl");
-        final String title = map.get("title");
-        String price = map.get("price");
-//        String bidprice = map.get("bidprice");
-        String dianpu = map.get("dianpu");
-        String youhui = map.get("youhui");
-        String mbidprice = map.get("hislowprice");
-        viewHolder.item_title.setText(title);
+            String img = newHomeCzgBean.get(position).getImgurl();
+            final String title = newHomeCzgBean.get(position).getTitle();
+            String price = newHomeCzgBean.get(position).getPrice();
+            String dianpu = newHomeCzgBean.get(position).getDianpu();
+            String youhui = newHomeCzgBean.get(position).getYouhui();
+            String mbidprice = newHomeCzgBean.get(position).getHislowprice();//最低价
+            viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale() + "人付款");
+            viewHolder.item_title.setText("             " + title);
             try {
-            if (mbidprice != null){
-                viewHolder.mbidprice.setText("最低价 "+mbidprice);
-            }
+                if (mbidprice != null) {
+                    viewHolder.mbidprice.setText("最低价 " + mbidprice);
+                }
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-        viewHolder.mprice.setText("¥"+price);
-        viewHolder.dianpu.setText(dianpu);
-        viewHolder.youhui.setText(youhui);
+            String domin = newHomeCzgBean.get(position).getDomain();
+            if (domin != null) {
+                if (domin.equals("taobao")) {
+                    viewHolder.tvMall.setText("淘宝");
+                } else if (domin.equals("tmall")) {
+                    viewHolder.tvMall.setText("天猫");
+                } else {
+                    viewHolder.tvMall.setText("京东");
+                }
+            } else {
+                viewHolder.tvMall.setVisibility(View.GONE);
+            }
+            viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
+            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            viewHolder.price.setText(price);
+            if (newHomeCzgBean.get(position).getQuan() != null && !newHomeCzgBean.get(position).getQuan().equals("")) {
+                viewHolder.llQuan.setVisibility(View.VISIBLE);
+                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
+            } else {
+                viewHolder.llQuan.setVisibility(View.GONE);
+            }
+            if (newHomeCzgBean.get(position).getZuan() != null && !newHomeCzgBean.get(position).getZuan().equals("")) {
+                viewHolder.zuan.setVisibility(View.VISIBLE);
+                viewHolder.zuan.setText(newHomeCzgBean.get(position).getZuan());
+            } else {
+                viewHolder.zuan.setVisibility(View.GONE);
+            }
+            viewHolder.dianpuText.setText(dianpu);
+            viewHolder.mprice.setText("¥" + price);
+            viewHolder.youhui.setText(youhui);
+            Glide.with(context)
+                    .load(img)
+                    .priority(Priority.HIGH)
+                    .placeholder(R.mipmap.zw_img_300)
+                    .into(viewHolder.item_img);
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     notifyDataSetChanged();
-                    if (AlibcLogin.getInstance().isLogin() == true){
-                        Intent intent = new Intent(context, WebViewActivity.class);
-                        intent.putExtra("url", list.get(position).get("url"));
-                        intent.putExtra("title", list.get(position).get("title"));
+                    Intent intent;
+                    try {
+//                        if (AlibcLogin.getInstance().isLogin() == true) {
+                        if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
+                            intent = new Intent(context, IntentActivity.class);
+                            if (newHomeCzgBean.get(position).getRequestUrl() != null) {
+                                intent.putExtra("url", newHomeCzgBean.get(position).getRequestUrl());
+                            }
+                            if (newHomeCzgBean.get(position).getTitle() != null) {
+                                intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
+                            }
+                            if (newHomeCzgBean.get(position).getDomain() != null) {
+                                intent.putExtra("domain", newHomeCzgBean.get(position).getDomain());
+                            }
+                            if (newHomeCzgBean.get(position).getRowkey() != null) {
+                                intent.putExtra("groupRowKey", newHomeCzgBean.get(position).getRowkey());
+                            }
+                            intent.putExtra("isczg", "1");
+                            if (newHomeCzgBean.get(position).getBprice() != null) {
+                                intent.putExtra("bprice", newHomeCzgBean.get(position).getBprice());
+                            }
+                        } else {
+                            intent = new Intent(context, WebViewActivity.class);
+                            intent.putExtra("url", newHomeCzgBean.get(position).getUrl());
+                            intent.putExtra("title", newHomeCzgBean.get(position).getTitle());
+                        }
                         context.startActivity(intent);
-                    } else {
-                        TaoBaoLoginandLogout();//淘宝授权登陆
+//                        } else {
+//                            DialogSingleUtil.show(context, "授权中...");
+//                            TaoBaoLoginandLogout();//淘宝授权登陆
+//                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             });
@@ -134,49 +198,40 @@ public class SsNewCzgAdapter extends BaseAdapter{
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
-            viewHolder.copy_title.setBackgroundResource(R.drawable.bid_circle);
-            viewHolder.copy_url.setBackgroundResource(R.drawable.bid_circle);
             viewHolder.copy_title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                     cm.setText(title);
-                    StringUtil.showToast(context,"复制成功");
+                    StringUtil.showToast(context, "复制成功");
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
             viewHolder.copy_url.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ClipboardManager cm = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(map.get("url"));
-                    StringUtil.showToast(context,"复制成功");
+                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(newHomeCzgBean.get(position).getUrl());
+                    StringUtil.showToast(context, "复制成功");
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }
             });
-        Glide.with(context)
-                    .load(img)
-                    .priority(Priority.HIGH)
-                    .placeholder(R.mipmap.zw_img_300)
-                    .into(viewHolder.item_img);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
         return convertView;
     }
-    class ViewHolder{
-        ImageView item_img;
-        TextView mbidprice,dianpu,mprice,youhui;
-        TextView item_title,copy_title,copy_url;
-        LinearLayout itemlayout,mCopyLayout;
-    }
+
+//    static class ViewHolder {
+//
+//    }
 
     /**
      * 淘宝授权登录
      */
-    private void TaoBaoLoginandLogout(){
-        DialogSingleUtil.show(context,"授权中...");
+    private void TaoBaoLoginandLogout() {
+        DialogSingleUtil.show(context, "授权中...");
         final AlibcLogin alibcLogin = AlibcLogin.getInstance();
         alibcLogin.showLogin((Activity) context, new AlibcLoginCallback() {
 
@@ -185,14 +240,42 @@ public class SsNewCzgAdapter extends BaseAdapter{
                 DialogSingleUtil.dismiss(0);
                 StringUtil.showToast(context, "登录成功 ");
                 SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String date = sDateFormat.format(new java.util.Date());
-                SharedPreferencesUtil.putSharedData(MyApplication.getApplication(),"taobao","taobaodata",date);
+                String date = sDateFormat.format(new Date());
+                SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "taobao", "taobaodata", date);
             }
+
             @Override
             public void onFailure(int code, String msg) {
                 DialogSingleUtil.dismiss(0);
                 StringUtil.showToast(context, "登录失败 ");
             }
         });
+    }
+
+    class ViewHolder {
+        ImageView item_img;
+        TextView mbidprice, dianpu, mprice, youhui;
+        TextView item_title, copy_title, copy_url;
+        LinearLayout itemlayout, mCopyLayout;
+        @BindView(R.id.dianpu_text)
+        TextView dianpuText;
+        @BindView(R.id.quan)
+        TextView quan;
+        @BindView(R.id.zuan)
+        TextView zuan;
+        @BindView(R.id.price)
+        TextView price;
+        @BindView(R.id.bprice)
+        TextView bprice;
+        @BindView(R.id.tv_mall)
+        TextView tvMall;
+        @BindView(R.id.tv_sale)
+        TextView tvSale;
+        @BindView(R.id.ll_quan)
+        LinearLayout llQuan;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

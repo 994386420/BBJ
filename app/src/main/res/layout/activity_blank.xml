@@ -131,11 +131,11 @@
             android:background="@color/color_line"
             android:layout_weight="1" >
 
-            <com.andview.refreshview.XScrollView
-                android:id="@+id/mscroll"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+            <!--<com.andview.refreshview.XScrollView-->
+                <!--android:id="@+id/mscroll"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--&gt;-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -189,7 +189,7 @@
 
                     </RelativeLayout>
                 </LinearLayout>
-            </com.andview.refreshview.XScrollView>
+            <!--</com.andview.refreshview.XScrollView>-->
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <RelativeLayout

@@ -290,8 +290,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 						}
 						//跳转到邀请好友页面
 						if (url.contains("yaoqing")){
-						Intent intent = new Intent(WebViewActivity.this, CoinGoGoGoActivity.class);
-						intent.putExtra("type", "1");
+//						Intent intent = new Intent(WebViewActivity.this, CoinGoGoGoActivity.class);
+//						intent.putExtra("type", "1");
+						Intent intent = new Intent(WebViewActivity.this,YaoqingFriendsActivity.class);
 						startActivity(intent);
 					    }
 						Uri uri = Uri.parse(url);

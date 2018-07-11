@@ -334,8 +334,16 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
             updataDialog = new UpdataDialog(context, R.layout.hehuo_dialog_layout,
                     new int[]{R.id.tv_update_gengxin});
             updataDialog.show();
+            updataDialog.setCanceledOnTouchOutside(true);
             TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+            ImageView img_close = updataDialog.findViewById(R.id.img_close);
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                }
+            });
             tv_update_refuse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

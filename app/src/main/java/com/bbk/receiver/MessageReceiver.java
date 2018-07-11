@@ -3,11 +3,13 @@ package com.bbk.receiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import com.bbk.activity.BidHomeActivity;
+import com.bbk.activity.EventIdIntentActivity;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.tencent.android.tpush.XGPushBaseReceiver;
@@ -99,6 +101,9 @@ public class MessageReceiver extends XGPushBaseReceiver {
 	@Override
 	public void onNotifactionClickedResult(Context context,
 			XGPushClickedResult message) {
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.cancelAll();
 		Log.e("===message===", message+"");
 		if (context == null || message == null) {
 			return;
@@ -112,25 +117,31 @@ public class MessageReceiver extends XGPushBaseReceiver {
 			// 获取自定义key-value
 			String customContent = message.getCustomContent();
 			if (customContent != null && customContent.length() != 0) {
-				try {
-					JSONObject obj = new JSONObject(customContent);
-					// key1为前台配置的key
-					if (!obj.isNull("eventId")) {
-						String eventId = obj.getString("eventId");
-						Log.d(LogTag, "get custom value:" + eventId);
-						if (eventId.equals("108")){
-								Log.i("eventId======",eventId+"========");
-//								SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
-								Intent intent = new Intent(context, BidHomeActivity.class);
-							    intent.putExtra("currentitem", "2");
-							    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-								context.startActivity(intent);
-						}
-						EventIdIntentUtil.EventIdIntent(context, obj);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+//				try {
+				Log.i("eventId======","===="+"========");
+					Intent intent = new Intent(context, EventIdIntentActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.putExtra("customContent", customContent);
+					context.startActivity(intent);
+//					JSONObject obj = new JSONObject(customContent);
+//					// key1为前台配置的key
+//					if (!obj.isNull("eventId")) {
+//						String eventId = obj.getString("eventId");
+//						Log.d(LogTag, "get custom value:" + eventId);
+//						if (eventId.equals("108")){
+//								Log.i("eventId======",eventId+"========");
+////								SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
+//								Intent intent = new Intent(context, BidHomeActivity.class);
+//							    intent.putExtra("currentitem", "2");
+////							    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//							    intent.setAction("");
+//								context.startActivity(intent);
+//						}
+//						EventIdIntentUtil.EventIdIntent(context, obj);
+//					}
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//				}
 			}
 		} else if (message.getActionType() == XGPushClickedResult.NOTIFACTION_DELETED_TYPE) {
 			// 通知被清除啦。。。。
@@ -189,6 +200,6 @@ public class MessageReceiver extends XGPushBaseReceiver {
 		Log.d(LogTag, text);
 		show(context, text);
 	}
-	
+
 
 }

@@ -182,8 +182,9 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                 finish();
                 break;
             case R.id.ll_yaoqing:
-                Intent intent = new Intent(FensiActivity.this, CoinGoGoGoActivity.class);
-                intent.putExtra("type", "1");
+//                Intent intent = new Intent(FensiActivity.this, CoinGoGoGoActivity.class);
+//                intent.putExtra("type", "1");
+                Intent intent = new Intent(FensiActivity.this,YaoqingFriendsActivity.class);
                 startActivity(intent);
                 break;
         }

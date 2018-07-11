@@ -129,7 +129,7 @@ public class JumpDetailActivty extends BaseActivity {
     public static String flag = "";
     private UpdataDialog updataDialog;
     private String isFirstClick;
-
+    private String urltaobaoOrjd ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -381,7 +381,7 @@ public class JumpDetailActivty extends BaseActivity {
     /**
      * 打开指定链接
      */
-    public void showUrl() {
+    public void showUrl(String url) {
         String text = url;
         if (TextUtils.isEmpty(text)) {
             StringUtil.showToast(this, "URL为空");
@@ -513,6 +513,7 @@ public class JumpDetailActivty extends BaseActivity {
     private  void updateCooperationByUserid(final Context context, String userID) {
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid", userID);
+        maps.put("rowkey",rowkey);
         RetrofitClient.getInstance(context).createBaseApi().updateCooperationByUserid(
                 maps, new BaseObserver<String>(context) {
                     @Override
@@ -522,6 +523,10 @@ public class JumpDetailActivty extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 StringUtil.showToast(context,"恭喜成为合伙人");
+                                JSONObject jsonObject1 = new JSONObject(jsonObject.optString("content"));
+                                if (jsonObject1.has("url")) {
+                                   urltaobaoOrjd = jsonObject1.optString("url");
+                                }
                                 if(flag.equals("lingquan")) {
                                     DialogSingleUtil.show(JumpDetailActivty.this);
                                     alibcShowParams = new AlibcShowParams(OpenType.Native, false);
@@ -531,21 +536,21 @@ public class JumpDetailActivty extends BaseActivity {
                                     exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
                                     if (domain != null) {
                                         if (domain.equals("tmall") || domain.equals("taobao")) {
-                                            showUrl();
+                                            showUrl(urltaobaoOrjd);
                                         } else if (domain.equals("jd")) {
                                             // 通过url呼京东主站
                                             // url 通过url呼京东主站的地址
                                             // mKeplerAttachParameter 存储第三方传入参数
                                             // mOpenAppAction  呼京东主站回调
                                             KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                                                    url,
+                                                    urltaobaoOrjd,
                                                     mKeplerAttachParameter,
                                                     mOpenAppAction);
                                             DialogSingleUtil.dismiss(100);
                                         } else {
                                             intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
-                                            if (url != null) {
-                                                intent.putExtra("url", url);
+                                            if (urltaobaoOrjd != null) {
+                                                intent.putExtra("url", urltaobaoOrjd);
                                             }
                                             if (rowkey != null) {
                                                 intent.putExtra("rowkey", rowkey);
@@ -589,53 +594,61 @@ public class JumpDetailActivty extends BaseActivity {
             updataDialog = new UpdataDialog(context, R.layout.hehuo_dialog_layout,
                     new int[]{R.id.tv_update_gengxin});
             updataDialog.show();
+            updataDialog.setCanceledOnTouchOutside(true);
             TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
             if (flag.equals("lingquan")){
                 tv_update_refuse.setText("任性购");
             }
-            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+            ImageView img_close = updataDialog.findViewById(R.id.img_close);
+            img_close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (flag.equals("share")) {
-                        updataDialog.dismiss();
-                    } else if (flag.equals("lingquan")) {
-                        updataDialog.dismiss();
-                        Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
-                        DialogSingleUtil.show(JumpDetailActivty.this);
-                        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
-                        alibcShowParams.setClientType("taobao_scheme");
-                        exParams = new HashMap<>();
-                        exParams.put("isv_code", "appisvcode");
-                        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-                        if (domain != null) {
-                            if (domain.equals("tmall") || domain.equals("taobao")) {
-                                showUrl();
-                            } else if (domain.equals("jd")) {
-                                // 通过url呼京东主站
-                                // url 通过url呼京东主站的地址
-                                // mKeplerAttachParameter 存储第三方传入参数
-                                // mOpenAppAction  呼京东主站回调
-                                KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                                        url,
-                                        mKeplerAttachParameter,
-                                        mOpenAppAction);
-                                DialogSingleUtil.dismiss(100);
-                            } else {
-                                intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
-                                if (url != null) {
-                                    intent.putExtra("url", url);
-                                }
-                                if (rowkey != null) {
-                                    intent.putExtra("rowkey", rowkey);
-                                }
-                                startActivity(intent);
-                                DialogSingleUtil.dismiss(50);
-                            }
-                        }
-                    }
+                    updataDialog.dismiss();
                 }
             });
+//            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (flag.equals("share")) {
+//                        updataDialog.dismiss();
+//                    } else if (flag.equals("lingquan")) {
+//                        updataDialog.dismiss();
+//                        Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+//                        DialogSingleUtil.show(JumpDetailActivty.this);
+//                        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+//                        alibcShowParams.setClientType("taobao_scheme");
+//                        exParams = new HashMap<>();
+//                        exParams.put("isv_code", "appisvcode");
+//                        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+//                        if (domain != null) {
+//                            if (domain.equals("tmall") || domain.equals("taobao")) {
+//                                showUrl(urltaobaoOrjd);
+//                            } else if (domain.equals("jd")) {
+//                                // 通过url呼京东主站
+//                                // url 通过url呼京东主站的地址
+//                                // mKeplerAttachParameter 存储第三方传入参数
+//                                // mOpenAppAction  呼京东主站回调
+//                                KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+//                                        urltaobaoOrjd,
+//                                        mKeplerAttachParameter,
+//                                        mOpenAppAction);
+//                                DialogSingleUtil.dismiss(100);
+//                            } else {
+//                                intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+//                                if (url != null) {
+//                                    intent.putExtra("url", url);
+//                                }
+//                                if (rowkey != null) {
+//                                    intent.putExtra("rowkey", rowkey);
+//                                }
+//                                startActivity(intent);
+//                                DialogSingleUtil.dismiss(50);
+//                            }
+//                        }
+//                    }
+//                }
+//            });
             tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -656,7 +669,7 @@ public class JumpDetailActivty extends BaseActivity {
             exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
             if (domain != null) {
                 if (domain.equals("tmall") || domain.equals("taobao")) {
-                    showUrl();
+                    showUrl(url);
                 } else if (domain.equals("jd")) {
                     // 通过url呼京东主站
                     // url 通过url呼京东主站的地址

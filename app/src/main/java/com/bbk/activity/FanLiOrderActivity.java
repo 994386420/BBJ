@@ -1,18 +1,19 @@
 package com.bbk.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
-import com.bbk.Bean.BrokerageBean;
 import com.bbk.Bean.OrderListBean;
-import com.bbk.adapter.BrokerageDetailAdapter;
 import com.bbk.adapter.FanLiOrderAdapter;
+import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -37,9 +38,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- *淘宝京东返利订单
+ * 淘宝京东返利订单
  */
-public class FanLiOrderActivity extends BaseActivity implements CommonLoadingView.LoadingHandler{
+public class FanLiOrderActivity extends BaseActivity implements CommonLoadingView.LoadingHandler {
 
 
     @BindView(R.id.title_back_btn)
@@ -54,8 +55,14 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
     CommonLoadingView progress;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    private String domain = "taobao",type = "";
-    private int page = 1,x = 1;
+    @BindView(R.id.ll_shensu)
+    FrameLayout llShensu;
+    @BindView(R.id.title_back_btn_right)
+    ImageButton titleBackBtnRight;
+    @BindView(R.id.topbar_layout)
+    LinearLayout topbarLayout;
+    private String domain = "taobao", type = "";
+    private int page = 1, x = 1;
     private List<OrderListBean> orderListBeans;
     private FanLiOrderAdapter fanLiOrderAdapter;
     private String userID;
@@ -72,7 +79,7 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
         refreshAndloda();
     }
 
-    private void initView(){
+    private void initView() {
         progress.setLoadingHandler(this);
         tablayout.addTab(tablayout.newTab().setText("淘宝订单"));
         tablayout.addTab(tablayout.newTab().setText("京东订单"));
@@ -90,6 +97,7 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
         fanliOrderList.setLayoutManager(new LinearLayoutManager(this));
         fanliOrderList.setHasFixedSize(true);
     }
+
     private void refreshAndloda() {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -143,12 +151,12 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
             if (j == 0) {
                 type = "";
             } else if (j == 1) {
-                type="1";
-            }else if (j == 2){
+                type = "1";
+            } else if (j == 2) {
                 type = "2";
-            }else if (j == 3){
+            } else if (j == 3) {
                 type = "3";
-            }else if (j == 4){
+            } else if (j == 4) {
                 type = "4";
             }
             x = 1;
@@ -172,12 +180,12 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
      */
     private void queryCpsOrderList() {
         refreshLayout.setNoMoreData(false);
-        userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid", userID);
         maps.put("type", type);//1跟踪中 2待发放 3已发放 4取消    空字符串为全部
-        maps.put("page",page+"");
-        maps.put("domain",domain);
+        maps.put("page", page + "");
+        maps.put("domain", domain);
         RetrofitClient.getInstance(this).createBaseApi().queryCpsOrderList(
                 maps, new BaseObserver<String>(this) {
                     @Override
@@ -186,7 +194,7 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 String content = jsonObject.optString("content");
-                                orderListBeans = JSON.parseArray(content,OrderListBean.class);
+                                orderListBeans = JSON.parseArray(content, OrderListBean.class);
                                 if (x == 1) {
                                     if (orderListBeans != null && orderListBeans.size() > 0) {
                                         refreshLayout.setEnableLoadMore(true);
@@ -200,7 +208,7 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
                                         progress.loadSuccess(true);
                                         refreshLayout.setEnableLoadMore(false);
                                     }
-                                }else {
+                                } else {
                                     fanliOrderList.setVisibility(View.VISIBLE);
                                     progress.loadSuccess();
                                     if (orderListBeans != null && orderListBeans.size() > 0) {
@@ -248,14 +256,30 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
         super.onDestroy();
     }
 
-    @OnClick(R.id.title_back_btn)
-    public void onViewClicked() {
-        finish();
-    }
-
     @Override
     public void doRequestData() {
         progress.setVisibility(View.GONE);
         queryCpsOrderList();
+    }
+
+    @OnClick({R.id.title_back_btn, R.id.title_back_btn_right, R.id.ll_shensu})
+    public void onViewClicked(View view) {
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.title_back_btn:
+                finish();
+                break;
+            case R.id.title_back_btn_right:
+                //常见问题跳转链接
+                String url = BaseApiService.Base_URL + "mobile/user/question";
+                intent = new Intent(FanLiOrderActivity.this, WebViewActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
+                break;
+            case R.id.ll_shensu:
+                intent = new Intent(FanLiOrderActivity.this,UserShenSuActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }

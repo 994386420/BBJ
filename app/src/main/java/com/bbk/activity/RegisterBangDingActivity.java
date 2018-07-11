@@ -361,7 +361,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 				params.put("imgUrl", imgUrl);
 			    params.put("mesgCode", mesgCode);
 			    params.put("client", "android");
-			    params.put("unionid",unionid);
+			    params.put("unionid",openID);
 				final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
 				new Thread(new Runnable() {
 					

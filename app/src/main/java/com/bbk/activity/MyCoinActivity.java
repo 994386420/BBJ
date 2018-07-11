@@ -625,8 +625,10 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
             Intent intent;
             switch (position) {
                 case 0:
-                    intent = new Intent(this, CoinGoGoGoActivity.class);
-                    intent.putExtra("type", "1");
+//                    intent = new Intent(this, CoinGoGoGoActivity.class);
+//                    intent.putExtra("type", "1");
+//                    startActivity(intent);
+                    intent = new Intent(this,YaoqingFriendsActivity.class);
                     startActivity(intent);
                     break;
                 case 1:

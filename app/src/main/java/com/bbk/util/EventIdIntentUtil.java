@@ -10,6 +10,7 @@ import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BrokerageActivity;
+import com.bbk.activity.BrokerageDetailActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.CouponActivity;
 import com.bbk.activity.DataFragmentActivity;
@@ -51,6 +52,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +75,7 @@ public class EventIdIntentUtil {
 	 * //按eventId跳转:    1超值购    2超爆款    3潮潮潮    4美味生鲜    5html活动页面(htmlUrl)        6三级页面(groupRowkey)
 	 * 7超市    8全球购    9服饰    10充值    11榜单(type) 12搜索
 	 * 101回复评论,103签到(鲸币界面) 104优惠券,105爆料,106发现,107数据频道 109跳京东返利web  110淘宝返利web 111大转盘 112查历史价格 113鲸港圈  114收益报表  115我的订单 116粉丝
+	 * 117淘宝本月结算 118淘宝本月付款 119京东本月结算 120京东本月付款 121系统消息(非聊天) 122消息聊天
 	 * @param context
 	 * @param jo
 	 */
@@ -239,6 +242,37 @@ public class EventIdIntentUtil {
 				break;
 			case "116":
 				intent = new Intent(context, FensiActivity.class);
+				context.startActivity(intent);
+				break;
+			case "117":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "t1");
+				context.startActivity(intent);
+				break;
+			case "118":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "t3");
+				context.startActivity(intent);
+				break;
+			case "119":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "j1");
+				context.startActivity(intent);
+				break;
+			case "120":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "j3");
+				context.startActivity(intent);
+				break;
+			case "121":
+				SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "2");
+				intent = new Intent(context, HomeActivity.class);
+				context.startActivity(intent);
+				break;
+			case "122":
+				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
+				intent = new Intent(context, BidHomeActivity.class);
+				intent.putExtra("currentitem", "2");
 				context.startActivity(intent);
 				break;
 		case "666":
@@ -418,30 +452,38 @@ public class EventIdIntentUtil {
 			updataDialog = new UpdataDialog(context, R.layout.hehuo_dialog_layout,
 					new int[]{R.id.tv_update_gengxin});
 			updataDialog.show();
+			updataDialog.setCanceledOnTouchOutside(true);
 			TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
 			TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
-			tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+			ImageView img_close = updataDialog.findViewById(R.id.img_close);
+			img_close.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					updataDialog.dismiss();
-					alibcShowParams = new AlibcShowParams(OpenType.Native, false);
-					alibcShowParams.setClientType("taobao_scheme");
-					exParams = new HashMap<>();
-					exParams.put("isv_code", "appisvcode");
-					exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-					if (domain != null) {
-						if (domain.equals("taobao")) {
-							showUrl(context, url);
-						} else if (domain.equals("jd")) {
-							KeplerApiManager.getWebViewService().openAppWebViewPage(context,
-									url,
-									mKeplerAttachParameter,
-									mOpenAppAction);
-							DialogSingleUtil.dismiss(100);
-						}
-					}
 				}
 			});
+//			tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					updataDialog.dismiss();
+//					alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+//					alibcShowParams.setClientType("taobao_scheme");
+//					exParams = new HashMap<>();
+//					exParams.put("isv_code", "appisvcode");
+//					exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+//					if (domain != null) {
+//						if (domain.equals("taobao")) {
+//							showUrl(context, url);
+//						} else if (domain.equals("jd")) {
+//							KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+//									url,
+//									mKeplerAttachParameter,
+//									mOpenAppAction);
+//							DialogSingleUtil.dismiss(100);
+//						}
+//					}
+//				}
+//			});
 			tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

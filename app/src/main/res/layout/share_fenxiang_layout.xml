@@ -37,6 +37,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="分享好友购买可获100%佣金奖励"
@@ -44,6 +45,7 @@
                 android:textColor="@color/tuiguang_color3"
                 android:textSize="17dp"/>
             <TextView
+                android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="邀请好友签到领红包，每天可领哦！"

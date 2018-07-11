@@ -194,6 +194,7 @@ public class SearchRecommendCzgActivity extends BaseActivity implements OnClickL
 						imm.hideSoftInputFromWindow(localTextView.getWindowToken(), 0);
 						Intent intent = new Intent(ACTION_NAME);
 						intent.putExtra("keyword", str);
+						SharedPreferencesUtil.putSharedData(SearchRecommendCzgActivity.this, "shaixuan", "shaixuan", "yes");
 						sendBroadcast(intent);
 					}
 				});
@@ -248,6 +249,7 @@ public class SearchRecommendCzgActivity extends BaseActivity implements OnClickL
 		imm.hideSoftInputFromWindow(historyListView.getWindowToken(), 0);
 		Intent intent = new Intent(ACTION_NAME);
 		intent.putExtra("keyword", keyword);
+		SharedPreferencesUtil.putSharedData(SearchRecommendCzgActivity.this, "shaixuan", "shaixuan", "yes");
 		sendBroadcast(intent);
 	}
 	

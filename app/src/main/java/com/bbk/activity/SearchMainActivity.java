@@ -246,6 +246,7 @@ public class SearchMainActivity extends ActivityGroup implements
     private boolean isGlobalMenuShow;
     private FilterPopupWindow popupWindow;
     String[] strs,strfenlei,strsdomain;
+    private String shaixuan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -520,6 +521,7 @@ public class SearchMainActivity extends ActivityGroup implements
     }
 
     public void doSearch() {
+        SharedPreferencesUtil.putSharedData(SearchMainActivity.this, "shaixuan", "shaixuan", "yes");
         mlistView.setVisibility(View.GONE);
         keyword = searchText.getText().toString();
         if (keyword.length() <= 0) {
@@ -559,6 +561,11 @@ public class SearchMainActivity extends ActivityGroup implements
         } else {
             x = 1;
             currentPageIndex = 1;
+            fenlei = "";
+            domain = "";
+            bPrice = "";
+            ePrice = "";
+            dianpu = "";
             initDataCzg();
         }
     }
@@ -953,11 +960,11 @@ public class SearchMainActivity extends ActivityGroup implements
                 initData();
                 break;
             case R.id.mpriceczg:
-                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+//                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
                 filter_price_czg.setTextColor(Color.parseColor("#f23030"));
                 paixu_czg_text.setTextColor(Color.parseColor("#222222"));
                 discount_czg_text.setTextColor(Color.parseColor("#222222"));
-                filter_czg.setTextColor(Color.parseColor("#222222"));
+//                filter_czg.setTextColor(Color.parseColor("#222222"));
                 currentPageIndex = 1;
                 x = 1;
                 if (isprice) {
@@ -974,9 +981,9 @@ public class SearchMainActivity extends ActivityGroup implements
                 break;
             case R.id.mfilter_czg:
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
-                filter_price_czg.setTextColor(Color.parseColor("#222222"));
-                paixu_czg_text.setTextColor(Color.parseColor("#222222"));
-                discount_czg_text.setTextColor(Color.parseColor("#222222"));
+//                filter_price_czg.setTextColor(Color.parseColor("#222222"));
+//                paixu_czg_text.setTextColor(Color.parseColor("#222222"));
+//                discount_czg_text.setTextColor(Color.parseColor("#222222"));
                 filter_czg.setTextColor(Color.parseColor("#f23030"));
                 mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
 //                currentPageIndex = 1;
@@ -1044,12 +1051,12 @@ public class SearchMainActivity extends ActivityGroup implements
 
                 break;
             case R.id.mComposite_czg:
-                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+//                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
                 filter_price_czg.setTextColor(Color.parseColor("#222222"));
                 paixu_czg_text.setTextColor(Color.parseColor("#f23030"));
                 discount_czg_text.setTextColor(Color.parseColor("#222222"));
-                filter_czg.setTextColor(Color.parseColor("#222222"));
+//                filter_czg.setTextColor(Color.parseColor("#222222"));
                 currentPageIndex = 1;
                 sortwayCzg = "0";
                 x = 1;
@@ -1057,12 +1064,12 @@ public class SearchMainActivity extends ActivityGroup implements
                 initDataCzg();
                 break;
             case R.id.discount_czg:
-                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+//                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
                 filter_price_czg.setTextColor(Color.parseColor("#222222"));
                 paixu_czg_text.setTextColor(Color.parseColor("#222222"));
                 discount_czg_text.setTextColor(Color.parseColor("#f23030"));
-                filter_czg.setTextColor(Color.parseColor("#222222"));
+//                filter_czg.setTextColor(Color.parseColor("#222222"));
                 currentPageIndex = 1;
                 sortwayCzg = "3";
                 x = 1;
@@ -2270,17 +2277,24 @@ public class SearchMainActivity extends ActivityGroup implements
                             }else {
                                 gridtype = "2";
                             }
-                            if (info.has("dianpus")){
-                                strs = info.optString("dianpus").split("\\|");
-//                                Log.i("===",strs[0]+strs[1]+"==="+info.optString("dianpus"));
-                            }
-                            if (info.has("domains")){
-                                strsdomain = info.optString("domains").split("\\|");
-                            }
-                            if (info.has("types")){
-                                strfenlei = info.optString("types").split("\\|");
-                            }
 
+                            shaixuan = SharedPreferencesUtil.getSharedData(SearchMainActivity.this, "shaixuan", "shaixuan");
+                            if (TextUtils.isEmpty(shaixuan)) {
+                                shaixuan = "yes";
+                            }
+                            if (shaixuan.equals("yes")) {
+                                if (info.has("dianpus")) {
+                                    strs = info.optString("dianpus").split("\\|");
+//                                Log.i("===",strs[0]+strs[1]+"==="+info.optString("dianpus"));
+                                }
+                                if (info.has("domains")) {
+                                    strsdomain = info.optString("domains").split("\\|");
+                                }
+                                if (info.has("types")) {
+                                    strfenlei = info.optString("types").split("\\|");
+                                }
+
+                            }
                            if (gridtype.equals("1")) {
                                     //显示块状
                                     xrefresh.setVisibility(View.GONE);
@@ -2327,6 +2341,7 @@ public class SearchMainActivity extends ActivityGroup implements
                             tipsLayout.setVisibility(View.VISIBLE);
                             tipsKeys.setText("当前筛选条件下无搜索结果");
                         }
+                        SharedPreferencesUtil.putSharedData(SearchMainActivity.this, "shaixuan", "shaixuan", "no");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

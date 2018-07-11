@@ -19,6 +19,15 @@ public class OrderListBean {
     private String timeArr;
     private String yj;
     private String imgurl;
+    private String yjliebiao;
+
+    public String getYjliebiao() {
+        return yjliebiao;
+    }
+
+    public void setYjliebiao(String yjliebiao) {
+        this.yjliebiao = yjliebiao;
+    }
 
     public String getTitle() {
         return title;

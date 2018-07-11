@@ -191,6 +191,7 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 						final InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 						imm.hideSoftInputFromWindow(localTextView.getWindowToken(), 0);
 						Intent intent = new Intent(ACTION_NAME);
+						SharedPreferencesUtil.putSharedData(SearchRecommendActivity.this, "shaixuan", "shaixuan", "yes");
 						intent.putExtra("keyword", str);
 						sendBroadcast(intent);
 					}
@@ -247,6 +248,7 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 		imm.hideSoftInputFromWindow(historyListView.getWindowToken(), 0);
 		Intent intent = new Intent(ACTION_NAME);
 		intent.putExtra("keyword", keyword);
+		SharedPreferencesUtil.putSharedData(SearchRecommendActivity.this, "shaixuan", "shaixuan", "yes");
 		sendBroadcast(intent);
 	}
 	

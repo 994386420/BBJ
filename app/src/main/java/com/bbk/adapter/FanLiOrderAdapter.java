@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -78,13 +79,13 @@ public class FanLiOrderAdapter extends RecyclerView.Adapter {
                 viewHolder.orderStatus.setText(orderListBean.getStatus());
             }
             if (orderListBean.getTitle() != null) {
-                viewHolder.orderTitle.setText(orderListBean.getTitle());
+                viewHolder.orderTitle.setText("         "+orderListBean.getTitle());
             }
             if (orderListBean.getDesc() != null) {
                 viewHolder.orderTime.setText(orderListBean.getDesc());
             }
-            if (orderListBean.getYj() != null) {
-                viewHolder.orderYongjin.setText(orderListBean.getYj());
+            if (orderListBean.getYjliebiao() != null) {
+                viewHolder.orderYongjin.setText(orderListBean.getYjliebiao());
             }
             if (orderListBean.getYjmoney() != null&& !orderListBean.getYjmoney().equals("")) {
                 viewHolder.orderYongjinMoney.setText("¥" + orderListBean.getYjmoney());
@@ -138,7 +139,7 @@ public class FanLiOrderAdapter extends RecyclerView.Adapter {
         @BindView(R.id.order_title)
         TextView orderTitle;
         @BindView(R.id.ll_title)
-        LinearLayout llTitle;
+        FrameLayout llTitle;
         @BindView(R.id.order_yongjin)
         TextView orderYongjin;
         @BindView(R.id.order_yongjin_money)

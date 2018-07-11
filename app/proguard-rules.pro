@@ -88,6 +88,13 @@
 
 #保持第三方库，有的需要-dontwarn,Android Private Librarys里面的全部keep,keep的时候需要注意class,有的还需要dontwarn。
 #---------------------------------第三方依赖库-------------------------------
+# 信鸽
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep class com.tencent.android.tpush.** {* ;}
+-keep class com.tencent.mid.** {* ;}
+-keep class com.qq.taf.jce.** {*;}
+
 -keep class tencent.**{*;}
 -dontwarn tencent.**
 

@@ -9,13 +9,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.alibaba.fastjson.JSON;
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XScrollView;
 import com.andview.refreshview.XScrollView.OnScrollListener;
 import com.andview.refreshview.XRefreshView.XRefreshViewListener;
+import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.adapter.BrowseDomainAdapter;
 import com.bbk.adapter.BrowseWenzhangAdapter;
 import com.bbk.adapter.CollectionWenzhangAdapter;
+import com.bbk.adapter.SsNewCzgAdapter;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
@@ -35,6 +38,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -99,7 +103,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 		mdomain = (RelativeLayout) findViewById(R.id.mdomain);
 		topiclistview = (MyListView) findViewById(R.id.topiclistview);
 		domainlistview = (MyListView) findViewById(R.id.domainlistview);
-		mscroll = (XScrollView) findViewById(R.id.mscroll);
+//		mscroll = (XScrollView) findViewById(R.id.mscroll);
 		mzhanwei = (LinearLayout) findViewById(R.id.mzhanwei);
 		xrefresh = (SmartRefreshLayout) findViewById(R.id.xrefresh);
 		refreshAndloda();
@@ -127,11 +131,12 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 		dataFlow.requestData(1, "newService/queryArticlesFootAndCollect", params, this,is);
 	}
 	public void initDomainData(boolean is) {
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> params = new HashMap<>();
-		params.put("userid", token);
-		params.put("type", "2");
-		params.put("page", String.valueOf(domainpage));
-		dataFlow.requestData(2, "newService/queryProductFootAndCollect", params, this,is);
+		params.put("userid", userID);
+//		params.put("type", "2");
+//		params.put("page", String.valueOf(domainpage));
+		dataFlow.requestData(2, "newService/queryFootPrintByUserid", params, this,is);
 	}
 	private void refreshAndloda() {
 		xrefresh.setOnRefreshListener(new OnRefreshListener() {
@@ -170,29 +175,29 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 				}
 			}
 		});
-		mscroll.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(ScrollView view, int scrollState, boolean arriveBottom) {
-				switch (scrollState) {
-				case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-				case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
-					// 当ListView处于滑动状态时，停止加载图片，保证操作界面流畅
-					Glide.with(BrowseActivity.this).pauseRequests();
-					break;
-				case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
-					// 当ListView处于静止状态时，继续加载图片
-					Glide.with(BrowseActivity.this).resumeRequests();
-					break;
-				}
-			}
-			
-			@Override
-			public void onScroll(int l, int t, int oldl, int oldt) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+//		mscroll.setOnScrollListener(new OnScrollListener() {
+//
+//			@Override
+//			public void onScrollStateChanged(ScrollView view, int scrollState, boolean arriveBottom) {
+//				switch (scrollState) {
+//				case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+//				case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
+//					// 当ListView处于滑动状态时，停止加载图片，保证操作界面流畅
+//					Glide.with(BrowseActivity.this).pauseRequests();
+//					break;
+//				case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+//					// 当ListView处于静止状态时，继续加载图片
+//					Glide.with(BrowseActivity.this).resumeRequests();
+//					break;
+//				}
+//			}
+//
+//			@Override
+//			public void onScroll(int l, int t, int oldl, int oldt) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
 	}
 	@Override
 	public void onClick(View v) {
@@ -223,14 +228,15 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 			vlist.get(i).setBackgroundColor(Color.parseColor("#ff7d41"));
 			switch (i) {
 			case 0:
+				xrefresh.setEnableLoadMore(true);
 				domainlistview.setVisibility(View.GONE);
-				if (topiccount.isEmpty() || topiccount.equals("")) {
-					topiclistview.setVisibility(View.GONE);
+//				if (topiccount.isEmpty() || topiccount.equals("")) {
+//					topiclistview.setVisibility(View.GONE);
 					mtext1.setText("鲸话题");
-				}else{
+//				}else{
 					topiclistview.setVisibility(View.VISIBLE);
-					mtext1.setText("鲸话题("+topiccount+")");
-				}
+//					mtext1.setText("鲸话题("+topiccount+")");
+//				}
 				mtext2.setText("商品");
 				curclick = 0;
 				if (topicadapter == null) {
@@ -239,14 +245,15 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 				}
 				break;
 			case 1:
+				xrefresh.setEnableLoadMore(false);
 				topiclistview.setVisibility(View.GONE);
-				if (domaincount.isEmpty() || domaincount.equals("")) {
-					domainlistview.setVisibility(View.GONE);
+//				if (domaincount.isEmpty() || domaincount.equals("")) {
+//					domainlistview.setVisibility(View.GONE);
 					mtext2.setText("商品");
-				}else{
+//				}else{
 					domainlistview.setVisibility(View.VISIBLE);
-					mtext2.setText("商品("+domaincount+")");
-				}
+//					mtext2.setText("商品("+domaincount+")");
+//				}
 				mtext1.setText("鲸话题");
 				curclick = 1;
 				if (domainadapter == null) {
@@ -376,11 +383,11 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 				if (isclear) {
 					topiclist.clear();
 					topiccount = object.optString("count");
-					if (topiccount.isEmpty() || topiccount.equals("")) {
+//					if (topiccount.isEmpty() || topiccount.equals("")) {
 						mtext1.setText("鲸话题");
-					}else{
-						mtext1.setText("鲸话题("+topiccount+")");
-					}
+//					}else{
+//						mtext1.setText("鲸话题("+topiccount+")");
+//					}
 					mtext2.setText("商品");
 				}
 				loadTopic(object);
@@ -393,18 +400,27 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 			break;
 		case 2:
 			try {
-				JSONObject object = new JSONObject(content);
-				if (isclear) {
-					domainlist.clear();
-					domaincount = object.optString("count");
-					if (domaincount.isEmpty() || domaincount.equals("")) {
-						mtext2.setText("商品");
-					}else{
-						mtext2.setText("商品("+domaincount+")");
-					}
-					mtext1.setText("鲸话题");
+//				JSONObject object = new JSONObject(content);
+//				if (isclear) {
+//					domainlist.clear();
+////					domaincount = object.optString("count");
+//					if (domaincount.isEmpty() || domaincount.equals("")) {
+//						mtext2.setText("商品");
+//					}else{
+//						mtext2.setText("商品("+domaincount+")");
+//					}
+//					mtext1.setText("鲸话题");
+//				}
+//				Log.i("===========",content);
+				List<NewHomeCzgBean> newHomeCzgBean = JSON.parseArray(content,NewHomeCzgBean.class);
+//				loadDomain(object);
+				if (newHomeCzgBean != null && newHomeCzgBean.size() > 0) {
+					SsNewCzgAdapter ssNewCzgAdapter = new SsNewCzgAdapter(this, newHomeCzgBean);
+					domainlistview.setAdapter(ssNewCzgAdapter);
+				}else {
+					mzhanwei.setVisibility(View.VISIBLE);
+					domainlistview.setVisibility(View.GONE);
 				}
-				loadDomain(object);
 				isclear = false;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

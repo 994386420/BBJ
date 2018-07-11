@@ -14,6 +14,7 @@ import com.bbk.fragment.BidInformFragment;
 import com.bbk.fragment.EverydayJbFragment;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.fragment.MoreJbFragment;
+import com.bbk.view.CustomViewPager;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -37,7 +38,7 @@ public class CoinGoGoGoActivity extends BaseFragmentActivity implements OnClickL
 	private View henggang1,henggang2;
 	private DataFlow dataFlow;
 	private int curclick = 0;
-	private ViewPager mViewPager;
+	private CustomViewPager mViewPager;
 	private MyFragmentPagerAdapter mPagerAdapter;
 	private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 	private View data_head;
@@ -62,8 +63,8 @@ public class CoinGoGoGoActivity extends BaseFragmentActivity implements OnClickL
 		topbar_goback_btn = (ImageButton) findViewById(R.id.topbar_goback_btn);
 		meverydayjb = (RelativeLayout) findViewById(R.id.meverydayjb);
 		mmorejb = (RelativeLayout) findViewById(R.id.mmorejb);
-		mViewPager = (ViewPager) findViewById(R.id.mviewpager);
-		
+		mViewPager = (CustomViewPager) findViewById(R.id.mviewpager);
+		mViewPager.setScanScroll(false);
 		mtext1 = (TextView) findViewById(R.id.mtext1);
 		mtext2 = (TextView) findViewById(R.id.mtext2);
 		henggang1 = findViewById(R.id.henggang1);

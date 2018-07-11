@@ -343,7 +343,7 @@ public class WelcomeActivity extends BaseActivity2{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		XGPushManager.unregisterPush(this);
+//		XGPushManager.unregisterPush(this);
 	}
 
 
@@ -364,7 +364,7 @@ public class WelcomeActivity extends BaseActivity2{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		XGPushManager.unregisterPush(this);
+//		XGPushManager.unregisterPush(this);
 	}
 	/**
 	 * 初始化分类数据和热度搜索词

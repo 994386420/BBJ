@@ -151,5 +151,7 @@ public interface BaseApiService<T> {
     // 查询佣金提现详情
     @POST("newService/queryYongjinListByUserid")
     Observable<String> queryYongjinListByUserid(@QueryMap Map<String, String> map);
-
+    //分享海报
+    @POST("newService/newInvitedFriend")
+    Observable<String> newInvitedFriend(@QueryMap Map<String, String> map);
 }
