@@ -55,7 +55,7 @@
                     android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="12dp"
-                    android:src="@mipmap/logo" />
+                    android:src="@mipmap/tuiguang_32" />
 
                 <TextView
                     android:id="@+id/main_about_name"
@@ -182,7 +182,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@mipmap/appdown"
+                    android:src="@mipmap/tuiguang_31"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView

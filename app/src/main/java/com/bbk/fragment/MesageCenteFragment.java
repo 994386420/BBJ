@@ -684,4 +684,29 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 				break;
 		}
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		switch (curclick) {
+			case 0:
+				systempage = 1;
+				x= 1;
+				initsystemData();
+				break;
+			case 1:
+				sendpage = 1;
+				x= 1;
+				initsendData();
+				break;
+			case 2:
+				receivepage = 1;
+				x= 1;
+				initreceiveData();
+				break;
+
+			default:
+				break;
+		}
+	}
 }

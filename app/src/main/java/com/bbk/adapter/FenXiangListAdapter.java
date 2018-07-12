@@ -41,6 +41,8 @@ import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
 import com.bbk.view.CircleImageView1;
 import com.bbk.view.MyGridView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.kepler.jd.login.KeplerApiManager;
 
 import org.json.JSONArray;
@@ -119,7 +121,7 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                 viewHolder.mcontent.setText(fenXiangListBean.getTitle());
             }
             if (fenXiangListBean.getHeadurl() != null) {
-                CircleImageView1.getImg(context, fenXiangListBean.getHeadurl(), viewHolder.mimg);
+                CircleImageView1.getImg1(context, fenXiangListBean.getHeadurl(), viewHolder.mimg);
             }
             if (fenXiangListBean.getItems() != null) {
                 final List<FenXiangItemBean> fenXiangItemBeans = JSON.parseArray(fenXiangListBean.getItems(), FenXiangItemBean.class);

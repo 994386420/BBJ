@@ -21,6 +21,7 @@ import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.UpdataDialog;
 import com.bbk.view.CircleImageView;
 import com.bbk.view.MyFootView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -29,6 +30,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -36,6 +38,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -54,6 +57,8 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 	private boolean isoncreat = false;
 	private int page = 1;
 	private boolean isclear = true;
+	private UpdataDialog updataDialog;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container
@@ -126,19 +131,20 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 		.show();
 	}
 	private void initDialog2(){
-		new AlertDialog(getActivity()).builder().setTitle("提现攻略")
-		.setMsg("第1步：搜索并关注“比比鲸大数据”公众号")
-		.setMsg2("第2步：发送“提现”")
-		.setMsg3("第3步：绑定账号，验证身份")
-		.setMsg4("第4步：领取红包")
-		.setLeft()
-		.setPositiveButton("OK,去微信提现", new View.OnClickListener() {
-			@SuppressLint("NewApi")
-			@Override
-			public void onClick(View v) {
-				
-			}
-		}).setPositiveButtonColor("#ffffff").setPositiveBackgroundColor("#ff7d41").show();
+//		new AlertDialog(getActivity()).builder().setTitle("提现攻略")
+//		.setMsg("第1步：搜索并关注“比比鲸大数据”公众号")
+//		.setMsg2("第2步：发送“提现”")
+//		.setMsg3("第3步：绑定账号，验证身份")
+//		.setMsg4("第4步：领取红包")
+//		.setLeft()
+//		.setPositiveButton("OK,去微信提现", new View.OnClickListener() {
+//			@SuppressLint("NewApi")
+//			@Override
+//			public void onClick(View v) {
+//
+//			}
+//		}).setPositiveButtonColor("#ffffff").setPositiveBackgroundColor("#ff7d41").show();
+		showMessageDialog(getActivity());
 	}
 	private void initData() {
 		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
@@ -221,5 +227,28 @@ public class EverydayJbFragment extends Fragment implements ResultEvent{
 			isoncreat = true;
 		}
 	}
-
+	public void showMessageDialog(final Context context) {
+		if(updataDialog == null || !updataDialog.isShowing()) {
+			//初始化弹窗 布局 点击事件的id
+			updataDialog = new UpdataDialog(context, R.layout.tixian_dialog_layout,
+					new int[]{R.id.tv_update_gengxin});
+			updataDialog.show();
+			updataDialog.setCanceledOnTouchOutside(true);
+			TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+			TextView tv_tixian = updataDialog.findViewById(R.id.tv_tixian);
+			ImageView img_close = updataDialog.findViewById(R.id.img_close);
+			img_close.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					updataDialog.dismiss();
+				}
+			});
+			tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					updataDialog.dismiss();
+				}
+			});
+		}
+	}
 }

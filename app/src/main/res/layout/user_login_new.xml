@@ -37,7 +37,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="25dp"
-            android:src="@mipmap/logo" />
+            android:src="@mipmap/tuiguang_32" />
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -269,16 +269,13 @@
                         android:id="@+id/wx_login_layout"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="40dp"
                         android:layout_weight="1" >
 
                         <ImageView
                             android:id="@+id/wx_login_img"
                             android:layout_width="50dp"
-                            android:layout_height="72dp"
-                            android:scaleType="centerCrop"
-                            android:src="@mipmap/denglu_weixin" />
+                            android:layout_height="50dp"
+                            android:src="@mipmap/weixin_logo" />
                     </RelativeLayout>
 
                 </LinearLayout>

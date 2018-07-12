@@ -11,7 +11,7 @@
 		android:layout_width="70dp"
 		android:layout_height="70dp"
 		android:layout_centerHorizontal="true"
-		android:src="@mipmap/wujeiguo"
+		android:src="@mipmap/tuiguang_32"
 		/>
 	<TextView
 		android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
 		android:text="新版本正在更新，请稍等"
 		android:textSize="15dp"
 		android:layout_marginTop="10dp"
-		android:textColor="@color/update_color2"/>
+		android:textColor="@color/color_line_top"/>
 	<com.bbk.view.ProgressBar
         android:id="@+id/updateProgress"
         android:layout_width="fill_parent"

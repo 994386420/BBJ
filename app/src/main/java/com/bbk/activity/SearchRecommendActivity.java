@@ -29,6 +29,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.bbk.dao.SearchHistoryDao;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -192,6 +193,9 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 						imm.hideSoftInputFromWindow(localTextView.getWindowToken(), 0);
 						Intent intent = new Intent(ACTION_NAME);
 						SharedPreferencesUtil.putSharedData(SearchRecommendActivity.this, "shaixuan", "shaixuan", "yes");
+						NewConstants.clickpositionFenlei = 5200;
+						NewConstants.clickpositionDianpu = 5200;
+						NewConstants.clickpositionMall = 5200;
 						intent.putExtra("keyword", str);
 						sendBroadcast(intent);
 					}
@@ -249,6 +253,9 @@ public class SearchRecommendActivity extends BaseActivity implements OnClickList
 		Intent intent = new Intent(ACTION_NAME);
 		intent.putExtra("keyword", keyword);
 		SharedPreferencesUtil.putSharedData(SearchRecommendActivity.this, "shaixuan", "shaixuan", "yes");
+		NewConstants.clickpositionFenlei = 5200;
+		NewConstants.clickpositionDianpu = 5200;
+		NewConstants.clickpositionMall = 5200;
 		sendBroadcast(intent);
 	}
 	

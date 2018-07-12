@@ -1,11 +1,13 @@
 package com.bbk.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +21,8 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.util.UpdataDialog;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.CommonLoadingView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -88,6 +92,7 @@ public class BrokerageActivity extends BaseActivity {
     TextView titleText1;
     @BindView(R.id.tv_tixian_detail)
     TextView tvTixianDetail;
+    private UpdataDialog updataDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,19 +232,20 @@ public class BrokerageActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_tixian:
-                new AlertDialog(this).builder().setTitle("提现攻略")
-                        .setMsg("第1步：搜索并关注“比比鲸大数据”公众号")
-                        .setMsg2("第2步：发送“佣金提现”")
-                        .setMsg3("第3步：绑定账号，验证身份")
-                        .setMsg4("第4步：领取红包")
-                        .setLeft()
-                        .setPositiveButton("OK,去微信提现", new View.OnClickListener() {
-                            @SuppressLint("NewApi")
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        }).setPositiveButtonColor("#ffffff").setPositiveBackgroundColor("#ff7d41").show();
+//                new AlertDialog(this).builder().setTitle("提现攻略")
+//                        .setMsg("第1步：搜索并关注“比比鲸大数据”公众号")
+//                        .setMsg2("第2步：发送“佣金提现”")
+//                        .setMsg3("第3步：绑定账号，验证身份")
+//                        .setMsg4("第4步：领取红包")
+//                        .setLeft()
+//                        .setPositiveButton("OK,去微信提现", new View.OnClickListener() {
+//                            @SuppressLint("NewApi")
+//                            @Override
+//                            public void onClick(View v) {
+//
+//                            }
+//                        }).setPositiveButtonColor("#ffffff").setPositiveBackgroundColor("#ff7d41").show();
+                showMessageDialog(BrokerageActivity.this);
                 break;
             case R.id.tablayout:
                 break;
@@ -287,6 +293,32 @@ public class BrokerageActivity extends BaseActivity {
                 intent = new Intent(this, TiXianDetailActivity.class);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    public void showMessageDialog(final Context context) {
+        if(updataDialog == null || !updataDialog.isShowing()) {
+            //初始化弹窗 布局 点击事件的id
+            updataDialog = new UpdataDialog(context, R.layout.tixian_dialog_layout,
+                    new int[]{R.id.tv_update_gengxin});
+            updataDialog.show();
+            updataDialog.setCanceledOnTouchOutside(true);
+            TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+            AdaptionSizeTextView tv_tixian = updataDialog.findViewById(R.id.tv_tixian);
+            tv_tixian.setText("发送“佣金提现”领取现金");
+            ImageView img_close = updataDialog.findViewById(R.id.img_close);
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                }
+            });
+            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                }
+            });
         }
     }
 }

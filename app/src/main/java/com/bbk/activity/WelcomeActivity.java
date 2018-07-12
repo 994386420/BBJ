@@ -48,6 +48,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.GossipPiazzaFragment;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.server.FloatingWindowService;
 import com.bbk.server.GrayService;
 import com.bbk.util.HttpUtil;
@@ -282,6 +283,10 @@ public class WelcomeActivity extends BaseActivity2{
 									public void onClick(View arg0) {
 										Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
 										intent.putExtra("content", content.toString());
+										SharedPreferencesUtil.putSharedData(WelcomeActivity.this, "shaixuan", "shaixuan", "yes");
+										NewConstants.clickpositionFenlei = 5200;
+										NewConstants.clickpositionDianpu = 5200;
+										NewConstants.clickpositionMall = 5200;
 										startActivity(intent);
 										finish();
 									}

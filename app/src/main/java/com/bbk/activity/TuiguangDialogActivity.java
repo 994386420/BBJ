@@ -40,6 +40,11 @@ public class TuiguangDialogActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tuiguang_dialog);
         ButterKnife.bind(this);
+        if (NewConstants.logFlag != null) {
+            if (NewConstants.logFlag.equals("1") || NewConstants.logFlag.equals("2")) {
+                tvHehuoPerson.setVisibility(View.GONE);
+            }
+        }
         mclose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

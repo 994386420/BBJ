@@ -22,12 +22,34 @@
             android:orientation="vertical"
             android:padding="14dp">
 
-            <TextView
-                android:id="@+id/tv_shangcheng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="商城" />
+            <RelativeLayout
+                android:id="@+id/ll_img_domain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <TextView
+                    android:id="@+id/tv_shangcheng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="商城" />
+                <TextView
+                    android:id="@+id/attr_list_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="#EE240E"
+                    android:text=""
+                    android:layout_marginRight="3dp"
+                    android:layout_toLeftOf="@+id/attr_list_img"/>
 
+                <ImageView
+                    android:id="@+id/attr_list_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/sort_common_down" />
+            </RelativeLayout>
             <GridView
                 android:id="@+id/yuguo_service"
                 android:layout_width="match_parent"
@@ -41,14 +63,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="15dp"
                 android:text="价格区间" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <EditText
@@ -84,32 +106,77 @@
                     android:inputType="number" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_dianpu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="店铺" />
 
+            <RelativeLayout
+                android:id="@+id/ll_img_dianpu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_dianpu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="店铺" />
+                <TextView
+                    android:id="@+id/attr_dianpu_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="#EE240E"
+                    android:text=""
+                    android:layout_marginRight="3dp"
+                    android:layout_toLeftOf="@+id/attr_dianpu_img"/>
+
+                <ImageView
+                    android:id="@+id/attr_dianpu_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/sort_common_down" />
+            </RelativeLayout>
             <GridView
                 android:id="@+id/dianpu_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:horizontalSpacing="14dp"
                 android:numColumns="3"
                 android:verticalSpacing="14dp"></GridView>
 
-            <TextView
-                android:id="@+id/tv_fenlei"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="分类" />
 
+            <RelativeLayout
+                android:id="@+id/ll_img_fenlei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_fenlei"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分类" />
+                <TextView
+                    android:id="@+id/attr_fenlei_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="#EE240E"
+                    android:text=""
+                    android:layout_marginRight="3dp"
+                    android:layout_toLeftOf="@+id/attr_fenlei_img"/>
+
+                <ImageView
+                    android:id="@+id/attr_fenlei_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/sort_common_down" />
+            </RelativeLayout>
             <GridView
                 android:id="@+id/fenlei_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="15dp"
                 android:horizontalSpacing="14dp"
                 android:numColumns="3"
                 android:verticalSpacing="14dp"></GridView>

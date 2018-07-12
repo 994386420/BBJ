@@ -14,15 +14,17 @@
 
         <ImageButton
             android:id="@+id/bangding_goback_btn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="2.0dip"
-            android:background="@null"
-            android:padding="12dp"
-            android:scaleType="centerInside"
-            android:src="@mipmap/icon_arrow_left_blue" />
+			android:layout_width="wrap_content"
+			android:layout_height="45dp"
+			android:layout_alignParentLeft="true"
+			android:layout_centerInParent="true"
+			android:background="@null"
+			android:paddingTop="12dp"
+			android:paddingBottom="12dp"
+			android:paddingLeft="18dp"
+			android:paddingRight="18dp"
+			android:scaleType="centerCrop"
+			android:src="@mipmap/goback_btn" />
 
         <TextView
             android:id="@+id/bangding_title"
@@ -45,12 +47,13 @@
 			android:layout_width="100dp"
 			android:layout_height="100dp"
 			android:layout_gravity="center_horizontal"
-			android:src="@mipmap/logo" />
+			android:src="@mipmap/tuiguang_32" />
 		<TextView
 			android:id="@+id/text_describe"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textSize="16dp"
+			android:layout_marginTop="5dp"
 			android:layout_marginBottom="5dp"
 			android:text="为了账户安全，请绑定一个手机号"/>
 	</LinearLayout>

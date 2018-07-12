@@ -348,57 +348,57 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         dataFlow.requestData(3, "appPayService/getOrderInfo", paramsMap, this, is);
     }
 
-    //首页分类数据
-    private void getIndexByType() {
-        refreshLayout.setNoMoreData(false);
-        Map<String, String> maps = new HashMap<String, String>();
-        maps.put("type", type);
-        maps.put("page", page + "");
-        maps.put("userid", userID);
-        RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexByType(
-                maps, new BaseObserver<String>(getActivity()) {
-                    @Override
-                    public void onNext(String s) {
-                        try {
-                            mrecyclerview.setVisibility(View.VISIBLE);
-                            scrollview.setVisibility(View.VISIBLE);
-                            JSONObject jsonObject = new JSONObject(s);
-                            if (jsonObject.optString("status").equals("1")) {
-                                content = jsonObject.optString("content");
-//                                Log.i("=====", content);
-                                handler.sendEmptyMessageDelayed(2, 0);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    protected void hideDialog() {
-                        refreshLayout.finishLoadMore();
-                        refreshLayout.finishRefresh();
-                        zLoadingView.loadSuccess();
-                        DialogSingleUtil.dismiss(0);
-                    }
-
-                    @Override
-                    protected void showDialog() {
-                    }
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        refreshLayout.finishLoadMore();
-                        refreshLayout.finishRefresh();
-                        DialogSingleUtil.dismiss(0);
-                        scrollview.setVisibility(View.GONE);
-                        zLoadingView.setVisibility(View.VISIBLE);
-                        zLoadingView.loadError();
-                        mrecyclerview.setVisibility(View.GONE);
-                        mSuspensionBar.setVisibility(View.GONE);
-                        StringUtil.showToast(getActivity(), e.message);
-                    }
-                });
-    }
+//    //首页分类数据
+//    private void getIndexByType() {
+//        refreshLayout.setNoMoreData(false);
+//        Map<String, String> maps = new HashMap<String, String>();
+//        maps.put("type", type);
+//        maps.put("page", page + "");
+//        maps.put("userid", userID);
+//        RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexByType(
+//                maps, new BaseObserver<String>(getActivity()) {
+//                    @Override
+//                    public void onNext(String s) {
+//                        try {
+//                            mrecyclerview.setVisibility(View.VISIBLE);
+//                            scrollview.setVisibility(View.VISIBLE);
+//                            JSONObject jsonObject = new JSONObject(s);
+//                            if (jsonObject.optString("status").equals("1")) {
+//                                content = jsonObject.optString("content");
+////                                Log.i("=====", content);
+//                                handler.sendEmptyMessageDelayed(2, 0);
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected void hideDialog() {
+//                        refreshLayout.finishLoadMore();
+//                        refreshLayout.finishRefresh();
+//                        zLoadingView.loadSuccess();
+//                        DialogSingleUtil.dismiss(0);
+//                    }
+//
+//                    @Override
+//                    protected void showDialog() {
+//                    }
+//
+//                    @Override
+//                    public void onError(ExceptionHandle.ResponeThrowable e) {
+//                        refreshLayout.finishLoadMore();
+//                        refreshLayout.finishRefresh();
+//                        DialogSingleUtil.dismiss(0);
+//                        scrollview.setVisibility(View.GONE);
+//                        zLoadingView.setVisibility(View.VISIBLE);
+//                        zLoadingView.loadError();
+//                        mrecyclerview.setVisibility(View.GONE);
+//                        mSuspensionBar.setVisibility(View.GONE);
+//                        StringUtil.showToast(getActivity(), e.message);
+//                    }
+//                });
+//    }
 
     @Override
     public void onClick(View view) {
@@ -567,7 +567,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                 case 4:
                     x = 2;
                     page++;
-                    getIndexByType();
+//                    getIndexByType();
                     break;
                 case 5:
                     initData();
@@ -577,18 +577,21 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     };
 
     //超值购
-    private void mIdex(String str) {
-        type = str;
-        x = 1;
-        page = 1;
-        getIndexByType();
-    }
+//    private void mIdex(String str) {
+//        type = str;
+//        x = 1;
+//        page = 1;
+//        getIndexByType();
+//    }
 
     @Override
     protected void loadLazyData() {
         titlelist = new ArrayList<>();
         DialogSingleUtil.show(getActivity());
-        mIdex("1");
+//        mIdex("1");
+        x = 1;
+        page = 1;
+        initDataCzg("");
         initData();
     }
 
@@ -597,8 +600,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         DialogSingleUtil.show(getActivity());
         zLoadingView.setVisibility(View.GONE);
         initData();
+        x = 1;
+        page = 1;
+        initDataCzg("");
 //        getIndexByType();
-        mIdex("1");
+//        mIdex("1");
     }
 
     @Override
@@ -672,10 +678,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
          mhscrollview.scrollTo(view.getLeft() - 200, 0);
         currentIndex = position;
         if (position == 0) {
+            x = 1;
+            page = 1;
             flag = "0";
             keyword = "";
             DialogSingleUtil.show(getActivity());
-            mIdex("1");
+            initDataCzg(keyword);
         } else {
             x = 1;
             page = 1;
@@ -746,10 +754,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
          mhscrollview1.scrollTo(view.getLeft() - 200, 0);
         currentIndexTop = position;
         if (position == 0) {
+            x = 1;
+            page = 1;
             flag = "0";
             keyword = "";
             DialogSingleUtil.show(getActivity());
-            mIdex("1");
+            initDataCzg(keyword);
         } else {
             x = 1;
             page = 1;
@@ -870,6 +880,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     @Override
                     public void onNext(String s) {
                         try {
+                            mrecyclerview.setVisibility(View.VISIBLE);
+                            scrollview.setVisibility(View.VISIBLE);
                             JSONObject jsonObject = new JSONObject(s);
                             content = jsonObject.optString("content");
                             JSONObject jo = new JSONObject(content);
@@ -910,6 +922,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
                     @Override
                     protected void hideDialog() {
+                        refreshLayout.finishLoadMore();
+                        refreshLayout.finishRefresh();
                         DialogSingleUtil.dismiss(0);
                         zLoadingView.loadSuccess();
                     }
@@ -921,9 +935,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
+                        refreshLayout.finishLoadMore();
+                        refreshLayout.finishRefresh();
                         DialogSingleUtil.dismiss(0);
-                        zLoadingView.setVisibility(View.GONE);
+                        scrollview.setVisibility(View.GONE);
+                        zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
+                        mrecyclerview.setVisibility(View.GONE);
+                        mSuspensionBar.setVisibility(View.GONE);
+                        DialogSingleUtil.dismiss(0);
                         StringUtil.showToast(getActivity(), e.message);
                     }
                 });
@@ -1241,7 +1261,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     public void onLoadMore(RefreshLayout refreshLayout) {
         if (flag != null) {
             if (flag.equals("0") || flag.equals("")) {
-                handler.sendEmptyMessageDelayed(4, 100);
+//                handler.sendEmptyMessageDelayed(4, 100);
+                page++;
+                x = 2;
+                initDataCzg("");
             } else {
                 page++;
                 x = 2;
@@ -1253,6 +1276,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     @Override
     public void onRefresh(RefreshLayout refreshLayout) {
         initData();
+        initDataCzg("");
         if (titlelist.size() > 0 && titlelist != null) {
             updateTitle(0, mbox2,keyword);
             updateTitleTop(0, mbox1,keyword);

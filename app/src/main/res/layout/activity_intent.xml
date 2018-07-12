@@ -17,7 +17,7 @@
 	        <ImageView 
 	            android:layout_width="60dp"
 	            android:layout_height="60dp"
-	            android:src="@mipmap/logo120"/>
+	            android:src="@mipmap/tuiguang_33"/>
 	        <ImageView 
 	            android:layout_width="30dp"
 	            android:layout_height="30dp"
@@ -29,7 +29,7 @@
 	            android:id="@+id/img3"
 	            android:layout_width="60dp"
 	            android:layout_height="60dp"
-	            android:src="@mipmap/icon_logo"/>
+	            android:src="@mipmap/tuiguang_33"/>
 	    </LinearLayout>
 	    <TextView 
 	        android:layout_marginTop="30dp"

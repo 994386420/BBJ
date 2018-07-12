@@ -7,7 +7,7 @@ public class SaleAttributeVo implements Serializable {
 	@Override
 	public String toString() {
 		return "SaleAttributeVo [goods=" + goods + ", value=" + value
-				+ ", goodsAndValId=" + goodsAndValId + "]";
+				+ ", goodsAndValId=" + goodsAndValId + ", isChecked=" + isChecked+ "]";
 	}
 
 	private String goods;

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +17,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
+import com.bbk.resource.NewConstants;
 import com.bbk.typeshaixuan.adapter.DianpuAdapter;
 import com.bbk.typeshaixuan.adapter.FenLeiAdapter;
 import com.bbk.typeshaixuan.adapter.GoodsAttrListAdapter;
@@ -63,6 +67,10 @@ public class FilterPopupWindow extends PopupWindow {
     private EditText zuidiText,zuigaoText;
     public static String ACTION_NAME = "FilterPopupWindow";
     private TextView tv_dianpu,tv_fenlei,tv_shancgheng;
+    public TextView name,fenleiname,dianpuname;
+    public ImageView img,feileiimg,dianpuimg;
+    private RelativeLayout ll_domain,ll_fenlei,ll_dianpu;
+    private boolean isGlobalMenuShow = true,isDomainShow = true,isDianPuShow = true;
 
     /**
      * 商品属性选择的popupwindow
@@ -86,6 +94,15 @@ public class FilterPopupWindow extends PopupWindow {
         tv_dianpu = contentView.findViewById(R.id.tv_dianpu);
         tv_shancgheng = contentView.findViewById(R.id.tv_shangcheng);
         tv_fenlei = contentView.findViewById(R.id.tv_fenlei);
+        img = contentView.findViewById(R.id.attr_list_img);
+        name = contentView.findViewById(R.id.attr_list_name);
+        feileiimg= contentView.findViewById(R.id.attr_fenlei_img);
+        fenleiname = contentView.findViewById(R.id.attr_fenlei_name);
+        dianpuimg= contentView.findViewById(R.id.attr_dianpu_img);
+        dianpuname = contentView.findViewById(R.id.attr_dianpu_name);
+        ll_domain = contentView.findViewById(R.id.ll_img_domain);
+        ll_fenlei = contentView.findViewById(R.id.ll_img_fenlei);
+        ll_dianpu = contentView.findViewById(R.id.ll_img_dianpu);
         goodsNoView.setOnClickListener(new CancelOnClickListener());
         contentView.setOnKeyListener(new OnKeyListener() {
             @Override
@@ -111,16 +128,41 @@ public class FilterPopupWindow extends PopupWindow {
                 }
                 serviceList.add(vo);
             }
+            if (NewConstants.clickpositionMall == 5200){
+            }else {
+                serviceList.get(NewConstants.clickpositionMall).setChecked(true);
+                domain = serviceList.get(NewConstants.clickpositionMall).getValue();
+                name.setText(domain);
+            }
             serviceAdapter = new GoodsAttrsAdapter(context);
             serviceGrid.setAdapter(serviceAdapter);
-            serviceAdapter.notifyDataSetChanged(true, serviceList);
+            serviceAdapter.notifyDataSetChanged(false, serviceList);
+            ll_domain.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isDomainShow = !isDomainShow;
+                    if (isDomainShow) {
+                        img.setImageResource(R.drawable.sort_common_down);
+                        serviceAdapter.notifyDataSetChanged(false, serviceList);
+                    }else {
+                        img.setImageResource(R.drawable.sort_common_up);
+                        serviceAdapter.notifyDataSetChanged(true, serviceList);
+                    }
+                }
+            });
             serviceGrid.setOnItemClickListener(new OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                     //设置当前选中的位置的状态为非。
                     serviceList.get(arg2).setChecked(!serviceList.get(arg2).isChecked());
-                    domain = serviceList.get(arg2).getValue();
+                    NewConstants.clickpositionMall = arg2;
+                    if (serviceList.get(arg2).isChecked()) {
+                        domain = serviceList.get(arg2).getValue();
+                    }else {
+                        domain = "";
+                    }
+                    name.setText(domain);
                     for (int i = 0; i < serviceList.size(); i++) {
                         //跳过已设置的选中的位置的状态
                         if (i == arg2) {
@@ -128,12 +170,15 @@ public class FilterPopupWindow extends PopupWindow {
                         }
                         serviceList.get(i).setChecked(false);
                     }
+                    isDomainShow = !isDomainShow;
+                    img.setImageResource(R.drawable.sort_common_up);
                     serviceAdapter.notifyDataSetChanged(true, serviceList);
                 }
             });
         }else {
             tv_shancgheng.setVisibility(View.GONE);
             serviceGrid.setVisibility(View.GONE);
+            ll_domain.setVisibility(View.GONE);
         }
 
         itemData = new ArrayList<SaleAttributeNameVo>();
@@ -151,6 +196,25 @@ public class FilterPopupWindow extends PopupWindow {
             vo.setValue(dianpuStr[i]);
             dianpulist.add(vo);
         }
+            if (NewConstants.clickpositionDianpu == 5200){
+            }else {
+                dianpulist.get(NewConstants.clickpositionDianpu).setChecked(true);
+                dianpu = dianpulist.get(NewConstants.clickpositionDianpu).getValue();
+                dianpuname.setText(dianpu);
+            }
+            ll_dianpu.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isDianPuShow = !isDianPuShow;
+                    if (isDianPuShow) {
+                        dianpuimg.setImageResource(R.drawable.sort_common_down);
+                        dianpuAdapter.notifyDataSetChanged(false, dianpulist);
+                    }else {
+                        dianpuimg.setImageResource(R.drawable.sort_common_up);
+                        dianpuAdapter.notifyDataSetChanged(true, dianpulist);
+                    }
+                }
+            });
         dianpuAdapter = new DianpuAdapter(context);
         dianpuGrid.setAdapter(dianpuAdapter);
         dianpuAdapter.notifyDataSetChanged(true, dianpulist);
@@ -159,8 +223,13 @@ public class FilterPopupWindow extends PopupWindow {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 //设置当前选中的位置的状态为非。
+                NewConstants.clickpositionDianpu = arg2;
                 dianpulist.get(arg2).setChecked(!dianpulist.get(arg2).isChecked());
-                dianpu = dianpulist.get(arg2).getValue();
+                if (dianpulist.get(arg2).isChecked()) {
+                    dianpu = dianpulist.get(arg2).getValue();
+                }else {
+                    dianpu = "";
+                }
                 for (int i = 0; i < dianpulist.size(); i++) {
                     //跳过已设置的选中的位置的状态
                     if (i == arg2) {
@@ -168,12 +237,15 @@ public class FilterPopupWindow extends PopupWindow {
                     }
                     dianpulist.get(i).setChecked(false);
                 }
+                isDianPuShow = !isDianPuShow;
+                img.setImageResource(R.drawable.sort_common_up);
                 dianpuAdapter.notifyDataSetChanged(true, dianpulist);
             }
         });
         }else {
             tv_dianpu.setVisibility(View.GONE);
             dianpuGrid.setVisibility(View.GONE);
+            ll_dianpu.setVisibility(View.GONE);
         }
 
 
@@ -187,16 +259,42 @@ public class FilterPopupWindow extends PopupWindow {
                 vo.setValue(fenleiStr[i]);
                 fenleilist.add(vo);
             }
+            if (NewConstants.clickpositionFenlei == 5200) {
+
+            }else {
+                fenleilist.get(NewConstants.clickpositionFenlei).setChecked(true);
+                fenlei = fenleilist.get(NewConstants.clickpositionFenlei).getValue();
+                fenleiname.setText(fenlei);
+            }
             fenLeiAdapter = new FenLeiAdapter(context);
             fenleiGrid.setAdapter(fenLeiAdapter);
-            fenLeiAdapter.notifyDataSetChanged(true, fenleilist);
+            fenLeiAdapter.notifyDataSetChanged(false, fenleilist);
+            ll_fenlei.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isGlobalMenuShow = !isGlobalMenuShow;
+                    if (isGlobalMenuShow) {
+                        feileiimg.setImageResource(R.drawable.sort_common_down);
+                        fenLeiAdapter.notifyDataSetChanged(false, fenleilist);
+                    }else {
+                        feileiimg.setImageResource(R.drawable.sort_common_up);
+                        fenLeiAdapter.notifyDataSetChanged(true, fenleilist);
+                    }
+                }
+            });
             fenleiGrid.setOnItemClickListener(new OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                     //设置当前选中的位置的状态为非。
+                    NewConstants.clickpositionFenlei = arg2;
                     fenleilist.get(arg2).setChecked(!fenleilist.get(arg2).isChecked());
-                    fenlei = fenleilist.get(arg2).getValue();
+                    if (fenleilist.get(arg2).isChecked()) {
+                        fenlei = fenleilist.get(arg2).getValue();
+                    }else {
+                        fenlei = "";
+                    }
+                    fenleiname.setText(fenlei);
                     for (int i = 0; i < fenleilist.size(); i++) {
                         //跳过已设置的选中的位置的状态
                         if (i == arg2) {
@@ -204,6 +302,8 @@ public class FilterPopupWindow extends PopupWindow {
                         }
                         fenleilist.get(i).setChecked(false);
                     }
+                    isGlobalMenuShow = !isGlobalMenuShow;
+                    feileiimg.setImageResource(R.drawable.sort_common_up);
                     fenLeiAdapter.notifyDataSetChanged(true, fenleilist);
                 }
             });
@@ -287,6 +387,15 @@ public class FilterPopupWindow extends PopupWindow {
                 if (fenLeiAdapter != null) {
                     fenLeiAdapter.notifyDataSetChanged();
                 }
+                dianpu = "";
+                fenlei = "";
+                domain = "";
+                dianpuname.setText("");
+                fenleiname.setText("");
+                name.setText("");
+                NewConstants.clickpositionFenlei = 5200;
+                NewConstants.clickpositionDianpu = 5200;
+                NewConstants.clickpositionMall = 5200;
             }
         });
         // 确定的点击监听，将所有已选中项列出
@@ -302,6 +411,7 @@ public class FilterPopupWindow extends PopupWindow {
 //                        }
 //                    }
 //                }
+//                Log.i("==============",fenleilist+"===========");
                 if (this != null) {
                     Intent intent = new Intent(ACTION_NAME);
                     intent.putExtra("productType",fenlei);

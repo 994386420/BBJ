@@ -5,7 +5,7 @@
         android:topRightRadius="2dp" 
         android:bottomRightRadius="2dp" 
         android:bottomLeftRadius="2dp"/>
-    <stroke android:width="1px" android:color="@color/update_color" />
+    <stroke android:width="1px" android:color="@color/tuiguang_color5" />
     <solid android:color="@color/white"/>
 </shape>
 

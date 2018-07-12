@@ -12,6 +12,9 @@ import org.json.JSONObject;
 import com.bbk.activity.R;
 import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.SearchMainActivity;
+import com.bbk.activity.SearchRecommendCzgActivity;
+import com.bbk.resource.NewConstants;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyGridView;
 
 import android.content.Context;
@@ -68,7 +71,7 @@ public class SortRightFragmentListviewAdapter extends BaseAdapter{
 		Map<String, String> map = list.get(position);
 		final String tongjilist = map.get("tongjilist");
 		String name = map.get("name");
-		String content = map.get("content");
+		final String content = map.get("content");
 		vh.mtext.setText(name);
 		final JSONArray array;
 		try {
@@ -98,6 +101,10 @@ public class SortRightFragmentListviewAdapter extends BaseAdapter{
 						String text = object.optString("name");
 							Intent intent = new Intent(context, SearchMainActivity.class);
 							intent.putExtra("keyword", text);
+						SharedPreferencesUtil.putSharedData(context, "shaixuan", "shaixuan", "yes");
+						NewConstants.clickpositionFenlei = 5200;
+						NewConstants.clickpositionDianpu = 5200;
+						NewConstants.clickpositionMall = 5200;
 							context.startActivity(intent);
 	
 					} catch (JSONException e) {

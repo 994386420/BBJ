@@ -22,6 +22,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.bbk.dao.SearchHistoryDao;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DensityUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -195,6 +196,9 @@ public class SearchRecommendCzgActivity extends BaseActivity implements OnClickL
 						Intent intent = new Intent(ACTION_NAME);
 						intent.putExtra("keyword", str);
 						SharedPreferencesUtil.putSharedData(SearchRecommendCzgActivity.this, "shaixuan", "shaixuan", "yes");
+						NewConstants.clickpositionFenlei = 5200;
+						NewConstants.clickpositionDianpu = 5200;
+						NewConstants.clickpositionMall = 5200;
 						sendBroadcast(intent);
 					}
 				});
@@ -250,6 +254,9 @@ public class SearchRecommendCzgActivity extends BaseActivity implements OnClickL
 		Intent intent = new Intent(ACTION_NAME);
 		intent.putExtra("keyword", keyword);
 		SharedPreferencesUtil.putSharedData(SearchRecommendCzgActivity.this, "shaixuan", "shaixuan", "yes");
+		NewConstants.clickpositionFenlei = 5200;
+		NewConstants.clickpositionDianpu = 5200;
+		NewConstants.clickpositionMall = 5200;
 		sendBroadcast(intent);
 	}
 	

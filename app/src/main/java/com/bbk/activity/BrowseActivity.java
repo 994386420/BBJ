@@ -232,7 +232,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 				domainlistview.setVisibility(View.GONE);
 //				if (topiccount.isEmpty() || topiccount.equals("")) {
 //					topiclistview.setVisibility(View.GONE);
-					mtext1.setText("鲸话题");
+					mtext1.setText("发现");
 //				}else{
 					topiclistview.setVisibility(View.VISIBLE);
 //					mtext1.setText("鲸话题("+topiccount+")");
@@ -384,7 +384,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 					topiclist.clear();
 					topiccount = object.optString("count");
 //					if (topiccount.isEmpty() || topiccount.equals("")) {
-						mtext1.setText("鲸话题");
+						mtext1.setText("发现");
 //					}else{
 //						mtext1.setText("鲸话题("+topiccount+")");
 //					}

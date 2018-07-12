@@ -522,6 +522,9 @@ public class SearchMainActivity extends ActivityGroup implements
 
     public void doSearch() {
         SharedPreferencesUtil.putSharedData(SearchMainActivity.this, "shaixuan", "shaixuan", "yes");
+        NewConstants.clickpositionFenlei = 5200;
+        NewConstants.clickpositionDianpu = 5200;
+        NewConstants.clickpositionMall = 5200;
         mlistView.setVisibility(View.GONE);
         keyword = searchText.getText().toString();
         if (keyword.length() <= 0) {
