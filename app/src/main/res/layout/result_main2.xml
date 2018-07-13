@@ -530,7 +530,7 @@
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:background="@null"
-                            android:src="@mipmap/zw" />
+                            android:src="@mipmap/zw_img_330" />
 
                         <TextView
                             android:id="@+id/text"
@@ -556,16 +556,15 @@
 
                 <ImageButton
                     android:id="@+id/to_top_btn"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="10.0dip"
                     android:layout_marginRight="10.0dip"
-                    android:background="@drawable/bg_to_top_btn"
                     android:gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@mipmap/back_01" />
+                    android:background="@mipmap/back_01" />
         </RelativeLayout>
     </LinearLayout>
 

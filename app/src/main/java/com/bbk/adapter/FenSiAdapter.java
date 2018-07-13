@@ -15,6 +15,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -79,7 +80,7 @@ public class FenSiAdapter extends RecyclerView.Adapter {
             //将position保存在itemView的Tag中，以便点击时进行获取
             viewHolder.itemView.setTag(position);
             viewHolder.tvName.setText(fensiBean.getInvitedname());
-            viewHolder.tvQiandao.setText("今日已签到");
+            viewHolder.tvQiandao.setText(fensiBean.getMsg());
             if (fensiBean.getStatus().equals("0")){
                 viewHolder.ivHongbao.setVisibility(View.VISIBLE);
                 viewHolder.tvLingqu.setVisibility(View.GONE);
@@ -104,11 +105,11 @@ public class FenSiAdapter extends RecyclerView.Adapter {
         @BindView(R.id.tv_name)
         TextView tvName;
         @BindView(R.id.tv_qiandao)
-        TextView tvQiandao;
+        AdaptionSizeTextView tvQiandao;
         @BindView(R.id.iv_hongbao)
         ImageView ivHongbao;
         @BindView(R.id.tv_lingqu)
-        TextView tvLingqu;
+        AdaptionSizeTextView tvLingqu;
 
         ViewHolder(View view) {
             super(view);

@@ -46,7 +46,7 @@ public class NumImageView extends android.support.v7.widget.AppCompatImageView {
         super.onDraw(canvas);
         if (num > 0) {
             //初始化半径
-            radius = (float) (getWidth() / 3.2);
+            radius = (float) (getWidth() / 3.3);
             //初始化字体大小
             textSize = num < 10 ? radius + 5 : radius;
             //初始化边距
@@ -57,7 +57,7 @@ public class NumImageView extends android.support.v7.widget.AppCompatImageView {
             //设置抗锯齿
             paint.setAntiAlias(true);
             //设置颜色为红色
-            paint.setColor(0xffff4444);
+            paint.setColor(0xffef250f);
             //设置填充样式为充满
             paint.setStyle(Paint.Style.FILL);
             //画圆

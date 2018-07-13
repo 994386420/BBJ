@@ -18,6 +18,7 @@ import com.bbk.activity.DetailsMainActivity22;
 import com.bbk.activity.FanLiOrderActivity;
 import com.bbk.activity.FensiActivity;
 import com.bbk.activity.HomeActivity;
+import com.bbk.activity.IntentActivity;
 import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.MyCoinActivity;
@@ -75,7 +76,7 @@ public class EventIdIntentUtil {
 	 * //按eventId跳转:    1超值购    2超爆款    3潮潮潮    4美味生鲜    5html活动页面(htmlUrl)        6三级页面(groupRowkey)
 	 * 7超市    8全球购    9服饰    10充值    11榜单(type) 12搜索
 	 * 101回复评论,103签到(鲸币界面) 104优惠券,105爆料,106发现,107数据频道 109跳京东返利web  110淘宝返利web 111大转盘 112查历史价格 113鲸港圈  114收益报表  115我的订单 116粉丝
-	 * 117淘宝本月结算 118淘宝本月付款 119京东本月结算 120京东本月付款 121系统消息(非聊天) 122消息聊天
+	 * 117淘宝本月结算 118淘宝本月付款 119京东本月结算 120京东本月付款 121系统消息(非聊天) 122消息聊天  123首页banner拉起京东淘宝店铺 124经过jump跳cps三级详情
 	 * @param context
 	 * @param jo
 	 */
@@ -273,6 +274,26 @@ public class EventIdIntentUtil {
 				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
 				intent = new Intent(context, BidHomeActivity.class);
 				intent.putExtra("currentitem", "2");
+				context.startActivity(intent);
+				break;
+			case "123":
+				alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+				alibcShowParams.setClientType("taobao_scheme");
+				exParams = new HashMap<>();
+				exParams.put("isv_code", "appisvcode");
+				exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+				if (jo.optString("htmlUrl").contains("jd")){
+					KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+							jo.optString("htmlUrl"),
+							mKeplerAttachParameter,
+							mOpenAppAction);
+				}else {
+					showUrl(context,jo.optString("htmlUrl"));
+				}
+				break;
+			case "124":
+				intent = new Intent(context, IntentActivity.class);
+				intent.putExtra("url",  jo.optString("htmlUrl"));
 				context.startActivity(intent);
 				break;
 		case "666":

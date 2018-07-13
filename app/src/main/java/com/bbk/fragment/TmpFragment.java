@@ -51,7 +51,7 @@ public class TmpFragment extends Fragment {
             Glide.with(getActivity())
                     .load(urlList.get(i))
                     .priority(Priority.HIGH)
-                    .placeholder(R.mipmap.zw_img_332)
+                    .placeholder(R.mipmap.tuiguang34)
                     .into(imageList.get(i));
         }
     }

@@ -43,7 +43,7 @@ public class UserShenSuActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shensu_layout);
         ButterKnife.bind(this);
-        View topView = findViewById(R.id.topbar_layout);
+        View topView = findViewById(R.id.topbar_layout_shensu);
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         initView();
@@ -90,6 +90,7 @@ public class UserShenSuActivity extends BaseActivity {
                             if (jsonObject.optString("status").equals("1")) {
                                 StringUtil.showToast(UserShenSuActivity.this, "申诉成功");
                                 medit.setText("");
+                                finish();
                             } else {
                                 StringUtil.showToast(UserShenSuActivity.this, jsonObject.optString("errmsg"));
                             }

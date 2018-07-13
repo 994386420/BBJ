@@ -62,11 +62,11 @@ public class SsNewCzgAdapter extends BaseAdapter {
         return position;
     }
 
-    //
-//    public void notifyData(List<Map<String,String>> List){
-//        this.newHomeCzgBean.addAll(List);
-//        notifyDataSetChanged();
-//    }
+
+    public void notifyData(List<NewHomeCzgBean> List){
+        this.newHomeCzgBean.addAll(List);
+        notifyDataSetChanged();
+    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;

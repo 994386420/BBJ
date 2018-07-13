@@ -1147,9 +1147,6 @@ public class BidChatFragment extends Fragment implements ConversationView,Friend
         if (BidHomeActivity.mNumImage != null){
             BidHomeActivity.mNumImage.setNum((int) num);
         }
-        if (HomeActivity.mNumImageView != null){
-            HomeActivity.mNumImageView.setNum((int) num);
-        }
         return num;
     }
 

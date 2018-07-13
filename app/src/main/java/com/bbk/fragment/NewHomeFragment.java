@@ -39,6 +39,7 @@ import com.bbk.Bean.NewHomePubaBean;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BidHomeActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
@@ -73,7 +74,9 @@ import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnMultiPurposeListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -93,7 +96,7 @@ import butterknife.OnClick;
 
 //OnClickListioner
 
-public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent, CommonLoadingView.LoadingHandler, MyScrollViewNew.ScrollViewListener,OnMultiPurposeListener {
+public class NewHomeFragment extends BaseViewPagerFragment implements OnClickListener, ResultEvent, CommonLoadingView.LoadingHandler, MyScrollViewNew.ScrollViewListener{
     @BindView(R.id.lin)
     LinearLayout lin;
     @BindView(R.id.mbox)
@@ -173,7 +176,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     private ImageView huodongimg;//活动按钮
     //第一次引导页是否显示隐藏
     private boolean isshowzhezhao = true;
-    final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     private boolean isHomeGudie = false;
     JSONObject jo, preguanggao;
     private RecyclerView mrecyclerview;
@@ -280,10 +282,118 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
         refreshLayout.setEnableFooterTranslationContent(true);
         //设置 Header 为 贝塞尔雷达 样式
         refreshLayout.setRefreshHeader(new BezierCircleHeader(getActivity()));
-//        refreshLayout.setEnableClipHeaderWhenFixedBehind(true);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(final RefreshLayout refreshlayout) {
+                initData();
+                initDataCzg("");
+                if (titlelist.size() > 0 && titlelist != null) {
+                    updateTitle(0, mbox2,keyword);
+                    updateTitleTop(0, mbox1,keyword);
+                }
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                if (flag != null) {
+                    if (flag.equals("0") || flag.equals("")) {
+//                handler.sendEmptyMessageDelayed(4, 100);
+                        page++;
+                        x = 2;
+                        initDataCzg(" ");
+                    } else {
+                        page++;
+                        x = 2;
+                        initDataCzg(keyword);
+                    }
+                }
+            }
+        });
+        refreshLayout.setOnMultiPurposeListener(new OnMultiPurposeListener() {
+            @Override
+            public void onHeaderPulling(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onHeaderReleased(RefreshHeader header, int headerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onHeaderReleasing(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onHeaderStartAnimator(RefreshHeader header, int headerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onHeaderFinish(RefreshHeader header, boolean success) {
+
+            }
+
+            @Override
+            public void onFooterPulling(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onFooterReleased(RefreshFooter footer, int footerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onFooterReleasing(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onFooterStartAnimator(RefreshFooter footer, int footerHeight, int extendHeight) {
+
+            }
+
+            @Override
+            public void onFooterFinish(RefreshFooter footer, boolean success) {
+
+            }
+
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+
+            }
+
+            @Override
+            public void onStateChanged(RefreshLayout refreshLayout, RefreshState oldState, RefreshState newState) {
+                switch (refreshLayout.getState()){
+                    case None:
+                        AnimationUtil.with().topMoveToViewLocation(lin,500);
+                        lin.setVisibility(View.VISIBLE);
+                        break;
+                    case PullDownCanceled:
+                        AnimationUtil.with().topMoveToViewLocation(lin,500);
+                        lin.setVisibility(View.VISIBLE);
+                        break;
+                    case Refreshing:
+                    case RefreshFinish:
+                    case RefreshReleased:
+                    case PullDownToRefresh:
+                        AnimationUtil.with().moveToViewTop(lin,500);
+                        lin.setVisibility(View.GONE);
+                        break;
+                }
+            }
+        });
         //设置 Footer 为 球脉冲 样式
 //        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale).setNormalColor(getActivity().getResources().getColor(R.color.button_color)).setAnimatingColor(getActivity().getResources().getColor(R.color.button_color)));
-        refreshLayout.setOnMultiPurposeListener(this);//刷新监听
         mrecyclerview = (RecyclerView) mView.findViewById(R.id.mrecycler);
         imageButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -303,6 +413,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     //首页数据请求
     private void initData() {
         Map<String, String> maps = new HashMap<String, String>();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         maps.put("userid", userID);
         RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexInfo(
                 maps, new BaseObserver<String>(getActivity()) {
@@ -310,6 +421,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     public void onNext(String s) {
                         try {
                             mrecyclerview.setVisibility(View.VISIBLE);
+                            scrollview.setVisibility(View.VISIBLE);
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 object = jsonObject.optJSONObject("content");
@@ -335,6 +447,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                         DialogSingleUtil.dismiss(0);
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
+                        scrollview.setVisibility(View.GONE);
                         mrecyclerview.setVisibility(View.GONE);
                         mSuspensionBar.setVisibility(View.GONE);
                         StringUtil.showToast(getActivity(), e.message);
@@ -351,6 +464,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 //    //首页分类数据
 //    private void getIndexByType() {
 //        refreshLayout.setNoMoreData(false);
+//        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 //        Map<String, String> maps = new HashMap<String, String>();
 //        maps.put("type", type);
 //        maps.put("page", page + "");
@@ -528,10 +642,17 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    if (object.has("messages")){
+                        NewConstants.messages = object.optInt("messages");
+                        if (HomeActivity.mNumImageView != null){
+                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
+                        }
+                    }
                     /**
                      * eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao
                      未登录 显示preguanggao
                      */
+                    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     if (TextUtils.isEmpty(userID)) {
                         if (object.has("preguanggao")) {
                             if (isshowzhezhao) {
@@ -644,6 +765,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             @Override
             public void onClick(View view) {
+                DialogSingleUtil.show(getActivity());
                 if (i != currentIndex) {
                     updateTitle(i, mbox2,text);
                     updateTitleTop(i, mbox1,text);
@@ -682,14 +804,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             page = 1;
             flag = "0";
             keyword = "";
-            DialogSingleUtil.show(getActivity());
             initDataCzg(keyword);
         } else {
             x = 1;
             page = 1;
             flag = "1";
             keyword = text;
-            DialogSingleUtil.show(getActivity());
             initDataCzg(keyword);
         }
     }
@@ -718,6 +838,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             @Override
             public void onClick(View view) {
+                DialogSingleUtil.show(getActivity());
                 if (i != currentIndexTop) {
                     updateTitleTop(i, mbox1,text);
                     updateTitle(i, mbox2,text);
@@ -758,14 +879,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
             page = 1;
             flag = "0";
             keyword = "";
-            DialogSingleUtil.show(getActivity());
             initDataCzg(keyword);
         } else {
             x = 1;
             page = 1;
             flag = "1";
             keyword = text;
-            DialogSingleUtil.show(getActivity());
             initDataCzg(keyword);
         }
     }
@@ -1205,103 +1324,5 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
     public void onViewClicked() {
         Intent intent = new Intent(getActivity(), BidHomeActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onHeaderPulling(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onHeaderReleased(RefreshHeader header, int headerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onHeaderReleasing(RefreshHeader header, float percent, int offset, int headerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onHeaderStartAnimator(RefreshHeader header, int headerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onHeaderFinish(RefreshHeader header, boolean success) {
-
-    }
-
-    @Override
-    public void onFooterPulling(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onFooterReleased(RefreshFooter footer, int footerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onFooterReleasing(RefreshFooter footer, float percent, int offset, int footerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onFooterStartAnimator(RefreshFooter footer, int footerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onFooterFinish(RefreshFooter footer, boolean success) {
-
-    }
-
-    @Override
-    public void onLoadMore(RefreshLayout refreshLayout) {
-        if (flag != null) {
-            if (flag.equals("0") || flag.equals("")) {
-//                handler.sendEmptyMessageDelayed(4, 100);
-                page++;
-                x = 2;
-                initDataCzg("");
-            } else {
-                page++;
-                x = 2;
-                initDataCzg(keyword);
-            }
-        }
-    }
-
-    @Override
-    public void onRefresh(RefreshLayout refreshLayout) {
-        initData();
-        initDataCzg("");
-        if (titlelist.size() > 0 && titlelist != null) {
-            updateTitle(0, mbox2,keyword);
-            updateTitleTop(0, mbox1,keyword);
-        }
-    }
-
-    @Override
-    public void onStateChanged(RefreshLayout refreshLayout, RefreshState oldState, RefreshState newState) {
-//        Log.i("=========",refreshLayout.getState()+"=====");
-        switch (refreshLayout.getState()){
-            case None:
-                AnimationUtil.with().topMoveToViewLocation(lin,500);
-                lin.setVisibility(View.VISIBLE);
-                break;
-            case PullDownCanceled:
-                AnimationUtil.with().topMoveToViewLocation(lin,500);
-                lin.setVisibility(View.VISIBLE);
-                break;
-            case Refreshing:
-            case RefreshFinish:
-            case RefreshReleased:
-            case PullDownToRefresh:
-                AnimationUtil.with().moveToViewTop(lin,500);
-                lin.setVisibility(View.GONE);
-                break;
-        }
     }
 }

@@ -310,6 +310,7 @@ public class FilterPopupWindow extends PopupWindow {
         }else {
             tv_fenlei.setVisibility(View.GONE);
             fenleiGrid.setVisibility(View.GONE);
+            ll_fenlei.setVisibility(View.GONE);
         }
 
 //        String str = "["

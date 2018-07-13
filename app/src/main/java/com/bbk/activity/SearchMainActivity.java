@@ -66,7 +66,6 @@ import com.bbk.dao.SearchHistoryDao;
 import com.bbk.evaluator.BGAlphaEvaluator;
 import com.bbk.flow.DataFlow3;
 import com.bbk.flow.ResultEvent;
-//import com.bbk.fragment.SearchFragment;
 import com.bbk.resource.NewConstants;
 import com.bbk.typeshaixuan.view.FilterPopupWindow;
 import com.bbk.util.AppJsonFileReader;
@@ -81,7 +80,6 @@ import com.bbk.util.ValidatorUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyGridView;
 import com.bbk.view.XCFlowLayout;
-import com.google.gson.JsonArray;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -105,6 +103,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+//import com.bbk.fragment.SearchFragment;
+
 public class SearchMainActivity extends ActivityGroup implements
         OnClickListener, OnKeyListener, ResultEvent, CommonLoadingView.LoadingHandler {
     @BindView(R.id.mall_shaixuan_image)
@@ -125,7 +125,9 @@ public class SearchMainActivity extends ActivityGroup implements
     RecyclerView resultCzgGirdlist;
     @BindView(R.id.xrefresh_czg_grid)
     SmartRefreshLayout xrefreshCzgGrid;
-    private boolean islistview = true,islistviewCzg = true;
+    @BindView(R.id.ll_shousuo)
+    LinearLayout llShousuo;
+    private boolean islistview = true, islistviewCzg = true;
     private FrameLayout mContent;
     private EditText searchText;
     private ImageButton goBackBtn, searchBtn;
@@ -133,7 +135,7 @@ public class SearchMainActivity extends ActivityGroup implements
     private static final String SEARCH_MAIN_RECOMMEND = "recommemd";
     private static final String SEARCH_MAIN_PROMPT = "prompt";
     private List<String> dataList;
-    private String keyword = "", domain = "",dianpu = "",fenlei = "",bprice =  "",eprice="";
+    private String keyword = "", domain = "", dianpu = "", fenlei = "", bprice = "", eprice = "";
     private Typeface typeFace;
     private ListView mlistView;
     private ArrayAdapter<String> adapter1;
@@ -152,7 +154,7 @@ public class SearchMainActivity extends ActivityGroup implements
     private String brand = "";
     private String bPrice = "";
     private String ePrice = "";
-    private String sortwayCzg = "0",sortway = "0";
+    private String sortwayCzg = "0", sortway = "0";
     private boolean isfilter = false;
     // 分类
     private JSONArray secondTypeJsonArr = new JSONArray();
@@ -245,7 +247,7 @@ public class SearchMainActivity extends ActivityGroup implements
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow;
     private FilterPopupWindow popupWindow;
-    String[] strs,strfenlei,strsdomain;
+    String[] strs, strfenlei, strsdomain;
     private String shaixuan;
 
     @Override
@@ -254,7 +256,7 @@ public class SearchMainActivity extends ActivityGroup implements
         setContentView(R.layout.search_main);
         ButterKnife.bind(this);
         View topView = findViewById(R.id.toolbar_layout);
-        SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(this));
+        SoftHideKeyBoardUtil.assistActivity(this, getStatusBarHeight(this));
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         dataFlow1 = new DataFlow3(this);
@@ -276,9 +278,15 @@ public class SearchMainActivity extends ActivityGroup implements
                            },
                     998);
             keyword = getIntent().getStringExtra("keyword");
+            llShousuo.setFocusable(true);
+            llShousuo.setFocusableInTouchMode(true);
+            searchText.setText(keyword);
+            mlistView.setVisibility(View.GONE);
             initDataCzg();
         } else {
             loadhotKeyword(type);
+            llShousuo.setFocusable(false);
+            llShousuo.setFocusableInTouchMode(false);
             dao = new SearchHistoryDao(this);
             timer.schedule(new TimerTask() {
                                public void run() {
@@ -294,6 +302,7 @@ public class SearchMainActivity extends ActivityGroup implements
             brand = getIntent().getStringExtra("brand");
         }
     }
+
     private int getStatusBarHeight(Context context) {
         int result = 0;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -566,8 +575,8 @@ public class SearchMainActivity extends ActivityGroup implements
             currentPageIndex = 1;
             fenlei = "";
             domain = "";
-            bPrice = "";
-            ePrice = "";
+            bprice = "";
+            eprice = "";
             dianpu = "";
             initDataCzg();
         }
@@ -657,13 +666,14 @@ public class SearchMainActivity extends ActivityGroup implements
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
 //                if (canLoadMore) {
-                    currentPageIndex++;
-                    x = 2;
-                    initData1();
+                currentPageIndex++;
+                x = 2;
+                initData1();
 //              }
             }
         });
     }
+
     private void onrefreshCzg(SmartRefreshLayout xrefresh) {
         xrefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -682,6 +692,7 @@ public class SearchMainActivity extends ActivityGroup implements
             }
         });
     }
+
     private void loadData() {
         Map<String, String> paramsMap = new HashMap<String, String>();
 //        paramsMap.put("stype", String.valueOf(SearchFragment.stypeWay));
@@ -767,9 +778,11 @@ public class SearchMainActivity extends ActivityGroup implements
 //        keyword = searchText.getText().toString();
         switch (v.getId()) {
             case R.id.ll_bj_layout:
+                bijia_layout.setClickable(false);
+                czg_layout.setClickable(true);
                 isGlobalMenuShow = false;
 //                showGlobalMenu1();
-                if (popupWindow != null){
+                if (popupWindow != null) {
                     popupWindow.dismiss();
                 }
                 if (view_box != null) {
@@ -792,6 +805,8 @@ public class SearchMainActivity extends ActivityGroup implements
                 }
                 break;
             case R.id.ll_czg_layout:
+                bijia_layout.setClickable(true);
+                czg_layout.setClickable(false);
                 Flag = "2";
                 type = "2";
                 x = 1;
@@ -920,10 +935,14 @@ public class SearchMainActivity extends ActivityGroup implements
 //			scrollView_home.fullScroll(ScrollView.FOCUS_UP);
                 break;
             case R.id.mfilter:
+                mComposite.setClickable(true);
+                mnumber.setClickable(true);
                 second.setVisibility(View.VISIBLE);
                 break;
             case R.id.mprice:
                 isloadShaixuan = false;
+                mComposite.setClickable(true);
+                mnumber.setClickable(true);
                 filter_price.setTextColor(Color.parseColor("#f23030"));
                 sellrank.setTextColor(Color.parseColor("#222222"));
                 compositerank.setTextColor(Color.parseColor("#222222"));
@@ -942,6 +961,8 @@ public class SearchMainActivity extends ActivityGroup implements
                 break;
             case R.id.mnumber:
                 isloadShaixuan = false;
+                mComposite.setClickable(true);
+                mnumber.setClickable(false);
                 mtop.setImageResource(R.mipmap.tuiguang_11);
                 sellrank.setTextColor(Color.parseColor("#f23030"));
                 compositerank.setTextColor(Color.parseColor("#222222"));
@@ -953,6 +974,8 @@ public class SearchMainActivity extends ActivityGroup implements
                 break;
             case R.id.mComposite:
                 isloadShaixuan = false;
+                mComposite.setClickable(false);
+                mnumber.setClickable(true);
                 mtop.setImageResource(R.mipmap.tuiguang_11);
                 compositerank.setTextColor(Color.parseColor("#f23030"));
                 sellrank.setTextColor(Color.parseColor("#222222"));
@@ -964,6 +987,8 @@ public class SearchMainActivity extends ActivityGroup implements
                 break;
             case R.id.mpriceczg:
 //                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+                discount_czg.setClickable(true);
+                mComposite_czg.setClickable(true);
                 filter_price_czg.setTextColor(Color.parseColor("#f23030"));
                 paixu_czg_text.setTextColor(Color.parseColor("#222222"));
                 discount_czg_text.setTextColor(Color.parseColor("#222222"));
@@ -983,14 +1008,16 @@ public class SearchMainActivity extends ActivityGroup implements
                 initDataCzg();
                 break;
             case R.id.mfilter_czg:
+                discount_czg.setClickable(true);
+                mComposite_czg.setClickable(true);
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
 //                filter_price_czg.setTextColor(Color.parseColor("#222222"));
 //                paixu_czg_text.setTextColor(Color.parseColor("#222222"));
 //                discount_czg_text.setTextColor(Color.parseColor("#222222"));
-                filter_czg.setTextColor(Color.parseColor("#f23030"));
-                mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
+//                  filter_czg.setTextColor(Color.parseColor("#f23030"));
+//                  mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
 //                currentPageIndex = 1;
-//                sortway = "4";
+//                sortway = "4";s
 //                x = 1;
 //                initDataCzg();
 //                showGlobalMenu();
@@ -1046,14 +1073,16 @@ public class SearchMainActivity extends ActivityGroup implements
 //                        jsonArray.put(jsonObject1);
 //                        jsonArray.put(jsonObject5);
 //                    Log.i("===========",jsonArray+"=====");
-                    popupWindow = new FilterPopupWindow(SearchMainActivity.this,strsdomain,strs,strfenlei);
+                    popupWindow = new FilterPopupWindow(SearchMainActivity.this, strsdomain, strs, strfenlei);
                     popupWindow.showFilterPopup(searchBtn);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 break;
             case R.id.mComposite_czg:
+                discount_czg.setClickable(true);
+                mComposite_czg.setClickable(false);
 //                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
                 filter_price_czg.setTextColor(Color.parseColor("#222222"));
@@ -1068,6 +1097,8 @@ public class SearchMainActivity extends ActivityGroup implements
                 break;
             case R.id.discount_czg:
 //                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+                discount_czg.setClickable(false);
+                mComposite_czg.setClickable(true);
                 mtop_czg.setImageResource(R.mipmap.tuiguang_11);
                 filter_price_czg.setTextColor(Color.parseColor("#222222"));
                 paixu_czg_text.setTextColor(Color.parseColor("#222222"));
@@ -2103,12 +2134,23 @@ public class SearchMainActivity extends ActivityGroup implements
                 String key = intent.getStringExtra("keyword");
                 keyword = key;
             }
+            searchText.setText(keyword);
+            mlistView.setVisibility(View.GONE);
             domain = intent.getStringExtra("domain");
             bprice = intent.getStringExtra("bprice");
             eprice = intent.getStringExtra("eprice");
             dianpu = intent.getStringExtra("dianpu");
             fenlei = intent.getStringExtra("productType");
-            Log.i("=============",domain+"=="+bprice+"==="+eprice+"==="+dianpu+"==="+fenlei);
+            if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") ||  eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")){
+                filter_czg.setTextColor(Color.parseColor("#f23030"));
+                mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
+            }else {
+                filter_czg.setTextColor(Color.parseColor("#222222"));
+                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+            }
+            Log.i("=============", domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
+            currentPageIndex = 1;
+            x = 1;
             if (Flag.equals("1")) {
                 initData();
             } else {
@@ -2257,7 +2299,7 @@ public class SearchMainActivity extends ActivityGroup implements
                         mshaixuanbox.setVisibility(View.VISIBLE);
                         msuccessLayout.setVisibility(View.VISIBLE);
                         mlistView.setVisibility(View.GONE);
-                        if (tmp1.equals("[]")){
+                        if (tmp1.equals("[]")) {
                             tipsLayout.setVisibility(View.VISIBLE);
                             tipsKeys.setText("没有找到相关商品");
                         }
@@ -2277,7 +2319,7 @@ public class SearchMainActivity extends ActivityGroup implements
                             JSONObject info = jo.getJSONObject("info");
                             if (info.optString("gridtype") != null) {
                                 gridtype = info.optString("gridtype");
-                            }else {
+                            } else {
                                 gridtype = "2";
                             }
 
@@ -2298,23 +2340,23 @@ public class SearchMainActivity extends ActivityGroup implements
                                 }
 
                             }
-                           if (gridtype.equals("1")) {
-                                    //显示块状
-                                    xrefresh.setVisibility(View.GONE);
-                                    xrefresh1.setVisibility(View.GONE);
-                                    xrefresh2.setVisibility(View.GONE);
-                                    xrefreshCzgGrid.setVisibility(View.VISIBLE);
-                                    islistviewCzg = false;
-                                    topbarListOrGridBtn.setImageResource(R.mipmap.lietu);
-                                } else {
-                                    //显示列表
-                                    xrefresh.setVisibility(View.GONE);
-                                    xrefresh1.setVisibility(View.GONE);
-                                    xrefresh2.setVisibility(View.VISIBLE);
-                                    xrefreshCzgGrid.setVisibility(View.GONE);
-                                    islistviewCzg = true;
-                                    topbarListOrGridBtn.setImageResource(R.mipmap.liebiao);
-                                }
+                            if (gridtype.equals("1")) {
+                                //显示块状
+                                xrefresh.setVisibility(View.GONE);
+                                xrefresh1.setVisibility(View.GONE);
+                                xrefresh2.setVisibility(View.GONE);
+                                xrefreshCzgGrid.setVisibility(View.VISIBLE);
+                                islistviewCzg = false;
+                                topbarListOrGridBtn.setImageResource(R.mipmap.lietu);
+                            } else {
+                                //显示列表
+                                xrefresh.setVisibility(View.GONE);
+                                xrefresh1.setVisibility(View.GONE);
+                                xrefresh2.setVisibility(View.VISIBLE);
+                                xrefreshCzgGrid.setVisibility(View.GONE);
+                                islistviewCzg = true;
+                                topbarListOrGridBtn.setImageResource(R.mipmap.liebiao);
+                            }
                             String tmpCzg = info.optString("page");
                             mshaixuanCzg.setVisibility(View.VISIBLE);
                             mshaixuanbox.setVisibility(View.GONE);
@@ -2421,21 +2463,21 @@ public class SearchMainActivity extends ActivityGroup implements
                         if (!tmp1.isEmpty()) {
 //							initListViewData(info);//放数据
                             searchResultBeans = JSON.parseArray(tmp1, SearchResultBean.class);
-                             if (searchResultBeans.size() > 0 && searchResultBeans != null) {
+                            if (searchResultBeans.size() > 0 && searchResultBeans != null) {
 //                                    listAdapter.notifyData(searchResultBeans);
                                 gridviewadapter.notifyData(searchResultBeans);
                                 isrequest = true;
                                 if (thread == null) {
-                                     NowPrice();
+                                    NowPrice();
                                 }
-                             }else{
-                                 xrefresh.finishLoadMore();
-                                 xrefresh1.finishLoadMore();
+                            } else {
+                                xrefresh.finishLoadMore();
+                                xrefresh1.finishLoadMore();
 //                    StringUtil.showToast(SearchMainActivity.this, "没有更多了");
-                                 xrefresh.finishLoadMoreWithNoMoreData();
-                                 xrefresh1.finishLoadMoreWithNoMoreData();
-                                 isrequest = false;
-                             }
+                                xrefresh.finishLoadMoreWithNoMoreData();
+                                xrefresh1.finishLoadMoreWithNoMoreData();
+                                isrequest = false;
+                            }
 //                            int totalCount = info.optInt("totalCount");
 //                            if (totalCount % 12 == 0) {
 //                                pagenum = totalCount / 12;
@@ -2462,34 +2504,34 @@ public class SearchMainActivity extends ActivityGroup implements
                     break;
                 case 5:
                     try {
-                    JSONObject jo = new JSONObject(contentCzg);
-                    String isBlandCzg = jo.optString("isBland");
-                    if (isBlandCzg.equals("1")) {
-                        NewConstants.Flag = "2";
-                        JSONObject info = jo.getJSONObject("info");
-                        String tmpCzg = info.optString("page");
-                        if (x == 2) {
-                            if (tmpCzg != null && !tmpCzg.toString().equals("[]")) {
-                                newHomeCzgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
-                                if (islistviewCzg) {
-                                    newCzgAdapter.notifyData(newHomeCzgBeans);
-                                }else {
-                                    newCzgGridAdapter.notifyData(newHomeCzgBeans);
-                                }
-                            } else {
+                        JSONObject jo = new JSONObject(contentCzg);
+                        String isBlandCzg = jo.optString("isBland");
+                        if (isBlandCzg.equals("1")) {
+                            NewConstants.Flag = "2";
+                            JSONObject info = jo.getJSONObject("info");
+                            String tmpCzg = info.optString("page");
+                            if (x == 2) {
+                                if (tmpCzg != null && !tmpCzg.toString().equals("[]")) {
+                                    newHomeCzgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
+                                    if (islistviewCzg) {
+                                        newCzgAdapter.notifyData(newHomeCzgBeans);
+                                    } else {
+                                        newCzgGridAdapter.notifyData(newHomeCzgBeans);
+                                    }
+                                } else {
 //                                StringUtil.showToast(SearchMainActivity.this, "没有更多了");
-                                xrefreshCzgGrid.finishLoadMoreWithNoMoreData();
-                                xrefresh2.finishLoadMoreWithNoMoreData();
+                                    xrefreshCzgGrid.finishLoadMoreWithNoMoreData();
+                                    xrefresh2.finishLoadMoreWithNoMoreData();
+                                }
                             }
-                        }
-                    } else if (isBlandCzg.equals("-1") && x == 2 && NewConstants.Flag.equals("2")) {
+                        } else if (isBlandCzg.equals("-1") && x == 2 && NewConstants.Flag.equals("2")) {
 //                        StringUtil.showToast(SearchMainActivity.this, "没有更多了");
-                        xrefreshCzgGrid.finishLoadMoreWithNoMoreData();
-                        xrefresh2.finishLoadMoreWithNoMoreData();
+                            xrefreshCzgGrid.finishLoadMoreWithNoMoreData();
+                            xrefresh2.finishLoadMoreWithNoMoreData();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
                     break;
             }
         }
@@ -2540,14 +2582,14 @@ public class SearchMainActivity extends ActivityGroup implements
                             if (jsonObject.optString("status").equals("1")) {
                                 content = jsonObject.optString("content");
                                 handlerMessage.sendEmptyMessageDelayed(1, 0);
-                            }else {
+                            } else {
                                 mshaixuanCzg.setVisibility(View.GONE);
                                 mshaixuanbox.setVisibility(View.VISIBLE);
                                 msuccessLayout.setVisibility(View.VISIBLE);
                                 mlistView.setVisibility(View.GONE);
                                 tipsLayout.setVisibility(View.VISIBLE);
                                 tipsKeys.setText("没有找到相关商品");
-                                StringUtil.showToast(SearchMainActivity.this,jsonObject.optString("errmsg"));
+                                StringUtil.showToast(SearchMainActivity.this, jsonObject.optString("errmsg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -2593,7 +2635,7 @@ public class SearchMainActivity extends ActivityGroup implements
      * productType 分类   dianpu店铺  bprice开始价格 eprice结束价格
      */
     private void initDataCzg() {
-        Log.i("++++++++",keyword+domain+"=="+bprice+"==="+eprice+"==="+dianpu+"==="+fenlei);
+        Log.i("++++++++", keyword +"==="+sortwayCzg+"===="+ domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
         xrefreshCzgGrid.setNoMoreData(false);
         xrefresh2.setNoMoreData(false);
         Map<String, String> paramsMap = new HashMap<>();
@@ -2604,11 +2646,11 @@ public class SearchMainActivity extends ActivityGroup implements
         paramsMap.put("page", currentPageIndex + "");
         paramsMap.put("client", "android");
         if (domain != null && !domain.equals("")) {
-            if (domain.equals("天猫")){
+            if (domain.equals("天猫")) {
                 domain = "tmall";
-            }else if (domain.equals("淘宝")){
+            } else if (domain.equals("淘宝")) {
                 domain = "taobao";
-            }else if (domain.equals("京东")){
+            } else if (domain.equals("京东")) {
                 domain = "jd";
             }
             paramsMap.put("domain", domain);
@@ -2635,8 +2677,8 @@ public class SearchMainActivity extends ActivityGroup implements
                             if (jsonObject.optString("status").equals("1")) {
                                 contentCzg = jsonObject.optString("content");
                                 handlerMessage.sendEmptyMessageDelayed(2, 0);
-                            }else {
-                                StringUtil.showToast(SearchMainActivity.this,jsonObject.optString("errmsg"));
+                            } else {
+                                StringUtil.showToast(SearchMainActivity.this, jsonObject.optString("errmsg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -2672,6 +2714,7 @@ public class SearchMainActivity extends ActivityGroup implements
                     }
                 });
     }
+
     /**
      * 商品比价数据请求
      */
@@ -2977,7 +3020,7 @@ public class SearchMainActivity extends ActivityGroup implements
                         xrefresh.setVisibility(View.GONE);
                         xrefresh1.setVisibility(View.VISIBLE);
                     }
-                }else {
+                } else {
                     if (islistviewCzg) {
                         islistviewCzg = false;
                         topbarListOrGridBtn.setImageResource(R.mipmap.lietu);

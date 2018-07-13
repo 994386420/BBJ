@@ -7,12 +7,14 @@ import java.util.Map;
 import com.bbk.Bean.SystemMessageBean;
 import com.bbk.Bean.WoYaoBean;
 import com.bbk.activity.BidBillDetailActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
@@ -29,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MesageCListSysAdapter extends BaseAdapter{
 	private List<SystemMessageBean> systemMessageBeans;
@@ -109,6 +114,15 @@ public class MesageCListSysAdapter extends BaseAdapter{
 					@Override
 					public void onNext(String s) {
 						Log.e("===",s);
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							NewConstants.messages = jsonObject.optInt("content");
+							if (HomeActivity.mNumImageView != null){
+								HomeActivity.mNumImageView.setNum(NewConstants.messages);
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 					}
 					@Override
 					protected void hideDialog() {

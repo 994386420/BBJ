@@ -144,7 +144,6 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 		msgEdittext = (EditText) findViewById(R.id.msgEdittext);
 		sendhenggang = findViewById(R.id.sendhenggang);
 		mhuifusend = (TextView) findViewById(R.id.mhuifusend);
-		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		// 获取屏幕高度
 		screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
 		// 阀值设置为屏幕高度的1/3
@@ -270,6 +269,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	 */
 	private void initsystemData() {
 		xrefresh.setNoMoreData(false);
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(systempage));
@@ -341,6 +341,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	 */
 	private void initsendData() {
 		xrefresh.setNoMoreData(false);
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(sendpage));
@@ -412,6 +413,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	 */
 	private void initreceiveData() {
 		xrefresh.setNoMoreData(false);
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(receivepage));
@@ -525,6 +527,7 @@ public class MesageCenterActivity extends BaseActivity implements OnClickListene
 	 */
 	private void insertPL() {
 		Map<String, String> maps = new HashMap<String, String>();
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		maps.put("userid", userID);
 		maps.put("reid", msgreid);
 		maps.put("plid", msgplid);

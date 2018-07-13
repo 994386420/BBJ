@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/refresh_root"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/__picker_common_primary"
-            android:orientation="vertical">
+            android:background="@color/__picker_common_primary">
             <com.bbk.view.MyScrollViewNew
                 android:id="@+id/scrollview"
                 android:layout_width="match_parent"
@@ -418,17 +418,16 @@
 
     <ImageButton
         android:id="@+id/to_top_btn"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="10.0dip"
         android:layout_marginRight="10.0dip"
         android:visibility="gone"
-        android:background="@drawable/bg_to_top_btn"
         android:gravity="center"
         android:scaleType="centerInside"
-        android:src="@mipmap/back_01" />
+        android:background="@mipmap/back_01" />
 
     <LinearLayout
         android:id="@+id/lin"

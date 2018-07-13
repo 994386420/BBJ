@@ -152,7 +152,6 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 		msgEdittext = (EditText) mView.findViewById(R.id.msgEdittext);
 		sendhenggang = mView.findViewById(R.id.sendhenggang);
 		mhuifusend = (TextView) mView.findViewById(R.id.mhuifusend);
-		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		// 获取屏幕高度
 		screenHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
 		// 阀值设置为屏幕高度的1/3
@@ -259,6 +258,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 		switch (curclick) {
 			case 0:
 				systempage = 1;
+				DialogSingleUtil.show(getActivity());
 				initsystemData();
 				break;
 			case 1:
@@ -278,6 +278,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 	 */
 	private void initsystemData() {
 		xrefresh.setNoMoreData(false);
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(systempage));
@@ -329,7 +330,6 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 					@Override
 					protected void showDialog() {
 //						zLoadingView.load();
-						DialogSingleUtil.show(getActivity());
 					}
 
 					@Override
@@ -349,6 +349,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 	 */
 	private void initsendData() {
 		xrefresh.setNoMoreData(false);
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(sendpage));
@@ -420,6 +421,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 	 */
 	private void initreceiveData() {
 		xrefresh.setNoMoreData(false);
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("page", String.valueOf(receivepage));
@@ -532,6 +534,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 	 * 插入评论
 	 */
 	private void insertPL() {
+		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();
 		maps.put("userid", userID);
 		maps.put("reid", msgreid);
@@ -646,6 +649,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 			case 0:
 				systempage = 1;
 				x = 1;
+				DialogSingleUtil.show(getActivity());
 				initsystemData();
 				break;
 			case 1:
@@ -667,6 +671,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 			case 0:
 				systempage = 1;
 				x= 1;
+				DialogSingleUtil.show(getActivity());
 				initsystemData();
 				break;
 			case 1:

@@ -22,6 +22,7 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.RoundImageView;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
@@ -44,7 +45,7 @@ public class IntentActivity extends BaseActivity {
 	private String title;
 	private String url;
 	private String domain,isczg,bprice;
-	private ImageView img3;
+	private RoundImageView img3;
 	private RelativeLayout onclickthis;
 	private TextView text1;
 	private boolean isintent = true;
@@ -86,7 +87,7 @@ public class IntentActivity extends BaseActivity {
 
 	private void initView() {
 		
-		img3 =(ImageView)findViewById(R.id.img3);
+		img3 = (RoundImageView) findViewById(R.id.img3);
 		text1 =(TextView)findViewById(R.id.text1);
 		onclickthis =(RelativeLayout)findViewById(R.id.onclickthis);
 		intentbuy =(RelativeLayout)findViewById(R.id.intentbuy);
@@ -110,6 +111,13 @@ public class IntentActivity extends BaseActivity {
 			}
 		});
 		try {
+			if (url.contains("jd")){
+				domain = "jd";
+			}else if (url.contains("tmall")){
+				domain = "tmall";
+			}else if (url.contains("taobao")){
+				domain = "taobao";
+			}
 			int drawS = getResources().getIdentifier(domain,"mipmap", getPackageName());
 			img3.setImageResource(drawS);
 		}catch (Exception E){

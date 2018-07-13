@@ -243,7 +243,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(newHomeCzgBean.get(position).getUrl());
+                    cm.setText(newHomeCzgBean.get(position).getRequestUrl());
                     StringUtil.showToast(context, "复制成功");
                     viewHolder.mCopyLayout.setVisibility(View.GONE);
                 }

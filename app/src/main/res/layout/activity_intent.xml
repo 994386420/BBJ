@@ -17,7 +17,7 @@
 	        <ImageView 
 	            android:layout_width="60dp"
 	            android:layout_height="60dp"
-	            android:src="@mipmap/tuiguang_33"/>
+	            android:src="@mipmap/new_app_icon"/>
 	        <ImageView 
 	            android:layout_width="30dp"
 	            android:layout_height="30dp"
@@ -25,7 +25,7 @@
 	            android:layout_marginRight="15dp"
 	            android:layout_gravity="center_vertical"
 	            android:src="@mipmap/jiantou"/>
-	        <ImageView 
+	        <com.bbk.view.RoundImageView
 	            android:id="@+id/img3"
 	            android:layout_width="60dp"
 	            android:layout_height="60dp"

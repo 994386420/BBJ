@@ -44,6 +44,7 @@ import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.ContactActivity;
 import com.bbk.activity.FanLiOrderActivity;
 import com.bbk.activity.FensiActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.LogisticsQueryActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
@@ -243,7 +244,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     @Override
                     public void onNext(String s) {
                         try {
-                            Log.i("是否合伙人", s);
+//                            Log.i("是否合伙人", s);
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
 //                                    JSONObject object = new JSONObject(jsonObject.optString("content"));
@@ -299,7 +300,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 mjb.setText(jinbi);
                                 mcollectnum.setText(collect);
                                 mfootnum.setText(footprint);
-                                mnewmsg.setText(messages);
                                 user_name.setText(username);
                                 mJlzText.setText("鲸力值" + exp);
                                 CircleImageView1.getImg(getActivity(), imgurl, user_img);
@@ -311,6 +311,13 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     mnewmsg.setVisibility(View.VISIBLE);
                                 } else {
                                     mnewmsg.setVisibility(View.GONE);
+                                }
+                                if (messages != null){
+                                    NewConstants.messages = Integer.parseInt(messages);
+                                    mnewmsg.setText(NewConstants.messages+"");
+                                    if (HomeActivity.mNumImageView != null){
+                                        HomeActivity.mNumImageView.setNum(NewConstants.messages);
+                                    }
                                 }
                                 if (sign != null) {
                                     initsignnum(sign);

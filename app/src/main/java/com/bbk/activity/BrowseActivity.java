@@ -61,7 +61,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	private MyListView topiclistview,domainlistview;
 	private List<Map<String, String>> topiclist,domainlist;
 	private DataFlow dataFlow;
-	private int topicpage=1,domainpage=1;
+	private int topicpage=1,domainpage=1,x = 1;
 	private String token;
 	private String topiccount="",domaincount="";
 	private BrowseWenzhangAdapter topicadapter;
@@ -76,6 +76,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	private boolean domainloadmore = false;
 	private String wztitle = "";
 	private XScrollView mscroll;
+	SsNewCzgAdapter ssNewCzgAdapter;
 	
 	
 	@Override
@@ -86,7 +87,6 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 		// 实现沉浸式状态栏
 		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
-		
 		initView();
 		initTopicData(true);
 	}
@@ -124,6 +124,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	}
 	
 	public void initTopicData(boolean is) {
+		xrefresh.setNoMoreData(false);
 		Map<String, String> params = new HashMap<>();
 		params.put("userid", token);
 		params.put("type", "2");
@@ -132,10 +133,12 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	}
 	public void initDomainData(boolean is) {
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+		xrefresh.setNoMoreData(false);
 		Map<String, String> params = new HashMap<>();
 		params.put("userid", userID);
 //		params.put("type", "2");
 //		params.put("page", String.valueOf(domainpage));
+		params.put("page",domainpage+"");
 		dataFlow.requestData(2, "newService/queryFootPrintByUserid", params, this,is);
 	}
 	private void refreshAndloda() {
@@ -150,6 +153,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 						break;
 					case 1:
 						domainpage = 1;
+						x = 1;
 						initDomainData(false);
 						break;
 				}
@@ -166,10 +170,11 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 						}
 						break;
 					case 1:
-						if (domainloadmore) {
+//						if (domainloadmore) {
 							domainpage++;
+							x = 2;
 							initDomainData(false);
-						}
+//						}
 						break;
 
 				}
@@ -228,7 +233,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 			vlist.get(i).setBackgroundColor(Color.parseColor("#ff7d41"));
 			switch (i) {
 			case 0:
-				xrefresh.setEnableLoadMore(true);
+//				xrefresh.setEnableLoadMore(true);
 				domainlistview.setVisibility(View.GONE);
 //				if (topiccount.isEmpty() || topiccount.equals("")) {
 //					topiclistview.setVisibility(View.GONE);
@@ -239,13 +244,14 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 //				}
 				mtext2.setText("商品");
 				curclick = 0;
-				if (topicadapter == null) {
+//				if (topicadapter == null) {
 					isclear = true;
+					topicpage = 1;
 					initTopicData(true);
-				}
+//				}
 				break;
 			case 1:
-				xrefresh.setEnableLoadMore(false);
+//				xrefresh.setEnableLoadMore(true);
 				topiclistview.setVisibility(View.GONE);
 //				if (domaincount.isEmpty() || domaincount.equals("")) {
 //					domainlistview.setVisibility(View.GONE);
@@ -254,12 +260,14 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 					domainlistview.setVisibility(View.VISIBLE);
 //					mtext2.setText("商品("+domaincount+")");
 //				}
-				mtext1.setText("鲸话题");
+				mtext1.setText("发现");
 				curclick = 1;
-				if (domainadapter == null) {
+//				if (domainadapter == null) {
 					isclear = true;
+					domainpage = 1;
+					x =1;
 					initDomainData(true);
-				}
+//				}
 				break;
 			default:
 				break;
@@ -414,12 +422,22 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 //				Log.i("===========",content);
 				List<NewHomeCzgBean> newHomeCzgBean = JSON.parseArray(content,NewHomeCzgBean.class);
 //				loadDomain(object);
-				if (newHomeCzgBean != null && newHomeCzgBean.size() > 0) {
-					SsNewCzgAdapter ssNewCzgAdapter = new SsNewCzgAdapter(this, newHomeCzgBean);
-					domainlistview.setAdapter(ssNewCzgAdapter);
+				if (x == 1) {
+					if (newHomeCzgBean != null && newHomeCzgBean.size() > 0) {
+						xrefresh.setEnableLoadMore(true);
+						ssNewCzgAdapter = new SsNewCzgAdapter(this, newHomeCzgBean);
+						domainlistview.setAdapter(ssNewCzgAdapter);
+					} else {
+						mzhanwei.setVisibility(View.VISIBLE);
+						domainlistview.setVisibility(View.GONE);
+						xrefresh.setEnableLoadMore(false);
+					}
 				}else {
-					mzhanwei.setVisibility(View.VISIBLE);
-					domainlistview.setVisibility(View.GONE);
+					if (newHomeCzgBean != null && newHomeCzgBean.size() > 0) {
+						ssNewCzgAdapter.notifyData(newHomeCzgBean);
+					}else {
+						xrefresh.finishLoadMoreWithNoMoreData();
+					}
 				}
 				isclear = false;
 			} catch (Exception e) {
