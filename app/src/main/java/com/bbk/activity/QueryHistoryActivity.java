@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.baidu.mobstat.ar;
 import com.bbk.activity.wxapi.WXEntryActivity;
 import com.bbk.adapter.QueryHistoryAdapter;
+import com.bbk.client.BaseApiService;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
@@ -92,7 +93,7 @@ public class QueryHistoryActivity extends BaseActivity implements OnClickListene
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 				String rowkey = list.get(arg2).get("rowkey");
-				String url1 = Constants.MAIN_BASE_URL_MOBILE + "mobile/user/history?rowkey=" + rowkey+"&userid="+userID;
+				String url1 = BaseApiService.Base_URL + "mobile/user/history?rowkey=" + rowkey+"&userid="+userID;
 				Intent intent = new Intent(QueryHistoryActivity.this, WebViewActivity.class);
 				intent.putExtra("url", url1);
 				startActivity(intent);
@@ -197,7 +198,7 @@ public class QueryHistoryActivity extends BaseActivity implements OnClickListene
 					mdelete.setVisibility(View.VISIBLE);
 					historytext.setVisibility(View.VISIBLE);
 					myindao.setVisibility(View.GONE);
-					String url1 = Constants.MAIN_BASE_URL_MOBILE + "mobile/user/history?rowkey=" + rowkey;
+					String url1 = BaseApiService.Base_URL + "mobile/user/history?rowkey=" + rowkey;
 					Intent intent = new Intent(this, WebViewActivity.class);
 					intent.putExtra("url", url1);
 					startActivity(intent);

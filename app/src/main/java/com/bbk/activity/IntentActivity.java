@@ -190,6 +190,7 @@ public class IntentActivity extends BaseActivity {
 													Intent intent = new Intent(IntentActivity.this,JumpDetailActivty.class);
 													intent.putExtra("content", content);
 													startActivity(intent);
+													DialogSingleUtil.dismiss(0);
 													finish();
 												}else {
 													//jumpThirdPage 为0
@@ -240,12 +241,12 @@ public class IntentActivity extends BaseActivity {
 
 					@Override
 					protected void hideDialog() {
-//						DialogSingleUtil.dismiss(0);
+						DialogSingleUtil.dismiss(0);
 					}
 
 					@Override
 					protected void showDialog() {
-//						DialogSingleUtil.show(IntentActivity.this);
+						DialogSingleUtil.show(IntentActivity.this);
 					}
 
 					@Override

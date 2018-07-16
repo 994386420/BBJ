@@ -7,6 +7,7 @@ import com.bbk.activity.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -51,7 +52,9 @@ public class QueryHistoryAdapter extends BaseAdapter{
 		}
 		Map<String, String> map = list.get(position);
 		String title = map.get("title");
-		vh.mtext.setText(title);
+		if (title != null && !title.equals("")) {
+			vh.mtext.setText(title);
+		}
 
 		return convertView;
 	}

@@ -765,8 +765,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             @Override
             public void onClick(View view) {
-                DialogSingleUtil.show(getActivity());
                 if (i != currentIndex) {
+                    DialogSingleUtil.show(getActivity());
                     updateTitle(i, mbox2,text);
                     updateTitleTop(i, mbox1,text);
                 }
@@ -838,8 +838,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements OnClickLis
 
             @Override
             public void onClick(View view) {
-                DialogSingleUtil.show(getActivity());
                 if (i != currentIndexTop) {
+                    DialogSingleUtil.show(getActivity());
                     updateTitleTop(i, mbox1,text);
                     updateTitle(i, mbox2,text);
                 }

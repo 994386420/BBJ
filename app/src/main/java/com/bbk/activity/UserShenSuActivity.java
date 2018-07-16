@@ -90,6 +90,7 @@ public class UserShenSuActivity extends BaseActivity {
                             if (jsonObject.optString("status").equals("1")) {
                                 StringUtil.showToast(UserShenSuActivity.this, "申诉成功");
                                 medit.setText("");
+                                DialogSingleUtil.dismiss(0);
                                 finish();
                             } else {
                                 StringUtil.showToast(UserShenSuActivity.this, jsonObject.optString("errmsg"));

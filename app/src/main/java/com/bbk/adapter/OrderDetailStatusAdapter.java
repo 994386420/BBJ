@@ -96,7 +96,7 @@ public class OrderDetailStatusAdapter extends BaseAdapter {
                     }
                     break;
                 case 3:
-                    viewHolder.orderDetailStatus.setText("发放佣金");
+                    viewHolder.orderDetailStatus.setText("发放金额");
                     viewHolder.view2.setVisibility(View.INVISIBLE);
                     viewHolder.view4.setVisibility(View.INVISIBLE);
                     if (state.equals("3")){

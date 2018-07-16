@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -290,6 +291,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 							JSONObject jsonObject = new JSONObject(s);
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
+								Log.i("===============>>>",content);
 									systemMessageBeans = JSON.parseArray(content,SystemMessageBean.class);
 									DialogSingleUtil.dismiss(0);
 								if (x == 1){

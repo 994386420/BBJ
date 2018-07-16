@@ -15,6 +15,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.resource.NewConstants;
+import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
@@ -90,6 +91,8 @@ public class MesageCListSysAdapter extends BaseAdapter{
 		vh.itemlayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				EventIdIntentUtil.EventIdIntent(context,systemMessageBean.getEventId());
+				Log.i("============>>>",systemMessageBean.getEventId());
 				if (!systemMessageBean.getIsread().equals("1")) {
 					systemMessageBean.setIsread("1");
 					notifyDataSetChanged();
@@ -120,6 +123,7 @@ public class MesageCListSysAdapter extends BaseAdapter{
 							if (HomeActivity.mNumImageView != null){
 								HomeActivity.mNumImageView.setNum(NewConstants.messages);
 							}
+
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}

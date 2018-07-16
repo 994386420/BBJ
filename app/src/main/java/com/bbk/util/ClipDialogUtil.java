@@ -56,24 +56,6 @@ public class ClipDialogUtil {
 			if (jsonObject[0].has("hasCps")) {
 				hasCps = jsonObject[0].optString("hasCps");//  hasCps=1  跳转三级页面 hasCps=0 跳原来的历史价格页面  如果hasCps=1  新增返回  domain   price
 			}
-			String LogisticsQuery = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),
-					"QueryHistory", "QueryHistory");
-			JSONObject object = new JSONObject();
-			object.put("url", url);
-			object.put("rowkey", rowkey);
-			object.put("title", title);
-			JSONArray array;
-			if (!LogisticsQuery.isEmpty()) {
-				array = new JSONArray(LogisticsQuery);
-			} else {
-				array = new JSONArray();
-			}
-			array.put(object);
-			if (array.length() > 10) {
-				array.remove(0);
-			}
-			SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "QueryHistory",
-					"QueryHistory", array.toString());
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -116,6 +98,28 @@ public class ClipDialogUtil {
 							@SuppressLint("NewApi")
 							@Override
 							public void onClick(View v) {
+								try {
+								String LogisticsQuery = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),
+										"QueryHistory", "QueryHistory");
+								JSONObject object = new JSONObject();
+								object.put("url", url);
+								object.put("rowkey", rowkey);
+								object.put("title", title);
+								JSONArray array;
+								if (!LogisticsQuery.isEmpty()) {
+									array = new JSONArray(LogisticsQuery);
+								} else {
+									array = new JSONArray();
+								}
+								array.put(object);
+								if (array.length() > 10) {
+									array.remove(0);
+								}
+								SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "QueryHistory",
+										"QueryHistory", array.toString());
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
 								String url1 = BaseApiService.Base_URL + "mobile/user/history?rowkey=" + rowkey;
 								Intent intent = new Intent(context, WebViewActivity.class);
 								intent.putExtra("url", url1);

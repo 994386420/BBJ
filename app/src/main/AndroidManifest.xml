@@ -830,7 +830,9 @@
             android:label="@string/title_activity_register_bang_ding" />
         <activity
             android:name=".IntentActivity"
-            android:label="@string/title_activity_intent" />
+            android:label="@string/title_activity_intent"
+            android:screenOrientation="portrait"
+            android:theme="@style/dialog2" />
         <receiver
             android:name="com.bbk.wxpay.AppRegister"
             android:permission="com.tencent.mm.plugin.permission.SEND">

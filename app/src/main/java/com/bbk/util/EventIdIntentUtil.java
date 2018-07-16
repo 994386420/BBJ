@@ -543,4 +543,108 @@ public class EventIdIntentUtil {
 			}
 		}
 	}
+
+
+	public static void EventIdIntent(Context context,String eventId){
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+		switch (eventId) {
+			case "102":
+				Intent intent102 = new Intent(context, CollectionActivity.class);
+				intent102.putExtra("type", "1");
+				context.startActivity(intent102);
+				break;
+			case "103":
+//			HomeActivity.initfour();
+				Intent intent103 = new Intent(context, MyCoinActivity.class);
+				context.startActivity(intent103);
+				break;
+			case "104":
+				Intent intent104 = new Intent(context, CouponActivity.class);
+				context.startActivity(intent104);
+				break;
+			case "105":
+				HomeActivity.inittwo();
+				break;
+			case "106":
+				HomeActivity.initone();
+				break;
+			case "107":
+				Intent intent107 = new Intent(context, DataFragmentActivity.class);
+				context.startActivity(intent107);
+				break;
+			case "108":
+//				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "2");
+				Intent intent = new Intent(context, UserLoginNewActivity.class);
+				context.startActivity(intent);
+
+				break;
+			case "111":
+				String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
+				if (!TextUtils.isEmpty(userID)) {
+					intent = new Intent(context, WebViewActivity.class);
+					String url = BaseApiService.Base_URL + "mobile/user/lottery?mid=";
+					intent.putExtra("url", url + mid);
+					context.startActivity(intent);
+				}else {
+					intent = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent);
+				}
+				break;
+			case "112":
+				intent = new Intent(context, QueryHistoryActivity.class);
+				context.startActivity(intent);
+				break;
+			case "113":
+				HomeActivity.initone();
+				break;
+			case "114":
+				intent = new Intent(context, BrokerageActivity.class);
+				context.startActivity(intent);
+				break;
+			case "115":
+				intent = new Intent(context, FanLiOrderActivity.class);
+				context.startActivity(intent);
+				break;
+			case "116":
+				intent = new Intent(context, FensiActivity.class);
+				context.startActivity(intent);
+				break;
+			case "117":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "t1");
+				context.startActivity(intent);
+				break;
+			case "118":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "t3");
+				context.startActivity(intent);
+				break;
+			case "119":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "j1");
+				context.startActivity(intent);
+				break;
+			case "120":
+				intent = new Intent(context, BrokerageDetailActivity.class);
+				intent.putExtra("type", "j3");
+				context.startActivity(intent);
+				break;
+			case "121":
+				SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "2");
+				intent = new Intent(context, HomeActivity.class);
+				context.startActivity(intent);
+				break;
+			case "122":
+				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
+				intent = new Intent(context, BidHomeActivity.class);
+				intent.putExtra("currentitem", "2");
+				context.startActivity(intent);
+				break;
+			default:
+				break;
+		}
+		if (WelcomeActivity.instance!= null){
+			WelcomeActivity.instance.finish();
+		}
+	}
 }

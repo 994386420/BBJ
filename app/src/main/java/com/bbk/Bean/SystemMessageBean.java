@@ -27,14 +27,6 @@ public class SystemMessageBean {
         this.dtime = dtime;
     }
 
-    public String getEventIde() {
-        return eventId;
-    }
-
-    public void setEventIde(String eventIde) {
-        this.eventId = eventIde;
-    }
-
     public String getMessage() {
         return message;
     }
@@ -49,5 +41,13 @@ public class SystemMessageBean {
 
     public void setMid(String mid) {
         this.mid = mid;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 }
