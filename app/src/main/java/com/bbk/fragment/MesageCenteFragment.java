@@ -37,12 +37,13 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow;
-import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.DialogMessageCenterUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.SoftHideKeyBoardUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
+import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -259,7 +260,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 		switch (curclick) {
 			case 0:
 				systempage = 1;
-				DialogSingleUtil.show(getActivity());
+				DialogMessageCenterUtil.show(getActivity());
 				initsystemData();
 				break;
 			case 1:
@@ -291,9 +292,9 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 							JSONObject jsonObject = new JSONObject(s);
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
-								Log.i("===============>>>",content);
+								    Logg.json(jsonObject);
 									systemMessageBeans = JSON.parseArray(content,SystemMessageBean.class);
-									DialogSingleUtil.dismiss(0);
+									DialogMessageCenterUtil.dismiss(0);
 								if (x == 1){
 									if (systemMessageBeans != null && systemMessageBeans.size() > 0) {
 										xrefresh.setEnableLoadMore(true);
@@ -336,7 +337,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						DialogSingleUtil.dismiss(0);
+						DialogMessageCenterUtil.dismiss(0);
 						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
@@ -364,7 +365,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
 								sendMsgBeans = JSON.parseArray(content,SendMsgBean.class);
-								DialogSingleUtil.dismiss(0);
+								DialogMessageCenterUtil.dismiss(0);
 								if (x == 1){
 									if (sendMsgBeans != null && sendMsgBeans.size() > 0) {
 										xrefresh.setEnableLoadMore(true);
@@ -402,12 +403,12 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 
 					@Override
 					protected void showDialog() {
-						DialogSingleUtil.show(getActivity());
+						DialogMessageCenterUtil.show(getActivity());
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						DialogSingleUtil.dismiss(0);
+						DialogMessageCenterUtil.dismiss(0);
 						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
@@ -436,7 +437,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
 								receiceMsgBeans = JSON.parseArray(content,ReceiceMsgBean.class);
-								DialogSingleUtil.dismiss(0);
+								DialogMessageCenterUtil.dismiss(0);
 								if (x == 1){
 									if (receiceMsgBeans != null && receiceMsgBeans.size() > 0) {
 										xrefresh.setEnableLoadMore(true);
@@ -490,12 +491,12 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 
 					@Override
 					protected void showDialog() {
-						DialogSingleUtil.show(getActivity());
+						DialogMessageCenterUtil.show(getActivity());
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						DialogSingleUtil.dismiss(0);
+						DialogMessageCenterUtil.dismiss(0);
 						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
@@ -567,12 +568,12 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 
 					@Override
 					protected void showDialog() {
-						DialogSingleUtil.show(getActivity());
+						DialogMessageCenterUtil.show(getActivity());
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-						DialogSingleUtil.dismiss(0);
+						DialogMessageCenterUtil.dismiss(0);
 						zLoadingView.setVisibility(View.VISIBLE);
 						zLoadingView.loadError();
 						mlistview.setVisibility(View.GONE);
@@ -651,7 +652,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 			case 0:
 				systempage = 1;
 				x = 1;
-				DialogSingleUtil.show(getActivity());
+				DialogMessageCenterUtil.show(getActivity());
 				initsystemData();
 				break;
 			case 1:
@@ -673,7 +674,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 			case 0:
 				systempage = 1;
 				x= 1;
-				DialogSingleUtil.show(getActivity());
+				DialogMessageCenterUtil.show(getActivity());
 				initsystemData();
 				break;
 			case 1:

@@ -204,6 +204,7 @@ public class IntentActivity extends BaseActivity {
 																	url,
 																	mKeplerAttachParameter,
 																	mOpenAppAction);
+															DialogSingleUtil.dismiss(0);
 															finish();
 														} else if (jumpBean.getUrl().contains("taobao") || jumpBean.getUrl().contains("tmall")) {
 															alibcShowParams = new AlibcShowParams(OpenType.Native, false);
@@ -212,6 +213,7 @@ public class IntentActivity extends BaseActivity {
 															exParams.put("isv_code", "appisvcode");
 															exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
 															showUrl();
+															DialogSingleUtil.dismiss(0);
 															finish();
 														} else {
 															handler.postDelayed(runa, 0);

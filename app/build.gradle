@@ -268,5 +268,6 @@ dependencies {
     compile 'com.android.support:design:23.3.0'
 
     implementation 'com.android.support:cardview-v7:23.1.1'
+    implementation 'com.logg:Logg:1.5.1'
 }
 

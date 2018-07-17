@@ -19,6 +19,8 @@ import com.bbk.chat.utils.Foreground;
 import com.bbk.util.CrashHandler;
 import com.kepler.jd.Listener.AsyncInitListener;
 import com.kepler.jd.login.KeplerApiManager;
+import com.logg.Logg;
+import com.logg.config.LoggConfiguration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -61,6 +63,15 @@ public class MyApplication extends Application {
 			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
 			StrictMode.setVmPolicy(builder.build());
 		}
+		/**
+		 * 打印注册
+		 */
+		LoggConfiguration configuration = new LoggConfiguration.Buidler()
+				.setDebug(true)
+//                .setTag("test")// 自定义全局Tag
+				.build();
+		Logg.init(configuration);
+
 		initTXYun();
 		initX5();
 		Foreground.init(this);

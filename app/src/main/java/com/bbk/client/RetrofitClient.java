@@ -3,15 +3,12 @@ package com.bbk.client;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
@@ -29,11 +26,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 
-/**
- * RetrofitClient
- * Created by Tamic on 2016-06-15.
- * {@link # https://github.com/NeglectedByBoss/RetrofitClient}
- */
 public class RetrofitClient {
 
     private static final int DEFAULT_TIMEOUT = 20;
@@ -148,7 +140,6 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void userSign(Map<String, String> parameters, Observer<?> observer) {
         apiService.userSign(parameters)
                 .compose(schedulersTransformer)
@@ -185,63 +176,54 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void getPageListChaozhigou(Map<String, String> parameters, Observer<?> observer) {
         apiService.getPageListChaozhigou(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void getAutoApp(Map<String, String> parameters, Observer<?> observer) {
         apiService.getAutoApp(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void querySysMessage(Map<String, String> parameters, Observer<?> observer) {
         apiService.querySysMessage(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void readSysmsg(Map<String, String> parameters, Observer<?> observer) {
         apiService.readSysmsg(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryIndex(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryIndex(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryBidList(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryBidList(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryBidByStatus(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryBidByStatus(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryJBiaoMsgByStatuss(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryJBiaoMsgByStatus(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void querySysTMessage(Map<String, String> parameters, Observer<?> observer) {
         apiService.querySysTMessage(parameters)
                 .compose(schedulersTransformer)
@@ -260,35 +242,30 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void insertMessageRead(Map<String, String> parameters, Observer<?> observer) {
         apiService.insertMessageRead(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void insertWenzhangGuanzhu(Map<String, String> parameters, Observer<?> observer) {
         apiService.insertWenzhangGuanzhu(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void insertPL(Map<String, String> parameters, Observer<?> observer) {
         apiService.insertPL(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryArticlesFootAndCollect(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryArticlesFootAndCollect(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryBidDetail(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryBidDetail(parameters)
                 .compose(schedulersTransformer)
@@ -307,7 +284,6 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryAppGuanggao(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryAppGuanggao(parameters)
                 .compose(schedulersTransformer)
@@ -320,35 +296,30 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryIndexSeeByToken(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryIndexSeeByToken(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryIndexTuijianByToken(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryIndexTuijianByToken(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void checkExsistProduct(Map<String, String> parameters, Observer<?> observer) {
         apiService.checkExsistProduct(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void getBijiaArr(Map<String, String> parameters, Observer<?> observer) {
         apiService.getBijiaArr(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void updateCooperationByUserid(Map<String, String> parameters, Observer<?> observer) {
         apiService.updateCooperationByUserid(parameters)
                 .compose(schedulersTransformer)
@@ -361,35 +332,30 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryUserBrokerage(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryUserBrokerage(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void querySignFanLi(Map<String, String> parameters, Observer<?> observer) {
         apiService.querySignFanLi(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void getMoneySignFanLi(Map<String, String> parameters, Observer<?> observer) {
         apiService.getMoneySignFanLi(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void getJumpUrl(Map<String, String> parameters, Observer<?> observer) {
         apiService.getJumpUrl(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryBrokerageDetail(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryBrokerageDetail(parameters)
                 .compose(schedulersTransformer)
@@ -402,7 +368,6 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryCompareByUrl(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryCompareByUrl(parameters)
                 .compose(schedulersTransformer)
@@ -415,22 +380,18 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryCpsShareList(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryCpsShareList(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void shareCpsInfos(Map<String, String> parameters, Observer<?> observer) {
         apiService.shareCpsInfos(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
-
     public  void queryCpsOrderList(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryCpsOrderList(parameters)
                 .compose(schedulersTransformer)
@@ -443,21 +404,18 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void insertCpsOrderCheck(Map<String, String> parameters, Observer<?> observer) {
         apiService.insertCpsOrderCheck(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void queryYongjinListByUserid(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryYongjinListByUserid(parameters)
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-
     public  void newInvitedFriend(Map<String, String> parameters, Observer<?> observer) {
         apiService.newInvitedFriend(parameters)
                 .compose(schedulersTransformer)
