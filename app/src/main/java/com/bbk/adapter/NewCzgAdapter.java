@@ -27,6 +27,7 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.logg.Logg;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -148,8 +149,12 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
             } else {
                 viewHolder.tvMall.setVisibility(View.GONE);
             }
-            viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
-            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            if (newHomeCzgBean.get(position).getBprice() != null && !newHomeCzgBean.get(position).getBprice().equals("")) {
+                viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
+                viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            }else {
+                viewHolder.bprice.setVisibility(View.GONE);
+            }
             viewHolder.price.setText(price);
             if (newHomeCzgBean.get(position).getQuan() !=null){
                 viewHolder.llQuan.setVisibility(View.VISIBLE);

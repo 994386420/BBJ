@@ -292,7 +292,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 							JSONObject jsonObject = new JSONObject(s);
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
-								    Logg.json(jsonObject);
+//								    Logg.json(jsonObject);
 									systemMessageBeans = JSON.parseArray(content,SystemMessageBean.class);
 									DialogMessageCenterUtil.dismiss(0);
 								if (x == 1){

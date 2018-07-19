@@ -216,7 +216,7 @@ public class WelcomeActivity extends BaseActivity2{
 							|| text.contains("gp/aw") || text.contains("style/index") || text.contains("sku-") || text.contains("goods")
 							|| text.contains("Detail") || text.contains("proDetail") || text.contains("Goods")) {
 						SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-					    checkExsistProduct(text);
+//					    checkExsistProduct(text);
 //						dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap, WelcomeActivity.this,false);
 					}
 				}

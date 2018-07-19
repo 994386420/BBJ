@@ -27,10 +27,12 @@ import com.umeng.analytics.MobclickAgent;
 import org.json.JSONObject;
 
  public class BaseActivity extends Activity {
+ 	private ClipDialogUtil clipDialogUtil;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connectivities();
+        clipDialogUtil = new ClipDialogUtil(this);
         Looper.myQueue().addIdleHandler(new IdleHandler() {
             @Override
             public boolean queueIdle() {

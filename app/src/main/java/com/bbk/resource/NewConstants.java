@@ -16,6 +16,7 @@ public class NewConstants {
     public static String logFlag;
     public static String copyText;
     public static int clickpositionFenlei, clickpositionDianpu, clickpositionMall,messages;
+    public final static String PHONE_PATTERN = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
 
     public static HashMap<String, Object> getJsonObject(String json) {
         HashMap<String, Object> map = new HashMap<String, Object>();

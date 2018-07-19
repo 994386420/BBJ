@@ -21,11 +21,12 @@ import com.bbk.util.StringUtil;
 import com.umeng.analytics.MobclickAgent;
 
 public class BaseFragmentActivity extends FragmentActivity {
-	
+	private ClipDialogUtil clipDialogUtil;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		connectivities();
+		clipDialogUtil = new ClipDialogUtil(this);
 		Looper.myQueue().addIdleHandler(new IdleHandler() {
             @Override
             public boolean queueIdle() {

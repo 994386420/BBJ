@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.FensiBean;
+import com.bbk.Bean.InvitedBean;
 import com.bbk.adapter.FenSiAdapter;
+import com.bbk.adapter.FenSiInvitedAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -20,6 +22,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
+import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -55,11 +58,15 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
     SmartRefreshLayout refreshLayout;
     int page = 1, x = 1;
     List<FensiBean> fensiBeans;
+    List<InvitedBean> invitedBeans;
     FenSiAdapter fenSiAdapter;
+    FenSiInvitedAdapter fenSiInvitedAdapter;
     @BindView(R.id.friends_num)
     TextView friendsNum;
     @BindView(R.id.ll_yaoqing)
     LinearLayout llYaoqing;
+    @BindView(R.id.fensi_recyclerview1)
+    RecyclerView fensiRecyclerview1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +76,26 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         ButterKnife.bind(this);
         titleText.setText("好友红包");
-        fensiRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+
+        };
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+
+        };
+        fensiRecyclerview.setLayoutManager(linearLayoutManager);
         fensiRecyclerview.setHasFixedSize(true);
+        fensiRecyclerview1.setLayoutManager(linearLayoutManager1);
+        fensiRecyclerview1.setHasFixedSize(true);
         progress.setLoadingHandler(this);
         refreshAndloda();
         queryUserBrokerage();
@@ -111,11 +136,13 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                             JSONObject jsonObject = new JSONObject(s);
                             String content = jsonObject.optString("content");
                             JSONObject object = new JSONObject(content);
+                            Logg.json(object.optString("arr2"));
                             if (jsonObject.optString("status").equals("1")) {
                                 refreshLayout.setEnableLoadMore(true);
                                 friendsNum.setText("共" + object.optString("count") + "位好友");
-                                fensiBeans = JSON.parseArray(object.optString("arr"), FensiBean.class);
+                                invitedBeans = JSON.parseArray(object.optString("arr2"), InvitedBean.class);
                                 if (x == 1) {
+                                    fensiBeans = JSON.parseArray(object.optString("arr"), FensiBean.class);
                                     if (fensiBeans.size() > 0 && fensiBeans != null) {
                                         fenSiAdapter = new FenSiAdapter(FensiActivity.this, fensiBeans);
                                         fensiRecyclerview.setAdapter(fenSiAdapter);
@@ -124,14 +151,22 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                                         progress.loadSuccess(true);
                                         refreshLayout.setEnableLoadMore(false);
                                     }
-                                } else {
-                                    if (fensiBeans.size() > 0 && fensiBeans != null) {
-                                        fenSiAdapter.notifyData(fensiBeans);
+                                    if (invitedBeans.size() > 0 && invitedBeans != null) {
+                                        fenSiInvitedAdapter = new FenSiInvitedAdapter(FensiActivity.this, invitedBeans);
+                                        fensiRecyclerview1.setAdapter(fenSiInvitedAdapter);
                                     } else {
-//                                        StringUtil.showToast(FensiActivity.this, "没有更多了");
+                                        progress.setVisibility(View.VISIBLE);
+                                        progress.loadSuccess(true);
+                                        refreshLayout.setEnableLoadMore(false);
+                                    }
+                                } else {
+                                    if (invitedBeans.size() > 0 && invitedBeans!= null) {
+                                        fenSiInvitedAdapter.notifyData(invitedBeans);
+                                    } else {
                                         refreshLayout.finishLoadMoreWithNoMoreData();
                                     }
                                 }
+
                             } else {
                                 StringUtil.showToast(FensiActivity.this, jsonObject.optString("errmsg"));
                             }
@@ -184,7 +219,7 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
             case R.id.ll_yaoqing:
 //                Intent intent = new Intent(FensiActivity.this, CoinGoGoGoActivity.class);
 //                intent.putExtra("type", "1");
-                Intent intent = new Intent(FensiActivity.this,YaoqingFriendsActivity.class);
+                Intent intent = new Intent(FensiActivity.this, YaoqingFriendsActivity.class);
                 startActivity(intent);
                 break;
         }

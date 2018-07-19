@@ -116,8 +116,12 @@ public class SsNewCzgAdapter extends BaseAdapter {
             } else {
                 viewHolder.tvMall.setVisibility(View.GONE);
             }
-            viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
-            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            if (newHomeCzgBean.get(position).getBprice() != null && !newHomeCzgBean.get(position).getBprice().equals("")) {
+                viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
+                viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
+            }else {
+                viewHolder.bprice.setVisibility(View.GONE);
+            }
             viewHolder.price.setText(price);
             if (newHomeCzgBean.get(position).getQuan() != null && !newHomeCzgBean.get(position).getQuan().equals("")) {
                 viewHolder.llQuan.setVisibility(View.VISIBLE);

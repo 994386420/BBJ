@@ -639,12 +639,12 @@ public class SearchMainActivity extends ActivityGroup implements
     @Override
     protected void onResume() {
         super.onResume();
-        String clipchange = SharedPreferencesUtil.getSharedData(this, "clipchange", "clipchange");
-        if (clipchange.equals("1")) {
-            if (SearchMainActivity.this != null) {
-                ClipDialogUtil.creatDialog(this);
-            }
-        }
+//        String clipchange = SharedPreferencesUtil.getSharedData(this, "clipchange", "clipchange");
+//        if (clipchange.equals("1")) {
+//            if (SearchMainActivity.this != null) {
+//                ClipDialogUtil.creatDialog(this);
+//            }
+//        }
     }
 
     private void onrefresh(SmartRefreshLayout xrefresh2) {
@@ -2141,13 +2141,6 @@ public class SearchMainActivity extends ActivityGroup implements
             eprice = intent.getStringExtra("eprice");
             dianpu = intent.getStringExtra("dianpu");
             fenlei = intent.getStringExtra("productType");
-            if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") ||  eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")){
-                filter_czg.setTextColor(Color.parseColor("#f23030"));
-                mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
-            }else {
-                filter_czg.setTextColor(Color.parseColor("#222222"));
-                mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
-            }
             Log.i("=============", domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
             currentPageIndex = 1;
             x = 1;
@@ -2635,6 +2628,13 @@ public class SearchMainActivity extends ActivityGroup implements
      * productType 分类   dianpu店铺  bprice开始价格 eprice结束价格
      */
     private void initDataCzg() {
+        if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") ||  eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")){
+            filter_czg.setTextColor(Color.parseColor("#f23030"));
+            mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
+        }else {
+            filter_czg.setTextColor(Color.parseColor("#222222"));
+            mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+        }
         Log.i("++++++++", keyword +"==="+sortwayCzg+"===="+ domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
         xrefreshCzgGrid.setNoMoreData(false);
         xrefresh2.setNoMoreData(false);

@@ -92,7 +92,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					data = new JSONObject(dataStr);
 				if ("1".equals(data.optString("status"))) {
 
-					if (ValidatorUtil.isMobile(addr) || ValidatorUtil.isEmail(addr)) {
+					if (ValidatorUtil.isMatchered(NewConstants.PHONE_PATTERN,addr)) {
 						get_code_btn.setEnabled(false);
 						time.start();
 						bangding_code.setSelection(bangding_code.getText().toString().length());
@@ -121,10 +121,12 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							}
 						}).start();
 					} else {
-						StringUtil.showToast(RegisterBangDingActivity.this,"您输入的不是手机号或者邮箱");
+						StringUtil.showToast(RegisterBangDingActivity.this,"请输入11位正确手机号");
+						DialogSingleUtil.dismiss(0);
 					}
 				}else{
 					StringUtil.showToast(RegisterBangDingActivity.this,data.optString("errmsg"));
+					DialogSingleUtil.dismiss(0);
 				}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -165,7 +167,13 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							TencentLoginUtil.Login(RegisterBangDingActivity.this);
 							    //友盟登录
 							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
-							intent = new Intent(RegisterBangDingActivity.this, TuiguangDialogActivity.class);
+//							intent = new Intent(RegisterBangDingActivity.this, TuiguangDialogActivity.class);
+							intent = new Intent(RegisterBangDingActivity.this, HomeActivity.class);
+//								setResult(3, intent);
+							intent.putExtra("type", "4");
+							if (DataFragmentActivity.login_remind != null) {
+								DataFragmentActivity.login_remind.setVisibility(View.GONE);
+							}
 							startActivity(intent);
 							}else {
 								StringUtil.showToast(RegisterBangDingActivity.this, data1.optString("errmsg"));
@@ -218,11 +226,6 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
 				String userPhone = bangding_account.getText().toString();
 				if (!TextUtils.isEmpty(userPhone)) {
 					get_code_btn.setEnabled(true);
@@ -248,6 +251,11 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					bangding_register.setTextColor(Color.parseColor("#FFFFFF"));
 					bangding_register.setBackgroundResource(R.drawable.bg_user_btn_unable);
 				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 
 			}
 

@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bbk.Bean.FensiBean;
+import com.bbk.Bean.InvitedBean;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.AdaptionSizeTextView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONObject;
 
@@ -33,11 +33,11 @@ import butterknife.ButterKnife;
  * Created by rtj on 2018/3/7.
  */
 
-public class FenSiAdapter extends RecyclerView.Adapter {
-    private List<FensiBean> fensiBeans;
+public class FenSiInvitedAdapter extends RecyclerView.Adapter {
+    private List<InvitedBean> fensiBeans;
     private Context context;
 
-    public FenSiAdapter(Context context, List<FensiBean> fensiBeans) {
+    public FenSiInvitedAdapter(Context context, List<InvitedBean> fensiBeans) {
         this.fensiBeans = fensiBeans;
         this.context = context;
     }
@@ -69,7 +69,7 @@ public class FenSiAdapter extends RecyclerView.Adapter {
         return fensiBeans.size();
     }
 
-    public void notifyData(List<FensiBean> beans) {
+    public void notifyData(List<InvitedBean> beans) {
         this.fensiBeans.addAll(beans);
         notifyDataSetChanged();
     }
@@ -77,25 +77,27 @@ public class FenSiAdapter extends RecyclerView.Adapter {
 
     private void initTop(final ViewHolder viewHolder, final int position) {
         try {
-            final FensiBean fensiBean = fensiBeans.get(position);
+            final InvitedBean fensiBean = fensiBeans.get(position);
             //将position保存在itemView的Tag中，以便点击时进行获取
             viewHolder.itemView.setTag(position);
-            viewHolder.tvName.setText(fensiBean.getInvitedname());
+            viewHolder.tvName.setText(fensiBean.getNickname());
             viewHolder.tvQiandao.setText(fensiBean.getMsg());
-            if (fensiBean.getStatus().equals("0")){
-                viewHolder.ivHongbao.setVisibility(View.VISIBLE);
+            viewHolder.tvQiandao.setTextColor(context.getResources().getColor(R.color.tuiguang_color1));
+            viewHolder.ivHongbao.setVisibility(View.GONE);
+            if (fensiBean.getStatus().equals("0")) {
                 viewHolder.tvLingqu.setVisibility(View.GONE);
-                Glide.with(context).load(R.drawable.tuiguang_d01).into(viewHolder.ivHongbao);
-                viewHolder.ivHongbao.setOnClickListener(new View.OnClickListener() {
+                viewHolder.tvNotice.setVisibility(View.VISIBLE);
+                viewHolder.tvNotice.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                      getMoneySignFanLi(fensiBean);
+                        noticeInvitedUserSign(fensiBean);
                     }
                 });
-            }else {
-                viewHolder.ivHongbao.setVisibility(View.GONE);
+            } else {
                 viewHolder.tvLingqu.setVisibility(View.VISIBLE);
-                viewHolder.tvLingqu.setText("已领取"+fensiBean.getMoney()+"个金币");
+                viewHolder.tvNotice.setVisibility(View.GONE);
+                viewHolder.tvLingqu.setText("今日已提醒");
+                viewHolder.tvLingqu.setTextColor(context.getResources().getColor(R.color.tuiguang_color4));
             }
             viewHolder.llItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,6 +119,8 @@ public class FenSiAdapter extends RecyclerView.Adapter {
         ImageView ivHongbao;
         @BindView(R.id.tv_lingqu)
         AdaptionSizeTextView tvLingqu;
+        @BindView(R.id.tv_notice)
+        AdaptionSizeTextView tvNotice;
         @BindView(R.id.ll_item)
         LinearLayout llItem;
 
@@ -127,12 +131,14 @@ public class FenSiAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     *领取返利金币
+     * 提醒
      */
-    private void getMoneySignFanLi(final FensiBean fensiBean) {
+    private void noticeInvitedUserSign(final InvitedBean fensiBean) {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
-        maps.put("id", fensiBean.getId());
-        RetrofitClient.getInstance(context).createBaseApi().getMoneySignFanLi(
+        maps.put("userid", userID);
+        maps.put("inviteduserid", fensiBean.getInviteduserid());
+        RetrofitClient.getInstance(context).createBaseApi().noticeInvitedUserSign(
                 maps, new BaseObserver<String>(context) {
                     @Override
                     public void onNext(String s) {
@@ -141,9 +147,9 @@ public class FenSiAdapter extends RecyclerView.Adapter {
                             if (jsonObject.optString("status").equals("1")) {
                                 String status = fensiBean.getStatus();
                                 Integer i = Integer.valueOf(status);
-                                fensiBean.setStatus((i+1)+"");
+                                fensiBean.setStatus((i + 1) + "");
                                 notifyDataSetChanged();
-                                StringUtil.showToast(context, "领取成功");
+                                StringUtil.showToast(context, "提醒成功");
                             } else {
                                 StringUtil.showToast(context, jsonObject.optString("errmsg"));
                             }

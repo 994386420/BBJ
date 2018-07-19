@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -107,6 +106,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     LinearLayout mTaobaoshopcart;
     @BindView(R.id.ll_fanli_order)
     LinearLayout llFanliOrder;
+    @BindView(R.id.view)
+    View view;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -281,14 +282,17 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                         if (type.equals("0")) {
                                             llTuiguang.setVisibility(View.GONE);
                                             llTuiguang_user.setVisibility(View.VISIBLE);
+                                            view.setVisibility(View.VISIBLE);
                                             tvLevel.setText("普通会员");
                                         } else if (type.equals("1")) {
                                             llTuiguang.setVisibility(View.VISIBLE);
                                             llTuiguang_user.setVisibility(View.GONE);
+                                            view.setVisibility(View.VISIBLE);
                                             tvLevel.setText("合作伙伴");
                                         } else if (type.equals("2")) {
                                             llTuiguang.setVisibility(View.VISIBLE);
                                             llTuiguang_user.setVisibility(View.GONE);
+                                            view.setVisibility(View.VISIBLE);
                                             tvLevel.setText("超级伙伴");
                                         }
                                     }
@@ -312,10 +316,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 } else {
                                     mnewmsg.setVisibility(View.GONE);
                                 }
-                                if (messages != null){
+                                if (messages != null) {
                                     NewConstants.messages = Integer.parseInt(messages);
-                                    mnewmsg.setText(NewConstants.messages+"");
-                                    if (HomeActivity.mNumImageView != null){
+                                    mnewmsg.setText(NewConstants.messages + "");
+                                    if (HomeActivity.mNumImageView != null) {
                                         HomeActivity.mNumImageView.setNum(NewConstants.messages);
                                     }
                                 }
@@ -495,7 +499,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             user_name.setText("请登录");
             user_img.setImageResource(R.mipmap.logo_01);
             mjb.setText("0");
-            llTuiguang_user.setVisibility(View.VISIBLE);
+            llTuiguang_user.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
             llTuiguang.setVisibility(View.GONE);
             tvLevel.setVisibility(View.GONE);
             mJlzText.setVisibility(View.GONE);
@@ -924,7 +929,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //        if (isFirstResultUse.equals("no")) {
 //            xrefresh.autoRefresh();
 //        } else {
-            initData();
+        initData();
 //        }
         try {
             if (showTimes == 0) {
@@ -1018,7 +1023,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     }
 
 
-    @OnClick({R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.ll_fensi, R.id.mjdshopcart, R.id.mTaobaoshopcart,R.id.ll_fanli_order})
+    @OnClick({R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.ll_fensi, R.id.mjdshopcart, R.id.mTaobaoshopcart, R.id.ll_fanli_order})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");

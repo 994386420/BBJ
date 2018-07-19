@@ -68,10 +68,11 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
                         data = new JSONObject(dataStr);
 					if ("1".equals(data.optString("status"))) {
 						StringUtil.showToast(RegisterByPhoneActivity.this,"发送成功");
+						DialogSingleUtil.dismiss(0);
 					}else {
 						StringUtil.showToast(RegisterByPhoneActivity.this,data.optString("errmsg"));
+						DialogSingleUtil.dismiss(0);
 					}
-					DialogSingleUtil.dismiss(0);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -84,8 +85,7 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 				try {
 					data = new JSONObject(dataStr);
 				if ("1".equals(data.optString("status"))) {
-
-					if (ValidatorUtil.isMobile(addr) || ValidatorUtil.isEmail(addr)) {
+					if (ValidatorUtil.isMatchered(NewConstants.PHONE_PATTERN,addr)) {
 						get_code_btn.setEnabled(false);
 						time.start();
 						bangding_code.setSelection(bangding_code.getText().toString().length());
@@ -113,10 +113,12 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 							}
 						}).start();
 					} else {
-						StringUtil.showToast(RegisterByPhoneActivity.this,"您输入的不是手机号或者邮箱");
+						StringUtil.showToast(RegisterByPhoneActivity.this,"请输入11位正确手机号");
+						DialogSingleUtil.dismiss(0);
 					}
 				}else{
 					StringUtil.showToast(RegisterByPhoneActivity.this,data.optString("errmsg"));
+					DialogSingleUtil.dismiss(0);
 				}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -157,7 +159,14 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
 							TencentLoginUtil.Login(RegisterByPhoneActivity.this);
 							NewConstants.logFlag = "1";
-							intent = new Intent(RegisterByPhoneActivity.this, TuiguangDialogActivity.class);
+//							intent = new Intent(RegisterByPhoneActivity.this, TuiguangDialogActivity.class);
+//							startActivity(intent);
+							intent = new Intent(RegisterByPhoneActivity.this, HomeActivity.class);
+//								setResult(3, intent);
+							intent.putExtra("type", "4");
+							if (DataFragmentActivity.login_remind != null) {
+								DataFragmentActivity.login_remind.setVisibility(View.GONE);
+							}
 							startActivity(intent);
 							}else {
 								StringUtil.showToast(RegisterByPhoneActivity.this, data1.optString("errmsg"));
@@ -219,18 +228,13 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 	private void initData() {
 		time = new TimeCount(120000, 1000);
 		get_code_btn.setOnClickListener(this);
-
+		String userPhone = bangding_account.getText().toString();
 		bangding_account.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
 				String userPhone = bangding_account.getText().toString();
-				if (!TextUtils.isEmpty(userPhone)) {
+				if (userPhone != null && !userPhone.equals("")) {
 					get_code_btn.setEnabled(true);
 					get_code_btn.setTextColor(Color.parseColor("#FFFFFF"));
 					get_code_btn.setBackgroundResource(R.drawable.bg_user_btn);
@@ -241,6 +245,7 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 							.setBackgroundResource(R.drawable.bg_user_btn_unable);
 
 				}
+
 				String userEmail = bangding_account.getText().toString();
 				String userCode = bangding_code.getText().toString();
 				String userpassword = bangding_tjm.getText().toString();
@@ -254,6 +259,11 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 					bangding_register.setTextColor(Color.parseColor("#FFFFFF"));
 					bangding_register.setBackgroundResource(R.drawable.bg_user_btn_unable);
 				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 
 			}
 
@@ -266,11 +276,6 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
 				String userEmail = bangding_account.getText().toString();
 				String userCode = bangding_code.getText().toString();
 				String userpassword = bangding_tjm.getText().toString();
@@ -284,6 +289,11 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 					bangding_register.setTextColor(Color.parseColor("#FFFFFF"));
 					bangding_register.setBackgroundResource(R.drawable.bg_user_btn_unable);
 				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 			}
 
 			@Override

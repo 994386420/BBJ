@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bbk.Bean.FenXiangItemBean;
@@ -62,39 +63,45 @@ public class FenXiangImageAdapter extends BaseAdapter {
         }
 //        Glide.clear(vh.mimg);
         Glide.with(context)
-                .load(fenXiangItemBeans.get(position).getImg())
+                .load(fenXiangItemBeans.get(position).getImgurl())
                 .placeholder(R.mipmap.zw_img_300)
                 .priority(Priority.HIGH)
                 .into(vh.mimg);
-        if (fenXiangItemBeans.get(position).getPrice() != null) {
+        if (fenXiangItemBeans.get(position).getPrice() != null && !fenXiangItemBeans.get(position).getPrice().equals("")) {
             vh.price.setText(fenXiangItemBeans.get(position).getPrice());
+        } else {
+            vh.llMoney.setVisibility(View.GONE);
         }
-        if (fenXiangItemBeans.get(position).getZuan() != null) {
+        if (fenXiangItemBeans.get(position).getZuan() != null&& !fenXiangItemBeans.get(position).getZuan().equals("")) {
             vh.zuan.setText(fenXiangItemBeans.get(position).getZuan().replace("预估", ""));
+        } else {
+            vh.zuan.setVisibility(View.GONE);
         }
-        vh.flItemLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, IntentActivity.class);
-                if (fenXiangItemBeans.get(position).getRequestUrl() != null) {
-                    intent.putExtra("url", fenXiangItemBeans.get(position).getRequestUrl());
+        if (fenXiangItemBeans.get(position).getRowkey() != null && !fenXiangItemBeans.get(position).getRowkey().equals("")) {
+            vh.flItemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, IntentActivity.class);
+                    if (fenXiangItemBeans.get(position).getRequestUrl() != null) {
+                        intent.putExtra("url", fenXiangItemBeans.get(position).getRequestUrl());
+                    }
+                    if (fenXiangItemBeans.get(position).getTitle() != null) {
+                        intent.putExtra("title", fenXiangItemBeans.get(position).getTitle());
+                    }
+                    if (fenXiangItemBeans.get(position).getDomain() != null) {
+                        intent.putExtra("domain", fenXiangItemBeans.get(position).getDomain());
+                    }
+                    if (fenXiangItemBeans.get(position).getRowkey() != null) {
+                        intent.putExtra("groupRowKey", fenXiangItemBeans.get(position).getRowkey());
+                    }
+                    intent.putExtra("isczg", "1");
+                    if (fenXiangItemBeans.get(position).getBprice() != null) {
+                        intent.putExtra("bprice", fenXiangItemBeans.get(position).getBprice());
+                    }
+                    context.startActivity(intent);
                 }
-                if (fenXiangItemBeans.get(position).getTitle() != null) {
-                    intent.putExtra("title", fenXiangItemBeans.get(position).getTitle());
-                }
-                if (fenXiangItemBeans.get(position).getDomain() != null) {
-                    intent.putExtra("domain", fenXiangItemBeans.get(position).getDomain());
-                }
-                if (fenXiangItemBeans.get(position).getRowkey() != null) {
-                    intent.putExtra("groupRowKey", fenXiangItemBeans.get(position).getRowkey());
-                }
-                intent.putExtra("isczg", "1");
-                if (fenXiangItemBeans.get(position).getBprice() != null) {
-                    intent.putExtra("bprice", fenXiangItemBeans.get(position).getBprice());
-                }
-                context.startActivity(intent);
-            }
-        });
+            });
+        }
         return convertView;
     }
 
@@ -107,10 +114,11 @@ public class FenXiangImageAdapter extends BaseAdapter {
         ImageView mplay;
         @BindView(R.id.fl_item_layout)
         FrameLayout flItemLayout;
+        @BindView(R.id.ll_money)
+        LinearLayout llMoney;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
-
 }

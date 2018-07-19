@@ -146,4 +146,20 @@ public class ValidatorUtil {
 //        System.out.println(Validator.isUsername(username));
 //        System.out.println(Validator.isChinese(username));
     }
+
+    /**
+     * 正则表达式匹配判断
+     * @param patternStr 匹配规则
+     * @param input 需要做匹配操作的字符串
+     * @return true if matched, else false
+     */
+    public static boolean isMatchered(String patternStr, CharSequence input) {
+        Pattern pattern = Pattern.compile(patternStr);
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            return true;
+        }
+        return false;
+    }
+
 }

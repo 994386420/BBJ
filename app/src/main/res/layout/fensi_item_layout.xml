@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/btn_seclecter"
     android:orientation="vertical">
 
     <LinearLayout
@@ -45,7 +46,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
-                android:visibility="visible" />
+                android:visibility="gone" />
             <com.bbk.view.AdaptionSizeTextView
                 android:id="@+id/tv_lingqu"
                 android:layout_width="wrap_content"
@@ -54,6 +55,22 @@
                 android:textSize="14dp"
                 android:visibility="gone"
                 android:textColor="@color/tuiguang_color1"/>
+
+            <com.bbk.view.AdaptionSizeTextView
+                android:id="@+id/tv_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="提醒TA签到"
+                android:gravity="center"
+                android:textSize="11dp"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:visibility="gone"
+                android:textColor="@color/tuiguang_color1"
+                android:background="@drawable/bg_tuiguang6" />
         </LinearLayout>
     </LinearLayout>
     <View
