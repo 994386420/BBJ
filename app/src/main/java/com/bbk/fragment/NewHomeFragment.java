@@ -54,6 +54,7 @@ import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.AnimationUtil;
+import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.HomeLoadUtil;
@@ -265,6 +266,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
         mSuspensionBar = mView.findViewById(R.id.layout_click);
         final LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
         mrecyclerview.setLayoutManager(gridLayoutManager);
+        refreshLayout.setEnableLoadMore(false);
     }
 
     /**
@@ -294,7 +296,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                     @Override
                     protected void hideDialog() {
                         zLoadingView.loadSuccess();
-                        DialogSingleUtil.dismiss(0);
+                        DialogHomeUtil.dismiss(0);
                     }
 
                     @Override
@@ -303,7 +305,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        DialogSingleUtil.dismiss(0);
+                        DialogHomeUtil.dismiss(0);
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         scrollview.setVisibility(View.GONE);
@@ -388,7 +390,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
                 initData();
-                initDataCzg("");
+//                initDataCzg("");
                 if (titlelist.size() > 0 && titlelist != null) {
                     homeLoadUtil.updateTitle(0, mbox2, keyword, mhscrollview);
                     homeLoadUtil.updateTitleTop(0, mboxtop, keyword, mhscrollviewtop);
@@ -610,7 +612,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     @Override
     protected void loadLazyData() {
         titlelist = new ArrayList<>();
-        DialogSingleUtil.show(getActivity());
+        DialogHomeUtil.show(getActivity());
 //        mIdex("1");
         x = 1;
         page = 1;
@@ -623,7 +625,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
      */
     @Override
     public void doRequestData() {
-        DialogSingleUtil.show(getActivity());
+        DialogHomeUtil.show(getActivity());
         zLoadingView.setVisibility(View.GONE);
         initData();
         x = 1;
@@ -636,7 +638,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     @Override
     public void onDestroy() {
         super.onDestroy();
-        DialogSingleUtil.dismiss(0);
+        DialogHomeUtil.dismiss(0);
     }
 
     @Override
@@ -720,7 +722,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
             keyword = chaozhigouTypesBeans.get(position).getKeyword();
             x = 1;
             page = 1;
-            DialogSingleUtil.show(getActivity());
+            DialogHomeUtil.show(getActivity());
             initDataCzg(keyword);
             homeLoadUtil.updateTitle(position + 1, mbox2, keyword, mhscrollview);
             homeLoadUtil.updateTitleTop(position + 1, mboxtop, keyword, mhscrollviewtop);
@@ -788,7 +790,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                     protected void hideDialog() {
                         refreshLayout.finishLoadMore();
                         refreshLayout.finishRefresh();
-                        DialogSingleUtil.dismiss(0);
+                        DialogHomeUtil.dismiss(0);
                         zLoadingView.loadSuccess();
                     }
 
@@ -801,13 +803,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         refreshLayout.finishLoadMore();
                         refreshLayout.finishRefresh();
-                        DialogSingleUtil.dismiss(0);
+                        DialogHomeUtil.dismiss(0);
                         scrollview.setVisibility(View.GONE);
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
                         mrecyclerview.setVisibility(View.GONE);
                         mSuspensionBar.setVisibility(View.GONE);
-                        DialogSingleUtil.dismiss(0);
+//                        DialogSingleUtil.dismiss(0);
                         StringUtil.showToast(getActivity(), e.message);
                     }
                 });

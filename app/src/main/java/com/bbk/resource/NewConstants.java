@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class NewConstants {
     public static HashMap<String, Object> mChatMap = new HashMap<>();
     public static HashMap<String, Object> mChatNickMameMap = new HashMap<>();
-    public static String Flag,yingdaoFlag;
+    public static String Flag,yingdaoFlag = "2",showdialogFlg = "0";
     public static String logFlag;
     public static String copyText;
     public static int clickpositionFenlei, clickpositionDianpu, clickpositionMall,messages;

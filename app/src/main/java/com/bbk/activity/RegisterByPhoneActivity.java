@@ -35,6 +35,7 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
 import com.bbk.util.ValidatorUtil;
+import com.logg.Logg;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -78,6 +79,7 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
+					DialogSingleUtil.dismiss(0);
 				}
 
 				break;
@@ -94,9 +96,10 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 						bangding_code.setSelection(bangding_code.getText().toString().length());
 						String v = RSAEncryptorAndroid.getSendCode(addr);
 						final Map<String, String> paramsMap = new HashMap<String, String>();
-						final String url = Constants.MAIN_BASE_URL_MOBILE + "apiService/sendMessage";
+						final String url = BaseApiService.Base_URL+ "apiService/sendMessage";
 						paramsMap.put("phone", addr);
-						paramsMap.put("code", v);
+//						Logg.e(addr+"============>>"+RSAEncryptorAndroid.getSendCode(addr).replace("\n",""));
+						paramsMap.put("code", RSAEncryptorAndroid.getSendCode(addr).replace("\n","").replace("\r",""));
 						new Thread(new Runnable() {
 							
 							@Override
@@ -383,6 +386,7 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 						params.put("imgUrl", imgUrl);
 						params.put("mesgCode", mesgCode);
 						params.put("client", "android");
+						params.put("code",RSAEncryptorAndroid.getSendCode(addr+mesgCode));
 						final String url1 = BaseApiService.Base_URL + Constants.registUserByPhoneNumber;
 						new Thread(new Runnable() {
 

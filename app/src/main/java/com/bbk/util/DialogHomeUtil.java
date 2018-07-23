@@ -1,0 +1,131 @@
+package com.bbk.util;
+
+import android.content.Context;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+
+public class DialogHomeUtil {
+
+	private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
+//	private static AlertDialog alertDialog = null;
+	private static int showCount = 0;
+	private Context context;
+	private static NewAlertDialog dialog = null;
+//	public static void show(Context context, int id,String tips){
+//		showCount++;
+//		if(alertDialog == null || !alertDialog.isShowing()){
+//			AlertDialog.Builder builder = new Builder(context, R.style.dialog);
+//			LayoutInflater inflater = LayoutInflater.from(context);
+//			View view = inflater.inflate(id, null);
+//			builder.setView(view,0,0,0,0);
+//
+//			ImageView imageView = (ImageView) view.findViewById(R.id.dialog_img);
+//
+//			final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//			animation.setDuration(1000);
+//			animation.setRepeatCount(Animation.INFINITE);
+//			animation.setRepeatMode(Animation.RESTART);
+//			animation.setInterpolator(LINEAR_INTERPOLATOR);
+//			imageView.setAnimation(animation);
+//			animation.startNow();
+////			imageView.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE,0.5);
+//			alertDialog = builder.create();
+//			alertDialog.setCanceledOnTouchOutside(false);
+//
+//			if(!TextUtils.isEmpty(tips))
+//				((TextView)view.findViewById(R.id.tips_tv)).setText(tips);
+//
+//			Window window = alertDialog.getWindow();
+//			WindowManager.LayoutParams params = window.getAttributes();
+//			params.gravity = Gravity.CENTER;
+//			//设置浮动窗口不可聚焦（实现操作除浮动窗口外的其他可见窗口的操作）
+//			params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+//			window.setAttributes(params);
+//		    window.setWindowAnimations(R.style.dialog_style);
+//		    alertDialog.setOnDismissListener(new OnDismissListener() {
+//				@Override
+//				public void onDismiss(DialogInterface dialog) {
+//					showCount = 0;
+//				}
+//			});
+////			alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//全局弹窗(WindowManager.LayoutParams.TYPE_TOAST
+////			alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);//全局弹窗
+//			alertDialog.show();
+//		}
+//	}
+//	public static void show(Context context,String tips){
+//		show(context, R.layout.loading_dialog,tips);
+//	}
+//	public static void show(Context context){
+//		show(context, R.layout.loading_dialog,null);
+//	}
+//
+//	public  static void dismiss(final int time) {
+//		showCount--;
+//		if(showCount>0){
+//			return;
+//		}
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				try {
+//					Thread.sleep(time);
+//					if(alertDialog != null && alertDialog.isShowing()) {
+//						alertDialog.dismiss();
+//						alertDialog = null;
+//					}
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}).start();
+//
+//	}
+
+
+	public static void show(Context context) {
+		if (context != null) {
+			if (dialog != null) {
+				dialog.dismiss();
+				dialog = null;
+			}
+			if (dialog == null) {
+				dialog = NewAlertDialog.create(context, true, null);
+			}
+			dialog.show();
+		}
+
+	}
+	public static void show(Context context,String tips) {
+		if (context != null) {
+			if (dialog != null) {
+				dialog.dismiss();
+				dialog = null;
+			}
+			if (dialog == null) {
+				dialog = NewAlertDialog.create(context, true, null);
+			}
+			dialog.show();
+		}
+
+	}
+	public static void  dismiss(final int time)  {
+	   new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(time);
+					if (dialog != null && dialog.isShowing()) {
+						dialog.dismiss();
+						dialog = null;
+					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+}

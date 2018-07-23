@@ -18,6 +18,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow3;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -248,7 +249,9 @@ public class IntentActivity extends BaseActivity {
 
 					@Override
 					protected void showDialog() {
-//						DialogSingleUtil.show(IntentActivity.this);
+						if (NewConstants.showdialogFlg.equals("1")) {
+							DialogSingleUtil.show(IntentActivity.this);
+						}
 					}
 
 					@Override

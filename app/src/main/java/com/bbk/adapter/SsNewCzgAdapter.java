@@ -20,6 +20,7 @@ import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -151,6 +152,7 @@ public class SsNewCzgAdapter extends BaseAdapter {
                     try {
 //                        if (AlibcLogin.getInstance().isLogin() == true) {
                         if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
+                            NewConstants.showdialogFlg = "1";
                             intent = new Intent(context, IntentActivity.class);
                             if (newHomeCzgBean.get(position).getRequestUrl() != null) {
                                 intent.putExtra("url", newHomeCzgBean.get(position).getRequestUrl());

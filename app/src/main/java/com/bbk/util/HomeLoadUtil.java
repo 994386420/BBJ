@@ -276,7 +276,7 @@ public class HomeLoadUtil {
             public void onClick(View view) {
 //                Logg.e(i+"==="+currentIndexTop);
                 if (i != currentIndexTop) {
-                    DialogSingleUtil.show(context);
+                    DialogHomeUtil.show(context);
                     SharedPreferencesUtil.putSharedData(context, "homeclick", "homeclick", "no");
                     updateTitleTop(i, mboxTop, text,horizontalScrollViewTop);
                     updateTitle(i, mbox, text,horizontalScrollView);
@@ -314,7 +314,7 @@ public class HomeLoadUtil {
             public void onClick(View view) {
                 if (i != currentIndex) {
                     SharedPreferencesUtil.putSharedData(context, "homeclick", "homeclick", "yes");
-                    DialogSingleUtil.show(context);
+                    DialogHomeUtil.show(context);
                     updateTitle(i, mbox, text,horizontalScrollView);
                     updateTitleTop(i, mboxTop, text,horizontalScrollViewTop);
                 }

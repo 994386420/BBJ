@@ -99,9 +99,9 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 						get_code_btn.setEnabled(false);
 						time.start();
 						bangding_code.setSelection(bangding_code.getText().toString().length());
-						String v = 	RSAEncryptorAndroid.getSendCode(addr);
+						String v = RSAEncryptorAndroid.getSendCode(addr).replace("\n","").replace("\r","");
 						final Map<String, String> paramsMap = new HashMap<String, String>();
-						final String url = Constants.MAIN_BASE_URL_MOBILE + "apiService/sendMessage";
+						final String url = BaseApiService.Base_URL + "apiService/sendMessage";
 						paramsMap.put("phone", addr);
 						paramsMap.put("type", "0");
 						paramsMap.put("code", v);
@@ -400,6 +400,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			    params.put("mesgCode", mesgCode);
 			    params.put("client", "android");
 			    params.put("unionid",openID);
+			    params.put("code",RSAEncryptorAndroid.getSendCode(addr+mesgCode));
 				final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
 				new Thread(new Runnable() {
 					

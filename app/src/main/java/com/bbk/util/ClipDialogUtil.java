@@ -28,6 +28,7 @@ import com.bbk.activity.WebViewActivity;
 import com.bbk.client.BaseApiService;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.kepler.jd.Listener.OpenAppAction;
@@ -70,6 +71,7 @@ public class ClipDialogUtil {
 	public static void creatDialog(final Context context) {
 		try {
 //			Logg.e("运行到这里了");
+			NewConstants.showdialogFlg = "0";
 			final String object1 = SharedPreferencesUtil.getSharedData(context, "clipchange", "object");
 			Logg.json(object1);
 			final JSONObject[] jsonObject = new JSONObject[1];
