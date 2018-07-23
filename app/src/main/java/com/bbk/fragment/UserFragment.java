@@ -62,8 +62,10 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.component.HomeAllComponent2;
 import com.bbk.component.HomeAllComponent3;
+import com.bbk.component.HomeAllComponent7;
 import com.bbk.component.JingbiComponent;
 import com.bbk.component.QiandaoComponent;
+import com.bbk.component.ShouyiComponent;
 import com.bbk.flow.DataFlow;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.BaseTools;
@@ -495,6 +497,22 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
         if (!TextUtils.isEmpty(userID)) {
             queryUserInfoMain();
+//            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+            if (!TextUtils.isEmpty(userID)) {
+                llBrokerage.postDelayed(new Runnable() {
+                    //                    @Override
+                    public void run() {
+                        //引导页只显示一次
+                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstUserFanli", "isFirstUserFanli");
+                        if (TextUtils.isEmpty(isFirstResultUse)) {
+                            isFirstResultUse = "yes";
+                        }
+                        if (isFirstResultUse.equals("yes") && NewConstants.yingdaoFlag.equals("1")) {
+                            showGuideViewHehuoren(llBrokerage,llFanliOrder);
+                        }
+                    }
+                },1500);
+            }
         } else {
             user_name.setText("请登录");
             user_img.setImageResource(R.mipmap.logo_01);
@@ -977,7 +995,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
             @Override
             public void onDismiss() {
-                showGuideViewHehuoren(targetView1);
+                SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse", "no");
+//                showGuideViewHehuoren(targetView1);
             }
         });
 
@@ -987,10 +1006,38 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         guide.show(getActivity());
     }
 
-    public void showGuideViewHehuoren(View targetView) {
+    public void showGuideViewHehuoren(View targetView, final View targetView1) {
         showTimes++;
         GuideBuilder builder = new GuideBuilder();
-        builder.setTargetView(llTuiguang_user)
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingBottom(30)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingLeft(10)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+            }
+
+            @Override
+            public void onDismiss() {
+                showGuideViewHehuoren1(targetView1);
+            }
+        });
+
+        builder.addComponent(new ShouyiComponent()).addComponent(new HomeAllComponent7());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show(getActivity());
+    }
+    public void showGuideViewHehuoren1(View targetView1) {
+        showTimes++;
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView1)
 //                .setFullingViewId(R.id.ll_view_group)
                 .setAlpha(150)
                 .setHighTargetCorner(20)
@@ -1007,7 +1054,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
             @Override
             public void onDismiss() {
-                SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse", "no");
+                SharedPreferencesUtil.putSharedData(getActivity(), "isFirstUserFanli", "isFirstUserFanli", "no");
             }
         });
 
@@ -1016,7 +1063,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         guide.setShouldCheckLocInWindow(true);
         guide.show(getActivity());
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

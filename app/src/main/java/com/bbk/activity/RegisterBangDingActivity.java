@@ -25,6 +25,9 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
 import com.bbk.util.ValidatorUtil;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
 
 import android.annotation.SuppressLint;
@@ -164,7 +167,34 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							SharedPreferencesUtil.putSharedData(getApplicationContext(),
 									"userInfor", "login_STATE","1");
 							NewConstants.logFlag = "2";
+							NewConstants.yingdaoFlag = "1";
 							TencentLoginUtil.Login(RegisterBangDingActivity.this);
+							String userId=SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "userID");
+							Context context = getApplicationContext();
+							XGPushConfig.setAccessId(context, 2100196420);
+							XGPushConfig.setAccessKey(context, "AUTV25N58F3Z");
+							XGPushManager.registerPush(context, userId, new XGIOperateCallback() {
+
+								@Override
+								public void onSuccess(Object data, int arg1) {
+									Log.e("TPush====", "注册成功，设备token为：" + data);
+								}
+
+								@Override
+								public void onFail(Object data, int errCode, String msg) {
+									Log.e("TPush====", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+								}
+							});
+							XGPushManager.registerPush(context, new XGIOperateCallback() {
+								@Override
+								public void onSuccess(Object data, int flag) {
+									Log.e("TPush", "注册成功，设备token为：" + data);
+								}
+								@Override
+								public void onFail(Object data, int errCode, String msg) {
+									Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+								}
+							});
 							    //友盟登录
 							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
 //							intent = new Intent(RegisterBangDingActivity.this, TuiguangDialogActivity.class);

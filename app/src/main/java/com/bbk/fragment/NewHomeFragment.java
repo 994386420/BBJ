@@ -1,6 +1,7 @@
 package com.bbk.fragment;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -41,6 +42,10 @@ import com.bbk.adapter.TypeGridAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.component.HomeAllComponent;
+import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeBijiaComponent;
+import com.bbk.component.SimpleComponent;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
@@ -57,6 +62,8 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyScrollViewNew;
+import com.blog.www.guideview.Guide;
+import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -562,6 +569,20 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                             }
                         }
                     }
+
+                    img3.post(new Runnable() {
+//                    @Override
+                    public void run() {
+                        //首页引导页只显示一次
+                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
+                        if (TextUtils.isEmpty(isFirstResultUse)) {
+                            isFirstResultUse = "yes";
+                        }
+                        if (isFirstResultUse.equals("yes")) {
+                            showGuideView(img3, img4);
+                        }
+                    }
+                   });
                     break;
                 case 4:
                     x = 2;
@@ -998,5 +1019,69 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                 scrollview.scrollTo(0, 0);
                 break;
         }
+    }
+
+
+    /**
+     * 首页引导图层
+     *
+     * @param targetView
+     * @param targetView1
+     */
+    public void showGuideView(View targetView, final View targetView1) {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingBottom(70)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingLeft(10)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+            }
+
+            @Override
+            public void onDismiss() {
+                showGuideViewBijia(targetView1);
+            }
+        });
+
+        builder.addComponent(new SimpleComponent()).addComponent(new HomeAllComponent());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show(getActivity());
+    }
+
+    public void showGuideViewBijia(View targetView) {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingBottom(70)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingLeft(10)
+                .setExitAnimationId(android.R.anim.fade_out)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+            }
+
+            @Override
+            public void onDismiss() {
+                SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse" ,"no");
+            }
+        });
+
+        builder.addComponent(new HomeBijiaComponent()).addComponent(new HomeAllComponent1());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show(getActivity());
     }
 }

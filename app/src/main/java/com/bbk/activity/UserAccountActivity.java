@@ -40,6 +40,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +83,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.signature.StringSignature;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
 
@@ -398,6 +401,19 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 							Intent intent = new Intent();
 							setResult(2, intent);
 //							DataFragment.login_remind.setVisibility(View.VISIBLE);
+							String userId=SharedPreferencesUtil.getSharedData(UserAccountActivity.this, "userInfor", "userID");
+							XGPushManager.unregisterPush(UserAccountActivity.this,new XGIOperateCallback() {
+
+								@Override
+								public void onSuccess(Object data, int arg1) {
+									Log.e("TPush", "注销成功，设备token为：" + data);
+								}
+
+								@Override
+								public void onFail(Object data, int errCode, String msg) {
+									Log.e("TPush", "注销失败，错误码：" + errCode + ",错误信息：" + msg);
+								}
+							});
 							DialogSingleUtil.dismiss(0);
 							finish();
 						}

@@ -22,12 +22,12 @@ public class SimpleComponent implements Component {
 
   @Override
   public int getAnchor() {
-    return Component.ANCHOR_TOP ;
+    return Component.ANCHOR_BOTTOM ;
   }
 
   @Override
   public int getFitPosition() {
-    return Component.FIT_CENTER;
+    return Component.FIT_END;
   }
 
   @Override

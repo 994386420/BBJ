@@ -248,7 +248,7 @@ public class IntentActivity extends BaseActivity {
 
 					@Override
 					protected void showDialog() {
-						DialogSingleUtil.show(IntentActivity.this);
+//						DialogSingleUtil.show(IntentActivity.this);
 					}
 
 					@Override

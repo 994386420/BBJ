@@ -66,6 +66,9 @@ import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.openapi.UsersAPI;
 import com.sina.weibo.sdk.openapi.models.ErrorInfo;
 import com.sina.weibo.sdk.openapi.models.User;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -345,6 +348,33 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", jsonObject.optString("u_sig"));
 							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "login_STATE", "1");
 							TencentLoginUtil.Login(this);
+							String userId=SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this, "userInfor", "userID");
+							Context context = getApplicationContext();
+							NewConstants.yingdaoFlag = "1";
+							XGPushConfig.setAccessId(context, 2100196420);
+							XGPushConfig.setAccessKey(context, "AUTV25N58F3Z");
+							XGPushManager.registerPush(context, userId, new XGIOperateCallback() {
+
+								@Override
+								public void onSuccess(Object data, int arg1) {
+									Log.e("TPush====", "注册成功，设备token为：" + data);
+								}
+
+								@Override
+								public void onFail(Object data, int errCode, String msg) {
+									Log.e("TPush====", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+								}
+							});
+							XGPushManager.registerPush(context, new XGIOperateCallback() {
+								@Override
+								public void onSuccess(Object data, int flag) {
+									Log.e("TPush", "注册成功，设备token为：" + data);
+								}
+								@Override
+								public void onFail(Object data, int errCode, String msg) {
+									Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+								}
+							});
 							if (DataFragment.login_remind != null) {
 								DataFragment.login_remind.setVisibility(View.GONE);
 							}
@@ -418,6 +448,33 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 									SharedPreferencesUtil.putSharedData(getApplicationContext(),
 											"userInfor", "login_STATE","1");
 									TencentLoginUtil.Login(this);
+									NewConstants.yingdaoFlag = "1";
+									String userId=SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this, "userInfor", "userID");
+									Context context = getApplicationContext();
+									XGPushConfig.setAccessId(context, 2100196420);
+									XGPushConfig.setAccessKey(context, "AUTV25N58F3Z");
+									XGPushManager.registerPush(context, userId, new XGIOperateCallback() {
+
+										@Override
+										public void onSuccess(Object data, int arg1) {
+											Log.e("TPush====", "注册成功，设备token为：" + data);
+										}
+
+										@Override
+										public void onFail(Object data, int errCode, String msg) {
+											Log.e("TPush====", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+										}
+									});
+									XGPushManager.registerPush(context, new XGIOperateCallback() {
+										@Override
+										public void onSuccess(Object data, int flag) {
+											Log.e("TPush", "注册成功，设备token为：" + data);
+										}
+										@Override
+										public void onFail(Object data, int errCode, String msg) {
+											Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+										}
+									});
 									if (DataFragment.login_remind!= null) {
 										DataFragment.login_remind.setVisibility(View.GONE);
 									}

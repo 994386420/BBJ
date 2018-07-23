@@ -136,8 +136,11 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                             JSONObject jsonObject = new JSONObject(s);
                             String content = jsonObject.optString("content");
                             JSONObject object = new JSONObject(content);
-                            Logg.json(object.optString("arr2"));
+//                            Logg.json(content);
                             if (jsonObject.optString("status").equals("1")) {
+                                fensiRecyclerview.setVisibility(View.VISIBLE);
+                                fensiRecyclerview1.setVisibility(View.VISIBLE);
+                                progress.setVisibility(View.GONE);
                                 refreshLayout.setEnableLoadMore(true);
                                 friendsNum.setText("共" + object.optString("count") + "位好友");
                                 invitedBeans = JSON.parseArray(object.optString("arr2"), InvitedBean.class);
@@ -146,18 +149,27 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                                     if (fensiBeans.size() > 0 && fensiBeans != null) {
                                         fenSiAdapter = new FenSiAdapter(FensiActivity.this, fensiBeans);
                                         fensiRecyclerview.setAdapter(fenSiAdapter);
-                                    } else {
-                                        progress.setVisibility(View.VISIBLE);
-                                        progress.loadSuccess(true);
-                                        refreshLayout.setEnableLoadMore(false);
+//                                        progress.loadSuccess();
                                     }
+//                                    else {
+//                                        progress.setVisibility(View.VISIBLE);
+//                                        progress.loadSuccess(true);
+//                                        refreshLayout.setEnableLoadMore(false);
+//                                    }
                                     if (invitedBeans.size() > 0 && invitedBeans != null) {
                                         fenSiInvitedAdapter = new FenSiInvitedAdapter(FensiActivity.this, invitedBeans);
                                         fensiRecyclerview1.setAdapter(fenSiInvitedAdapter);
                                     } else {
-                                        progress.setVisibility(View.VISIBLE);
-                                        progress.loadSuccess(true);
+//                                        progress.setVisibility(View.VISIBLE);
+//                                        progress.loadSuccess(true);
                                         refreshLayout.setEnableLoadMore(false);
+                                    }
+//                                    Logg.json("==========>>>>>>>",fensiBeans.size()+"==="+invitedBeans.size());
+                                    if (fensiBeans.size() == 0&& invitedBeans.size() == 0){
+                                        progress.setVisibility(View.VISIBLE);
+                                        fensiRecyclerview.setVisibility(View.GONE);
+                                        fensiRecyclerview1.setVisibility(View.GONE);
+                                        progress.loadSuccess(true);
                                     }
                                 } else {
                                     if (invitedBeans.size() > 0 && invitedBeans!= null) {
@@ -190,6 +202,8 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
+                        fensiRecyclerview.setVisibility(View.GONE);
+                        fensiRecyclerview1.setVisibility(View.GONE);
                         progress.setVisibility(View.VISIBLE);
                         progress.loadError();
                         refreshLayout.finishRefresh();

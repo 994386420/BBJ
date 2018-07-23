@@ -10,7 +10,7 @@ import com.blog.www.guideview.Component;
 /**
  * Created by binIoter on 16/6/17.
  */
-public class HomeAllComponent3 implements Component {
+public class HomeAllComponent6 implements Component {
 
   @Override
   public View getView(LayoutInflater inflater) {
@@ -26,16 +26,16 @@ public class HomeAllComponent3 implements Component {
 
   @Override
   public int getFitPosition() {
-    return Component.FIT_CENTER;
+    return Component.FIT_START;
   }
 
   @Override
   public int getXOffset() {
-    return 0;
+    return -135;
   }
 
   @Override
   public int getYOffset() {
-    return 100;
+    return 160;
   }
 }

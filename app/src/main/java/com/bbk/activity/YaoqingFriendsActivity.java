@@ -100,7 +100,7 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
 //                                Log.i("=========",imgUrlList+"----------");
                                 adapter = new Adapter(getSupportFragmentManager(), imgUrlList, YaoqingFriendsActivity.this);
                                 pager.setAdapter(adapter);
-                                pager.setCurrentItem(Integer.MAX_VALUE % imgUrlList.size());
+                                pager.setCurrentItem(1);
                             } else {
                                 StringUtil.showToast(YaoqingFriendsActivity.this, jsonObject.optString("errmsg"));
                             }

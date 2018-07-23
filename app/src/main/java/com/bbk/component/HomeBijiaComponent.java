@@ -22,7 +22,7 @@ public class HomeBijiaComponent implements Component {
 
   @Override
   public int getAnchor() {
-    return Component.ANCHOR_TOP ;
+    return Component.ANCHOR_BOTTOM ;
   }
 
   @Override

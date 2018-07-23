@@ -160,8 +160,7 @@ public class WelcomeActivity extends BaseActivity2{
 		startService(service);
 		SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
 		init();
-
-
+		NewConstants.yingdaoFlag = "0";
 		// 开启logcat输出，方便debug，发布时请关闭
 		// XGPushConfig.enableDebug(this, true);
 		// 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(),
@@ -179,7 +178,7 @@ public class WelcomeActivity extends BaseActivity2{
 
 			@Override
 			public void onSuccess(Object data, int arg1) {
-				Log.e("TPush", "注册成功，设备token为：" + data);
+				Log.e("TPush===", "注册成功，设备token为：" + data);
 			}
 
 			@Override

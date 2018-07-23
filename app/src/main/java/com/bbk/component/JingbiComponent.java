@@ -15,7 +15,7 @@ public class JingbiComponent implements Component {
   @Override
   public View getView(LayoutInflater inflater) {
 
-    LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.layer_jingbi, null);
+    LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.layer_order, null);
     return ll;
   }
 
@@ -26,12 +26,12 @@ public class JingbiComponent implements Component {
 
   @Override
   public int getFitPosition() {
-    return Component.FIT_START;
+    return Component.FIT_CENTER;
   }
 
   @Override
   public int getXOffset() {
-    return 120;
+    return 30;
   }
 
   @Override

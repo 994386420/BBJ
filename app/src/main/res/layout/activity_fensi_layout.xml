@@ -10,17 +10,18 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/__picker_common_primary">
         <com.bbk.view.MyScrollViewNew
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
 
 <LinearLayout
     android:id="@+id/fensi_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/__picker_common_primary">
 
@@ -29,13 +30,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@mipmap/tuiguang_03">
+        android:background="@mipmap/tuiguang_38">
 
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_yaoqing"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_hehuo_person"
             android:layout_width="match_parent"
@@ -61,30 +62,35 @@
         android:textSize="14dp"
         android:text="共0位好友"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fensi_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
         </android.support.v7.widget.RecyclerView>
-            <android.support.v7.widget.RecyclerView
-                android:layout_below="@+id/fensi_recyclerview"
-                android:id="@+id/fensi_recyclerview1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-            </android.support.v7.widget.RecyclerView>
-            <com.bbk.view.CommonLoadingView
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                android:layout_centerHorizontal="true"/>
-        </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fensi_recyclerview1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/fensi_recyclerview"
+            android:visibility="visible">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <com.bbk.view.CommonLoadingView
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 
 </LinearLayout>

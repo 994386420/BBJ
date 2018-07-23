@@ -31,6 +31,11 @@ import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.component.FenXiangComponent;
+import com.bbk.component.HomeAllComponent;
+import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeAllComponent6;
+import com.bbk.component.SimpleComponent;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.update.AppVersion;
 import com.bbk.util.DialogSingleUtil;
@@ -41,6 +46,8 @@ import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
 import com.bbk.view.CircleImageView1;
 import com.bbk.view.MyGridView;
+import com.blog.www.guideview.Guide;
+import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.kepler.jd.login.KeplerApiManager;
@@ -146,6 +153,19 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                     }
                 });
             }
+            viewHolder.llShare.post(new Runnable() {
+                //                    @Override
+                public void run() {
+                    //引导页只显示一次
+                    String isFirstResultUse = SharedPreferencesUtil.getSharedData(context, "isfenxiang", "isfenxiang");
+                    if (TextUtils.isEmpty(isFirstResultUse)) {
+                        isFirstResultUse = "yes";
+                    }
+                    if (isFirstResultUse.equals("yes") && position == 0) {
+                        showGuideView(viewHolder.llShare);
+                    }
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -157,7 +177,7 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
         return fenXiangListBeans.size();
     }
 
-    private void recyGrid(ViewHolder viewHolder, final List<FenXiangItemBean> fenXiangItemBeans) {
+    private void recyGrid(final ViewHolder viewHolder, final List<FenXiangItemBean> fenXiangItemBeans) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
         ViewGroup.LayoutParams layoutParams = viewHolder.mrecy.getLayoutParams();
@@ -391,5 +411,34 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
     } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void showGuideView(View targetView) {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingBottom(60)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingLeft(10)
+                .setExitAnimationId(android.R.anim.fade_out)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+            }
+
+            @Override
+            public void onDismiss() {
+                SharedPreferencesUtil.putSharedData(context, "isfenxiang", "isfenxiang", "no");
+            }
+        });
+
+        builder.addComponent(new FenXiangComponent()).addComponent(new HomeAllComponent6());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show((Activity) context);
     }
 }

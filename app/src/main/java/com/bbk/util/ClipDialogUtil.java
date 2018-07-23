@@ -95,24 +95,29 @@ public class ClipDialogUtil {
 			hasCps = jsonObject[0].optString("hasCps");
 			if (hasCps != null) {
 				if (hasCps.equals("1")) {
-					Intent intent = new Intent(context, IntentActivity.class);
-					if (url != null && !url.equals("")) {
-						intent.putExtra("url", url);
-					}
-					if (title != null && !title.equals("")) {
-						intent.putExtra("title", title);
-					}
-					if (domain != null && !domain.equals("")) {
-						intent.putExtra("domain", domain);
-					}
-					if (rowkey != null && !rowkey.equals("")) {
-						intent.putExtra("groupRowKey", rowkey);
-					}
-					if (price != null && !price.equals("")) {
-						intent.putExtra("bprice", price);
-					}
-					DialogCheckYouhuiUtil.dismiss(2000);
-					context.startActivity(intent);
+					mHandler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							Intent intent = new Intent(context, IntentActivity.class);
+							if (url != null && !url.equals("")) {
+								intent.putExtra("url", url);
+							}
+							if (title != null && !title.equals("")) {
+								intent.putExtra("title", title);
+							}
+							if (domain != null && !domain.equals("")) {
+								intent.putExtra("domain", domain);
+							}
+							if (rowkey != null && !rowkey.equals("")) {
+								intent.putExtra("groupRowKey", rowkey);
+							}
+							if (price != null && !price.equals("")) {
+								intent.putExtra("bprice", price);
+							}
+							DialogCheckYouhuiUtil.dismiss(1500);
+							context.startActivity(intent);
+						}
+					}, 1500);
 				}
 			}
 		}else{

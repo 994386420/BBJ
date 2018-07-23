@@ -10,32 +10,32 @@ import com.blog.www.guideview.Component;
 /**
  * Created by binIoter on 16/6/17.
  */
-public class HomeAllComponent3 implements Component {
+public class FenXiangComponent implements Component {
 
   @Override
   public View getView(LayoutInflater inflater) {
 
-    LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.layer_home_all, null);
+    LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.layer_fenxiang, null);
     return ll;
   }
 
   @Override
   public int getAnchor() {
-    return Component.ANCHOR_BOTTOM;
+    return Component.ANCHOR_BOTTOM ;
   }
 
   @Override
   public int getFitPosition() {
-    return Component.FIT_CENTER;
+    return Component.FIT_END;
   }
 
   @Override
   public int getXOffset() {
-    return 0;
+    return -75;
   }
 
   @Override
   public int getYOffset() {
-    return 100;
+    return 0;
   }
 }

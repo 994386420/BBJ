@@ -10,18 +10,18 @@ import com.blog.www.guideview.Component;
 /**
  * Created by binIoter on 16/6/17.
  */
-public class HomeAllComponent3 implements Component {
+public class ShouyiComponent implements Component {
 
   @Override
   public View getView(LayoutInflater inflater) {
 
-    LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.layer_home_all, null);
+    LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.layer_shouyi, null);
     return ll;
   }
 
   @Override
   public int getAnchor() {
-    return Component.ANCHOR_BOTTOM;
+    return Component.ANCHOR_BOTTOM ;
   }
 
   @Override
@@ -31,11 +31,11 @@ public class HomeAllComponent3 implements Component {
 
   @Override
   public int getXOffset() {
-    return 0;
+    return 50;
   }
 
   @Override
   public int getYOffset() {
-    return 100;
+    return 0;
   }
 }
