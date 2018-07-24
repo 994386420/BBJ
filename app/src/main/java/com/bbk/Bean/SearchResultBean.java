@@ -28,6 +28,15 @@ public class SearchResultBean {
     private String quan;
     private String detailImages;
     private String hidebutton;
+    private String domainCh;
+
+    public String getDomainCh() {
+        return domainCh;
+    }
+
+    public void setDomainCh(String domainCh) {
+        this.domainCh = domainCh;
+    }
 
     public String getDetailImages() {
         return detailImages;

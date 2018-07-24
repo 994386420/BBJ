@@ -1,6 +1,5 @@
 package com.bbk.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import com.bbk.Bean.BrokerageBean;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
-import com.bbk.dialog.AlertDialog;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -92,6 +90,8 @@ public class BrokerageActivity extends BaseActivity {
     TextView titleText1;
     @BindView(R.id.tv_tixian_detail)
     TextView tvTixianDetail;
+    @BindView(R.id.shensu_jilu)
+    TextView shensuJilu;
     private UpdataDialog updataDialog;
 
     @Override
@@ -224,7 +224,7 @@ public class BrokerageActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four, R.id.title_text1,R.id.tv_tixian_detail})
+    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four, R.id.title_text1, R.id.tv_tixian_detail,R.id.shensu_jilu})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -293,11 +293,15 @@ public class BrokerageActivity extends BaseActivity {
                 intent = new Intent(this, TiXianDetailActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.shensu_jilu:
+                intent = new Intent(this, ShesuRecordActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
     public void showMessageDialog(final Context context) {
-        if(updataDialog == null || !updataDialog.isShowing()) {
+        if (updataDialog == null || !updataDialog.isShowing()) {
             //初始化弹窗 布局 点击事件的id
             updataDialog = new UpdataDialog(context, R.layout.tixian_dialog_layout,
                     new int[]{R.id.tv_update_gengxin});

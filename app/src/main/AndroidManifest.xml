@@ -483,6 +483,11 @@
             android:name=".EventIdIntentActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ShesuRecordActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.tencent.rdm.uuid"
             android:value="a2af72ec-a731-46eb-8501-0477e34702f3" />

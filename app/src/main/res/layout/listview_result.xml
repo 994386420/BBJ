@@ -29,17 +29,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/item_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:lines="2"
-                android:text=" "
-                android:textColor="#111111"
-                android:textSize="14dp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_mall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text=""
+                    android:paddingRight="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:background="@drawable/bg_tuiguang3"
+                    android:layout_marginTop="2dp"
+                    android:textSize="10dp"/>
+                <TextView
+                    android:id="@+id/item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:lines="2"
+                    android:text=" "
+                    android:textColor="#111111"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/item_offer"

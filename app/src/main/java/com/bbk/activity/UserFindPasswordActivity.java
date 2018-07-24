@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.JiaMiUtil;
 import com.bbk.util.RSAEncryptorAndroid;
@@ -156,15 +158,16 @@ public class UserFindPasswordActivity extends BaseActivity implements
 		case R.id.get_code_btn:
 			userCodeEditText.setText("");
 			addr = userPhoneEditText.getText().toString();
-			if (ValidatorUtil.isMobile(addr) || ValidatorUtil.isEmail(addr)) {
+			if (ValidatorUtil.isMatchered(NewConstants.PHONE_PATTERN,addr)) {
 				getCodeBtn.setEnabled(false);
 				Map<String, String> paramsMap1 = new HashMap<String, String>();
-				String cc = RSAEncryptorAndroid.getSendCode(addr);
+				String cc = RSAEncryptorAndroid.getSendCode(addr).replace("\n","").replace("\r","");
 				paramsMap1.put("phone", addr);
 				paramsMap1.put("code", cc);
 				dataFlow.requestData(1, "apiService/sendMessage", paramsMap1, this,true,"短信发送中...");
 			} else {
-				StringUtil.showToast(getApplicationContext(),"您输入的不是手机号或者邮箱");
+				StringUtil.showToast(UserFindPasswordActivity.this,"请输入11位正确手机号");
+				DialogSingleUtil.dismiss(0);
 			}
 			break;
 		case R.id.topbar_goback:

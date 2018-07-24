@@ -80,6 +80,7 @@ import com.bbk.util.ValidatorUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyGridView;
 import com.bbk.view.XCFlowLayout;
+import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -1004,7 +1005,7 @@ public class SearchMainActivity extends ActivityGroup implements
                     mtop_czg.setImageResource(R.mipmap.tuiguang_13);
                     isprice = true;
                 }
-                domain = "";
+//                domain = "";
                 initDataCzg();
                 break;
             case R.id.mfilter_czg:
@@ -1092,7 +1093,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 currentPageIndex = 1;
                 sortwayCzg = "0";
                 x = 1;
-                domain = "";
+//                domain = "";
                 initDataCzg();
                 break;
             case R.id.discount_czg:
@@ -1107,7 +1108,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 currentPageIndex = 1;
                 sortwayCzg = "3";
                 x = 1;
-                domain = "";
+//                domain = "";
                 initDataCzg();
                 break;
 
@@ -2630,10 +2631,11 @@ public class SearchMainActivity extends ActivityGroup implements
     private void initDataCzg() {
         if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") ||  eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")){
             filter_czg.setTextColor(Color.parseColor("#f23030"));
-            mallShaixuanImage.setImageResource(R.mipmap.tuiguang_16);
+            Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d03).into(mallShaixuanImage);
         }else {
             filter_czg.setTextColor(Color.parseColor("#222222"));
-            mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+//            mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
+            Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d03).into(mallShaixuanImage);
         }
         Log.i("++++++++", keyword +"==="+sortwayCzg+"===="+ domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
         xrefreshCzgGrid.setNoMoreData(false);

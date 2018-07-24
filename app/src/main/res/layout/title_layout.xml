@@ -45,7 +45,7 @@
             android:layout_marginRight="10dp"
             android:text=""
             android:visibility="gone"
-            android:textColor="@color/tuiguang_color4"
+            android:textColor="@color/tuiguang_color1"
             android:textSize="14sp" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

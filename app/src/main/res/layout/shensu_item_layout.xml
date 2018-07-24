@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_seclecter"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_dt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/tuiguang_color4"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/tv_descrip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tuiguang_color3"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:textStyle="bold"
+            android:textSize="15dp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_shensu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:gravity="center_vertical"
+            android:background="@color/__picker_common_primary">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@mipmap/tuiguang_32"/>
+            <com.bbk.view.AdaptionSizeTextView
+                android:id="@+id/tv_reson"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tuiguang_color3"
+                android:text=""
+                android:layout_marginLeft="5dp"
+                android:textSize="14dp"/>
+            <ImageView
+                android:id="@+id/img_shensu"
+                android:layout_width="12dp"
+                android:layout_height="20dp"
+                android:background="@mipmap/tuiguang_44"/>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/__picker_common_primary"/>
+</LinearLayout>
