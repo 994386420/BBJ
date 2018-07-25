@@ -63,27 +63,29 @@ public class FloatingWindowService extends Service implements ResultEvent {
 					}
 //				    Logg.e("===============>>>","执行了几次");
 					previousTime = now;
+//				    Logg.e(clipboardManager);
 					String text = clipboardManager.getText().toString();
+					Logg.e(text);
 					if (text != null && !text.equals("") && !text.equals("null")) {
 									if (text.contains("bbj")) {
 										NewConstants.copyText = text;
 									}
-						https://item.taobao.com/item.htm?id=552855465528
+//						https://item.taobao.com/item.htm?id=552855465528
 //							Map<String, String> paramsMap = new HashMap<String, String>();
 //							paramsMap.put("url", text);
 //							dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap,FloatingWindowService.this,false);
 						// //获得当前activity的名字
-						if (!text.contains("标题:")) {
-							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-							Logg.e("======>>>",text);
-							if (text.contains("http")&&text.contains("jd") || text.contains("https" )&& text.contains("jd") || text.contains("http")&&text.contains("taobao") || text.contains("http")&&text.contains("tmall") ||
-									text.contains("http")&&text.contains("zmnxbc") || text.contains("http")&&text.contains("点击链接") || text.contains("http")&&text.contains("喵口令")|| text.contains("https")&&text.contains("taobao")
-									||text.contains("https")&&text.contains("tmall") || text.contains("https")&&text.contains("zmnxbc") || text.contains("https")&&text.contains("点击链接") || text.contains("https")&&text.contains("喵口令") ) {
-								checkExsistProduct(text);
-//								Intent intent = new Intent(getApplicationContext(),
-//										JumpDetailActivty.class);
-							}
-						}
+//						if (!text.contains("标题:")) {
+//							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+//							Logg.e("======>>>",text);
+//							if (text.contains("http")&&text.contains("jd") || text.contains("https" )&& text.contains("jd") || text.contains("http")&&text.contains("taobao") || text.contains("http")&&text.contains("tmall") ||
+//									text.contains("http")&&text.contains("zmnxbc") || text.contains("http")&&text.contains("点击链接") || text.contains("http")&&text.contains("喵口令")|| text.contains("https")&&text.contains("taobao")
+//									||text.contains("https")&&text.contains("tmall") || text.contains("https")&&text.contains("zmnxbc") || text.contains("https")&&text.contains("点击链接") || text.contains("https")&&text.contains("喵口令") ) {
+//								checkExsistProduct(text);
+////								Intent intent = new Intent(getApplicationContext(),
+////										JumpDetailActivty.class);
+//							}
+//						}
 					}
 				}
 

@@ -44,8 +44,6 @@ public class ShesuRecordActivity extends BaseActivity implements CommonLoadingVi
     String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     @BindView(R.id.title_back_btn)
     ImageButton titleBackBtn;
-    @BindView(R.id.title_text)
-    TextView titleText;
     @BindView(R.id.brokerage_detail_list)
     RecyclerView brokerageDetailList;
     @BindView(R.id.refreshLayout)
@@ -59,7 +57,7 @@ public class ShesuRecordActivity extends BaseActivity implements CommonLoadingVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.brokerage_detail_layout);
+        setContentView(R.layout.shensu_record_layout);
         ButterKnife.bind(this);
         View topView = findViewById(R.id.topbar_layout);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
@@ -68,7 +66,6 @@ public class ShesuRecordActivity extends BaseActivity implements CommonLoadingVi
         brokerageDetailList.setHasFixedSize(true);
         progress.setLoadingHandler(this);
         refreshAndloda();
-        titleText.setText("申诉记录");
         queryCpsOrderCheck();
     }
 

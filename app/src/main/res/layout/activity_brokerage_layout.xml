@@ -520,7 +520,7 @@
     </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:orientation="vertical"
                 android:background="@color/__picker_common_primary">
     <TextView
@@ -535,6 +535,7 @@
         android:textColor="@color/white"
         android:layout_marginBottom="25dp"
         android:layout_marginTop="10dp"
+        android:visibility="gone"
         android:background="@drawable/bg_tuiguang1"
         android:layout_gravity="bottom"/>
             </LinearLayout>

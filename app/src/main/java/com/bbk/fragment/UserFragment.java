@@ -44,6 +44,7 @@ import com.bbk.activity.ContactActivity;
 import com.bbk.activity.FanLiOrderActivity;
 import com.bbk.activity.FensiActivity;
 import com.bbk.activity.HomeActivity;
+import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.LogisticsQueryActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
@@ -507,7 +508,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                         if (TextUtils.isEmpty(isFirstResultUse)) {
                             isFirstResultUse = "yes";
                         }
-                        if (isFirstResultUse.equals("yes") && NewConstants.yingdaoFlag.equals("1")) {
+                        if (isFirstResultUse.equals("yes") && NewConstants.yingdaoFlag.equals("1") && JumpDetailActivty.Flag.equals("home") ) {
                             showGuideViewHehuoren(llBrokerage,llFanliOrder);
                         }
                     }
@@ -592,6 +593,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         switch (v.getId()) {
             case R.id.ll_tuiguang_user:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -605,6 +607,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mjingbi:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -614,6 +617,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mcollection:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -623,6 +627,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mfoot:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -646,6 +651,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                break;
             case R.id.morderlist:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -659,6 +665,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mycomment:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -669,6 +676,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.newpinglun:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -679,6 +687,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mygossip:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -688,6 +697,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mfeedback:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -701,6 +711,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.user_img:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -710,6 +721,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.user_name:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -734,6 +746,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     }
                 } else {
                     StringUtil.showToast(getActivity(), "请先登录！");
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivity(intent);
                 }
@@ -742,6 +755,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             //我的发镖
             case R.id.ll_my_fabiao:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -752,6 +766,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             //我的劫镖
             case R.id.ll_my_jiebiao:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -997,6 +1012,22 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             public void onDismiss() {
                 SharedPreferencesUtil.putSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse", "no");
 //                showGuideViewHehuoren(targetView1);
+                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                if (!TextUtils.isEmpty(userID)) {
+                    llBrokerage.postDelayed(new Runnable() {
+                        //                    @Override
+                        public void run() {
+                            //引导页只显示一次
+                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstUserFanli", "isFirstUserFanli");
+                            if (TextUtils.isEmpty(isFirstResultUse)) {
+                                isFirstResultUse = "yes";
+                            }
+                            if (isFirstResultUse.equals("yes") && NewConstants.yingdaoFlag.equals("2")) {
+                                showGuideViewHehuoren(llBrokerage,llFanliOrder);
+                            }
+                        }
+                    },0);
+                }
             }
         });
 
@@ -1091,6 +1122,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mjdshopcart:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1102,6 +1134,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.mTaobaoshopcart:
                 if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {

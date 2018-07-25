@@ -123,14 +123,14 @@ public class ClipDialogUtil {
 				}
 			}
 		}else{
-			DialogCheckYouhuiUtil.dismiss(2000);
-			mHandler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					showMessageDialog(context,url);;//耗时操作
-				}
-			}, 2000);
-		}
+				DialogCheckYouhuiUtil.dismiss(2000);
+				mHandler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						showMessageDialog(context,url);;//耗时操作
+					}
+				}, 2000);
+			}
 		}catch (Exception e){
 			e.printStackTrace();
 		}

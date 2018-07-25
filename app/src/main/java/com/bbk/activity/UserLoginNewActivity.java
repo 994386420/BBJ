@@ -350,7 +350,6 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 							TencentLoginUtil.Login(this);
 							String userId=SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this, "userInfor", "userID");
 							Context context = getApplicationContext();
-							NewConstants.yingdaoFlag = "1";
 							XGPushConfig.setAccessId(context, 2100196420);
 							XGPushConfig.setAccessKey(context, "AUTV25N58F3Z");
 							XGPushManager.registerPush(context, userId, new XGIOperateCallback() {
@@ -391,6 +390,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								startActivity(Intent);
 							}
 							if (JumpDetailActivty.Flag.equals("home")) {
+								NewConstants.yingdaoFlag = "1";
 								intent = new Intent(this, HomeActivity.class);
 								intent.putExtra("type", "4");
 								if (DataFragmentActivity.login_remind != null) {
@@ -398,6 +398,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								}
 								startActivity(intent);
 							}else {
+								NewConstants.yingdaoFlag = "2";
 								intent = new Intent();
 								setResult(3, intent);
 							}

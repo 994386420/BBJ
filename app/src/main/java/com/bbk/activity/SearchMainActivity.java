@@ -2631,11 +2631,11 @@ public class SearchMainActivity extends ActivityGroup implements
     private void initDataCzg() {
         if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") ||  eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")){
             filter_czg.setTextColor(Color.parseColor("#f23030"));
-            Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d03).into(mallShaixuanImage);
+            Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d04).into(mallShaixuanImage);
         }else {
             filter_czg.setTextColor(Color.parseColor("#222222"));
 //            mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
-            Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d03).into(mallShaixuanImage);
+            Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d04).into(mallShaixuanImage);
         }
         Log.i("++++++++", keyword +"==="+sortwayCzg+"===="+ domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
         xrefreshCzgGrid.setNoMoreData(false);

@@ -249,6 +249,64 @@ public class HomeLoadUtil {
         });
     }
 
+    public static void loadGuanggaoBanner(final Context context, final Banner mBanner, final JSONObject banner) {
+        List<Object> imgUrlList = new ArrayList<>();
+        try {
+//            for (int i = 0; i < banner.length(); i++) {
+//                JSONObject jo = banner.getJSONObject(i);
+                String imgUrl = banner.getString("img");
+                imgUrlList.add(imgUrl);
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mBanner.setImages(imgUrlList)
+                .setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                 EventIdIntentUtil.EventIdIntent(context, banner);
+                    }
+                })
+                .setDelayTime(3000)
+                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setIndicatorGravity(BannerConfig.CENTER)
+                .start();
+        mBanner.setOnTouchListener(new View.OnTouchListener() {
+            public float startX;
+            public float startY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mBanner.requestDisallowInterceptTouchEvent(true);
+                        // 记录手指按下的位置
+                        startY = event.getY();
+                        startX = event.getX();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        // 获取当前手指位置
+                        float endY = event.getY();
+                        float endX = event.getX();
+                        float distanceX = Math.abs(endX - startX);
+                        float distanceY = Math.abs(endY - startY);
+                        mBanner.requestDisallowInterceptTouchEvent(true);
+//                        refreshLayout.setEnabled(false);
+                        // 如果X轴位移大于Y轴位移，那么将事件交给viewPager处理。
+                        if (distanceX + 500 < distanceY) {
+                            mBanner.requestDisallowInterceptTouchEvent(false);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+//                        refreshLayout.setEnabled(true);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
 
     public static void addtitleTop(final Context context, final String text, final int i, final LinearLayout mboxTop, final LinearLayout mbox, final HorizontalScrollView horizontalScrollViewTop, final HorizontalScrollView horizontalScrollView) {
         LayoutInflater inflater = LayoutInflater.from(context);

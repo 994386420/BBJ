@@ -1,7 +1,9 @@
 package com.bbk.fragment;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,18 +27,29 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.OpenType;
+import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.ChaozhigouTypesBean;
+import com.bbk.Bean.CheckBean;
+import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.activity.BaseActivity;
+import com.bbk.activity.BaseFragmentActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.HomeActivity;
+import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.SortActivity;
+import com.bbk.activity.WebViewActivity;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.TypeGridAdapter;
 import com.bbk.client.BaseObserver;
@@ -54,18 +67,23 @@ import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.AnimationUtil;
+import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogHomeUtil;
-import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.util.UpdataDialog;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyScrollViewNew;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
+import com.kepler.jd.Listener.OpenAppAction;
+import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.logg.Logg;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
@@ -176,9 +194,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     ImageButton imageButton;
     @BindView(R.id.progress)
     CommonLoadingView zLoadingView;
+    @BindView(R.id.banner_guanggao)
+    Banner bannerGuanggao;
+    @BindView(R.id.guanggao_layout)
+    RelativeLayout guanggaoLayout;
+    Unbinder unbinder;
     private DataFlow6 dataFlow;
     private View mView;
     private JSONArray banner = new JSONArray();
+    private JSONObject guanggaobanner = new JSONObject();
     private JSONArray tag = new JSONArray();
     private List<Map<String, String>> taglist = new ArrayList<>();
     private JSONArray gongneng = new JSONArray();
@@ -209,6 +233,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     private String keyword = "";
     List<ChaozhigouTypesBean> chaozhigouTypesBeans;
     private HomeLoadUtil homeLoadUtil;
+    public static boolean isShowCheck = true;
+    private ClipboardManager clipboardManager;
+    private CheckBean checkBean;
+    private static Handler mHandler = new Handler();
+    private static UpdataDialog updataDialog;
+    private static AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
+    private static Map<String, String> exParams;//yhhpass参数
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -251,6 +282,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
             initView(mView);
             initListeners();
         }
+        unbinder = ButterKnife.bind(this, mView);
         return mView;
 
     }
@@ -526,6 +558,14 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                         if (fabiao != null && fabiao.length() > 0) {
                             HomeLoadUtil.loadViewflipper(getActivity(), mviewflipper, fabiao);
                         }
+                        Logg.json(object.optString("tonglanguanggao"));
+                        if (object.has("tonglanguanggao")){
+                            guanggaoLayout.setVisibility(View.VISIBLE);
+                            guanggaobanner = object.optJSONObject("tonglanguanggao");
+                            HomeLoadUtil.loadGuanggaoBanner(getActivity(),bannerGuanggao,guanggaobanner);
+                        }else {
+                            guanggaoLayout.setVisibility(View.GONE);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -573,18 +613,18 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                     }
 
                     img3.post(new Runnable() {
-//                    @Override
-                    public void run() {
-                        //首页引导页只显示一次
-                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-                        if (TextUtils.isEmpty(isFirstResultUse)) {
-                            isFirstResultUse = "yes";
+                        //                    @Override
+                        public void run() {
+                            //首页引导页只显示一次
+                            String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
+                            if (TextUtils.isEmpty(isFirstResultUse)) {
+                                isFirstResultUse = "yes";
+                            }
+                            if (isFirstResultUse.equals("yes")) {
+                                showGuideView(img3, img4);
+                            }
                         }
-                        if (isFirstResultUse.equals("yes")) {
-                            showGuideView(img3, img4);
-                        }
-                    }
-                   });
+                    });
                     break;
                 case 4:
                     x = 2;
@@ -644,11 +684,13 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 
 
     /**
      * 加载分类菜单
+     *
      * @param searchwords
      * @param mbox
      * @throws JSONException
@@ -792,6 +834,27 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                         refreshLayout.finishRefresh();
                         DialogHomeUtil.dismiss(0);
                         zLoadingView.loadSuccess();
+                        NewConstants.showdialogFlg = "0";
+                        clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        if ( clipboardManager.getText() != null){
+                            if (isShowCheck) {
+                                String text = clipboardManager.getText().toString();
+                                if (text != null && !text.equals("") && !text.equals("null")) {
+                                    if (text.contains("bbj")) {
+                                        NewConstants.copyText = text;
+                                    }
+                                    // //获得当前activity的名字
+                                    if (!text.contains("标题:")) {
+                                        SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+                                        if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
+                                                text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("点击链接") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
+                                                || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("点击链接") || text.contains("https") && text.contains("喵口令")) {
+                                            checkExsistProduct(text);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     @Override
@@ -817,6 +880,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
     /**
      * 首页滑动监听
+     *
      * @param scrollView
      * @param x
      * @param y
@@ -884,6 +948,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
     /**
      * 首页分类点击事件
+     *
      * @param keywordd
      */
     @Override
@@ -966,6 +1031,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
     /**
      * 搜索框状态
+     *
      * @param refreshLayout
      * @param oldState
      * @param newState
@@ -993,9 +1059,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
     /**
      * 点击事件
+     *
      * @param view
      */
-    @OnClick({R.id.type_image, R.id.ll_shouqi, R.id.msearch, R.id.msort,R.id.image_puba, R.id.to_top_btn})
+    @OnClick({R.id.type_image, R.id.ll_shouqi, R.id.msearch, R.id.msort, R.id.image_puba, R.id.to_top_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.type_image:
@@ -1077,7 +1144,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
             @Override
             public void onDismiss() {
-                SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse" ,"no");
+                SharedPreferencesUtil.putSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse", "no");
             }
         });
 
@@ -1086,4 +1153,177 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
         guide.setShouldCheckLocInWindow(true);
         guide.show(getActivity());
     }
+
+
+
+    private void checkExsistProduct(String text) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("url", text);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().checkExsistProduct(
+                paramsMap, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                String content = jsonObject.optString("content");
+                                checkBean = JSON.parseObject(content,CheckBean.class);
+                                if (checkBean.getHasCps() != null) {
+                                    if (checkBean.getHasCps().equals("1")) {
+                                        mHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent = new Intent(getActivity(), IntentActivity.class);
+                                                if (checkBean.getUrl() != null && !checkBean.getUrl().equals("")) {
+                                                    intent.putExtra("url", checkBean.getUrl());
+                                                }
+                                                if (checkBean.getDomain() != null && !checkBean.getDomain().equals("")) {
+                                                    intent.putExtra("domain", checkBean.getDomain());
+                                                }
+                                                if (checkBean.getRowkey()!= null && !checkBean.getRowkey().equals("")) {
+                                                    intent.putExtra("groupRowKey", checkBean.getRowkey());
+                                                }
+                                                if (checkBean.getPrice() != null && !checkBean.getPrice().equals("")) {
+                                                    intent.putExtra("bprice", checkBean.getPrice());
+                                                }
+                                                DialogCheckYouhuiUtil.dismiss(2000);
+                                                isShowCheck = false;
+                                                startActivity(intent);
+                                            }
+                                        }, 2000);
+                                    }
+                                }else{
+                                    DialogCheckYouhuiUtil.dismiss(2000);
+                                    isShowCheck = false;
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showMessageDialog(getActivity(),checkBean.getUrl());;//耗时操作
+                                        }
+                                    }, 2000);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    protected void hideDialog() {
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        if (NewHomeFragment.this != null){
+                            DialogCheckYouhuiUtil.show(getActivity());
+                        }
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+						StringUtil.showToast(getActivity(), e.message);
+                        DialogCheckYouhuiUtil.dismiss(0);
+                    }
+                });
+
+    }
+
+
+
+    /**
+     *
+     * @param context
+     */
+    public void showMessageDialog(final Context context, final String url) {
+        if(updataDialog == null || !updataDialog.isShowing()) {
+            //初始化弹窗 布局 点击事件的id
+            updataDialog = new UpdataDialog(context, R.layout.check_nomessage_dialog_layout,
+                    new int[]{R.id.tv_update_gengxin});
+            updataDialog.show();
+            updataDialog.setCanceledOnTouchOutside(true);
+            TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                    jumpThirdApp(url);
+                }
+            });
+            LinearLayout ll_close = updataDialog.findViewById(R.id.ll_close);
+            ll_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                }
+            });
+        }
+    }
+
+
+
+    public  void jumpThirdApp(String url){
+        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+        alibcShowParams.setClientType("taobao_scheme");
+        exParams = new HashMap<>();
+        exParams.put("isv_code", "appisvcode");
+        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+        if (url.contains("tmall") || url.contains("taobao")) {
+            showUrl(url);
+        } else if (url.contains("jd")) {
+            KeplerApiManager.getWebViewService().openAppWebViewPage(getActivity(),
+                    url,
+                    mKeplerAttachParameter,
+                    mOpenAppAction);
+        } else {
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            if (url != null) {
+                intent.putExtra("url", url);
+            }
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * 打开指定链接
+     */
+    public  void showUrl(String url) {
+        String text = url;
+        if (TextUtils.isEmpty(text)) {
+            StringUtil.showToast(getActivity(), "URL为空");
+            return;
+        }
+        AlibcTrade.show(getActivity(), new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
+    }
+
+    private static KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
+
+    OpenAppAction mOpenAppAction = new OpenAppAction() {
+        @Override
+        public void onStatus(final int status, final String url) {
+            Intent intent;
+            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+            } else {
+            }
+            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+                StringUtil.showToast(getActivity(), "未安装京东");
+                intent = new Intent(getActivity(), WebViewActivity.class);
+                if (url != null) {
+                    intent.putExtra("url", url);
+                }
+                startActivity(intent);
+                //未安装京东
+            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+                StringUtil.showToast(getActivity(), "不在白名单");
+                //不在白名单
+            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+                StringUtil.showToast(getActivity(), "协议错误");
+                //协议错误
+            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
+                //呼京东成功
+            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+                StringUtil.showToast(getActivity(), "网络异常");
+                //网络异常
+            }
+        }
+    };
 }

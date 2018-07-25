@@ -301,7 +301,6 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 							SharedPreferencesUtil.putSharedData(getApplicationContext(), "userInfor", "userSig", inforJsonObj.optString("u_sig"));
 //							SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "login_STATE","1");
 							TencentLoginUtil.Login(this);
-							NewConstants.yingdaoFlag = "1";
 							String userId=SharedPreferencesUtil.getSharedData(UserSelfLoginNewActivity.this, "userInfor", "userID");
 							Context context = getApplicationContext();
 							XGPushConfig.setAccessId(context, 2100196420);
@@ -344,6 +343,7 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 								startActivity(Intent);
 							}
 							if (JumpDetailActivty.Flag.equals("home")) {
+								NewConstants.yingdaoFlag = "1";
 								intent = new Intent(this, HomeActivity.class);
 								intent.putExtra("type", "4");
 								if (DataFragmentActivity.login_remind != null) {
@@ -351,6 +351,7 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 								}
 								startActivity(intent);
 							}else {
+								NewConstants.yingdaoFlag = "2";
 								intent = new Intent();
 								setResult(3, intent);
 							}

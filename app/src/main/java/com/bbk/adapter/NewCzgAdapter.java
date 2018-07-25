@@ -1,6 +1,7 @@
 package com.bbk.adapter;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
     //    private List<Map<String,String>> list;
     private Context context;
     List<NewHomeCzgBean> newHomeCzgBean;
+    private ClipboardManager clipboardManager;
 
     public NewCzgAdapter(Context context, List<NewHomeCzgBean> newHomeCzgBean) {
 //        this.list = list;
@@ -185,6 +187,8 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
                     try {
 //                        if (AlibcLogin.getInstance().isLogin() == true) {
                         if (JumpIntentUtil.isJump5(newHomeCzgBean, position)) {
+                            clipboardManager = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                            clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
                             NewConstants.showdialogFlg = "1";
                             intent = new Intent(context, IntentActivity.class);
                             if (newHomeCzgBean.get(position).getRequestUrl() != null) {
