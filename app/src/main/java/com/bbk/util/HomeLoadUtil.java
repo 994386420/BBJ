@@ -21,6 +21,7 @@ import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
+import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.OnClickHomeListioner;
 import com.bbk.fragment.OnClickListioner;
 import com.bumptech.glide.Glide;
@@ -335,6 +336,7 @@ public class HomeLoadUtil {
 //                Logg.e(i+"==="+currentIndexTop);
                 if (i != currentIndexTop) {
                     DialogHomeUtil.show(context);
+                    NewHomeFragment.refreshLayout.setEnableRefresh(false);
                     SharedPreferencesUtil.putSharedData(context, "homeclick", "homeclick", "no");
                     updateTitleTop(i, mboxTop, text,horizontalScrollViewTop);
                     updateTitle(i, mbox, text,horizontalScrollView);
@@ -373,6 +375,7 @@ public class HomeLoadUtil {
                 if (i != currentIndex) {
                     SharedPreferencesUtil.putSharedData(context, "homeclick", "homeclick", "yes");
                     DialogHomeUtil.show(context);
+                    NewHomeFragment.refreshLayout.setEnableRefresh(false);
                     updateTitle(i, mbox, text,horizontalScrollView);
                     updateTitleTop(i, mboxTop, text,horizontalScrollViewTop);
                 }

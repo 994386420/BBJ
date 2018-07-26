@@ -186,8 +186,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     ViewFlipper mviewflipper;
     @BindView(R.id.mrecycler)
     RecyclerView mrecyclerview;
-    @BindView(R.id.refresh_root)
-    SmartRefreshLayout refreshLayout;
+//    @BindView(R.id.refresh_root)
+    public  static SmartRefreshLayout refreshLayout;
     @BindView(R.id.huodongimg)
     ImageView huodongimg;
     @BindView(R.id.to_top_btn)
@@ -198,7 +198,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     Banner bannerGuanggao;
     @BindView(R.id.guanggao_layout)
     RelativeLayout guanggaoLayout;
-    Unbinder unbinder;
     private DataFlow6 dataFlow;
     private View mView;
     private JSONArray banner = new JSONArray();
@@ -283,12 +282,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
             initView(mView);
             initListeners();
         }
-        unbinder = ButterKnife.bind(this, mView);
         return mView;
 
     }
 
     private void initView(View v) {
+        refreshLayout = mView.findViewById(R.id.refresh_root);
         zLoadingView.setLoadingHandler(this);
         refresh();
         //设置 Footer 为 球脉冲 样式
@@ -300,6 +299,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
         final LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
         mrecyclerview.setLayoutManager(gridLayoutManager);
         refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setEnableRefresh(false);
     }
 
     /**
@@ -328,6 +328,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
                     @Override
                     protected void hideDialog() {
+                        refreshLayout.setEnableRefresh(true);
                         zLoadingView.loadSuccess();
                         DialogHomeUtil.dismiss(0);
                     }
@@ -486,6 +487,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                         if (x == 1) {
                             if (czgBeans != null && czgBeans.size() > 0) {
                                 refreshLayout.setEnableLoadMore(true);
+                                refreshLayout.setEnableRefresh(true);
                                 mrecyclerview.setVisibility(View.VISIBLE);
                                 newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
                                 mrecyclerview.setAdapter(newCzgAdapter);
@@ -685,7 +687,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
 
@@ -833,6 +834,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                     protected void hideDialog() {
                         refreshLayout.finishLoadMore();
                         refreshLayout.finishRefresh();
+                        refreshLayout.setEnableRefresh(true);
                         DialogHomeUtil.dismiss(0);
                         zLoadingView.loadSuccess();
                         NewConstants.showdialogFlg = "0";

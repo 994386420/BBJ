@@ -284,7 +284,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                         mJlzText.setVisibility(View.VISIBLE);
                                         if (type.equals("0")) {
                                             llTuiguang.setVisibility(View.GONE);
-                                            llTuiguang_user.setVisibility(View.VISIBLE);
+                                            llTuiguang_user.setVisibility(View.GONE);
                                             view.setVisibility(View.VISIBLE);
                                             tvLevel.setText("普通会员");
                                         } else if (type.equals("1")) {
@@ -512,7 +512,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                             showGuideViewHehuoren(llBrokerage,llFanliOrder);
                         }
                     }
-                },1500);
+                },2000);
             }
         } else {
             user_name.setText("请登录");

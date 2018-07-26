@@ -2629,6 +2629,13 @@ public class SearchMainActivity extends ActivityGroup implements
      * productType 分类   dianpu店铺  bprice开始价格 eprice结束价格
      */
     private void initDataCzg() {
+        if (sortwayCzg.equals("1")){
+            mtop_czg.setImageResource(R.mipmap.tuiguang_12);
+        }else if (sortwayCzg.equals("2")){
+            mtop_czg.setImageResource(R.mipmap.tuiguang_13);
+        }else {
+            mtop_czg.setImageResource(R.mipmap.tuiguang_11);
+        }
         if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") ||  eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")){
             filter_czg.setTextColor(Color.parseColor("#f23030"));
             Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d04).into(mallShaixuanImage);
