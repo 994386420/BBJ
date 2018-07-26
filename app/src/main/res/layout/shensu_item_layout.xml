@@ -27,7 +27,6 @@
             android:textColor="@color/tuiguang_color3"
             android:layout_marginTop="5dp"
             android:text=""
-            android:textStyle="bold"
             android:textSize="15dp"/>
 
         <LinearLayout

@@ -51,6 +51,7 @@ import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.kepler.jd.login.KeplerApiManager;
+import com.logg.Logg;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -242,21 +243,22 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                             if (jsonObject.optString("status").equals("1")) {
                                 List<String> DetailimgUrlList = new ArrayList<>();
                                 JSONObject jsonObject1 = new JSONObject(jsonObject.optString("content"));
-                                isFirstClick = SharedPreferencesUtil.getSharedData(
-                                        context, "isFirstClick", "isFirstClick");
-                                if (TextUtils.isEmpty(isFirstClick)) {
-                                    isFirstClick = "yes";
-                                }
-                                if (isFirstClick.equals("yes")) {
-                                    if (jsonObject1.has("errmsg")) {
-                                        if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
-                                            showMessageDialog(context, userID);
-                                            SharedPreferencesUtil.putSharedData(context, "isFirstClick", "isFirstClick", "no");
-                                        } else {
-                                            Share(v, title, DetailimgUrlList, jsonObject1);
-                                        }
-                                    }
-                                }else {
+//                                Logg.json(jsonObject1);
+//                                isFirstClick = SharedPreferencesUtil.getSharedData(
+//                                        context, "isFirstClick", "isFirstClick");
+//                                if (TextUtils.isEmpty(isFirstClick)) {
+//                                    isFirstClick = "yes";
+//                                }
+//                                if (isFirstClick.equals("yes")) {
+//                                    if (jsonObject1.has("errmsg")) {
+//                                        if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
+//                                            showMessageDialog(context, userID);
+//                                            SharedPreferencesUtil.putSharedData(context, "isFirstClick", "isFirstClick", "no");
+//                                        } else {
+//                                            Share(v, title, DetailimgUrlList, jsonObject1);
+//                                        }
+//                                    }
+//                                }else {
 //                                    Log.i("======",jsonObject1+"============");
 //                                    StringUtil.showToast(context,jsonObject1.optString("errmsg"));
 //                                    if (jsonObject1.has("wenan")){
@@ -277,7 +279,7 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
 //                                        shareFenXiangUtil = new ShareFenXiangUtil((Activity) context, v, title, DetailimgUrlList);
 //                                    }
                                     Share(v,title,DetailimgUrlList,jsonObject1);
-                                }
+//                                }
                             }else {
                                 StringUtil.showToast(context,jsonObject.optString("errmsg"));
                             }

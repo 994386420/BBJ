@@ -29,6 +29,7 @@ import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.TuiguangDialogActivity;
 import com.bbk.activity.UserLoginNewActivity;
+import com.bbk.activity.UserShenSuActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.activity.WebViewActivity111;
 import com.bbk.activity.WebViewActivity_copy;
@@ -296,6 +297,12 @@ public class EventIdIntentUtil {
 				intent.putExtra("url",  jo.optString("htmlUrl"));
 				context.startActivity(intent);
 				break;
+
+			case "125":
+				intent = new Intent(context, UserShenSuActivity.class);
+				intent.putExtra("status","1");
+				context.startActivity(intent);
+				break;
 		case "666":
 			String url = jo.optString("url");
 			Intent intent666 = new Intent(context, WebViewActivity_copy.class);
@@ -325,23 +332,23 @@ public class EventIdIntentUtil {
 							if (jsonObject.optString("status").equals("1")) {
 								String content = jsonObject.optString("content");
 								final JSONObject jsonObject1 = new JSONObject(content);
-								isFirstClick = SharedPreferencesUtil.getSharedData(
-										context, "isFirstClick", "isFirstClick");
-								if (TextUtils.isEmpty(isFirstClick)) {
-									isFirstClick = "yes";
-								}
-								if (isFirstClick.equals("yes")) {
-									if (jsonObject1.has("errmsg")){
-										if (jsonObject1.optString("errmsg") != null&& !jsonObject1.optString("errmsg").equals("")){
-											showMessageDialog(context,userid,jsonObject1.optString("url"),domain);
-											SharedPreferencesUtil.putSharedData(context, "isFirstClick", "isFirstClick", "no");
-										}else {
-											jumpUrl(domain,jsonObject1,context);
-										}
-									}
-								}else {
+//								isFirstClick = SharedPreferencesUtil.getSharedData(
+//										context, "isFirstClick", "isFirstClick");
+//								if (TextUtils.isEmpty(isFirstClick)) {
+//									isFirstClick = "yes";
+//								}
+//								if (isFirstClick.equals("yes")) {
+//									if (jsonObject1.has("errmsg")){
+//										if (jsonObject1.optString("errmsg") != null&& !jsonObject1.optString("errmsg").equals("")){
+//											showMessageDialog(context,userid,jsonObject1.optString("url"),domain);
+//											SharedPreferencesUtil.putSharedData(context, "isFirstClick", "isFirstClick", "no");
+//										}else {
+//											jumpUrl(domain,jsonObject1,context);
+//										}
+//									}
+//								}else {
 									jumpUrl(domain,jsonObject1,context);
-								}
+//								}
 
 							}else {
 								StringUtil.showToast(context, jsonObject.optString("errmsg"));
@@ -638,6 +645,11 @@ public class EventIdIntentUtil {
 				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "3");
 				intent = new Intent(context, BidHomeActivity.class);
 				intent.putExtra("currentitem", "2");
+				context.startActivity(intent);
+				break;
+			case "125":
+				intent = new Intent(context, UserShenSuActivity.class);
+				intent.putExtra("status","1");
 				context.startActivity(intent);
 				break;
 			default:

@@ -42,6 +42,7 @@ import com.bbk.view.CustomViewPager;
 import com.bbk.view.NumImageView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.logg.Logg;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler.Response;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
@@ -107,6 +108,8 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     public static ImageView mHomeGudieImage;//第一次安装首页新人引导
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +122,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         params.height = StringUtil.dip2px(this, 42);
         params.width = StringUtil.dip2px(this, 42);
         homeImgBtn.setLayoutParams(params);
+        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
         initView();
         initData();
     }
@@ -223,6 +227,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                                         if (isshow) {
                                             Glide.with(HomeActivity.this).load(tabImgGray2.get(i)).placeholder(tabImgGray[i]).into(nextIV);
                                         } else {
+                                            Logg.e("=========================>>>>",i);
                                             nextIV.setImageResource(tabImgGray[i]);
                                         }
                                         TextView nextTV = (TextView) nextLayout.getChildAt(1);
@@ -362,6 +367,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                 @Override
                 public void onClick(View v) {
                     if (index == 0) {
+                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
                         StringUtil.setScalse(homeImgBtn);//设置缩放动画
                         homeImgBtn.setVisibility(View.VISIBLE);
                         mtext.setVisibility(View.GONE);
@@ -370,6 +376,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                         params.width = StringUtil.dip2px(HomeActivity.this, 42);
                         homeImgBtn.setLayoutParams(params);
                     } else {
+                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
                         homeImgBtn.setVisibility(View.VISIBLE);
                         mtext.setVisibility(View.VISIBLE);
                         ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
@@ -489,6 +496,13 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         if (!TextUtils.isEmpty(type)) {
             SharedPreferencesUtil.cleanShareData(getApplicationContext(), "homeactivty");
             mViewPager.setCurrentItem(Integer.valueOf(type));
+            homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
+            homeImgBtn.setVisibility(View.VISIBLE);
+            mtext.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+            params.height = StringUtil.dip2px(HomeActivity.this, 25);
+            params.width = StringUtil.dip2px(HomeActivity.this, 25);
+            homeImgBtn.setLayoutParams(params);
         }
     }
 

@@ -240,6 +240,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     private static UpdataDialog updataDialog;
     private static AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private static Map<String, String> exParams;//yhhpass参数
+    public static boolean cancelCheck = true;// 是否取消查询
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -835,9 +836,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                         DialogHomeUtil.dismiss(0);
                         zLoadingView.loadSuccess();
                         NewConstants.showdialogFlg = "0";
+                        cancelCheck = true;
+                        isShowCheck = false;
                         clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                         if ( clipboardManager.getText() != null){
-                            if (isShowCheck) {
+//                            if (isShowCheck) {
                                 String text = clipboardManager.getText().toString();
                                 if (text != null && !text.equals("") && !text.equals("null")) {
                                     if (text.contains("bbj")) {
@@ -852,7 +855,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                                             checkExsistProduct(text);
                                         }
                                     }
-                                }
+//                                }
                             }
                         }
                     }
@@ -1187,21 +1190,24 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                                                     intent.putExtra("bprice", checkBean.getPrice());
                                                 }
                                                 DialogCheckYouhuiUtil.dismiss(2000);
-                                                isShowCheck = false;
-                                                startActivity(intent);
+                                                if (cancelCheck) {
+                                                    startActivity(intent);
+                                                }
                                             }
                                         }, 2000);
                                     }
                                 }else{
                                     DialogCheckYouhuiUtil.dismiss(2000);
-                                    isShowCheck = false;
+                                    if (cancelCheck) {
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            showMessageDialog(getActivity(),checkBean.getUrl());;//耗时操作
+                                                showMessageDialog(getActivity(), checkBean.getUrl());
+                                                ;//耗时操作
                                         }
                                     }, 2000);
                                 }
+                            }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1254,6 +1260,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                 @Override
                 public void onClick(View v) {
                     updataDialog.dismiss();
+                    cancelCheck = false;
                 }
             });
         }

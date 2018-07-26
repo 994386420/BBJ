@@ -161,6 +161,14 @@ public class FilterPopupWindow extends PopupWindow {
                         domain = serviceList.get(arg2).getValue();
                     }else {
                         domain = "";
+                        dianpu = "";
+                        fenlei = "";
+                        dianpuname.setText("");
+                        fenleiname.setText("");
+                        name.setText("");
+                        NewConstants.clickpositionFenlei = 5200;
+                        NewConstants.clickpositionDianpu = 5200;
+                        NewConstants.clickpositionMall = 5200;
                     }
                     name.setText(domain);
                     for (int i = 0; i < serviceList.size(); i++) {
@@ -228,7 +236,15 @@ public class FilterPopupWindow extends PopupWindow {
                 if (dianpulist.get(arg2).isChecked()) {
                     dianpu = dianpulist.get(arg2).getValue();
                 }else {
+                    domain = "";
                     dianpu = "";
+                    fenlei = "";
+                    dianpuname.setText("");
+                    fenleiname.setText("");
+                    name.setText("");
+                    NewConstants.clickpositionFenlei = 5200;
+                    NewConstants.clickpositionDianpu = 5200;
+                    NewConstants.clickpositionMall = 5200;
                 }
                 for (int i = 0; i < dianpulist.size(); i++) {
                     //跳过已设置的选中的位置的状态
@@ -292,7 +308,15 @@ public class FilterPopupWindow extends PopupWindow {
                     if (fenleilist.get(arg2).isChecked()) {
                         fenlei = fenleilist.get(arg2).getValue();
                     }else {
+                        domain = "";
+                        dianpu = "";
                         fenlei = "";
+                        dianpuname.setText("");
+                        fenleiname.setText("");
+                        name.setText("");
+                        NewConstants.clickpositionFenlei = 5200;
+                        NewConstants.clickpositionDianpu = 5200;
+                        NewConstants.clickpositionMall = 5200;
                     }
                     fenleiname.setText(fenlei);
                     for (int i = 0; i < fenleilist.size(); i++) {

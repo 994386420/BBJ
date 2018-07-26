@@ -60,6 +60,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 	private static Map<String, String> exParams;//yhhpass参数
 	private static Handler mHandler = new Handler();
 	private static UpdataDialog updataDialog;
+	public static boolean cancelCheck = true;// 是否取消查询
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 	protected void onStart() {
 		super.onStart();
 		NewConstants.showdialogFlg = "0";
+		cancelCheck = true;
 		clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 //		Logg.e(clipboardManager.getPrimaryClip());
 		if ( clipboardManager.getText() != null){
@@ -191,18 +193,24 @@ public class BaseFragmentActivity extends FragmentActivity {
 												}
 												DialogCheckYouhuiUtil.dismiss(2000);
 												intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-												startActivity(intent);
+												Logg.e("==================>>>>>>",cancelCheck);
+												if (cancelCheck) {
+													startActivity(intent);
+												}
 											}
 										}, 2000);
 									}
 								}else{
 									DialogCheckYouhuiUtil.dismiss(2000);
+									if (cancelCheck) {
 									mHandler.postDelayed(new Runnable() {
 										@Override
 										public void run() {
-											showMessageDialog(BaseFragmentActivity.this,checkBean.getUrl());;//耗时操作
+												showMessageDialog(BaseFragmentActivity.this, checkBean.getUrl());
+												;//耗时操作
 										}
 									}, 2000);
+								}
 								}
 							}
 						} catch (JSONException e) {

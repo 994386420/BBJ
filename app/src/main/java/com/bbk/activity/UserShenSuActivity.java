@@ -84,8 +84,13 @@ public class UserShenSuActivity extends BaseActivity implements CommonLoadingVie
         tablayout.addOnTabSelectedListener(tabSelectedListener);
         llShensu.setVisibility(View.VISIBLE);
         refreshLayout.setVisibility(View.GONE);
-        StringUtil.setIndicator(tablayout, 50, 50);
+        StringUtil.setIndicator(tablayout, 40, 40);
         refreshAndloda();
+        String status = getIntent().getStringExtra("status");
+        if (status != null && status.equals("1")){
+            TabLayout.Tab tabAt = tablayout.getTabAt(1);
+            tabAt.select();
+        }
 //        queryCpsOrderCheck();
     }
 

@@ -298,11 +298,6 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
 				String userEmail = bangding_account.getText().toString();
 				String userCode = bangding_code.getText().toString();
 				String userpassword = bangding_tjm.getText().toString();
@@ -316,6 +311,11 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					bangding_register.setTextColor(Color.parseColor("#FFFFFF"));
 					bangding_register.setBackgroundResource(R.drawable.bg_user_btn_unable);
 				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 			}
 
 			@Override

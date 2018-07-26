@@ -206,6 +206,7 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
                                         progress.setVisibility(View.VISIBLE);
                                         fanliOrderList.setVisibility(View.GONE);
                                         progress.loadSuccess(true);
+                                        progress.loadEmpty("完成交易1~10分钟查看订单");
                                         refreshLayout.setEnableLoadMore(false);
                                     }
                                 } else {

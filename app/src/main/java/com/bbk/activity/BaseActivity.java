@@ -61,6 +61,7 @@ import java.util.Map;
 	 private static Map<String, String> exParams;//yhhpass参数
 	 private static Handler mHandler = new Handler();
 	 private static UpdataDialog updataDialog;
+	public static boolean cancelCheck = true;// 是否取消查询
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,18 +143,23 @@ import java.util.Map;
 												 }
 												 DialogCheckYouhuiUtil.dismiss(2000);
 												 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-												 startActivity(intent);
+												 if (cancelCheck) {
+													 startActivity(intent);
+												 }
 											 }
 										 }, 2000);
 									 }
 								 }else{
 									 DialogCheckYouhuiUtil.dismiss(2000);
+									 if (cancelCheck) {
 									 mHandler.postDelayed(new Runnable() {
 										 @Override
 										 public void run() {
-											 showMessageDialog(BaseActivity.this,checkBean.getUrl());;//耗时操作
+												 showMessageDialog(BaseActivity.this, checkBean.getUrl());
+												 ;//耗时操作
 										 }
 									 }, 2000);
+								 }
 								 }
 							 }
 						 } catch (JSONException e) {
@@ -255,6 +261,7 @@ import java.util.Map;
 				 @Override
 				 public void onClick(View v) {
 					 updataDialog.dismiss();
+					 cancelCheck = false;
 				 }
 			 });
 		 }
@@ -346,6 +353,7 @@ import java.util.Map;
 	 @Override
 	 protected void onStart() {
 		 super.onStart();
+		 cancelCheck = true;
 		 NewConstants.showdialogFlg = "0";
 		 clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 		 if ( clipboardManager.getText() != null){

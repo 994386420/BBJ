@@ -408,23 +408,23 @@ public class JumpDetailActivty extends BaseActivity {
                                 content = jsonObject.optString("content");
                                 JSONObject jsonObject1 = new JSONObject(content);
 //                                Log.i("===",s);
-                                isFirstClick = SharedPreferencesUtil.getSharedData(JumpDetailActivty.this, "isFirstClick", "isFirstClick");
-                                if (TextUtils.isEmpty(isFirstClick)) {
-                                    isFirstClick = "yes";
-                                }
-                                if (isFirstClick.equals("yes")) {
-                                    if (jsonObject1.has("errmsg")) {
-                                        if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
-                                            showMessageDialog(JumpDetailActivty.this,userID);
-//                                        StringUtil.showToast(JumpDetailActivty.this, jsonObject1.optString("errmsg"));
-                                            SharedPreferencesUtil.putSharedData(JumpDetailActivty.this, "isFirstClick", "isFirstClick", "no");
-                                        } else {
-                                            shareOrjump();
-                                        }
-                                    }
-                                }else {
+//                                isFirstClick = SharedPreferencesUtil.getSharedData(JumpDetailActivty.this, "isFirstClick", "isFirstClick");
+//                                if (TextUtils.isEmpty(isFirstClick)) {
+//                                    isFirstClick = "yes";
+//                                }
+//                                if (isFirstClick.equals("yes")) {
+//                                    if (jsonObject1.has("errmsg")) {
+//                                        if (jsonObject1.optString("errmsg") != null && !jsonObject1.optString("errmsg").equals("")) {
+//                                            showMessageDialog(JumpDetailActivty.this,userID);
+////                                        StringUtil.showToast(JumpDetailActivty.this, jsonObject1.optString("errmsg"));
+//                                            SharedPreferencesUtil.putSharedData(JumpDetailActivty.this, "isFirstClick", "isFirstClick", "no");
+//                                        } else {
+//                                            shareOrjump();
+//                                        }
+//                                    }
+//                                }else {
                                   shareOrjump();
-                                }
+//                                }
 
                             }
                         } catch (JSONException e) {

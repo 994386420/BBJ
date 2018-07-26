@@ -38,6 +38,8 @@ public class CommonLoadingView extends FrameLayout {
     private View loadingErrorView;
     //数据为空
     private View emptyView;
+    //数据为空提示文字
+    private TextView emptyText;
     private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
 
 
@@ -105,6 +107,7 @@ public class CommonLoadingView extends FrameLayout {
         animation.setInterpolator(LINEAR_INTERPOLATOR);
         imageView.setAnimation(animation);
         animation.startNow();
+        emptyText = rootView.findViewById(R.id.tv_message);
         mLoadErrorLl = rootView.findViewById(R.id.mzhanwei_layout);
         mLoadErrorLl.setOnClickListener(new OnClickListener() {
             @Override
@@ -125,9 +128,17 @@ public class CommonLoadingView extends FrameLayout {
 
     public void load(String message){
         mLoadingTextTv.setText(message);
+        emptyText.setText(message);
         loadingView.setVisibility(VISIBLE);
         loadingErrorView.setVisibility(GONE);
         emptyView.setVisibility(GONE);
+    }
+
+    public void loadEmpty(String message){
+        emptyText.setText(message);
+        loadingView.setVisibility(GONE);
+        loadingErrorView.setVisibility(GONE);
+        emptyView.setVisibility(VISIBLE);
     }
 
 

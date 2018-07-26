@@ -32,7 +32,7 @@ public class DataFlow{
 			if(TextUtils.isEmpty(tips)){
 				DialogSingleUtil.show(context);
 			}else{
-				DialogSingleUtil.show(context,tips);
+				DialogSingleUtil.show(context);
 			}
 		}
 		final Map<String, String> params;
@@ -89,7 +89,7 @@ public class DataFlow{
 				}
 				data.event.onResultData(requestCode,api,dataJo,content);
 			}catch(Exception e){
-
+				DialogSingleUtil.dismiss(0);
 			}
 
 			
