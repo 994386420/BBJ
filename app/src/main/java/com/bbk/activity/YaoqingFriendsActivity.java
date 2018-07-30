@@ -98,9 +98,11 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
 //                                imgUrlList.add(0,detailImags.getString(2));
 //                                imgUrlList.add(4,detailImags.getString(0));
 //                                Log.i("=========",imgUrlList+"----------");
-                                adapter = new Adapter(getSupportFragmentManager(), imgUrlList, YaoqingFriendsActivity.this);
-                                pager.setAdapter(adapter);
-                                pager.setCurrentItem(1);
+                                if (imgUrlList != null && imgUrlList.size() > 0) {
+                                    adapter = new Adapter(getSupportFragmentManager(), imgUrlList, YaoqingFriendsActivity.this);
+                                    pager.setAdapter(adapter);
+                                    pager.setCurrentItem(1);
+                                }
                             } else {
                                 StringUtil.showToast(YaoqingFriendsActivity.this, jsonObject.optString("errmsg"));
                             }

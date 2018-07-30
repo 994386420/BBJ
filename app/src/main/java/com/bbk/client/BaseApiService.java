@@ -162,4 +162,20 @@ public interface BaseApiService<T> {
     @POST("newService/queryCpsOrderCheck")
     Observable<String>queryCpsOrderCheck(@QueryMap Map<String, String> map);
 
+    /**
+     * 购物商城接口
+     */
+    //购物车相关操作
+    @POST("mallService/doShoppingCart")
+    Observable<String> doShoppingCart(@QueryMap Map<String, String> map);
+    //根据id查购物车内容
+    @POST("mallService/queryShoppingCartByUserid")
+    Observable<String> queryShoppingCartByUserid(@QueryMap Map<String, String> map);
+    //搜索商品结果
+    @POST("mallService/queryProductListByKeyword")
+    Observable<String> queryProductListByKeyword(@QueryMap Map<String, String> map);
+    //三级页面详情
+    @POST("mallService/queryProductDetailById")
+    Observable<String> queryProductDetailById(@QueryMap Map<String, String> map);
+
 }

@@ -370,20 +370,22 @@ public class UpdateVersionService implements ResultEvent {
      * 安装apk文件
      */
     private void installAPK() {
-        Uri uri2=Uri.fromFile(new File(mFile, "bbj" + ".apk"));
-        Intent intent=new Intent(Intent.ACTION_VIEW);
+        if (mFile != null) {
+            Uri uri2 = Uri.fromFile(new File(mFile, "bbj" + ".apk"));
+            Intent intent = new Intent(Intent.ACTION_VIEW);
 //        intent.setDataAndType(uri2, "application/vnd.android.package-archive");
             //判断是否是AndroidN以及更高的版本
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", new File(mFile, "bbj" + ".apk"));
                 intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
-        } else {
-            intent.setDataAndType(uri2, "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            } else {
+                intent.setDataAndType(uri2, "application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            context.startActivity(intent);
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
-        context.startActivity(intent);
-        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     /**

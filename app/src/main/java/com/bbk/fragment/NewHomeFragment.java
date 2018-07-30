@@ -852,8 +852,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                                     if (!text.contains("标题:")) {
                                         SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
                                         if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
-                                                text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("点击链接") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
-                                                || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("点击链接") || text.contains("https") && text.contains("喵口令")) {
+                                                text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
+                                                || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
                                             checkExsistProduct(text);
                                         }
                                     }

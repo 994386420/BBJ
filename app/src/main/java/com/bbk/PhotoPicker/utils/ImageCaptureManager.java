@@ -65,19 +65,20 @@ public class ImageCaptureManager {
       // Create the File where the photo should go
       File file = createImageFile();
       Uri photoFile;
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        //清单文件配置com.bbk.activity.fileProvider，否则要报错
-        String authority = BuildConfig.APPLICATION_ID + ".fileProvider";
-        photoFile = FileProvider.getUriForFile(mContext, authority, file);
-      } else {
-        photoFile = Uri.fromFile(file);
-      }
-
-      // Continue only if the File was successfully created
-      if (photoFile != null) {
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFile);
+      if (file != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+          takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+          takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+          //清单文件配置com.bbk.activity.fileProvider，否则要报错
+          String authority = BuildConfig.APPLICATION_ID + ".fileProvider";
+          photoFile = FileProvider.getUriForFile(mContext, authority, file);
+        } else {
+          photoFile = Uri.fromFile(file);
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+          takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFile);
+        }
       }
     }
     return takePictureIntent;
@@ -92,8 +93,10 @@ public class ImageCaptureManager {
     }
 
     File f = new File(mCurrentPhotoPath);
-    Uri contentUri = Uri.fromFile(f);
-    mediaScanIntent.setData(contentUri);
+    if (f != null){
+      Uri contentUri = Uri.fromFile(f);
+      mediaScanIntent.setData(contentUri);
+     }
     mContext.sendBroadcast(mediaScanIntent);
   }
 

@@ -49,8 +49,10 @@ public class ShareHaiBaoManager {
                         intent.setAction(Intent.ACTION_SEND_MULTIPLE);
                         intent.setType("image/*");
                         ArrayList<Uri> imageUris = new ArrayList<Uri>();
-                        for (File f : files) {
-                            imageUris.add(Uri.fromFile(f));
+                        if (files != null) {
+                            for (File f : files) {
+                                imageUris.add(Uri.fromFile(f));
+                            }
                         }
                         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
                         mContext.startActivity(intent);
