@@ -1,6 +1,7 @@
 package com.bbk.Bean;
 
 public interface OnAddressListioner {
-	public abstract void onDelete(String addrid);
-	public abstract void onDefaultAdressCheck(int addrid);
+	void onDelete(String addrid);
+	void onDefaultAdressCheck(String addrid);
+	void onItemCick(String addrid,String phone,String receiver,String tag,String street,String area);
 }

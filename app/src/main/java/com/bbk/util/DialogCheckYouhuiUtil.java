@@ -13,7 +13,7 @@ public class DialogCheckYouhuiUtil {
 				dialog = null;
 			}
 			if (dialog == null) {
-				dialog =CheckYouhuiAlertDialog.create(context, true, null);
+				dialog =CheckYouhuiAlertDialog.create(context, true, null,"正在查询优惠信息...");
 			}
 			dialog.show();
 		}
@@ -26,7 +26,7 @@ public class DialogCheckYouhuiUtil {
 				dialog = null;
 			}
 			if (dialog == null) {
-				dialog = CheckYouhuiAlertDialog.create(context, true, null);
+				dialog = CheckYouhuiAlertDialog.create(context, true, null,tips);
 			}
 			dialog.show();
 		}

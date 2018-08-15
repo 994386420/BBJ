@@ -62,6 +62,7 @@ import java.util.Map;
 	 private static Handler mHandler = new Handler();
 	 private static UpdataDialog updataDialog;
 	public static boolean cancelCheck = true;// 是否取消查询
+	 private String copytext;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,7 +170,8 @@ import java.util.Map;
 					 @Override
 					 protected void hideDialog() {
 //						 DialogCheckYouhuiUtil.dismiss(2000);
-						 clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
+//						 clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
+						 SharedPreferencesUtil.putSharedData(BaseActivity.this, "copyText", "copyText", copytext);
 					 }
 
 					 @Override
@@ -357,9 +359,9 @@ import java.util.Map;
 		 NewConstants.showdialogFlg = "0";
 		 clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 		 if ( clipboardManager.getText() != null){
-
 		 String text = clipboardManager.getText().toString();
 		 if (text != null && !text.equals("") && !text.equals("null")) {
+			 copytext = text;
 			 if (text.contains("bbj")) {
 				 NewConstants.copyText = text;
 			 }
@@ -370,7 +372,10 @@ import java.util.Map;
 				 if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
 						 text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
 						 || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
-					 checkExsistProduct(text);
+					 String cliptext = SharedPreferencesUtil.getSharedData(this, "copyText", "copyText");
+				 	 if (!text.equals(cliptext)) {
+						 checkExsistProduct(text);
+					 }
 				 }
 			 }
 		 }

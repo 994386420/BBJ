@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FC"
 	android:id="@+id/topbar_layout"
     android:orientation="vertical" >
 			<View 
@@ -14,9 +13,8 @@
         />
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:background="#FFFFFF" >
+        android:layout_height="46dp"
+        android:layout_alignParentTop="true">
 
         <ImageButton
             android:id="@+id/topbar_goback_btn"
@@ -30,8 +28,9 @@
 			android:paddingLeft="18dp"
 			android:paddingRight="18dp"
 			android:scaleType="centerCrop"
-			android:src="@mipmap/goback_btn" />
-
+			android:src="@mipmap/goback_btn"
+			android:visibility="gone"/>
+//    android:textColor="#2D2D2D"
         <TextView
             android:id="@+id/topbar_title"
             android:layout_width="wrap_content"
@@ -39,8 +38,7 @@
             android:layout_centerInParent="true"
             android:singleLine="true"
             android:text= "商品分类"
-            android:textColor="#2D2D2D"
-            android:textSize="16sp" />
+			android:textSize="21dp"/>
 
         <View
             android:layout_width="match_parent"
@@ -50,10 +48,9 @@
     </RelativeLayout>
 	            <RelativeLayout
                 android:id="@+id/msearchall"
-                android:background="#f3f3f3"
                 android:layout_width="match_parent"
  		    	android:layout_height="wrap_content"
- 		    	>
+					android:background="@color/__picker_common_primary">
                 <ImageView 
                     android:layout_marginLeft="20dp"
  		    		android:layout_marginRight="20dp"
@@ -76,13 +73,12 @@
 			    	android:layout_height="wrap_content"
 			    	android:layout_centerVertical="true"
 			    	android:textColor="#999999"
-			    	android:text="输入你想比价的商品"
+			    	android:text="粘贴宝贝链接/标题，购物省钱又赚钱"
 			    	android:textSize="12dp"/>
             </RelativeLayout>
     		<LinearLayout
         		android:layout_width="match_parent"  
         		android:layout_height="match_parent"
-        		android:background="#fbfbfb"
         		android:orientation="horizontal" >
   
         		<ListView  
@@ -90,17 +86,15 @@
             		android:layout_width="0dp"  
             		android:layout_height="match_parent"  
             		android:scrollbars="none"  
-            		android:layout_weight="1.0"  
-            		android:background="#fff" />   
+            		android:layout_weight="1.0" />
             	<com.bbk.view.MyScrollViewNew
-            	    android:background="#fff"
+            	    android:background="@color/__picker_common_primary"
         			android:layout_weight="3.0"
         			android:layout_width="0dp"
         			android:layout_height="match_parent"
             	    >
             	    <LinearLayout 
             	        android:padding="10dp"
-            	        android:background="#f3f3f3"
             	        android:layout_width="match_parent"
             	        android:layout_height="match_parent">
             	        <com.bbk.view.MyListView 

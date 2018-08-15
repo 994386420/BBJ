@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ffffff"
     android:focusableInTouchMode="true"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/rl_home">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -14,10 +14,10 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/refresh_root"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/__picker_common_primary">
+            android:layout_height="match_parent">
             <com.bbk.view.MyScrollViewNew
                 android:id="@+id/scrollview"
+                android:fillViewport="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <RelativeLayout
@@ -26,7 +26,6 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:background="#ffffff"
                     android:layout_height="match_parent">
                     <LinearLayout
                         android:id="@+id/ll_top"
@@ -41,8 +40,7 @@
                         <com.youth.banner.Banner
                             android:id="@+id/banner"
                             android:layout_width="match_parent"
-                            android:layout_height="180dp"
-                            android:background="@mipmap/banner_zhanwei"
+                            android:layout_height="184dp"
                             app:indicator_height="6dp"
                             app:indicator_width="6dp"
                             app:indicator_margin="2.5dp"
@@ -75,7 +73,6 @@
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:adjustViewBounds="true"
-                                android:background="@mipmap/zw_img_160"
                                 android:layout_gravity="center_horizontal"
 
                                 />
@@ -103,7 +100,6 @@
                                 android:id="@+id/img2"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:background="@mipmap/zw_img_160"
                                 android:adjustViewBounds="true"
                                 android:layout_gravity="center_horizontal"
 
@@ -132,7 +128,6 @@
                                 android:id="@+id/img3"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:background="@mipmap/zw_img_160"
                                 android:adjustViewBounds="true"
                                 android:layout_gravity="center_horizontal"
 
@@ -161,7 +156,6 @@
                                 android:id="@+id/img4"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:background="@mipmap/zw_img_160"
                                 android:adjustViewBounds="true"
                                 android:layout_gravity="center_horizontal"
 
@@ -190,7 +184,6 @@
                                 android:id="@+id/img5"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:background="@mipmap/zw_img_160"
                                 android:adjustViewBounds="true"
                                 android:layout_gravity="center_horizontal"
 
@@ -366,14 +359,14 @@
                             <com.youth.banner.Banner
                                 android:id="@+id/banner_guanggao"
                                 android:layout_width="match_parent"
-                                android:layout_height="130dp"
+                                android:layout_height="wrap_content"
                                 app:indicator_height="6dp"
                                 app:indicator_width="6dp"
                                 app:indicator_margin="2.5dp"
                                 android:focusable="true"
                                 app:indicator_drawable_selected="@drawable/banner_circle2"
                                 app:indicator_drawable_unselected="@drawable/banner_circle"
-                                />
+                                app:image_scale_type="fit_xy"/>
 
                         </RelativeLayout>
                     <View
@@ -403,12 +396,18 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/mrecycler"
-                        android:background="#f3f3f3"
                         android:layout_width="match_parent"
                         android:descendantFocusability="afterDescendants"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
 
                     </android.support.v7.widget.RecyclerView>
+                    <!--<com.bbk.view.CustomViewPager1-->
+                        <!--android:id="@+id/viewPager"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content">-->
+
+                    <!--</com.bbk.view.CustomViewPager1>-->
 
                     <View
                         android:layout_width="match_parent"
@@ -453,7 +452,6 @@
         android:id="@+id/lin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_home_yinying"
         android:visibility="visible"
         android:orientation="vertical" >
 
@@ -485,7 +483,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="输入你想比价的商品"
+                    android:text="粘贴宝贝链接/标题，购物省钱又赚钱"
                     android:textColor="#999999"
                     android:textSize="14dp" />
             </LinearLayout>
@@ -494,20 +492,45 @@
                 android:id="@+id/msort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:gravity="center"
                 android:orientation="vertical" >
 
-                <ImageView
-                    android:id="@+id/image_fenlei"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp" />
+                <RelativeLayout
+                    android:id="@+id/newpinglun"
+                    android:layout_width="38dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true">
+
+                    <ImageView
+                        android:id="@+id/image_fenlei"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/praise" />
+
+                    <TextView
+                        android:id="@+id/mnewmsg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/text_result_red_more"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:text="9"
+                        android:visibility="gone"
+                        android:textColor="#ffffff"
+                        android:textSize="8dp" />
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_fenlei"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="分类"
+                    android:text="消息"
                     android:textColor="@color/white"
                     android:textSize="10dp" />
             </LinearLayout>

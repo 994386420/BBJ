@@ -5,9 +5,8 @@
     android:layout_height="match_parent">
     <ImageView 
         android:id="@+id/mimg"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:layout_width="match_parent"
-        android:background="@mipmap/qidong"
         android:layout_height="match_parent"
         />
     <TextView
@@ -20,6 +19,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
         android:text="跳过3秒"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="13sp"/>
 </RelativeLayout>

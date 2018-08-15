@@ -13,15 +13,12 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -35,29 +32,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.bbk.Bean.NewFxBean;
-import com.bbk.adapter.FindListAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.entity.XGMessageEntity;
-import com.bbk.flow.DataFlow;
-import com.bbk.flow.ResultEvent;
-import com.bbk.fragment.GossipPiazzaFragment;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
 import com.bbk.server.FloatingWindowService;
-import com.bbk.server.GrayService;
-import com.bbk.util.HttpUtil;
-import com.bbk.util.NetworkUtils;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -82,6 +69,7 @@ public class WelcomeActivity extends BaseActivity2{
 				return;
 			}
 			int curTime = msg.what;
+			mbtn.setVisibility(View.VISIBLE);
 			mbtn.setText("跳过"+curTime+"秒");
 			curTime--;
 
@@ -204,7 +192,6 @@ public class WelcomeActivity extends BaseActivity2{
 			SchemeIntentUtil.intent(uri,this);
 			finish();
 		}
-		handler2.sendEmptyMessage(time);
 		ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 		if (cm.getText()!= null) {
 			String text = cm.getText().toString();
@@ -272,8 +259,9 @@ public class WelcomeActivity extends BaseActivity2{
 								String img = content.optString("img");
 									Glide.with(getApplicationContext())
 											.load(img)
-											.placeholder(R.mipmap.qidong)
+											.diskCacheStrategy(DiskCacheStrategy.RESULT)
 											.into(mimg);
+								handler2.sendEmptyMessage(time);
 								final String eventId = content.optString("eventId");
 								//点击跳转活动页
 								mimg.setOnClickListener(new OnClickListener() {
@@ -306,6 +294,9 @@ public class WelcomeActivity extends BaseActivity2{
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
 						StringUtil.showToast(WelcomeActivity.this, e.message);
+						Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
+						startActivity(intent);
+						finish();
 					}
 				});
 	}

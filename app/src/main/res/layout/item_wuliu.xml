@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:gravity="center_vertical"
+    android:background="#ffffff">
+    <!--快件接收时间-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#999999"
+        android:textSize="12sp"
+        tools:text="05-15" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            tools:text="10:59"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="vertical">
+        <!--时间轴的竖线-->
+        <View
+            android:id="@+id/time_line_view_top"
+            android:layout_width="1dp"
+            android:layout_height="28dp"
+            android:background="#eeeeee" />
+        <ImageView
+            android:id="@+id/dot_iv"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:background="@mipmap/order_08"/>
+
+        <!--时间轴的竖线-->
+        <View
+            android:id="@+id/time_line_view"
+            android:layout_width="1dp"
+            android:layout_height="28dp"
+            android:background="#eeeeee" />
+    </LinearLayout>
+
+
+
+    <!--快件接收站点-->
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        tools:text="快件已发出" />
+</LinearLayout>

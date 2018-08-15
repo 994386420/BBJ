@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/topbar_layout"
+    tools:context="com.bbk.activity.BidListDetailActivity"
+    android:background="@color/white">
+
+    <include
+        layout="@layout/title_layout"/>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/tuiguang_color1"
+        app:tabSelectedTextColor="@color/tuiguang_color1"
+        app:tabTextColor="#333333"
+        />
+    <View
+        android:id="@+id/henggang213"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/__picker_common_primary" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/xrefresh"
+            android:background="#f3f3f3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/mlistview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f3f3f3"
+                android:divider="@null"/>
+                <com.bbk.view.CommonLoadingView
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </RelativeLayout>
+</LinearLayout>

@@ -111,7 +111,8 @@
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textColorHint="#969696"
-                    android:textSize="17sp" >
+                    android:textSize="17sp"
+                    android:inputType="number">
                 </EditText>
 
                 <RelativeLayout

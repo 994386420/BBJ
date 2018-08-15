@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -14,10 +15,12 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bbk.activity.BaseActivity;
 import com.bbk.activity.BaseFragmentActivity;
 import com.bbk.activity.R;
+import com.bbk.adapter.FenXiangListAdapter;
 import com.bbk.fragment.NewHomeFragment;
 
 /**
@@ -47,10 +50,14 @@ public class CheckYouhuiAlertDialog extends Dialog {
      * @param cancelListener 按下返回键监听
      * @return
      */
-    public static CheckYouhuiAlertDialog create(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    public static CheckYouhuiAlertDialog create(Context context, boolean cancelable, OnCancelListener cancelListener,String tips) {
         final CheckYouhuiAlertDialog dialog = new CheckYouhuiAlertDialog(context, R.style.MyDialog);
         dialog.setContentView(R.layout.check_loading_dialog);
         ImageView imageView = (ImageView) dialog.findViewById(R.id.dialog_img);
+        TextView textView = dialog.findViewById(R.id.tips_tv);
+        if (!TextUtils.isEmpty(tips)) {
+            textView.setText(tips);
+        }
         LinearLayout linearLayout = dialog.findViewById(R.id.ll_close);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +66,7 @@ public class CheckYouhuiAlertDialog extends Dialog {
                 BaseFragmentActivity.cancelCheck = false;
                 BaseActivity.cancelCheck = false;
                 NewHomeFragment.cancelCheck = false;
+                FenXiangListAdapter.cancelCheck = false;
             }
         });
 			final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

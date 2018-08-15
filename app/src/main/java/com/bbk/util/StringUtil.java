@@ -141,6 +141,23 @@ public class StringUtil {
 		return false;
 	}
 
+//	/**
+//	 * 验证手机号码的格式是否正确
+//	 */
+//	public static boolean isMobilePhoneVerify(String mobileString){
+//		if(mobileString ==null || "".equals(mobileString.trim())){
+//			return true;
+//		}else{
+//			Pattern p = Pattern.compile("^1[0-9][0-9]{9}$");
+//			Matcher m = p.matcher(mobileString.trim());
+//			if(!m.matches()){
+//				return true;
+//			}else{
+//				return false;
+//			}
+//		}
+//
+//	}
 	/**
 	 * 验证手机号码的格式是否正确
 	 */
@@ -148,7 +165,7 @@ public class StringUtil {
 		if(mobileString ==null || "".equals(mobileString.trim())){
 			return true;
 		}else{
-			Pattern p = Pattern.compile("^1[0-9][0-9]{9}$");
+			Pattern p = Pattern.compile("^1\\d{10}$");
 			Matcher m = p.matcher(mobileString.trim());
 			if(!m.matches()){
 				return true;
@@ -158,7 +175,6 @@ public class StringUtil {
 		}
 
 	}
-
 	/**
 	 * 设置tablayout下划线长度
 	 * @param tabs
@@ -281,5 +297,15 @@ public class StringUtil {
 		set.play(animator_x).with(animator_y);
 		set.setDuration(500);
 		set.start();
+	}
+
+
+	public static int getStatusBarHeight(Context context) {
+		int result = 0;
+		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) {
+			result = context.getResources().getDimensionPixelSize(resourceId);
+		}
+		return result;
 	}
 }

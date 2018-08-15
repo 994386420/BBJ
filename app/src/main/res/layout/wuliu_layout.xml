@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/topbar_layout"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/title_layout"/>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/__picker_common_primary">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/btn_seclecter"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" >
+        <TextView
+            android:id="@+id/tv_dh"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tuiguang_color3"
+            android:textSize="13dp"
+            android:text="运单号" />
+
+        <TextView
+            android:id="@+id/tv_kefu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/shop_color1"
+            android:textSize="13dp"
+            android:visibility="gone"
+            android:text="物流客服" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_gs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/tuiguang_color3"
+        android:textSize="13dp"
+        android:text="承运公司"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="5dp"/>
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/tuiguang_color3"
+        android:textSize="13dp"
+        android:text="承运电话"
+        android:visibility="gone"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/__picker_common_primary"/>
+
+            <!--物流追踪的列表-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listview_wuliu"
+                android:layout_width="match_parent"
+                android:background="#ffffff"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

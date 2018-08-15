@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bbk.activity.R;
 import com.bbk.activity.SortActivity;
+import com.bbk.fragment.SortFragment;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -52,7 +53,8 @@ public class ListViewAdapter extends BaseAdapter{
 		}
 		mPosition = position;
 		vh.tv.setText(str[position]);
-		if (position == SortActivity.mPosition) {
+		//position == SortActivity.mPosition
+		if (position == SortFragment.mPosition) {
 			convertView.setBackgroundColor(Color.parseColor("#f3f3f3"));
 			vh.tv.setTextColor(Color.parseColor("#EE240E"));
 			vh.fenge.setBackgroundColor(Color.parseColor("#f3f3f3"));

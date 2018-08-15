@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/refresh_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/__picker_common_primary">
+            <com.bbk.view.MyScrollViewNew
+                android:id="@+id/scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:background="#ffffff"
+                        android:layout_height="match_parent">
+                        <LinearLayout
+                            android:id="@+id/ll_center"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:background="#ffffff"
+                            android:layout_height="match_parent">
+                        <FrameLayout
+                            android:id="@+id/ll_top"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@color/white">
+                            <RelativeLayout
+                                android:id="@+id/layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="85dp">
+
+                                <com.youth.banner.Banner
+                                    android:id="@+id/banner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="280dp"
+                                    app:indicator_height="6dp"
+                                    app:indicator_width="6dp"
+                                    app:indicator_margin="2.5dp"
+                                    android:focusable="true"
+                                    app:indicator_drawable_selected="@drawable/banner_circle2"
+                                    app:indicator_drawable_unselected="@drawable/banner_circle"
+                                    />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="@drawable/bg_fenxiang"/>
+                            </RelativeLayout>
+
+                            <android.support.v7.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardBackgroundColor="@color/white"
+                                app:cardCornerRadius= "10dp"
+                                app:cardElevation = "10dp"
+                                android:layout_gravity="bottom"
+                                app:cardUseCompatPadding="true"
+                                android:layout_marginTop="10dp">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="8dp"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:id="@+id/box1"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <ImageView
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_marginTop="6dp"
+                                            android:layout_marginBottom="6dp"
+                                            android:id="@+id/img1"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:adjustViewBounds="true"
+                                            android:background="@mipmap/zw_img_160"
+                                            android:layout_gravity="center_horizontal"
+
+                                            />
+                                        <com.bbk.view.AdaptionSizeTextView
+                                            android:id="@+id/text1"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
+                                            android:textSize="13dp"
+                                            android:textColor="#666666"
+                                            android:layout_gravity="center_horizontal"
+                                            android:text=""/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:id="@+id/box2"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <ImageView
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_marginTop="6dp"
+                                            android:layout_marginBottom="6dp"
+                                            android:id="@+id/img2"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:background="@mipmap/zw_img_160"
+                                            android:adjustViewBounds="true"
+                                            android:layout_gravity="center_horizontal"
+
+                                            />
+                                        <com.bbk.view.AdaptionSizeTextView
+                                            android:id="@+id/text2"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
+                                            android:textSize="13dp"
+                                            android:textColor="#666666"
+                                            android:layout_gravity="center_horizontal"
+                                            android:text=""/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:id="@+id/box3"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <ImageView
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_marginTop="6dp"
+                                            android:layout_marginBottom="6dp"
+                                            android:id="@+id/img3"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:background="@mipmap/zw_img_160"
+                                            android:adjustViewBounds="true"
+                                            android:layout_gravity="center_horizontal"
+
+                                            />
+                                        <com.bbk.view.AdaptionSizeTextView
+                                            android:id="@+id/text3"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
+                                            android:textSize="13dp"
+                                            android:textColor="#666666"
+                                            android:layout_gravity="center_horizontal"
+                                            android:text=""/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:id="@+id/box4"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <ImageView
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_marginTop="6dp"
+                                            android:layout_marginBottom="6dp"
+                                            android:id="@+id/img4"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:background="@mipmap/zw_img_160"
+                                            android:adjustViewBounds="true"
+                                            android:layout_gravity="center_horizontal"
+
+                                            />
+                                        <com.bbk.view.AdaptionSizeTextView
+                                            android:id="@+id/text4"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
+                                            android:textSize="13dp"
+                                            android:textColor="#666666"
+                                            android:layout_gravity="center_horizontal"
+                                            android:text=""/>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:id="@+id/box5"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <ImageView
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_marginTop="6dp"
+                                            android:layout_marginBottom="6dp"
+                                            android:id="@+id/img5"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:background="@mipmap/zw_img_160"
+                                            android:adjustViewBounds="true"
+                                            android:layout_gravity="center_horizontal"
+
+                                            />
+                                        <com.bbk.view.AdaptionSizeTextView
+                                            android:id="@+id/text5"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
+                                            android:textSize="13dp"
+                                            android:textColor="#666666"
+                                            android:layout_gravity="center_horizontal"
+                                            android:text=""/>
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </android.support.v7.widget.CardView>
+                        </FrameLayout>
+
+                        //超值好货
+                        <LinearLayout
+                            android:id="@+id/ll_hot"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@mipmap/index_01"/>
+                            <!--<View-->
+                                <!--android:layout_width="70dp"-->
+                                <!--android:layout_height="1dp"-->
+                                <!--android:layout_marginRight="20dp"-->
+                                <!--android:background="@color/__picker_common_primary"/>-->
+
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:gravity="center"-->
+                                <!--android:orientation="vertical">-->
+
+                                <!--<TextView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:text="超值好货"-->
+                                    <!--android:textSize="18dp"-->
+                                    <!--android:textColor="@color/tuiguang_color3"/>-->
+                                <!--<TextView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:textColor="@color/tuiguang_color4"-->
+                                    <!--android:text="GOOD"-->
+                                    <!--android:textSize="12dp"-->
+                                    <!--android:layout_marginTop="5dp"/>-->
+                            <!--</LinearLayout>-->
+                            <!--<View-->
+                                <!--android:layout_width="70dp"-->
+                                <!--android:layout_height="1dp"-->
+                                <!--android:layout_marginLeft="20dp"-->
+                                <!--android:background="@color/__picker_common_primary"/>-->
+                        </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/hot_recyclerview"
+                            android:background="#f3f3f3"
+                            android:layout_width="match_parent"
+                            android:descendantFocusability="afterDescendants"
+                            android:layout_height="match_parent"/>
+
+
+                        //品牌
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:orientation="horizontal">
+
+                            <!--<View-->
+                                <!--android:layout_width="70dp"-->
+                                <!--android:layout_height="1dp"-->
+                                <!--android:layout_marginRight="20dp"-->
+                                <!--android:background="@color/__picker_common_primary"/>-->
+
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:gravity="center"-->
+                                <!--android:orientation="vertical">-->
+
+                                <!--<TextView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:text="品牌优选"-->
+                                    <!--android:textSize="18dp"-->
+                                    <!--android:textColor="@color/tuiguang_color3"/>-->
+                                <!--<TextView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:textColor="@color/tuiguang_color4"-->
+                                    <!--android:text="GOOD"-->
+                                    <!--android:textSize="12dp"-->
+                                    <!--android:layout_marginTop="5dp"/>-->
+                            <!--</LinearLayout>-->
+                            <!--<View-->
+                                <!--android:layout_width="70dp"-->
+                                <!--android:layout_height="1dp"-->
+                                <!--android:layout_marginLeft="20dp"-->
+                                <!--android:background="@color/__picker_common_primary"/>-->
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@mipmap/index_02"/>
+                        </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/pinpai_recyclerview"
+                            android:background="#f3f3f3"
+                            android:layout_width="match_parent"
+                            android:descendantFocusability="afterDescendants"
+                            android:layout_height="match_parent"/>
+
+                        //热销专场
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:orientation="horizontal">
+
+                            <!--<View-->
+                                <!--android:layout_width="70dp"-->
+                                <!--android:layout_height="1dp"-->
+                                <!--android:layout_marginRight="20dp"-->
+                                <!--android:background="@color/__picker_common_primary"/>-->
+
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:gravity="center"-->
+                                <!--android:orientation="vertical">-->
+
+                                <!--<TextView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:text="热销专场"-->
+                                    <!--android:textSize="18dp"-->
+                                    <!--android:textColor="@color/tuiguang_color3"/>-->
+                                <!--<TextView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:textColor="@color/tuiguang_color4"-->
+                                    <!--android:text="GOOD"-->
+                                    <!--android:textSize="12dp"-->
+                                    <!--android:layout_marginTop="5dp"/>-->
+                            <!--</LinearLayout>-->
+                            <!--<View-->
+                                <!--android:layout_width="70dp"-->
+                                <!--android:layout_height="1dp"-->
+                                <!--android:layout_marginLeft="20dp"-->
+                                <!--android:background="@color/__picker_common_primary"/>-->
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:background="@mipmap/index_03"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                        <HorizontalScrollView
+                            android:id="@+id/mhscrollview"
+                            android:layout_width="match_parent"
+                            android:layout_height="41dp"
+                            android:fillViewport="true"
+                            android:scrollbars="none"
+                            android:visibility="visible" >
+
+                            <LinearLayout
+                                android:id="@+id/mbox"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal" >
+                            </LinearLayout>
+                        </HorizontalScrollView>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_line"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/mrecycler"
+                            android:background="#f3f3f3"
+                            android:layout_width="match_parent"
+                            android:descendantFocusability="afterDescendants"
+                            android:layout_height="match_parent">
+
+                        </android.support.v7.widget.RecyclerView>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:background="#f3f3f3" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </com.bbk.view.MyScrollViewNew>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </FrameLayout>
+    <ImageButton
+        android:id="@+id/img_car"
+        android:layout_width="35dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="70.0dip"
+        android:layout_marginRight="15.0dip"
+        android:visibility="gone"
+        android:gravity="center"
+        android:scaleType="centerInside"
+        android:background="@mipmap/store_32" />
+    <ImageButton
+        android:id="@+id/to_top_btn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30.0dip"
+        android:layout_marginRight="15.0dip"
+        android:visibility="gone"
+        android:gravity="center"
+        android:scaleType="centerInside"
+        android:background="@mipmap/store_31" />
+
+    <LinearLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_home_yinying"
+        android:visibility="visible"
+        android:gravity="center"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:paddingRight="20dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp">
+        <ImageButton
+            android:id="@+id/title_back_btn1"
+            android:layout_width="12dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:background="@mipmap/shop_back_img"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:layout_marginLeft="10dp"
+            android:visibility="visible"
+            android:scaleType="centerCrop" />
+        </LinearLayout>
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tv_dianpu_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:text="洗护专区"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:visibility="visible"
+            android:textColor="@color/white" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/lin"
+        android:id="@+id/ll_type"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:orientation="horizontal">
+        <HorizontalScrollView
+
+            android:id="@+id/mhscrollview1"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:layout_weight="1"
+            android:visibility="visible" >
+            <LinearLayout
+                android:id="@+id/mbox1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </LinearLayout>
+
+
+    <com.bbk.view.CommonLoadingView
+        android:id="@+id/progress"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

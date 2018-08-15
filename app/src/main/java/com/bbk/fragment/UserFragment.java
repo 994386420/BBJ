@@ -1,10 +1,14 @@
 package com.bbk.fragment;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,7 +35,10 @@ import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
 import com.alibaba.baichuan.android.trade.page.AlibcMyCartsPage;
 import com.alibaba.fastjson.JSON;
+import com.appkefu.lib.interfaces.KFAPIs;
+import com.bbk.Bean.ButtonListBean;
 import com.bbk.Bean.DemoTradeCallback;
+import com.bbk.Bean.NewUserBean;
 import com.bbk.Bean.UserBean;
 import com.bbk.activity.AboutUsActivity;
 import com.bbk.activity.AddressMangerActivity;
@@ -39,9 +46,9 @@ import com.bbk.activity.BidListDetailActivity;
 import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.BrokerageActivity;
 import com.bbk.activity.BrowseActivity;
+import com.bbk.activity.CoinGoGoGoActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.ContactActivity;
-import com.bbk.activity.FanLiOrderActivity;
 import com.bbk.activity.FensiActivity;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.JumpDetailActivty;
@@ -57,6 +64,8 @@ import com.bbk.activity.UserAccountActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.UserSuggestionActivity;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.activity.YaoqingFriendsActivity;
+import com.bbk.adapter.MyButtonListAdapter;
 import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
@@ -69,16 +78,25 @@ import com.bbk.component.QiandaoComponent;
 import com.bbk.component.ShouyiComponent;
 import com.bbk.flow.DataFlow;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.CarActivity;
+import com.bbk.shopcar.DianpuHomeActivity;
+import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.HongbaoDialog;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.util.UpdataDialog;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.CircleImageView1;
+import com.bbk.view.MyScrollViewNew;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
+import com.bumptech.glide.Glide;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -89,6 +107,7 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -96,11 +115,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class UserFragment extends BaseViewPagerFragment implements OnClickListener {
-    @BindView(R.id.tv_shouyi)
-    TextView tvShouyi;
-    @BindView(R.id.tv_hongbao)
-    TextView tvHongbao;
+public class UserFragment extends BaseViewPagerFragment implements OnClickListener, MyButtonListAdapter.userInterface {
+    //    @BindView(R.id.tv_shouyi)
+//    TextView tvShouyi;
+//    @BindView(R.id.tv_hongbao)
+//    TextView tvHongbao;
     @BindView(R.id.tv_level)
     TextView tvLevel;
     @BindView(R.id.mjdshopcart)
@@ -111,6 +130,78 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     LinearLayout llFanliOrder;
     @BindView(R.id.view)
     View view;
+    @BindView(R.id.ll_sign)
+    LinearLayout llSign;
+    @BindView(R.id.ll_jingbi)
+    LinearLayout llJingbi;
+    @BindView(R.id.ll_fensi)
+    LinearLayout llFensi;
+    @BindView(R.id.ll_yaoqing)
+    LinearLayout llYaoqing;
+    @BindView(R.id.ll_all_order)
+    LinearLayout llAllOrder;
+    @BindView(R.id.ll_daifukuan)
+    LinearLayout llDaifukuan;
+    @BindView(R.id.ll_daifahuo)
+    LinearLayout llDaifahuo;
+    @BindView(R.id.ll_daishouhuo)
+    LinearLayout llDaishouhuo;
+    @BindView(R.id.ll_daipl)
+    LinearLayout llDaipl;
+    @BindView(R.id.ll_shouhou)
+    LinearLayout llShouhou;
+    @BindView(R.id.ll_car)
+    LinearLayout llCar;
+    @BindView(R.id.ll_foot)
+    LinearLayout llFoot;
+    @BindView(R.id.ll_pl)
+    LinearLayout llPl;
+    @BindView(R.id.ll_address)
+    LinearLayout llAddress;
+    @BindView(R.id.ll_tq)
+    LinearLayout llTq;
+    @BindView(R.id.ll_xs)
+    LinearLayout llXs;
+    @BindView(R.id.ll_cjwt)
+    LinearLayout llCjwt;
+    @BindView(R.id.ll_yjfk)
+    LinearLayout llYjfk;
+    @BindView(R.id.ll_woyao)
+    LinearLayout llWoyao;
+    @BindView(R.id.ll_pudao)
+    LinearLayout llPudao;
+    @BindView(R.id.ll_kefu)
+    LinearLayout llKefu;
+    @BindView(R.id.ll_adoutbbj)
+    LinearLayout llAdoutbbj;
+    @BindView(R.id.ll_benyueyugu)
+    LinearLayout llBenyueyugu;
+    @BindView(R.id.tv_ketimoney)
+    TextView tvKetimoney;
+    @BindView(R.id.tv_lastmonth)
+    TextView tvLastmonth;
+    @BindView(R.id.tv_thismonth)
+    TextView tvThismonth;
+    @BindView(R.id.tv_thismonthyu)
+    TextView tvThismonthyu;
+    @BindView(R.id.tv_yaoqingma)
+    TextView tvYaoqingma;
+    @BindView(R.id.tv_so)
+    TextView tvSo;
+    @BindView(R.id.tv_sl)
+    TextView tvSl;
+    @BindView(R.id.tv_ss)
+    TextView tvSs;
+    @BindView(R.id.button_list)
+    RecyclerView buttonList;
+    @BindView(R.id.scrollView)
+    MyScrollViewNew scrollView;
+    @BindView(R.id.ll_order_user)
+    LinearLayout llOrderUser;
+    @BindView(R.id.huodongimg)
+    ImageView huodongimg;
+    @BindView(R.id.tv_copy)
+    TextView tvCopy;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -148,12 +239,12 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     LinearLayout llTuiguang;
     @BindView(R.id.ll_brokerage)
     LinearLayout llBrokerage;
-    @BindView(R.id.ll_fensi)
-    LinearLayout llFensi;
     String isFirstResultUse;
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
-
+    private UpdataDialog updataDialog;
+    private HongbaoDialog hongbaoDialog;
+    private String hongbaoMoney;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -173,6 +264,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         ButterKnife.bind(this, mView);
         dataFlow = new DataFlow(getActivity());
         user_head = mView.findViewById(R.id.user_head);
+        Glide.with(getActivity()).load(R.drawable.first_01).into(huodongimg);
         initstateView();
         initView();
         initData();
@@ -270,16 +362,16 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                         String type = json.optString("type");
                                         String totalmoney = json.optString("totalmoney");//佣金收益总金额
                                         String rebate = json.optString("rebate");//邀请好友未领红包个数
-                                        if (totalmoney != null && !totalmoney.equals("")) {
-                                            tvShouyi.setText(totalmoney);
-                                        } else {
-                                            tvShouyi.setText("¥ 0.0");
-                                        }
-                                        if (rebate != null && !rebate.equals("")) {
-                                            tvHongbao.setText(rebate);
-                                        } else {
-                                            tvHongbao.setText("0");
-                                        }
+//                                        if (totalmoney != null && !totalmoney.equals("")) {
+//                                            tvShouyi.setText(totalmoney);
+//                                        } else {
+//                                            tvShouyi.setText("¥ 0.0");
+//                                        }
+//                                        if (rebate != null && !rebate.equals("")) {
+//                                            tvHongbao.setText(rebate);
+//                                        } else {
+//                                            tvHongbao.setText("0");
+//                                        }
                                         tvLevel.setVisibility(View.VISIBLE);
                                         mJlzText.setVisibility(View.VISIBLE);
                                         if (type.equals("0")) {
@@ -316,14 +408,19 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                         username);
                                 if (!messages.equals("0")) {
                                     mnewmsg.setVisibility(View.VISIBLE);
+                                    NewHomeFragment.mnewmsg.setVisibility(View.VISIBLE);
                                 } else {
                                     mnewmsg.setVisibility(View.GONE);
+                                    NewHomeFragment.mnewmsg.setVisibility(View.GONE);
                                 }
                                 if (messages != null) {
                                     NewConstants.messages = Integer.parseInt(messages);
                                     mnewmsg.setText(NewConstants.messages + "");
                                     if (HomeActivity.mNumImageView != null) {
-                                        HomeActivity.mNumImageView.setNum(NewConstants.messages);
+//                                        HomeActivity.mNumImageView.setNum(NewConstants.messages);
+                                    }
+                                    if (NewHomeFragment.mnewmsg != null) {
+                                        NewHomeFragment.mnewmsg.setText(NewConstants.messages + "");
                                     }
                                 }
                                 if (sign != null) {
@@ -354,7 +451,173 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 });
     }
 
+
+    private void queryUserCenter() {
+        Map<String, String> maps = new HashMap<String, String>();
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        maps.put("userid", userID);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().queryUserCenter(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                Logg.json(jsonObject);
+                                NewUserBean userBean = JSON.parseObject(jsonObject.optString("content"), NewUserBean.class);
+                                String messages = String.valueOf(userBean.getMessages());
+                                String username = userBean.getUsername();
+                                String imgurl = userBean.getImgurl();
+                                NewConstants.imgurl = imgurl;
+                                String exp = userBean.getExp();//鲸力值
+                                String partner = userBean.getPartner();
+                                hongbaoMoney = userBean.getAward();
+                                if (hongbaoMoney != null && !hongbaoMoney.equals("")) {
+                                    huodongimg.setVisibility(View.VISIBLE);
+                                }else {
+                                    huodongimg.setVisibility(View.GONE);
+                                }
+                                if (!TextUtils.isEmpty(userID)) {
+                                    tvCopy.setVisibility(View.VISIBLE);
+                                    tvLevel.setVisibility(View.VISIBLE);
+                                    mJlzText.setVisibility(View.VISIBLE);
+                                    tvYaoqingma.setVisibility(View.VISIBLE);
+                                    if (partner.equals("0")) {
+                                        llTuiguang.setVisibility(View.GONE);
+                                        llTuiguang_user.setVisibility(View.GONE);
+                                        view.setVisibility(View.VISIBLE);
+                                        tvLevel.setText("普通会员");
+                                    } else if (partner.equals("1")) {
+                                        llTuiguang.setVisibility(View.VISIBLE);
+                                        llTuiguang_user.setVisibility(View.GONE);
+                                        view.setVisibility(View.VISIBLE);
+                                        tvLevel.setText("合作伙伴");
+                                    } else if (partner.equals("2")) {
+                                        llTuiguang.setVisibility(View.VISIBLE);
+                                        llTuiguang_user.setVisibility(View.GONE);
+                                        view.setVisibility(View.VISIBLE);
+                                        tvLevel.setText("超级伙伴");
+                                    }
+                                    user_name.setText(username);
+                                    mJlzText.setText("鲸力值" + exp);
+                                    CircleImageView1.getImg(getActivity(), imgurl, user_img);
+                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "imgUrl",
+                                            imgurl);
+                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "nickname",
+                                            username);
+                                    if (!messages.equals("0")) {
+                                        mnewmsg.setVisibility(View.VISIBLE);
+                                        NewHomeFragment.mnewmsg.setVisibility(View.VISIBLE);
+                                    } else {
+                                        mnewmsg.setVisibility(View.GONE);
+                                        NewHomeFragment.mnewmsg.setVisibility(View.GONE);
+                                    }
+                                    if (messages != null) {
+                                        NewConstants.messages = Integer.parseInt(messages);
+                                        mnewmsg.setText(NewConstants.messages + "");
+//                                        if (HomeActivity.mNumImageView != null) {
+//                                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
+//                                        }
+                                        if (NewHomeFragment.mnewmsg != null) {
+                                            NewHomeFragment.mnewmsg.setText(NewConstants.messages + "");
+                                        }
+                                    }
+
+                                    tvKetimoney.setText("可提现金额 ¥" + userBean.getKeti());
+                                    JSONObject jsonObject1 = new JSONObject(userBean.getEarn());
+                                    tvLastmonth.setText("¥" + jsonObject1.optString("lastMonth"));
+                                    tvThismonth.setText("¥" + jsonObject1.optString("thisMonth"));
+                                    tvThismonthyu.setText("¥" + jsonObject1.optString("thisMonthYu"));
+                                    tvYaoqingma.setText("邀请码： " + userBean.getInvicode());
+
+                                    JSONObject jsonObject2 = new JSONObject(userBean.getGoodsInfo());
+                                    if (jsonObject2.has("s0")) {
+                                        if (jsonObject2.optString("s0").equals("0")) {
+                                            tvSo.setVisibility(View.GONE);
+                                        } else {
+                                            tvSo.setVisibility(View.VISIBLE);
+                                            tvSo.setText(jsonObject2.optString("s0"));
+                                        }
+                                    }
+                                    if (jsonObject2.has("s1")) {
+                                        if (jsonObject2.optString("s1").equals("0")) {
+                                            tvSl.setVisibility(View.GONE);
+                                        } else {
+                                            tvSl.setVisibility(View.VISIBLE);
+                                            tvSl.setText(jsonObject2.optString("s1"));
+                                        }
+                                    }
+                                    if (jsonObject2.has("s3")) {
+                                        if (jsonObject2.optString("s3").equals("0")) {
+                                            tvSs.setVisibility(View.GONE);
+                                        } else {
+                                            tvSs.setVisibility(View.VISIBLE);
+                                            tvSs.setText(jsonObject2.optString("s3"));
+                                        }
+                                    }
+                                } else {
+                                    user_name.setText("请登录");
+                                    user_img.setImageResource(R.mipmap.logo_01);
+                                    mjb.setText("0");
+                                    llTuiguang_user.setVisibility(View.GONE);
+                                    view.setVisibility(View.GONE);
+                                    llTuiguang.setVisibility(View.GONE);
+                                    tvLevel.setVisibility(View.GONE);
+                                    mJlzText.setVisibility(View.GONE);
+                                    tvYaoqingma.setVisibility(View.GONE);
+                                    tvSo.setVisibility(View.GONE);
+                                    tvSs.setVisibility(View.GONE);
+                                    tvSl.setVisibility(View.GONE);
+                                    tvCopy.setVisibility(View.GONE);
+                                    xrefresh.finishRefresh();
+                                }
+
+                                if (userBean.getButtonlist() != null) {
+                                    List<ButtonListBean> buttonListBean = JSON.parseArray(userBean.getButtonlist(), ButtonListBean.class);
+                                    MyButtonListAdapter myButtonListAdapter = new MyButtonListAdapter(getActivity(), buttonListBean);
+                                    myButtonListAdapter.setUserInterface(UserFragment.this);
+                                    buttonList.setAdapter(myButtonListAdapter);
+                                }
+                                if (userBean.getShowOrders() != null) {
+                                    if (userBean.getShowOrders().equals("1")) {
+                                        llOrderUser.setVisibility(View.VISIBLE);
+                                    } else {
+                                        llOrderUser.setVisibility(View.GONE);
+                                    }
+                                }
+//                                scrollView.scrollTo(0, 0);
+                            } else {
+                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        xrefresh.finishRefresh();
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        xrefresh.finishRefresh();
+                        StringUtil.showToast(getActivity(), e.message);
+                    }
+                });
+    }
+
     public void initView() {
+        //禁用滑动事件
+        buttonList.setNestedScrollingEnabled(false);
+        buttonList.setHasFixedSize(true);
+        buttonList.setFocusable(false);
+        buttonList.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+
         mAddress = mView.findViewById(R.id.maddress);
         mAddress.setOnClickListener(this);
         mFabiaoLayout = mView.findViewById(R.id.ll_my_fabiao);
@@ -496,35 +759,40 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         TelephonyManager TelephonyMgr = (TelephonyManager) getActivity().getSystemService(getActivity().TELEPHONY_SERVICE);
         String token = TelephonyMgr.getDeviceId();
         SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
-        if (!TextUtils.isEmpty(userID)) {
-            queryUserInfoMain();
+//        if (!TextUtils.isEmpty(userID)) {
+//            queryUserInfoMain();
+        queryUserCenter();
 //            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-            if (!TextUtils.isEmpty(userID)) {
-                llBrokerage.postDelayed(new Runnable() {
-                    //                    @Override
-                    public void run() {
-                        //引导页只显示一次
-                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstUserFanli", "isFirstUserFanli");
-                        if (TextUtils.isEmpty(isFirstResultUse)) {
-                            isFirstResultUse = "yes";
-                        }
-                        if (isFirstResultUse.equals("yes") && NewConstants.yingdaoFlag.equals("1") && JumpDetailActivty.Flag.equals("home") ) {
-                            showGuideViewHehuoren(llBrokerage,llFanliOrder);
-                        }
-                    }
-                },2000);
-            }
-        } else {
-            user_name.setText("请登录");
-            user_img.setImageResource(R.mipmap.logo_01);
-            mjb.setText("0");
-            llTuiguang_user.setVisibility(View.GONE);
-            view.setVisibility(View.GONE);
-            llTuiguang.setVisibility(View.GONE);
-            tvLevel.setVisibility(View.GONE);
-            mJlzText.setVisibility(View.GONE);
-            xrefresh.finishRefresh();
-        }
+//            if (!TextUtils.isEmpty(userID)) {
+//                llBrokerage.postDelayed(new Runnable() {
+//                    //                    @Override
+//                    public void run() {
+//                        //引导页只显示一次
+//                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstUserFanli", "isFirstUserFanli");
+//                        if (TextUtils.isEmpty(isFirstResultUse)) {
+//                            isFirstResultUse = "yes";
+//                        }
+//                        if (isFirstResultUse.equals("yes") && NewConstants.yingdaoFlag.equals("1") && JumpDetailActivty.Flag.equals("home")) {
+//                            showGuideViewHehuoren(llBrokerage, llFanliOrder);
+//                        }
+//                    }
+//                }, 2000);
+//            }
+//        } else {
+//            user_name.setText("请登录");
+//            user_img.setImageResource(R.mipmap.logo_01);
+//            mjb.setText("0");
+//            llTuiguang_user.setVisibility(View.GONE);
+//            view.setVisibility(View.GONE);
+//            llTuiguang.setVisibility(View.GONE);
+//            tvLevel.setVisibility(View.GONE);
+//            mJlzText.setVisibility(View.GONE);
+//            tvYaoqingma.setVisibility(View.GONE);
+//            tvSo.setVisibility(View.GONE);
+//            tvSs.setVisibility(View.GONE);
+//            tvSl.setVisibility(View.GONE);
+//            xrefresh.finishRefresh();
+//        }
 
 
     }
@@ -603,7 +871,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 }
                 break;
             case R.id.mtaobaologin:
-                TaoBaoLoginandLogout();
+//                TaoBaoLoginandLogout();
+
                 break;
             case R.id.mjingbi:
                 if (TextUtils.isEmpty(userID)) {
@@ -614,6 +883,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     intent = new Intent(getActivity(), MyCoinActivity.class);
                     startActivity(intent);
                 }
+//                intent = new Intent(getActivity(), ShopOrderActivity.class);
+//                startActivity(intent);
                 break;
             case R.id.mcollection:
                 if (TextUtils.isEmpty(userID)) {
@@ -626,14 +897,16 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 }
                 break;
             case R.id.mfoot:
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
-                    intent = new Intent(getActivity(), BrowseActivity.class);
-                    startActivity(intent);
-                }
+//                if (TextUtils.isEmpty(userID)) {
+//                    JumpDetailActivty.Flag = "home";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
+//                    intent = new Intent(getActivity(), BrowseActivity.class);
+//                    startActivity(intent);
+//                }
+                intent = new Intent(getActivity(), DianpuHomeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.mphonechongzhi:
                 intent = new Intent(getActivity(), WebViewActivity.class);
@@ -964,25 +1237,25 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //        } else {
         initData();
 //        }
-        try {
-            if (showTimes == 0) {
-                msign.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //我的引导页只显示一次
-                        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse");
-                        if (TextUtils.isEmpty(isFirstResultUse)) {
-                            isFirstResultUse = "yes";
-                        }
-                        if (isFirstResultUse.equals("yes")) {
-                            showGuideView(msign, msign);
-                        }
-                    }
-                });
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+//        try {
+//            if (showTimes == 0) {
+//                msign.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        //我的引导页只显示一次
+//                        isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstMyUse", "isFirstMyUserUse");
+//                        if (TextUtils.isEmpty(isFirstResultUse)) {
+//                            isFirstResultUse = "yes";
+//                        }
+//                        if (isFirstResultUse.equals("yes")) {
+//                            showGuideView(msign, msign);
+//                        }
+//                    }
+//                });
+//            }
+//        } catch (Exception e) {
+//            // TODO: handle exception
+//        }
     }
 
     /**
@@ -1023,10 +1296,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 isFirstResultUse = "yes";
                             }
                             if (isFirstResultUse.equals("yes") && NewConstants.yingdaoFlag.equals("2")) {
-                                showGuideViewHehuoren(llBrokerage,llFanliOrder);
+                                showGuideViewHehuoren(llBrokerage, llFanliOrder);
                             }
                         }
-                    },0);
+                    }, 0);
                 }
             }
         });
@@ -1065,6 +1338,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         guide.setShouldCheckLocInWindow(true);
         guide.show(getActivity());
     }
+
     public void showGuideViewHehuoren1(View targetView1) {
         showTimes++;
         GuideBuilder builder = new GuideBuilder();
@@ -1094,59 +1368,12 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         guide.setShouldCheckLocInWindow(true);
         guide.show(getActivity());
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
 
-
-    @OnClick({R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.ll_fensi, R.id.mjdshopcart, R.id.mTaobaoshopcart, R.id.ll_fanli_order})
-    public void onViewClicked(View view) {
-        Intent intent;
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        switch (view.getId()) {
-            case R.id.tv_tuiguang_tule:
-                //推广规则跳转链接
-                String url = BaseApiService.Base_URL + "mobile/user/generalize";
-                intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
-                break;
-            case R.id.ll_brokerage:
-                intent = new Intent(getActivity(), BrokerageActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ll_fensi:
-                intent = new Intent(getActivity(), FensiActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.mjdshopcart:
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
-                    KeplerApiManager.getWebViewService().openAppWebViewPage(getActivity(),
-                            "https://p.m.jd.com/cart/cart.action",
-                            mKeplerAttachParameter,
-                            mOpenAppAction);
-                }
-                break;
-            case R.id.mTaobaoshopcart:
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
-                    showCart();
-                }
-                break;
-            case R.id.ll_fanli_order:
-                intent = new Intent(getActivity(), FanLiOrderActivity.class);
-                startActivity(intent);
-                break;
-        }
-    }
 
     /**
      * 显示我的购物车
@@ -1199,4 +1426,438 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //			});
         }
     };
+
+    @OnClick({R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
+            R.id.ll_pl, R.id.ll_address, R.id.ll_tq, R.id.ll_xs, R.id.ll_cjwt, R.id.ll_yjfk, R.id.ll_woyao, R.id.ll_pudao, R.id.ll_kefu, R.id.ll_adoutbbj, R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.mjdshopcart,
+            R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu,R.id.huodongimg})
+    public void onViewClicked(View view) {
+        Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        switch (view.getId()) {
+            case R.id.tv_tuiguang_tule:
+                //推广规则跳转链接
+//                String url = BaseApiService.Base_URL + "mobile/user/generalize";
+//                intent = new Intent(getActivity(), WebViewActivity.class);
+//                intent.putExtra("url", url);
+//                startActivity(intent);
+                showMessageDialog(getActivity());
+                break;
+            case R.id.ll_brokerage:
+                intent = new Intent(getActivity(), BrokerageActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.mjdshopcart:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    KeplerApiManager.getWebViewService().openAppWebViewPage(getActivity(),
+                            "https://p.m.jd.com/cart/cart.action",
+                            mKeplerAttachParameter,
+                            mOpenAppAction);
+                }
+                break;
+            case R.id.mTaobaoshopcart:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    showCart();
+                }
+                break;
+            case R.id.ll_fanli_order:
+//                    intent = new Intent(getActivity(), FanLiOrderActivity.class);
+//                    startActivity(intent);
+                intent = new Intent(getActivity(), BrokerageActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_sign:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), MyCoinActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_jingbi:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), CoinGoGoGoActivity.class);
+                    intent.putExtra("type", "0");
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_fensi:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), FensiActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_yaoqing:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), YaoqingFriendsActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_all_order:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), ShopOrderActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_daifukuan:
+                mShopOrder(userID, "1");
+                break;
+            case R.id.ll_daifahuo:
+                mShopOrder(userID, "2");
+                break;
+            case R.id.ll_daishouhuo:
+                mShopOrder(userID, "3");
+                break;
+            case R.id.ll_daipl:
+                mShopOrder(userID, "4");
+                break;
+            case R.id.ll_shouhou:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    startChat();
+                }
+                break;
+            case R.id.ll_car:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), CarActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_foot:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BrowseActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_pl:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), MesageCenterActivity.class);
+                    intent.putExtra("type", "1");
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_address:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), AddressMangerActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_tq:
+                break;
+            case R.id.ll_xs:
+                break;
+            case R.id.ll_cjwt:
+                break;
+            case R.id.ll_yjfk:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), UserSuggestionActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_woyao:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BidListDetailActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_pudao:
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.ll_kefu:
+                break;
+            case R.id.ll_adoutbbj:
+                intent = new Intent(getActivity(), AboutUsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_benyueyugu:
+                intent = new Intent(getActivity(), BrokerageActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.huodongimg:
+                showHongbaoDialog(getActivity());
+                break;
+        }
+    }
+
+    private void mShopOrder(String userid, String value) {
+        Intent intent;
+        if (TextUtils.isEmpty(userid)) {
+            JumpDetailActivty.Flag = "home";
+            intent = new Intent(getActivity(), UserLoginNewActivity.class);
+            startActivityForResult(intent, 1);
+        } else {
+            intent = new Intent(getActivity(), ShopOrderActivity.class);
+            intent.putExtra("status", value);
+            startActivity(intent);
+        }
+    }
+
+    public void showMessageDialog(final Context context) {
+        if (updataDialog == null || !updataDialog.isShowing()) {
+            //初始化弹窗 布局 点击事件的id
+            updataDialog = new UpdataDialog(context, R.layout.tixian_dialog_layout,
+                    new int[]{R.id.tv_update_gengxin});
+            updataDialog.show();
+            updataDialog.setCanceledOnTouchOutside(true);
+            TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+            AdaptionSizeTextView tv_tixian = updataDialog.findViewById(R.id.tv_tixian);
+            tv_tixian.setText("发送“佣金提现”领取现金");
+            ImageView img_close = updataDialog.findViewById(R.id.img_close);
+            img_close.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                }
+            });
+            tv_update_gengxin.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                }
+            });
+        }
+    }
+    public void showHongbaoDialog(final Context context) {
+        if (hongbaoDialog == null || !hongbaoDialog.isShowing()) {
+            hongbaoDialog = new HongbaoDialog(context, R.layout.hongbao_dialog_layout,
+                    new int[]{R.id.mclose});
+            hongbaoDialog.show();
+            hongbaoDialog.setCanceledOnTouchOutside(true);
+            AdaptionSizeTextView textView = hongbaoDialog.findViewById(R.id.tv_hongbao_money);
+            if (hongbaoMoney != null) {
+                textView.setText(hongbaoMoney);
+            }
+            LinearLayout llclose = hongbaoDialog.findViewById(R.id.mclose);
+            llclose.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hongbaoDialog.dismiss();
+                }
+            });
+        }
+    }
+    @Override
+    public void Intent(String name) {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Intent intent;
+        switch (name) {
+            case "购物车":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), CarActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case "足迹":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BrowseActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case "我的评论":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), MesageCenterActivity.class);
+                    intent.putExtra("type", "1");
+                    startActivity(intent);
+                }
+                break;
+            case "收货地址":
+                NewConstants.address = "1";
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), AddressMangerActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case "会员特权":
+                //推广规则跳转链接
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    String url = BaseApiService.Base_URL + "mobile/user/generalize";
+                    intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url", url);
+                    startActivity(intent);
+                }
+                break;
+            case "新手必看":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url", "http://bibijing.com/mobile/html/introduce.jsp");
+                    startActivity(intent);
+                }
+                break;
+            case "常见问题":
+                //常见问题跳转链接
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    String url1 = BaseApiService.Base_URL + "mobile/user/question";
+                    intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url", url1);
+                    startActivity(intent);
+                }
+                break;
+            case "意见反馈":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), UserSuggestionActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case "我要的":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BidListDetailActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case "扑倒的":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case "联系客服":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    startChat();
+                }
+                break;
+            case "关于比比鲸":
+                if (TextUtils.isEmpty(userID)) {
+                    JumpDetailActivty.Flag = "home";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), AboutUsActivity.class);
+                    startActivity(intent);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void startChat() {
+        //
+        KFAPIs.startChat(getActivity(),
+                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
+                "比比鲸客服", // 2. 会话界面标题，可自定义
+                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
+                // 如果不想发送此信息，可以将此信息设置为""或者null
+                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
+                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
+                // 显示:true, 不显示:false
+                5, // 5. 默认显示消息数量
+                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
+                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
+                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
+                false, // 8. 默认机器人应答
+                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
+                null);
+
+    }
+
+    @OnClick(R.id.tv_copy)
+    public void onViewClicked() {
+        ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setText(tvYaoqingma.getText().toString());
+        StringUtil.showToast(getActivity(), "复制成功");
+    }
 }

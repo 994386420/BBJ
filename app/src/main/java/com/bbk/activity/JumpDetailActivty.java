@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
+import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -47,6 +49,7 @@ import com.bumptech.glide.Priority;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -121,7 +124,7 @@ public class JumpDetailActivty extends BaseActivity {
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
-    private String url, rowkey, domain, quans;
+    private String url, rowkey, domain, quans,jumpdomain;
     String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
@@ -130,6 +133,8 @@ public class JumpDetailActivty extends BaseActivity {
     private UpdataDialog updataDialog;
     private String isFirstClick;
     private String urltaobaoOrjd ;
+    private Handler mHandler = new Handler();
+    private boolean cancleJump = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -356,6 +361,7 @@ public class JumpDetailActivty extends BaseActivity {
                         StringUtil.showToast(this,"对不起，您的点击太快了，请休息一下");
                     }else {
                         llShare.setClickable(false);
+                        cancleJump = true;
                         shareCpsInfo();
                     }
                 }
@@ -371,6 +377,7 @@ public class JumpDetailActivty extends BaseActivity {
                         StringUtil.showToast(this,"对不起，您的点击太快了，请休息一下");
                     }else {
                         llLingquan.setClickable(false);
+                        cancleJump = true;
                         shareCpsInfo();
                     }
                 }
@@ -382,13 +389,20 @@ public class JumpDetailActivty extends BaseActivity {
      * 打开指定链接
      */
     public void showUrl(String url) {
-        String text = url;
+        final String text = url;
         if (TextUtils.isEmpty(text)) {
             StringUtil.showToast(this, "URL为空");
             return;
         }
-        AlibcTrade.show(this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
-        DialogSingleUtil.dismiss(100);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (cancleJump) {
+                    AlibcTrade.show(JumpDetailActivty.this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
+                    updataDialog.dismiss();
+                }
+            }
+        }, 2000);
     }
 
     /**
@@ -465,10 +479,10 @@ public class JumpDetailActivty extends BaseActivity {
 //				public void run() {
             Intent intent;
             if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
-                DialogSingleUtil.show(JumpDetailActivty.this);
+//                DialogSingleUtil.show(JumpDetailActivty.this);
             } else {
 //						mKelperTask = null;
-                DialogSingleUtil.dismiss(0);
+//                DialogSingleUtil.dismiss(0);
             }
             if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
                 StringUtil.showToast(JumpDetailActivty.this, "未安装京东");
@@ -583,30 +597,30 @@ public class JumpDetailActivty extends BaseActivity {
                 });
     }
 
-    /**
-     * 不是合伙人弹窗
-     * @param context
-     * @param useid
-     */
-    public void showMessageDialog(final Context context, final String useid) {
-        if(updataDialog == null || !updataDialog.isShowing()) {
-            //初始化弹窗 布局 点击事件的id
-            updataDialog = new UpdataDialog(context, R.layout.hehuo_dialog_layout,
-                    new int[]{R.id.tv_update_gengxin});
-            updataDialog.show();
-            updataDialog.setCanceledOnTouchOutside(true);
-            TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
-            TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
-            if (flag.equals("lingquan")){
-                tv_update_refuse.setText("任性购");
-            }
-            ImageView img_close = updataDialog.findViewById(R.id.img_close);
-            img_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updataDialog.dismiss();
-                }
-            });
+//    /**
+//     * 不是合伙人弹窗
+//     * @param context
+//     * @param useid
+//     */
+//    public void showMessageDialog(final Context context, final String useid) {
+//        if(updataDialog == null || !updataDialog.isShowing()) {
+//            //初始化弹窗 布局 点击事件的id
+//            updataDialog = new UpdataDialog(context, R.layout.hehuo_dialog_layout,
+//                    new int[]{R.id.tv_update_gengxin});
+//            updataDialog.show();
+//            updataDialog.setCanceledOnTouchOutside(true);
+//            TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
+//            TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+//            if (flag.equals("lingquan")){
+//                tv_update_refuse.setText("任性购");
+//            }
+//            ImageView img_close = updataDialog.findViewById(R.id.img_close);
+//            img_close.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    updataDialog.dismiss();
+//                }
+//            });
 //            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -649,11 +663,40 @@ public class JumpDetailActivty extends BaseActivity {
 //                    }
 //                }
 //            });
-            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+//            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    updataDialog.dismiss();
+//                    updateCooperationByUserid(context,useid);
+//                }
+//            });
+//        }
+//    }
+
+        public void showLoadingDialog(final Context context) {
+        if(updataDialog == null || !updataDialog.isShowing()) {
+            //初始化弹窗 布局 点击事件的id
+            updataDialog = new UpdataDialog(context, R.layout.disanfang_dialog,
+                    new int[]{R.id.ll_close});
+            updataDialog.show();
+            LinearLayout img_close = updataDialog.findViewById(R.id.ll_close);
+            ImageView imgLoading = updataDialog.findViewById(R.id.img_loading);
+            ImageView imageView = updataDialog.findViewById(R.id.img_app);
+            if (url.contains("jd")){
+                jumpdomain = "jumpjd";
+            }else if (url.contains("tmall")){
+                jumpdomain = "jumptmall";
+            }else if (url.contains("taobao")){
+                jumpdomain = "jumptaobao";
+            }
+            int drawS = getResources().getIdentifier(jumpdomain,"mipmap", getPackageName());
+            imageView.setImageResource(drawS);
+            Glide.with(context).load(R.drawable.tuiguang_d05).into(imgLoading);
+            img_close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updataDialog.dismiss();
-                    updateCooperationByUserid(context,useid);
+                    cancleJump = false;
                 }
             });
         }
@@ -669,17 +712,22 @@ public class JumpDetailActivty extends BaseActivity {
             exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
             if (domain != null) {
                 if (domain.equals("tmall") || domain.equals("taobao")) {
+                    showLoadingDialog(JumpDetailActivty.this);
                     showUrl(url);
                 } else if (domain.equals("jd")) {
-                    // 通过url呼京东主站
-                    // url 通过url呼京东主站的地址
-                    // mKeplerAttachParameter 存储第三方传入参数
-                    // mOpenAppAction  呼京东主站回调
-                    KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                            url,
-                            mKeplerAttachParameter,
-                            mOpenAppAction);
-                    DialogSingleUtil.dismiss(100);
+                    showLoadingDialog(JumpDetailActivty.this);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (cancleJump) {
+                                KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+                                        url,
+                                        mKeplerAttachParameter,
+                                        mOpenAppAction);
+                                updataDialog.dismiss();
+                            }
+                        }
+                    }, 2000);
                 } else {
                     Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
                     if (url != null) {
@@ -689,7 +737,7 @@ public class JumpDetailActivty extends BaseActivity {
                         intent.putExtra("rowkey", rowkey);
                     }
                     startActivity(intent);
-                    DialogSingleUtil.dismiss(50);
+//                    updataDialog.dismiss();
                 }
             }
 

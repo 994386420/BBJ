@@ -90,7 +90,7 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 				try {
 					data = new JSONObject(dataStr);
 				if ("1".equals(data.optString("status"))) {
-					if (ValidatorUtil.isMatchered(NewConstants.PHONE_PATTERN,addr)) {
+					if (StringUtil.isNullOrEmpty(addr)) {
 						get_code_btn.setEnabled(false);
 						time.start();
 						bangding_code.setSelection(bangding_code.getText().toString().length());

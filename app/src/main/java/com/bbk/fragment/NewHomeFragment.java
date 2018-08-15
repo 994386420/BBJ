@@ -12,8 +12,8 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,16 +40,16 @@ import com.bbk.Bean.ChaozhigouTypesBean;
 import com.bbk.Bean.CheckBean;
 import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.Bean.NewHomeCzgBean;
-import com.bbk.activity.BaseActivity;
-import com.bbk.activity.BaseFragmentActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.IntentActivity;
+import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
-import com.bbk.activity.SortActivity;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.adapter.Adapter;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.TypeGridAdapter;
 import com.bbk.client.BaseObserver;
@@ -115,7 +115,7 @@ import butterknife.Unbinder;
 /**
  * 首页
  */
-public class NewHomeFragment extends BaseViewPagerFragment implements ResultEvent, CommonLoadingView.LoadingHandler, MyScrollViewNew.ScrollViewListener, OnClickHomeListioner, OnMultiPurposeListener {
+public class NewHomeFragment extends BaseViewPagerFragment implements  CommonLoadingView.LoadingHandler, MyScrollViewNew.ScrollViewListener, OnClickHomeListioner, OnMultiPurposeListener {
     @BindView(R.id.lin)
     LinearLayout lin;
     @BindView(R.id.mbox)
@@ -186,8 +186,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     ViewFlipper mviewflipper;
     @BindView(R.id.mrecycler)
     RecyclerView mrecyclerview;
-//    @BindView(R.id.refresh_root)
-    public  static SmartRefreshLayout refreshLayout;
+    public static SmartRefreshLayout refreshLayout;
     @BindView(R.id.huodongimg)
     ImageView huodongimg;
     @BindView(R.id.to_top_btn)
@@ -198,7 +197,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     Banner bannerGuanggao;
     @BindView(R.id.guanggao_layout)
     RelativeLayout guanggaoLayout;
-    private DataFlow6 dataFlow;
+    @BindView(R.id.rl_home)
+    RelativeLayout rlHome;
+    Unbinder unbinder;
+    public static TextView mnewmsg;
     private View mView;
     private JSONArray banner = new JSONArray();
     private JSONObject guanggaobanner = new JSONObject();
@@ -214,13 +216,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     JSONObject jo, preguanggao;
     JSONObject object;
     private LinearLayout mSuspensionBar;
-    private IWXAPI msgApi = null;
-    private int data;// 支付结果标识
-    private PayReq mReq;
-    private PayModel mPayModel;
     List<NewHomeCzgBean> czgBeans;//超值购数据
     private String content;
-    private int currentIndex = 0, currentIndexTop = 0;
     private List<Map<String, String>> titlelist;
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
@@ -240,6 +237,8 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     private static AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private static Map<String, String> exParams;//yhhpass参数
     public static boolean cancelCheck = true;// 是否取消查询
+    private String copytext;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -272,32 +271,40 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
             getActivity().getWindow().setBackgroundDrawable(null);
             mView = inflater.inflate(R.layout.activity_new_home_layout, null);
             ButterKnife.bind(this, mView);
+            rlHome.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+            lin.setBackgroundResource(R.drawable.bg_home_yinying);
             homeLoadUtil = new HomeLoadUtil(getActivity(), NewHomeFragment.this);
-            dataFlow = new DataFlow6(getContext());
-            mPayModel = BaseService.getPayModel(getActivity());
             View topView = mView.findViewById(R.id.lin);
-            imageFenlei.setBackgroundResource(R.mipmap.fenlei_white);
+            imageFenlei.setBackgroundResource(R.mipmap.praise);
             // 实现沉浸式状态栏
             ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
             initView(mView);
             initListeners();
         }
+        unbinder = ButterKnife.bind(this, mView);
         return mView;
 
     }
 
     private void initView(View v) {
+        mnewmsg = mView.findViewById(R.id.mnewmsg);
         refreshLayout = mView.findViewById(R.id.refresh_root);
         zLoadingView.setLoadingHandler(this);
         refresh();
         //设置 Footer 为 球脉冲 样式
 //        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale).setNormalColor(getActivity().getResources().getColor(R.color.button_color)).setAnimatingColor(getActivity().getResources().getColor(R.color.button_color)));
         mrecyclerview.setHasFixedSize(true);
-        mrecyclerview.setNestedScrollingEnabled(false);
-        ((SimpleItemAnimator) mrecyclerview.getItemAnimator()).setSupportsChangeAnimations(false);
+//        mrecyclerview.setNestedScrollingEnabled(false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+//        ((SimpleItemAnimator) mrecyclerview.getItemAnimator()).setSupportsChangeAnimations(false);
         mSuspensionBar = mView.findViewById(R.id.layout_click);
-        final LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
-        mrecyclerview.setLayoutManager(gridLayoutManager);
+//        final LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
+        mrecyclerview.setLayoutManager(linearLayoutManager);
         refreshLayout.setEnableLoadMore(false);
         refreshLayout.setEnableRefresh(false);
     }
@@ -350,11 +357,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                 });
     }
 
-    private void initDataWx(boolean is) {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("paytype", "wx");
-        dataFlow.requestData(3, "appPayService/getOrderInfo", paramsMap, this, is);
-    }
 
 //    //首页分类数据
 //    private void getIndexByType() {
@@ -450,35 +452,15 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
         refreshLayout.setOnMultiPurposeListener(this);
     }
 
-    @Override
-    public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-        switch (requestCode) {
-            case 3:
-                Log.i("支付数据", content + "============");
-                try {
-                    JSONObject object = new JSONObject(content);
-                    mPayModel.wxPay(object, new PayModel.wxListener() {
-                        @Override
-                        public void onResult(PayReq req) {
-                            mReq = req;
-                            msgApi = WXAPIFactory.createWXAPI(getActivity(), Constants.APP_ID);
-//                            msgApi.registerApp(Constants.APP_ID);
-                            msgApi.sendReq(mReq);
-                            Log.i("调起微信支付", "============");
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-        }
-    }
 
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case 0:
+                    newCzgAdapter.notifyData(czgBeans);
+                    break;
                 case 1:
                     break;
                 case 2:
@@ -562,11 +544,29 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                             HomeLoadUtil.loadViewflipper(getActivity(), mviewflipper, fabiao);
                         }
                         Logg.json(object.optString("tonglanguanggao"));
-                        if (object.has("tonglanguanggao")){
+                        if (object.has("tonglanguanggao")) {
                             guanggaoLayout.setVisibility(View.VISIBLE);
                             guanggaobanner = object.optJSONObject("tonglanguanggao");
-                            HomeLoadUtil.loadGuanggaoBanner(getActivity(),bannerGuanggao,guanggaobanner);
-                        }else {
+//                            WindowManager windowManager = getActivity().getWindowManager();
+//                            Display display = windowManager.getDefaultDisplay();
+//                            RelativeLayout.LayoutParams lp = getActivity().getWindow().getAttributes();
+//                            lp.height = display.getHeight()*1/4; // 设置高度为屏幕的1/4
+//                            getActivity().getWindow().setAttributes(lp);
+//                            WindowManager wm = (WindowManager) getContext()
+//                                    .getSystemService(Context.WINDOW_SERVICE);
+//                            int width = wm.getDefaultDisplay().getWidth();
+//                            int height = wm.getDefaultDisplay().getHeight();
+//                            ViewGroup.LayoutParams lp = bannerGuanggao.getLayoutParams();
+                            DisplayMetrics dm = new DisplayMetrics();
+                            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+                            int width = dm.widthPixels;
+                            int height = dm.heightPixels;
+                            ViewGroup.LayoutParams lp = bannerGuanggao.getLayoutParams();
+                            lp.width = width;
+                            lp.height = height * 1 / 7;
+                            bannerGuanggao.setLayoutParams(lp);
+                            HomeLoadUtil.loadGuanggaoBanner(getActivity(), bannerGuanggao, guanggaobanner);
+                        } else {
                             guanggaoLayout.setVisibility(View.GONE);
                         }
                     } catch (Exception e) {
@@ -574,9 +574,9 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                     }
                     if (object.has("messages")) {
                         NewConstants.messages = object.optInt("messages");
-                        if (HomeActivity.mNumImageView != null) {
-                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
-                        }
+//                        if (HomeActivity.mNumImageView != null) {
+//                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
+//                        }
                     }
                     /**
                      * eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao
@@ -687,6 +687,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
     }
 
 
@@ -814,9 +815,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                                         }
                                     } else if (x == 2) {
                                         mrecyclerview.setVisibility(View.VISIBLE);
+//                                        czgBeans.clear();
                                         if (tmpCzg != null && !tmpCzg.toString().equals("[]")) {
-                                            czgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
                                             newCzgAdapter.notifyData(czgBeans);
+//                                            handler.sendEmptyMessageDelayed(0, 0);
                                         } else {
                                             refreshLayout.finishLoadMoreWithNoMoreData();
                                         }
@@ -832,7 +834,12 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
 
                     @Override
                     protected void hideDialog() {
-                        refreshLayout.finishLoadMore();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshLayout.finishLoadMore();
+                            }
+                        }, 2500);
                         refreshLayout.finishRefresh();
                         refreshLayout.setEnableRefresh(true);
                         DialogHomeUtil.dismiss(0);
@@ -841,22 +848,28 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                         cancelCheck = true;
                         isShowCheck = false;
                         clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                        if ( clipboardManager.getText() != null){
+                        if (clipboardManager.getText() != null) {
 //                            if (isShowCheck) {
-                                String text = clipboardManager.getText().toString();
-                                if (text != null && !text.equals("") && !text.equals("null")) {
-                                    if (text.contains("bbj")) {
-                                        NewConstants.copyText = text;
-                                    }
-                                    // //获得当前activity的名字
-                                    if (!text.contains("标题:")) {
-                                        SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-                                        if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
-                                                text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
-                                                || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
+                            String text = clipboardManager.getText().toString();
+                            copytext = text;
+                            if (text != null && !text.equals("") && !text.equals("null")) {
+                                if (text.contains("bbj")) {
+                                    NewConstants.copyText = text;
+                                }
+                                // //获得当前activity的名字
+                                if (!text.contains("标题:")) {
+                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+                                    if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
+                                            text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
+                                            || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
+                                        String cliptext = SharedPreferencesUtil.getSharedData(getActivity(), "copyText", "copyText");
+                                        String isfrist = SharedPreferencesUtil.getSharedData(getActivity(), "isfirst", "isfirst");
+                                        Logg.e(text+"======="+cliptext);
+                                        if (!text.equals(cliptext)) {
                                             checkExsistProduct(text);
                                         }
                                     }
+                                }
 //                                }
                             }
                         }
@@ -900,7 +913,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
             llType.setVisibility(View.GONE);
             imageButton.setVisibility(View.GONE);
             lin.setVisibility(View.VISIBLE);
-            imageFenlei.setBackgroundResource(R.mipmap.fenlei_white);
+            imageFenlei.setBackgroundResource(R.mipmap.praise);
             tvFenlei.setTextColor(getActivity().getResources().getColor(R.color.white));
         } else if (y > 0 && y <= imageHeight) { //滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
             float scale = (float) y / imageHeight;
@@ -910,7 +923,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
             llType.setVisibility(View.GONE);
             imageButton.setVisibility(View.GONE);
             lin.setVisibility(View.VISIBLE);
-            imageFenlei.setBackgroundResource(R.mipmap.fenlei_white);
+            imageFenlei.setBackgroundResource(R.mipmap.praise);
         } else {
             //滑动到banner下面设置普通颜色
             //将标题栏的颜色设置为完全不透明状态
@@ -937,7 +950,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
      * 获取顶部图片高度后，设置滚动监听
      */
     private void initListeners() {
-
         ViewTreeObserver vto = mBanner.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -963,6 +975,11 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
         flag = "1";
         keyword = keywordd;
         initDataCzg(keyword);
+    }
+
+    @Override
+    public void onMallClick(String text) {
+
     }
 
     @Override
@@ -1069,6 +1086,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
      */
     @OnClick({R.id.type_image, R.id.ll_shouqi, R.id.msearch, R.id.msort, R.id.image_puba, R.id.to_top_btn})
     public void onViewClicked(View view) {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
             case R.id.type_image:
                 showGlobalMenu();
@@ -1081,8 +1099,16 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                 startActivity(intent);
                 break;
             case R.id.msort:
-                Intent intent1 = new Intent(getActivity(), SortActivity.class);
-                startActivity(intent1);
+//                Intent intent1 = new Intent(getActivity(), SortActivity.class);
+//                startActivity(intent1);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), MesageCenterActivity.class);
+                    intent.putExtra("type", "0");
+                    startActivity(intent);
+                }
                 break;
             case R.id.image_puba:
                 Intent intent2 = new Intent(getActivity(), BidHomeActivity.class);
@@ -1160,7 +1186,6 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     }
 
 
-
     private void checkExsistProduct(String text) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("url", text);
@@ -1172,7 +1197,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 String content = jsonObject.optString("content");
-                                checkBean = JSON.parseObject(content,CheckBean.class);
+                                checkBean = JSON.parseObject(content, CheckBean.class);
                                 if (checkBean.getHasCps() != null) {
                                     if (checkBean.getHasCps().equals("1")) {
                                         mHandler.postDelayed(new Runnable() {
@@ -1185,7 +1210,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                                                 if (checkBean.getDomain() != null && !checkBean.getDomain().equals("")) {
                                                     intent.putExtra("domain", checkBean.getDomain());
                                                 }
-                                                if (checkBean.getRowkey()!= null && !checkBean.getRowkey().equals("")) {
+                                                if (checkBean.getRowkey() != null && !checkBean.getRowkey().equals("")) {
                                                     intent.putExtra("groupRowKey", checkBean.getRowkey());
                                                 }
                                                 if (checkBean.getPrice() != null && !checkBean.getPrice().equals("")) {
@@ -1198,38 +1223,40 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                                             }
                                         }, 2000);
                                     }
-                                }else{
+                                } else {
                                     DialogCheckYouhuiUtil.dismiss(2000);
                                     if (cancelCheck) {
-                                    mHandler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
+                                        mHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
                                                 showMessageDialog(getActivity(), checkBean.getUrl());
                                                 ;//耗时操作
-                                        }
-                                    }, 2000);
+                                            }
+                                        }, 2000);
+                                    }
                                 }
-                            }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     protected void hideDialog() {
-                        clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
+                        SharedPreferencesUtil.putSharedData(getActivity(), "copyText", "copyText", copytext);
+//                        clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
                     }
 
                     @Override
                     protected void showDialog() {
-                        if (NewHomeFragment.this != null){
+                        if (NewHomeFragment.this != null) {
                             DialogCheckYouhuiUtil.show(getActivity());
                         }
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(getActivity(), e.message);
+                        StringUtil.showToast(getActivity(), e.message);
                         DialogCheckYouhuiUtil.dismiss(0);
                     }
                 });
@@ -1237,20 +1264,18 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     }
 
 
-
     /**
-     *
      * @param context
      */
     public void showMessageDialog(final Context context, final String url) {
-        if(updataDialog == null || !updataDialog.isShowing()) {
+        if (updataDialog == null || !updataDialog.isShowing()) {
             //初始化弹窗 布局 点击事件的id
             updataDialog = new UpdataDialog(context, R.layout.check_nomessage_dialog_layout,
                     new int[]{R.id.tv_update_gengxin});
             updataDialog.show();
             updataDialog.setCanceledOnTouchOutside(true);
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
-            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+            tv_update_gengxin.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updataDialog.dismiss();
@@ -1258,7 +1283,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
                 }
             });
             LinearLayout ll_close = updataDialog.findViewById(R.id.ll_close);
-            ll_close.setOnClickListener(new View.OnClickListener() {
+            ll_close.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updataDialog.dismiss();
@@ -1269,8 +1294,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     }
 
 
-
-    public  void jumpThirdApp(String url){
+    public void jumpThirdApp(String url) {
         alibcShowParams = new AlibcShowParams(OpenType.Native, false);
         alibcShowParams.setClientType("taobao_scheme");
         exParams = new HashMap<>();
@@ -1295,7 +1319,7 @@ public class NewHomeFragment extends BaseViewPagerFragment implements ResultEven
     /**
      * 打开指定链接
      */
-    public  void showUrl(String url) {
+    public void showUrl(String url) {
         String text = url;
         if (TextUtils.isEmpty(text)) {
             StringUtil.showToast(getActivity(), "URL为空");

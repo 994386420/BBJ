@@ -59,6 +59,7 @@ public class IntentActivity extends BaseActivity {
 			intent.putExtra("url", url);
 			intent.putExtra("rowkey", rowkey);
 			startActivity(intent);
+			DialogSingleUtil.dismiss(0);
 			finish();
 		}
 	};

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape = "rectangle"
+    >
+    <size android:height="40dp"
+        android:width="40dp"/>
+    <gradient
+        android:startColor="@color/__picker_common_primary"
+        android:endColor="@color/__picker_common_primary"
+        android:angle="45"
+        />
+    <corners
+        android:bottomLeftRadius = "60dp"
+        android:bottomRightRadius = "0dp"
+        android:topLeftRadius = "60dp"
+        android:topRightRadius = "0dp"/>
+</shape>

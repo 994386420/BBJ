@@ -213,4 +213,5 @@ public class MyScrollViewNew extends ScrollView {
         distanceY = 0;
         upDownSlide = false;
     }
+
 }

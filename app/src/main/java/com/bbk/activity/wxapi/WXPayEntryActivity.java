@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.bbk.activity.R;
 import com.bbk.resource.Constants;
+import com.bbk.shopcar.ShopOrderActivity;
+import com.bbk.util.StringUtil;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -20,12 +22,10 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private IWXAPI api;
     public static final String action = "jason.broadcast.action";
-
-    //    public static String ACTION_NAME = "code";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_home_layout);
+//        setContentView(R.layout.activity_new_home_layout);
         Log.i("微信回调", "wx==========0========");
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
 //
@@ -37,6 +37,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onNewIntent(intent);
         setIntent(intent);
         api.handleIntent(intent, this);
+        finish();
     }
 
     @Override
@@ -45,32 +46,27 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp resp) {
-        Log.d("微信回调结果", "==============回调结果================" + resp.errCode);
         Intent intent;
         switch (resp.errCode) {
-            case 0:
-//                    intent = new Intent(action);
-//                    intent.putExtra("data", "1");
-//                    sendBroadcast(intent);
-//                    finish();
+            case BaseResp.ErrCode.ERR_OK:
+                StringUtil.showToast(this,"支付成功");
+                intent = new Intent(this, ShopOrderActivity.class);
+                intent.putExtra("status", "2");
+                startActivity(intent);
+                finish();
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
-//                intent = new Intent(action);
-//                intent.putExtra("data", "0");
-//                sendBroadcast(intent);
-//                finish();
+                StringUtil.showToast(this,"取消支付");
+                intent = new Intent(this, ShopOrderActivity.class);
+                startActivity(intent);
+                finish();
                 break;
-            case BaseResp.ErrCode.ERR_AUTH_DENIED:
-//                intent = new Intent(action);
-//                intent.putExtra("data", "0");
-//                sendBroadcast(intent);
-//                finish();
+            case BaseResp.ErrCode.ERR_COMM:
+                StringUtil.showToast(this,"支付错误");
+                finish();
                 break;
             default:
-//                intent = new Intent(action);
-//                intent.putExtra("data", "0");
-//                sendBroadcast(intent);
-//                finish();
+                finish();
                 break;
         }
     }

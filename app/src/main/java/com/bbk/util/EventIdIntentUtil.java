@@ -15,6 +15,7 @@ import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.CouponActivity;
 import com.bbk.activity.DataFragmentActivity;
 import com.bbk.activity.DetailsMainActivity22;
+import com.bbk.activity.DianpuActivity;
 import com.bbk.activity.FanLiOrderActivity;
 import com.bbk.activity.FensiActivity;
 import com.bbk.activity.HomeActivity;
@@ -27,6 +28,7 @@ import com.bbk.activity.R;
 import com.bbk.activity.RankCategoryActivity;
 import com.bbk.activity.ResultMainActivity;
 import com.bbk.activity.SearchMainActivity;
+import com.bbk.activity.ShopDetailActivty;
 import com.bbk.activity.TuiguangDialogActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.UserShenSuActivity;
@@ -43,6 +45,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.DianpuHomeActivity;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
@@ -84,7 +87,32 @@ public class EventIdIntentUtil {
 	public static void EventIdIntent(Context context,JSONObject jo){
 		String eventId = jo.optString("eventId");
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+		Intent intent;
 		switch (eventId) {
+			case "a1":
+				intent = new Intent(context,DianpuActivity.class);
+				if (jo.has("keyword")) {
+					intent.putExtra("dianpuid", jo.optString("keyword"));
+				}
+				context.startActivity(intent);
+				break;
+			case "a3":
+				intent = new Intent(context,ShopDetailActivty.class);
+				if (jo.has("keyword")) {
+					intent.putExtra("id", jo.optString("keyword"));
+				}
+				context.startActivity(intent);
+				break;
+			case "xihu":
+				Intent intentxh;
+				if (TextUtils.isEmpty(userID)){
+					intentxh = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intentxh);
+				}else {
+					intentxh = new Intent(context, DianpuHomeActivity.class);
+					context.startActivity(intentxh);
+				}
+				break;
 		case "5":
 			String htmlUrl = jo.optString("htmlUrl");
 			Intent intent4;
@@ -188,7 +216,7 @@ public class EventIdIntentUtil {
 			break;
 			case "108":
 //				SharedPreferencesUtil.putSharedData(context, "Bidhomeactivty", "type", "2");
-				Intent intent = new Intent(context, UserLoginNewActivity.class);
+				intent = new Intent(context, UserLoginNewActivity.class);
 				context.startActivity(intent);
 
 				break;
@@ -657,6 +685,27 @@ public class EventIdIntentUtil {
 		}
 		if (WelcomeActivity.instance!= null){
 			WelcomeActivity.instance.finish();
+		}
+	}
+
+	public static void EventIdIntentDianpu(Context context,String eventId,String dianpuid) {
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+		Intent intent;
+		switch (eventId) {
+			case "a1":
+				intent = new Intent(context,DianpuActivity.class);
+				if (dianpuid != null) {
+					intent.putExtra("dianpuid", dianpuid);
+				}
+				context.startActivity(intent);
+				break;
+			case "a3":
+				intent = new Intent(context,ShopDetailActivty.class);
+				if (dianpuid != null) {
+					intent.putExtra("id", dianpuid);
+				}
+				context.startActivity(intent);
+				break;
 		}
 	}
 }

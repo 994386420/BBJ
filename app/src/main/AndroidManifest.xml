@@ -4,6 +4,24 @@
     package="com.bbk.activity"
     android:versionCode="35"
     android:versionName="4.2.7">
+    <!--&lt;!&ndash; 聊天界面拍照发送图片 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
+    <!--&lt;!&ndash; 登录接口：检测/监听网络状态 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <!--&lt;!&ndash; 登录接口：访问网络，连接im服务器 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!--&lt;!&ndash; 聊天：收到消息后震动 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.VIBRATE" />-->
+    <!--&lt;!&ndash; 聊天界面：录制语音,将语音文件保存在手机内存卡，检测是否已经装载文件系统 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />-->
+    <!--<uses-permission android:name="android.permission.RECORD_AUDIO" />-->
+    <!--&lt;!&ndash; 后台收到消息的时候，休眠状态唤醒CPU，将消息显示在通知栏 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
+    <!--&lt;!&ndash; 可选：监听手机重启自动重连服务器 &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
+
 
     <!-- 在sd卡中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
@@ -68,7 +86,7 @@
         android:resizeable="true"
         android:smallScreens="true"
         android:xlargeScreens="true" />
-
+    <!--android:largeHeap="true"-->
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -76,7 +94,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
-        android:largeHeap="true"
         tools:replace="android:allowBackup">
 
         <!-- android:name=".CalligraphyApplication" -->
@@ -91,15 +108,15 @@
                 <!--android:resource="@xml/file_paths" />-->
         <!--</provider>-->
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.bbk.activity.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/__picker_provider_paths" />
-        </provider>
+        <!--<provider-->
+            <!--android:name="android.support.v4.content.FileProvider"-->
+            <!--android:authorities="com.bbk.activity.fileProvider"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="true">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+                <!--android:resource="@xml/__picker_provider_paths" />-->
+        <!--</provider>-->
         <!-- 您从百度网站获取的 APP	KEY -->
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
@@ -486,6 +503,56 @@
 
         <activity
             android:name=".ShesuRecordActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.bbk.shopcar.CarActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.bbk.shopcar.ShopOrderActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.shopcar.ShopOrderDetailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.shopcar.WuLiuActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.bbk.shopcar.DianpuHomeActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.shopcar.ConfirmOrderActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.shopcar.MyPlActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.shopcar.MyWantPLActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.shopcar.TuiKuanDeatailActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShopDetailActivty"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DianpuActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <meta-data
@@ -876,6 +943,116 @@
         <activity android:name=".BidAllHotActivity"></activity>
         <activity android:name=".BidMyListDetailActivity"></activity>
         <activity android:name=".BidMyBillDetailActivity"></activity>
+
+
+
+
+        <!-- 微客服 -->
+        <!-- 请到 http://admin.weikefu.net/AppKeFu/admin/ 申请appkey-->
+        <meta-data
+            android:name="com.appkefu.lib.appkey"
+            android:value="9b1c315d2377165cdb838f675e22c00e" />
+
+        <!-- 兼容android N 24相机访问权限 -->
+         <!--https://inthecheesefactory.com/blog/how-to-share-access-to-file-with-fileprovider-on-android-nougat/en -->
+         <!--注意: 替换自己的包名 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.bbk.activity.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/__picker_provider_paths"/>
+        </provider>
+
+        <!-- 聊天窗口, 可通过修改layout文件appkefu_activity_kfvip_chat.xml自定义窗口UI -->
+        <activity android:name="com.appkefu.lib.ui.activity.KFChatActivity"
+            android:theme="@style/appkefu_theme_no_titlebar"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <!-- 设置页面，点击聊天窗口右上角按钮进入，可清空聊天记录 -->
+        <activity android:name="com.appkefu.lib.ui.activity.KFSettingsActivity"
+            android:theme="@style/appkefu_theme_no_titlebar" />
+        <!-- 常见问题类别页面，点击聊天页面输入框下方扩展面板:常见问题按钮进入 -->
+        <activity android:name="com.appkefu.lib.ui.activity.KFFAQActivity"
+            android:theme="@style/appkefu_theme_no_titlebar"/>
+        <!-- 常见问题详情页面， -->
+        <activity android:name="com.appkefu.lib.ui.activity.KFFAQDetailActivity"
+            android:theme="@style/appkefu_theme_no_titlebar"/>
+        <!-- 满意度评价页面 -->
+        <activity android:name="com.appkefu.lib.ui.activity.KFRateActivity"
+            android:theme="@style/appkefu_theme_no_titlebar"/>
+        <!-- 留言页面 -->
+        <activity android:name="com.appkefu.lib.ui.activity.KFLeaveMessageActivity"
+            android:theme="@style/appkefu_theme_no_titlebar"/>
+        <!-- 内嵌浏览器页面，打开网址 -->
+        <activity android:name="com.appkefu.lib.ui.activity.KFWebBrowserActivity"
+            android:theme="@style/appkefu_theme_no_titlebar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 此处data的android:scheme请填写您App的包名,保持android:host, 如下所示： -->
+                <data android:scheme="com.bbk.activity" android:host="appkefu_url" />
+            </intent-filter>
+        </activity>
+        <!-- 发送语音辅助service -->
+        <service android:name="com.appkefu.lib.soundrecorder.KFRecorderService"/>
+        <service android:name="com.appkefu.lib.service.KFDownloadService"/>
+
+        <!-- im长连接 主service -->
+        <service android:name="com.appkefu.lib.service.KFMainService">
+            <intent-filter android:priority="1000">
+                <!-- 可选 android:priority = "1000"这个属性设置最高优先级，1000是最高值，如果数字越小则优先级越低 -->
+                <action android:name="com.appkefu.lib.action.kefu.LOGIN_WITH_OPENUDID"/>
+                <action android:name="com.appkefu.lib.action.DISCONNECT" />
+                <action android:name="com.appkefu.lib.action.TOGGLE" />
+                <action android:name="com.appkefu.lib.action.SEND" />
+                <action android:name="com.appkefu.lib.action.NETWORK_STATUS_CHANGED" />
+                <action android:name="com.appkefu.lib.action.XMPP.MESSAGE_RECEIVED" />
+            </intent-filter>
+        </service>
+
+        <!-- 可选：监听网络变化 -->
+        <receiver android:name="com.appkefu.lib.receivers.KFNetworkConnectivityReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <!-- 可选：监听手机重启，方便重连im服务器, 需要配合权限RECEIVE_BOOT_COMPLETED使用-->
+        <receiver android:name="com.appkefu.lib.receivers.KFBootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+        <!-- 可选：监听手机连接电源状态,如果已经连接电源自动尝试重连 -->
+        <receiver android:name="com.appkefu.lib.receivers.KFPowerReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        <!-- 监听客服发送过来的消息 -->
+        <!--<receiver android:name="com.appkefu.lib.receivers.KFMessageReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.appkefu.lib.action.XMPP.MESSAGE_RECEIVED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!-- 可选：检测屏幕是否解锁,以便重连服务器 -->
+        <receiver android:name="com.appkefu.lib.receivers.KFScreenReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" /><!-- 监听屏幕解锁 -->
+            </intent-filter>
+        </receiver>
+        <!-- 定时检测是否需要重连im服务器,以便重连服务器 -->
+        <receiver android:name="com.appkefu.lib.receivers.KFAlarmReceiver">
+            <intent-filter>
+                <action android:name="com.appkefu.lib.action.LOGIN_ALARM" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>

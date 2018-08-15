@@ -14,12 +14,18 @@
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
             android:background="@color/color_line"/>
+        <com.bbk.view.MyScrollViewNew
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/__picker_common_primary">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/address_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_line"
         android:visibility="gone"/>
+        </com.bbk.view.MyScrollViewNew>
     <LinearLayout
         android:id="@+id/no_address_layout"
         android:layout_width="match_parent"

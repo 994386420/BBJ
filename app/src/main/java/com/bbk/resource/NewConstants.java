@@ -12,10 +12,10 @@ import java.util.Iterator;
 public class NewConstants {
     public static HashMap<String, Object> mChatMap = new HashMap<>();
     public static HashMap<String, Object> mChatNickMameMap = new HashMap<>();
-    public static String Flag,yingdaoFlag = "2",showdialogFlg = "0";
+    public static String Flag,yingdaoFlag = "2",showdialogFlg = "0",car = "1",refeshFlag = "0",refeshOrderFlag = "0",address;
     public static String logFlag;
-    public static String copyText;
-    public static int clickpositionFenlei, clickpositionDianpu, clickpositionMall,messages;
+    public static String copyText,imgurl;
+    public static int clickpositionFenlei, clickpositionDianpu, clickpositionMall,messages,postion,option;
 //    public final static String PHONE_PATTERN = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
     public final static String PHONE_PATTERN = "^1\\d{10}$";
     public static HashMap<String, Object> getJsonObject(String json) {

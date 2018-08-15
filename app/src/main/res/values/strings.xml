@@ -329,9 +329,9 @@
     //首页底部文字
     <string name="home_new_text">首页</string>
     <string name="home_baoliao_text">鲸港圈</string>
-    <string name="home_faxian_text">发现</string>
+    <string name="home_faxian_text">数据</string>
     <string name="home_my_text">我的</string>
-    <string name="home_news_text">消息</string>
+    <string name="home_news_text">分类</string>
 
     <string name="refresh_down_text">下拉可更新</string>
     <string name="refresh_release_text">松手可更新</string>
@@ -340,4 +340,10 @@
     <string name="jiebiao_content">填写内容已和“我要”协商确认</string>
     <string name="hehuo_text">完成交易5-10分钟 \n进入“我的-推广赚”查看收益报表。</string>
     <string name="dianpu">卖家</string>
+
+
+    <string name="shoppingcat">购物车</string>
+    <string name="actionBar_edit">编辑</string>
+    <string name="all">全选</string>
+    <string name="order_total">合计 :</string>
 </resources>

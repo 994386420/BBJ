@@ -38,6 +38,7 @@ import com.bbk.component.HomeAllComponent6;
 import com.bbk.component.SimpleComponent;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.update.AppVersion;
+import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.NoFastClickUtils;
 import com.bbk.util.ShareFenXiangUtil;
@@ -71,6 +72,7 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
     private ShareFenXiangUtil shareFenXiangUtil;
     private UpdataDialog updataDialog;
     private String isFirstClick;
+    public static boolean cancelCheck = true;// 是否取消查询
 
     public FenXiangListAdapter(Context context, List<FenXiangListBean> fenXiangListBeans) {
         this.context = context;
@@ -278,7 +280,9 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
 //                                        //调用转发微信功能类
 //                                        shareFenXiangUtil = new ShareFenXiangUtil((Activity) context, v, title, DetailimgUrlList);
 //                                    }
-                                    Share(v,title,DetailimgUrlList,jsonObject1);
+                                if (cancelCheck) {
+                                    Share(v, title, DetailimgUrlList, jsonObject1);
+                                }
 //                                }
                             }else {
                                 StringUtil.showToast(context,jsonObject.optString("errmsg"));
@@ -290,19 +294,23 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
 
                     @Override
                     protected void hideDialog() {
-                        DialogSingleUtil.dismiss(0);
+//                        DialogSingleUtil.dismiss(0);
+                        cancelCheck = true;
+                        DialogCheckYouhuiUtil.dismiss(0);
                         viewHolder.llShare.setClickable(true);
                     }
 
                     @Override
                     protected void showDialog() {
-                        DialogSingleUtil.show(context);
+//                        DialogSingleUtil.show(context);
+                        DialogCheckYouhuiUtil.show(context,"正在生成您的专属分享图片...");
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         viewHolder.llShare.setClickable(true);
-                        DialogSingleUtil.dismiss(0);
+//                        DialogSingleUtil.dismiss(0);
+                        DialogCheckYouhuiUtil.dismiss(0);
                         StringUtil.showToast(context, e.message);
                     }
                 });

@@ -41,7 +41,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QueryHistoryActivity extends BaseActivity implements OnClickListener, ResultEvent, TextWatcher {
+public class QueryHistoryActivity extends Activity implements OnClickListener, ResultEvent, TextWatcher {
 
 	private ImageButton topbar_goback_btn;
 	private EditText medit;

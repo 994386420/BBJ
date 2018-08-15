@@ -80,7 +80,7 @@
             android:layout_weight="1"
             android:background="@drawable/alertdialog_left_selector"
             android:gravity="center"
-            android:textColor="@color/actionsheet_blue"
+            android:textColor="@color/shop_color1"
             android:textSize="16sp" />
 
         <ImageView
@@ -96,7 +96,7 @@
             android:layout_weight="1"
             android:background="@drawable/alertdialog_right_selector"
             android:gravity="center"
-            android:textColor="@color/actionsheet_blue"
+            android:textColor="@color/tuiguang_color1"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>

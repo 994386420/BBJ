@@ -120,9 +120,9 @@ public class MesageCListSysAdapter extends BaseAdapter{
 						try {
 							JSONObject jsonObject = new JSONObject(s);
 							NewConstants.messages = jsonObject.optInt("content");
-							if (HomeActivity.mNumImageView != null){
-								HomeActivity.mNumImageView.setNum(NewConstants.messages);
-							}
+//							if (HomeActivity.mNumImageView != null){
+//								HomeActivity.mNumImageView.setNum(NewConstants.messages);
+//							}
 
 						} catch (JSONException e) {
 							e.printStackTrace();

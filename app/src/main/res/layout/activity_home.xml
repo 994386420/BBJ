@@ -80,7 +80,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_13" />
+                android:src="@mipmap/bottom_17" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bottom_14" />
+                android:src="@mipmap/bottom_16" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -232,10 +232,13 @@
 -dontwarn com.tencent.**s
 -dontwarn com.baidu.**
 
+#
+-dontwarn com.appkefu.**
+-keep class com.appkefu.** { *;}
 
 
 #---------------------------------实体类---------------------------------
 -keep class com.bbk.Bean.** { *; }
-
+-keep class com.bbk.shopcar.entity.** { *; }
 
 

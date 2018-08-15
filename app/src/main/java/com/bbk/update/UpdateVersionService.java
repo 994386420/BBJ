@@ -377,7 +377,7 @@ public class UpdateVersionService implements ResultEvent {
             //判断是否是AndroidN以及更高的版本
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", new File(mFile, "bbj" + ".apk"));
+                Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", new File(mFile, "bbj" + ".apk"));
                 intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
             } else {
                 intent.setDataAndType(uri2, "application/vnd.android.package-archive");

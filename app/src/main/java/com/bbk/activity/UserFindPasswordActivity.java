@@ -158,7 +158,7 @@ public class UserFindPasswordActivity extends BaseActivity implements
 		case R.id.get_code_btn:
 			userCodeEditText.setText("");
 			addr = userPhoneEditText.getText().toString();
-			if (ValidatorUtil.isMatchered(NewConstants.PHONE_PATTERN,addr)) {
+			if (StringUtil.isNullOrEmpty(addr)) {
 				getCodeBtn.setEnabled(false);
 				Map<String, String> paramsMap1 = new HashMap<String, String>();
 				String cc = RSAEncryptorAndroid.getSendCode(addr).replace("\n","").replace("\r","");

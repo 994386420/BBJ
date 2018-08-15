@@ -460,6 +460,118 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void queryMyOrder(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryMyOrder(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void deleteMyOrder(Map<String, String> parameters, Observer<?> observer) {
+        apiService.deleteMyOrder(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryMyOrderDetail(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryMyOrderDetail(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryMyLogistics(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryMyLogistics(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryDianpuMainInfo(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryDianpuMainInfo(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryIndexMain(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryIndexMain(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryMyOrderToPay(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryMyOrderToPay(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void getOrderInfo(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getOrderInfo(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryAddro(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryAddro(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void removeAddr(Map<String, String> parameters, Observer<?> observer) {
+        apiService.removeAddr(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void modifyAddr(Map<String, String> parameters, Observer<?> observer) {
+        apiService.modifyAddr(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryUserCenter(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryUserCenter(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void refundGoods(Map<String, String> parameters, Observer<?> observer) {
+        apiService.refundGoods(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryPLByProductid(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryPLByProductid(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void insertPinlun(Map<String, String> parameters, Observer<?> observer) {
+        apiService.insertPinlun(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void receiptGoods(Map<String, String> parameters, Observer<?> observer) {
+        apiService.receiptGoods(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void queryRefundProgress(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryRefundProgress(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

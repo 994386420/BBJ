@@ -20,20 +20,18 @@ import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.SearchMainActivity;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.OnClickHomeListioner;
-import com.bbk.fragment.OnClickListioner;
+import com.bbk.fragment.OnClickMallListioner;
+import com.bbk.shopcar.DianpuHomeActivity;
 import com.bumptech.glide.Glide;
-import com.logg.Logg;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,9 +44,10 @@ import java.util.Map;
 public class HomeLoadUtil {
 
     public static OnClickHomeListioner onClickListioner;
+    public static OnClickMallListioner onClickMallListioner;
     static Context context;
-    static String homeclick;
-    static int currentIndexTop = 0,currentIndex = 0;
+    static String homeclick,dianpuclick;
+    static int currentIndexTop = 0,currentIndex = 0,dianpuCickTop = 0,dianpuCick = 0;
 
     public HomeLoadUtil(Context context,OnClickHomeListioner onClickListioner){
         this.onClickListioner = onClickListioner;
@@ -262,11 +261,20 @@ public class HomeLoadUtil {
             e.printStackTrace();
         }
         mBanner.setImages(imgUrlList)
-                .setImageLoader(new GlideImageLoader())
+                .setImageLoader(new GlideImageGuanggaoLoader())
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-                 EventIdIntentUtil.EventIdIntent(context, banner);
+//                 EventIdIntentUtil.EventIdIntent(context, banner);
+                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                        Intent intentxh;
+                        if (TextUtils.isEmpty(userID)){
+                            intentxh = new Intent(context, UserLoginNewActivity.class);
+                            context.startActivity(intentxh);
+                        }else {
+                            intentxh = new Intent(context, DianpuHomeActivity.class);
+                            context.startActivity(intentxh);
+                        }
                     }
                 })
                 .setDelayTime(3000)
@@ -407,7 +415,8 @@ public class HomeLoadUtil {
             title3.setTextColor(Color.parseColor("#666666"));
             henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
         }
-        mhscrollview1.scrollTo(view.getLeft() - 200, 0);
+//        mhscrollview1.scrollTo(view.getLeft() - 200, 0);
+        mhscrollview1.smoothScrollTo(view.getLeft() - 250, 0);
         currentIndexTop = position;
         homeclick = SharedPreferencesUtil.getSharedData(context, "homeclick", "homeclick");
         if (homeclick.equals("no")) {
@@ -440,7 +449,8 @@ public class HomeLoadUtil {
             title3.setTextColor(Color.parseColor("#666666"));
             henggang3.setBackgroundColor(Color.parseColor("#ffffff"));
         }
-        mhscrollview.scrollTo(view.getLeft() - 200, 0);
+//        mhscrollview.scrollTo(view.getLeft() - 200, 0);
+        mhscrollview.smoothScrollTo(view.getLeft() - 250, 0);
         currentIndex = position;
         homeclick = SharedPreferencesUtil.getSharedData(context, "homeclick", "homeclick");
         if (TextUtils.isEmpty(homeclick)) {

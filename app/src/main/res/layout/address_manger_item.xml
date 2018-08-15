@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:background="@color/white"
+    android:id="@+id/ll_address"
+    android:background="@drawable/btn_seclecter"
     android:orientation="vertical">
 
     <LinearLayout
@@ -34,11 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#0E73DF"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="1dp"
-            android:paddingTop="1dp"
-            android:textSize="12sp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingBottom="0.5dp"
+            android:paddingTop="0.5dp"
+            android:textSize="10sp"
             android:background="@drawable/bg_biaoqian2"
             android:layout_marginLeft="10dp"
             android:text="" />
@@ -59,24 +60,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp">
-        <CheckBox
-            android:id="@+id/checkbox_set_moren"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:checked="true"
-            android:button="@null"
-            android:layout_centerVertical="true"
-            style="@style/CustomCheckBoxTheme" />
-        <TextView
-            android:id="@+id/ismoren"
-            android:layout_toRightOf="@+id/checkbox_set_moren"
+        <LinearLayout
+            android:id="@+id/ll_moren"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_centerVertical="true"
-            android:textSize="14sp"
-            android:layout_marginLeft="5dp"
-            android:text="设为默认"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <!--<CheckBox-->
+                <!--android:id="@+id/checkbox_set_moren"-->
+                <!--android:layout_width="18dp"-->
+                <!--android:layout_height="18dp"-->
+                <!--android:checked="true"-->
+                <!--android:button="@null"-->
+                <!--style="@style/CustomCheckBoxTheme" />-->
+            <ImageView
+                android:id="@+id/checkbox_set_moren"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/dizhi_check" />
+            <TextView
+                android:id="@+id/ismoren"
+                android:layout_toRightOf="@+id/checkbox_set_moren"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:layout_marginLeft="5dp"
+                android:text="设为默认"/>
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -86,6 +99,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <LinearLayout
+                android:id="@+id/ll_bianji"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"

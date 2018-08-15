@@ -16,12 +16,20 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.AddressMangerBean;
+import com.bbk.adapter.AddressMangerAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.logg.Logg;
 import com.smarttop.library.bean.City;
 import com.smarttop.library.bean.County;
 import com.smarttop.library.bean.Province;
@@ -31,9 +39,12 @@ import com.smarttop.library.widget.AddressSelector;
 import com.smarttop.library.widget.BottomDialog;
 import com.smarttop.library.widget.OnAddressSelectedListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
  * 添加地址界面
@@ -58,7 +69,7 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 	private DataFlow6 dataFlow;
 	private String tag;//地址标签
 	private Button saveBtm;//保存
-	private String original;
+	private String original,addrid;
 	public static String ACTION_NAME = "AdressActivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +82,10 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 		initView();
 		if (getIntent().getStringExtra("original") != null){
 			original = getIntent().getStringExtra("original");
+		}
+		if (getIntent().getStringExtra("addrid") != null){
+			addrid = getIntent().getStringExtra("addrid");
+			queryAddro(addrid);
 		}
 	}
 
@@ -98,10 +113,10 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 	}
 	private void initData(boolean is) {
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
-		String name = userName.getText().toString();
-		String phone = userPhone.getText().toString();
-		String area = mAddress.getText().toString();
-		String street =detarilAdress.getText().toString();
+		String name = userName.getText().toString().replace(" ","");
+		String phone = userPhone.getText().toString().replace(" ","");
+		String area = mAddress.getText().toString().replace(" ","");
+		String street =detarilAdress.getText().toString().replace(" ","");
 		if (tag == null){
 			tag = "";
 		}
@@ -196,7 +211,13 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 				mSchool.setTextColor(getResources().getColor(R.color.address_color1));
 				break;
 			case R.id.save_btn:
-				initData(true);
+				if (addrid != null){
+					if (validateMessage()) {
+						modifyAddr(addrid);
+					}
+				}else {
+					initData(true);
+				}
 				break;
 		}
 	}
@@ -276,8 +297,147 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 //				setResult(1,intent);
 				intent = new Intent(ACTION_NAME);
 				sendBroadcast(intent);
+				DialogSingleUtil.dismiss(0);
 				finish();
 				break;
 		}
+	}
+
+
+
+
+	private void queryAddro(String addrid) {
+		mTitle.setText("编辑联系人");
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("userid", userID);
+		maps.put("addrid", addrid);
+		RetrofitClient.getInstance(this).createBaseApi().queryAddro(
+				maps, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							String content = jsonObject.optString("content");
+							if (jsonObject.optString("status").equals("1")) {
+								Logg.json(jsonObject);
+								if (!content.equals("[]")) {
+									List<AddressMangerBean> addressMangerBeans = JSON.parseArray(content, AddressMangerBean.class);
+									String name = userName.getText().toString();
+									String phone = userPhone.getText().toString();
+									String area = mAddress.getText().toString();
+									String street =detarilAdress.getText().toString();
+									userName.setText(addressMangerBeans.get(0).getReceiver());
+									userPhone.setText(addressMangerBeans.get(0).getPhone());
+									mAddress.setText(addressMangerBeans.get(0).getArea());
+									detarilAdress.setText(addressMangerBeans.get(0).getStreet());
+									if (addressMangerBeans.get(0).getTag() != null){
+									switch (addressMangerBeans.get(0).getTag()){
+										case "公司":
+											mHome.setBackgroundResource(R.drawable.bg_biaoqian);
+											mGongsi.setBackgroundResource(R.drawable.bg_biaoqian1);
+											mSchool.setBackgroundResource(R.drawable.bg_biaoqian);
+											mHome.setTextColor(getResources().getColor(R.color.address_color1));
+											mGongsi.setTextColor(getResources().getColor(R.color.white));
+											mSchool.setTextColor(getResources().getColor(R.color.address_color1));
+										break;
+										case "家":
+											mHome.setBackgroundResource(R.drawable.bg_biaoqian1);
+											mGongsi.setBackgroundResource(R.drawable.bg_biaoqian);
+											mSchool.setBackgroundResource(R.drawable.bg_biaoqian);
+											mHome.setTextColor(getResources().getColor(R.color.white));
+											mGongsi.setTextColor(getResources().getColor(R.color.address_color1));
+											mSchool.setTextColor(getResources().getColor(R.color.address_color1));
+											break;
+										case "学校":
+											mHome.setBackgroundResource(R.drawable.bg_biaoqian);
+											mGongsi.setBackgroundResource(R.drawable.bg_biaoqian);
+											mSchool.setBackgroundResource(R.drawable.bg_biaoqian1);
+											mHome.setTextColor(getResources().getColor(R.color.address_color1));
+											mGongsi.setTextColor(getResources().getColor(R.color.address_color1));
+											mSchool.setTextColor(getResources().getColor(R.color.white));
+											break;
+									}
+									}
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
+					}
+
+					@Override
+					protected void showDialog() {
+						DialogSingleUtil.show(AddressActivity.this);
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						StringUtil.showToast(AddressActivity.this, e.message);
+					}
+				});
+	}
+
+	private void modifyAddr(String addrid) {
+		String name = userName.getText().toString();
+		String phone = userPhone.getText().toString();
+		String area = mAddress.getText().toString();
+		String street =detarilAdress.getText().toString();
+		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+		Map<String, String> maps = new HashMap<String, String>();
+		maps.put("userid", userID);
+		maps.put("addrid", addrid);
+		if (tag == null){
+			tag = "";
+		}
+		maps.put("name", name);
+		maps.put("phone", phone);
+		maps.put("area", area);
+		maps.put("street", street);
+		maps.put("tag", tag);
+		maps.put("original", original);
+		maps.put("way", "0");//编辑地址传0
+		RetrofitClient.getInstance(this).createBaseApi().modifyAddr(
+				maps, new BaseObserver<String>(this) {
+					@Override
+					public void onNext(String s) {
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							String content = jsonObject.optString("content");
+							if (jsonObject.optString("status").equals("1")) {
+								Logg.json(jsonObject);
+								Intent intent;
+								intent = new Intent(ACTION_NAME);
+								sendBroadcast(intent);
+								DialogSingleUtil.dismiss(0);
+								finish();
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					protected void hideDialog() {
+						DialogSingleUtil.dismiss(0);
+					}
+
+					@Override
+					protected void showDialog() {
+						DialogSingleUtil.show(AddressActivity.this);
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+						DialogSingleUtil.dismiss(0);
+						StringUtil.showToast(AddressActivity.this, e.message);
+					}
+				});
 	}
 }

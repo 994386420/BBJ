@@ -30,13 +30,11 @@
         android:background="@color/__picker_common_primary"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/__picker_common_primary">
+        android:layout_height="match_parent">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/mrefresh"
             android:layout_width="match_parent"
-            android:background="@color/__picker_common_primary"
             android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -45,8 +43,7 @@
                 android:id="@+id/mrecyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"
-                android:background="#fff" />
+                android:overScrollMode="never" />
             <com.bbk.view.CommonLoadingView
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"

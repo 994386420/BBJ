@@ -44,7 +44,7 @@ public interface Constants {
 	 * tag（地址标签）
 	 * original（是否为默认收货地址：1为默认，不为默认0或者传空）
 	 */
-	String addAddress = "auction/addAddr";
+	String addAddress = "mallService/addAddr";
 	/**
 	 *查询地址
 	 * 参数userid（用户id）
@@ -62,7 +62,7 @@ public interface Constants {
 	 * tag（地址标签）
 	 * original（是否为默认收货地址：1为默认，不为默认0或者传空）
 	 */
-	String modifyAddr = "auction/modifyAddr";
+	String modifyAddr = "mallService/modifyAddr";
 	/**
 	 * 删除收货地址
 	 * addrid（收货地址id存在查单个，不存在查询全部）

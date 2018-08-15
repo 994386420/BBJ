@@ -177,5 +177,58 @@ public interface BaseApiService<T> {
     //三级页面详情
     @POST("mallService/queryProductDetailById")
     Observable<String> queryProductDetailById(@QueryMap Map<String, String> map);
+    /**
+     * 商城订单
+     */
+    //查询我的订单
+    @POST("mallService/queryMyOrder")
+    Observable<String> queryMyOrder(@QueryMap Map<String, String> map);
+    //删除或者取消订单
+    @POST("mallService/deleteMyOrder")
+    Observable<String> deleteMyOrder(@QueryMap Map<String, String> map);
+    //查询我的订单详情
+    @POST("mallService/queryMyOrderDetail")
+    Observable<String> queryMyOrderDetail(@QueryMap Map<String, String> map);
+    //查询物流
+    @POST("mallService/queryMyLogistics")
+    Observable<String> queryMyLogistics(@QueryMap Map<String, String> map);
+    //店铺主页接口
+    @POST("mallService/queryDianpuMainInfo")
+    Observable<String> queryDianpuMainInfo(@QueryMap Map<String, String> map);
+    //商城首页
+    @POST("mallService/queryIndexMain")
+    Observable<String> queryIndexMain(@QueryMap Map<String, String> map);
+    //
+    @POST("mallService/queryMyOrderToPay")
+    Observable<String> queryMyOrderToPay(@QueryMap Map<String, String> map);
+    @POST("appPayService/getOrderInfo")
+    Observable<String> getOrderInfo(@QueryMap Map<String, String> map);
 
+    //查询全部地址
+    @POST("mallService/queryAddr")
+    Observable<String> queryAddro(@QueryMap Map<String, String> map);
+    //删除地址
+    @POST("mallService/removeAddr")
+    Observable<String> removeAddr(@QueryMap Map<String, String> map);
+    //修改收货地址单个或者多个信息
+    @POST("mallService/modifyAddr")
+    Observable<String> modifyAddr(@QueryMap Map<String, String> map);
+    //用户个人中心
+    @POST("newService/queryUserCenter")
+    Observable<String> queryUserCenter(@QueryMap Map<String, String> map);
+    //退货
+    @POST("mallService/refundGoods")
+    Observable<String> refundGoods(@QueryMap Map<String, String> map);
+    //评论
+    @POST("mallService/queryPLByProductid")
+    Observable<String> queryPLByProductid(@QueryMap Map<String, String> map);
+    @POST("mallService/insertPinlun")
+    Observable<String> insertPinlun(@QueryMap Map<String, String> map);
+
+    //确认收货
+    @POST("mallService/receiptGoods")
+    Observable<String> receiptGoods(@QueryMap Map<String, String> map);
+    //退款详情
+    @POST("mallService/queryRefundProgress")
+    Observable<String> queryRefundProgress(@QueryMap Map<String, String> map);
 }

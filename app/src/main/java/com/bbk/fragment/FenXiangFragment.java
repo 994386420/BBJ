@@ -154,6 +154,7 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
         zLoadingView.setVisibility(View.GONE);
         zLoadingView.setLoadingHandler(this);
         mrefresh = mView.findViewById(R.id.mrefresh);
+        mrefresh.setBackgroundColor(getActivity().getResources().getColor(R.color.__picker_common_primary));
         mrecyclerview = mView.findViewById(R.id.mrecyclerview);
         float_btn = mView.findViewById(R.id.float_btn);
         float_btn.setVisibility(View.GONE);

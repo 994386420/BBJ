@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/__picker_common_primary"/>
+    <RelativeLayout
+        android:id="@+id/rl_dianou"
+        android:padding="1dp"
+        android:background="@drawable/btn_seclecter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/store_checkBox"
+            android:visibility="visible"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:minWidth="32dp"
+            android:minHeight="48dp"
+            android:background="@null"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbox_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/store_checkBox"
+            android:background="@mipmap/order_04"/>
+        <TextView
+            android:textColor="@color/tuiguang_color3"
+            android:drawablePadding="5dp"
+            android:textSize="14sp"
+            android:text="店铺"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/img"
+            android:id="@+id/store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="3dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/store_name"
+            android:background="@drawable/right_arrow"/>
+
+        <Button
+            android:background="@color/transparent"
+            android:textColor="@color/grey_color2"
+            android:id="@+id/store_edit"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="编辑"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/__picker_common_primary"/>
+</LinearLayout>

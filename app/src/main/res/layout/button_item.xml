@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll_button"
+        android:background="@drawable/btn_seclecter"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp" >
+        <ImageView
+            android:id="@+id/button_img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:id="@+id/button_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/shop_color1"
+            android:layout_marginTop="10dp"
+            android:textSize="14dp"
+            android:text=""/>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

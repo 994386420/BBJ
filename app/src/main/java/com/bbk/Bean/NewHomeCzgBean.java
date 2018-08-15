@@ -15,7 +15,7 @@ public class NewHomeCzgBean {
     private String quan;//满减
     private String zuan;//赚
     private String bprice;//原价
-    private String imgurl;
+    private transient String imgurl;
     private String domain;
     private String rowkey;
     private String requestUrl;
