@@ -159,6 +159,7 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
         float_btn = mView.findViewById(R.id.float_btn);
         float_btn.setVisibility(View.GONE);
         mrecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+        mrecyclerview.setHasFixedSize(true);
         refreshAndloda();
         float_btn.setOnClickListener(new View.OnClickListener() {
             @Override

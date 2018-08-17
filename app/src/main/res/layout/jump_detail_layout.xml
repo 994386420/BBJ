@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
-        android:layout_marginBottom="150dp"
-        android:background="@mipmap/zw_img_332"/>
+        android:layout_marginBottom="150dp" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
@@ -24,8 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:orientation="vertical">
         <com.youth.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"

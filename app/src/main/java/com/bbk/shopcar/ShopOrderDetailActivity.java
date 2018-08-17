@@ -438,7 +438,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.rl_dianpu:
-                intent = new Intent(this, DianpuActivity.class);
+                intent = new Intent(this, NewDianpuActivity.class);
                 intent.putExtra("dianpuid", dianpuid);
                 startActivity(intent);
                 break;
@@ -550,6 +550,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                     Intent intent = new Intent(ShopOrderDetailActivity.this,ShopOrderActivity.class);
                                     startActivity(intent);
                                 } else {
+                                    NewConstants.refeshOrderFlag = "1";
                                     StringUtil.showToast(context, "订单已取消");
                                     state = "-2";
                                     queryMyOrderDetail(orderid);

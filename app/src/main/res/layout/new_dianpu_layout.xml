@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_home"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                //       app:contentScrim="?attr/colorPrimary"
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/toolbar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                    <LinearLayout
+                        android:id="@+id/ll_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:id="@+id/layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="160dp"
+                                android:scaleType="fitXY" />
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="30dp"
+                                android:background="@drawable/bg_home_yinying"
+                                android:paddingBottom="10dp">
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+                                    <ImageView
+                                        android:id="@+id/img_dianpu_logo"
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:background="@mipmap/zw_img_300"/>
+
+                                    <TextView
+                                        android:id="@+id/tv_dianpu"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:text="店铺"
+                                        android:textSize="16dp"
+                                        android:textColor="@color/white" />
+                                    <TextView
+                                        android:id="@+id/tv_sale"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:text="120"
+                                        android:textSize="12dp"
+                                        android:textColor="@color/white"
+                                        android:layout_below="@+id/img_dianpu_logo"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_back"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp">
+                                    <ImageButton
+                                        android:id="@+id/title_back_btn"
+                                        android:layout_width="12dp"
+                                        android:layout_height="21dp"
+                                        android:layout_alignParentLeft="true"
+                                        android:background="@mipmap/shop_back_img"
+                                        android:paddingTop="10dp"
+                                        android:paddingBottom="12dp"
+                                        android:paddingLeft="18dp"
+                                        android:paddingRight="18dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:visibility="visible"
+                                        android:scaleType="centerCrop" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_kefu"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:gravity="center"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="vertical">
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:background="@mipmap/store_20"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:text="客服"
+                                        android:textSize="13dp"
+                                        android:textColor="@color/white" />
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_mall_choose"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dp">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:background="@mipmap/store_21"/>
+                            <TextView
+                                android:id="@+id/tv_choose"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="全部商品"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/color_line_top"/>
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="9dp"
+                                android:layout_marginLeft="5dp"
+                                android:background="@mipmap/store_22"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbaretail"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        app:layout_collapseMode="pin"
+                        android:fitsSystemWindows="true"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" >
+                        <LinearLayout
+                            android:id="@+id/lin"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="gone"
+                            android:gravity="center"
+                            android:orientation="horizontal" >
+                            <LinearLayout
+                                android:id="@+id/ll_back1"
+                                android:layout_width="30dp"
+                                android:layout_height="match_parent"
+                                android:visibility="invisible"
+                                android:gravity="center_vertical">
+                                <ImageView
+                                    android:id="@+id/title_back_btn1"
+                                    android:layout_width="12dp"
+                                    android:layout_height="21dp"
+                                    android:layout_alignParentLeft="true"
+                                    android:background="@mipmap/goback_btn"
+                                    android:paddingTop="12dp"
+                                    android:paddingBottom="12dp"
+                                    android:paddingLeft="18dp"
+                                    android:paddingRight="18dp"
+                                    android:scaleType="centerCrop" />
+                            </LinearLayout>
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/tv_dianpu_top"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="aaaa"
+                                android:visibility="visible"
+                                android:gravity="center"
+                                android:textSize="16dp"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@color/tuiguang_color3" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:layout_marginRight="10dp"
+                                android:layout_alignParentRight="true"
+                                android:visibility="invisible"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:background="@mipmap/store_20"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:text="客服"
+                                    android:textSize="13dp"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </android.support.v7.widget.Toolbar>
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.bbk.model.tablayout.XTabLayout
+                        android:id="@+id/tablayout"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        app:xTabMode="scrollable"
+                        app:xTabIndicatorWidth="40dp"
+                        app:xTabTextColor="#999"
+                        app:xTabSelectedTextColor="@color/color_line_top"
+                        app:xTabIndicatorColor="@color/color_line_top"
+                        app:xTabIndicatorHeight="1dp"
+                        app:xTabTextSize="15sp"
+                        app:xTabSelectedTextSize="15sp"
+                        app:xTabDividerWidth="0dp"
+                        app:xTabDividerHeight="0dp"
+                        app:xTabDividerColor="#000"
+                        />
+                </LinearLayout>
+                <View
+                    android:background="@color/__picker_common_primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+            </android.support.design.widget.AppBarLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <!--<android.support.v4.view.ViewPager-->
+                    <!--android:id="@+id/viewpager"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:overScrollMode="never">-->
+                <!--</android.support.v4.view.ViewPager>-->
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:id="@+id/refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/__picker_common_primary">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/mrecycler"
+                            android:layout_width="match_parent"
+                            android:descendantFocusability="afterDescendants"
+                            android:layout_height="match_parent"
+                            >
+
+                        </android.support.v7.widget.RecyclerView>
+                        <com.bbk.view.CommonLoadingView
+                            android:id="@+id/progress"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true"/>
+                    </RelativeLayout>
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            </RelativeLayout>
+
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_btn_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="20dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/img_car"
+            android:layout_width="35dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10.0dip"
+            android:layout_marginRight="15.0dip"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:background="@mipmap/store_32" />
+        <ImageButton
+            android:layout_below="@+id/img_car"
+            android:id="@+id/to_top_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="15.0dip"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:background="@mipmap/store_31" />
+    </LinearLayout>
+</RelativeLayout>
+
+

@@ -2,6 +2,7 @@ package com.bbk.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,12 +110,17 @@ public class TuijianGridAdapter extends RecyclerView.Adapter {
             final ShopTuijianBean shopTuijianBean = shopTuijianBeans.get(position);
             viewHolder.item_title.setText(shopTuijianBean.getTitle());
             viewHolder.tvSale.setVisibility(View.GONE);
-            viewHolder.bprice.setVisibility(View.GONE);
+            viewHolder.bprice.setText(shopTuijianBean.getBprice());
+            viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
             viewHolder.price.setText(shopTuijianBean.getPrice());
             viewHolder.llQuan.setVisibility(View.GONE);
             viewHolder.zuan.setVisibility(View.GONE);
             viewHolder.tvSale1.setVisibility(View.VISIBLE);
-            viewHolder.tvSale1.setText(shopTuijianBean.getSale() + "人已买");
+            if (shopTuijianBean.getSale() != null) {
+                viewHolder.tvSale1.setText(shopTuijianBean.getSale() + "人已买");
+            }else {
+                viewHolder.tvSale1.setVisibility(View.GONE);
+            }
             Glide.with(context)
                     .load(shopTuijianBean.getImgurl())
                     .priority(Priority.HIGH)

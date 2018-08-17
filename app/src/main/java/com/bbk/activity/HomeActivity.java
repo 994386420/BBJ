@@ -34,6 +34,7 @@ import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.NewRankFragment;
 import com.bbk.fragment.SortFragment;
 import com.bbk.fragment.UserFragment;
+import com.bbk.model.MainActivity;
 import com.bbk.resource.Constants;
 import com.bbk.update.UpdateVersionService;
 import com.bbk.util.BaseTools;
@@ -293,7 +294,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     }
 
     public void initViewPagerData() {
-        NewHomeFragment homeFragment = new NewHomeFragment();
+        MainActivity homeFragment = new MainActivity();
         NewRankFragment rankFragment = new NewRankFragment();
 //        HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
 //		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();

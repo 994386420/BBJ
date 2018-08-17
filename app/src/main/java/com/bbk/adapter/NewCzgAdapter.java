@@ -88,12 +88,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
 
     public void notifyData(List<NewHomeCzgBean> beans) {
         this.newHomeCzgBean.addAll(beans);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                notifyDataSetChanged();
-            }
-        }, 2000);
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

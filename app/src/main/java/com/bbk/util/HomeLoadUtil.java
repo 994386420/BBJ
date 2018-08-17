@@ -1,5 +1,6 @@
 package com.bbk.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,16 +17,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.OpenType;
+import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
+import com.bbk.activity.BrowseActivity;
+import com.bbk.activity.IntentActivity;
+import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.UserLoginNewActivity;
+import com.bbk.activity.WebViewActivity;
+import com.bbk.component.HomeAllComponent;
+import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeBijiaComponent;
+import com.bbk.component.SimpleComponent;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.OnClickHomeListioner;
 import com.bbk.fragment.OnClickMallListioner;
 import com.bbk.shopcar.DianpuHomeActivity;
+import com.bbk.shopcar.NewDianpuHomeActivity;
+import com.blog.www.guideview.Guide;
+import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
+import com.kepler.jd.Listener.OpenAppAction;
+import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KeplerAttachParameter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -48,7 +68,13 @@ public class HomeLoadUtil {
     static Context context;
     static String homeclick,dianpuclick;
     static int currentIndexTop = 0,currentIndex = 0,dianpuCickTop = 0,dianpuCick = 0;
+    private static UpdataDialog updataDialog;
+    private static AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
+    private static Map<String, String> exParams;//yhhpass参数
 
+    public HomeLoadUtil(Context context){
+        this.context = context;
+    }
     public HomeLoadUtil(Context context,OnClickHomeListioner onClickListioner){
         this.onClickListioner = onClickListioner;
         this.context = context;
@@ -272,7 +298,7 @@ public class HomeLoadUtil {
                             intentxh = new Intent(context, UserLoginNewActivity.class);
                             context.startActivity(intentxh);
                         }else {
-                            intentxh = new Intent(context, DianpuHomeActivity.class);
+                            intentxh = new Intent(context, NewDianpuHomeActivity.class);
                             context.startActivity(intentxh);
                         }
                     }
@@ -464,4 +490,142 @@ public class HomeLoadUtil {
             }
         }
     }
+
+
+    /**
+     * 首页引导图层
+     *
+     * @param targetView
+     * @param targetView1
+     */
+
+    public static void showGuideView(final Context context, View targetView, final View targetView1) {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingBottom(70)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingLeft(10)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+            }
+
+            @Override
+            public void onDismiss() {
+                showGuideViewBijia(context,targetView1);
+            }
+        });
+
+        builder.addComponent(new SimpleComponent()).addComponent(new HomeAllComponent());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show((Activity) context);
+    }
+
+    public static void showGuideViewBijia(final Context context, View targetView) {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingBottom(70)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingLeft(10)
+                .setExitAnimationId(android.R.anim.fade_out)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+            }
+
+            @Override
+            public void onDismiss() {
+                SharedPreferencesUtil.putSharedData(context, "isFirstHomeUse", "isFirstHomeUserUse", "no");
+            }
+        });
+
+        builder.addComponent(new HomeBijiaComponent()).addComponent(new HomeAllComponent1());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show((Activity) context);
+    }
+
+
+
+    /**
+     * 跳转京东淘宝APP
+     *
+     * @param url
+     */
+    public void jumpThirdApp(String url) {
+        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+        alibcShowParams.setClientType("taobao_scheme");
+        exParams = new HashMap<>();
+        exParams.put("isv_code", "appisvcode");
+        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+        if (url.contains("tmall") || url.contains("taobao")) {
+            showUrl(url);
+        } else if (url.contains("jd")) {
+            KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+                    url,
+                    mKeplerAttachParameter,
+                    mOpenAppAction);
+        } else {
+            Intent intent = new Intent(context, WebViewActivity.class);
+            if (url != null) {
+                intent.putExtra("url", url);
+            }
+           context. startActivity(intent);
+        }
+    }
+
+    /**
+     * 打开指定链接
+     */
+    public void showUrl(String url) {
+        String text = url;
+        if (TextUtils.isEmpty(text)) {
+            StringUtil.showToast(context, "URL为空");
+            return;
+        }
+        AlibcTrade.show((Activity) context, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
+    }
+
+    private static KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
+
+    OpenAppAction mOpenAppAction = new OpenAppAction() {
+        @Override
+        public void onStatus(final int status, final String url) {
+            Intent intent;
+            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+            } else {
+            }
+            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+                StringUtil.showToast(context, "未安装京东");
+                intent = new Intent(context, WebViewActivity.class);
+                if (url != null) {
+                    intent.putExtra("url", url);
+                }
+                context.startActivity(intent);
+                //未安装京东
+            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+                StringUtil.showToast(context, "不在白名单");
+                //不在白名单
+            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+                StringUtil.showToast(context, "协议错误");
+                //协议错误
+            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
+                //呼京东成功
+            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+                StringUtil.showToast(context, "网络异常");
+                //网络异常
+            }
+        }
+    };
 }

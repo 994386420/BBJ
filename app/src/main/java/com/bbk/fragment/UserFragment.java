@@ -77,9 +77,11 @@ import com.bbk.component.JingbiComponent;
 import com.bbk.component.QiandaoComponent;
 import com.bbk.component.ShouyiComponent;
 import com.bbk.flow.DataFlow;
+import com.bbk.model.MainActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
 import com.bbk.shopcar.DianpuHomeActivity;
+import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
@@ -463,7 +465,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
-                                Logg.json(jsonObject);
+//                                Logg.json(jsonObject);
                                 NewUserBean userBean = JSON.parseObject(jsonObject.optString("content"), NewUserBean.class);
                                 String messages = String.valueOf(userBean.getMessages());
                                 String username = userBean.getUsername();
@@ -507,10 +509,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                             username);
                                     if (!messages.equals("0")) {
                                         mnewmsg.setVisibility(View.VISIBLE);
-                                        NewHomeFragment.mnewmsg.setVisibility(View.VISIBLE);
+                                        MainActivity.mnewmsg.setVisibility(View.VISIBLE);
                                     } else {
                                         mnewmsg.setVisibility(View.GONE);
-                                        NewHomeFragment.mnewmsg.setVisibility(View.GONE);
+                                        MainActivity.mnewmsg.setVisibility(View.GONE);
                                     }
                                     if (messages != null) {
                                         NewConstants.messages = Integer.parseInt(messages);
@@ -518,8 +520,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                                        if (HomeActivity.mNumImageView != null) {
 //                                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
 //                                        }
-                                        if (NewHomeFragment.mnewmsg != null) {
-                                            NewHomeFragment.mnewmsg.setText(NewConstants.messages + "");
+                                        if ( MainActivity.mnewmsg != null) {
+                                            MainActivity.mnewmsg.setText(NewConstants.messages + "");
                                         }
                                     }
 
@@ -905,7 +907,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    intent = new Intent(getActivity(), BrowseActivity.class);
 //                    startActivity(intent);
 //                }
-                intent = new Intent(getActivity(), DianpuHomeActivity.class);
+                intent = new Intent(getActivity(), NewDianpuHomeActivity.class);
                 startActivity(intent);
                 break;
             case R.id.mphonechongzhi:

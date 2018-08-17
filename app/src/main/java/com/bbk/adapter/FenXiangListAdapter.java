@@ -135,6 +135,7 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
             }
             if (fenXiangListBean.getItems() != null) {
                 final List<FenXiangItemBean> fenXiangItemBeans = JSON.parseArray(fenXiangListBean.getItems(), FenXiangItemBean.class);
+                viewHolder.mrecy.setFocusable(false);
                 recyGrid(viewHolder, fenXiangItemBeans);
                 viewHolder.llShare.setOnClickListener(new View.OnClickListener() {
                     @Override

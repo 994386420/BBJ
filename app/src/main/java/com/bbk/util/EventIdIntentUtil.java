@@ -46,6 +46,8 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.DianpuHomeActivity;
+import com.bbk.shopcar.NewDianpuActivity;
+import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
@@ -72,6 +74,7 @@ public class EventIdIntentUtil {
 	static String url;
 	private static UpdataDialog updataDialog;
 	private static String isFirstClick;
+	private static Context contexte;
 	public static void main(String[] args) {
 
 	}
@@ -85,12 +88,13 @@ public class EventIdIntentUtil {
 	 * @param jo
 	 */
 	public static void EventIdIntent(Context context,JSONObject jo){
+		contexte = context;
 		String eventId = jo.optString("eventId");
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Intent intent;
 		switch (eventId) {
 			case "a1":
-				intent = new Intent(context,DianpuActivity.class);
+				intent = new Intent(context,NewDianpuHomeActivity.class);
 				if (jo.has("keyword")) {
 					intent.putExtra("dianpuid", jo.optString("keyword"));
 				}
@@ -426,7 +430,12 @@ public class EventIdIntentUtil {
 			} else {
 			}
 			if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-
+				StringUtil.showToast(contexte, "未安装京东");
+				Intent intent = new Intent(contexte, WebViewActivity.class);
+				if (url != null) {
+					intent.putExtra("url", url);
+				}
+				contexte.startActivity(intent);
 				//未安装京东
 			} else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
 //				StringUtil.showToast(context, "不在白名单");
@@ -693,7 +702,7 @@ public class EventIdIntentUtil {
 		Intent intent;
 		switch (eventId) {
 			case "a1":
-				intent = new Intent(context,DianpuActivity.class);
+				intent = new Intent(context,NewDianpuActivity.class);
 				if (dianpuid != null) {
 					intent.putExtra("dianpuid", dianpuid);
 				}

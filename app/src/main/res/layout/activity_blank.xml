@@ -61,35 +61,6 @@
             android:orientation="horizontal"
             android:paddingLeft="5dp"
             android:paddingRight="5dp" >
-
-            <RelativeLayout
-                android:id="@+id/mtopic"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:id="@+id/mtext1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="发现"
-                    android:textColor="#ff7d41" />
-
-                <View
-                    android:id="@+id/henggang1"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:background="#ff7d41" />
-            </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/mdomain"
                 android:layout_width="0dp"
@@ -106,7 +77,8 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:text="商品"
-                    android:textColor="#333333" />
+                    android:textColor="#ff7d41"
+                    />
 
                 <View
                     android:id="@+id/henggang2"
@@ -115,8 +87,38 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:background="#ff7d41"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/mtopic"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/mtext1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="发现"
+                    android:textColor="#333333"/>
+
+                <View
+                    android:id="@+id/henggang1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:background="#ffffff" />
             </RelativeLayout>
+
+
         </LinearLayout>
 
         <View
@@ -184,6 +186,7 @@
                             android:layout_height="match_parent"
                             android:divider="@color/color_line"
                             android:dividerHeight="2dp"
+                            android:background="@color/white"
                             android:visibility="gone" >
                         </com.bbk.view.MyListView>
 

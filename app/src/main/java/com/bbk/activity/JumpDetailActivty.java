@@ -36,6 +36,7 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.GlideImageGuanggaoLoader;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.NoFastClickUtils;
@@ -44,6 +45,7 @@ import com.bbk.util.ShareJumpUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.kepler.jd.Listener.OpenAppAction;
@@ -239,7 +241,7 @@ public class JumpDetailActivty extends BaseActivity {
                 imgUrlList.add(imgUrl);
             }
             banner.setImages(imgUrlList)
-                    .setImageLoader(new GlideImageLoader())
+                    .setImageLoader(new GlideImageGuanggaoLoader())
                     .setOnBannerListener(new OnBannerListener() {
                         @Override
                         public void OnBannerClick(int position) {
@@ -682,12 +684,18 @@ public class JumpDetailActivty extends BaseActivity {
             LinearLayout img_close = updataDialog.findViewById(R.id.ll_close);
             ImageView imgLoading = updataDialog.findViewById(R.id.img_loading);
             ImageView imageView = updataDialog.findViewById(R.id.img_app);
-            if (url.contains("jd")){
+            AdaptionSizeTextView adaptionSizeTextView = updataDialog.findViewById(R.id.quan);
+            if (domain.equals("jd")){
                 jumpdomain = "jumpjd";
-            }else if (url.contains("tmall")){
+            }else if (domain.equals("tmall")){
                 jumpdomain = "jumptmall";
-            }else if (url.contains("taobao")){
+            }else if (domain.equals("taobao")){
                 jumpdomain = "jumptaobao";
+            }
+            if (quans != null && !quans.equals("") && !quans.equals("0")) {
+                adaptionSizeTextView.setVisibility(View.VISIBLE);
+            } else {
+                adaptionSizeTextView.setVisibility(View.INVISIBLE);
             }
             int drawS = getResources().getIdentifier(jumpdomain,"mipmap", getPackageName());
             imageView.setImageResource(drawS);

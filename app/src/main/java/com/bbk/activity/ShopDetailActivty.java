@@ -44,10 +44,13 @@ import com.bbk.shopcar.CarActivity;
 import com.bbk.shopcar.ConfirmOrderActivity;
 import com.bbk.shopcar.DianpuHomeActivity;
 import com.bbk.shopcar.MyPlActivity;
+import com.bbk.shopcar.NewDianpuActivity;
+import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.shopcar.view.IdeaScrollView;
 import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.GlideImageGuanggaoLoader;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -335,7 +338,7 @@ public class ShopDetailActivty extends BaseActivity {
                                             imgUrlList.add(imgUrl);
                                         }
                                         banner.setImages(imgUrlList)
-                                                .setImageLoader(new GlideImageLoader())
+                                                .setImageLoader(new GlideImageGuanggaoLoader())
                                                 .setOnBannerListener(new OnBannerListener() {
                                                     @Override
                                                     public void OnBannerClick(int position) {
@@ -487,7 +490,7 @@ public class ShopDetailActivty extends BaseActivity {
                 showMessageDialog(this);
                 break;
             case R.id.tv_all_mall:
-                intent = new Intent(this, DianpuHomeActivity.class);
+                intent = new Intent(this, NewDianpuHomeActivity.class);
                 if (shopDetailBean != null) {
                     if (shopDetailBean.getDianpuid() != null) {
                         intent.putExtra("dianpuid", shopDetailBean.getDianpuid());
@@ -496,7 +499,7 @@ public class ShopDetailActivty extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_dianpu:
-                intent = new Intent(this, DianpuActivity.class);
+                intent = new Intent(this, NewDianpuActivity.class);
                 if (shopDetailBean != null) {
                     if (shopDetailBean.getDianpuid() != null) {
                         intent.putExtra("dianpuid", shopDetailBean.getDianpuid());
@@ -508,7 +511,7 @@ public class ShopDetailActivty extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_dianpu:
-                intent = new Intent(this, DianpuActivity.class);
+                intent = new Intent(this, NewDianpuActivity.class);
                 if (shopDetailBean != null) {
                     if (shopDetailBean.getDianpuid() != null) {
                         intent.putExtra("dianpuid", shopDetailBean.getDianpuid());

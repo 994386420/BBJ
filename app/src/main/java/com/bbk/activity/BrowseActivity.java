@@ -66,7 +66,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 	private String topiccount="",domaincount="";
 	private BrowseWenzhangAdapter topicadapter;
 	private BrowseDomainAdapter domainadapter;
-	private int curclick = 0;
+	private int curclick = 1;
 	private List<TextView> tlist = new ArrayList<>();
 	private List<View> vlist = new ArrayList<>();
 	private LinearLayout mzhanwei;
@@ -88,7 +88,8 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 		ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
 		dataFlow = new DataFlow(this);
 		initView();
-		initTopicData(true);
+//		initTopicData(true);
+		initDomainData(true);
 	}
 	
 	public void initView() {
@@ -422,6 +423,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 //				Log.i("===========",content);
 				List<NewHomeCzgBean> newHomeCzgBean = JSON.parseArray(content,NewHomeCzgBean.class);
 //				loadDomain(object);
+				domainlistview.setVisibility(View.VISIBLE);
 				if (x == 1) {
 					if (newHomeCzgBean != null && newHomeCzgBean.size() > 0) {
 						xrefresh.setEnableLoadMore(true);

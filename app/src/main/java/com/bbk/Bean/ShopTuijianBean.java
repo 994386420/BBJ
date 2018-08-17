@@ -12,6 +12,15 @@ public class ShopTuijianBean {
     private String dianpu;
     private String imgurl;
     private String sale;
+    private String bprice;
+
+    public String getBprice() {
+        return bprice;
+    }
+
+    public void setBprice(String bprice) {
+        this.bprice = bprice;
+    }
 
     public String getDianpu() {
         return dianpu;

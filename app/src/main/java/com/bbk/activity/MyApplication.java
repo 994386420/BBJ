@@ -98,7 +98,7 @@ public class MyApplication extends Application {
 			@Override
 			public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
 				//指定为经典Footer，默认是 BallPulseFooter
-				return new ClassicsFooter(context).setDrawableSize(20);
+				return new ClassicsFooter(context).setDrawableSize(15).setTextSizeTitle(15);
 			}
 		});
 

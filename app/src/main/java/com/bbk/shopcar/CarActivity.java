@@ -380,7 +380,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
     @Override
     public void IntentGroup(String dianpuid) {
         NewConstants.refeshFlag = "0";
-        Intent intent = new Intent(this, DianpuActivity.class);
+        Intent intent = new Intent(this, NewDianpuActivity.class);
         intent.putExtra("dianpuid",dianpuid);
         startActivity(intent);
     }
@@ -508,27 +508,46 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                     StringUtil.showToast(mcontext, "请选择要支付的商品");
                     return;
                 }
-                dialog = new AlertDialog.Builder(mcontext).create();
-                dialog.setMessage("总计:" + mtotalCount + "种商品，" +   doubleToString(mtotalPrice) + "元");
-                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "支付", new DialogInterface.OnClickListener() {
+//                dialog = new AlertDialog.Builder(mcontext).create();
+//                dialog.setMessage("总计:" + mtotalCount + "种商品，" +   doubleToString(mtotalPrice) + "元");
+//                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "支付", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        NewConstants.refeshFlag = "0";
+//                        Intent intent = new Intent(CarActivity.this,ConfirmOrderActivity.class);
+//                        intent.putExtra("ids",ids);
+//                        intent.putExtra("nums",nums);
+//                        intent.putExtra("guiges",guiges);
+//                        startActivity(intent);
+//                        return;
+//                    }
+//                });
+//                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        return;
+//                    }
+//                });
+//                dialog.show();
+                new com.bbk.dialog.AlertDialog(mcontext).builder().setTitle("提示")
+                        .setMsg("总计:" + mtotalCount + "种商品，" +   doubleToString(mtotalPrice) + "元")
+                        .setPositiveButton("支付", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                NewConstants.refeshFlag = "0";
+                                Intent intent = new Intent(CarActivity.this,ConfirmOrderActivity.class);
+                                intent.putExtra("ids",ids);
+                                intent.putExtra("nums",nums);
+                                intent.putExtra("guiges",guiges);
+                                startActivity(intent);
+                                return;
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        NewConstants.refeshFlag = "0";
-                        Intent intent = new Intent(CarActivity.this,ConfirmOrderActivity.class);
-                        intent.putExtra("ids",ids);
-                        intent.putExtra("nums",nums);
-                        intent.putExtra("guiges",guiges);
-                        startActivity(intent);
+                    public void onClick(View v) {
                         return;
                     }
-                });
-                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-                dialog.show();
+                }).show();
                 break;
             case R.id.share_goods:
                 if (mtotalCount == 0) {
@@ -549,21 +568,34 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                     StringUtil.showToast(mcontext, "请选择要删除的商品");
                     return;
                 }
-                dialog = new AlertDialog.Builder(mcontext).create();
-                dialog.setMessage("确认要删除该商品吗?");
-                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+//                dialog = new AlertDialog.Builder(mcontext).create();
+//                dialog.setMessage("确认要删除该商品吗?");
+//                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        doDelete();
+//                    }
+//                });
+//                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        return;
+//                    }
+//                });
+//                dialog.show();
+                new com.bbk.dialog.AlertDialog(mcontext).builder().setTitle("提示")
+                        .setMsg("确认要删除该商品吗?")
+                        .setPositiveButton("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                doDelete();
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        doDelete();
-                    }
-                });
-                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         return;
                     }
-                });
-                dialog.show();
+                }).show();
                 break;
 //            case R.id.actionBar_edit:
 //                flag = !flag;

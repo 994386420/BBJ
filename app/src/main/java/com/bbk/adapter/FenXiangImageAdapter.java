@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bbk.Bean.FenXiangItemBean;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.R;
+import com.bbk.resource.NewConstants;
 import com.bbk.view.SquareImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -81,6 +82,7 @@ public class FenXiangImageAdapter extends BaseAdapter {
             vh.flItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    NewConstants.showdialogFlg = "1";
                     Intent intent = new Intent(context, IntentActivity.class);
                     if (fenXiangItemBeans.get(position).getRequestUrl() != null) {
                         intent.putExtra("url", fenXiangItemBeans.get(position).getRequestUrl());

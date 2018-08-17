@@ -27,6 +27,7 @@ import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.MyWantPLActivity;
+import com.bbk.shopcar.NewDianpuActivity;
 import com.bbk.shopcar.ShopOrderDetailActivity;
 import com.bbk.shopcar.WuLiuActivity;
 import com.bbk.util.DialogSingleUtil;
@@ -206,7 +207,7 @@ public class ShopOrderAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     NewConstants.refeshOrderFlag = "0";
-                    Intent intent  = new Intent(context, DianpuActivity.class);
+                    Intent intent  = new Intent(context, NewDianpuActivity.class);
                     intent.putExtra("dianpuid",shopOrderBean.getDianpuid());
                     context.startActivity(intent);
                 }

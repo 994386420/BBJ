@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +63,11 @@ public class DianPuGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return shopDianpuBeans.size();
+        if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
+            return shopDianpuBeans.size();
+        }else {
+            return 0;
+        }
     }
 
     public void notifyData(List<ShopDianpuBean> beans) {
@@ -116,7 +121,11 @@ public class DianPuGridAdapter extends RecyclerView.Adapter {
             viewHolder.llQuan.setVisibility(View.GONE);
             viewHolder.zuan.setVisibility(View.GONE);
             viewHolder.tvSale1.setVisibility(View.VISIBLE);
-            viewHolder.tvSale1.setText(shopTuijianBean.getSale() + "人已买");
+            if (shopTuijianBean.getSale() != null) {
+                viewHolder.tvSale1.setText(shopTuijianBean.getSale() + "人已买");
+            }else {
+                viewHolder.tvSale1.setVisibility(View.GONE);
+            }
             Glide.with(context)
                     .load(shopTuijianBean.getImgurl())
                     .priority(Priority.HIGH)

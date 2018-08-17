@@ -532,6 +532,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.bbk.shopcar.NewDianpuHomeActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.bbk.shopcar.ConfirmOrderActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
@@ -553,6 +558,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".DianpuActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.shopcar.NewDianpuActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <meta-data

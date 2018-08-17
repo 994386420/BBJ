@@ -8,22 +8,23 @@
 
     android:background="@drawable/bg_toast"
 
-    android:padding="15dp" >
+    android:padding="10dp" >
 
 
     <ImageView
 
         android:id="@+id/toast_icon"
 
-        android:layout_width="wrap_content"
+        android:layout_width="15dp"
 
-        android:layout_height="wrap_content"
+        android:layout_height="15dp"
 
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
 
         android:contentDescription="@string/app_name"
+        android:visibility="gone"
 
-        android:visibility="gone" />
+      />
 
     <TextView
 
@@ -42,8 +43,9 @@
         android:textColor="@color/white"
 
         android:textIsSelectable="false"
+        android:text=""
 
-        android:textSize="13sp" />
+        android:textSize="12sp" />
 
 
 </RelativeLayout>

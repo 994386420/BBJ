@@ -35,6 +35,7 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.ClipDialogUtil;
+import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -126,26 +127,12 @@ import java.util.Map;
 							     checkBean = JSON.parseObject(content,CheckBean.class);
 								 if (checkBean.getHasCps() != null) {
 									 if (checkBean.getHasCps().equals("1")) {
+										 DialogCheckYouhuiUtil.dismiss(2000);
 										 mHandler.postDelayed(new Runnable() {
 											 @Override
 											 public void run() {
-												 Intent intent = new Intent(BaseActivity.this, IntentActivity.class);
-												 if (checkBean.getUrl() != null && !checkBean.getUrl().equals("")) {
-													 intent.putExtra("url", checkBean.getUrl());
-												 }
-												 if (checkBean.getDomain() != null && !checkBean.getDomain().equals("")) {
-													 intent.putExtra("domain", checkBean.getDomain());
-												 }
-												 if (checkBean.getRowkey()!= null && !checkBean.getRowkey().equals("")) {
-													 intent.putExtra("groupRowKey", checkBean.getRowkey());
-												 }
-												 if (checkBean.getPrice() != null && !checkBean.getPrice().equals("")) {
-													 intent.putExtra("bprice", checkBean.getPrice());
-												 }
-												 DialogCheckYouhuiUtil.dismiss(2000);
-												 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 												 if (cancelCheck) {
-													 startActivity(intent);
+													 showYouhuiDialog(BaseActivity.this);
 												 }
 											 }
 										 }, 2000);
@@ -239,6 +226,73 @@ import java.util.Map;
 		View view = inflater.inflate(id, null);
 		return view;
 	}
+
+	 /**
+	  * 有优惠券弹窗
+	  * @param context
+	  */
+	 public void showYouhuiDialog(final Context context) {
+		 if (updataDialog == null || !updataDialog.isShowing()) {
+			 //初始化弹窗 布局 点击事件的id
+			 updataDialog = new UpdataDialog(context, R.layout.check_nomessage_dialog_layout,
+					 new int[]{R.id.tv_update_gengxin});
+			 updataDialog.show();
+			 updataDialog.setCanceledOnTouchOutside(true);
+			 LinearLayout llZuji = updataDialog.findViewById(R.id.ll_zuji);
+			 llZuji.setVisibility(View.VISIBLE);
+			 llZuji.setOnClickListener(new View.OnClickListener() {
+				 @Override
+				 public void onClick(View v) {
+					 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+					 if (TextUtils.isEmpty(userID)) {
+						 JumpDetailActivty.Flag = "home";
+						 Intent intent = new Intent(context, UserLoginNewActivity.class);
+						 startActivityForResult(intent, 1);
+					 } else {
+						 Intent intent  = new Intent(context, BrowseActivity.class);
+						 updataDialog.dismiss();
+						 cancelCheck = false;
+						 startActivity(intent);
+					 }
+				 }
+			 });
+			 TextView tvZuan = updataDialog.findViewById(R.id.tv_zuan);
+			 TextView tvQuan = updataDialog.findViewById(R.id.tv_update);
+			 tvQuan.setTextColor(context.getResources().getColor(R.color.tuiguang_color2));
+			 tvZuan.setText(checkBean.getMessage1());
+			 tvQuan.setText(checkBean.getMessage2());
+			 TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
+			 tv_update_gengxin.setText("查看优惠");
+			 tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+				 @Override
+				 public void onClick(View v) {
+					 updataDialog.dismiss();
+					 Intent intent = new Intent(context, IntentActivity.class);
+					 if (checkBean.getUrl() != null && !checkBean.getUrl().equals("")) {
+						 intent.putExtra("url", checkBean.getUrl());
+					 }
+					 if (checkBean.getDomain() != null && !checkBean.getDomain().equals("")) {
+						 intent.putExtra("domain", checkBean.getDomain());
+					 }
+					 if (checkBean.getRowkey() != null && !checkBean.getRowkey().equals("")) {
+						 intent.putExtra("groupRowKey", checkBean.getRowkey());
+					 }
+					 if (checkBean.getPrice() != null && !checkBean.getPrice().equals("")) {
+						 intent.putExtra("bprice", checkBean.getPrice());
+					 }
+					 startActivity(intent);
+				 }
+			 });
+			 LinearLayout ll_close = updataDialog.findViewById(R.id.ll_close);
+			 ll_close.setOnClickListener(new View.OnClickListener() {
+				 @Override
+				 public void onClick(View v) {
+					 updataDialog.dismiss();
+					 cancelCheck = false;
+				 }
+			 });
+		 }
+	 }
 	 /**
 	  *
 	  * @param context

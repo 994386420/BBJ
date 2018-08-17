@@ -2,7 +2,7 @@ package com.bbk.shopcar.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -24,6 +24,7 @@ import com.bbk.activity.R;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.dialog.AlertDialog;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.Utils.UtilTool;
 import com.bbk.shopcar.Utils.UtilsLog;
@@ -269,18 +270,31 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
         convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(mcontext)
-                        .setMessage("确定要删除该商品吗")
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                new AlertDialog.Builder(mcontext)
+//                        .setMessage("确定要删除该商品吗")
+//                        .setNegativeButton("取消", null)
+//                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                modifyCountInterface.childDelete(groupPosition, childPosition, child.getId(), child.getNum(), child.getGuige());
+//                            }
+//                        })
+//                        .create()
+//                        .show();
+                new AlertDialog(mcontext).builder().setTitle("提示")
+                        .setMsg("确认要删除该商品吗?")
+                        .setPositiveButton("确认", new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(View v) {
                                 modifyCountInterface.childDelete(groupPosition, childPosition, child.getId(), child.getNum(), child.getGuige());
                             }
-                        })
-                        .create()
-                        .show();
-                ;
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        return;
+                    }
+                }).show();
+
             }
         });
         if (child != null) {
@@ -327,26 +341,26 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
                     modifyCountInterface.doDecrease(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child.getId(), child.getNum(), child.getGuige());
                 }
             });
-            childViewHolder.goodsNum.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialog(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child);
-                }
-            });
+//            childViewHolder.goodsNum.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showDialog(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child);
+//                }
+//            });
             childViewHolder.delGoods.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new AlertDialog.Builder(mcontext)
-                            .setMessage("确定要删除该商品吗")
-                            .setNegativeButton("取消", null)
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-//                                    modifyCountInterface.childDelete(groupPosition,childPosition);
-                                }
-                            })
-                            .create()
-                            .show();
+//                    new AlertDialog.Builder(mcontext)
+//                            .setMessage("确定要删除该商品吗")
+//                            .setNegativeButton("取消", null)
+//                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+////                                    modifyCountInterface.childDelete(groupPosition,childPosition);
+//                                }
+//                            })
+//                            .create()
+//                            .show();
                     ;
                 }
             });
@@ -354,71 +368,71 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    /**
-     * @param groupPosition
-     * @param childPosition
-     * @param showCountView
-     * @param isChecked
-     * @param child
-     */
-    private void showDialog(final int groupPosition, final int childPosition, final View showCountView, final boolean isChecked, final GoodsInfo child) {
-        final AlertDialog.Builder alertDialog_Builder = new AlertDialog.Builder(mcontext);
-        View view = LayoutInflater.from(mcontext).inflate(R.layout.dialog_change_num, null);
-        final AlertDialog dialog = alertDialog_Builder.create();
-        dialog.setView(view);//errored,这里是dialog，不是alertDialog_Buidler
-        count = child.getNum();
-        final EditText num = (EditText) view.findViewById(R.id.dialog_num);
-        num.setText(count + "");
-        //自动弹出键盘
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                UtilTool.showKeyboard(mcontext, showCountView);
-            }
-        });
-        final TextView increase = (TextView) view.findViewById(R.id.dialog_increaseNum);
-        final TextView DeIncrease = (TextView) view.findViewById(R.id.dialog_reduceNum);
-        final TextView pButton = (TextView) view.findViewById(R.id.dialog_Pbutton);
-        final TextView nButton = (TextView) view.findViewById(R.id.dialog_Nbutton);
-        nButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        pButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int number = Integer.parseInt(num.getText().toString().trim());
-                if (number == 0) {
-                    dialog.dismiss();
-                } else {
-                    UtilsLog.i("数量=" + number + "");
-                    num.setText(String.valueOf(number));
-                    child.setNum(number);
-                    modifyCountInterface.doUpdate(groupPosition, childPosition, showCountView, isChecked);
-                    dialog.dismiss();
-                }
-            }
-        });
-        increase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                count++;
-                num.setText(String.valueOf(count));
-            }
-        });
-        DeIncrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (count > 1) {
-                    count--;
-                    num.setText(String.valueOf(count));
-                }
-            }
-        });
-        dialog.show();
-    }
+//    /**
+//     * @param groupPosition
+//     * @param childPosition
+//     * @param showCountView
+//     * @param isChecked
+//     * @param child
+//     */
+//    private void showDialog(final int groupPosition, final int childPosition, final View showCountView, final boolean isChecked, final GoodsInfo child) {
+//        final AlertDialog.Builder alertDialog_Builder = new AlertDialog.Builder(mcontext);
+//        View view = LayoutInflater.from(mcontext).inflate(R.layout.dialog_change_num, null);
+//        final AlertDialog dialog = alertDialog_Builder.create();
+//        dialog.setView(view);//errored,这里是dialog，不是alertDialog_Buidler
+//        count = child.getNum();
+//        final EditText num = (EditText) view.findViewById(R.id.dialog_num);
+//        num.setText(count + "");
+//        //自动弹出键盘
+//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//            @Override
+//            public void onShow(DialogInterface dialog) {
+//                UtilTool.showKeyboard(mcontext, showCountView);
+//            }
+//        });
+//        final TextView increase = (TextView) view.findViewById(R.id.dialog_increaseNum);
+//        final TextView DeIncrease = (TextView) view.findViewById(R.id.dialog_reduceNum);
+//        final TextView pButton = (TextView) view.findViewById(R.id.dialog_Pbutton);
+//        final TextView nButton = (TextView) view.findViewById(R.id.dialog_Nbutton);
+//        nButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        pButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int number = Integer.parseInt(num.getText().toString().trim());
+//                if (number == 0) {
+//                    dialog.dismiss();
+//                } else {
+//                    UtilsLog.i("数量=" + number + "");
+//                    num.setText(String.valueOf(number));
+//                    child.setNum(number);
+//                    modifyCountInterface.doUpdate(groupPosition, childPosition, showCountView, isChecked);
+//                    dialog.dismiss();
+//                }
+//            }
+//        });
+//        increase.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                count++;
+//                num.setText(String.valueOf(count));
+//            }
+//        });
+//        DeIncrease.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (count > 1) {
+//                    count--;
+//                    num.setText(String.valueOf(count));
+//                }
+//            }
+//        });
+//        dialog.show();
+//    }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
