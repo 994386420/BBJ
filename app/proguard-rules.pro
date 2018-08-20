@@ -232,7 +232,7 @@
 -dontwarn com.tencent.**s
 -dontwarn com.baidu.**
 
-#
+# 微客服
 -dontwarn com.appkefu.**
 -keep class com.appkefu.** { *;}
 

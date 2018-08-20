@@ -43,6 +43,8 @@ import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
@@ -130,8 +132,9 @@ public class HomeLoadUtil {
             String imageUrl = map.get("imageUrl").toString();
             Glide.with(context)
                     .load(imageUrl)
-                    .placeholder(R.mipmap.zw_img_160)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)//不加这句会有绿色背景
                     .thumbnail(0.5f)
+                    .placeholder(R.mipmap.zw_img_160)
                     .into(imageView);
             boxlist.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override

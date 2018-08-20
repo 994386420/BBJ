@@ -1,13 +1,9 @@
 package com.bbk.shopcar;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
@@ -15,13 +11,10 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSON;
 import com.bbk.activity.BaseActivity;
-import com.bbk.activity.DianpuActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.SearchPromptActivity;
 import com.bbk.activity.ShopDetailActivty;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
@@ -36,21 +29,17 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
-import com.bbk.util.ValidatorUtil;
 import com.bbk.view.CommonLoadingView;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import org.json.JSONObject;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -256,11 +245,6 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
             for (int j = 0; j < child.size(); j++) {
                 if (child.get(j).isChoosed()) {
                     toBeDeleteChilds.add(child.get(j));
-//                    StringBuilder sb = new  StringBuilder();
-//                    sb.append("'"+child.get(j).getId()+"'");//拼接商品id号
-//                    if(i!=child.size()-1){//前面的元素后面全拼上",",最后一个元素后不拼
-//                            sb.append(",");
-//                        }
                     list.add(child.get(j).getId());
                     listguige.add(child.get(j).getGuige());
 //                    Logg.e(child.get(j).getId());
@@ -419,6 +403,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         GoodsInfo good = (GoodsInfo) adapter.getChild(groupPosition, childPosition);
         int count = good.getNum();
         if (count == 1) {
+            StringUtil.showToast(mcontext, "不能再减少了哦");
             return;
         }
         count--;

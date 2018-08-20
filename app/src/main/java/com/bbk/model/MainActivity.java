@@ -194,11 +194,25 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private static Handler mHandler = new Handler();
     private static UpdataDialog updataDialog;
     private HomeLoadUtil homeLoadUtil;
-    private int showTime = 0;
+    private int showTime = 0,curposition = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        if (null != getActivity().getIntent().getStringExtra("content")) {
+            String content = getActivity().getIntent().getStringExtra("content");
+            try {
+                isshowzhezhao = false;
+                JSONObject jsonObject = new JSONObject(content);
+                EventIdIntentUtil.EventIdIntent(getActivity(), jsonObject);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+
         if (null == mView) {
             getActivity().getWindow().setBackgroundDrawable(null);
             mView = inflater.inflate(R.layout.new_home_layout, null);
@@ -345,7 +359,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 int j = tab.getPosition();
                 if (j == 0) {
                     keyword = "";
+                    curposition = 0;
                 } else {
+                    curposition = j - 1;
                     DialogHomeUtil.show(getActivity());
                     keyword = tab.getText().toString();
                 }
@@ -447,6 +463,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 //tag
                                 if (object.has("tag")) {
                                     JSONArray tag = object.optJSONArray("tag");
+                                    Logg.json(tag);
                                     List<Map<String, String>> taglist = new ArrayList<>();
                                     if (tag != null && tag.length() > 0) {
                                         HomeLoadUtil.loadTag(getActivity(), taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
@@ -587,6 +604,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                     czgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
                                     if (x == 1) {
                                         if (czgBeans != null && czgBeans.size() > 0) {
+                                            typeGridAdapter.setSeclection(curposition);
+                                            typeGridAdapter.notifyDataSetChanged();
+
                                             refresh.setEnableLoadMore(true);
                                             recyclerView.setVisibility(View.VISIBLE);
                                             newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
@@ -884,12 +904,13 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            typeGridAdapter.setSeclection(position);
+            curposition = position;
+            typeGridAdapter.setSeclection(curposition);
             typeGridAdapter.notifyDataSetChanged();
             keyword = chaozhigouTypesBeans.get(position).getKeyword();
-            x = 1;
-            page = 1;
-            initDataCzg(keyword);
+//            x = 1;
+//            page = 1;
+//            initDataCzg(keyword);
             XTabLayout.Tab tabAt = tablayout.getTabAt(position + 1);
             tabAt.select();
             showGlobalMenu();

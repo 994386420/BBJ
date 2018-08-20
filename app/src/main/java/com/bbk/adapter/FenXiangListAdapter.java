@@ -178,7 +178,11 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
 
     @Override
     public int getItemCount() {
-        return fenXiangListBeans.size();
+        if (fenXiangListBeans != null && fenXiangListBeans.size() > 0) {
+            return fenXiangListBeans.size();
+        }else {
+            return 0;
+        }
     }
 
     private void recyGrid(final ViewHolder viewHolder, final List<FenXiangItemBean> fenXiangItemBeans) {

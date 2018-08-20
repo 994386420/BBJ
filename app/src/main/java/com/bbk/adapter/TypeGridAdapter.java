@@ -28,7 +28,11 @@ public class TypeGridAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return titlelist.size();
+		if (titlelist != null && titlelist.size() > 0) {
+			return titlelist.size();
+		}else {
+			return 0;
+		}
 	}
 
 	@Override
