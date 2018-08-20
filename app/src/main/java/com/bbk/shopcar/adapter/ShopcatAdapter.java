@@ -212,6 +212,9 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
 
         count = child.getNum();
         childViewHolder.dialogNum.setText(count + "");
+        /**
+         * 判断是否获取到焦点
+         */
         childViewHolder.dialogNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -222,6 +225,9 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
                 }
             }
         });
+        /**
+         * 添加数量变化监听
+         */
         childViewHolder.dialogNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

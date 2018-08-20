@@ -392,7 +392,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
     }
 
     /**
-     * 减少购物车数量，最低为一
+     * 减少购物车数量，最低1
      * @param groupPosition
      * @param childPosition
      * @param showCountView

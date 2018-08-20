@@ -463,7 +463,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 //tag
                                 if (object.has("tag")) {
                                     JSONArray tag = object.optJSONArray("tag");
-                                    Logg.json(tag);
                                     List<Map<String, String>> taglist = new ArrayList<>();
                                     if (tag != null && tag.length() > 0) {
                                         HomeLoadUtil.loadTag(getActivity(), taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
