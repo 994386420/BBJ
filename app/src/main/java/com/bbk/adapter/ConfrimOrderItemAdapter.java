@@ -97,7 +97,7 @@ public class ConfrimOrderItemAdapter extends RecyclerView.Adapter {
             vh.itemTitle.setText(confrimOredetItemBean.getTitle());
 //            vh.tvNum.setText("x" + confrimOredetItemBean.getNumber());
 //            vh.tvShopPrice.setText("￥" + confrimOredetItemBean.getPrice());
-            Logg.e(confrimOredetItemBean.getGuige());
+//            Logg.e(confrimOredetItemBean.getGuige());
             vh.tvShopGuige.setText(confrimOredetItemBean.getGuige());
             vh.tvMoney.setText(confrimOredetItemBean.getPrice());
             vh.tvNumber.setText("x" + confrimOredetItemBean.getNumber());

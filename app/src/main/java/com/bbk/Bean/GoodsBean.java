@@ -10,6 +10,24 @@ public class GoodsBean {
     private String totalnumber;
     private String list;
     private String subprice;
+    private String youhui;
+    private String liuyan;//留言
+
+    public String getLiuyan() {
+        return liuyan;
+    }
+
+    public void setLiuyan(String liuyan) {
+        this.liuyan = liuyan;
+    }
+
+    public String getYouhui() {
+        return youhui;
+    }
+
+    public void setYouhui(String youhui) {
+        this.youhui = youhui;
+    }
 
     public String getDianpu() {
         return dianpu;

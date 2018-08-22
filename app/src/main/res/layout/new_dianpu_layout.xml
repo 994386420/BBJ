@@ -26,6 +26,7 @@
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_behavior="@string/behavior"
                 android:background="@color/white">
 
                 //       app:contentScrim="?attr/colorPrimary"
@@ -72,7 +73,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
-                                        android:text="店铺"
+                                        android:text=""
                                         android:textSize="16dp"
                                         android:textColor="@color/white" />
                                     <TextView
@@ -80,7 +81,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
-                                        android:text="120"
+                                        android:text=""
                                         android:textSize="12dp"
                                         android:textColor="@color/white"
                                         android:layout_below="@+id/img_dianpu_logo"/>

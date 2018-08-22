@@ -239,7 +239,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         loadingProgress.setLoadingHandler(this);
         zLoadingView.setLoadingHandler(this);
         refresh();
-        tablayout.setxTabDisplayNum(4);
+        tablayout.setxTabDisplayNum(5);
         mrecyclerview.setHasFixedSize(true);
         mrecyclerview.setLayoutManager(new GridLayoutManager(NewDianpuHomeActivity.this, 2));
     }
@@ -273,7 +273,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                                 if (dianPuHomeBean.getTag() != null) {
                                     JSONArray tag = new JSONArray(dianPuHomeBean.getTag());
                                     if (tag != null && tag.length() > 0) {
-                                        HomeLoadUtil.loadTag(NewDianpuHomeActivity.this, taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
+                                        HomeLoadUtil.loaddianpuTag(NewDianpuHomeActivity.this, taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
                                     }
                                 }
                                 //分类

@@ -15,7 +15,7 @@
         android:padding="10dp"
         android:background="@drawable/btn_seclecter">
         <RelativeLayout
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -25,7 +25,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/store_checkBox"
                 android:background="@mipmap/order_04"/>
-            <TextView
+            <com.bbk.view.AdaptionSizeTextView
                 android:textColor="@color/tuiguang_color3"
                 android:drawablePadding="5dp"
                 android:textSize="14sp"

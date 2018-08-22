@@ -3,9 +3,12 @@ package com.bbk.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,11 +16,16 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.ConfrimOredetItemBean;
 import com.bbk.Bean.GoodsBean;
-import com.bbk.Bean.OrderItembean;
 import com.bbk.activity.R;
+import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.Utils.ShopDialog;
+import com.bbk.shopcar.entity.GoodsInfo;
+import com.bbk.shopcar.entity.StoreInfo;
+import com.bbk.util.StringUtil;
 import com.bbk.view.AdaptionSizeTextView;
+import com.logg.Logg;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,7 +73,7 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         if (goodsBeans != null && goodsBeans.size() > 0) {
             return goodsBeans.size();
-        }else {
+        } else {
             return 0;
         }
     }
@@ -86,6 +94,12 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter {
         AdaptionSizeTextView tvSubprice;
         @BindView(R.id.result_item)
         LinearLayout resultItem;
+        @BindView(R.id.tv_youhui)
+        AdaptionSizeTextView tvYouhui;
+        @BindView(R.id.ll_youhui)
+        LinearLayout llYouhui;
+        @BindView(R.id.tv_liuyan)
+        EditText tvLiuyan;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -96,10 +110,56 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter {
     private void initTop(final ViewHolder viewHolder, final int position) {
         try {
             final GoodsBean goodsBean = goodsBeans.get(position);
+            goodsBean.setLiuyan("0");
+            /**
+             * 判断是否获取到焦点
+             */
+            viewHolder.tvLiuyan.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        NewConstants.liuyan = "1";
+                    } else {
+                        NewConstants.liuyan = "2";
+                    }
+                }
+            });
+            /**
+             * 添加数量变化监听
+             */
+            viewHolder.tvLiuyan.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.length() > 0) {
+                        if (!NewConstants.liuyan.equals("2")) {
+                           goodsBean.setLiuyan(viewHolder.tvLiuyan.getText().toString());
+                        }
+                    }else {
+                        goodsBean.setLiuyan("0");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
             viewHolder.tvSubprice.setText(goodsBean.getSubprice());
             viewHolder.mdianpu.setText(goodsBean.getDianpu());
             viewHolder.tvKuaidi.setText(goodsBean.getWuliu());
-            viewHolder.tvNum.setText("共"+goodsBean.getTotalnumber()+"件商品，小计");
+            if (goodsBean.getYouhui() != null && !goodsBean.getYouhui().equals("")) {
+                viewHolder.llYouhui.setVisibility(View.VISIBLE);
+                viewHolder.tvYouhui.setText(goodsBean.getYouhui());
+            } else {
+                viewHolder.llYouhui.setVisibility(View.GONE);
+            }
+            viewHolder.tvNum.setText("共" + goodsBean.getTotalnumber() + "件商品，小计");
             viewHolder.llFuwu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -115,8 +175,8 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter {
 
             };
             viewHolder.recyclerviewOrderItem.setLayoutManager(linearLayoutManager);
-            List<ConfrimOredetItemBean> confrimOredetItemBeans = JSON.parseArray(goodsBean.getList(),ConfrimOredetItemBean.class);
-            viewHolder.recyclerviewOrderItem.setAdapter(new ConfrimOrderItemAdapter(context,confrimOredetItemBeans));
+            List<ConfrimOredetItemBean> confrimOredetItemBeans = JSON.parseArray(goodsBean.getList(), ConfrimOredetItemBean.class);
+            viewHolder.recyclerviewOrderItem.setAdapter(new ConfrimOrderItemAdapter(context, confrimOredetItemBeans));
         } catch (Exception e) {
             e.printStackTrace();
         }

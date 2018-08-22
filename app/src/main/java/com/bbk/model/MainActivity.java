@@ -603,9 +603,10 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                     czgBeans = JSON.parseArray(tmpCzg, NewHomeCzgBean.class);
                                     if (x == 1) {
                                         if (czgBeans != null && czgBeans.size() > 0) {
-                                            typeGridAdapter.setSeclection(curposition);
-                                            typeGridAdapter.notifyDataSetChanged();
-
+                                            if (typeGridAdapter != null) {
+                                                typeGridAdapter.setSeclection(curposition);
+                                                typeGridAdapter.notifyDataSetChanged();
+                                            }
                                             refresh.setEnableLoadMore(true);
                                             recyclerView.setVisibility(View.VISIBLE);
                                             newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);

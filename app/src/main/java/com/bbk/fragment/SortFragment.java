@@ -167,7 +167,7 @@ public class SortFragment extends BaseViewPagerFragment implements OnItemClickLi
 			@Override
 			public void run() {
 				adapter.notifyDataSetChanged();
-				mlistView.smoothScrollBy(view.getTop()-250,1500);
+				mlistView.smoothScrollBy(view.getTop()-300,1500);
 			}
 		});
 	}

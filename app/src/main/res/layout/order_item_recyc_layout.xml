@@ -42,6 +42,7 @@
     android:gravity="center_vertical"
     android:maxLines="2"
     android:text=" "
+        android:textIsSelectable="true"
     android:textColor="@color/tuiguang_color3"
     android:textSize="13dp" />
 

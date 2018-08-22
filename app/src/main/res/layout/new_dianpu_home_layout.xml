@@ -26,6 +26,7 @@
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_behavior="@string/behavior"
                 android:background="@color/white">
 
                 //       app:contentScrim="?attr/colorPrimary"
@@ -83,7 +84,10 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:padding="8dp"
+                                    android:paddingBottom="15dp"
+                                    android:paddingTop="15dp"
+                                    android:paddingRight="8dp"
+                                    android:paddingLeft="8dp"
                                     android:orientation="horizontal">
 
                                     <LinearLayout
@@ -331,11 +335,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingRight="20dp"
+                                android:layout_marginRight="35dp"
                                 android:text="洗护专区"
                                 android:gravity="center"
                                 android:textSize="18dp"
                                 android:visibility="visible"
-                                android:textColor="@color/white" />
+                                android:textColor="@color/black" />
                         </LinearLayout>
 
 
@@ -354,12 +359,12 @@
                         android:layout_height="40dp"
                         app:xTabMode="scrollable"
                         app:xTabIndicatorWidth="50dp"
-                        app:xTabTextColor="#999"
+                        app:xTabTextColor="@color/shop_color1"
                         app:xTabSelectedTextColor="@color/color_line_top"
                         app:xTabIndicatorColor="@color/color_line_top"
                         app:xTabIndicatorHeight="1dp"
-                        app:xTabTextSize="15sp"
-                        app:xTabSelectedTextSize="15sp"
+                        app:xTabTextSize="14sp"
+                        app:xTabSelectedTextSize="14sp"
                         app:xTabDividerWidth="0dp"
                         app:xTabDividerHeight="0dp"
                         app:xTabDividerColor="#000"

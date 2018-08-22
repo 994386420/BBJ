@@ -99,7 +99,7 @@ public class DetailImageAdapter extends RecyclerView.Adapter{
             lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             viewHolder.item_img.setLayoutParams(lp);
             viewHolder.item_img.setMaxWidth(screenWidth);
-            viewHolder.item_img.setMaxHeight((int) (screenWidth * 3.5));// 这里其实可以根据需求而定，我这里测试为最大宽度的3.5倍
+//            viewHolder.item_img.setMaxHeight((int) (screenWidth * 3.5));// 这里其实可以根据需求而定，我这里测试为最大宽度的3.5倍
             Glide.with(context)
                     .load(list.get(position).toString())
                     .priority(Priority.HIGH)

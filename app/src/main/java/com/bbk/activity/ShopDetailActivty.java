@@ -10,6 +10,7 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +43,6 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
 import com.bbk.shopcar.ConfirmOrderActivity;
-import com.bbk.shopcar.DianpuHomeActivity;
 import com.bbk.shopcar.MyPlActivity;
 import com.bbk.shopcar.NewDianpuActivity;
 import com.bbk.shopcar.NewDianpuHomeActivity;
@@ -51,10 +51,10 @@ import com.bbk.shopcar.view.IdeaScrollView;
 import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageGuanggaoLoader;
-import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.CircleImageView1;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -172,12 +172,18 @@ public class ShopDetailActivty extends BaseActivity {
     LinearLayout llPj;
     @BindView(R.id.ll_kefu)
     LinearLayout llKefu;
+    @BindView(R.id.tv_youhui)
+    AdaptionSizeTextView tvYouhui;
+    @BindView(R.id.ll_youhui)
+    LinearLayout llYouhui;
     private String id;
+    private DetailImageAdapter detailImageAdapter;
     private ShopDetailBean shopDetailBean;
     private ShopDialog shopDialog;
     private PathMeasure mPathMeasure;
     private float[] mCurrentPosition = new float[2];
     private float currentPercentage = 0;
+    Handler handler = new Handler();
     private RadioGroup.OnCheckedChangeListener radioGroupListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -186,6 +192,15 @@ public class ShopDetailActivty extends BaseActivity {
                 radioButton.setTextColor(radioButton.isChecked() ? getRadioCheckedAlphaColor(currentPercentage) : getRadioAlphaColor(currentPercentage));
                 if (radioButton.isChecked() && isNeedScrollTo) {
                     ideaScrollView.setPosition(i);
+                    Logg.e(i);
+                    if (i == 3){
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ideaScrollView.fullScroll(IdeaScrollView.FOCUS_DOWN);
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -237,11 +252,11 @@ public class ShopDetailActivty extends BaseActivity {
         View four = findViewById(R.id.four);
         View three = findViewById(R.id.three);
         ArrayList<Integer> araryDistance = new ArrayList<>();
-
         araryDistance.add(0);
+        Logg.e(detailImageList.computeVerticalScrollExtent());
         araryDistance.add(getMeasureHeight(one) - getMeasureHeight(headerParent));
         araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) - getMeasureHeight(headerParent));
-        araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) + getMeasureHeight(three) + getMeasureHeight(one) - getMeasureHeight(headerParent));
+        araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) + getMeasureHeight(three)+ getMeasureHeight(one) - getMeasureHeight(headerParent));
 
         ideaScrollView.setArrayDistance(araryDistance);
 
@@ -316,9 +331,16 @@ public class ShopDetailActivty extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
-                                Logg.json(jsonObject);
+//                                Logg.json(jsonObject);
                                 shopDetailBean = JSON.parseObject(jsonObject.optString("content"), ShopDetailBean.class);
                                 shopAddress.setText(shopDetailBean.getFahuodi());
+
+                                if (shopDetailBean.getYouhui() != null && !shopDetailBean.getYouhui().equals("")) {
+                                    llYouhui.setVisibility(View.VISIBLE);
+                                    tvYouhui.setText(shopDetailBean.getYouhui());
+                                }else {
+                                    llYouhui.setVisibility(View.GONE);
+                                }
                                 if (shopDetailBean != null) {
                                     Glide.with(ShopDetailActivty.this)
                                             .load(shopDetailBean.getImgurl())
@@ -358,7 +380,8 @@ public class ShopDetailActivty extends BaseActivity {
                                             DetailimgUrlList.add(imgUrl);
                                         }
                                         if (DetailimgUrlList.size() > 0) {
-                                            detailImageList.setAdapter(new DetailImageAdapter(ShopDetailActivty.this, DetailimgUrlList));
+                                            detailImageAdapter = new DetailImageAdapter(ShopDetailActivty.this, DetailimgUrlList);
+                                            detailImageList.setAdapter(detailImageAdapter);
                                         }
                                     }
                                     if (shopDetailBean.getSale() != null) {
@@ -464,7 +487,7 @@ public class ShopDetailActivty extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.ll_add_car, R.id.ll_buy_now, R.id.ll_fuwu, R.id.ll_shuxing, R.id.ll_canshu, R.id.tv_dianpu, R.id.back_image, R.id.tv_all_mall, R.id.ll_dianpu, R.id.ll_car, R.id.ll_pl,R.id.ll_kefu})
+    @OnClick({R.id.title_back_btn, R.id.ll_add_car, R.id.ll_buy_now, R.id.ll_fuwu, R.id.ll_shuxing, R.id.ll_canshu, R.id.tv_dianpu, R.id.back_image, R.id.tv_all_mall, R.id.ll_dianpu, R.id.ll_car, R.id.ll_pl, R.id.ll_kefu})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -472,22 +495,30 @@ public class ShopDetailActivty extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_add_car:
-                doShoppingCart(shopDetailBean.getId(), "1", "1", "111");
+                if (shopDetailBean != null) {
+                    doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
+                }
                 break;
             case R.id.ll_buy_now:
-                intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
-                intent.putExtra("ids", shopDetailBean.getId());
-                intent.putExtra("nums", "1");
-                intent.putExtra("guiges", "11111");
-                startActivity(intent);
+                if (shopDetailBean != null) {
+                    intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
+                    intent.putExtra("ids", shopDetailBean.getId());
+                    intent.putExtra("nums", "1");
+                    intent.putExtra("guiges", " ");
+                    startActivity(intent);
+                }
                 break;
             case R.id.ll_fuwu:
-                showBaozhangeDialog(this);
+                if (shopDetailBean != null) {
+                    showBaozhangeDialog(this);
+                }
                 break;
             case R.id.ll_shuxing:
                 break;
             case R.id.ll_canshu:
-                showMessageDialog(this);
+                if (shopDetailBean != null) {
+                    showMessageDialog(this);
+                }
                 break;
             case R.id.tv_all_mall:
                 intent = new Intent(this, NewDianpuHomeActivity.class);
@@ -524,15 +555,19 @@ public class ShopDetailActivty extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_pl:
-                intent = new Intent(this, MyPlActivity.class);
-                intent.putExtra("id", id);
-                if (shopDetailBean.getImgurl() != null) {
-                    intent.putExtra("img", shopDetailBean.getImgurl());
+                if (shopDetailBean != null) {
+                    intent = new Intent(this, MyPlActivity.class);
+                    intent.putExtra("id", id);
+                    if (shopDetailBean.getImgurl() != null) {
+                        intent.putExtra("img", shopDetailBean.getImgurl());
+                    }
+                    startActivity(intent);
                 }
-                startActivity(intent);
                 break;
             case R.id.ll_kefu:
-                startECChat();
+                if (shopDetailBean != null) {
+                    startECChat();
+                }
                 break;
         }
     }
@@ -768,7 +803,7 @@ public class ShopDetailActivty extends BaseActivity {
     // 电商专用咨询页面
     private void startECChat() {
         //"<img border=\\\"0\" src=\"" + shopDetailBean.getImgurl() + "\" />   <p>商品名称：" + shopDetailBean.getTitle() + "</p> <p>\\"+shopDetailBean.getPrice()+"</p> "
-        mKefuDescription = "<img border='0' src='" + shopDetailBean.getImgurl() + "' /> <p>商品名称：" +  shopDetailBean.getTitle() + " </p>   <p>商品价格："+shopDetailBean.getPrice()+"</p> ";
+        mKefuDescription = "<img border='0' src='" + shopDetailBean.getImgurl() + "' /> <p>商品名称：" + shopDetailBean.getTitle() + " </p>   <p>商品价格：" + shopDetailBean.getPrice() + "</p> ";
         KFAPIs.startECChat(this,
                 "bbjkfxz",//1. 客服工作组名称(请务必保证大小写一致)，请在管理后台分配
                 "比比鲸客服",//2. 会话界面标题，可自定义

@@ -253,7 +253,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
             child.removeAll(toBeDeleteChilds);
         }
         Logg.json(list.toString().replace("[", "").replace("]", "").replace(" ",""));
-        doShoppingCart(list.toString().replace("[", "").replace("]", "").replace(" ",""), "-1", "", listguige.toString().replace("[", "").replace("]", "").replace(" ",""),"all");
+        doShoppingCart(list.toString().replace("[", "").replace("]", "").replace(" ",""), "-1", "", listguige.toString().replace("[", "").replace("]", ""),"all");
         groups.removeAll(toBeDeleteGroups);
         //重新设置购物车
         setCartNum();
@@ -652,10 +652,10 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         }
         Logg.json(list.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ",""));
         Logg.json(listNum.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ",""));
-        Logg.json(listguiges.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ",""));
+        Logg.json(listguiges.toString().replace("[", "").replace("]", "").replace(",","|"));
         ids = list.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ","");
         nums = listNum.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ","");
-        guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ","");
+        guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",","|");
         totalPrice.setText("￥" + doubleToString(mtotalPrice) + "");
         goPay.setText("去支付(" + mtotalCount + ")");
         if (mtotalCount == 0) {

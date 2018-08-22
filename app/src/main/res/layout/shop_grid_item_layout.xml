@@ -50,6 +50,7 @@
                     android:gravity="center_vertical"
                     android:lines="2"
                     android:text=""
+                    android:textIsSelectable="true"
                     android:textColor="#111111"
                     android:textSize="12dp" />
                 //券和赚
@@ -169,7 +170,7 @@
                             android:textSize="12dp"
                             android:text="¥"/>
 
-                        <TextView
+                        <com.bbk.view.AdaptionSizeTextView
                             android:id="@+id/price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -177,7 +178,7 @@
                             android:textSize="16dp"
                             android:text="0.0"/>
 
-                        <TextView
+                        <com.bbk.view.AdaptionSizeTextView
                             android:id="@+id/bprice"
                             android:layout_width="wrap_content"
                             android:layout_height="22dp"
@@ -185,7 +186,7 @@
                             android:text="¥0.0"
                             android:textColor="@color/tuiguang_color4"
                             android:textSize="11dp" />
-                        <TextView
+                        <com.bbk.view.AdaptionSizeTextView
                             android:id="@+id/tv_sale1"
                             android:layout_weight="1"
                             android:layout_width="wrap_content"

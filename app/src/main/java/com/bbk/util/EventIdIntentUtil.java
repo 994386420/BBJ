@@ -51,6 +51,7 @@ import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.logg.Logg;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -94,7 +95,7 @@ public class EventIdIntentUtil {
 		Intent intent;
 		switch (eventId) {
 			case "a1":
-				intent = new Intent(context,NewDianpuHomeActivity.class);
+				intent = new Intent(context,NewDianpuActivity.class);
 				if (jo.has("keyword")) {
 					intent.putExtra("dianpuid", jo.optString("keyword"));
 				}

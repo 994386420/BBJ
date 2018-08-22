@@ -532,7 +532,7 @@ public class ShopOrderAdapter extends RecyclerView.Adapter {
         }
         ids = list.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
         nums = listNum.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
-        guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
+        guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",", "|");
         Logg.e("调起支付",ids+"===="+nums+"===="+guiges);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
@@ -546,6 +546,7 @@ public class ShopOrderAdapter extends RecyclerView.Adapter {
         maps.put("guiges", guiges);
         maps.put("dianpuid", dianpuid);
         maps.put("ordernum",ordernum);
+        maps.put("liuyans"," ");
         RetrofitClient.getInstance(context).createBaseApi().getOrderInfo(
                 maps, new BaseObserver<String>(context) {
                     @Override

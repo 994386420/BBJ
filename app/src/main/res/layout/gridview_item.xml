@@ -6,7 +6,7 @@
     android:padding="10dp"
     android:orientation="vertical" >
 
-    <TextView
+    <com.bbk.view.AdaptionSizeTextView
         android:id="@+id/mall_detail_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -103,6 +103,7 @@
                         android:background="@drawable/appkefu_inputbar_recordvoicebtn"
                         android:text="发送链接"
                         android:textColor="#555555"
+                        android:visibility="gone"
                     	android:textSize="12dp"/>
                 </LinearLayout>
             </RelativeLayout>

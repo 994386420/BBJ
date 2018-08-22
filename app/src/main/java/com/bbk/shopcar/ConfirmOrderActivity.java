@@ -40,9 +40,11 @@ import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,13 +87,15 @@ public class ConfirmOrderActivity extends BaseActivity {
     LinearLayout llCheck;
     @BindView(R.id.ll_add_address)
     LinearLayout llAddAddress;
-    private String ids, nums, guiges;
+    private String ids, nums, guiges,liuyans;
     private PayReq mReq;
     private PayModel mPayModel;
     private IWXAPI msgApi = null;
     private String addrid = "";
     CofirmOrderBean cofirmOrderBean;
     private String usejinbi = "0";
+    List<GoodsBean> goodsBeans;
+    ConfirmOrderAdapter confirmOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,16 +169,20 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 tvName.setText(cofirmOrderBean.getReceiver());
                                 tvPhone.setText(cofirmOrderBean.getPhone());
                                 totalPrice.setText("¥" + cofirmOrderBean.getTotal());
-                                if (cofirmOrderBean.getUsejinbi().equals("0")) {
-                                    tvDikou.setVisibility(View.GONE);
-                                    ckDikou.setVisibility(View.GONE);
-                                    llCheck.setBackgroundColor(getResources().getColor(R.color.__picker_common_primary));
-                                    llCheck.setVisibility(View.VISIBLE);
-                                } else {
-                                    llCheck.setVisibility(View.VISIBLE);
-                                    llCheck.setBackgroundColor(getResources().getColor(R.color.white));
-                                    tvDikou.setText("可用" + cofirmOrderBean.getJinbi() + "鲸币抵" + cofirmOrderBean.getJinbimoney() + "元");
+
+                                if (cofirmOrderBean.getUsejinbi() != null) {
+                                    if (cofirmOrderBean.getUsejinbi().equals("0")) {
+                                        tvDikou.setVisibility(View.GONE);
+                                        ckDikou.setVisibility(View.GONE);
+                                        llCheck.setBackgroundColor(getResources().getColor(R.color.__picker_common_primary));
+                                        llCheck.setVisibility(View.VISIBLE);
+                                    } else {
+                                        llCheck.setVisibility(View.VISIBLE);
+                                        llCheck.setBackgroundColor(getResources().getColor(R.color.white));
+                                        tvDikou.setText("可用" + cofirmOrderBean.getJinbi() + "鲸币抵" + cofirmOrderBean.getJinbimoney() + "元");
+                                    }
                                 }
+
                                 if (cofirmOrderBean.getTag() != null && !cofirmOrderBean.getTag().equals("")) {
                                     tag.setText(cofirmOrderBean.getTag());
                                 } else {
@@ -191,8 +199,11 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 };
                                 scrollView.scrollTo(0, 0);
                                 recyclerview.setLayoutManager(linearLayoutManager);
-                                List<GoodsBean> goodsBeans = JSON.parseArray(cofirmOrderBean.getGoods(), GoodsBean.class);
-                                recyclerview.setAdapter(new ConfirmOrderAdapter(ConfirmOrderActivity.this, goodsBeans));
+                                if (cofirmOrderBean.getGoods() != null) {
+                                    goodsBeans = JSON.parseArray(cofirmOrderBean.getGoods(), GoodsBean.class);
+                                    confirmOrderAdapter = new ConfirmOrderAdapter(ConfirmOrderActivity.this, goodsBeans);
+                                    recyclerview.setAdapter(confirmOrderAdapter);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -224,7 +235,20 @@ public class ConfirmOrderActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.go_pay:
+                final List<String> list = new ArrayList<>();
                 if (addrid != null) {
+                    for (int i = 0; i < goodsBeans.size();i++){
+                        try {
+                            JSONArray jsonArray = new JSONArray(goodsBeans.get(i).getList());
+                            for (int j = 0;j<jsonArray.length();j++) {
+                                list.add(goodsBeans.get(i).getLiuyan());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    liuyans = list.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ","").replace("0"," ");
+                    Logg.json(liuyans);
                     getOrderInfo();
                 }else {
                     StringUtil.showToast(this,"请选择收货地址");
@@ -251,6 +275,7 @@ public class ConfirmOrderActivity extends BaseActivity {
         maps.put("ids", ids);
         maps.put("nums", nums);
         maps.put("guiges", guiges);
+        maps.put("liuyans",liuyans);
         RetrofitClient.getInstance(this).createBaseApi().getOrderInfo(
                 maps, new BaseObserver<String>(this) {
                     @Override

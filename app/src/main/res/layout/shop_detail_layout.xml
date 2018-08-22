@@ -13,7 +13,8 @@
     <com.bbk.shopcar.view.IdeaScrollView
         android:id="@+id/ideaScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,9 +28,10 @@
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="390dp"
-                    android:background="@mipmap/zw_img_332"
+                    android:background="@mipmap/zw_img_300"
                     app:indicator_height="6dp"
                     app:indicator_width="6dp"
+                    app:image_scale_type="center_crop"
                     app:indicator_margin="2.5dp"
                     android:focusable="true"
                     app:indicator_drawable_selected="@drawable/banner_circle2"
@@ -104,6 +106,7 @@
                         android:text=""
                         android:maxLines="2"
                         android:gravity="left"
+                        android:textIsSelectable="true"
                         android:textColor="@color/tuiguang_color3"
                         android:textSize="16dp"/>
 
@@ -158,6 +161,7 @@
                     android:layout_height="8dp"
                     android:background="@color/__picker_common_primary"/>
                 <LinearLayout
+                    android:id="@+id/ll_youhui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -182,18 +186,20 @@
                         android:text="积分"
                         android:paddingRight="8dp"
                         android:paddingLeft="8dp"
+                        android:visibility="gone"
                         android:layout_marginLeft="20dp"
                         android:background="@drawable/bg_tuiguang4"
                         android:textSize="10dp"/>
 
                     <com.bbk.view.AdaptionSizeTextView
+                        android:id="@+id/tv_youhui"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="20dp"
                         android:layout_weight="1"
                         android:textColor="@color/tuiguang_color3"
                         android:textSize="13dp"
-                        android:text="购买可得10鲸币" />
+                        android:text="" />
                 </LinearLayout>
 
                 <View
@@ -250,7 +256,8 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="10dp" >
+                    android:paddingTop="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"

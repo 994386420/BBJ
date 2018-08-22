@@ -26,6 +26,7 @@
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_behavior="@string/behavior"
                 android:background="@color/white">
 
                 //       app:contentScrim="?attr/colorPrimary"

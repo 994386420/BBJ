@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:id="@+id/lltype"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/title"
+        layout="@layout/title_layout"/>
+    <View
+        android:layout_below="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/__picker_common_primary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.bbk.model.tablayout.XTabLayout
+            android:id="@+id/tablayout"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:xTabMode="scrollable"
+            app:xTabIndicatorWidth="50dp"
+            app:xTabTextColor="@color/shop_color1"
+            app:xTabSelectedTextColor="@color/color_line_top"
+            app:xTabIndicatorColor="@color/color_line_top"
+            app:xTabIndicatorHeight="1dp"
+            app:xTabTextSize="14sp"
+            app:xTabSelectedTextSize="14sp"
+            app:xTabDividerWidth="0dp"
+            app:xTabDividerHeight="0dp"
+            app:xTabDividerColor="#000"
+            />
+    </LinearLayout>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:background="#f1f1f1"
+        android:id="@+id/mPtrframe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mrecycler"
+                    android:layout_width="match_parent"
+                    android:descendantFocusability="afterDescendants"
+                    android:layout_height="match_parent"
+                    >
+
+                </android.support.v7.widget.RecyclerView>
+
+            <com.bbk.view.CommonLoadingView
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+</LinearLayout>

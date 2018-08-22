@@ -19,7 +19,6 @@ import com.appkefu.lib.interfaces.KFAPIs;
 import com.bbk.Bean.OrderItembean;
 import com.bbk.Bean.ShopOrderDetailBean;
 import com.bbk.activity.BaseActivity;
-import com.bbk.activity.DianpuActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.adapter.OrderDetailItemAdapter;
@@ -132,6 +131,12 @@ public class ShopOrderDetailActivity extends BaseActivity {
     LinearLayout llBohao;
     @BindView(R.id.ll_copy)
     LinearLayout llCopy;
+    @BindView(R.id.ll_userjinbi)
+    LinearLayout llUserjinbi;
+    @BindView(R.id.tv_youhui)
+    TextView tvYouhui;
+    @BindView(R.id.ll_youhui)
+    LinearLayout llYouhui;
     private PayReq mReq;
     private PayModel mPayModel;
     private IWXAPI msgApi = null;
@@ -140,6 +145,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
     private String ids, nums, guiges;
     private String mKefuDescription;
     private String ordernum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,6 +196,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 tvPl.setVisibility(View.GONE);
                 llOrder.setVisibility(View.VISIBLE);
                 llCheck.setVisibility(View.GONE);
+                llUserjinbi.setVisibility(View.GONE);
                 tvDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -221,6 +228,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 tvPl.setVisibility(View.GONE);
                 llOrder.setVisibility(View.GONE);
                 llCheck.setVisibility(View.GONE);
+                llUserjinbi.setVisibility(View.VISIBLE);
                 break;
             case "0":
                 tvStatus.setText("待付款");
@@ -234,6 +242,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 tvQr.setVisibility(View.GONE);
                 tvPl.setVisibility(View.GONE);
                 llOrder.setVisibility(View.VISIBLE);
+                llUserjinbi.setVisibility(View.GONE);
                 tvQuxiao.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -270,8 +279,9 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 tvYanchang.setVisibility(View.GONE);
                 tvQr.setVisibility(View.GONE);
                 tvPl.setVisibility(View.GONE);
-                llOrder.setVisibility(View.VISIBLE);
+                llOrder.setVisibility(View.GONE);
                 llCheck.setVisibility(View.GONE);
+                llUserjinbi.setVisibility(View.VISIBLE);
                 break;
             case "2":
                 tvStatus.setText("已发货");
@@ -286,6 +296,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 tvPl.setVisibility(View.GONE);
                 llOrder.setVisibility(View.VISIBLE);
                 llCheck.setVisibility(View.GONE);
+                llUserjinbi.setVisibility(View.VISIBLE);
                 break;
             case "3":
                 tvStatus.setText("待评论");
@@ -300,6 +311,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 tvQr.setVisibility(View.GONE);
                 llOrder.setVisibility(View.VISIBLE);
                 llCheck.setVisibility(View.GONE);
+                llUserjinbi.setVisibility(View.VISIBLE);
                 break;
             case "4":
                 tvStatus.setText("交易成功");
@@ -314,6 +326,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 tvPl.setVisibility(View.GONE);
                 llOrder.setVisibility(View.GONE);
                 llCheck.setVisibility(View.GONE);
+                llUserjinbi.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -343,10 +356,16 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                 tvDianpu.setText(shopOrderDetailBean.getDianpu());
                                 tvName.setText(shopOrderDetailBean.getReceiver());
                                 tvPhone.setText(shopOrderDetailBean.getPhone());
-                                if (shopOrderDetailBean.getUsejinbi() != null && shopOrderDetailBean.getUsejinbi().equals("")) {
+                                if (shopOrderDetailBean.getYouhui() != null){
+                                    llYouhui.setVisibility(View.VISIBLE);
+                                    tvYouhui.setText(shopOrderDetailBean.getYouhui());
+                                }else {
+                                    llYouhui.setVisibility(View.GONE);
+                                }
+                                if (shopOrderDetailBean.getUsejinbi() != null && !shopOrderDetailBean.getUsejinbi().equals("")) {
                                     tvUsejinbi.setText(shopOrderDetailBean.getUsejinbi());
                                 } else {
-                                    tvUsejinbi.setText("0");
+                                    tvUsejinbi.setText("0.00");
                                 }
                                 tvWulitime.setText(shopOrderDetailBean.getWuliutime());
                                 tvWuliuMessage.setText(shopOrderDetailBean.getWuliu());
@@ -361,7 +380,8 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                     tvShifukuan.setText("¥" + shopOrderDetailBean.getTotalprice());
                                 } else {
                                     tvPaytime.setVisibility(View.GONE);
-                                    llShifukuan.setVisibility(View.GONE);
+                                    llShifukuan.setVisibility(View.VISIBLE);
+                                    tvShifukuan.setText("¥" + shopOrderDetailBean.getTotalprice());
                                 }
                                 if (shopOrderDetailBean.getUsejinbi2() != null) {
                                     if (shopOrderDetailBean.getUsejinbi2().equals("0")) {
@@ -369,6 +389,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                         ckDikou.setVisibility(View.GONE);
                                         llCheck.setBackgroundColor(getResources().getColor(R.color.__picker_common_primary));
                                     } else {
+                                        llCheck.setVisibility(View.VISIBLE);
                                         llCheck.setBackgroundColor(getResources().getColor(R.color.white));
                                         tvDikou.setText("可用" + shopOrderDetailBean.getJinbi() + "鲸币抵" + shopOrderDetailBean.getJinbimoney() + "元");
                                     }
@@ -394,7 +415,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                 }
                                 ids = list.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
                                 nums = listNum.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
-                                guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
+                                guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",", "|");
                                 recyclerviewOrderDetail.setAdapter(new OrderDetailItemAdapter(ShopOrderDetailActivity.this, orderItembeans, state, orderid, dianpuid));
                                 if (state != null) {
                                     setVisible(state);
@@ -423,7 +444,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.title_back_btn, R.id.ll_wuliu, R.id.rl_dianpu, R.id.ll_lx_maijia, R.id.ll_bohao,R.id.ll_copy})
+    @OnClick({R.id.title_back_btn, R.id.ll_wuliu, R.id.rl_dianpu, R.id.ll_lx_maijia, R.id.ll_bohao, R.id.ll_copy})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -448,7 +469,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
             case R.id.ll_bohao:
                 break;
             case R.id.ll_copy:
-                ClipboardManager cm = (ClipboardManager)this.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager cm = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setText(ordernum);
                 StringUtil.showToast(this, "订单号复制成功");
                 break;
@@ -472,6 +493,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
         maps.put("guiges", guiges);
         maps.put("dianpuid", dianpuid);
         maps.put("ordernum", orderid);
+        maps.put("liuyans", " ");
         RetrofitClient.getInstance(this).createBaseApi().getOrderInfo(
                 maps, new BaseObserver<String>(this) {
                     @Override
@@ -547,7 +569,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                 if (status.equals("1")) {
                                     StringUtil.showToast(context, "订单已删除");
                                     NewConstants.refeshOrderFlag = "1";
-                                    Intent intent = new Intent(ShopOrderDetailActivity.this,ShopOrderActivity.class);
+                                    Intent intent = new Intent(ShopOrderDetailActivity.this, ShopOrderActivity.class);
                                     startActivity(intent);
                                 } else {
                                     NewConstants.refeshOrderFlag = "1";

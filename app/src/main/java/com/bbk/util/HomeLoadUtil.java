@@ -39,6 +39,7 @@ import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.OnClickHomeListioner;
 import com.bbk.fragment.OnClickMallListioner;
 import com.bbk.shopcar.DianpuHomeActivity;
+import com.bbk.shopcar.DianpuTypesActivity;
 import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
@@ -48,6 +49,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.logg.Logg;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -89,6 +91,7 @@ public class HomeLoadUtil {
     public static void loadTag(final Context context, List<Map<String, String>> taglist, final JSONArray tag,ImageView mImageView1,ImageView mImageView2,ImageView mImageView3,ImageView mImageView4,ImageView mImageView5
     ,TextView mTextView1 ,TextView mTextView2 ,TextView mTextView3 ,TextView mTextView4 ,TextView mTextView5,LinearLayout mLlLayout1,LinearLayout mLlLayout2,LinearLayout mLlLayout3,LinearLayout mLlLayout4,LinearLayout mLlLayout5) throws Exception {
         taglist.clear();
+//        Logg.json(tag.toString());
         for (int i = 0; i < tag.length(); i++) {
             JSONObject object = tag.getJSONObject(i);
             Map<String, String> map = new HashMap<>();
@@ -154,7 +157,86 @@ public class HomeLoadUtil {
         }
     }
 
-
+    /***
+     * 加载中部图标
+     * @param tag
+     * @throws Exception
+     */
+    public static void loaddianpuTag(final Context context, List<Map<String, String>> taglist, final JSONArray tag,ImageView mImageView1,ImageView mImageView2,ImageView mImageView3,ImageView mImageView4,ImageView mImageView5
+            ,TextView mTextView1 ,TextView mTextView2 ,TextView mTextView3 ,TextView mTextView4 ,TextView mTextView5,LinearLayout mLlLayout1,LinearLayout mLlLayout2,LinearLayout mLlLayout3,LinearLayout mLlLayout4,LinearLayout mLlLayout5) throws Exception {
+        taglist.clear();
+        Logg.json(tag.toString());
+        for (int i = 0; i < tag.length(); i++) {
+            JSONObject object = tag.getJSONObject(i);
+            Map<String, String> map = new HashMap<>();
+//            String htmlUrl = object.optString("htmlUrl");
+            String eventId = object.optString("eventId");
+            String img = object.optString("img");
+            String name = object.optString("name");
+            String keyword = object.optString("keyword");
+//            map.put("htmlUrl", htmlUrl);
+            map.put("eventId", eventId);
+            map.put("text", name);
+            map.put("imageUrl", img);
+            map.put("keyword",keyword);
+            taglist.add(map);
+        }
+        List<ImageView> imglist = new ArrayList<>();
+        List<TextView> textlist = new ArrayList<>();
+        List<LinearLayout> boxlist = new ArrayList<>();
+        imglist.add(mImageView1);
+        imglist.add(mImageView2);
+        imglist.add(mImageView3);
+        imglist.add(mImageView4);
+        imglist.add(mImageView5);
+        textlist.add(mTextView1);
+        textlist.add(mTextView2);
+        textlist.add(mTextView3);
+        textlist.add(mTextView4);
+        textlist.add(mTextView5);
+        boxlist.add(mLlLayout1);
+        boxlist.add(mLlLayout2);
+        boxlist.add(mLlLayout3);
+        boxlist.add(mLlLayout4);
+        boxlist.add(mLlLayout5);
+        for (int i = 0; i < boxlist.size(); i++) {
+            final int position = i;
+            TextView textView = textlist.get(position);
+            ImageView imageView = imglist.get(position);
+            final Map<String, String> map = taglist.get(position);
+            String text = map.get("text").toString();
+            textlist.get(position).setText(text);
+            TextPaint tp = textView.getPaint();
+            tp.setFakeBoldText(true);
+            String imageUrl = map.get("imageUrl").toString();
+            Glide.with(context)
+                    .load(imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)//不加这句会有绿色背景
+                    .thumbnail(0.5f)
+                    .placeholder(R.mipmap.zw_img_160)
+                    .into(imageView);
+            boxlist.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        if (NoFastClickUtils.isFastClick()){
+                            StringUtil.showToast(context,"对不起，您的点击太快了，请休息一下");
+                        }else {
+//                            EventIdIntentUtil.EventIdIntent(context, tag.getJSONObject(position));
+                            Intent intent = new Intent(context, DianpuTypesActivity.class);
+                            intent.putExtra("tag",tag.toString());
+                            intent.putExtra("keyword",map.get("keyword").toString());
+                            intent.putExtra("position", position+"");
+                            context.startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
     /***
      * 加载轮播
      * @param fabiao
@@ -226,6 +308,7 @@ public class HomeLoadUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Logg.json(banner);
         mBanner.setImages(imgUrlList)
                 .setImageLoader(new GlideImageLoader())
                 .setOnBannerListener(new OnBannerListener() {

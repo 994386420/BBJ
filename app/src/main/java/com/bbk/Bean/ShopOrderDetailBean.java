@@ -26,6 +26,16 @@ public class ShopOrderDetailBean {
     private String state;
     private String addrid;
 
+    private String youhui;
+
+    public String getYouhui() {
+        return youhui;
+    }
+
+    public void setYouhui(String youhui) {
+        this.youhui = youhui;
+    }
+
     public String getAddrid() {
         return addrid;
     }

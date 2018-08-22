@@ -346,4 +346,6 @@
     <string name="actionBar_edit">编辑</string>
     <string name="all">全选</string>
     <string name="order_total">合计 :</string>
+
+    <string name="behavior">com.bbk.shopcar.CustomBehavior</string>
 </resources>

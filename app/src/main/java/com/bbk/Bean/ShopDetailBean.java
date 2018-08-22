@@ -22,6 +22,15 @@ public class ShopDetailBean {
     private String dianpuid;
     private String dianpulogo;
     private String fahuodi;
+    private String youhui;//优惠信息
+
+    public String getYouhui() {
+        return youhui;
+    }
+
+    public void setYouhui(String youhui) {
+        this.youhui = youhui;
+    }
 
     public String getFahuodi() {
         return fahuodi;
