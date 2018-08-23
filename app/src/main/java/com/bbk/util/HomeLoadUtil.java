@@ -363,6 +363,7 @@ public class HomeLoadUtil {
 
     public static void loadGuanggaoBanner(final Context context, final Banner mBanner, final JSONObject banner) {
         List<Object> imgUrlList = new ArrayList<>();
+        Logg.json(banner);
         try {
 //            for (int i = 0; i < banner.length(); i++) {
 //                JSONObject jo = banner.getJSONObject(i);
@@ -377,16 +378,16 @@ public class HomeLoadUtil {
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-//                 EventIdIntentUtil.EventIdIntent(context, banner);
-                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                        Intent intentxh;
-                        if (TextUtils.isEmpty(userID)){
-                            intentxh = new Intent(context, UserLoginNewActivity.class);
-                            context.startActivity(intentxh);
-                        }else {
-                            intentxh = new Intent(context, NewDianpuHomeActivity.class);
-                            context.startActivity(intentxh);
-                        }
+                 EventIdIntentUtil.EventIdIntent(context, banner);
+//                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+//                        Intent intentxh;
+//                        if (TextUtils.isEmpty(userID)){
+//                            intentxh = new Intent(context, UserLoginNewActivity.class);
+//                            context.startActivity(intentxh);
+//                        }else {
+//                            intentxh = new Intent(context, NewDianpuHomeActivity.class);
+//                            context.startActivity(intentxh);
+//                        }
                     }
                 })
                 .setDelayTime(3000)

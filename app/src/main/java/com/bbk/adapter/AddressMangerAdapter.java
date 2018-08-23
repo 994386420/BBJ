@@ -62,7 +62,11 @@ public class AddressMangerAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return addressMangerBeans.size();
+        if (addressMangerBeans != null && addressMangerBeans.size() > 0) {
+            return addressMangerBeans.size();
+        }else {
+            return 0;
+        }
     }
 
 

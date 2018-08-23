@@ -220,6 +220,7 @@ public class WelcomeActivity extends BaseActivity2{
 	}
 
 	private void init() {
+		HomeActivity.position = 0;
 		mbtn=(TextView) findViewById(R.id.mbtn);
 		mbtn.setOnClickListener(new OnClickListener() {
 

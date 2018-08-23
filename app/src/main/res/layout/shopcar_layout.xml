@@ -60,6 +60,7 @@
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_height="60dp"
+        android:visibility="gone"
         android:orientation="vertical">
         <View
             android:id="@+id/view"

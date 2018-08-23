@@ -212,6 +212,7 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
 
         count = child.getNum();
         childViewHolder.dialogNum.setText(count + "");
+        NewConstants.car = "2";
         /**
          * 判断是否获取到焦点
          */
@@ -220,49 +221,39 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     NewConstants.car = "1";
+                    /**
+                     * 添加数量变化监听
+                     */
+                    childViewHolder.dialogNum.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (s.length() > 0) {
+                                int num = Integer.parseInt(childViewHolder.dialogNum.getText().toString());
+                                if (!NewConstants.car.equals("2")) {
+                                    modifyCountInterface.Refresh(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child.getId(), num, child.getGuige(),childViewHolder.dialogNum.getText().toString());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
                 } else {
                     NewConstants.car = "2";
                 }
             }
         });
-        /**
-         * 添加数量变化监听
-         */
-        childViewHolder.dialogNum.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    int num = Integer.parseInt(childViewHolder.dialogNum.getText().toString());
-                    if (!NewConstants.car.equals("2")) {
-                        if (num <= 0) {
-                            StringUtil.showToast(context, "数量超出范围");
-                            doShoppingCart(child.getId(), "5", childViewHolder.dialogNum.getText().toString(), child.getGuige());
-                            childViewHolder.dialogNum.setText("1");
-                        } else if (num > 99) {
-                            StringUtil.showToast(context, "数量超出范围");
-                            doShoppingCart(child.getId(), "5", childViewHolder.dialogNum.getText().toString(), child.getGuige());
-                            childViewHolder.dialogNum.setText("99");
-                        } else {
-                            doShoppingCart(child.getId(), "5", childViewHolder.dialogNum.getText().toString(), child.getGuige());
-                        }
-                        modifyCountInterface.Refresh(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child.getId(), num, child.getGuige());
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
         childViewHolder.dialogIncreaseNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logg.e(child.getId());
                 modifyCountInterface.doIncrease(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child.getId(), child.getNum(), child.getGuige());
             }
         });
@@ -324,7 +315,7 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
             }
             childViewHolder.goodsPrimePrice.setText(spannableString);
             childViewHolder.goodsBuyNum.setText("x" + child.getNum() + "");
-            Logg.e(child.isChoosed());
+//            Logg.e(child.isChoosed());
             childViewHolder.singleCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -539,7 +530,7 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
 
         void Intent(String id);
 
-        void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige);
+        void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige,String dialogNum);
     }
 
     /**

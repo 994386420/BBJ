@@ -5,18 +5,20 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:id="@+id/toolbar_layout"
+    android:background="@color/tuiguang_color5"
     tools:ignore="ContentDescription" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
+        android:background="@color/white"
         tools:ignore="ContentDescription" >
     <LinearLayout
         android:id="@+id/ll_shousuo"
         android:layout_width="match_parent"
         android:layout_height="56.0dp"
-        android:background="#FFFFFF"
+        android:background="#ff7d41"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -24,17 +26,17 @@
             android:id="@+id/topbar_goback_btn"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:background="@drawable/bg_go_back_btn"
-            android:padding="10dp"
+            android:background="#ff7d41"
+            android:padding="12dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/top_back"/>
+            android:src="@mipmap/shop_back_img"/>
 
 
         <com.bbk.view.ClearableEditText
             android:id="@+id/topbar_search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/search_edittext_bg"
+            android:background="@drawable/text_view_border_5dp"
             android:drawablePadding="5.0dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="40dp"
@@ -42,7 +44,7 @@
             android:ems="6"
             android:hint="请输入搜索关键字"
             android:imeOptions="actionSearch"
-            android:padding="8.0dp"
+            android:padding="7dp"
             android:singleLine="true"
             android:textColor="#999999"
             android:textColorHint="#999999"
@@ -67,7 +69,7 @@
             android:background="@null"
             android:padding="10dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/liebiao" />
+            android:src="@mipmap/tuiguang_55" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
@@ -81,14 +83,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="#ff7d41"
             android:orientation="horizontal">
             <LinearLayout
                 android:id="@+id/ll_czg_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/btn_seclecter"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -99,7 +100,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="超值购"
-                    android:textColor="@color/black"
+                    android:textColor="#ffdc78"
                     android:textSize="14dp" />
 
                 <View
@@ -107,7 +108,7 @@
                     android:layout_width="70dp"
                     android:layout_height="1dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="#f23030" />
+                    android:background="#ffdc78" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_bj_layout"
@@ -124,8 +125,7 @@
                     android:gravity="center_horizontal"
                     android:padding="10dp"
                     android:text="全网购"
-                    android:background="@drawable/btn_seclecter"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="14dp" />
 
                 <View
@@ -134,7 +134,7 @@
                     android:layout_height="1dp"
                     android:layout_gravity="center_horizontal|bottom"
                     android:visibility="gone"
-                    android:background="#f23030" />
+                    android:background="#ffdc78" />
             </LinearLayout>
 
 

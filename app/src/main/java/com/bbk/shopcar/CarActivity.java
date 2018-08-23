@@ -118,6 +118,21 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 queryShoppingCartByUserid();
+                if (groups != null) {
+                    for (int i = 0; i < groups.size(); i++) {
+                        StoreInfo group = groups.get(i);
+                        group.setChoosed(false);
+                        List<GoodsInfo> child = childs.get(group.getId());
+                        for (int j = 0; j < child.size(); j++) {
+                            child.get(j).setChoosed(false);//这里出现过错误
+                        }
+                    }
+                }
+                calulate();
+                if (adapter != null) {
+                    adapter.notifyDataSetChanged();
+                }
+                allCheckBox.setChecked(false);
             }
         });
         mPtrframe.setEnableLoadMore(false);
@@ -188,7 +203,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                 }
             }
         }
-        Logg.e("购物车数量"+count);
+//        Logg.e("购物车数量"+count);
         //购物车已经清空
         if (count == 0) {
             clearCart();
@@ -232,6 +247,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
      * 2.把将要删除的对象放进相应的容器中，待遍历完，用removeAll的方式进行删除
      */
     private void doDelete() {
+        DialogSingleUtil.show(CarActivity.this);
         List<String> list = new ArrayList<>();
         List<String> listguige = new ArrayList<>();
         List<StoreInfo> toBeDeleteGroups = new ArrayList<StoreInfo>(); //待删除的组元素
@@ -257,6 +273,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         groups.removeAll(toBeDeleteGroups);
         //重新设置购物车
         setCartNum();
+        calulate();
         adapter.notifyDataSetChanged();
 
     }
@@ -383,9 +400,14 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
     public void doIncrease(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige) {
         GoodsInfo good = (GoodsInfo) adapter.getChild(groupPosition, childPosition);
         int count = good.getNum();
+        if (count == 99) {
+            StringUtil.showToast(mcontext, "不能再增加了哦");
+            return;
+        }
         count++;
         good.setNum(count);
         ((TextView) showCountView).setText(String.valueOf(count));
+        DialogSingleUtil.show(CarActivity.this);
         doShoppingCart(id, "3", 1+ "", guige,"add");
         adapter.notifyDataSetChanged();
         calulate();
@@ -409,6 +431,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         count--;
         good.setNum(count);
         ((TextView) showCountView).setText("" + count);
+        DialogSingleUtil.show(CarActivity.this);
         doShoppingCart(id, "4", 1 + "", guige,"dec");
         adapter.notifyDataSetChanged();
         calulate();
@@ -421,6 +444,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
      */
     @Override
     public void childDelete(int groupPosition, int childPosition, String id, int num, String guige) {
+        DialogSingleUtil.show(CarActivity.this);
         StoreInfo group = groups.get(groupPosition);
         List<GoodsInfo> child = childs.get(group.getId());
         child.remove(childPosition);
@@ -458,10 +482,24 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
      * @param guige
      */
     @Override
-    public void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige) {
+    public void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige,String dialognum) {
 //        Logg.e("------------------------>>>>>");
         GoodsInfo good = (GoodsInfo) adapter.getChild(groupPosition, childPosition);
-        good.setNum(num);
+        if (num <= 0) {
+            StringUtil.showToast(this, "数量超出范围");
+            doShoppingCart(id, "5", dialognum ,guige,"");
+            good.setNum(1);
+            adapter.notifyDataSetChanged();
+        } else if (num > 99) {
+            StringUtil.showToast(this, "数量超出范围");
+            doShoppingCart(id, "5", dialognum, guige,"");
+            good.setNum(99);
+            adapter.notifyDataSetChanged();
+        } else {
+            Logg.e(NewConstants.car);
+            good.setNum(num);
+            doShoppingCart(id, "5", dialognum, guige,"");
+        }
         calulate();
     }
 
@@ -833,7 +871,6 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
 
                     @Override
                     protected void showDialog() {
-                        DialogSingleUtil.show(CarActivity.this);
                     }
 
                     @Override

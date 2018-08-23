@@ -108,6 +108,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     public static String Flag = "";
     public static NumImageView mNumImageView;
     public static ImageView mHomeGudieImage;//第一次安装首页新人引导
+    public static int position = 5;
 
 
 
@@ -120,10 +121,10 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         instance = this;
         mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, Constants.WEIBO_APP_KEY);
         mWeiboShareAPI.registerApp();
-        ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
-        params.height = StringUtil.dip2px(this, 42);
-        params.width = StringUtil.dip2px(this, 42);
-        homeImgBtn.setLayoutParams(params);
+//        ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+//        params.height = StringUtil.dip2px(this, 42);
+//        params.width = StringUtil.dip2px(this, 42);
+//        homeImgBtn.setLayoutParams(params);
 //        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
         initView();
         initData();
@@ -366,6 +367,25 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         for (int i = 0; i < TAB_SIZE; i++) {
             final int index = i;
             LinearLayout tabLayout = (LinearLayout) tabParentLayout.getChildAt(i);
+            Logg.e(HomeActivity.position);
+                if (HomeActivity.position == 0) {
+//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
+                    StringUtil.setScalse(homeImgBtn);//设置缩放动画
+                    homeImgBtn.setVisibility(View.VISIBLE);
+                    mtext.setVisibility(View.GONE);
+                    ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                    params.height = StringUtil.dip2px(HomeActivity.this, 42);
+                    params.width = StringUtil.dip2px(HomeActivity.this, 42);
+                    homeImgBtn.setLayoutParams(params);
+                } else {
+//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
+                    homeImgBtn.setVisibility(View.VISIBLE);
+                    mtext.setVisibility(View.VISIBLE);
+                    ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                    params.height = StringUtil.dip2px(HomeActivity.this, 25);
+                    params.width = StringUtil.dip2px(HomeActivity.this, 25);
+                    homeImgBtn.setLayoutParams(params);
+                }
             tabLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -69,7 +69,6 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.resource.NewConstants;
 import com.bbk.typeshaixuan.view.FilterPopupWindow;
 import com.bbk.util.AppJsonFileReader;
-import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -128,6 +127,10 @@ public class SearchMainActivity extends ActivityGroup implements
     SmartRefreshLayout xrefreshCzgGrid;
     @BindView(R.id.ll_shousuo)
     LinearLayout llShousuo;
+    @BindView(R.id.bj_text)
+    TextView bjText;
+    @BindView(R.id.czg_text)
+    TextView czgText;
     private boolean islistview = true, islistviewCzg = true;
     private FrameLayout mContent;
     private EditText searchText;
@@ -764,8 +767,10 @@ public class SearchMainActivity extends ActivityGroup implements
         return filterJO.toString();
     }
 
-    private void setText(View view) {
+    private void setText(View view,TextView textView,TextView textView1) {
         view.setVisibility(View.VISIBLE);
+        textView.setTextColor(getResources().getColor(R.color.white));
+        textView1.setTextColor(getResources().getColor(R.color.search_color));
     }
 
     private void setView() {
@@ -797,7 +802,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 type = "1";
                 loadhotKeyword("1");
                 setView();
-                setText(bijia_view);
+                setText(bijia_view,bjText,czgText);
 //                Log.i("========",keyword);
                 if (keyword != null && !keyword.equals("")) {
                     currentPageIndex = 1;
@@ -813,7 +818,7 @@ public class SearchMainActivity extends ActivityGroup implements
                 x = 1;
                 loadhotKeyword(type);
                 setView();
-                setText(czg_view);
+                setText(czg_view,czgText,bjText);
                 second.setVisibility(View.GONE);
                 if (keyword != null && !keyword.equals("")) {
                     currentPageIndex = 1;
@@ -2279,7 +2284,7 @@ public class SearchMainActivity extends ActivityGroup implements
                             xrefresh2.setVisibility(View.GONE);
                             xrefreshCzgGrid.setVisibility(View.GONE);
                             islistview = true;
-                            topbarListOrGridBtn.setImageResource(R.mipmap.lietu);
+                            topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_56);
                         } else {
                             //显示列表
                             xrefresh.setVisibility(View.VISIBLE);
@@ -2287,7 +2292,7 @@ public class SearchMainActivity extends ActivityGroup implements
                             xrefresh2.setVisibility(View.GONE);
                             xrefreshCzgGrid.setVisibility(View.GONE);
                             islistview = false;
-                            topbarListOrGridBtn.setImageResource(R.mipmap.liebiao);
+                            topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_55);
                         }
                         mshaixuanCzg.setVisibility(View.GONE);
                         mshaixuanbox.setVisibility(View.VISIBLE);
@@ -2341,7 +2346,7 @@ public class SearchMainActivity extends ActivityGroup implements
                                 xrefresh2.setVisibility(View.GONE);
                                 xrefreshCzgGrid.setVisibility(View.VISIBLE);
                                 islistviewCzg = false;
-                                topbarListOrGridBtn.setImageResource(R.mipmap.lietu);
+                                topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_56);
                             } else {
                                 //显示列表
                                 xrefresh.setVisibility(View.GONE);
@@ -2349,7 +2354,7 @@ public class SearchMainActivity extends ActivityGroup implements
                                 xrefresh2.setVisibility(View.VISIBLE);
                                 xrefreshCzgGrid.setVisibility(View.GONE);
                                 islistviewCzg = true;
-                                topbarListOrGridBtn.setImageResource(R.mipmap.liebiao);
+                                topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_55);
                             }
                             String tmpCzg = info.optString("page");
                             mshaixuanCzg.setVisibility(View.VISIBLE);
@@ -2629,22 +2634,22 @@ public class SearchMainActivity extends ActivityGroup implements
      * productType 分类   dianpu店铺  bprice开始价格 eprice结束价格
      */
     private void initDataCzg() {
-        if (sortwayCzg.equals("1")){
+        if (sortwayCzg.equals("1")) {
             mtop_czg.setImageResource(R.mipmap.tuiguang_12);
-        }else if (sortwayCzg.equals("2")){
+        } else if (sortwayCzg.equals("2")) {
             mtop_czg.setImageResource(R.mipmap.tuiguang_13);
-        }else {
+        } else {
             mtop_czg.setImageResource(R.mipmap.tuiguang_11);
         }
-        if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") ||  eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")){
+        if (domain != null && !domain.equals("") || bprice != null && !bprice.equals("") || eprice != null && !eprice.equals("") || dianpu != null && !dianpu.equals("") || fenlei != null && !fenlei.equals("")) {
             filter_czg.setTextColor(Color.parseColor("#f23030"));
             Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d04).into(mallShaixuanImage);
-        }else {
+        } else {
             filter_czg.setTextColor(Color.parseColor("#222222"));
 //            mallShaixuanImage.setImageResource(R.mipmap.shaixuan_01);
             Glide.with(SearchMainActivity.this).load(R.drawable.tuiguang_d04).into(mallShaixuanImage);
         }
-        Log.i("++++++++", keyword +"==="+sortwayCzg+"===="+ domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
+        Log.i("++++++++", keyword + "===" + sortwayCzg + "====" + domain + "==" + bprice + "===" + eprice + "===" + dianpu + "===" + fenlei);
         xrefreshCzgGrid.setNoMoreData(false);
         xrefresh2.setNoMoreData(false);
         Map<String, String> paramsMap = new HashMap<>();
@@ -3020,24 +3025,24 @@ public class SearchMainActivity extends ActivityGroup implements
                 if (Flag.equals("1")) {
                     if (islistview) {
                         islistview = false;
-                        topbarListOrGridBtn.setImageResource(R.mipmap.liebiao);
+                        topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_55);
                         xrefresh.setVisibility(View.VISIBLE);
                         xrefresh1.setVisibility(View.GONE);
                     } else {
                         islistview = true;
-                        topbarListOrGridBtn.setImageResource(R.mipmap.lietu);
+                        topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_56);
                         xrefresh.setVisibility(View.GONE);
                         xrefresh1.setVisibility(View.VISIBLE);
                     }
                 } else {
                     if (islistviewCzg) {
                         islistviewCzg = false;
-                        topbarListOrGridBtn.setImageResource(R.mipmap.lietu);
+                        topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_56);
                         xrefreshCzgGrid.setVisibility(View.VISIBLE);
                         xrefresh2.setVisibility(View.GONE);
                     } else {
                         islistviewCzg = true;
-                        topbarListOrGridBtn.setImageResource(R.mipmap.liebiao);
+                        topbarListOrGridBtn.setImageResource(R.mipmap.tuiguang_55);
                         xrefreshCzgGrid.setVisibility(View.GONE);
                         xrefresh2.setVisibility(View.VISIBLE);
                     }

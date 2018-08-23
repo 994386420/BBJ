@@ -299,10 +299,10 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     float scale = (float) Offset / appBarLayout.getTotalScrollRange();
                     float alpha = (255 * scale);
 //                    toolbaretail.setAlpha();
-                    toolbaretail.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
-                    tvMessage.setTextColor(Color.argb((int) alpha, 0, 0, 0));
+                    toolbaretail.setBackgroundColor(Color.argb((int) alpha, 255, 100, 60));
+                    tvMessage.setTextColor(Color.argb((int) alpha, 255, 255, 255));
 //                    imageMessage.setAlpha((appBarLayout.getTotalScrollRange() / 2 - Offset * 1.0f) / appBarLayout.getTotalScrollRange());
-                    imageMessage.setBackgroundResource(R.mipmap.order_09);
+//                    imageMessage.setBackgroundResource(R.mipmap.order_09);
 //                    shareImg.setImageDrawable(getResources().getDrawable(R.mipmap.search));
 //                    toolbaretail.setNavigationIcon(R.mipmap.search);
                     /**
@@ -317,7 +317,10 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 //                    shareImg.setImageDrawable(getResources().getDrawable(R.mipmap.search));
                     toolbaretail.setTitle("");
 //                    toolbaretail.setAlpha(floate);
-                    toolbaretail.setBackgroundResource(R.color.white);
+                    float scale = (float) Offset / appBarLayout.getTotalScrollRange();
+                    float alpha = (255 * scale);
+                    toolbaretail.setBackgroundResource(R.color.tuiguang_color5);
+                    tvMessage.setTextColor(Color.argb((int) alpha, 255, 255, 255));
                     if (Offset == appBarLayout.getTotalScrollRange()) {
                         typeImage.setVisibility(View.VISIBLE);
                         toTopBtn.setVisibility(View.VISIBLE);
@@ -477,9 +480,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 }
 
                                 //通栏广告
-                                if (object.has("tonglanguanggao")) {
+                                if (object.has("tonglanguanggaoandroid")) {
                                     guanggaoLayout.setVisibility(View.VISIBLE);
-                                    JSONObject guanggaobanner = object.optJSONObject("tonglanguanggao");
+                                    JSONObject guanggaobanner = object.optJSONObject("tonglanguanggaoandroid");
                                     DisplayMetrics dm = new DisplayMetrics();
                                     getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
                                     int width = dm.widthPixels;

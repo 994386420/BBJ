@@ -70,7 +70,7 @@ public class CheckYouhuiAlertDialog extends Dialog {
             }
         });
 			final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-			animation.setDuration(1000);
+			animation.setDuration(3000);
 			animation.setRepeatCount(Animation.INFINITE);
 			animation.setRepeatMode(Animation.RESTART);
 			animation.setInterpolator(LINEAR_INTERPOLATOR);

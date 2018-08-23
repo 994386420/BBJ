@@ -108,13 +108,13 @@ public class EventIdIntentUtil {
 				}
 				context.startActivity(intent);
 				break;
-			case "xihu":
+			case "xihujie":
 				Intent intentxh;
 				if (TextUtils.isEmpty(userID)){
 					intentxh = new Intent(context, UserLoginNewActivity.class);
 					context.startActivity(intentxh);
 				}else {
-					intentxh = new Intent(context, DianpuHomeActivity.class);
+					intentxh = new Intent(context, NewDianpuHomeActivity.class);
 					context.startActivity(intentxh);
 				}
 				break;

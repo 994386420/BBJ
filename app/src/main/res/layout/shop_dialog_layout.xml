@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="七天无理由退换货"
+                android:text="消费者在满足7天无理由退换货申请条件的前提下，可以提出“7天无理由退换货”的申请"
                 android:textSize="12dp"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/tuiguang_color4"/>
@@ -139,7 +139,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="七天无理由退换货"
+                android:text="极速退款是为诚信会员提供的退款退货流程的专享特权，额度是根据每个用户当前的信誉评级情况而定"
                 android:textSize="12dp"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/tuiguang_color4"/>
@@ -182,7 +182,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="七天无理由退换货"
+                android:text="预约后准时上门取件，极速退款到账"
                 android:textSize="12dp"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/tuiguang_color4"/>
