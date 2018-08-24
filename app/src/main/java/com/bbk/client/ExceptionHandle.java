@@ -66,7 +66,7 @@ public class ExceptionHandle {
             return ex;
         } else if (e instanceof ConnectTimeoutException){
             ex = new ResponeThrowable(e, ERROR.TIMEOUT_ERROR);
-            ex.message = "连接超时";
+            ex.message = "请求超时";
             return ex;
         } else if (e instanceof java.net.SocketTimeoutException) {
             ex = new ResponeThrowable(e, ERROR.TIMEOUT_ERROR);

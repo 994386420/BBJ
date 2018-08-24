@@ -110,13 +110,13 @@ public class EventIdIntentUtil {
 				break;
 			case "xihujie":
 				Intent intentxh;
-				if (TextUtils.isEmpty(userID)){
-					intentxh = new Intent(context, UserLoginNewActivity.class);
-					context.startActivity(intentxh);
-				}else {
+//				if (TextUtils.isEmpty(userID)){
+//					intentxh = new Intent(context, UserLoginNewActivity.class);
+//					context.startActivity(intentxh);
+//				}else {
 					intentxh = new Intent(context, NewDianpuHomeActivity.class);
 					context.startActivity(intentxh);
-				}
+//				}
 				break;
 		case "5":
 			String htmlUrl = jo.optString("htmlUrl");

@@ -15,6 +15,7 @@ import android.support.annotation.IdRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -26,6 +27,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.appkefu.lib.interfaces.KFAPIs;
@@ -51,6 +53,7 @@ import com.bbk.shopcar.view.IdeaScrollView;
 import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageGuanggaoLoader;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -65,6 +68,8 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+import com.zaaach.toprightmenu.MenuItem;
+import com.zaaach.toprightmenu.TopRightMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -176,6 +181,12 @@ public class ShopDetailActivty extends BaseActivity {
     AdaptionSizeTextView tvYouhui;
     @BindView(R.id.ll_youhui)
     LinearLayout llYouhui;
+    @BindView(R.id.img_more)
+    ImageView imgMore;
+    @BindView(R.id.ll_more)
+    LinearLayout llMore;
+    @BindView(R.id.img_more_black)
+    ImageView imgMoreBlack;
     private String id;
     private DetailImageAdapter detailImageAdapter;
     private ShopDetailBean shopDetailBean;
@@ -193,7 +204,7 @@ public class ShopDetailActivty extends BaseActivity {
                 if (radioButton.isChecked() && isNeedScrollTo) {
                     ideaScrollView.setPosition(i);
                     Logg.e(i);
-                    if (i == 3){
+                    if (i == 3) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -227,6 +238,7 @@ public class ShopDetailActivty extends BaseActivity {
         });
         backImage.setVisibility(View.VISIBLE);
         llCar.setVisibility(View.VISIBLE);
+        llMore.setVisibility(View.VISIBLE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false) {
             @Override
@@ -256,7 +268,7 @@ public class ShopDetailActivty extends BaseActivity {
         Logg.e(detailImageList.computeVerticalScrollExtent());
         araryDistance.add(getMeasureHeight(one) - getMeasureHeight(headerParent));
         araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) - getMeasureHeight(headerParent));
-        araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) + getMeasureHeight(three)+ getMeasureHeight(one) - getMeasureHeight(headerParent));
+        araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) + getMeasureHeight(three) + getMeasureHeight(one) - getMeasureHeight(headerParent));
 
         ideaScrollView.setArrayDistance(araryDistance);
 
@@ -285,12 +297,18 @@ public class ShopDetailActivty extends BaseActivity {
                 if (percentage == 0.0) {
                     llCar.setVisibility(View.VISIBLE);
                     imgCarBlack.setVisibility(View.GONE);
+                    llMore.setVisibility(View.VISIBLE);
+                    imgMoreBlack.setVisibility(View.GONE);
                 } else if (percentage > 0.0 && percentage < 0.5) {
                     llCar.setVisibility(View.VISIBLE);
                     imgCarBlack.setVisibility(View.GONE);
+                    llMore.setVisibility(View.VISIBLE);
+                    imgMoreBlack.setVisibility(View.GONE);
                 } else {
                     llCar.setVisibility(View.GONE);
                     imgCarBlack.setVisibility(View.VISIBLE);
+                    llMore.setVisibility(View.GONE);
+                    imgMoreBlack.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -338,7 +356,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 if (shopDetailBean.getYouhui() != null && !shopDetailBean.getYouhui().equals("")) {
                                     llYouhui.setVisibility(View.VISIBLE);
                                     tvYouhui.setText(shopDetailBean.getYouhui());
-                                }else {
+                                } else {
                                     llYouhui.setVisibility(View.GONE);
                                 }
                                 if (shopDetailBean != null) {
@@ -487,25 +505,37 @@ public class ShopDetailActivty extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.ll_add_car, R.id.ll_buy_now, R.id.ll_fuwu, R.id.ll_shuxing, R.id.ll_canshu, R.id.tv_dianpu, R.id.back_image, R.id.tv_all_mall, R.id.ll_dianpu, R.id.ll_car, R.id.ll_pl, R.id.ll_kefu})
+    @OnClick({R.id.title_back_btn, R.id.ll_add_car, R.id.ll_buy_now, R.id.ll_fuwu, R.id.ll_shuxing, R.id.ll_canshu, R.id.tv_dianpu, R.id.back_image, R.id.tv_all_mall,
+            R.id.ll_dianpu, R.id.ll_car, R.id.ll_pl, R.id.ll_kefu,R.id.ll_more, R.id.img_more_black,R.id.img_car_black})
     public void onViewClicked(View view) {
         Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
             case R.id.title_back_btn:
                 finish();
                 break;
             case R.id.ll_add_car:
                 if (shopDetailBean != null) {
-                    doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
+                    if (TextUtils.isEmpty(userID)) {
+                        intent = new Intent(this, UserLoginNewActivity.class);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
+                    }
                 }
                 break;
             case R.id.ll_buy_now:
                 if (shopDetailBean != null) {
-                    intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
-                    intent.putExtra("ids", shopDetailBean.getId());
-                    intent.putExtra("nums", "1");
-                    intent.putExtra("guiges", " ");
-                    startActivity(intent);
+                    if (TextUtils.isEmpty(userID)) {
+                        intent = new Intent(this, UserLoginNewActivity.class);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
+                        intent.putExtra("ids", shopDetailBean.getId());
+                        intent.putExtra("nums", "1");
+                        intent.putExtra("guiges", " ");
+                        startActivity(intent);
+                    }
                 }
                 break;
             case R.id.ll_fuwu:
@@ -551,22 +581,62 @@ public class ShopDetailActivty extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_car:
-                intent = new Intent(this, CarActivity.class);
-                startActivity(intent);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(this, CarActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.ll_pl:
                 if (shopDetailBean != null) {
-                    intent = new Intent(this, MyPlActivity.class);
-                    intent.putExtra("id", id);
-                    if (shopDetailBean.getImgurl() != null) {
-                        intent.putExtra("img", shopDetailBean.getImgurl());
+                    if (TextUtils.isEmpty(userID)) {
+                        intent = new Intent(this, UserLoginNewActivity.class);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        intent = new Intent(this, MyPlActivity.class);
+                        intent.putExtra("id", id);
+                        if (shopDetailBean.getImgurl() != null) {
+                            intent.putExtra("img", shopDetailBean.getImgurl());
+                        }
+                        startActivity(intent);
                     }
-                    startActivity(intent);
                 }
                 break;
             case R.id.ll_kefu:
                 if (shopDetailBean != null) {
-                    startECChat();
+                    if (TextUtils.isEmpty(userID)) {
+                        intent = new Intent(this, UserLoginNewActivity.class);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        startECChat();
+                    }
+                }
+                break;
+            case R.id.ll_more:
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    HomeLoadUtil.showItemPop(this, llMore);
+                }
+                break;
+            case R.id.img_more_black:
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    HomeLoadUtil.showItemPop(this, imgMoreBlack);
+                }
+                break;
+            case R.id.img_car_black:
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(this, CarActivity.class);
+                    startActivity(intent);
                 }
                 break;
         }
@@ -705,11 +775,6 @@ public class ShopDetailActivty extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.img_car_black)
-    public void onViewClicked() {
-        Intent intent = new Intent(this, CarActivity.class);
-        startActivity(intent);
-    }
 
 
     private void addCart(LinearLayout iv) {

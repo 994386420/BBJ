@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -25,8 +26,10 @@ import com.bbk.Bean.DianPuHomeBean;
 import com.bbk.Bean.PinpaiBean;
 import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.activity.BaseActivity;
+import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.adapter.DianPuGridAdapter;
 import com.bbk.adapter.DianPuHoHotGridAdapter;
 import com.bbk.adapter.DianPuHomePinpaiGridAdapter;
@@ -34,14 +37,12 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.HomeAlertDialog;
-import com.bbk.flow.DataFlow6;
 import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
-import com.bbk.util.MallLoadUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
@@ -143,6 +144,8 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     RecyclerView mrecyclerview;
     @BindView(R.id.loading_progress)
     CommonLoadingView loadingProgress;
+    @BindView(R.id.img_more_black)
+    ImageView imgMoreBlack;
     private int page = 1, x = 1;
     private String keyword = "";
     private int showTime = 0;
@@ -210,12 +213,14 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     toolbaretail.setBackgroundResource(R.drawable.bg_home_yinying);
                     titleBackBtn1.setBackgroundResource(R.mipmap.shop_back_img);
                     tvDianpuTop.setTextColor(Color.WHITE);
+                    imgMoreBlack.setBackgroundResource(R.mipmap.store_06);
                 } else if (Offset < appBarLayout.getTotalScrollRange() / 2) {
                     toolbaretail.setTitle("");
                     float scale = (float) Offset / appBarLayout.getTotalScrollRange();
                     float alpha = (255 * scale);
                     toolbaretail.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
                     titleBackBtn1.setBackgroundResource(R.mipmap.goback_btn);
+                    imgMoreBlack.setBackgroundResource(R.mipmap.store_05);
                     tvDianpuTop.setTextColor(Color.argb((int) alpha, 0, 0, 0));
                     /**
                      * 从最低浮动开始渐显 当前 Offset就是  appBarLayout.getTotalScrollRange() / 2
@@ -257,6 +262,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     public void onNext(String s) {
                         try {
                             mrecyclerview.setVisibility(View.VISIBLE);
+                            refreshLayout.setVisibility(View.VISIBLE);
                             JSONObject jsonObject = new JSONObject(s);
 //                            Logg.json(jsonObject);
                             if (jsonObject.optString("status").equals("1")) {
@@ -355,6 +361,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                         DialogSingleUtil.dismiss(0);
                         zLoadingView.setVisibility(View.VISIBLE);
                         zLoadingView.loadError();
+                        refreshLayout.setVisibility(View.GONE);
                         mrecyclerview.setVisibility(View.GONE);
                         StringUtil.showToast(NewDianpuHomeActivity.this, e.message);
                     }
@@ -454,8 +461,8 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                 x = 1;
                 page = 1;
                 queryProductListByKeyword(keyword);
-                XTabLayout.Tab tabAt = tablayout.getTabAt(0);
-                tabAt.select();
+//                XTabLayout.Tab tabAt = tablayout.getTabAt(0);
+//                tabAt.select();
             }
         });
         refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -473,7 +480,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
      */
     @Override
     public void doRequestData() {
-        DialogHomeUtil.show(this);
+        DialogSingleUtil.show(this);
         zLoadingView.setVisibility(View.GONE);
         queryIndexMain();
         x = 1;
@@ -492,8 +499,10 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
      *
      * @param view
      */
-    @OnClick({R.id.to_top_btn, R.id.title_back_btn1, R.id.ll_back})
+    @OnClick({R.id.to_top_btn, R.id.title_back_btn1, R.id.ll_back,R.id.img_more_black,R.id.img_car})
     public void onViewClicked(View view) {
+        Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
             case R.id.title_back_btn1:
                 finish();
@@ -514,12 +523,23 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
             case R.id.ll_back:
                 finish();
                 break;
+            case R.id.img_more_black:
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    HomeLoadUtil.showItemPop(this,imgMoreBlack);
+                }
+                break;
+            case R.id.img_car:
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(this, CarActivity.class);
+                    startActivity(intent);
+                }
+                break;
         }
-    }
-
-    @OnClick(R.id.img_car)
-    public void onViewClicked() {
-        Intent intent = new Intent(this, CarActivity.class);
-        startActivity(intent);
     }
 }

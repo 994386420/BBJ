@@ -15,21 +15,27 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.appkefu.lib.interfaces.KFAPIs;
 import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.BrowseActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.JumpDetailActivty;
+import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.activity.ShopDetailActivty;
 import com.bbk.activity.UserLoginNewActivity;
+import com.bbk.activity.UserSuggestionActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.component.HomeAllComponent;
 import com.bbk.component.HomeAllComponent1;
@@ -38,6 +44,7 @@ import com.bbk.component.SimpleComponent;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.OnClickHomeListioner;
 import com.bbk.fragment.OnClickMallListioner;
+import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.DianpuHomeActivity;
 import com.bbk.shopcar.DianpuTypesActivity;
 import com.bbk.shopcar.NewDianpuHomeActivity;
@@ -53,6 +60,9 @@ import com.logg.Logg;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+import com.zaaach.toprightmenu.MenuItem;
+import com.zaaach.toprightmenu.TopRightMenu;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -715,4 +725,74 @@ public class HomeLoadUtil {
             }
         }
     };
+
+
+    /**
+     * 快捷菜单弹窗
+     */
+    public static void showItemPop(final Context context,View view){
+        TopRightMenu mTopRightMenu;
+        mTopRightMenu = new TopRightMenu((Activity) context);
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem(R.mipmap.bibijing_02,"消息", NewConstants.messages + ""));
+        menuItems.add(new MenuItem(R.mipmap.bibijing_03,"首页"));
+        menuItems.add(new MenuItem(R.mipmap.bibijing_04,"在线客服"));
+        mTopRightMenu
+                .setHeight(620)     //默认高度480
+                .setWidth(400)//默认宽度wrap_content
+                .showIcon(true)     //显示菜单图标，默认为true
+                .dimBackground(true)           //背景变暗，默认为true
+                .needAnimationStyle(true)   //显示动画，默认为true
+                .setAnimationStyle(R.style.TRM_ANIM_STYLE)  //默认为R.style.TRM_ANIM_STYLE
+                .addMenuList(menuItems)
+                .addMenuItem(new MenuItem(R.mipmap.bibijing_05,"意见反馈"))
+                .setOnMenuItemClickListener(new TopRightMenu.OnMenuItemClickListener() {
+                    @Override
+                    public void onMenuItemClick(int position) {
+                        Intent intent;
+                        switch (position){
+                            case 0:
+                                intent = new Intent(context, MesageCenterActivity.class);
+                                intent.putExtra("type", "0");
+                                context.startActivity(intent);
+                                break;
+                            case 1:
+                                intent = new Intent(context, HomeActivity.class);
+                                intent.putExtra("type", "0");
+                                context.startActivity(intent);
+                                break;
+                            case 2:
+                                startChat(context);
+                                break;
+                            case 3:
+                                intent = new Intent(context, UserSuggestionActivity.class);
+                                context.startActivity(intent);
+                                break;
+                        }
+                    }
+                })
+                .showAsDropDown(view, -315, 0);
+    }
+
+
+    private static void startChat(Context context) {
+        //
+        KFAPIs.startChat(context,
+                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
+                "比比鲸客服", // 2. 会话界面标题，可自定义
+                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
+                // 如果不想发送此信息，可以将此信息设置为""或者null
+                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
+                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
+                // 显示:true, 不显示:false
+                5, // 5. 默认显示消息数量
+                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
+                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
+                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
+                false, // 8. 默认机器人应答
+                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
+                null);
+
+    }
+
 }

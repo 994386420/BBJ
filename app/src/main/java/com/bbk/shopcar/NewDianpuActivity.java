@@ -12,9 +12,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +27,9 @@ import com.bbk.Bean.DianPuTypesBean;
 import com.bbk.Bean.DianpuBean;
 import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.activity.BaseActivity;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.adapter.DianPuGridAdapter;
 import com.bbk.adapter.DianpuTypesAdapter;
 import com.bbk.client.BaseObserver;
@@ -37,13 +39,13 @@ import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
-import com.bbk.view.MyScrollViewNew;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -62,7 +64,7 @@ import butterknife.OnClick;
 /**
  * 店铺
  */
-public class NewDianpuActivity extends BaseActivity implements  DianpuTypesAdapter.TypeInterface {
+public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapter.TypeInterface {
     String dianpuid;
     @BindView(R.id.banner)
     ImageView banner;
@@ -114,6 +116,8 @@ public class NewDianpuActivity extends BaseActivity implements  DianpuTypesAdapt
     LinearLayout llBtnBottom;
     @BindView(R.id.rl_home)
     RelativeLayout rlHome;
+    @BindView(R.id.img_more_black)
+    ImageView imgMoreBlack;
     private int page = 1, x = 1;
     DianPuGridAdapter dianPuGridAdapter;
     private int imageHeight, height;
@@ -201,6 +205,7 @@ public class NewDianpuActivity extends BaseActivity implements  DianpuTypesAdapt
         });
 
     }
+
     /**
      * 初始化setToolBar
      */
@@ -281,9 +286,9 @@ public class NewDianpuActivity extends BaseActivity implements  DianpuTypesAdapt
                                         .into(imgDianpuLogo);
                                 tvDianpu.setText(dianpuBean.getDianpu());
                                 tvDianpuTop.setText(dianpuBean.getDianpu());
-                                if (dianpuBean.getTotalSale() != null){
+                                if (dianpuBean.getTotalSale() != null) {
                                     tvSale.setText("已销:" + dianpuBean.getTotalSale() + "件");
-                                }else {
+                                } else {
                                     tvSale.setVisibility(View.GONE);
                                 }
                             } else {
@@ -390,8 +395,10 @@ public class NewDianpuActivity extends BaseActivity implements  DianpuTypesAdapt
     }
 
 
-    @OnClick({R.id.title_back_btn, R.id.ll_mall_choose, R.id.ll_back1, R.id.ll_back, R.id.ll_kefu, R.id.img_car, R.id.to_top_btn})
+    @OnClick({R.id.title_back_btn, R.id.ll_mall_choose, R.id.ll_back1, R.id.ll_back, R.id.ll_kefu, R.id.img_car, R.id.to_top_btn,R.id.img_more_black})
     public void onViewClicked(View view) {
+        Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
             case R.id.title_back_btn:
                 finish();
@@ -406,11 +413,21 @@ public class NewDianpuActivity extends BaseActivity implements  DianpuTypesAdapt
                 finish();
                 break;
             case R.id.ll_kefu:
-                startChat();
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    startChat();
+                }
                 break;
             case R.id.img_car:
-                Intent intent = new Intent(this, CarActivity.class);
-                startActivity(intent);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(this, CarActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.to_top_btn:
                 //滑动到顶部
@@ -425,6 +442,14 @@ public class NewDianpuActivity extends BaseActivity implements  DianpuTypesAdapt
                         lin.setVisibility(View.GONE);
                         toolbaretail.setVisibility(View.GONE);
                     }
+                }
+                break;
+            case R.id.img_more_black:
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(this, UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    HomeLoadUtil.showItemPop(this,imgMoreBlack);
                 }
                 break;
         }

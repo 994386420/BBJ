@@ -118,6 +118,9 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 queryShoppingCartByUserid();
+                /**
+                 * 刷新调用方法重置购物车
+                 */
                 if (groups != null) {
                     for (int i = 0; i < groups.size(); i++) {
                         StoreInfo group = groups.get(i);

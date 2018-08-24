@@ -63,7 +63,11 @@ public class DianPuHomePinpaiGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return pinpaiBeans.size();
+        if (pinpaiBeans != null && pinpaiBeans.size()>0) {
+            return pinpaiBeans.size();
+        }else {
+            return 0;
+        }
     }
 
 

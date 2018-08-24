@@ -61,7 +61,11 @@ public class DianPuHoHotGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return shopDianpuBeans.size();
+        if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
+            return shopDianpuBeans.size();
+        }else {
+            return 0;
+        }
     }
 
     public void notifyData(List<ShopDianpuBean> beans) {

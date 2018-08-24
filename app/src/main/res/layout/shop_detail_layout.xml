@@ -704,6 +704,22 @@
                     android:layout_gravity="center"
                     android:background="@mipmap/store_04"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_more"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_cicyle10"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/img_more"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/store_06"/>
+            </LinearLayout>
             <ImageView
                 android:id="@+id/img_car_black"
                 android:layout_width="25dp"
@@ -712,6 +728,16 @@
                 android:layout_marginRight="15dp"
                 android:visibility="gone"
                 android:background="@mipmap/store_03"/>
+
+
+            <ImageView
+                android:id="@+id/img_more_black"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"
+                android:background="@mipmap/store_05"/>
 
         </LinearLayout>
 
