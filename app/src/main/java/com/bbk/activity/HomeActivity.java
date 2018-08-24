@@ -520,12 +520,24 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
             SharedPreferencesUtil.cleanShareData(getApplicationContext(), "homeactivty");
             mViewPager.setCurrentItem(Integer.valueOf(type));
 //            homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
-            homeImgBtn.setVisibility(View.VISIBLE);
-            mtext.setVisibility(View.VISIBLE);
-            ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
-            params.height = StringUtil.dip2px(HomeActivity.this, 25);
-            params.width = StringUtil.dip2px(HomeActivity.this, 25);
-            homeImgBtn.setLayoutParams(params);
+            if (HomeActivity.position == 0) {
+//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
+                StringUtil.setScalse(homeImgBtn);//设置缩放动画
+                homeImgBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.GONE);
+                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                params.height = StringUtil.dip2px(HomeActivity.this, 42);
+                params.width = StringUtil.dip2px(HomeActivity.this, 42);
+                homeImgBtn.setLayoutParams(params);
+            } else {
+//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
+                homeImgBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                params.height = StringUtil.dip2px(HomeActivity.this, 25);
+                params.width = StringUtil.dip2px(HomeActivity.this, 25);
+                homeImgBtn.setLayoutParams(params);
+            }
         }
     }
 

@@ -11,7 +11,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="10dp"
-        android:src="@drawable/appkefu_notification_icon"
+        android:src="@mipmap/notificattion"
         android:contentDescription="@string/appkefu_imageview_contentdescription" />
 
     <RelativeLayout 
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:textColor="#000000"
+            android:textColor="@color/color_line_top"
             android:textSize="13sp" />
          
         <TextView 
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textColor="#000000"
+            android:textColor="@color/color_line_top"
             android:textSize="13sp" 
             />
         
@@ -48,7 +48,7 @@
         android:layout_below="@+id/appkefu_notification_contentview_titlelayout"
         android:layout_toRightOf="@id/appkefu_notification_contentview_icon"
         android:layout_marginTop="5dp"
-        android:textColor="#000000"
+        android:textColor="@color/color_line_top"
         android:text="@string/appkefu_notification_contentview_content"
         android:textSize="13sp"
         android:visibility="gone"  />
@@ -61,7 +61,7 @@
         android:layout_below="@+id/appkefu_notification_contentview_titlelayout"
         android:layout_toRightOf="@id/appkefu_notification_contentview_icon"
         android:layout_marginTop="5dp"
-        android:textColor="#000000"
+        android:textColor="@color/color_line_top"
         android:textSize="13sp"
         />
 

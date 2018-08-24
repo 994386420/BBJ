@@ -13,26 +13,20 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.ShopOrderBean;
-import com.bbk.Bean.WoYaoBean;
 import com.bbk.activity.BaseActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.ShopDetailActivty;
-import com.bbk.adapter.BidListDetailAdapter;
-import com.bbk.adapter.ShopOrderAdapter;
 import com.bbk.adapter.ShopOrderWaiCengAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
-import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
-import com.bbk.util.EventIdIntentUtil;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.HongbaoDialog;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
-import com.bbk.util.UpdataDialog;
 import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.CommonLoadingView;
 import com.logg.Logg;
@@ -76,7 +70,9 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
     CommonLoadingView progress;
     @BindView(R.id.xrefresh)
     SmartRefreshLayout xrefresh;
-    private int page = 1,x =1,option;
+    @BindView(R.id.img_more_black)
+    ImageView imgMoreBlack;
+    private int page = 1, x = 1, option;
     private List<ShopOrderBean> shopOrderBeans;
     private ShopOrderWaiCengAdapter shopOrderAdapter;
     private HongbaoDialog hongbaoDialog;
@@ -95,6 +91,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
     }
 
     private void initVeiw() {
+        imgMoreBlack.setVisibility(View.VISIBLE);
         progress.setLoadingHandler(this);
         titleText.setText("我的订单");
         tablayout.addTab(tablayout.newTab().setText("全部"));
@@ -160,7 +157,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
      */
     private void queryMyOrder() {
         xrefresh.setNoMoreData(false);
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("option", option + "");
         maps.put("userid", userID);
@@ -188,7 +185,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
                                             isFirstResultUse = "yes";
                                         }
                                         if (isFirstResultUse.equals("yes")) {
-                                            if (hongbaoMoney != null && !hongbaoMoney.equals("") && option == 2){
+                                            if (hongbaoMoney != null && !hongbaoMoney.equals("") && option == 2) {
                                                 showHongbaoDialog(ShopOrderActivity.this);
                                                 SharedPreferencesUtil.putSharedData(ShopOrderActivity.this, "isFirstHongbao", "isFirstHongbao", "no");
                                             }
@@ -268,12 +265,8 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
         queryMyOrder();
     }
 
-    @OnClick(R.id.title_back_btn)
-    public void onViewClicked() {
-        finish();
-    }
 
-//    @Override
+    //    @Override
 //    public void doDeleteOrder(String orderid) {
 //        deleteMyOrder("1",orderid);
 //    }
@@ -282,25 +275,25 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
 //    public void doQuXiaoOrder(String orderid) {
 //        deleteMyOrder("0",orderid);
 //    }
-public void showHongbaoDialog(final Context context) {
-    if (hongbaoDialog == null || !hongbaoDialog.isShowing()) {
-        hongbaoDialog = new HongbaoDialog(context, R.layout.hongbao_dialog_layout,
-                new int[]{R.id.mclose});
-        hongbaoDialog.show();
-        hongbaoDialog.setCanceledOnTouchOutside(true);
-        AdaptionSizeTextView textView = hongbaoDialog.findViewById(R.id.tv_hongbao_money);
-        if (hongbaoMoney != null) {
-            textView.setText(hongbaoMoney);
-        }
-        LinearLayout llclose = hongbaoDialog.findViewById(R.id.mclose);
-        llclose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hongbaoDialog.dismiss();
+    public void showHongbaoDialog(final Context context) {
+        if (hongbaoDialog == null || !hongbaoDialog.isShowing()) {
+            hongbaoDialog = new HongbaoDialog(context, R.layout.hongbao_dialog_layout,
+                    new int[]{R.id.mclose});
+            hongbaoDialog.show();
+            hongbaoDialog.setCanceledOnTouchOutside(true);
+            AdaptionSizeTextView textView = hongbaoDialog.findViewById(R.id.tv_hongbao_money);
+            if (hongbaoMoney != null) {
+                textView.setText(hongbaoMoney);
             }
-        });
+            LinearLayout llclose = hongbaoDialog.findViewById(R.id.mclose);
+            llclose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hongbaoDialog.dismiss();
+                }
+            });
+        }
     }
-}
 
     @Override
     protected void onResume() {
@@ -309,6 +302,18 @@ public void showHongbaoDialog(final Context context) {
             page = 1;
             x = 1;
             queryMyOrder();
+        }
+    }
+
+    @OnClick({R.id.title_back_btn, R.id.img_more_black})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.title_back_btn:
+                finish();
+                break;
+            case R.id.img_more_black:
+                HomeLoadUtil.showItemPop(this,imgMoreBlack);
+                break;
         }
     }
 }

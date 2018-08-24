@@ -757,8 +757,8 @@ public class HomeLoadUtil {
                                 context.startActivity(intent);
                                 break;
                             case 1:
+                                SharedPreferencesUtil.putSharedData(context, "homeactivty", "type","0");
                                 intent = new Intent(context, HomeActivity.class);
-                                intent.putExtra("type", "0");
                                 context.startActivity(intent);
                                 break;
                             case 2:

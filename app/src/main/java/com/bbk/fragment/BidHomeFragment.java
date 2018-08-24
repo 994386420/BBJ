@@ -1,40 +1,32 @@
 package com.bbk.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.alibaba.fastjson.JSON;
-import com.andview.refreshview.XRefreshView;
-import com.bbk.Bean.NewFxBean;
-import com.bbk.Decoration.TwoDecoration;
 import com.bbk.Decoration.TwoDecoration2;
 import com.bbk.activity.BidAcceptanceActivity;
-import com.bbk.activity.BidDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.adapter.BidHomeAdapter;
-import com.bbk.adapter.FindListAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
-import com.bbk.flow.ResultEvent;
 import com.bbk.util.DialogSingleUtil;
-import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
-import com.bbk.view.HeaderView;
-import com.bbk.view.MyFootView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -44,21 +36,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 /**
  * 发镖首页
  */
 
-public class BidHomeFragment extends BaseViewPagerFragment implements View.OnClickListener,CommonLoadingView.LoadingHandler {
+public class BidHomeFragment extends BaseViewPagerFragment implements View.OnClickListener, CommonLoadingView.LoadingHandler {
+    @BindView(R.id.img_more_black)
+    ImageView imgMoreBlack;
+    Unbinder unbinder;
     private DataFlow6 dataFlow;
     private View mView;
     private RecyclerView mrecyclerview;
-    private List<Map<String,String>> list;
+    private List<Map<String, String>> list;
     private BidHomeAdapter adapter;
     private JSONArray list3array = new JSONArray();
     private JSONArray list4array = new JSONArray();
@@ -92,54 +91,56 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
             mzhuangtai = mView.findViewById(R.id.mzhuangtai);
             initData();
         }
+        unbinder = ButterKnife.bind(this, mView);
         return mView;
     }
 
-    public void initView(){
+    public void initView() {
         zLoadingView = mView.findViewById(R.id.progress);
         zLoadingView.setLoadingHandler(this);
         ll_search_layout = mView.findViewById(R.id.search_layout);
         ll_search_layout.setOnClickListener(this);
-       list = new ArrayList<>();
-        topbar_goback_btn = (ImageView)mView.findViewById(R.id.topbar_goback_btn);
+        list = new ArrayList<>();
+        topbar_goback_btn = (ImageView) mView.findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
             }
         });
-        mrecyclerview = (RecyclerView)mView.findViewById(R.id.mrecyclerview);
+        mrecyclerview = (RecyclerView) mView.findViewById(R.id.mrecyclerview);
         mrefresh = (SmartRefreshLayout) mView.findViewById(R.id.mrefresh);
         refreshAndloda();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return position < 2+list3array.length() ? 2 : 1;
+                return position < 2 + list3array.length() ? 2 : 1;
             }
         });
         mrecyclerview.setLayoutManager(gridLayoutManager);
-        mrecyclerview.addItemDecoration(new TwoDecoration2(10,"#f3f3f3",3));
+        mrecyclerview.addItemDecoration(new TwoDecoration2(10, "#f3f3f3", 3));
         mrecyclerview.setHasFixedSize(true);
-        adapter = new BidHomeAdapter(getActivity(),list);
+        adapter = new BidHomeAdapter(getActivity(), list);
         mrecyclerview.setAdapter(adapter);
     }
-    public void initData(){
+
+    public void initData() {
 //        mrefresh.setNoMoreData(false);
         mrefresh.finishLoadMoreWithNoMoreData();
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
-        maps.put("userid",userID);
+        maps.put("userid", userID);
         RetrofitClient.getInstance(getActivity()).createBaseApi().queryIndex(
                 maps, new BaseObserver<String>(getActivity()) {
                     @Override
                     public void onNext(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            if (isclear){
+                            if (isclear) {
                                 list.clear();
                             }
-                            Map<String,String> map = new HashMap<>();
+                            Map<String, String> map = new HashMap<>();
                             JSONObject json = new JSONObject(jsonObject.optString("content"));
                             String list1 = json.optString("list1");
                             String list2 = json.optString("list2");
@@ -147,16 +148,17 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
                             String list4 = json.optString("list4");
                             list3array = new JSONArray(list3);
                             list4array = new JSONArray(list4);
-                            map.put("list1",list1);
-                            map.put("list2",list2);
-                            map.put("list3",list3);
-                            map.put("list4",list4);
+                            map.put("list1", list1);
+                            map.put("list2", list2);
+                            map.put("list3", list3);
+                            map.put("list4", list4);
                             list.add(map);
                             adapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     protected void hideDialog() {
                         DialogSingleUtil.dismiss(0);
@@ -165,6 +167,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
                         mrefresh.finishRefresh();
                         mrecyclerview.setVisibility(View.VISIBLE);
                     }
+
                     @Override
                     protected void showDialog() {
 //                        zLoadingView.load();
@@ -202,10 +205,10 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.search_layout:
                 Intent intent = new Intent(getActivity(), BidAcceptanceActivity.class);
-                intent.putExtra("type","服饰");
+                intent.putExtra("type", "服饰");
                 startActivity(intent);
                 break;
         }
@@ -226,5 +229,23 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     public void doRequestData() {
         zLoadingView.setVisibility(View.GONE);
         initData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick(R.id.img_more_black)
+    public void onViewClicked() {
+        Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (TextUtils.isEmpty(userID)) {
+            intent = new Intent(getActivity(), UserLoginNewActivity.class);
+            startActivityForResult(intent, 1);
+        } else {
+            HomeLoadUtil.showItemPop(getActivity(), imgMoreBlack);
+        }
     }
 }

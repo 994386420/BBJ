@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -137,6 +139,8 @@ public class ShopOrderDetailActivity extends BaseActivity {
     TextView tvYouhui;
     @BindView(R.id.ll_youhui)
     LinearLayout llYouhui;
+    @BindView(R.id.img_more_black)
+    ImageView imgMoreBlack;
     private PayReq mReq;
     private PayModel mPayModel;
     private IWXAPI msgApi = null;
@@ -178,6 +182,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
     }
 
     private void initVeiw() {
+        imgMoreBlack.setVisibility(View.VISIBLE);
         titleText.setText("订单详情");
     }
 
@@ -356,10 +361,10 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                 tvDianpu.setText(shopOrderDetailBean.getDianpu());
                                 tvName.setText(shopOrderDetailBean.getReceiver());
                                 tvPhone.setText(shopOrderDetailBean.getPhone());
-                                if (shopOrderDetailBean.getYouhui() != null){
+                                if (shopOrderDetailBean.getYouhui() != null) {
                                     llYouhui.setVisibility(View.VISIBLE);
                                     tvYouhui.setText(shopOrderDetailBean.getYouhui());
-                                }else {
+                                } else {
                                     llYouhui.setVisibility(View.GONE);
                                 }
                                 if (shopOrderDetailBean.getUsejinbi() != null && !shopOrderDetailBean.getUsejinbi().equals("")) {
@@ -444,7 +449,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.title_back_btn, R.id.ll_wuliu, R.id.rl_dianpu, R.id.ll_lx_maijia, R.id.ll_bohao, R.id.ll_copy})
+    @OnClick({R.id.title_back_btn, R.id.ll_wuliu, R.id.rl_dianpu, R.id.ll_lx_maijia, R.id.ll_bohao, R.id.ll_copy, R.id.img_more_black})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -472,6 +477,9 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 ClipboardManager cm = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setText(ordernum);
                 StringUtil.showToast(this, "订单号复制成功");
+                break;
+            case R.id.img_more_black:
+                HomeLoadUtil.showItemPop(this,imgMoreBlack);
                 break;
         }
     }

@@ -60,6 +60,16 @@
             android:visibility="gone"
             android:textColor="@color/tuiguang_color1"
             android:textSize="14sp" />
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/img_more_black"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/store_05"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
