@@ -687,7 +687,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="0.65"/>
             <LinearLayout
                 android:id="@+id/ll_car"
                 android:layout_width="30dp"

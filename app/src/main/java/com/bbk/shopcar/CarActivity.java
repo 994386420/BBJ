@@ -118,27 +118,33 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 queryShoppingCartByUserid();
-                /**
-                 * 刷新调用方法重置购物车
-                 */
-                if (groups != null) {
-                    for (int i = 0; i < groups.size(); i++) {
-                        StoreInfo group = groups.get(i);
-                        group.setChoosed(false);
-                        List<GoodsInfo> child = childs.get(group.getId());
-                        for (int j = 0; j < child.size(); j++) {
-                            child.get(j).setChoosed(false);//这里出现过错误
-                        }
-                    }
-                }
-                calulate();
-                if (adapter != null) {
-                    adapter.notifyDataSetChanged();
-                }
-                allCheckBox.setChecked(false);
+                reSet();
+
             }
         });
         mPtrframe.setEnableLoadMore(false);
+    }
+
+
+    /**
+     * 刷新调用方法重置购物车
+     */
+    private void reSet(){
+        if (groups != null) {
+            for (int i = 0; i < groups.size(); i++) {
+                StoreInfo group = groups.get(i);
+                group.setChoosed(false);
+                List<GoodsInfo> child = childs.get(group.getId());
+                for (int j = 0; j < child.size(); j++) {
+                    child.get(j).setChoosed(false);//这里出现过错误
+                }
+            }
+        }
+        calulate();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        allCheckBox.setChecked(false);
     }
 
 
@@ -183,9 +189,10 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         super.onResume();
         Logg.e(NewConstants.refeshFlag);
         if (NewConstants.refeshFlag.equals("1")){
-            mtotalCount = 0;
-            goPay.setText("去支付(" + mtotalCount + ")");
+//            mtotalCount = 0;
+//            goPay.setText("去支付(" + mtotalCount + ")");
             queryShoppingCartByUserid();
+            reSet();
         }else {
             setCartNum();
         }
