@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,10 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +60,7 @@ public class DetailImageAdapter extends RecyclerView.Adapter{
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       ViewHolder ViewHolder = new ViewHolder(
+        ViewHolder ViewHolder = new ViewHolder(
                 LayoutInflater.from(context).inflate( R.layout.jump_detail_image_item, parent, false));
         return ViewHolder;
     }
@@ -77,7 +82,11 @@ public class DetailImageAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list != null &  list.size() > 0) {
+            return list.size();
+        }else {
+            return 0;
+        }
     }
 
     public void notifyData(List<Map<String,String>> List){
@@ -100,11 +109,47 @@ public class DetailImageAdapter extends RecyclerView.Adapter{
             viewHolder.item_img.setLayoutParams(lp);
             viewHolder.item_img.setMaxWidth(screenWidth);
 //            viewHolder.item_img.setMaxHeight((int) (screenWidth * 3.5));// 这里其实可以根据需求而定，我这里测试为最大宽度的3.5倍
+//            Glide.with(context)
+//                    .load(list.get(position).toString())
+//                    .priority(Priority.HIGH)
+//                    .thumbnail(1f)
+//                    .placeholder(R.mipmap.zw_img_300)
+//                    .into(viewHolder.item_img);
+            final String url = list.get(position).toString();
             Glide.with(context)
-                    .load(list.get(position).toString())
-                    .priority(Priority.HIGH)
+                    .load(url)
+                    .asBitmap()
                     .placeholder(R.mipmap.zw_img_300)
-                    .into(viewHolder.item_img);
+		            .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                int imageHeight = resource.getHeight();
+                                if(imageHeight > 4096) {
+                                    imageHeight = 4096;
+                                    ViewGroup.LayoutParams para =  viewHolder.item_img.getLayoutParams();
+                                    para.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                                    para.height = imageHeight;
+                                    viewHolder.item_img.setLayoutParams(para);
+                                    Glide.with(context)
+                                            .load(url)
+                                            .dontAnimate()
+                                            .centerCrop()
+                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                            .into(viewHolder.item_img);
+                                }
+                                else {
+                                    Glide.with(context)
+                                            .load(url)
+                                            .placeholder(R.mipmap.zw_img_300)
+							                .dontAnimate()
+                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                            .into(viewHolder.item_img);
+                                }
+                            }
+
+                        });
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -378,9 +378,44 @@ public class JumpDetailActivty extends BaseActivity {
                     if (NoFastClickUtils.isFastClick()){
                         StringUtil.showToast(this,"对不起，您的点击太快了，请休息一下");
                     }else {
-                        llLingquan.setClickable(false);
+//                        llLingquan.setClickable(false);
                         cancleJump = true;
-                        shareCpsInfo();
+//                        shareCpsInfo();
+                        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+                        alibcShowParams.setClientType("taobao_scheme");
+                        exParams = new HashMap<>();
+                        exParams.put("isv_code", "appisvcode");
+                        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+                        if (domain != null) {
+                            if (domain.equals("tmall") || domain.equals("taobao")) {
+                                showLoadingDialog(JumpDetailActivty.this);
+                                showUrl(url);
+                            } else if (domain.equals("jd")) {
+                                showLoadingDialog(JumpDetailActivty.this);
+                                mHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (cancleJump) {
+                                            updataDialog.dismiss();
+                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+                                                    url,
+                                                    mKeplerAttachParameter,
+                                                    mOpenAppAction);
+                                        }
+                                    }
+                                }, 2000);
+                            } else {
+                                intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+                                if (url != null) {
+                                    intent.putExtra("url", url);
+                                }
+                                if (rowkey != null) {
+                                    intent.putExtra("rowkey", rowkey);
+                                }
+                                startActivity(intent);
+//                    updataDialog.dismiss();
+                            }
+                        }
                     }
                 }
                 break;
@@ -400,8 +435,8 @@ public class JumpDetailActivty extends BaseActivity {
             @Override
             public void run() {
                 if (cancleJump) {
-                    AlibcTrade.show(JumpDetailActivty.this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
                     updataDialog.dismiss();
+                    AlibcTrade.show(JumpDetailActivty.this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
                 }
             }
         }, 2000);

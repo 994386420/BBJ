@@ -232,12 +232,15 @@ public class HomeLoadUtil {
                         if (NoFastClickUtils.isFastClick()){
                             StringUtil.showToast(context,"对不起，您的点击太快了，请休息一下");
                         }else {
-//                            EventIdIntentUtil.EventIdIntent(context, tag.getJSONObject(position));
-                            Intent intent = new Intent(context, DianpuTypesActivity.class);
-                            intent.putExtra("tag",tag.toString());
-                            intent.putExtra("keyword",map.get("keyword").toString());
-                            intent.putExtra("position", position+"");
-                            context.startActivity(intent);
+                            if (map.get("eventId").toString().equals("a2")) {
+                                Intent intent = new Intent(context, DianpuTypesActivity.class);
+                                intent.putExtra("tag", tag.toString());
+                                intent.putExtra("keyword", map.get("keyword").toString());
+                                intent.putExtra("position", position + "");
+                                context.startActivity(intent);
+                            }else {
+                                EventIdIntentUtil.EventIdIntent(context, tag.getJSONObject(position));
+                            }
                         }
                     } catch (Exception e) {
                         // TODO Auto-generated catch block

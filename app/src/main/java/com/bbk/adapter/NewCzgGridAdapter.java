@@ -28,6 +28,7 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,7 +76,11 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return newHomeCzgBean.size();
+        if (newHomeCzgBean != null && newHomeCzgBean.size() > 0) {
+            return newHomeCzgBean.size();
+        }else {
+            return 0;
+        }
     }
 
     public void notifyData(List<NewHomeCzgBean> beans) {
@@ -161,11 +166,13 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter {
                     .load(img)
                     .priority(Priority.HIGH)
                     .placeholder(R.mipmap.zw_img_300)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .centerCrop()
                     .into(viewHolder.item_img);
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    notifyDataSetChanged();
+//                    notifyDataSetChanged();
                     Intent intent;
                     try {
 //                        if (AlibcLogin.getInstance().isLogin() == true){

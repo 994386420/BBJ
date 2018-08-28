@@ -141,27 +141,10 @@ public class StringUtil {
 		return false;
 	}
 
-//	/**
-//	 * 验证手机号码的格式是否正确
-//	 */
-//	public static boolean isMobilePhoneVerify(String mobileString){
-//		if(mobileString ==null || "".equals(mobileString.trim())){
-//			return true;
-//		}else{
-//			Pattern p = Pattern.compile("^1[0-9][0-9]{9}$");
-//			Matcher m = p.matcher(mobileString.trim());
-//			if(!m.matches()){
-//				return true;
-//			}else{
-//				return false;
-//			}
-//		}
-//
-//	}
 	/**
 	 * 验证手机号码的格式是否正确
 	 */
-	public static boolean isMobilePhoneVerify(String mobileString){
+	public static boolean isMobilePhoneVerifyAddress(String mobileString){
 		if(mobileString ==null || "".equals(mobileString.trim())){
 			return true;
 		}else{
@@ -171,6 +154,23 @@ public class StringUtil {
 				return true;
 			}else{
 				return false;
+			}
+		}
+
+	}
+	/**
+	 * 验证手机号码的格式是否正确
+	 */
+	public static boolean isMobilePhoneVerify(String mobileString){
+		if(mobileString ==null || "".equals(mobileString.trim())){
+			return false;
+		}else{
+			Pattern p = Pattern.compile("^1\\d{10}$");
+			Matcher m = p.matcher(mobileString.trim());
+			if(!m.matches()){
+				return false;
+			}else{
+				return true;
 			}
 		}
 

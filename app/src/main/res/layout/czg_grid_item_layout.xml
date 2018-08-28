@@ -22,8 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="206dp"
             android:layout_marginLeft="5px"
-            android:layout_marginRight="5px"
-            android:scaleType="centerCrop" />
+            android:layout_marginRight="5px" />
     <RelativeLayout
         android:paddingBottom="10dp"
         android:paddingTop="10dp"

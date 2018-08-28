@@ -143,7 +143,7 @@ public class AddressActivity extends BaseActivity implements View.OnClickListene
 			StringUtil.showToast(this,"请输入收货人电话");
 			return false;
 		}
-		if (StringUtil.isMobilePhoneVerify(userPhone.getText().toString())) {
+		if (StringUtil.isMobilePhoneVerifyAddress(userPhone.getText().toString())) {
 			StringUtil.showToast(this,"请输入正确的手机号码");
 			return false;
 		}

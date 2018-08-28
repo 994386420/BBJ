@@ -52,7 +52,9 @@ public class ShareManager {
                         ArrayList<Uri> imageUris = new ArrayList<Uri>();
                         if (files != null){
                             for (File f : files) {
-                                imageUris.add(Uri.fromFile(f));
+                                if(f != null) {
+                                    imageUris.add(Uri.fromFile(f));
+                                }
                             }
                         }
                         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);

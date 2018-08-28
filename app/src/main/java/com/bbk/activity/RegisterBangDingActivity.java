@@ -95,7 +95,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 					data = new JSONObject(dataStr);
 				if ("1".equals(data.optString("status"))) {
 
-					if (StringUtil.isNullOrEmpty(addr)) {
+					if (StringUtil.isMobilePhoneVerify(addr)) {
 						get_code_btn.setEnabled(false);
 						time.start();
 						bangding_code.setSelection(bangding_code.getText().toString().length());

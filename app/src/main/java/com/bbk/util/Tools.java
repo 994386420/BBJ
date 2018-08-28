@@ -33,6 +33,9 @@ public class Tools {
             URL url = new URL(image);
             HttpURLConnection conn = null;
             conn = (HttpURLConnection) url.openConnection();
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
+            conn.setConnectTimeout(0);
             InputStream is = null;
             is = conn.getInputStream();
             bitmap =  BitmapFactory.decodeStream(is);
