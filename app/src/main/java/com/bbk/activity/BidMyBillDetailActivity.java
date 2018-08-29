@@ -95,7 +95,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
         zLoadingView.setLoadingHandler(this);
         pubaDetailLayout = findViewById(R.id.puba_detail_layout);
         mTitle = findViewById(R.id.title);
-        mTitle.setText("扑倒详情");
+        mTitle.setText("接单详情");
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +196,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                                     //根据status判断状态显示
                                     switch (mStatus) {
                                         case "1":
-                                            mendtimetop.setText("待扑倒   " + endtime + " 结束");
+                                            mendtimetop.setText("待接单   " + endtime + " 结束");
                                             mtextbox.setVisibility(View.GONE);
                                             break;
                                         case "2":
@@ -219,7 +219,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                                     mprice2.setText("￥" + price);
                                     mcount.setText("x" + number);
                                     mspectatornum.setText("围观 " + spectator + "  人");
-                                    mbidnum.setText("扑倒 " + bidnum + "  人");
+                                    mbidnum.setText("接单 " + bidnum + "  人");
                                     mbidnum2.setText(bidnum + " 条");
                                     mstarttime.setText(begintime);
                                     mendtime.setText(endtime);
@@ -359,7 +359,7 @@ public class BidMyBillDetailActivity extends BaseActivity implements ResultEvent
                 mtext2.setVisibility(View.GONE);
                 break;
             case "1":
-                mtext2.setText("取消扑倒");
+                mtext2.setText("取消接单");
                 mtext2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

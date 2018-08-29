@@ -109,7 +109,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
         list = new ArrayList<>();
         mXjppList = new ArrayList<>();
         mTitle = findViewById(R.id.title);
-        mTitle.setText("我要详情");
+        mTitle.setText("发飙详情");
         tv_status = findViewById(R.id.tv_statuus);
         topbar_goback_btn= (ImageView) findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +196,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
                                 mprice.setText("￥" + pubaDetailBean.getPrice());
                                 mcount.setText("x" + pubaDetailBean.getNumber());
                                 mspectatornum.setText("围观 " + pubaDetailBean.getSpectator() + "  人");
-                                mbidnum.setText("扑倒 " + pubaDetailBean.getBidnum() + "  人");
+                                mbidnum.setText("接单 " + pubaDetailBean.getBidnum() + "  人");
                                 mbidnum2.setText(pubaDetailBean.getBidnum() + " 条");
                                 mordernum.setText("订单编号:" + pubaDetailBean.getOrdernum());
                                 mbegintime.setText("创建时间:" + pubaDetailBean.getBeginlong());
@@ -254,11 +254,11 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
             case "0":
                 tv_status.setText("待审核 "+time);
                 mtext2.setVisibility(View.GONE);
-                mtext1.setText("取消我要");
+                mtext1.setText("取消发飙");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消我要？")
+                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消发飙？")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @SuppressLint("NewApi")
                                     @Override
@@ -275,12 +275,12 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
                 });
                 break;
             case "1":
-                tv_status.setText("待扑倒 "+ time);
-                mtext1.setText("取消我要");
+                tv_status.setText("待接单 "+ time);
+                mtext1.setText("取消发飙");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消我要？")
+                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消发飙？")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @SuppressLint("NewApi")
                                     @Override
@@ -337,11 +337,11 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
                 break;
             case "4":
                 tv_status.setText("未审核通过 "+ time);
-                mtext1.setText("取消我要");
+                mtext1.setText("取消发飙");
                 mtext1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消我要？")
+                        new AlertDialog(BidBillDetailActivity.this).builder().setTitle("提示").setMsg("是否取消发飙？")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @SuppressLint("NewApi")
                                     @Override
@@ -388,7 +388,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
         }
     }
     public void rebid(final String id){
-        mtext1.setText("再次我要");
+        mtext1.setText("再次发飙");
         mtext1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

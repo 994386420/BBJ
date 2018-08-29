@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/topbar_layout"
     tools:context="com.bbk.activity.BidAcceptanceActivity"
-    android:background="#b40000">
+    android:background="@color/tuiguang_color5" >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,14 +17,14 @@
         android:focusableInTouchMode="true">
     <View
         android:id="@+id/data_head"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:orientation="horizontal" >
 
         <ImageView
@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="#fff"
-                android:text="怎么扑"
+                android:text="接单"
                 android:textSize="17dp" />
         </LinearLayout>
         <LinearLayout
@@ -71,7 +71,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#b40000">
+        android:background="@color/tuiguang_color5" >
         <LinearLayout
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="你要我吗?"
+                android:hint="搜飙~"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:textColor="#808080"

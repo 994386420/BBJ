@@ -6,13 +6,13 @@
     android:orientation="vertical"
     android:id="@+id/topbar_layout"
     tools:context="com.bbk.activity.BidBillDetailActivity"
-    android:background="#b40000">
+    android:background="@color/tuiguang_color5">
     <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#b40000">
+        android:background="@color/tuiguang_color5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,12 +25,12 @@
         android:id="@+id/data_head"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#b40000" />
+        android:background="@color/tuiguang_color5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:orientation="horizontal">
 
         <ImageView
@@ -148,7 +148,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="我要价"
+                                    android:text="买方出价"
                                     android:textColor="#b40000"
                                     android:textSize="11dp" />
                             </LinearLayout>
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="扑倒 0 人" />
+                    android:text="接单 0 人" />
 
                 <View
                     android:layout_width="1dp"
@@ -347,7 +347,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#1a9afc"
-                        android:text="联系扑倒人" />
+                        android:text="联系接单人" />
                 </LinearLayout>
 
                 <View
@@ -375,7 +375,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#333333"
-                    android:text="扑倒记录" />
+                    android:text="接单记录" />
 
                 <View
                     android:layout_width="1dp"

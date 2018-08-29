@@ -15,13 +15,13 @@
             android:id="@+id/mzhuangtai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#b40000"
+            android:background="@color/tuiguang_color5"
             android:visibility="gone" />
         <LinearLayout
             android:id="@+id/topbar_layout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="#b40000"
+            android:background="@color/tuiguang_color5"
             android:orientation="horizontal" >
 
             <ImageView
@@ -47,7 +47,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:textColor="#fff"
-                    android:text="你要我吗"
+                    android:text="就要用一元买10元的货"
                     android:textSize="17dp" />
             </LinearLayout>
 
@@ -77,7 +77,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#b40000">
+        android:background="@color/tuiguang_color5">
         <LinearLayout
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
-                android:text="你要我吗?"/>
+                android:text="搜飙~"/>
 
         </LinearLayout>
     </LinearLayout>

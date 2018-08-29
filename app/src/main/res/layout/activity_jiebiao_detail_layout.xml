@@ -7,12 +7,12 @@
     android:orientation="vertical"
     android:id="@+id/topbar_layout"
     tools:context="com.bbk.activity.BidDetailActivity"
-    android:background="#b40000">
+    android:background="@color/tuiguang_color5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#b40000">
+        android:background="@color/tuiguang_color5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,12 +26,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:visibility="gone"
-            android:background="#b40000" />
+            android:background="@color/tuiguang_color5"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="#b40000"
+            android:background="@color/tuiguang_color5"
             android:orientation="horizontal">
 
             <ImageView
@@ -222,7 +222,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="我要价"
+                            android:text="买方出价"
                             android:textColor="#b40000"
                             android:textSize="11dp" />
                     </LinearLayout>
@@ -270,7 +270,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="扑倒 108  人" />
+                        android:text="接单 108  人" />
 
                     <View
                         android:layout_width="1dp"
@@ -308,7 +308,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="扑倒记录" />
+                        android:text="接单记录" />
 
                     <View
                         android:layout_width="1dp"
@@ -403,7 +403,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="我要价 "
+                            android:text="买方出价 "
                             android:textSize="12dp" />
 
                         <TextView
@@ -425,7 +425,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="扑倒价"
+                            android:text="接单价"
                             android:textSize="12dp" />
 
                         <TextView

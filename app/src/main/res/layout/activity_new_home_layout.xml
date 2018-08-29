@@ -276,7 +276,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_weight="1"
                                     android:singleLine="true"
-                                    android:text="你要我吗?"
+                                    android:text="就要用一元买10元的货"
                                     android:textStyle="bold"
                                     android:textColor="#333333"
                                     android:textSize="18dp" />

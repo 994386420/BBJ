@@ -697,9 +697,9 @@ public class NewHomeAdapter extends RecyclerView.Adapter implements View.OnClick
             String sellprice = object.optString("sellprice");
             final String url = object.optString("url");
             mtitle.setText(title);
-            mbuyprice.setText("我要价 " + buyprice);
-            msellprice.setText("扑倒价 " + sellprice);
-            mcount.setText("扑倒中" + count + "人");
+            mbuyprice.setText("买方出价 " + buyprice);
+            msellprice.setText("接单价 " + sellprice);
+            mcount.setText("接单中" + count + "人");
             Glide.with(context).load(img).into(mimg);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

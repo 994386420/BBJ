@@ -8,7 +8,7 @@
         android:id="@+id/data_head"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#b40000" />
+        android:background="@color/tuiguang_color5" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,7 +19,7 @@
             android:padding="10dp"
             android:text="我的战绩"
             android:textColor="#fff"
-            android:background="#b40000"
+            android:background="@color/tuiguang_color5"
             android:gravity="center_horizontal"
             android:textSize="18dp"/>
         <LinearLayout
@@ -29,7 +29,7 @@
             android:orientation="horizontal"
             android:layout_below="@id/mtitle"
             android:gravity="center_vertical"
-            android:background="#b40000">
+            android:background="@color/tuiguang_color5" >
             <TextView
                 android:id="@+id/musername"
                 android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
             android:layout_weight="1"
             android:textSize="14dp"
             android:textColor="@color/black"
-            android:text="我要的"/>
+            android:text="我发的飙"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -235,7 +235,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/text_dark"
-                android:text="谁来扑"/>
+                android:text="待接单"/>
             <TextView
                 android:id="@+id/mjietext"
                 android:layout_width="wrap_content"
@@ -338,7 +338,7 @@
             android:layout_weight="1"
             android:textSize="14dp"
             android:textColor="@color/black"
-            android:text="扑倒的"/>
+            android:text="我接的单"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -375,7 +375,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/text_dark"
-                android:text="扑倒中"/>
+                android:text="接单中"/>
             <TextView
                 android:id="@+id/mbidjietext"
                 android:layout_width="wrap_content"

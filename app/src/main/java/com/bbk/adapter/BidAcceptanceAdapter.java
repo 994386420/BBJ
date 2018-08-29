@@ -91,7 +91,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
             final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
             if (status != null){
                 if (status.equals("1")){
-                viewHolder.mStatus.setText("扑倒");
+                viewHolder.mStatus.setText("接单");
                 viewHolder.mbackground.setVisibility(View.GONE);
                 viewHolder.mTimeStatus.setText("距结束");
                 viewHolder.mtime.setVisibility(View.VISIBLE);
@@ -104,7 +104,7 @@ public class BidAcceptanceAdapter extends BaseAdapter{
                 }
             }
             viewHolder.item_title.setText(title);
-            viewHolder.mbidprice.setText("扑倒价  "+bidprice);
+            viewHolder.mbidprice.setText("接单价  "+bidprice);
             viewHolder.mprice.setText("¥"+price);
             viewHolder.mcount.setText("x"+number);
             Glide.with(context)

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/topbar_layout"
-    android:background="#b40000">
+    android:background="@color/tuiguang_color5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,12 +17,12 @@
         android:id="@+id/data_head"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#b40000" />
+        android:background="@color/tuiguang_color5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:orientation="horizontal">
 
         <ImageView
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="要什么"
+                android:text="发飙"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>

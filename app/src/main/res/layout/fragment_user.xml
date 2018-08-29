@@ -607,7 +607,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:textColor="@color/tuiguang_color3"
-                    android:text="我要的" />
+                    android:text="我发的飙" />
 
                 <ImageView
                     android:layout_width="15dp"
@@ -644,7 +644,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:textColor="@color/tuiguang_color3"
-                    android:text="扑倒的" />
+                    android:text="我接的单" />
 
                 <ImageView
                     android:layout_width="15dp"

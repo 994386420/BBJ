@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/topbar_layout"
     tools:context="com.bbk.activity.BidFilterPriceActivity"
-    android:background="#b40000">
+    android:background="@color/tuiguang_color5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,12 +19,12 @@
         android:id="@+id/data_head"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#b40000" />
+        android:background="@color/tuiguang_color5" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:orientation="horizontal">
 
         <ImageView
@@ -175,14 +175,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#1a9afc"
-            android:text="联系扑倒人" />
+            android:text="联系接单人" />
     </LinearLayout>
     </LinearLayout>
     <TextView
         android:id="@+id/mensure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:text="确定成交"
         android:textColor="#ffffff"
         android:gravity="center"

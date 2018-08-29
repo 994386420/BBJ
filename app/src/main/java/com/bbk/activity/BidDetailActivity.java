@@ -194,7 +194,7 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                                     //根据status判断状态显示
                                     switch (pubaDetailBean.getStatus()){
                                         case "1":
-                                            mendtimetop.setText("待扑倒   "+endtime+" 结束");
+                                            mendtimetop.setText("待接单   "+endtime+" 结束");
                                             break;
                                         case "2":
                                             mendtimetop.setText("待评论 "+endtime);
@@ -216,7 +216,7 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                                     mprice2.setText("￥"+pubaDetailBean.getPrice());
                                     mcount.setText("x"+pubaDetailBean.getNumber());
                                     mspectatornum.setText("围观 "+pubaDetailBean.getSpectator()+"  人");
-                                    mbidnum.setText("扑倒 "+pubaDetailBean.getBidnum()+"  人");
+                                    mbidnum.setText("接单 "+pubaDetailBean.getBidnum()+"  人");
                                     mbidnum2.setText(pubaDetailBean.getBidnum()+" 条");
                                     mstarttime.setText(pubaDetailBean.getBegintime());
                                     mendtime.setText(endtime);
@@ -225,13 +225,13 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                                     if (pubaDetailBean.getUserid() != null) {
                                         if (pubaDetailBean.getUserid().equals(userID)) {
                                             mgobid.setClickable(false);
-                                            mGoJbText.setText("不能扑倒自己");
-                                            mGoJbText.setTextColor(getResources().getColor(R.color.biao_color));
+                                            mGoJbText.setText("不能自己接单");
+                                            mGoJbText.setTextColor(getResources().getColor(R.color.tuiguang_color5));
                                             mGoJbTextStaus.setVisibility(View.GONE);
                                             mgobid.setBackgroundColor(getResources().getColor(R.color.gray));
                                         } else {
                                             mgobid.setClickable(true);
-                                            mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                                            mgobid.setBackgroundColor(getResources().getColor(R.color.tuiguang_color5));
                                         }
                                     }
                                     //从我的接镖列表获取返回值status，如果status = 1，可接镖；其他为不可接镖
@@ -239,7 +239,7 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                                         status = getIntent().getStringExtra("status");
                                         if (status.equals("1")) {
                                             mgobid.setClickable(true);
-                                            mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                                            mgobid.setBackgroundColor(getResources().getColor(R.color.tuiguang_color5));
                                         } else {
                                             mgobid.setClickable(false);
                                             mGoJbText.setText("已结束");
@@ -320,10 +320,10 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                 if (list.get(i).get("biduserid").toString().equals(userID)){
                     if (object.optString("bidstatus").equals("-1")){
                         mgobid.setClickable(true);
-                        mgobid.setBackgroundColor(getResources().getColor(R.color.biao_color));
+                        mgobid.setBackgroundColor(getResources().getColor(R.color.tuiguang_color5));
                     }else {
                         mgobid.setClickable(false);
-                        mGoJbText.setText("已扑倒");
+                        mGoJbText.setText("已接单");
                         mGoJbText.setTextColor(getResources().getColor(R.color.color_line_text));
                         mGoJbTextStaus.setVisibility(View.GONE);
                         mgobid.setBackgroundColor(getResources().getColor(R.color.gray));

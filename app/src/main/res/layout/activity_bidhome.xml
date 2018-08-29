@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_home_layout"
     android:layout_width="match_parent"
-    android:background="@color/biao_color"
+    android:background="@color/tuiguang_color5"
     android:layout_height="match_parent" >
     <RelativeLayout
         android:background="#FFF"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="我要"
+                android:text="发飙"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="扑倒"
+                android:text="接单"
                 android:textColor="#444444"
                 android:textSize="10dp" />
         </LinearLayout>

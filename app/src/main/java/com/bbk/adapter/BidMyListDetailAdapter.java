@@ -117,12 +117,12 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtimebefor.setText("距结束");
                         vh.mtime.setVisibility(View.VISIBLE);
                         vh.mtime.friendly_time(endtime,"#999999");
-                        vh.mtext2.setText("取消扑倒");
+                        vh.mtext2.setText("取消接单");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消扑倒？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消接单？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -155,13 +155,13 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtimebefor.setText("距结束");
                         vh.mtime.setVisibility(View.VISIBLE);
                         vh.mtime.friendly_time(endtime,"#999999");
-                        vh.mtypetext.setText("正扑倒");
-                        vh.mtext2.setText("取消扑倒");
+                        vh.mtypetext.setText("正接单");
+                        vh.mtext2.setText("取消接单");
                         vh.mtext2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消扑倒？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消接单？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override

@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     android:id="@+id/topbar_layout"
     tools:context="com.bbk.activity.BidMyWantPLActivity"
-    android:background="#b40000">
+    android:background="@color/tuiguang_color5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,12 +22,12 @@
         android:id="@+id/data_head"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#b40000" />
+        android:background="@color/tuiguang_color5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:orientation="horizontal">
 
         <ImageView

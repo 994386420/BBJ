@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "E:\\bibijing\\bibijing\\guideview\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
+            "map": [
+                {
+                    "source": "E:\\bibijing\\bibijing\\guideview\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,113,169,222,269",
+                        "endColumns": "57,55,52,46,52",
+                        "endOffsets": "108,164,217,264,317"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "E:\\bibijing\\bibijing\\guideview\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+            "map": [
+                {
+                    "source": "E:\\bibijing\\bibijing\\guideview\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,113,169,222,269",
+                        "endColumns": "57,55,52,46,52",
+                        "endOffsets": "108,164,217,264,317"
+                    }
+                }
+            ]
+        }
+    ]
+}

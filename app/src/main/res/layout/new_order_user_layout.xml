@@ -248,7 +248,7 @@
                 android:textColor="@color/shop_color1"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"
-                android:text="我要的"/>
+                android:text="我发的飙"/>
 
         </LinearLayout>
         <View
@@ -276,7 +276,7 @@
                 android:textColor="@color/shop_color1"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"
-                android:text="扑倒的"/>
+                android:text="我接的单"/>
 
         </LinearLayout>
         <View

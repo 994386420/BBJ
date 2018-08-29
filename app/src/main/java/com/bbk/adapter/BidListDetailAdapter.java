@@ -113,12 +113,12 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtime.setVisibility(View.VISIBLE);
                         initStartData(vh,woYaoBean);
                         vh.mtext2.setVisibility(View.GONE);
-                        vh.mtext1.setText("取消我要");
+                        vh.mtext1.setText("取消发飙");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消我要？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发飙？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -138,16 +138,16 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                     case "1":
                         vh.mpricebox.setVisibility(View.GONE);
                         vh.mtimebefor.setText("距结束");
-                        vh.mtypetext.setText("待扑倒");
+                        vh.mtypetext.setText("待接单");
                         initStartData(vh,woYaoBean);
                         vh.mtime.friendly_time(endtime,"#999999");
                         vh.mtime.setVisibility(View.VISIBLE);
-                        vh.mtext1.setText("取消我要");
+                        vh.mtext1.setText("取消发飙");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消我要？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发飙？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -216,12 +216,12 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
                         vh.mtimebefor.setText(endtime);
                         vh.mtime.setVisibility(View.GONE);
                         initStartData(vh,woYaoBean);
-                        vh.mtext1.setText("取消我要");
+                        vh.mtext1.setText("取消发飙");
                         vh.mtext1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 curposition = position;
-                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消我要？")
+                                new AlertDialog(context).builder().setTitle("提示").setMsg("是否取消发飙？")
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @SuppressLint("NewApi")
                                             @Override
@@ -288,7 +288,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
     }
 
     public void rebid(ViewHolder vh, final String id){
-        vh.mtext1.setText("再次我要");
+        vh.mtext1.setText("再次发飙");
         vh.mtext1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,7 +315,7 @@ public class BidListDetailAdapter extends BaseAdapter implements ResultEvent{
             String url =woYaoBean.getUrl();
             vh.item_title.setText(title);
             vh.mcount.setText("x"+number);
-            vh.mbidnum.setText("扑倒 "+bidnum+" 人");
+            vh.mbidnum.setText("接单 "+bidnum+" 人");
             vh.mprice.setText("¥"+price);
             Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);
 

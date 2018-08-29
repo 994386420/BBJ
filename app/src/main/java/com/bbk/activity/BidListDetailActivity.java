@@ -82,7 +82,7 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
         zLoadingView = findViewById(R.id.progress);
         zLoadingView.setLoadingHandler(this);
         mTitle = findViewById(R.id.title);
-        mTitle.setText("我要的");
+        mTitle.setText("我发的飙");
         topbar_goback_btn= findViewById(R.id.topbar_goback_btn);
         topbar_goback_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class BidListDetailActivity extends BaseActivity implements CommonLoading
         xrefresh = findViewById(R.id.xrefresh);
         tablayout.addTab(tablayout.newTab().setText("全部"));
         tablayout.addTab(tablayout.newTab().setText("待审核"));
-        tablayout.addTab(tablayout.newTab().setText("待扑倒"));
+        tablayout.addTab(tablayout.newTab().setText("待接单"));
         tablayout.addTab(tablayout.newTab().setText("待评论"));
         tablayout.addTab(tablayout.newTab().setText("完成"));
         tablayout.setTabMode(TabLayout.MODE_FIXED);

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/topbar_layout"
     tools:context="com.bbk.activity.BidingActivity"
-    android:background="#b40000">
+    android:background="@color/tuiguang_color5">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,12 +20,12 @@
         android:id="@+id/data_head"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#b40000" />
+        android:background="@color/tuiguang_color5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:orientation="horizontal">
 
         <ImageView
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="怎么扑"
+                android:text="接单"
                 android:textColor="#fff"
                 android:textSize="17dp" />
         </LinearLayout>
@@ -143,7 +143,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="我要价"
+                                    android:text="买方出价"
                                     android:textColor="#b40000"
                                     android:textSize="11dp" />
                             </LinearLayout>
@@ -255,7 +255,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="扑倒价需小于或等于我要价，以免错过交易机会"
+                        android:text="接单价需小于或等于买方出价，以免错过交易机会"
                         android:textColor="#fff"
                         android:textSize="13dp" />
                 </LinearLayout>
@@ -357,7 +357,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="#b40000"
+        android:background="@color/tuiguang_color5"
         android:text="提交价格及信息"
         android:textColor="#fff"
         android:gravity="center"/>
