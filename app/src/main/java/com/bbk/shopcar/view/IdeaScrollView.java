@@ -10,9 +10,7 @@ import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 
-/**
- * Created by idea on 2018/2/24.
- */
+
 
 public class IdeaScrollView extends ScrollView {
 

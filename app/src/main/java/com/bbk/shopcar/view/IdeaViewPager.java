@@ -6,9 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.WindowManager;
 
-/**
- * Created by idea on 2018/2/24.
- */
 
 public class IdeaViewPager extends ViewPager {
 
