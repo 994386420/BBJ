@@ -1,7 +1,6 @@
 package com.bbk.shopcar.entity;
 
 /**
- * Created by Administrator on 2017/3/26.
  * 商品信息
  */
 

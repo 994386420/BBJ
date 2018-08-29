@@ -6,11 +6,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-/**
- * Description: 沉梦昂志
- * Data：2017/3/27-10:14
- * Author: xiaoma
- */
 
 public class UtilTool {
 

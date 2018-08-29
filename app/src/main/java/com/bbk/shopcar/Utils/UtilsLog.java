@@ -2,9 +2,6 @@ package com.bbk.shopcar.Utils;
 
 import android.util.Log;
 
-/**
- * Created by Administrator on 2017/2/11.
- */
 
 public class UtilsLog {
     //开关
