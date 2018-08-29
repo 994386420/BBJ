@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="首页"
-                android:textColor="#b40000"
+                android:textColor="#ff641e"
                 android:textSize="10dp" />
         </LinearLayout>
 

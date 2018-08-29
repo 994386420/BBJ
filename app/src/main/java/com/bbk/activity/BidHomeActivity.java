@@ -78,7 +78,7 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     public static Activity instance = null;
     private String bcolor = "#ffffff";
     private String tcolor = "#444444";
-    private String ctcolor = "#b40000";
+    private String ctcolor = "#ff641e";
     private BidFragment bidFragment;
     public static String Flag = "";
     public static NumImageView mNumImage;//带数字角标的自定义view
