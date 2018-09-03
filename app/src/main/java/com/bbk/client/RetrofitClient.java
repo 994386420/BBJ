@@ -511,6 +511,12 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+    public  void getOrderInfoByJinbi(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getOrderInfoByJinbi(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
 
     public  void queryAddro(Map<String, String> parameters, Observer<?> observer) {
         apiService.queryAddro(parameters)

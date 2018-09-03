@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -212,6 +213,18 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             }
 
         }
+//        String customContent;
+//        if (getActivity().getIntent().getStringExtra("customContent") != null) {
+//            customContent = getActivity().getIntent().getStringExtra("customContent");
+//            try {
+//                JSONObject obj = new JSONObject(customContent);
+//                if (!obj.isNull("eventId")) {
+//                    EventIdIntentUtil.EventIdIntent(getActivity(), obj);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         if (null == mView) {
             getActivity().getWindow().setBackgroundDrawable(null);

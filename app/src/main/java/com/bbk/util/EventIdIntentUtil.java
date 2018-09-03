@@ -326,6 +326,7 @@ public class EventIdIntentUtil {
 				}
 				break;
 			case "124":
+				NewConstants.showdialogFlg = "1";
 				intent = new Intent(context, IntentActivity.class);
 				intent.putExtra("url",  jo.optString("htmlUrl"));
 				context.startActivity(intent);

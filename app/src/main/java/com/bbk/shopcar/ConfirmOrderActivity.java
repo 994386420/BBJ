@@ -87,7 +87,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     LinearLayout llCheck;
     @BindView(R.id.ll_add_address)
     LinearLayout llAddAddress;
-    private String ids, nums, guiges,liuyans;
+    private String ids, nums, guiges,liuyans,type = "0";
     private PayReq mReq;
     private PayModel mPayModel;
     private IWXAPI msgApi = null;
@@ -249,7 +249,14 @@ public class ConfirmOrderActivity extends BaseActivity {
                     }
                     liuyans = list.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ","").replace("0"," ");
                     Logg.json(liuyans);
-                    getOrderInfo();
+                    if (cofirmOrderBean != null) {
+                        if (cofirmOrderBean.getTotaljin() != null)
+                            if (cofirmOrderBean.getTotaljin().equals("0")) {
+                                getOrderInfo();
+                            }else {
+                                getOrderInfoByJinbi();
+                            }
+                    }
                 }else {
                     StringUtil.showToast(this,"请选择收货地址");
                 }
@@ -276,7 +283,79 @@ public class ConfirmOrderActivity extends BaseActivity {
         maps.put("nums", nums);
         maps.put("guiges", guiges);
         maps.put("liuyans",liuyans);
+        maps.put("type",type);
         RetrofitClient.getInstance(this).createBaseApi().getOrderInfo(
+                maps, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            if (jsonObject.optString("status").equals("1")) {
+                                Logg.json(jsonObject);
+                                try {
+                                    JSONObject object = new JSONObject(content);
+                                    NewConstants.refeshFlag = "1";
+                                    NewConstants.refeshOrderFlag = "1";
+                                    mPayModel.wxPay(object, new PayModel.wxListener() {
+                                        @Override
+                                        public void onResult(PayReq req) {
+                                            mReq = req;
+                                            msgApi = WXAPIFactory.createWXAPI(ConfirmOrderActivity.this, Constants.APP_ID);
+//                            msgApi.registerApp(Constants.APP_ID);
+                                            msgApi.sendReq(mReq);
+                                            DialogSingleUtil.dismiss(0);
+                                            finish();
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                StringUtil.showToast(ConfirmOrderActivity.this, jsonObject.optString("errmsg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                        goPay.setClickable(true);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(ConfirmOrderActivity.this);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        goPay.setClickable(true);
+                        StringUtil.showToast(ConfirmOrderActivity.this, e.message);
+                    }
+                });
+    }
+    /**
+     * totaljin   不为0的时候调用
+     * 增加参数type（0不用金币（可选金币抵扣）	1要使用金币）
+     * 调起支付订单
+     */
+    private void getOrderInfoByJinbi() {
+        goPay.setClickable(false);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userID);
+        maps.put("addressid", addrid);
+        maps.put("useJinbi", usejinbi);
+        maps.put("ids", ids);
+        maps.put("nums", nums);
+        maps.put("guiges", guiges);
+        maps.put("liuyans",liuyans);
+        maps.put("type",type);
+        RetrofitClient.getInstance(this).createBaseApi().getOrderInfoByJinbi(
                 maps, new BaseObserver<String>(this) {
                     @Override
                     public void onNext(String s) {

@@ -23,6 +23,15 @@ public class ShopDetailBean {
     private String dianpulogo;
     private String fahuodi;
     private String youhui;//优惠信息
+    private String leastjin;//至少使用多少个金币
+
+    public String getLeastjin() {
+        return leastjin;
+    }
+
+    public void setLeastjin(String leastjin) {
+        this.leastjin = leastjin;
+    }
 
     public String getYouhui() {
         return youhui;

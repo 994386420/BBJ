@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -53,8 +54,11 @@ public class UserSuggestionActivity extends BaseActivity implements OnClickListe
 			
 			@Override
 			public void onClick(View arg0) {
-				initData();
-				finish();
+				if ( medit.getText() != null && !medit.getText().toString().equals("")) {
+					initData();
+				}else {
+					StringUtil.showToast(UserSuggestionActivity.this, "您还没有提出建议哦");
+				}
 			}
 		});
 		medit = (EditText)findViewById(R.id.medit);
@@ -82,12 +86,13 @@ public class UserSuggestionActivity extends BaseActivity implements OnClickListe
 		paramsMap.put("userid", userID);
 		paramsMap.put("content", medit.getText().toString()+"--来自："+string);
 		dataFlow.requestData(1, "newService/insertFeedBack", paramsMap, this);
-		StringUtil.showToast(this, "发布成功");
 	}
 
 	@Override
 	public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {
-		
+		DialogSingleUtil.dismiss(0);
+		StringUtil.showToast(this, "发布成功");
+		finish();
 	}
 
 	@Override

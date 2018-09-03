@@ -40,6 +40,7 @@ import com.bbk.entity.XGMessageEntity;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
 import com.bbk.server.FloatingWindowService;
+import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -53,6 +54,7 @@ import com.tencent.android.tpush.XGPushManager;
 
 
 public class WelcomeActivity extends BaseActivity2{
+	String customContent;
 	private XGMessageEntity xgMessage;
 	private TextView mbtn;
 	private final static String ALBUM_PATH
@@ -80,6 +82,7 @@ public class WelcomeActivity extends BaseActivity2{
 				if(xgMessage != null){
 					intent.putExtra("xgMessage", new Gson().toJson(xgMessage).toString());
 				}
+				intent.putExtra("customContent", customContent);
 				startActivity(intent);
 				finish();
 			}
@@ -142,6 +145,7 @@ public class WelcomeActivity extends BaseActivity2{
 			//android.provider.Settings;
 			token = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 		}
+
 //		 = TelephonyMgr.getDeviceId();
 		//启动后台服务
 		Intent service=new Intent(this, FloatingWindowService.class);
@@ -220,6 +224,9 @@ public class WelcomeActivity extends BaseActivity2{
 	}
 
 	private void init() {
+		if (getIntent().getStringExtra("customContent") != null) {
+			customContent = getIntent().getStringExtra("customContent");
+		}
 		HomeActivity.position = 0;
 		mbtn=(TextView) findViewById(R.id.mbtn);
 		mbtn.setOnClickListener(new OnClickListener() {
@@ -230,6 +237,7 @@ public class WelcomeActivity extends BaseActivity2{
 				if(xgMessage != null){
 					intent.putExtra("xgMessage", new Gson().toJson(xgMessage).toString());
 				}
+				intent.putExtra("customContent", customContent);
 				startActivity(intent);
 				finish();
 			}

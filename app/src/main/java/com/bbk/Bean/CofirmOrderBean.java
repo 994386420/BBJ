@@ -17,6 +17,15 @@ public class CofirmOrderBean {
     private String jinbimoney;
     private String receiver;
     private String addrid;
+    private String totaljin;//总共需要使用的金币个数
+
+    public String getTotaljin() {
+        return totaljin;
+    }
+
+    public void setTotaljin(String totaljin) {
+        this.totaljin = totaljin;
+    }
 
     public String getAddrid() {
         return addrid;

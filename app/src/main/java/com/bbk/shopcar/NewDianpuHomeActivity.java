@@ -38,6 +38,9 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.model.tablayout.XTabLayout;
+import com.bbk.shopcar.presenter.DianpuHomePresenter;
+import com.bbk.shopcar.view.DianpuHomeView;
+import com.bbk.shopcar.view.DianpuListView;
 import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
@@ -153,6 +156,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     private List<Map<String, String>> titlelist;
     private boolean isshowGuanggao = true;
     JSONObject preguanggao;
+    private DianpuHomePresenter dianpuHomePresenter = new DianpuHomePresenter(this);
 
 
     @Override
@@ -163,19 +167,22 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         View topView = findViewById(R.id.toolbaretail);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         ButterKnife.bind(this);
+        dianpuHomePresenter.attachView(dianpuHomeView);
+        dianpuHomePresenter.attachListView(dianpuListView);
         initView();
         setToolBar();
-        queryIndexMain();
+        dianpuHomePresenter.queryIndexMain(refreshLayout,mrecyclerview,zLoadingView);
         tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(XTabLayout.Tab tab) {
                 Logg.e(tab.getText());
+                loadingProgress.setVisibility(View.VISIBLE);
                 loadingProgress.load();
                 int j = tab.getPosition();
                 keyword = tab.getText().toString();
                 page = 1;
                 x = 1;
-                queryProductListByKeyword(keyword);
+                dianpuHomePresenter.queryProductListByKeyword("","",keyword,refresh,refreshLayout,loadingProgress,mrecyclerview,page);
             }
 
             @Override
@@ -190,6 +197,125 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         });
     }
 
+    /**
+     * 店铺首页数据
+     */
+    private DianpuHomeView dianpuHomeView = new DianpuHomeView() {
+        @Override
+        public void onSuccess(DianPuHomeBean dianPuHomeBean) {
+            try {
+                //店铺banner
+                if (dianPuHomeBean.getBanner() != null) {
+                    JSONArray banner = new JSONArray(dianPuHomeBean.getBanner());
+                    if (banner != null && banner.length() > 0) {
+                        HomeLoadUtil.loadbanner(NewDianpuHomeActivity.this, mBanner, banner);
+                    }
+                }
+                List<Map<String, String>> taglist = new ArrayList<>();
+                //店铺tag
+                if (dianPuHomeBean.getTag() != null) {
+                    JSONArray tag = new JSONArray(dianPuHomeBean.getTag());
+                    if (tag != null && tag.length() > 0) {
+                        HomeLoadUtil.loaddianpuTag(NewDianpuHomeActivity.this, taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
+                    }
+                }
+                //分类
+                if (dianPuHomeBean.getTypes() != null) {
+                    JSONArray Types = new JSONArray(dianPuHomeBean.getTypes());
+                    keyword = Types.getJSONObject(0).optString("keyword");
+//                                    queryProductListByKeyword(keyword);
+                    try {
+                        if (showTime == 0) {
+                            showTime++;
+                            for (int i = 0; i < Types.length(); i++) {
+                                String keyword = Types.getJSONObject(i).optString("name");
+                                tablayout.addTab(tablayout.newTab().setText(keyword));
+                            }
+                        }
+                        XTabLayout.Tab tabAt = tablayout.getTabAt(0);
+                        tabAt.select();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //超值好货
+                if (dianPuHomeBean.getHotlist() != null) {
+                    List<ShopDianpuBean> shopDianpuBeans = JSON.parseArray(dianPuHomeBean.getHotlist(), ShopDianpuBean.class);
+                    hotRecyclerview.setHasFixedSize(true);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewDianpuHomeActivity.this);
+                    linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+                    hotRecyclerview.setLayoutManager(linearLayoutManager);
+                    hotRecyclerview.setAdapter(new DianPuHoHotGridAdapter(NewDianpuHomeActivity.this, shopDianpuBeans));
+                }
+                //品牌优选
+                if (dianPuHomeBean.getBrand() != null) {
+                    List<PinpaiBean> pinpaiBeans = JSON.parseArray(dianPuHomeBean.getBrand(), PinpaiBean.class);
+                    pinpaiRecyclerview.setHasFixedSize(true);
+                    LinearLayoutManager linearLayoutManagePp = new LinearLayoutManager(NewDianpuHomeActivity.this);
+                    linearLayoutManagePp.setOrientation(linearLayoutManagePp.HORIZONTAL);
+                    pinpaiRecyclerview.setLayoutManager(linearLayoutManagePp);
+                    pinpaiRecyclerview.setAdapter(new DianPuHomePinpaiGridAdapter(NewDianpuHomeActivity.this, pinpaiBeans));
+                }
+
+                if (dianPuHomeBean.getGuanggao() != null) {
+                    if (isshowGuanggao) {
+                        preguanggao = new JSONObject(dianPuHomeBean.getGuanggao());
+                        new HomeAlertDialog(NewDianpuHomeActivity.this).builder()
+                                .setimag(preguanggao.optString("img"))
+                                .setonclick(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View arg0) {
+                                        EventIdIntentUtil.EventIdIntent(NewDianpuHomeActivity.this, preguanggao);
+                                    }
+                                }).show();
+                        isshowGuanggao = false;
+                    }
+
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onError(String result) {
+            StringUtil.showToast(NewDianpuHomeActivity.this,result);
+        }
+    };
+
+    /**
+     *商品列表
+     */
+    private DianpuListView dianpuListView = new DianpuListView() {
+        @Override
+        public void onSuccess(List<ShopDianpuBean> shopDianpuBeans) {
+            if (x == 1) {
+                if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
+                    refresh.setEnableLoadMore(true);
+                    mrecyclerview.setVisibility(View.VISIBLE);
+                    loadingProgress.loadSuccess();
+                    dianPuGridAdapter = new DianPuGridAdapter(NewDianpuHomeActivity.this, shopDianpuBeans);
+                    mrecyclerview.setAdapter(dianPuGridAdapter);
+                } else {
+                    mrecyclerview.setVisibility(View.GONE);
+                    loadingProgress.loadSuccess(true);
+                    refresh.setEnableLoadMore(false);
+                }
+            } else {
+                if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
+                    dianPuGridAdapter.notifyData(shopDianpuBeans);
+                } else {
+                    StringUtil.showToast(NewDianpuHomeActivity.this, "没有更多了");
+                    refresh.setEnableLoadMore(false);
+                }
+            }
+        }
+
+        @Override
+        public void onError(String result) {
+            StringUtil.showToast(NewDianpuHomeActivity.this,result);
+        }
+    };
     /**
      * 初始化setToolBar
      */
@@ -250,203 +376,6 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     }
 
     /**
-     * 首页数据请求
-     */
-    private void queryIndexMain() {
-        Map<String, String> maps = new HashMap<String, String>();
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        maps.put("userid", userID);
-        RetrofitClient.getInstance(NewDianpuHomeActivity.this).createBaseApi().queryIndexMain(
-                maps, new BaseObserver<String>(NewDianpuHomeActivity.this) {
-                    @Override
-                    public void onNext(String s) {
-                        try {
-                            mrecyclerview.setVisibility(View.VISIBLE);
-                            refreshLayout.setVisibility(View.VISIBLE);
-                            JSONObject jsonObject = new JSONObject(s);
-//                            Logg.json(jsonObject);
-                            if (jsonObject.optString("status").equals("1")) {
-                                DianPuHomeBean dianPuHomeBean = JSON.parseObject(jsonObject.optString("content"), DianPuHomeBean.class);
-                                //店铺banner
-                                if (dianPuHomeBean.getBanner() != null) {
-                                    JSONArray banner = new JSONArray(dianPuHomeBean.getBanner());
-                                    if (banner != null && banner.length() > 0) {
-                                        HomeLoadUtil.loadbanner(NewDianpuHomeActivity.this, mBanner, banner);
-                                    }
-                                }
-                                List<Map<String, String>> taglist = new ArrayList<>();
-                                //店铺tag
-                                if (dianPuHomeBean.getTag() != null) {
-                                    JSONArray tag = new JSONArray(dianPuHomeBean.getTag());
-                                    if (tag != null && tag.length() > 0) {
-                                        HomeLoadUtil.loaddianpuTag(NewDianpuHomeActivity.this, taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
-                                    }
-                                }
-                                //分类
-                                if (dianPuHomeBean.getTypes() != null) {
-                                    JSONArray Types = new JSONArray(dianPuHomeBean.getTypes());
-                                    keyword = Types.getJSONObject(0).optString("keyword");
-//                                    queryProductListByKeyword(keyword);
-                                    try {
-                                        if (showTime == 0) {
-                                            showTime++;
-                                            for (int i = 0; i < Types.length(); i++) {
-                                                String keyword = Types.getJSONObject(i).optString("name");
-                                                tablayout.addTab(tablayout.newTab().setText(keyword));
-                                            }
-                                        }
-                                        XTabLayout.Tab tabAt = tablayout.getTabAt(0);
-                                        tabAt.select();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                //超值好货
-                                if (dianPuHomeBean.getHotlist() != null) {
-                                    List<ShopDianpuBean> shopDianpuBeans = JSON.parseArray(dianPuHomeBean.getHotlist(), ShopDianpuBean.class);
-                                    hotRecyclerview.setHasFixedSize(true);
-                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(NewDianpuHomeActivity.this);
-                                    linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
-                                    hotRecyclerview.setLayoutManager(linearLayoutManager);
-                                    hotRecyclerview.setAdapter(new DianPuHoHotGridAdapter(NewDianpuHomeActivity.this, shopDianpuBeans));
-                                }
-                                //品牌优选
-                                if (dianPuHomeBean.getBrand() != null) {
-                                    List<PinpaiBean> pinpaiBeans = JSON.parseArray(dianPuHomeBean.getBrand(), PinpaiBean.class);
-                                    pinpaiRecyclerview.setHasFixedSize(true);
-                                    LinearLayoutManager linearLayoutManagePp = new LinearLayoutManager(NewDianpuHomeActivity.this);
-                                    linearLayoutManagePp.setOrientation(linearLayoutManagePp.HORIZONTAL);
-                                    pinpaiRecyclerview.setLayoutManager(linearLayoutManagePp);
-                                    pinpaiRecyclerview.setAdapter(new DianPuHomePinpaiGridAdapter(NewDianpuHomeActivity.this, pinpaiBeans));
-                                }
-
-                                if (dianPuHomeBean.getGuanggao() != null) {
-                                    if (isshowGuanggao) {
-                                        preguanggao = new JSONObject(dianPuHomeBean.getGuanggao());
-                                        new HomeAlertDialog(NewDianpuHomeActivity.this).builder()
-                                                .setimag(preguanggao.optString("img"))
-                                                .setonclick(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View arg0) {
-                                                        EventIdIntentUtil.EventIdIntent(NewDianpuHomeActivity.this, preguanggao);
-                                                    }
-                                                }).show();
-                                        isshowGuanggao = false;
-                                    }
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    protected void hideDialog() {
-                        refreshLayout.setEnableRefresh(true);
-                        refreshLayout.finishRefresh();
-                        zLoadingView.loadSuccess();
-                        DialogSingleUtil.dismiss(0);
-                    }
-
-                    @Override
-                    protected void showDialog() {
-                        DialogSingleUtil.show(NewDianpuHomeActivity.this);
-                    }
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        refreshLayout.finishRefresh();
-                        DialogSingleUtil.dismiss(0);
-                        zLoadingView.setVisibility(View.VISIBLE);
-                        zLoadingView.loadError();
-                        refreshLayout.setVisibility(View.GONE);
-                        mrecyclerview.setVisibility(View.GONE);
-                        StringUtil.showToast(NewDianpuHomeActivity.this, e.message);
-                    }
-                });
-    }
-
-
-    private void queryProductListByKeyword(String keyword) {
-//        Logg.e(keyword + "===========>>>>>>>");
-        refresh.setNoMoreData(false);
-        Map<String, String> maps = new HashMap<String, String>();
-        maps.put("dianpu", "");
-        maps.put("keyword", keyword);
-        maps.put("sortWay", "");
-        maps.put("page", page + "");
-        RetrofitClient.getInstance(NewDianpuHomeActivity.this).createBaseApi().queryProductListByKeyword(
-                maps, new BaseObserver<String>(NewDianpuHomeActivity.this) {
-                    @Override
-                    public void onNext(String s) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String content = jsonObject.optString("content");
-                            JSONObject jsonObject1 = new JSONObject(content);
-                            if (jsonObject.optString("status").equals("1")) {
-//                                Logg.json(content);
-                                List<ShopDianpuBean> shopDianpuBeans = JSON.parseArray(jsonObject1.optString("list"), ShopDianpuBean.class);
-                                //禁用滑动事件
-//                                mrecyclerview.setNestedScrollingEnabled(false);
-                                if (x == 1) {
-                                    if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
-                                        refresh.setEnableLoadMore(true);
-                                        mrecyclerview.setVisibility(View.VISIBLE);
-                                        loadingProgress.loadSuccess();
-                                        dianPuGridAdapter = new DianPuGridAdapter(NewDianpuHomeActivity.this, shopDianpuBeans);
-                                        mrecyclerview.setAdapter(dianPuGridAdapter);
-                                    } else {
-                                        mrecyclerview.setVisibility(View.GONE);
-//                                        progress.setVisibility(View.VISIBLE);
-//                                        progress.loadSuccess(true);
-                                        loadingProgress.loadSuccess(true);
-                                        refresh.setEnableLoadMore(false);
-                                    }
-                                } else {
-                                    if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
-                                        dianPuGridAdapter.notifyData(shopDianpuBeans);
-                                    } else {
-                                        StringUtil.showToast(NewDianpuHomeActivity.this, "没有更多了");
-                                        refresh.setEnableLoadMore(false);
-                                    }
-                                }
-                            } else {
-                                StringUtil.showToast(NewDianpuHomeActivity.this, jsonObject.optString("errmsg"));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    protected void hideDialog() {
-                        refresh.finishLoadMore();
-                        refreshLayout.finishRefresh();
-                        DialogSingleUtil.dismiss(0);
-                    }
-
-                    @Override
-                    protected void showDialog() {
-//                        DialogSingleUtil.show(DianpuHomeActivity.this);
-                    }
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        DialogSingleUtil.dismiss(0);
-                        refresh.finishLoadMore();
-                        refreshLayout.finishRefresh();
-                        mrecyclerview.setVisibility(View.GONE);
-                        loadingProgress.loadError();
-//                        progress.loadError();
-//                        progress.setVisibility(View.VISIBLE);
-                        StringUtil.showToast(NewDianpuHomeActivity.this, e.message);
-                    }
-                });
-    }
-
-    /**
      * 刷新事件
      */
     private void refresh() {
@@ -456,21 +385,19 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         refresh.setEnableAutoLoadMore(true);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(final RefreshLayout refreshlayout) {
-                queryIndexMain();
+            public void onRefresh(final RefreshLayout refreshlayoutt) {
+                dianpuHomePresenter.queryIndexMain(refreshLayout,mrecyclerview,zLoadingView);
                 x = 1;
                 page = 1;
-                queryProductListByKeyword(keyword);
-//                XTabLayout.Tab tabAt = tablayout.getTabAt(0);
-//                tabAt.select();
+                dianpuHomePresenter.queryProductListByKeyword("","",keyword,refresh,refreshLayout,loadingProgress,mrecyclerview,page);
             }
         });
         refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
+            public void onLoadMore(RefreshLayout refreshLayoutt) {
                 page++;
                 x = 2;
-                queryProductListByKeyword(keyword);
+                dianpuHomePresenter.queryProductListByKeyword("","",keyword,refresh,refreshLayout,loadingProgress,mrecyclerview,page);
             }
         });
     }
@@ -482,7 +409,8 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     public void doRequestData() {
         DialogSingleUtil.show(this);
         zLoadingView.setVisibility(View.GONE);
-        queryIndexMain();
+        loadingProgress.setVisibility(View.GONE);
+        dianpuHomePresenter.queryIndexMain(refreshLayout,mrecyclerview,zLoadingView);
         x = 1;
         page = 1;
     }
@@ -492,7 +420,6 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         super.onDestroy();
         DialogSingleUtil.dismiss(0);
     }
-
 
     /**
      * 点击事件

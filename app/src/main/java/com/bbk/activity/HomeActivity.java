@@ -514,7 +514,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(mPageName);
+//        MobclickAgent.onPageStart(mPageName);
         String type = SharedPreferencesUtil.getSharedData(getApplicationContext(), "homeactivty", "type");
         if (!TextUtils.isEmpty(type)) {
             SharedPreferencesUtil.cleanShareData(getApplicationContext(), "homeactivty");
@@ -544,7 +544,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(mPageName);
+//        MobclickAgent.onPageEnd(mPageName);
     }
 
     public static void initone() {

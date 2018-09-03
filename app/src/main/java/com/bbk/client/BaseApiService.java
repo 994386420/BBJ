@@ -203,6 +203,9 @@ public interface BaseApiService<T> {
     Observable<String> queryMyOrderToPay(@QueryMap Map<String, String> map);
     @POST("appPayService/getOrderInfo")
     Observable<String> getOrderInfo(@QueryMap Map<String, String> map);
+    @POST("appPayService/getOrderInfo")
+    Observable<String> getOrderInfoByJinbi(@QueryMap Map<String, String> map);
+
 
     //查询全部地址
     @POST("mallService/queryAddr")

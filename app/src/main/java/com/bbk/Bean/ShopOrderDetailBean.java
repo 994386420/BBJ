@@ -27,6 +27,15 @@ public class ShopOrderDetailBean {
     private String addrid;
 
     private String youhui;
+    private String leastjin;//至少使用多少个金币
+
+    public String getLeastjin() {
+        return leastjin;
+    }
+
+    public void setLeastjin(String leastjin) {
+        this.leastjin = leastjin;
+    }
 
     public String getYouhui() {
         return youhui;

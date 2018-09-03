@@ -37,6 +37,7 @@ import com.bbk.resource.NewConstants;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogCheckYouhuiUtil;
+import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -46,6 +47,7 @@ import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
 import com.logg.Logg;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +71,7 @@ import java.util.Map;
         super.onCreate(savedInstanceState);
         connectivities();
         clipDialogUtil = new ClipDialogUtil(this);
+		PushAgent.getInstance(this).onAppStart();
         Looper.myQueue().addIdleHandler(new IdleHandler() {
             @Override
             public boolean queueIdle() {
@@ -409,6 +412,20 @@ import java.util.Map;
 	 @Override
 	 protected void onStart() {
 		 super.onStart();
+
+		 String custom = SharedPreferencesUtil.getSharedData(this, "custom", "custom");
+		 if (custom != null && !custom.equals("")){
+			 try {
+				 JSONObject obj = new JSONObject(custom);
+				 if (!obj.isNull("eventId")) {
+					 EventIdIntentUtil.EventIdIntent(this, obj);
+					 SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "custom", "custom", "");
+				 }
+			 } catch (JSONException e) {
+				 e.printStackTrace();
+			 }
+		 }
+
 		 cancelCheck = true;
 		 NewConstants.showdialogFlg = "0";
 		 clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

@@ -12,6 +12,15 @@ public class GoodsBean {
     private String subprice;
     private String youhui;
     private String liuyan;//留言
+    private String leastjin;//当前店铺至少需要金币个数
+
+    public String getLeastjin() {
+        return leastjin;
+    }
+
+    public void setLeastjin(String leastjin) {
+        this.leastjin = leastjin;
+    }
 
     public String getLiuyan() {
         return liuyan;

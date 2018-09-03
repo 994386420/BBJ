@@ -13,6 +13,15 @@ public class ShopTuijianBean {
     private String imgurl;
     private String sale;
     private String bprice;
+    private String leastjin;//至少使用多少个金币
+
+    public String getLeastjin() {
+        return leastjin;
+    }
+
+    public void setLeastjin(String leastjin) {
+        this.leastjin = leastjin;
+    }
 
     public String getBprice() {
         return bprice;

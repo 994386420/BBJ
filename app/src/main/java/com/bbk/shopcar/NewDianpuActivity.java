@@ -38,6 +38,9 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.Utils.ShopDialog;
+import com.bbk.shopcar.presenter.DianpuPresenter;
+import com.bbk.shopcar.view.DianpuListView;
+import com.bbk.shopcar.view.DianpuView;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -46,6 +49,7 @@ import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -64,7 +68,7 @@ import butterknife.OnClick;
 /**
  * 店铺
  */
-public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapter.TypeInterface {
+public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapter.TypeInterface,CommonLoadingView.LoadingHandler {
     String dianpuid;
     @BindView(R.id.banner)
     ImageView banner;
@@ -120,13 +124,12 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
     ImageView imgMoreBlack;
     private int page = 1, x = 1;
     DianPuGridAdapter dianPuGridAdapter;
-    private int imageHeight, height;
     private String sortway = "1", keywordType = "";
     private ShopDialog shopDialog;
     DianpuBean dianpuBean;
     DianpuTypesAdapter dianpuTypesAdapter;
     List<DianPuTypesBean> dianPuTypesBeans;
-    private String mKefuDescription;
+    private DianpuPresenter dianpuPresenter = new DianpuPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +139,9 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         View topView = findViewById(R.id.lin);
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         ButterKnife.bind(this);
+        dianpuPresenter.attachView(dianpuView);
+        dianpuPresenter.attachListView(dianpuListView);
+        progress.setLoadingHandler(this);
         NewConstants.postion = 1314;
         tablayout.addTab(tablayout.newTab().setText("综合"));
         tablayout.addTab(tablayout.newTab().setText("销量"));
@@ -162,7 +168,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                 }
                 x = 1;
                 page = 1;
-                queryProductListByKeyword(dianpuid, sortway, keywordType);
+                dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
             }
 
             @Override
@@ -177,30 +183,101 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         });
         if (getIntent().getStringExtra("dianpuid") != null) {
             dianpuid = getIntent().getStringExtra("dianpuid");
-            queryDianpuMainInfo(dianpuid);
-            queryProductListByKeyword(dianpuid, sortway, keywordType);
+            dianpuPresenter.queryDianpuMainInfo(dianpuid,refreshLayout);
+            dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
         }
     }
 
+    /**
+     * 店铺主页
+     */
+    private DianpuView dianpuView = new DianpuView() {
+
+        @Override
+        public void onSuccess(DianpuBean dianpubean) {
+            dianpuBean = dianpubean;
+            Glide.with(NewDianpuActivity.this)
+                    .load(dianpuBean.getBannerimg())
+                    .priority(Priority.HIGH)
+                    .into(banner);
+            Glide.with(NewDianpuActivity.this)
+                    .load(dianpuBean.getLogoimg())
+                    .priority(Priority.HIGH)
+                    .placeholder(R.mipmap.zw_img_300)
+                    .into(imgDianpuLogo);
+            tvDianpu.setText(dianpuBean.getDianpu());
+            tvDianpuTop.setText(dianpuBean.getDianpu());
+            if (dianpuBean.getTotalSale() != null) {
+                tvSale.setText("已销:" + dianpuBean.getTotalSale() + "件");
+            } else {
+                tvSale.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onError(String result) {
+            StringUtil.showToast(NewDianpuActivity.this,result);
+        }
+    };
+
+    /**
+     *搜索商品结果
+     */
+    private DianpuListView dianpuListView = new DianpuListView() {
+
+        @Override
+        public void onSuccess(List<ShopDianpuBean> shopDianpuBeans) {
+            if (x == 1) {
+                if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
+                    refresh.setEnableLoadMore(true);
+                    mrecycler.setVisibility(View.VISIBLE);
+                    dianPuGridAdapter = new DianPuGridAdapter(NewDianpuActivity.this, shopDianpuBeans);
+                    mrecycler.setAdapter(dianPuGridAdapter);
+                    progress.loadSuccess();
+                } else {
+                    mrecycler.setVisibility(View.GONE);
+                    progress.setVisibility(View.VISIBLE);
+                    progress.loadSuccess(true);
+                    refresh.setEnableLoadMore(false);
+                }
+            } else {
+                if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
+                    dianPuGridAdapter.notifyData(shopDianpuBeans);
+                } else {
+                    StringUtil.showToast(NewDianpuActivity.this, "没有更多了");
+                    refresh.setEnableLoadMore(false);
+                }
+            }
+        }
+
+        @Override
+        public void onError(String result) {
+            StringUtil.showToast(NewDianpuActivity.this,result);
+        }
+    };
+
+    /**
+     * 初始化刷新
+     */
     private void refreshAndloda() {
         refreshLayout.setEnableLoadMore(false);
         refresh.setEnableRefresh(false);
         refresh.setEnableAutoLoadMore(true);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshLayout) {
+            public void onRefresh(RefreshLayout refreshLayoutt) {
                 x = 1;
                 page = 1;
-                queryProductListByKeyword(dianpuid, sortway, keywordType);
-                queryDianpuMainInfo(dianpuid);
+                dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
+                dianpuPresenter.queryDianpuMainInfo(dianpuid,refreshLayout);
             }
         });
         refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
+            public void onLoadMore(RefreshLayout refreshLayoutt) {
                 x = 2;
                 page++;
-                queryProductListByKeyword(dianpuid, sortway, keywordType);
+                dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
             }
         });
 
@@ -259,142 +336,16 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         });
     }
 
-    /**
-     * 查询
-     */
-    private void queryDianpuMainInfo(String dianpuid) {
-        Map<String, String> maps = new HashMap<String, String>();
-        maps.put("dianpu", dianpuid);
-        RetrofitClient.getInstance(this).createBaseApi().queryDianpuMainInfo(
-                maps, new BaseObserver<String>(this) {
-                    @Override
-                    public void onNext(String s) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String content = jsonObject.optString("content");
-                            JSONObject object = new JSONObject(content);
-                            if (jsonObject.optString("status").equals("1")) {
-                                dianpuBean = JSON.parseObject(content, DianpuBean.class);
-                                Glide.with(NewDianpuActivity.this)
-                                        .load(dianpuBean.getBannerimg())
-                                        .priority(Priority.HIGH)
-                                        .into(banner);
-                                Glide.with(NewDianpuActivity.this)
-                                        .load(dianpuBean.getLogoimg())
-                                        .priority(Priority.HIGH)
-                                        .placeholder(R.mipmap.zw_img_300)
-                                        .into(imgDianpuLogo);
-                                tvDianpu.setText(dianpuBean.getDianpu());
-                                tvDianpuTop.setText(dianpuBean.getDianpu());
-                                if (dianpuBean.getTotalSale() != null) {
-                                    tvSale.setText("已销:" + dianpuBean.getTotalSale() + "件");
-                                } else {
-                                    tvSale.setVisibility(View.GONE);
-                                }
-                            } else {
-                                StringUtil.showToast(NewDianpuActivity.this, jsonObject.optString("errmsg"));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    protected void hideDialog() {
-                        DialogSingleUtil.dismiss(0);
-                        refreshLayout.finishRefresh();
-                    }
-
-                    @Override
-                    protected void showDialog() {
-                        DialogSingleUtil.show(NewDianpuActivity.this);
-                    }
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        DialogSingleUtil.dismiss(0);
-                        refreshLayout.finishRefresh();
-                        StringUtil.showToast(NewDianpuActivity.this, e.message);
-                    }
-                });
-    }
-
-    private void queryProductListByKeyword(String dianpuid, String sortWay, String keyword) {
-        refresh.setNoMoreData(false);
-        Map<String, String> maps = new HashMap<String, String>();
-        maps.put("dianpu", dianpuid);
-        maps.put("keyword", keyword);
-        maps.put("sortWay", sortWay);
-        maps.put("page", page + "");
-        RetrofitClient.getInstance(this).createBaseApi().queryProductListByKeyword(
-                maps, new BaseObserver<String>(this) {
-                    @Override
-                    public void onNext(String s) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            String content = jsonObject.optString("content");
-                            JSONObject jsonObject1 = new JSONObject(content);
-                            if (jsonObject.optString("status").equals("1")) {
-//                                Logg.json(content);
-                                List<ShopDianpuBean> shopDianpuBeans = JSON.parseArray(jsonObject1.optString("list"), ShopDianpuBean.class);
-                                if (x == 1) {
-                                    if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
-                                        refresh.setEnableLoadMore(true);
-                                        mrecycler.setVisibility(View.VISIBLE);
-                                        dianPuGridAdapter = new DianPuGridAdapter(NewDianpuActivity.this, shopDianpuBeans);
-                                        mrecycler.setAdapter(dianPuGridAdapter);
-                                        progress.loadSuccess();
-                                    } else {
-                                        mrecycler.setVisibility(View.GONE);
-                                        progress.setVisibility(View.VISIBLE);
-                                        progress.loadSuccess(true);
-                                        refresh.setEnableLoadMore(false);
-                                    }
-                                } else {
-                                    if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
-                                        dianPuGridAdapter.notifyData(shopDianpuBeans);
-                                    } else {
-                                        StringUtil.showToast(NewDianpuActivity.this, "没有更多了");
-                                        refresh.setEnableLoadMore(false);
-                                    }
-                                }
-                            } else {
-                                StringUtil.showToast(NewDianpuActivity.this, jsonObject.optString("errmsg"));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    protected void hideDialog() {
-                        refresh.finishLoadMore();
-                        refreshLayout.finishRefresh();
-                        DialogSingleUtil.dismiss(0);
-                    }
-
-                    @Override
-                    protected void showDialog() {
-                        DialogSingleUtil.show(NewDianpuActivity.this);
-                    }
-
-                    @Override
-                    public void onError(ExceptionHandle.ResponeThrowable e) {
-                        DialogSingleUtil.dismiss(0);
-                        refreshLayout.finishRefresh();
-                        refresh.finishLoadMore();
-                        progress.loadError();
-                        progress.setVisibility(View.VISIBLE);
-                        StringUtil.showToast(NewDianpuActivity.this, e.message);
-                    }
-                });
-    }
-
     protected void onDestroy() {
         super.onDestroy();
+        DialogSingleUtil.dismiss(0);
     }
 
 
+    /**
+     * 点击事件
+     * @param view
+     */
     @OnClick({R.id.title_back_btn, R.id.ll_mall_choose, R.id.ll_back1, R.id.ll_back, R.id.ll_kefu, R.id.img_car, R.id.to_top_btn,R.id.img_more_black})
     public void onViewClicked(View view) {
         Intent intent;
@@ -510,7 +461,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         keywordType = keyword;
         x = 1;
         page = 1;
-        queryProductListByKeyword(dianpuid, sortway, keyword);
+        dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
     }
 
     private void startChat() {
@@ -533,4 +484,9 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
 
     }
 
+    @Override
+    public void doRequestData() {
+        progress.setVisibility(View.GONE);
+        dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
+    }
 }
