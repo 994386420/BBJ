@@ -25,10 +25,13 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
 import com.bbk.util.ValidatorUtil;
+import com.logg.Logg;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -197,6 +200,15 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 							});
 							    //友盟登录
 							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
+							final String userID = inforJsonObj.optString("u_id");
+							PushAgent mPushAgent = PushAgent.getInstance(RegisterBangDingActivity.this);
+							mPushAgent.addAlias(userId, "BBJ", new UTrack.ICallBack() {
+								@Override
+								public void onMessage(boolean isSuccess, String message) {
+//									Logg.e("===>>>设置别名成功==="+userID);
+								}
+							});
+
 //							intent = new Intent(RegisterBangDingActivity.this, TuiguangDialogActivity.class);
 							intent = new Intent(RegisterBangDingActivity.this, HomeActivity.class);
 //								setResult(3, intent);
@@ -387,19 +399,22 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 				}
 			    String mesgCode = bangding_code.getText().toString();//验证码
 				String username = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "username");
-				String openID = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "openID");
+//				String openID = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "openID");
 				String imgUrl = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "thirdlogin", "imgUrl");
-			    String unionid = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "unionid");
+//			    String unionid = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "unionid");
+			    String openid = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this,  "thirdlogin", "openId");
+			    String unionid = SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this,  "thirdlogin", "unionid");
 				addr = bangding_account.getText().toString();//手机号
+			   Logg.e(openid+"=========>>"+imgUrl+"=========>>>"+unionid);
 				final Map<String, String> params = new HashMap<String, String>();
 				params.put("phone", addr);
 				params.put("invitcode", invitcode);
 				params.put("username", username);
-				params.put("openid", openID);
+				params.put("openid", unionid);
 				params.put("imgUrl", imgUrl);
 			    params.put("mesgCode", mesgCode);
 			    params.put("client", "android");
-			    params.put("unionid",openID);
+			    params.put("unionid",openid);
 			    params.put("code",RSAEncryptorAndroid.getSendCode(addr+mesgCode));
 				final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
 				new Thread(new Runnable() {

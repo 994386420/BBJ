@@ -487,6 +487,15 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 											Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
 										}
 									});
+									final String userID = inforJsonObj.optString("u_id");
+									PushAgent mPushAgent = PushAgent.getInstance(UserLoginNewActivity.this);
+									mPushAgent.addAlias(userId, "BBJ", new UTrack.ICallBack() {
+										@Override
+										public void onMessage(boolean isSuccess, String message) {
+//											Logg.e("===>>>设置别名成功==="+userID);
+										}
+									});
+
 									if (DataFragment.login_remind!= null) {
 										DataFragment.login_remind.setVisibility(View.GONE);
 									}
@@ -550,7 +559,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				switch (msg.what) {
 				case 4:
 					if(!TextUtils.isEmpty(str)) {
-						userLoginThirdPartyHttp(openID, nickName, imgUrl);
+						userLoginThirdPartyHttp(nickName);
 					}
 					break;
 				default:
@@ -721,7 +730,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 					nickName = user.screen_name;
 					imgUrl = user.avatar_large;
 					SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "imgUrl", imgUrl);
-					userLoginThirdPartyHttp(openID, nickName, imgUrl);
+//					userLoginThirdPartyHttp(openID, nickName, imgUrl);
 
 				} else {
 					StringUtil.showToast(getApplicationContext(), response);
@@ -770,7 +779,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								nickName = userInforJson.optString("nickname");
 								imgUrl = userInforJson.optString("figureurl_qq_2");
 								SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "imgUrl", imgUrl);
-								userLoginThirdPartyHttp(openID, nickName, imgUrl);
+//								userLoginThirdPartyHttp(openID, nickName, imgUrl);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -860,7 +869,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 					String result = HttpUtil.requestByHttpGet(path, null);// 请求https连接并得到json结果
 					
 					JSONObject jsonObject = new JSONObject(result);
-
+					Logg.json("Openid",jsonObject);
 					if (null != jsonObject) {
 						String openid = jsonObject.getString("openid")
 								.toString().trim();
@@ -891,10 +900,13 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 				try {
 					String result = HttpUtil.requestByHttpGet(path,null);
 					JSONObject jsonObject = new JSONObject(result);
+//					Logg.e("UID===========",openId+"======"+jsonObject);
 					nickName = jsonObject.getString("nickname");
 					openID = jsonObject.getString("unionid");
 					imgUrl = jsonObject.getString("headimgurl");
 					SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "imgUrl", imgUrl);
+					SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "unionid", jsonObject.getString("unionid"));
+					SharedPreferencesUtil.putSharedData(getApplicationContext(), "thirdlogin", "openId", openId);
 					Message msg = Message.obtain();
 					msg.what = 4;
 					msg.obj = result;
@@ -915,14 +927,20 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	}
 	
 	
-	private void userLoginThirdPartyHttp(final String openID, final String nickName, final String imgUrl) {
+	private void userLoginThirdPartyHttp(final String nickName) {
 		progressDialogText.setText("正在获取登录信息");
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		SharedPreferencesUtil.putSharedData(UserLoginNewActivity.this,"userInfor","openID", openID);
 		SharedPreferencesUtil.putSharedData(UserLoginNewActivity.this,"userInfor","username", nickName);
-		paramsMap.put("openid", openID);
+		String imgUrl = SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this, "thirdlogin", "imgUrl");
+		String openid = SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this, "thirdlogin", "openId");
+		String unionid = SharedPreferencesUtil.getSharedData(UserLoginNewActivity.this, "thirdlogin", "unionid");
+		Logg.e(openid+"========="+imgUrl+"========="+unionid);
+		paramsMap.put("openid", unionid);
 		paramsMap.put("nickname", nickName);
 		paramsMap.put("imgurl", imgUrl);
+		paramsMap.put("unionid",openid);
+		paramsMap.put("client","android");
 		dataFlow.requestData(3, "apiService/checkIsThirdBand" , paramsMap, this, false);
 		
 	}

@@ -462,10 +462,12 @@ public class WebViewWZActivity extends BaseActivity implements OnClickListener, 
 	            Tencent.onActivityResultData(requestCode, resultCode, data, this);
 	        }
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-		int i = url.indexOf("userid=");
-		url = url.substring(0,i) + "userid=" + userID;
-		isintent = false;
-		mPbWebview.loadUrl(url);
+		 if (userID != null && !userID.equals("")) {
+			 int i = url.indexOf("userid=");
+			 url = url.substring(0, i) + "userid=" + userID;
+			 isintent = false;
+			 mPbWebview.loadUrl(url);
+		 }
 //		mPbWebview.postDelayed(new Runnable()
 //        {
 //            @Override

@@ -40,6 +40,8 @@ import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,6 +193,16 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 									Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
 								}
 							});
+
+							final String userID = inforJsonObj.optString("u_id");
+							PushAgent mPushAgent = PushAgent.getInstance(RegisterByPhoneActivity.this);
+							mPushAgent.addAlias(userId, "BBJ", new UTrack.ICallBack() {
+								@Override
+								public void onMessage(boolean isSuccess, String message) {
+//									Logg.e("===>>>设置别名成功==="+userID);
+								}
+							});
+
 							NewConstants.logFlag = "1";
 //							intent = new Intent(RegisterByPhoneActivity.this, TuiguangDialogActivity.class);
 //							startActivity(intent);

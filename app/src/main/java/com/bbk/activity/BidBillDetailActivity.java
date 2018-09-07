@@ -202,11 +202,16 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
                                 mbegintime.setText("创建时间:" + pubaDetailBean.getBeginlong());
                                 mendtime.setText("结束时间:" + pubaDetailBean.getEndlong());
                                 if (bidarr.length() > 0) {
-                                    addList(bidarr);
-                                } else {
                                     isGlobalMenuShow = true;
                                     xjpp_iamge.setImageResource(R.mipmap.xjpp_top);
                                     xjpp_view_layout.setVisibility(View.VISIBLE);
+                                    xjpp_layout.setVisibility(View.VISIBLE);
+                                    addList(bidarr);
+                                } else {
+                                    isGlobalMenuShow = false;
+                                    xjpp_iamge.setImageResource(R.mipmap.xjpp_top);
+                                    xjpp_view_layout.setVisibility(View.GONE);
+                                    xjpp_layout.setVisibility(View.GONE);
                                 }
                                 adapter = new BidDetailListAdapter(BidBillDetailActivity.this, list);
                                 mlistview.setAdapter(adapter);
@@ -454,16 +459,18 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
             map.put("url",object.optString("url"));
                 mXjppList.add(map);
             }
-            horizontalListView.setAdapter(new XjppAdapter(this,mXjppList));
-            horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (mXjppList != null && mXjppList.size() > 0) {
+                horizontalListView.setAdapter(new XjppAdapter(this, mXjppList));
+                horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(BidBillDetailActivity.this, WebViewActivity.class);
                         intent.putExtra("url", mXjppList.get(i).get("url"));
                         intent.putExtra("groupRowKey", mXjppList.get(i).get("rowkey"));
-                         startActivity(intent);
-                }
-            });
+                        startActivity(intent);
+                    }
+                });
+            }
     }
     @Override
     public void onResultData(int requestCode, String api, JSONObject dataJo, String content) {

@@ -203,7 +203,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="我想要"
+                            android:text="发飙"
                             android:textColor="#fff"
                             android:textSize="12dp" />
                     </RelativeLayout>

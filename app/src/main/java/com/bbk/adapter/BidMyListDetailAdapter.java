@@ -239,7 +239,7 @@ public class BidMyListDetailAdapter extends BaseAdapter implements ResultEvent{
             String url = puDaoListBean.getUrl();
             vh.item_title.setText(title);
             vh.mcount.setText("x"+number);
-            vh.mbidnum.setText("扑倒 "+bidnum+" 人");
+            vh.mbidnum.setText("接单 "+bidnum+" 人");
             vh.mprice.setText("¥"+price);
             vh.mendprice.setText("¥"+bidprice);
             Glide.with(context).load(img).placeholder(R.mipmap.zw_img_300).into(vh.item_img);

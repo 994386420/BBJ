@@ -2015,14 +2015,17 @@ public class SearchMainActivity extends ActivityGroup implements
                 break;
             case 2:
                 //二级页面去发标
-                Intent intent;
-                intent = new Intent(this, BidActivity.class);
-                intent.putExtra("rowkey", rowkeya);
-                intent.putExtra("type", "1");
-                intent.putExtra("price", pricea);
-                intent.putExtra("title", titlea);
-                intent.putExtra("imags", imgsa);
-                startActivity(intent);
+                String userId=SharedPreferencesUtil.getSharedData(SearchMainActivity.this, "userInfor", "userID");
+                if (userId != null && !userId.equals("")) {
+                    Intent intent;
+                    intent = new Intent(this, BidActivity.class);
+                    intent.putExtra("rowkey", rowkeya);
+                    intent.putExtra("type", "1");
+                    intent.putExtra("price", pricea);
+                    intent.putExtra("title", titlea);
+                    intent.putExtra("imags", imgsa);
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;
