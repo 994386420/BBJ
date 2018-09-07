@@ -1,5 +1,6 @@
 package com.bbk.fragment;
 
+import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -80,7 +81,6 @@ import com.bbk.flow.DataFlow;
 import com.bbk.model.MainActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
-import com.bbk.shopcar.DianpuHomeActivity;
 import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.util.BaseTools;
@@ -247,6 +247,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     private UpdataDialog updataDialog;
     private HongbaoDialog hongbaoDialog;
     private String hongbaoMoney;
+    public static String LogFlag = "0";
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -951,7 +952,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.newpinglun:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "19";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -986,7 +988,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.user_img:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "17";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -996,7 +999,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.user_name:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "18";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1021,7 +1025,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     }
                 } else {
                     StringUtil.showToast(getActivity(), "请先登录！");
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivity(intent);
                 }
@@ -1138,10 +1142,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         return animation;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-    }
 
     private void sign() {
         final View view = addViewToAnimLayout(anim_mask_layout);
@@ -1477,7 +1477,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.ll_sign:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "13";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1487,7 +1488,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.ll_jingbi:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "14";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1498,7 +1500,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.ll_fensi:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "15";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1508,7 +1511,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.ll_yaoqing:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "16";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1518,7 +1522,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case R.id.ll_all_order:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "12";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1527,20 +1532,25 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 }
                 break;
             case R.id.ll_daifukuan:
+                LogFlag = "7";
                 mShopOrder(userID, "1");
                 break;
             case R.id.ll_daifahuo:
+                LogFlag = "8";
                 mShopOrder(userID, "2");
                 break;
             case R.id.ll_daishouhuo:
+                LogFlag = "9";
                 mShopOrder(userID, "3");
                 break;
             case R.id.ll_daipl:
+                LogFlag = "10";
                 mShopOrder(userID, "4");
                 break;
             case R.id.ll_shouhou:
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "11";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1643,7 +1653,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     private void mShopOrder(String userid, String value) {
         Intent intent;
         if (TextUtils.isEmpty(userid)) {
-            JumpDetailActivty.Flag = "home";
+//            JumpDetailActivty.Flag = "home";
             intent = new Intent(getActivity(), UserLoginNewActivity.class);
             startActivityForResult(intent, 1);
         } else {
@@ -1704,7 +1714,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         switch (name) {
             case "购物车":
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "2";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1714,7 +1725,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case "足迹":
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "6";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1724,7 +1736,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case "我的评论":
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "5";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1736,7 +1749,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             case "收货地址":
                 NewConstants.address = "1";
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "4";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1746,54 +1760,55 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case "会员特权":
                 //推广规则跳转链接
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
+//                if (TextUtils.isEmpty(userID)) {
+//                    JumpDetailActivty.Flag = "home";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
                     String url = BaseApiService.Base_URL + "mobile/user/generalize";
                     intent = new Intent(getActivity(), WebViewActivity.class);
                     intent.putExtra("url", url);
                     startActivity(intent);
-                }
+//                }
                 break;
             case "新手必看":
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
+//                if (TextUtils.isEmpty(userID)) {
+//                    JumpDetailActivty.Flag = "home";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
                     intent = new Intent(getActivity(), WebViewActivity.class);
                     intent.putExtra("url", "http://bibijing.com/mobile/html/introduce.jsp");
                     startActivity(intent);
-                }
+//                }
                 break;
             case "常见问题":
                 //常见问题跳转链接
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
+//                if (TextUtils.isEmpty(userID)) {
+//                    JumpDetailActivty.Flag = "home";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
                     String url1 = BaseApiService.Base_URL + "mobile/user/question";
                     intent = new Intent(getActivity(), WebViewActivity.class);
                     intent.putExtra("url", url1);
                     startActivity(intent);
-                }
+//                }
                 break;
             case "意见反馈":
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
+//                if (TextUtils.isEmpty(userID)) {
+//                    JumpDetailActivty.Flag = "home";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
                     intent = new Intent(getActivity(), UserSuggestionActivity.class);
                     startActivity(intent);
-                }
+//                }
                 break;
             case "我要的":
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "3";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1803,7 +1818,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case "扑倒的":
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "1";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -1812,25 +1827,45 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 }
                 break;
             case "联系客服":
-                if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
+//                if (TextUtils.isEmpty(userID)) {
+//                    JumpDetailActivty.Flag = "home";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
                     startChat();
-                }
+//                }
                 break;
             case "关于比比鲸":
+//                if (TextUtils.isEmpty(userID)) {
+//                    JumpDetailActivty.Flag = "home";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
+                    intent = new Intent(getActivity(), AboutUsActivity.class);
+                    startActivity(intent);
+//                }
+                break;
+            case "我发的飙":
                 if (TextUtils.isEmpty(userID)) {
-                    JumpDetailActivty.Flag = "home";
+//                    JumpDetailActivty.Flag = "home";
+                    LogFlag = "3";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    intent = new Intent(getActivity(), AboutUsActivity.class);
+                    intent = new Intent(getActivity(), BidListDetailActivity.class);
                     startActivity(intent);
                 }
                 break;
-
+            case "我接的单":
+                if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "1";
+                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+                    startActivity(intent);
+                }
+                break;
             default:
                 break;
         }
@@ -1861,5 +1896,99 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setText(tvYaoqingma.getText().toString());
         StringUtil.showToast(getActivity(), "复制成功");
+    }
+
+    /**
+     * 登陆回调
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        switch (requestCode) {
+            case 1:
+                if (userID != null && !userID.equals("")) {
+                    switch (LogFlag) {
+                        case "1":
+                            intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "2":
+                            intent = new Intent(getActivity(), CarActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "3":
+                            intent = new Intent(getActivity(), BidListDetailActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "4":
+                            intent = new Intent(getActivity(), AddressMangerActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "5":
+                            intent = new Intent(getActivity(), MesageCenterActivity.class);
+                            intent.putExtra("type", "1");
+                            startActivity(intent);
+                            break;
+                        case "6":
+                            intent = new Intent(getActivity(), BrowseActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "7":
+                            mShopOrder(userID, "1");
+                            break;
+                        case "8":
+                            mShopOrder(userID, "2");
+                            break;
+                        case "9":
+                            mShopOrder(userID, "3");
+                            break;
+                        case "10":
+                            mShopOrder(userID, "4");
+                            break;
+                        case "11":
+                            startChat();
+                            break;
+                        case "12":
+                            intent = new Intent(getActivity(), ShopOrderActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "13":
+                            intent = new Intent(getActivity(), MyCoinActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "14":
+                            intent = new Intent(getActivity(), CoinGoGoGoActivity.class);
+                            intent.putExtra("type", "0");
+                            startActivity(intent);
+                            break;
+                        case "15":
+                            intent = new Intent(getActivity(), FensiActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "16":
+                            intent = new Intent(getActivity(), YaoqingFriendsActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "17":
+//                            intent = new Intent(getActivity(), UserAccountActivity.class);
+//                            startActivity(intent);
+                            break;
+                        case "18":
+//                            intent = new Intent(getActivity(), UserAccountActivity.class);
+//                            startActivity(intent);
+                            break;
+                        case "19":
+                            intent = new Intent(getActivity(), MesageCenterActivity.class);
+                            intent.putExtra("type", "0");
+                            startActivity(intent);
+                    }
+                }
+                break;
+        }
     }
 }

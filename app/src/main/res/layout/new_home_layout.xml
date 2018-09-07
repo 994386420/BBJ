@@ -231,7 +231,7 @@
                                 android:layout_height="36dp"
                                 android:layout_marginLeft="15dp"
                                 android:layout_marginRight="10dp"
-                                android:src="@mipmap/rangnipu" />
+                                android:src="@mipmap/fabiao" />
 
                             <ViewFlipper
                                 android:id="@+id/mviewflipper"

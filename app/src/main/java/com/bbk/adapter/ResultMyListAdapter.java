@@ -55,10 +55,19 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
     private Activity context;
     private PopupWindow popupWindow;
     private List<SearchResultBean> searchResultBeans;
+    private LogInterface logInterface;
 
     public ResultMyListAdapter(List<SearchResultBean> searchResultBeans, Activity context) {
         this.searchResultBeans = searchResultBeans;
         this.context = context;
+    }
+
+    public LogInterface getLogInterface() {
+        return logInterface;
+    }
+
+    public void setLogInterface(LogInterface logInterface) {
+        this.logInterface = logInterface;
     }
 
     public void notifyData(List<SearchResultBean> beans) {
@@ -188,8 +197,9 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
                                 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                                 Intent intent;
                                 if (TextUtils.isEmpty(userID)) {
-                                    intent = new Intent(context, UserLoginNewActivity.class);
-                                    context.startActivityForResult(intent, 2);
+//                                    intent = new Intent(context, UserLoginNewActivity.class);
+//                                    context.startActivityForResult(intent, 2);
+                                    logInterface.IntentLog(rowkey,"1",dataSet.getPrice(),dataSet.getTitle(),dataSet.getDetailImages());
                                 } else {
                                     //二级页面去发标
                                     intent = new Intent(context, BidActivity.class);
@@ -214,8 +224,9 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
                                 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                                 Intent intent;
                                 if (TextUtils.isEmpty(userID)) {
-                                    intent = new Intent(context, UserLoginNewActivity.class);
-                                    context.startActivityForResult(intent, 2);
+//                                    intent = new Intent(context, UserLoginNewActivity.class);
+//                                    context.startActivityForResult(intent, 2);
+                                    logInterface.IntentLog(rowkey,"1",dataSet.getPrice(),dataSet.getTitle(),dataSet.getDetailImages());
                                 } else {
                                     //二级页面去发标
                                     intent = new Intent(context, BidActivity.class);
@@ -365,6 +376,12 @@ public class ResultMyListAdapter extends RecyclerView.Adapter implements PopupWi
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public interface LogInterface {
+        void IntentLog(String rowkey,String type,String price,String title,String imgs);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

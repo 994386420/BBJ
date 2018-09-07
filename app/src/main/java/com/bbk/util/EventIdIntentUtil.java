@@ -11,6 +11,7 @@ import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BrokerageActivity;
 import com.bbk.activity.BrokerageDetailActivity;
+import com.bbk.activity.CoinGoGoGoActivity;
 import com.bbk.activity.CollectionActivity;
 import com.bbk.activity.CouponActivity;
 import com.bbk.activity.DataFragmentActivity;
@@ -196,14 +197,24 @@ public class EventIdIntentUtil {
 
 			break;
 		case "102":
-			Intent intent102 = new Intent(context, CollectionActivity.class);
-			intent102.putExtra("type", "1");
-			context.startActivity(intent102);
+			if (TextUtils.isEmpty(userID)){
+				intent14 = new Intent(context, UserLoginNewActivity.class);
+				context.startActivity(intent14);
+			}else {
+				Intent intent102 = new Intent(context, CollectionActivity.class);
+				intent102.putExtra("type", "1");
+				context.startActivity(intent102);
+			}
 			break;
 		case "103":
 //			HomeActivity.initfour();
-			Intent intent103 = new Intent(context, MyCoinActivity.class);
-			context.startActivity(intent103);
+			if (TextUtils.isEmpty(userID)){
+				intent14 = new Intent(context, UserLoginNewActivity.class);
+				context.startActivity(intent14);
+			}else {
+				Intent intent103 = new Intent(context, MyCoinActivity.class);
+				context.startActivity(intent103);
+			}
 			break;
 		case "104":
 			Intent intent104 = new Intent(context, CouponActivity.class);
@@ -265,7 +276,10 @@ public class EventIdIntentUtil {
 				context.startActivity(intent);
 				break;
 			case "113":
-			    HomeActivity.initone();
+				HomeActivity.position = 1;
+				SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "1");
+				intent = new Intent(context, HomeActivity.class);
+				context.startActivity(intent);
 				break;
 			case "114":
 				intent = new Intent(context, BrokerageActivity.class);
@@ -326,7 +340,7 @@ public class EventIdIntentUtil {
 				}
 				break;
 			case "124":
-				NewConstants.showdialogFlg = "1";
+                NewConstants.showdialogFlg = "1";
 				intent = new Intent(context, IntentActivity.class);
 				intent.putExtra("url",  jo.optString("htmlUrl"));
 				context.startActivity(intent);
@@ -335,6 +349,12 @@ public class EventIdIntentUtil {
 			case "125":
 				intent = new Intent(context, UserShenSuActivity.class);
 				intent.putExtra("status","1");
+				context.startActivity(intent);
+				break;
+
+			case "126":
+				intent = new Intent(contexte, CoinGoGoGoActivity.class);
+				intent.putExtra("type", "0");
 				context.startActivity(intent);
 				break;
 		case "666":

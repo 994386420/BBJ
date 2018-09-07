@@ -34,6 +34,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageGuanggaoLoader;
@@ -127,16 +128,16 @@ public class JumpDetailActivty extends BaseActivity {
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
     private String url, rowkey, domain, quans,jumpdomain;
-    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
     public static String Flag = "";
-    public static String flag = "";
+    public static String flag = "",LogFlag = "";
     private UpdataDialog updataDialog;
     private String isFirstClick;
     private String urltaobaoOrjd ;
     private Handler mHandler = new Handler();
     private boolean cancleJump = true;
+    private String isczg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +159,7 @@ public class JumpDetailActivty extends BaseActivity {
             content = getIntent().getStringExtra("content");
             initview();
         }
+        isczg = getIntent().getStringExtra("isczg");
     }
 
     private void initview() {
@@ -220,38 +222,42 @@ public class JumpDetailActivty extends BaseActivity {
         List<Object> imgUrlList = new ArrayList<>();
         JSONArray imgs = null;
         try {
-            JSONArray detailImags = new JSONArray(jumpBean.getDetailImgs());
-            for (int i = 0; i < detailImags.length(); i++) {
-                String imgUrl = detailImags.getString(i);
-                DetailimgUrlList.add(imgUrl);
+            if (jumpBean.getDetailImgs() != null) {
+                JSONArray detailImags = new JSONArray(jumpBean.getDetailImgs());
+                for (int i = 0; i < detailImags.length(); i++) {
+                    String imgUrl = detailImags.getString(i);
+                    DetailimgUrlList.add(imgUrl);
+                }
+                if (DetailimgUrlList.size() > 0) {
+                    detailImageList.setAdapter(new DetailImageAdapter(this, DetailimgUrlList));
+                    rlDetail.setVisibility(View.VISIBLE);
+                    detailImageList.setVisibility(View.VISIBLE);
+                    view.setVisibility(View.VISIBLE);
+                } else {
+                    rlDetail.setVisibility(View.GONE);
+                    detailImageList.setVisibility(View.GONE);
+                    view.setVisibility(View.GONE);
+                }
             }
-            if (DetailimgUrlList.size() > 0) {
-                detailImageList.setAdapter(new DetailImageAdapter(this, DetailimgUrlList));
-                rlDetail.setVisibility(View.VISIBLE);
-                detailImageList.setVisibility(View.VISIBLE);
-                view.setVisibility(View.VISIBLE);
-            } else {
-                rlDetail.setVisibility(View.GONE);
-                detailImageList.setVisibility(View.GONE);
-                view.setVisibility(View.GONE);
-            }
-            imgs = new JSONArray(jumpBean.getImgs());
-            for (int i = 0; i < imgs.length(); i++) {
-                String imgUrl = imgs.getString(i);
-                imgUrlList.add(imgUrl);
-            }
-            banner.setImages(imgUrlList)
-                    .setImageLoader(new GlideImageGuanggaoLoader())
-                    .setOnBannerListener(new OnBannerListener() {
-                        @Override
-                        public void OnBannerClick(int position) {
+            if (jumpBean.getImgs() != null) {
+                imgs = new JSONArray(jumpBean.getImgs());
+                for (int i = 0; i < imgs.length(); i++) {
+                    String imgUrl = imgs.getString(i);
+                    imgUrlList.add(imgUrl);
+                }
+                banner.setImages(imgUrlList)
+                        .setImageLoader(new GlideImageGuanggaoLoader())
+                        .setOnBannerListener(new OnBannerListener() {
+                            @Override
+                            public void OnBannerClick(int position) {
 
-                        }
-                    })
-                    .setDelayTime(3000)
-                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                    .setIndicatorGravity(BannerConfig.CENTER)
-                    .start();
+                            }
+                        })
+                        .setDelayTime(3000)
+                        .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                        .setIndicatorGravity(BannerConfig.CENTER)
+                        .start();
+            }
             refresh.finishRefresh();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -263,6 +269,7 @@ public class JumpDetailActivty extends BaseActivity {
      * @param rowkey
      */
     private void getIndexByType(String rowkey,String title) {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("type", "1");
         maps.put("page", 1 + "");
@@ -344,6 +351,7 @@ public class JumpDetailActivty extends BaseActivity {
     @OnClick({R.id.back_image, R.id.detail_image, R.id.ll_share, R.id.ll_lingquan})
     public void onViewClicked(View view) {
         Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
             case R.id.back_image:
                 finish();
@@ -355,7 +363,8 @@ public class JumpDetailActivty extends BaseActivity {
             case R.id.ll_share:
                 flag = "share";
                 if (TextUtils.isEmpty(userID)) {
-                    Flag = "home";
+//                    Flag = "home";
+                    LogFlag = "1";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -371,7 +380,8 @@ public class JumpDetailActivty extends BaseActivity {
             case R.id.ll_lingquan:
                 flag = "lingquan";
                 if (TextUtils.isEmpty(userID)) {
-                    Flag = "home";
+//                    Flag = "home";
+                    LogFlag = "2";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -446,6 +456,7 @@ public class JumpDetailActivty extends BaseActivity {
      * 分享图片文字及连接
      */
     private void shareCpsInfo() {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid", userID);
         maps.put("rowkey", rowkey);
@@ -553,6 +564,7 @@ public class JumpDetailActivty extends BaseActivity {
     protected void onActivityResult(int arg0, int arg1, Intent arg2) {
         switch (arg0) {
             case 1:
+                getJumpUrl();
                 break;
         }
         super.onActivityResult(arg0, arg1, arg2);
@@ -806,5 +818,109 @@ public class JumpDetailActivty extends BaseActivity {
             DialogSingleUtil.dismiss(0);
         }
         super.onDestroy();
+    }
+
+    private void getJumpUrl() {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("userid", userID);
+        if (tvTitle != null) {
+            params.put("title", tvTitle.getText().toString());
+        }
+        if (url != null) {
+            params.put("url", url);
+        }
+        if (domain != null) {
+            params.put("domain", domain);
+        }
+        params.put("client", "andorid");
+        if (isczg != null) {
+            params.put("isczg", isczg);// 如果是从超值购请求的   新增参数  isczg=1,否则可以不传
+        }
+        if (bprice != null) {
+            params.put("bprice", bprice.getText().toString());
+        }
+        if (rowkey != null){
+            params.put("rowkey",rowkey);
+        }
+        params.put("client", "andorid");
+        RetrofitClient.getInstance(this).createBaseApi().getJumpUrl(
+                params, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            if (jsonObject.optString("status").equals("1")) {
+                                JumpBean jumpBean = JSON.parseObject(content,JumpBean.class);
+                                url = jumpBean.getUrl();
+                                switch (LogFlag){
+                                    case "1":
+                                        llShare.setClickable(false);
+                                        cancleJump = true;
+                                        shareCpsInfo();
+                                        break;
+                                    case "2":
+                                        cancleJump = true;
+                                        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+                                        alibcShowParams.setClientType("taobao_scheme");
+                                        exParams = new HashMap<>();
+                                        exParams.put("isv_code", "appisvcode");
+                                        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+                                        if (domain != null) {
+                                            if (domain.equals("tmall") || domain.equals("taobao")) {
+                                                showLoadingDialog(JumpDetailActivty.this);
+                                                showUrl(url);
+                                            } else if (domain.equals("jd")) {
+                                                showLoadingDialog(JumpDetailActivty.this);
+                                                mHandler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        if (cancleJump) {
+                                                            updataDialog.dismiss();
+                                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+                                                                    url,
+                                                                    mKeplerAttachParameter,
+                                                                    mOpenAppAction);
+                                                        }
+                                                    }
+                                                }, 2000);
+                                            } else {
+                                                Intent intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+                                                if (url != null) {
+                                                    intent.putExtra("url", url);
+                                                }
+                                                if (rowkey != null) {
+                                                    intent.putExtra("rowkey", rowkey);
+                                                }
+                                                startActivity(intent);
+                                            }
+                                        }
+                                        break;
+                                }
+                            } else {
+                                StringUtil.showToast(JumpDetailActivty.this, jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(JumpDetailActivty.this);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+//						DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(JumpDetailActivty.this, e.message);
+                    }
+                });
     }
 }

@@ -191,6 +191,7 @@ public class IntentActivity extends BaseActivity {
 												if (jumpBean.getJumpThirdPage() != null && jumpBean.getJumpThirdPage().equals("1")){
 													Intent intent = new Intent(IntentActivity.this,JumpDetailActivty.class);
 													intent.putExtra("content", content);
+													intent.putExtra("isczg", isczg);
 													startActivity(intent);
 													DialogSingleUtil.dismiss(0);
 													finish();

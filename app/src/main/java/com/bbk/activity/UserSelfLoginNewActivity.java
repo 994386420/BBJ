@@ -46,6 +46,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
+import com.logg.Logg;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -66,6 +67,8 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import org.json.JSONObject;
 
@@ -280,7 +283,7 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 						loginBtn.setEnabled(true);
 						if("1".equals(dataJo.optString("status"))) {
 							JSONObject inforJsonObj = new JSONObject(content);
-							String userID = inforJsonObj.optString("u_id");
+							final String userID = inforJsonObj.optString("u_id");
 							String isPartner = "";
 							if (inforJsonObj.has("isPartner")){
 								isPartner = inforJsonObj.optString("isPartner");
@@ -327,6 +330,15 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 									Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
 								}
 							});
+
+							PushAgent mPushAgent = PushAgent.getInstance(UserSelfLoginNewActivity.this);
+							mPushAgent.addAlias(userId, "BBJ", new UTrack.ICallBack() {
+								@Override
+								public void onMessage(boolean isSuccess, String message) {
+									Logg.e("===>>>设置别名成功"+userID);
+								}
+							});
+
 							if (DataFragment.login_remind!= null) {
 								DataFragment.login_remind.setVisibility(View.GONE);
 							}

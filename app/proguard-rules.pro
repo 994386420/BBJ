@@ -258,7 +258,8 @@
 -keep class com.alibaba.sdk.android.**{*;}
 -keep class com.ut.**{*;}
 -keep class com.ta.**{*;}
--keep public class **.R$*{
+-keep class com.ta.**{*;}
+-keep public class com.bbk.activity.R$*{
    public static final int *;
 }
 

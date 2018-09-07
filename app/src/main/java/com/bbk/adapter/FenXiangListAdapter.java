@@ -37,6 +37,7 @@ import com.bbk.component.HomeAllComponent1;
 import com.bbk.component.HomeAllComponent6;
 import com.bbk.component.SimpleComponent;
 import com.bbk.dialog.AlertDialog;
+import com.bbk.shopcar.adapter.ShopcatAdapter;
 import com.bbk.update.AppVersion;
 import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
@@ -73,12 +74,21 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
     private UpdataDialog updataDialog;
     private String isFirstClick;
     public static boolean cancelCheck = true;// 是否取消查询
+    private LogInterface logInterface;
 
     public FenXiangListAdapter(Context context, List<FenXiangListBean> fenXiangListBeans) {
         this.context = context;
         this.fenXiangListBeans = fenXiangListBeans;
     }
 
+
+    public LogInterface getLogInterface() {
+        return logInterface;
+    }
+
+    public void setLogInterface(LogInterface logInterface) {
+        this.logInterface = logInterface;
+    }
 
     @Override
     public void onClick(View v) {
@@ -142,8 +152,9 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                     public void onClick(View v) {
                         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                         if (TextUtils.isEmpty(userID)) {
-                            Intent intent = new Intent(context, UserLoginNewActivity.class);
-                            context.startActivity(intent);
+//                            Intent intent = new Intent(context, UserLoginNewActivity.class);
+//                            context.startActivity(intent);
+                            logInterface.IntentLog(v, fenXiangListBean.getRowkeys(), fenXiangListBean.getTitle());
                         } else {
                             if (NoFastClickUtils.isFastClick()){
                                 StringUtil.showToast(context,"对不起，您的点击太快了，请休息一下");
@@ -228,6 +239,11 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+
+    public interface LogInterface {
+        void IntentLog(View v,String rowkeys,String title);
     }
 
     /**

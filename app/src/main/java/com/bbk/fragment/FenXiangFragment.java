@@ -1,5 +1,8 @@
 package com.bbk.fragment;
 
+import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,8 +29,10 @@ import com.bbk.adapter.GossipPiazzaAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.ShareFenXiangUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
@@ -36,10 +41,12 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +59,7 @@ import butterknife.Unbinder;
  * Created by rtj on 2017/11/23.
  * 分享列表
  */
-public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler {
+public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler,FenXiangListAdapter.LogInterface {
     @BindView(R.id.topbar_title_iv)
     TextView topbarTitleIv;
     private SmartRefreshLayout mrefresh;
@@ -64,6 +71,9 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
     private FloatingActionButton float_btn;
     private List<FenXiangListBean> fenXiangListBeans;
     private CommonLoadingView zLoadingView;//加载框
+    private String rowkeysa,titlea;
+    private View view;
+    private ShareFenXiangUtil shareFenXiangUtil;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -107,6 +117,7 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
                                 if (x == 1) {
                                     adapter = new FenXiangListAdapter(getActivity(), fenXiangListBeans);
                                     mrecyclerview.setAdapter(adapter);
+                                    adapter.setLogInterface(FenXiangFragment.this);
                                 } else if (x == 2) {
                                     if (fenXiangListBeans != null && fenXiangListBeans.size() > 0 && adapter != null) {
                                         adapter.notifyData(fenXiangListBeans);
@@ -237,12 +248,6 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
         ImmersedStatusbarUtils.FlymeSetStatusBarLightMode(getActivity().getWindow(), true);
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     @Override
     protected void loadLazyData() {
 //        mrefresh.autoRefresh();
@@ -264,5 +269,109 @@ public class FenXiangFragment extends BaseViewPagerFragment implements CommonLoa
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void IntentLog(View v, String rowkeys, String title) {
+        rowkeysa = rowkeys;
+        titlea = title;
+        view = v;
+        Intent intent = new Intent(getActivity(), UserLoginNewActivity.class);
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (userID != null && !userID.equals("")) {
+            switch (requestCode) {
+                case 1:
+                    shareCpsInfos(view, rowkeysa, titlea);
+                    break;
+            }
+        }
+    }
+
+
+    /**
+     * 分享多张图片到朋友圈
+     * @param v
+     * @param rowkeys
+     * @param title
+     */
+    private void shareCpsInfos(final View v, String rowkeys, final String title) {
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userID);
+        maps.put("rowkeys", rowkeys);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().shareCpsInfos(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                List<String> DetailimgUrlList = new ArrayList<>();
+                                JSONObject jsonObject1 = new JSONObject(jsonObject.optString("content"));
+                                if (FenXiangListAdapter.cancelCheck) {
+                                    Share(v, title, DetailimgUrlList, jsonObject1);
+                                }
+                            }else {
+                                StringUtil.showToast(getActivity(),jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        FenXiangListAdapter.cancelCheck = true;
+                        DialogCheckYouhuiUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogCheckYouhuiUtil.show(getActivity(),"正在生成您的专属分享图片...");
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogCheckYouhuiUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), e.message);
+                    }
+                });
+    }
+
+    /**
+     * 微信分享
+     * @param v
+     * @param title
+     * @param DetailimgUrlList
+     * @param jsonObject1
+     */
+    private void Share( View v,String title,List<String> DetailimgUrlList,JSONObject jsonObject1){
+        try {
+            if (jsonObject1.has("wenan")){
+                String wenan = jsonObject1.optString("wenan");
+                if (wenan != null &&!wenan.equals("")) {
+                    wenan = jsonObject1.optString("wenan").replace("|", "\n");
+                }
+                ClipboardManager cm = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setText(title+"\n"+wenan);
+            }
+            if (jsonObject1.has("imgs")) {
+                JSONArray detailImags = new JSONArray(jsonObject1.optString("imgs"));
+                for (int i = 0; i < detailImags.length(); i++) {
+                    String imgUrl = detailImags.getString(i);
+                    DetailimgUrlList.add(imgUrl);
+                }
+                //调用转发微信功能类
+                shareFenXiangUtil = new ShareFenXiangUtil(getActivity(), v, title, DetailimgUrlList);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

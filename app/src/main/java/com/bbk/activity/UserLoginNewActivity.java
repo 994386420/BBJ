@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -57,6 +58,7 @@ import com.bbk.util.MD5Util;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.TencentLoginUtil;
+import com.logg.Logg;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -77,6 +79,8 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 public class UserLoginNewActivity extends BaseActivity implements OnClickListener, TextWatcher,ResultEvent {
 	private Typeface typeFace;
@@ -328,7 +332,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 							loginBtn.setText("立即登录");
 							loginBtn.setEnabled(true);
 							String isPartner = "";
-							String userID = jsonObject.optString("u_id");
+							final String userID = jsonObject.optString("u_id");
 							if (jsonObject.has("isPartner")){
 								isPartner = jsonObject.optString("isPartner");
 							}
@@ -374,6 +378,14 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 									Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
 								}
 							});
+							PushAgent mPushAgent = PushAgent.getInstance(UserLoginNewActivity.this);
+							mPushAgent.addAlias(userId, "BBJ", new UTrack.ICallBack() {
+								@Override
+								public void onMessage(boolean isSuccess, String message) {
+									Logg.e("===>>>设置别名成功==="+userID);
+								}
+							});
+							DialogSingleUtil.dismiss(0);
 							if (DataFragment.login_remind != null) {
 								DataFragment.login_remind.setVisibility(View.GONE);
 							}
@@ -402,13 +414,12 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 								intent = new Intent();
 								setResult(3, intent);
 							}
-							DialogSingleUtil.dismiss(0);
-							finish();
 							if (isPartner != null && isPartner.equals("0")){
 								NewConstants.logFlag = "4";
 								intent = new Intent(this, TuiguangDialogActivity.class);
 								startActivity(intent);
 							}
+							finish();
 						}else {
 							StringUtil.showToast(UserLoginNewActivity.this,dataJo.optString("errmsg"));
 							loginBtn.setText("立即登录");
@@ -557,6 +568,8 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		Intent intent;
 		switch (v.getId()) {
 		case R.id.login_btn:
+			final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(loginBtn.getWindowToken(), 0);
 			if(getUserLoginInfor()) {
 				userLoginHttp();
 			}

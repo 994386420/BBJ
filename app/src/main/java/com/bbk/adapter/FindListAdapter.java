@@ -22,6 +22,7 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.logg.Logg;
 
 import android.app.Activity;
 import android.content.Context;
@@ -132,7 +133,7 @@ public class FindListAdapter extends BaseAdapter{
 		if (!TextUtils.isEmpty(userID)) {
 			insertWenzhangGuanzhu(userID,fxBeans.get(position).getId(),token,wztitle);
 		} else {
-			insertWenzhangGuanzhu("-1",fxBeans.get(position).getId(),token,wztitle);
+			insertWenzhangGuanzhu("",fxBeans.get(position).getId(),token,wztitle);
 		}
 
 	}
@@ -149,6 +150,7 @@ public class FindListAdapter extends BaseAdapter{
 					public void onNext(String s) {
 						try {
 							JSONObject jsonObject = new JSONObject(s);
+							Logg.json(jsonObject);
 							if (jsonObject.optString("status").equals("1")) {
 								Intent intent = new Intent(context, WebViewWZActivity.class);
 								intent.putExtra("title", wztitle);

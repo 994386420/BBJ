@@ -48,6 +48,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
     private LinearLayout  mcollection, mfoot;
     private View data_head;
     public static int mMessage;
+    private String LogFlag;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
         switch (v.getId()){
             case R.id.mmyfabid:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "1";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -144,19 +146,23 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
                 }
                 break;
             case R.id.mshenhe:
+                LogFlag = "2";
                 mJieBiaoDetail(userID,"1");
                 break;
             case R.id.mjie:
+                LogFlag = "3";
                 mJieBiaoDetail(userID,"2");
                 break;
             case R.id.mpl:
+                LogFlag = "4";
                 mJieBiaoDetail(userID,"3");
                 break;
-            case R.id.mcomplete:
+            case R.id.mcomplete: LogFlag = "5";
                 mJieBiaoDetail(userID,"4");
                 break;
             case R.id.mmybid:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "6";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -165,22 +171,28 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
                 }
                 break;
             case R.id.mbidjie:
+                LogFlag = "7";
                 mDetail(userID,"1");
                 break;
             case R.id.mbidpl:
+                LogFlag = "8";
                 mDetail(userID,"2");
                 break;
             case R.id.mbidcomplete:
+                LogFlag = "9";
                 mDetail(userID,"3");
                 break;
             case R.id.muserimg:
+                LogFlag = "10";
                 islogin();
                 break;
             case R.id.musername:
+                LogFlag = "11";
                 islogin();
                 break;
             case R.id.newpinglun:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "12";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 }else {
@@ -275,5 +287,56 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
     public void onResume() {
         super.onResume();
         initData();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "userID");
+        Intent intent;
+        if (userID != null && !userID.equals("")) {
+            switch (requestCode) {
+                case 1:
+                    switch (LogFlag) {
+                        case "1":
+                            intent = new Intent(getActivity(), BidListDetailActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "2":
+                            mJieBiaoDetail(userID, "1");
+                            break;
+                        case "3":
+                            mJieBiaoDetail(userID, "2");
+                            break;
+                        case "4":
+                            mJieBiaoDetail(userID, "3");
+                            break;
+                        case "5":
+                            mJieBiaoDetail(userID, "4");
+                            break;
+                        case "6":
+                            intent = new Intent(getActivity(), BidMyListDetailActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "7":
+                            mDetail(userID, "1");
+                            break;
+                        case "8":
+                            mDetail(userID, "2");
+                            break;
+                        case "9":
+                            mDetail(userID, "3");
+                            break;
+                        case "10":
+                            break;
+                        case "11":
+                            break;
+                        case "12":
+                            BidHomeActivity.initThree();
+                            break;
+                    }
+                    break;
+            }
+        }
     }
 }

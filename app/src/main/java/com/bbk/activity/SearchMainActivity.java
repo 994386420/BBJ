@@ -106,7 +106,7 @@ import butterknife.OnClick;
 //import com.bbk.fragment.SearchFragment;
 
 public class SearchMainActivity extends ActivityGroup implements
-        OnClickListener, OnKeyListener, ResultEvent, CommonLoadingView.LoadingHandler {
+        OnClickListener, OnKeyListener, ResultEvent, CommonLoadingView.LoadingHandler,ResultMyListAdapter.LogInterface ,ResultMyGridAdapter.LogInterfaceGrid{
     @BindView(R.id.mall_shaixuan_image)
     ImageView mallShaixuanImage;
     @BindView(R.id.tv_jd)
@@ -253,6 +253,7 @@ public class SearchMainActivity extends ActivityGroup implements
     private FilterPopupWindow popupWindow;
     String[] strs, strfenlei, strsdomain;
     private String shaixuan;
+    private String rowkeya, typea, pricea, titlea, imgsa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -2013,6 +2014,15 @@ public class SearchMainActivity extends ActivityGroup implements
                 }
                 break;
             case 2:
+                //二级页面去发标
+                Intent intent;
+                intent = new Intent(this, BidActivity.class);
+                intent.putExtra("rowkey", rowkeya);
+                intent.putExtra("type", "1");
+                intent.putExtra("price", pricea);
+                intent.putExtra("title", titlea);
+                intent.putExtra("imags", imgsa);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -2240,8 +2250,10 @@ public class SearchMainActivity extends ActivityGroup implements
                             if (x == 1) {
                                 listAdapter = new ResultMyListAdapter(searchResultBeans, SearchMainActivity.this);
                                 result_list.setAdapter(listAdapter);
+                                listAdapter.setLogInterface(SearchMainActivity.this);
                                 gridviewadapter = new ResultMyGridAdapter(searchResultBeans, SearchMainActivity.this);
                                 mgridView_main.setAdapter(gridviewadapter);
+                                gridviewadapter.setLogInterface(SearchMainActivity.this);
                                 if (isloadShaixuan == true) {
                                     mshaixuanbox.setVisibility(View.VISIBLE);
                                     loadFilterBrand(info);
@@ -3120,5 +3132,29 @@ public class SearchMainActivity extends ActivityGroup implements
             }, durationAlpha);
         }
 
+    }
+
+    @Override
+    public void IntentLog(String rowkey, String type, String price, String title, String imgs) {
+        rowkeya = rowkey;
+        typea = type;
+        pricea = price;
+        titlea = title;
+        imgsa = imgs;
+        Intent intent;
+        intent = new Intent(SearchMainActivity.this, UserLoginNewActivity.class);
+        startActivityForResult(intent, 2);
+    }
+
+    @Override
+    public void IntentLogGird(String rowkey, String type, String price, String title, String imgs) {
+        rowkeya = rowkey;
+        typea = type;
+        pricea = price;
+        titlea = title;
+        imgsa = imgs;
+        Intent intent;
+        intent = new Intent(SearchMainActivity.this, UserLoginNewActivity.class);
+        startActivityForResult(intent, 2);
     }
 }

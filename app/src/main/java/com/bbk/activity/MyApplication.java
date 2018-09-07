@@ -432,10 +432,10 @@ public class MyApplication extends Application {
 			@Override
 			public void onSuccess(String deviceToken) {
 				Log.i(TAG, "device token: " + deviceToken);
-				mPushAgent.addAlias(userId, deviceToken, new UTrack.ICallBack() {
+				mPushAgent.addAlias(userId, "BBJ", new UTrack.ICallBack() {
 					@Override
 					public void onMessage(boolean isSuccess, String message) {
-						Logg.e("设置别名成功");
+						Logg.e("设置别名成功"+userId);
 					}
 				});
 				sendBroadcast(new Intent(UPDATE_STATUS_ACTION));

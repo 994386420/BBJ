@@ -83,10 +83,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.signature.StringSignature;
+import com.logg.Logg;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 public class UserAccountActivity extends BaseActivity implements OnClickListener, ResultEvent {
 
@@ -401,7 +404,14 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 							Intent intent = new Intent();
 							setResult(2, intent);
 //							DataFragment.login_remind.setVisibility(View.VISIBLE);
-							String userId=SharedPreferencesUtil.getSharedData(UserAccountActivity.this, "userInfor", "userID");
+							PushAgent mPushAgent = PushAgent.getInstance(UserAccountActivity.this);
+							mPushAgent.deleteAlias(userID, "BBJ", new UTrack.ICallBack(){
+								@Override
+								public void onMessage(boolean isSuccess, String message) {
+									Logg.e("移除用户ID成功===="+userID);
+								}
+							});
+
 							XGPushManager.unregisterPush(UserAccountActivity.this,new XGIOperateCallback() {
 
 								@Override

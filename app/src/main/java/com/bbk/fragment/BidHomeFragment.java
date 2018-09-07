@@ -22,6 +22,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
+import com.bbk.shopcar.CarActivity;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -67,6 +68,7 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
     private ImageView topbar_goback_btn;
     private LinearLayout ll_search_layout;
     private CommonLoadingView zLoadingView;//加载框
+    private String LogFlag;
 
 
     @Override
@@ -242,10 +244,29 @@ public class BidHomeFragment extends BaseViewPagerFragment implements View.OnCli
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         if (TextUtils.isEmpty(userID)) {
+            LogFlag = "1";
             intent = new Intent(getActivity(), UserLoginNewActivity.class);
             startActivityForResult(intent, 1);
         } else {
             HomeLoadUtil.showItemPop(getActivity(), imgMoreBlack);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Intent intent;
+        if (userID != null && !userID.equals("")) {
+            switch (requestCode) {
+                case 1:
+                    switch (LogFlag) {
+                        case "1":
+                            HomeLoadUtil.showItemPop(getActivity(), imgMoreBlack);
+                            break;
+                    }
+                    break;
+            }
         }
     }
 }

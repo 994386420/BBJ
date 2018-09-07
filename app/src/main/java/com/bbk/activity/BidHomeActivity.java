@@ -362,15 +362,26 @@ public class BidHomeActivity extends BaseFragmentActivity implements IWeiboHandl
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         bidFragment.IntentResult(requestCode, resultCode, data);
+        Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (requestCode) {
             case 1:
                 mViewPager.setCurrentItem(0);
                 break;
             case 2:
-                mViewPager.setCurrentItem(0);
+                if (userID != null && !userID.equals("")) {
+                    intent= new Intent(BidHomeActivity.this, BidFbActivity.class);
+                    startActivityForResult(intent,1);
+                }else {
+                    mViewPager.setCurrentItem(0);
+                }
                 break;
             case 3:
-                mViewPager.setCurrentItem(2);
+                if (userID != null && !userID.equals("")) {
+                    mViewPager.setCurrentItem(3);
+                }else {
+                    mViewPager.setCurrentItem(2);
+                }
                 break;
         }
     }

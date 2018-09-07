@@ -18,6 +18,7 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.SoftHideKeyBoardUtil;
 import com.bbk.view.MyWebView;
 import com.bbk.view.X5WebView;
+import com.logg.Logg;
 import com.tamic.jswebview.view.NumberProgressBar;
 import com.tamic.jswebview.view.ProgressBarWebView;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
@@ -169,11 +170,11 @@ public class WebViewWZActivity extends BaseActivity implements OnClickListener, 
 		}
 		mPbWebview.setWebViewClient(new WebViewClient(){
 			@Override
-			public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+			public boolean shouldOverrideUrlLoading(WebView webView, String url) {
 				if (!isintent) {
 					if (url.contains("bbjtech://")) {
 						Uri uri = Uri.parse(url);
-
+//						Logg.json(url);
 						try {
 							JSONObject jsonObject = new JSONObject();
 							// String host = uri.getHost();

@@ -218,6 +218,7 @@ public class ShopDetailActivty extends BaseActivity {
     };
     private boolean isNeedScrollTo = true;
     private String mKefuDescription;
+    private String LogFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -517,6 +518,7 @@ public class ShopDetailActivty extends BaseActivity {
             case R.id.ll_add_car:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
+                        LogFlag = "1";
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
@@ -527,6 +529,7 @@ public class ShopDetailActivty extends BaseActivity {
             case R.id.ll_buy_now:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
+                        LogFlag = "2";
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
@@ -582,6 +585,7 @@ public class ShopDetailActivty extends BaseActivity {
                 break;
             case R.id.ll_car:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "3";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -592,6 +596,7 @@ public class ShopDetailActivty extends BaseActivity {
             case R.id.ll_pl:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
+                        LogFlag = "4";
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
@@ -607,6 +612,7 @@ public class ShopDetailActivty extends BaseActivity {
             case R.id.ll_kefu:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
+                        LogFlag = "5";
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
@@ -616,6 +622,7 @@ public class ShopDetailActivty extends BaseActivity {
                 break;
             case R.id.ll_more:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "6";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -624,6 +631,7 @@ public class ShopDetailActivty extends BaseActivity {
                 break;
             case R.id.img_more_black:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "7";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -632,6 +640,7 @@ public class ShopDetailActivty extends BaseActivity {
                 break;
             case R.id.img_car_black:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "8";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -642,6 +651,69 @@ public class ShopDetailActivty extends BaseActivity {
         }
     }
 
+
+
+    /**
+     * 登陆回调
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Intent intent;
+        if (userID != null && !userID.equals("")){
+            switch (requestCode) {
+                case 1:
+                    switch (LogFlag){
+                        case "1":
+                            doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
+                            break;
+                        case "2":
+                            if (shopDetailBean != null) {
+                                intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
+                                intent.putExtra("ids", shopDetailBean.getId());
+                                intent.putExtra("nums", "1");
+                                intent.putExtra("guiges", " ");
+                                startActivity(intent);
+                            }
+                            break;
+                        case "3":
+                            intent = new Intent(this, CarActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "4":
+                            if (shopDetailBean != null) {
+                                intent = new Intent(this, MyPlActivity.class);
+                                intent.putExtra("id", id);
+                                if (shopDetailBean.getImgurl() != null) {
+                                    intent.putExtra("img", shopDetailBean.getImgurl());
+                                }
+                                startActivity(intent);
+                            }
+                            break;
+                        case "5":
+                            if (shopDetailBean != null) {
+                                startECChat();
+                            }
+                            break;
+                        case "6":
+                            HomeLoadUtil.showItemPop(this, llMore);
+                            break;
+                        case "7":
+                            HomeLoadUtil.showItemPop(this, imgMoreBlack);
+                            break;
+                        case "8":
+                            intent = new Intent(this, CarActivity.class);
+                            startActivity(intent);
+                            break;
+                       }
+                    break;
+                }
+            }
+    }
 
     /**
      * 购物车操作

@@ -421,14 +421,14 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                                 break;
                         }
                     }
-                    if (index == 2) {
-                        Flag = "home";
-                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                        if (TextUtils.isEmpty(userID)) {
-                            Intent intent4 = new Intent(getApplicationContext(), UserLoginNewActivity.class);
-                            startActivityForResult(intent4, 1);
-                        }
-                    }
+//                    if (index == 2) {
+//                        Flag = "home";
+//                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+//                        if (TextUtils.isEmpty(userID)) {
+//                            Intent intent4 = new Intent(getApplicationContext(), UserLoginNewActivity.class);
+//                            startActivityForResult(intent4, 1);
+//                        }
+//                    }
                     mViewPager.setCurrentItem(index);
                 }
             });

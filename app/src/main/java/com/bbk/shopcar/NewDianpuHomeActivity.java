@@ -157,6 +157,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     private boolean isshowGuanggao = true;
     JSONObject preguanggao;
     private DianpuHomePresenter dianpuHomePresenter = new DianpuHomePresenter(this);
+    private String LogFlag;
 
 
     @Override
@@ -452,6 +453,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                 break;
             case R.id.img_more_black:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "1";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -460,6 +462,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                 break;
             case R.id.img_car:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "2";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -467,6 +470,35 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     startActivity(intent);
                 }
                 break;
+        }
+    }
+
+
+    /**
+     * 登陆回调
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Intent intent;
+        if (userID != null && !userID.equals("")) {
+            switch (requestCode) {
+                case 1:
+                    switch (LogFlag) {
+                        case "1":
+                            HomeLoadUtil.showItemPop(this, imgMoreBlack);
+                            break;
+                        case "2":
+                            intent = new Intent(this, CarActivity.class);
+                            startActivity(intent);
+                            break;
+                    }
+                    break;
+            }
         }
     }
 }

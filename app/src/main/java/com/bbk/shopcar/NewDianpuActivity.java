@@ -130,6 +130,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
     DianpuTypesAdapter dianpuTypesAdapter;
     List<DianPuTypesBean> dianPuTypesBeans;
     private DianpuPresenter dianpuPresenter = new DianpuPresenter(this);
+    private String LogFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -373,6 +374,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                 break;
             case R.id.img_car:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "2";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -397,6 +399,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                 break;
             case R.id.img_more_black:
                 if (TextUtils.isEmpty(userID)) {
+                    LogFlag = "1";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
@@ -406,6 +409,33 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         }
     }
 
+    /**
+     * 登陆回调
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Intent intent;
+        if (userID != null && !userID.equals("")) {
+            switch (requestCode) {
+                case 1:
+                    switch (LogFlag) {
+                        case "1":
+                            HomeLoadUtil.showItemPop(this, imgMoreBlack);
+                            break;
+                        case "2":
+                            intent = new Intent(this, CarActivity.class);
+                            startActivity(intent);
+                            break;
+                    }
+                    break;
+            }
+        }
+    }
 
     /**
      * 商品分类

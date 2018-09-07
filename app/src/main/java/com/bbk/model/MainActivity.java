@@ -993,4 +993,20 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
         page = 1;
         initDataCzg(keyword);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Intent intent;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (userID != null && !userID.equals("")) {
+            switch (requestCode) {
+                case 1:
+                    intent = new Intent(getActivity(), MesageCenterActivity.class);
+                    intent.putExtra("type", "0");
+                    startActivity(intent);
+                    break;
+            }
+        }
+    }
 }

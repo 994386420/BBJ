@@ -60,6 +60,7 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
     private List<SearchResultBean> searchResultBeans;
     private PopupWindow popupWindow;
     private int showTimes = 0;
+    private LogInterfaceGrid logInterface;
 
     public ResultMyGridAdapter(List<SearchResultBean> searchResultBeans, Activity context) {
         this.searchResultBeans = searchResultBeans;
@@ -71,6 +72,14 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
             this.searchResultBeans.addAll(beans);
             notifyDataSetChanged();
         }
+    }
+
+    public LogInterfaceGrid getLogInterface() {
+        return logInterface;
+    }
+
+    public void setLogInterface(LogInterfaceGrid logInterface) {
+        this.logInterface = logInterface;
     }
 
     @Override
@@ -246,8 +255,9 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
                                 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                                 Intent intent;
                                 if (TextUtils.isEmpty(userID)) {
-                                    intent = new Intent(context, UserLoginNewActivity.class);
-                                    context.startActivityForResult(intent, 2);
+//                                    intent = new Intent(context, UserLoginNewActivity.class);
+//                                    context.startActivityForResult(intent, 2);
+                                    logInterface.IntentLogGird(groupRowKey,"1",dataSet.getPrice(),dataSet.getTitle(),dataSet.getDetailImages());
                                 } else {
                                     //二级页面去发标
                                     intent = new Intent(context, BidActivity.class);
@@ -273,8 +283,9 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
                                 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                                 Intent intent;
                                 if (TextUtils.isEmpty(userID)) {
-                                    intent = new Intent(context, UserLoginNewActivity.class);
-                                    context.startActivityForResult(intent, 2);
+//                                    intent = new Intent(context, UserLoginNewActivity.class);
+//                                    context.startActivityForResult(intent, 2);
+                                    logInterface.IntentLogGird(groupRowKey,"1",dataSet.getPrice(),dataSet.getTitle(),dataSet.getDetailImages());
                                 } else {
                                     //二级页面去发标
                                     intent = new Intent(context, BidActivity.class);
@@ -383,6 +394,10 @@ public class ResultMyGridAdapter extends RecyclerView.Adapter implements PopupWi
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public interface LogInterfaceGrid {
+        void IntentLogGird(String rowkey,String type,String price,String title,String imgs);
     }
 
     /**
