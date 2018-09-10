@@ -21,6 +21,7 @@ import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.view.MyListView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -164,44 +165,47 @@ public class QueryHistoryActivity extends Activity implements OnClickListener, R
 			try {
 				if (!content.equals("{}") && !content.equals("")) {
 					JSONObject jsonObject = new JSONObject(content);
-
 					String title = jsonObject.optString("title");
 					String rowkey = jsonObject.optString("rowkey");
 					String url = jsonObject.optString("url");
-					String LogisticsQuery = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),
-							"QueryHistory", "QueryHistory");
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
-					String now = sdf.format(new Date());
-					String time = now.substring(5, 10);
-					JSONObject object = new JSONObject();
-					object.put("url", url);
-					object.put("rowkey", rowkey);
-					object.put("title", title);
-					JSONArray array;
-					if (!LogisticsQuery.isEmpty()) {
-						array = new JSONArray(LogisticsQuery);
-					} else {
-						array = new JSONArray();
+					if (title != null && !title.equals("")) {
+						String LogisticsQuery = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),
+								"QueryHistory", "QueryHistory");
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+						String now = sdf.format(new Date());
+						String time = now.substring(5, 10);
+						JSONObject object = new JSONObject();
+						object.put("url", url);
+						object.put("rowkey", rowkey);
+						object.put("title", title);
+						JSONArray array;
+						if (!LogisticsQuery.isEmpty()) {
+							array = new JSONArray(LogisticsQuery);
+						} else {
+							array = new JSONArray();
+						}
+						array.put(object);
+						if (array.length() > 10) {
+							array.remove(0);
+						}
+						SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "QueryHistory", "QueryHistory",
+								array.toString());
+						Map<String, String> map = new HashMap<>();
+						map.put("url", url);
+						map.put("rowkey", rowkey);
+						map.put("title", title);
+						list.add(map);
+						adapter.notifyDataSetChanged();
+						mdelete.setVisibility(View.VISIBLE);
+						historytext.setVisibility(View.VISIBLE);
+						myindao.setVisibility(View.GONE);
+						String url1 = BaseApiService.Base_URL + "mobile/user/history?rowkey=" + rowkey;
+						Intent intent = new Intent(this, WebViewActivity.class);
+						intent.putExtra("url", url1);
+						startActivity(intent);
+					}else {
+						StringUtil.showToast(QueryHistoryActivity.this,"未收录");
 					}
-					array.put(object);
-					if (array.length() > 10) {
-						array.remove(0);
-					}
-					SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "QueryHistory", "QueryHistory",
-							array.toString());
-					Map<String, String> map = new HashMap<>();
-					map.put("url", url);
-					map.put("rowkey", rowkey);
-					map.put("title", title);
-					list.add(map);
-					adapter.notifyDataSetChanged();
-					mdelete.setVisibility(View.VISIBLE);
-					historytext.setVisibility(View.VISIBLE);
-					myindao.setVisibility(View.GONE);
-					String url1 = BaseApiService.Base_URL + "mobile/user/history?rowkey=" + rowkey;
-					Intent intent = new Intent(this, WebViewActivity.class);
-					intent.putExtra("url", url1);
-					startActivity(intent);
 				} else {
 					if (toast != null) {
 						toast.cancel();
