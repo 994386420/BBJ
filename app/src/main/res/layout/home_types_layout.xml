@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
-    android:id="@+id/lltype"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:id="@+id/lltype"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <include
         android:id="@+id/title"
         layout="@layout/title_layout"/>
@@ -14,6 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/__picker_common_primary"/>
+        <GridView
+            android:id="@+id/miaosha_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="5"
+            android:visibility="gone"></GridView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +47,32 @@
             app:xTabDividerHeight="0dp"
             app:xTabDividerColor="#000"
             />
+
+        <LinearLayout
+            android:id="@+id/type_image"
+            android:layout_weight="7.5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:gravity="center">
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/__picker_common_primary"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/xjpp_normal" />
+        </LinearLayout>
     </LinearLayout>
+    <View
+        android:background="@color/__picker_common_primary"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:background="#f1f1f1"
         android:id="@+id/mPtrframe"
@@ -64,6 +100,55 @@
                 android:layout_gravity="center"/>
         </FrameLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="70dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="38dp"
+            android:background="@color/white">
+            <GridView
+                android:id="@+id/type_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:columnWidth="80dp"
+                android:horizontalSpacing="0dp"
+                android:numColumns="auto_fit"
+                android:paddingBottom="60dp"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="0dp" />
+        </LinearLayout>
 
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_shouqi"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:gravity="center"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/bg_cicyle1"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="@mipmap/tuiguang_22"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:textColor="#fff"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="收起"/>
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>

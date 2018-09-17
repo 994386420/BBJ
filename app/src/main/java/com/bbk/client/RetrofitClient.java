@@ -578,6 +578,27 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void getPageListChaozhigou99Types(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getPageListChaozhigou99Types(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void getPageListChaozhigou99(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getPageListChaozhigou99(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void parseCpsDianpuMainUrl(Map<String, String> parameters, Observer<?> observer) {
+        apiService.parseCpsDianpuMainUrl(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

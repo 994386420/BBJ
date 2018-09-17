@@ -39,17 +39,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+                    <!--<TextView-->
+                        <!--android:id="@+id/tv_mall"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:text=""-->
+                        <!--android:paddingRight="8dp"-->
+                        <!--android:paddingLeft="8dp"-->
+                        <!--android:paddingTop="2dp"-->
+                        <!--android:paddingBottom="2dp"-->
+                        <!--android:background="@drawable/bg_tuiguang3"-->
+                        <!--android:layout_marginTop="2dp"-->
+                        <!--android:textSize="10dp"/>-->
                     <TextView
                         android:id="@+id/tv_mall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:textColor="@color/white"
                         android:text=""
                         android:paddingRight="8dp"
                         android:paddingLeft="8dp"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
-                        android:background="@drawable/bg_tuiguang3"
                         android:layout_marginTop="2dp"
                         android:textSize="10dp"/>
                     <TextView
@@ -85,30 +97,78 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:layout_weight="1">
+                        <!--<LinearLayout-->
+                            <!--android:id="@+id/ll_quan"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:gravity="center"-->
+                            <!--android:layout_marginRight="5dp"-->
+                            <!--android:background="@drawable/bg_czg1"-->
+                            <!--android:orientation="horizontal">-->
+                            <!--<TextView-->
+                                <!--android:id="@+id/quan"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:paddingLeft="10dp"-->
+                                <!--android:paddingRight="10dp"-->
+                                <!--android:paddingTop="3dp"-->
+                                <!--android:paddingBottom="3dp"-->
+                                <!--android:gravity="center"-->
+                                <!--android:textColor="@color/white"-->
+                                <!--android:text="领券减0"-->
+                                <!--android:textSize="11dp"/>-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="3dp"-->
+                                <!--android:layout_height="5dp"-->
+                                <!--android:background="@drawable/bg_cicyle"/>-->
+                            <!--<TextView-->
+                                <!--android:id="@+id/mprice"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:textColor="#b40000"-->
+                                <!--android:text="1"-->
+                                <!--android:visibility="gone"-->
+                                <!--android:textSize="22dp"/>-->
+                        <!--</LinearLayout>-->
                         <LinearLayout
                             android:id="@+id/ll_quan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:background="@drawable/bg_czg1"
+                            android:layout_marginRight="5dp"
+                            android:background="@mipmap/home_juan_01"
                             android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingTop="2dp"
+                                android:paddingBottom="2dp"
+                                android:gravity="center"
+                                android:background="@drawable/bg_czg1"
+                                android:textColor="@color/white"
+                                android:text="券"
+                                android:textSize="11dp"/>
                             <TextView
                                 android:id="@+id/quan"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:paddingTop="3dp"
-                                android:paddingBottom="3dp"
+                                android:paddingLeft="4dp"
+                                android:paddingRight="4dp"
+                                android:paddingTop="2dp"
+                                android:paddingBottom="2dp"
                                 android:gravity="center"
-                                android:textColor="@color/white"
-                                android:text="领券减0"
+                                android:textColor="@color/tuiguang_color2"
+                                android:text=""
                                 android:textSize="11dp"/>
-
                             <TextView
                                 android:layout_width="3dp"
                                 android:layout_height="5dp"
+                                android:visibility="gone"
                                 android:background="@drawable/bg_cicyle"/>
                             <TextView
                                 android:id="@+id/mprice"
@@ -126,14 +186,13 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:background="@drawable/bg_czg2"
-                            android:paddingBottom="3dp"
+                            android:paddingBottom="2dp"
                             android:paddingLeft="3dp"
                             android:paddingRight="3dp"
-                            android:paddingTop="3dp"
+                            android:paddingTop="2dp"
                             android:text=""
-                            android:layout_marginLeft="5dp"
                             android:textColor="@color/white"
-                            android:textSize="10dp" />
+                            android:textSize="11dp" />
                         <TextView
                             android:id="@+id/mbidprice"
                             android:layout_width="wrap_content"

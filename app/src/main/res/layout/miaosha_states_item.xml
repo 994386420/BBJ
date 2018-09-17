@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/ll_miaosha"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tuiguang_color7"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="8dp">
+
+        <com.bbk.view.AdaptionSizeTextView
+            android:id="@+id/miaosha_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15:00"
+            android:textColor="@color/tuiguang_color8"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <com.bbk.view.AdaptionSizeTextView
+            android:id="@+id/miaoshao_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:text="即将开始"
+            android:textColor="@color/tuiguang_color8"
+            android:textSize="11dp" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/point_view"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:visibility="gone"
+        android:background="@drawable/bg_miaoshao"
+        />
+</LinearLayout>

@@ -89,9 +89,9 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
     private LinearLayout tabParentLayout;
     private int[] tabImgBlue = {R.mipmap.bottom_01, R.mipmap.bottom_02,
-            R.mipmap.bottom_07, R.mipmap.bottom_06, R.mipmap.bottom_05};
+            R.mipmap.bottom_03, R.mipmap.bottom_07, R.mipmap.bottom_06};
     private int[] tabImgGray = {R.mipmap.bottom_11, R.mipmap.bottom_12,
-            R.mipmap.bottom_17, R.mipmap.bottom_16, R.mipmap.bottom_15};
+            R.mipmap.bottom_13, R.mipmap.bottom_17, R.mipmap.bottom_15};
     private List<String> tabImgBlue2 = new ArrayList<>();
     private List<String> tabImgGray2 = new ArrayList<>();
     private boolean isshow = false;
@@ -299,15 +299,15 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         NewRankFragment rankFragment = new NewRankFragment();
 //        HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
 //		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();
-//        MesageCenteFragment mesageCenteFragment = new MesageCenteFragment();
+        MesageCenteFragment mesageCenteFragment = new MesageCenteFragment();
         SortFragment sortFragment = new SortFragment();
         FenXiangFragment fenXiangFragment = new FenXiangFragment();
         UserFragment userFragment = new UserFragment();
         fragments.add(homeFragment);//首页
 //		fragments.add(gossipPiazzaFragment);//爆料
         fragments.add(fenXiangFragment);
-        fragments.add(sortFragment);//消息
-        fragments.add(rankFragment);//发现
+        fragments.add(mesageCenteFragment);//消息
+        fragments.add(sortFragment);//发现
         fragments.add(userFragment);//我的
         mPagerAdapter.notifyDataSetChanged();
 
@@ -368,24 +368,24 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
             final int index = i;
             LinearLayout tabLayout = (LinearLayout) tabParentLayout.getChildAt(i);
             Logg.e(HomeActivity.position);
-                if (HomeActivity.position == 0) {
+            if (HomeActivity.position == 0) {
 //                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
-                    StringUtil.setScalse(homeImgBtn);//设置缩放动画
-                    homeImgBtn.setVisibility(View.VISIBLE);
-                    mtext.setVisibility(View.GONE);
-                    ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
-                    params.height = StringUtil.dip2px(HomeActivity.this, 42);
-                    params.width = StringUtil.dip2px(HomeActivity.this, 42);
-                    homeImgBtn.setLayoutParams(params);
-                } else {
+                StringUtil.setScalse(homeImgBtn);//设置缩放动画
+                homeImgBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.GONE);
+                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                params.height = StringUtil.dip2px(HomeActivity.this, 42);
+                params.width = StringUtil.dip2px(HomeActivity.this, 42);
+                homeImgBtn.setLayoutParams(params);
+            } else {
 //                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
-                    homeImgBtn.setVisibility(View.VISIBLE);
-                    mtext.setVisibility(View.VISIBLE);
-                    ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
-                    params.height = StringUtil.dip2px(HomeActivity.this, 25);
-                    params.width = StringUtil.dip2px(HomeActivity.this, 25);
-                    homeImgBtn.setLayoutParams(params);
-                }
+                homeImgBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                params.height = StringUtil.dip2px(HomeActivity.this, 25);
+                params.width = StringUtil.dip2px(HomeActivity.this, 25);
+                homeImgBtn.setLayoutParams(params);
+            }
             tabLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -607,4 +607,3 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         super.onStart();
     }
 }
-

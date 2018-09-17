@@ -17,10 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:gravity="center"
         android:background="@drawable/bg_tiaozhuan2">
         
@@ -68,6 +68,7 @@
         android:textColor="@color/tuiguang_color3"
         android:text="先领券再购物"/>
     <com.bbk.view.AdaptionSizeTextView
+        android:id="@+id/quan1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

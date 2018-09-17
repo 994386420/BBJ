@@ -577,6 +577,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		Intent intent;
 		switch (v.getId()) {
 		case R.id.login_btn:
+//			NewConstants.refeshFlag = "1";
 			final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(loginBtn.getWindowToken(), 0);
 			if(getUserLoginInfor()) {
@@ -631,6 +632,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 //			break;
 		case R.id.wx_login_layout:
 			if (mCheckXieyi.isChecked()){
+//				NewConstants.refeshFlag = "1";
 				sendAuth();
 			}else {
 				stringUtil.showToast(this,getResources().getString(R.string.app_wx_text));

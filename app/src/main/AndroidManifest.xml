@@ -569,6 +569,21 @@
             android:name="com.bbk.shopcar.DianpuTypesActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.bbk.model.ChaoZhiGouTypesActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".FenXiangActivty"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".NewRankActivty"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.tencent.rdm.uuid"
             android:value="a2af72ec-a731-46eb-8501-0477e34702f3" />

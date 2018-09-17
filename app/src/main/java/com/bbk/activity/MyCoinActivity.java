@@ -62,12 +62,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
     private View data_head;
     private RelativeLayout mbackground, msign;
     private ListView mlistview;
-    private String[] str1 = {"邀请好友下载APP", "收益奖励", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享鲸港圈", "分享文章", "评论文章"};
-    private String[] str2 = {"+500鲸币", "+5000鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币", "+20鲸币", "+10鲸币", "+10鲸币"};
-    private String[] str3 = {"每邀请一个好友注册成功", "月返利收入≥100元", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日）", "分享一条鲸港圈的商品（限10次/日）",
-            "对“发现”文章进行分享（限10次/日）", "对“发现”文章进行评论"};
-    private int[] drawable = {R.mipmap.rw_1, R.mipmap.jingbi_img14, R.mipmap.rw_7, R.mipmap.coin_weixin, R.mipmap.rw_4,
-            R.mipmap.rw_10, R.mipmap.jinbi_clsj, R.mipmap.jingbi_img15, R.mipmap.jingbi_img16, R.mipmap.rw_8};
+
     //    private String[] str1 = {"新注册用户", "签到打卡", "微信公众号签到", "完善资料", "收藏奖励", "意见反馈", "邀请好友下载APP", "查历史价", "爆料奖励", "我要", "扑倒"};
 //    private String[] str2 = {"+800鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+500鲸币", "+15鲸币", "+50鲸币", "+50鲸币", "+50鲸币"};
 //    private String[] str3 = {"新用户注册成功", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "收藏商品一次（限10次/日）", "反馈有效意见或建议",
@@ -119,7 +114,6 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
     }
 
     private void initView() {
-        list = new ArrayList<>();
         anim_mask_layout = createAnimLayout();
         topbar_goback_btn = (ImageButton) findViewById(R.id.topbar_goback_btn);
         morezhuanpan = (LinearLayout) findViewById(R.id.morezhuanpan);
@@ -179,19 +173,6 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
     }
 
     private void initData() {
-        for (int i = 0; i < str1.length; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("str1", str1[i]);
-            map.put("str2", str2[i]);
-            map.put("str3", str3[i]);
-            map.put("drawable", drawable[i]);
-            map.put("isgo", "0");
-            list.add(map);
-        }
-        adapter = new MyCoinAdapter(list, this);
-        mlistview.setAdapter(adapter);
-        mlistview.setOnItemClickListener(this);
-        setHeight();
         mscroll.fullScroll(View.FOCUS_UP);
         userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         if (!TextUtils.isEmpty(userID)) {
@@ -349,6 +330,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
         switch (requestCode) {
             case 1:
                 try {
+                    list = new ArrayList<>();
                     JSONObject object = new JSONObject(content);
 //                    Log.i("======",object+"--------");
                     String day = object.optString("continuous_day");
@@ -357,20 +339,42 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
                     }
                     String jinbi = object.optString("jinbi");
                     String str = object.optString("addjinbi");
+                    String invitedReward = object.optString("invitedReward");
                     textjingbi.setText("今天获得" + str + "鲸币");
                     msigntext.setText("签到+" + str + "鲸币");
                     signnum = "+" + str;
                     num = Integer.valueOf(jinbi) + Integer.valueOf(str);
                     mjbcoin.setText(object.optString("jinbi"));
                     initday(day, jinbi);
-                    for (int i = 0; i < list.size(); i++) {
-                        initisgo(i, object);
-                    }
-                    adapter.notifyDataSetChanged();
 //				mscroll.smoothScrollTo(0, 0);
                     mbackground.setFocusable(true);
                     mbackground.setFocusableInTouchMode(true);
                     mbackground.requestFocus();
+
+                    String[] str1 = {"邀请好友下载APP", "收益奖励", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享鲸港圈", "分享文章", "评论文章"};
+                    String[] str2 = {"+"+invitedReward+"鲸币", "+5000鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币", "+20鲸币", "+10鲸币", "+10鲸币"};
+                    String[] str3 = {"每邀请一个好友注册成功", "月返利收入≥100元", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日）", "分享一条鲸港圈的商品（限10次/日）",
+                            "对“发现”文章进行分享（限10次/日）", "对“发现”文章进行评论"};
+                    int[] drawable = {R.mipmap.rw_1, R.mipmap.jingbi_img14, R.mipmap.rw_7, R.mipmap.coin_weixin, R.mipmap.rw_4,
+                            R.mipmap.rw_10, R.mipmap.jinbi_clsj, R.mipmap.jingbi_img15, R.mipmap.jingbi_img16, R.mipmap.rw_8};
+                    for (int i = 0; i < str1.length; i++) {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("str1", str1[i]);
+                        map.put("str2", str2[i]);
+                        map.put("str3", str3[i]);
+                        map.put("drawable", drawable[i]);
+                        map.put("isgo", "0");
+                        list.add(map);
+                    }
+                    Logg.json(list);
+                    for (int i = 0; i < list.size(); i++) {
+                        initisgo(i, object);
+                    }
+                    adapter = new MyCoinAdapter(list, this);
+                    mlistview.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    mlistview.setOnItemClickListener(this);
+                    setHeight();
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -669,6 +673,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
 //                    startActivity(intent);
                     break;
                 case 7:
+                    HomeActivity.position = 1;
                     SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "1");
                     intent = new Intent(this, HomeActivity.class);
                     startActivity(intent);
@@ -681,8 +686,9 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
 //                    intent = new Intent(this, BidHomeActivity.class);
 //                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "Bidhomeactivty", "type", "0");
 //                    startActivity(intent);
-                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "3");
-                    intent = new Intent(this, HomeActivity.class);
+//                    HomeActivity.position = 1;
+//                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "3");
+                    intent = new Intent(this, NewRankActivty.class);
                     startActivity(intent);
                     break;
                 case 9:
@@ -690,8 +696,9 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
 //                    intent = new Intent(this, BidHomeActivity.class);
 //                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "Bidhomeactivty", "type", "0");
 //                    startActivity(intent);
-                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "3");
-                    intent = new Intent(this, HomeActivity.class);
+//                    HomeActivity.position = 1;
+//                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "3");
+                    intent = new Intent(this, NewRankActivty.class);
                     startActivity(intent);
                     break;
                 default:

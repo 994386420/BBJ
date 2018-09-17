@@ -22,4 +22,19 @@
         android:layout_marginTop="16dp"
         android:textSize="14dp"/>
 
+
+    <TextView
+        android:id="@+id/tv_mall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="去逛逛"
+        android:textSize="15dp"
+        android:background="@drawable/bg_czg1"
+        android:textColor="@color/white"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

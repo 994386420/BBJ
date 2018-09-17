@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:singleLine="true"
+			android:textColor="@color/tuiguang_color3"
             android:text= "商品分类"
 			android:textSize="21dp"/>
 

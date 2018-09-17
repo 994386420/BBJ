@@ -69,6 +69,7 @@ import com.bbk.fragment.DataFragment;
 import com.bbk.lubanyasuo.Luban;
 import com.bbk.lubanyasuo.OnCompressListener;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DateUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.DialogUtil;
@@ -390,6 +391,7 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 					.setPositiveButton("确认", new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
+//							NewConstants.refeshFlag = "1";
 							//友盟登出
 							DialogSingleUtil.show(UserAccountActivity.this,"退出中...");
 							MobclickAgent.onProfileSignOff();

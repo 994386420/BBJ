@@ -18,12 +18,14 @@ import com.bbk.activity.DataFragmentActivity;
 import com.bbk.activity.DetailsMainActivity22;
 import com.bbk.activity.DianpuActivity;
 import com.bbk.activity.FanLiOrderActivity;
+import com.bbk.activity.FenXiangActivty;
 import com.bbk.activity.FensiActivity;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.MyCoinActivity;
+import com.bbk.activity.NewRankActivty;
 import com.bbk.activity.QueryHistoryActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.RankCategoryActivity;
@@ -45,10 +47,13 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
+import com.bbk.model.ChaoZhiGouTypesActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.DianpuHomeActivity;
 import com.bbk.shopcar.NewDianpuActivity;
 import com.bbk.shopcar.NewDianpuHomeActivity;
+import com.bbk.view.AdaptionSizeTextView;
+import com.bumptech.glide.Glide;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
@@ -62,6 +67,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +83,8 @@ public class EventIdIntentUtil {
 	private static UpdataDialog updataDialog;
 	private static String isFirstClick;
 	private static Context contexte;
+	private static String jumpdomain;
+	private static boolean cancleJump = true;
 	public static void main(String[] args) {
 
 	}
@@ -85,7 +93,7 @@ public class EventIdIntentUtil {
 	 * //按eventId跳转:    1超值购    2超爆款    3潮潮潮    4美味生鲜    5html活动页面(htmlUrl)        6三级页面(groupRowkey)
 	 * 7超市    8全球购    9服饰    10充值    11榜单(type) 12搜索
 	 * 101回复评论,103签到(鲸币界面) 104优惠券,105爆料,106发现,107数据频道 109跳京东返利web  110淘宝返利web 111大转盘 112查历史价格 113鲸港圈  114收益报表  115我的订单 116粉丝
-	 * 117淘宝本月结算 118淘宝本月付款 119京东本月结算 120京东本月付款 121系统消息(非聊天) 122消息聊天  123首页banner拉起京东淘宝店铺 124经过jump跳cps三级详情
+	 * 117淘宝本月结算 118淘宝本月付款 119京东本月结算 120京东本月付款 121系统消息(非聊天) 122消息聊天  123首页banner拉起京东淘宝店铺 124经过jump跳cps三级详情 127发飙  128(9块9)  129秒杀  130好货拼团  131超高赚
 	 * @param context
 	 * @param jo
 	 */
@@ -221,10 +229,16 @@ public class EventIdIntentUtil {
 			context.startActivity(intent104);
 			break;
 		case "105":
-			HomeActivity.inittwo();
+			HomeActivity.position = 1;
+			SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "2");
+			intent = new Intent(context, HomeActivity.class);
+			context.startActivity(intent);
 			break;
 		case "106":
-			HomeActivity.initone();
+//			HomeActivity.position = 1;
+//			SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "3");
+			intent = new Intent(context, NewRankActivty.class);
+			context.startActivity(intent);
 			break;
 		case "107":
 			Intent intent107 = new Intent(context, DataFragmentActivity.class);
@@ -278,7 +292,7 @@ public class EventIdIntentUtil {
 			case "113":
 				HomeActivity.position = 1;
 				SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "1");
-				intent = new Intent(context, HomeActivity.class);
+				intent = new Intent(context,HomeActivity.class);
 				context.startActivity(intent);
 				break;
 			case "114":
@@ -353,10 +367,51 @@ public class EventIdIntentUtil {
 				break;
 
 			case "126":
-				intent = new Intent(contexte, CoinGoGoGoActivity.class);
+				intent = new Intent(context, CoinGoGoGoActivity.class);
 				intent.putExtra("type", "0");
 				context.startActivity(intent);
 				break;
+			case "127":
+				intent = new Intent(context, BidHomeActivity.class);
+				context.startActivity(intent);
+				break;
+			case "128":
+				intent = new Intent(context,ChaoZhiGouTypesActivity.class);
+				intent.putExtra("type", "1");
+				context.startActivity(intent);
+				break;
+			case "129":
+				intent = new Intent(context, ChaoZhiGouTypesActivity.class);
+				intent.putExtra("type", "4");
+				context.startActivity(intent);
+				break;
+			case "130":
+				intent = new Intent(context, ChaoZhiGouTypesActivity.class);
+				intent.putExtra("type", "3");
+				context.startActivity(intent);
+				break;
+			case "131":
+				intent = new Intent(context, ChaoZhiGouTypesActivity.class);
+				intent.putExtra("type", "2");
+				context.startActivity(intent);
+				break;
+			case "132":
+				if (TextUtils.isEmpty(userID)){
+					intent14 = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent14);
+				}else {
+					parseCpsDianpuMainUrl(context, userID, "taobao", jo.optString("keyword"), jo.optString("htmlUrl"));
+				}
+				break;
+			case "133":
+				if (TextUtils.isEmpty(userID)){
+					intent14 = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent14);
+				}else {
+					parseCpsDianpuMainUrl(context, userID, "jd", jo.optString("keyword"), jo.optString("htmlUrl"));
+				}
+				break;
+
 		case "666":
 			String url = jo.optString("url");
 			Intent intent666 = new Intent(context, WebViewActivity_copy.class);
@@ -370,6 +425,55 @@ public class EventIdIntentUtil {
 		if (WelcomeActivity.instance!= null){
 			WelcomeActivity.instance.finish();
 		}
+	}
+
+
+
+	public static void parseCpsDianpuMainUrl(final Context context, final String userid, final String domain, final String url, String zurl) {
+		Map<String, String> maps = new HashMap<String, String>();
+		Logg.e(userid +"==="+ domain +"==="+url+"===" +zurl);
+		maps.put("userid", userid);
+		maps.put("domain", domain);
+		maps.put("url", url);
+		maps.put("zurl", zurl);
+		RetrofitClient.getInstance(context).createBaseApi().parseCpsDianpuMainUrl(
+				maps, new BaseObserver<String>(context) {
+					@Override
+					public void onNext(String s) {
+						Logg.json("===", s);
+						try {
+							JSONObject jsonObject = new JSONObject(s);
+							if (jsonObject.optString("status").equals("1")) {
+								String content = jsonObject.optString("content");
+								final JSONObject jsonObject1 = new JSONObject(content);
+								jumpUrl(domain,jsonObject1,context);
+							}else {
+								StringUtil.showToast(context, jsonObject.optString("errmsg"));
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					protected void hideDialog() {
+//						DialogSingleUtil.dismiss(0);
+						updataDialog.dismiss();
+					}
+
+					@Override
+					protected void showDialog() {
+//						DialogSingleUtil.show(context);
+						showLoadingDialog(context,url);
+					}
+
+					@Override
+					public void onError(ExceptionHandle.ResponeThrowable e) {
+//						DialogSingleUtil.dismiss(0);
+						updataDialog.dismiss();
+						StringUtil.showToast(context, e.message);
+					}
+				});
 	}
 
 	public static void parseCpsDomainMainUrl(final Context context, final String userid, final String domain) {
@@ -737,6 +841,38 @@ public class EventIdIntentUtil {
 				}
 				context.startActivity(intent);
 				break;
+		}
+	}
+
+
+	public static void showLoadingDialog(final Context context,String url) {
+		if(updataDialog == null || !updataDialog.isShowing()) {
+			//初始化弹窗 布局 点击事件的id
+			updataDialog = new UpdataDialog(context, R.layout.disanfang_dialog,
+					new int[]{R.id.ll_close});
+			updataDialog.show();
+			LinearLayout img_close = updataDialog.findViewById(R.id.ll_close);
+			ImageView imgLoading = updataDialog.findViewById(R.id.img_loading);
+			ImageView imageView = updataDialog.findViewById(R.id.img_app);
+			AdaptionSizeTextView adaptionSizeTextViewQuan = updataDialog.findViewById(R.id.quan);
+			AdaptionSizeTextView adaptionSizeTextViewQuan1 = updataDialog.findViewById(R.id.quan1);
+			if (url.contains("jd")){
+				jumpdomain = "jumpjd";
+			}else if (url.contains("tmall")){
+				jumpdomain = "jumptmall";
+			}else if (url.contains("taobao")){
+				jumpdomain = "jumptaobao";
+			}
+			int drawS = context.getResources().getIdentifier(jumpdomain,"mipmap", context.getPackageName());
+			imageView.setImageResource(drawS);
+			Glide.with(context).load(R.drawable.tuiguang_d05).into(imgLoading);
+			img_close.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					updataDialog.dismiss();
+					cancleJump = false;
+				}
+			});
 		}
 	}
 }

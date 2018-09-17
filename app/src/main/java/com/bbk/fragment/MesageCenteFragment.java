@@ -96,12 +96,13 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		if (null == mView) {
 			mView = inflater.inflate(R.layout.activity_mesage_center, null);
-			SoftHideKeyBoardUtil.assistActivity(getActivity(),getStatusBarHeight(getActivity()));
+//			SoftHideKeyBoardUtil.assistActivity(getActivity(),getStatusBarHeight(getActivity()));
+			getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 			View topView = mView.findViewById(R.id.parentview);
 			// 实现沉浸式状态栏
 			ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
-			getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-					| WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//			getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+//					| WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 //			if (getIntent().getStringExtra("type") != null) {
 //				type = getIntent().getStringExtra("type");
 //			}
@@ -306,7 +307,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 									}else {
 										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
-										zLoadingView.loadSuccess(true);
+										zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看消息哦","去登录",true);
 										xrefresh.setEnableLoadMore(false);
 									}
 								}else {
@@ -377,7 +378,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 									}else {
 										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
-										zLoadingView.loadSuccess(true);
+										zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看评论哦","去登录",true);
 										xrefresh.setEnableLoadMore(false);
 									}
 								}else {
@@ -449,7 +450,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 									}else {
 										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
-										zLoadingView.loadSuccess(true);
+										zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看评论哦","去登录",true);
 										xrefresh.setEnableLoadMore(false);
 									}
 								}else {

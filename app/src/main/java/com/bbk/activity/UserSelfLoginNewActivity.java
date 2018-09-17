@@ -487,6 +487,7 @@ public class UserSelfLoginNewActivity extends BaseActivity implements OnClickLis
 		Intent intent;
 		switch (v.getId()) {
 		case R.id.login_btn:
+//			NewConstants.refeshFlag = "1";
 			if(getUserLoginInfor()) {
 				userLoginHttp();
 			}

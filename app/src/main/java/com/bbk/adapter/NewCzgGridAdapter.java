@@ -148,9 +148,9 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter {
                 viewHolder.bprice.setVisibility(View.GONE);
             }
             viewHolder.price.setText(price);
-            if (newHomeCzgBean.get(position).getQuan() != null) {
+            if (newHomeCzgBean.get(position).getQuan1() != null) {
                 viewHolder.llQuan.setVisibility(View.VISIBLE);
-                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
+                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan1());
             } else {
                 viewHolder.llQuan.setVisibility(View.GONE);
             }

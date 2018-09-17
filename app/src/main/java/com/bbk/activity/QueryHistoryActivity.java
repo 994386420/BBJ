@@ -148,6 +148,8 @@ public class QueryHistoryActivity extends Activity implements OnClickListener, R
 		case R.id.mqueryhistory:
 			Map<String, String> paramsMap = new HashMap<String, String>();
 			paramsMap.put("url", medit.getText().toString());
+			String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+			paramsMap.put("userid", userID);
 			dataFlow.requestData(1, "newService/checkExsistProduct", paramsMap, this);
 			break;
 

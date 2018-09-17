@@ -20,6 +20,15 @@ public class NewHomeCzgBean {
     private String rowkey;
     private String requestUrl;
     private String sale;
+    private String quan1;
+
+    public String getQuan1() {
+        return quan1;
+    }
+
+    public void setQuan1(String quan1) {
+        this.quan1 = quan1;
+    }
 
     public String getSale() {
         return sale;

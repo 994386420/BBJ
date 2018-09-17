@@ -329,9 +329,9 @@
     //首页底部文字
     <string name="home_new_text">首页</string>
     <string name="home_baoliao_text">鲸港圈</string>
-    <string name="home_faxian_text">数据</string>
+    <string name="home_faxian_text">分类</string>
     <string name="home_my_text">我的</string>
-    <string name="home_news_text">分类</string>
+    <string name="home_news_text">消息</string>
 
     <string name="refresh_down_text">下拉可更新</string>
     <string name="refresh_release_text">松手可更新</string>

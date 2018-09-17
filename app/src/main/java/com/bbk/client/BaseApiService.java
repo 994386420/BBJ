@@ -234,4 +234,16 @@ public interface BaseApiService<T> {
     //退款详情
     @POST("mallService/queryRefundProgress")
     Observable<String> queryRefundProgress(@QueryMap Map<String, String> map);
+
+    //9.9，超高赚  筛选的分类
+    @POST("apiService/getPageListChaozhigou99Types")
+    Observable<String> getPageListChaozhigou99Types(@QueryMap Map<String, String> map);
+    //9.9，超级返  数据接口
+    @POST("apiService/getPageListChaozhigou99")
+    Observable<String> getPageListChaozhigou99(@QueryMap Map<String, String> map);
+
+    //
+    @POST("newService/parseCpsDianpuMainUrl")
+    Observable<String> parseCpsDianpuMainUrl(@QueryMap Map<String, String> map);
+
 }

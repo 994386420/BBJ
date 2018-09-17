@@ -7,6 +7,15 @@ package com.bbk.Bean;
 public class ChaozhigouTypesBean {
     private String keyword;
     private String name;
+    private String desc;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public String getKeyword() {
         return keyword;

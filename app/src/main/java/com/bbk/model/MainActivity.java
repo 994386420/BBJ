@@ -1,6 +1,7 @@
 package com.bbk.model;
 
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +13,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +32,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
 import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.ChaoJiFanBean;
 import com.bbk.Bean.ChaozhigouTypesBean;
 import com.bbk.Bean.CheckBean;
+import com.bbk.Bean.MiaoShaBean;
 import com.bbk.Bean.NewHomeCzgBean;
+import com.bbk.Bean.PinTuanBean;
+import com.bbk.Bean.TagBean;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BrowseActivity;
+import com.bbk.activity.FenXiangActivty;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MesageCenterActivity;
@@ -44,6 +51,9 @@ import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.UserLoginNewActivity;
+import com.bbk.activity.WebViewActivity;
+import com.bbk.adapter.FenXiangListAdapter;
+import com.bbk.adapter.MyHomeTagAdapter;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.TypeGridAdapter;
 import com.bbk.client.BaseObserver;
@@ -61,6 +71,7 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
 import com.bbk.view.CommonLoadingView;
+import com.bbk.view.RushBuyCountDownTimerHomeView;
 import com.bumptech.glide.Glide;
 import com.logg.Logg;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
@@ -69,13 +80,15 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -85,7 +98,7 @@ import butterknife.Unbinder;
 /**
  * 首页新版
  */
-public class MainActivity extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler {
+public class MainActivity extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler,HomeGridAdapter.LogInterface,HomeGridPinTuanAdapter.LogPinTuanInterface {
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.banner_layout)
@@ -175,10 +188,29 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     RelativeLayout rlHome;
     @BindView(R.id.huodongimg)
     ImageView huodongimg;
+    @BindView(R.id.tag_list)
+    RecyclerView tagList;
+    @BindView(R.id.ll_miaosha)
+    LinearLayout llMiaosha;
+    @BindView(R.id.hot_recyclerview)
+    RecyclerView hotRecyclerview;
+    @BindView(R.id.ll_pingtuan)
+    LinearLayout llPingtuan;
+    @BindView(R.id.pingtuan_recyclerview)
+    RecyclerView pingtuanRecyclerview;
+    @BindView(R.id.ll_czuan)
+    LinearLayout llCzuan;
+    @BindView(R.id.czuan_recyclerview)
+    RecyclerView czuanRecyclerview;
+    @BindView(R.id.mtime)
+    RushBuyCountDownTimerHomeView mtime;
+    @BindView(R.id.ll_huodong)
+    LinearLayout llHuodong;
     private View mView;
     private boolean isshowzhezhao = true;
     private int page = 1, x = 1;
     List<NewHomeCzgBean> czgBeans;//超值购数据
+    private String chaozhigou;
     NewCzgAdapter newCzgAdapter;
     private String keyword = "";
     private int durationRotate = 700;// 旋转动画时间
@@ -195,7 +227,8 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private static Handler mHandler = new Handler();
     private static UpdataDialog updataDialog;
     private HomeLoadUtil homeLoadUtil;
-    private int showTime = 0,curposition = 0;
+    private int showTime = 0, curposition = 0;
+    private String url1,title1,domain1,type1,isczg1,bprice1,quan1,zuan1;
 
     @Nullable
     @Override
@@ -247,6 +280,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      * 刷新事件
      */
     private void refresh() {
+        tagList.setNestedScrollingEnabled(false);
+        tagList.setHasFixedSize(true);
+        tagList.setFocusable(false);
+        tagList.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+
         zLoadingView.setLoadingHandler(this);
         refreshLayout.setEnableLoadMore(false);
         refresh.setEnableRefresh(false);
@@ -258,14 +296,16 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
                 queryAppIndexInfo();
-                if (keyword.equals("")) {
-                    page = 1;
-                    x = 1;
-                    initDataCzg(keyword);
-                } else {
+//                if (keyword.equals("")) {
+//
+//                    initDataCzg(keyword);
+//                }
+//                else {
+                page = 1;
+//                    x = 1;
                     XTabLayout.Tab tabAt = tablayout.getTabAt(0);
                     tabAt.select();
-                }
+//                }
             }
         });
         refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -376,14 +416,28 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 if (j == 0) {
                     keyword = "";
                     curposition = 0;
+                    czgBeans = JSON.parseArray(chaozhigou, NewHomeCzgBean.class);
+                    if (czgBeans != null && czgBeans.size() > 0) {
+                        if (typeGridAdapter != null) {
+                            typeGridAdapter.setSeclection(curposition);
+                            typeGridAdapter.notifyDataSetChanged();
+                        }
+                        refresh.setEnableLoadMore(true);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
+                        recyclerView.setAdapter(newCzgAdapter);
+                    } else {
+                        refresh.setEnableLoadMore(false);
+                        recyclerView.setVisibility(View.GONE);
+                    }
                 } else {
                     curposition = j - 1;
                     DialogHomeUtil.show(getActivity());
                     keyword = tab.getText().toString();
+                    page = 1;
+                    x = 1;
+                    initDataCzg(keyword);
                 }
-                page = 1;
-                x = 1;
-                initDataCzg(keyword);
             }
 
             @Override
@@ -470,7 +524,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                     }
                                 }
                                 //banner
-                                if (object.has("banner")){
+                                if (object.has("banner")) {
                                     JSONArray bannerarray = object.optJSONArray("banner");
                                     if (bannerarray != null && bannerarray.length() > 0) {
                                         HomeLoadUtil.loadbanner(getActivity(), banner, bannerarray);
@@ -478,14 +532,66 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 }
                                 //tag
                                 if (object.has("tag")) {
+                                    List<TagBean> tagBeans = JSON.parseArray(object.optString("tag"), TagBean.class);
                                     JSONArray tag = object.optJSONArray("tag");
-                                    List<Map<String, String>> taglist = new ArrayList<>();
-                                    if (tag != null && tag.length() > 0) {
-                                        HomeLoadUtil.loadTag(getActivity(), taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
+//                                    Logg.json(object.optString("tag"));
+//                                    List<Map<String, String>> taglist = new ArrayList<>();
+//                                    if (tag != null && tag.length() > 0) {
+//                                        HomeLoadUtil.loadTag(getActivity(), taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
+//                                    }
+                                    Logg.json(tag);
+                                    if (tagBeans != null && tagBeans.size() > 0) {
+                                        tagList.setVisibility(View.VISIBLE);
+                                        MyHomeTagAdapter myHomeTagAdapter = new MyHomeTagAdapter(getActivity(), tagBeans, tag);
+                                        tagList.setAdapter(myHomeTagAdapter);
                                     }
                                 }
+                                //今日秒杀
+                                Logg.e(object.optString("pintuan"));
+                                mtime.addsum(object.optString("miaoshatime"), "#FFFFFFFF");
+                                mtime.start();
+                                if (object.has("miaosha")) {
+                                    List<MiaoShaBean> miaoShaBeans = JSON.parseArray(object.optString("miaosha"), MiaoShaBean.class);
+                                    hotRecyclerview.setVisibility(View.VISIBLE);
+                                    hotRecyclerview.setHasFixedSize(true);
+                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                                    linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+                                    hotRecyclerview.setLayoutManager(linearLayoutManager);
+                                    if (miaoShaBeans != null && miaoShaBeans.size() > 0) {
+                                        HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), miaoShaBeans);
+                                        hotRecyclerview.setAdapter(homeGridAdapter);
+                                        homeGridAdapter.setLogInterface(MainActivity.this);
+                                    }
+                                }
+                                //超值拼团
+                                if (object.has("pintuan")) {
+                                    List<PinTuanBean> pinTuanBeans = JSON.parseArray(object.optString("pintuan"), PinTuanBean.class);
+                                    pingtuanRecyclerview.setVisibility(View.VISIBLE);
+                                    pingtuanRecyclerview.setHasFixedSize(true);
+                                    LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
+                                    linearLayoutManager1.setOrientation(linearLayoutManager1.HORIZONTAL);
+                                    pingtuanRecyclerview.setLayoutManager(linearLayoutManager1);
+                                    if (pinTuanBeans != null && pinTuanBeans.size() > 0) {
+                                        HomeGridPinTuanAdapter homeGridPinTuanAdapter = new HomeGridPinTuanAdapter(getActivity(), pinTuanBeans);
+                                        pingtuanRecyclerview.setAdapter(homeGridPinTuanAdapter);
+                                        homeGridPinTuanAdapter.setLogPinTuanInterface(MainActivity.this);
+                                    }
+                                }
+                                //超高赚
+                                if (object.has("chaojifan")) {
+                                    List<ChaoJiFanBean> chaoJiFanBeans = JSON.parseArray(object.optString("chaojifan"), ChaoJiFanBean.class);
+                                    czuanRecyclerview.setVisibility(View.VISIBLE);
+                                    czuanRecyclerview.setHasFixedSize(true);
+                                    LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
+                                    linearLayoutManager2.setOrientation(linearLayoutManager2.HORIZONTAL);
+                                    czuanRecyclerview.setLayoutManager(linearLayoutManager2);
+                                    if (chaoJiFanBeans != null && chaoJiFanBeans.size() > 0) {
+                                        czuanRecyclerview.setAdapter(new HomeGridChaojiFanAdapter(getActivity(), chaoJiFanBeans));
+                                    }
+                                }
+                                llHuodong.setVisibility(View.VISIBLE);
                                 //发镖滚动信息
-                                if (object.has("fabiao")){
+                                if (object.has("fabiao")) {
                                     JSONArray fabiao = object.optJSONArray("fabiao");
                                     if (fabiao != null && fabiao.length() > 0) {
                                         HomeLoadUtil.loadViewflipper(getActivity(), mviewflipper, fabiao);
@@ -528,6 +634,24 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                         }
                                     }
                                 });
+
+                                chaozhigou = object.optString("chaozhigou");
+                                //第一页超值购数据
+                                czgBeans = JSON.parseArray(chaozhigou, NewHomeCzgBean.class);
+                                if (czgBeans != null && czgBeans.size() > 0) {
+                                    if (typeGridAdapter != null) {
+                                        typeGridAdapter.setSeclection(curposition);
+                                        typeGridAdapter.notifyDataSetChanged();
+                                    }
+                                    refresh.setEnableLoadMore(true);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
+                                    recyclerView.setAdapter(newCzgAdapter);
+                                } else {
+                                    refresh.setEnableLoadMore(false);
+                                    recyclerView.setVisibility(View.GONE);
+                                }
+
 
                                 //eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao 未登录 显示preguanggao
                                 String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -572,6 +696,35 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     protected void hideDialog() {
                         refreshLayout.setEnableRefresh(true);
                         zLoadingView.loadSuccess();
+                        refreshLayout.finishRefresh();
+                        DialogHomeUtil.dismiss(0);
+                        NewConstants.showdialogFlg = "0";
+                        cancelCheck = true;
+                        isShowCheck = false;
+                        clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        if (clipboardManager.getText() != null) {
+//                            if (isShowCheck) {
+                            String text = clipboardManager.getText().toString();
+                            copytext = text;
+                            if (text != null && !text.equals("") && !text.equals("null")) {
+                                if (text.contains("bbj")) {
+                                    NewConstants.copyText = text;
+                                }
+                                // //获得当前activity的名字
+                                if (!text.contains("标题:")) {
+                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+                                    if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
+                                            text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
+                                            || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
+                                        String cliptext = SharedPreferencesUtil.getSharedData(getActivity(), "copyText", "copyText");
+                                        if (!text.equals(cliptext)) {
+                                            checkExsistProduct(text);
+                                        }
+                                    }
+                                }
+//                                }
+                            }
+                        }
                     }
 
                     @Override
@@ -581,8 +734,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogHomeUtil.dismiss(0);
-                        zLoadingView.setVisibility(View.VISIBLE);
-                        zLoadingView.loadError();
+                        if (zLoadingView != null) {
+                            zLoadingView.setVisibility(View.VISIBLE);
+                            zLoadingView.loadError();
+                        }
+                        refreshLayout.finishRefresh();
                         refreshLayout.setVisibility(View.GONE);
                         StringUtil.showToast(getActivity(), e.message);
                     }
@@ -591,9 +747,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 
     /**
      * 超值购数据请求
+     *
      * @param keyword
      */
     private void initDataCzg(String keyword) {
+//        Logg.e(keyword+"=====================");
         refresh.setNoMoreData(false);
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("keyword", keyword);
@@ -635,7 +793,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                     if (x == 2) {
                                         recyclerView.setVisibility(View.VISIBLE);
                                         if (tmpCzg != null && !tmpCzg.toString().equals("[]")) {
-                                            newCzgAdapter.notifyData(czgBeans);;
+                                            newCzgAdapter.notifyData(czgBeans);
                                         } else {
                                             refresh.finishLoadMoreWithNoMoreData();
                                         }
@@ -656,34 +814,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                         refreshLayout.finishRefresh();
                         refresh.setEnableRefresh(false);
                         DialogHomeUtil.dismiss(0);
-                        newCzgAdapter.notifyData(czgBeans);
-                        NewConstants.showdialogFlg = "0";
-                        cancelCheck = true;
-                        isShowCheck = false;
-                        clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                        if (clipboardManager.getText() != null) {
-//                            if (isShowCheck) {
-                            String text = clipboardManager.getText().toString();
-                            copytext = text;
-                            if (text != null && !text.equals("") && !text.equals("null")) {
-                                if (text.contains("bbj")) {
-                                    NewConstants.copyText = text;
-                                }
-                                // //获得当前activity的名字
-                                if (!text.contains("标题:")) {
-                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-                                    if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
-                                            text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
-                                            || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
-                                        String cliptext = SharedPreferencesUtil.getSharedData(getActivity(), "copyText", "copyText");
-                                        if (!text.equals(cliptext)) {
-                                            checkExsistProduct(text);
-                                        }
-                                    }
-                                }
-//                                }
-                            }
-                        }
+//                        newCzgAdapter.notifyData(czgBeans);
                     }
 
                     @Override
@@ -707,6 +838,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 
     /**
      * 查询优惠券
+     *
      * @param text
      */
     private void checkExsistProduct(String text) {
@@ -792,9 +924,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 public void onClick(View v) {
                     String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     if (TextUtils.isEmpty(userID)) {
-                        JumpDetailActivty.Flag = "home";
+//                        JumpDetailActivty.Flag = "home";
                         Intent intent = new Intent(context, UserLoginNewActivity.class);
-                        startActivityForResult(intent, 1);
+                        startActivityForResult(intent, 3);
                     } else {
                         Intent intent = new Intent(context, BrowseActivity.class);
                         updataDialog.dismiss();
@@ -810,10 +942,33 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             tvQuan.setText(checkBean.getMessage2());
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
             tv_update_gengxin.setText("查看优惠");
+            LinearLayout llYouhui = updataDialog.findViewById(R.id.ll_youhui);
+            llYouhui.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                    NewConstants.showdialogFlg = "1";
+                    Intent intent = new Intent(context, IntentActivity.class);
+                    if (checkBean.getUrl() != null && !checkBean.getUrl().equals("")) {
+                        intent.putExtra("url", checkBean.getUrl());
+                    }
+                    if (checkBean.getDomain() != null && !checkBean.getDomain().equals("")) {
+                        intent.putExtra("domain", checkBean.getDomain());
+                    }
+                    if (checkBean.getRowkey() != null && !checkBean.getRowkey().equals("")) {
+                        intent.putExtra("groupRowKey", checkBean.getRowkey());
+                    }
+                    if (checkBean.getPrice() != null && !checkBean.getPrice().equals("")) {
+                        intent.putExtra("bprice", checkBean.getPrice());
+                    }
+                    startActivity(intent);
+                }
+            });
             tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updataDialog.dismiss();
+                    NewConstants.showdialogFlg = "1";
                     Intent intent = new Intent(context, IntentActivity.class);
                     if (checkBean.getUrl() != null && !checkBean.getUrl().equals("")) {
                         intent.putExtra("url", checkBean.getUrl());
@@ -936,9 +1091,10 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 
     /**
      * 点击事件
+     *
      * @param view
      */
-    @OnClick({R.id.msearch, R.id.msort, R.id.type_image, R.id.ll_shouqi, R.id.image_puba,R.id.to_top_btn})
+    @OnClick({R.id.msearch, R.id.msort, R.id.type_image, R.id.ll_shouqi, R.id.image_puba, R.id.to_top_btn, R.id.ll_miaosha, R.id.ll_pingtuan, R.id.ll_czuan})
     public void onViewClicked(View view) {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Intent intent;
@@ -981,6 +1137,21 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     }
                 }
                 break;
+            case R.id.ll_miaosha:
+                intent = new Intent(getActivity(), ChaoZhiGouTypesActivity.class);
+                intent.putExtra("type", "4");
+                startActivity(intent);
+                break;
+            case R.id.ll_pingtuan:
+                intent = new Intent(getActivity(), ChaoZhiGouTypesActivity.class);
+                intent.putExtra("type", "3");
+                startActivity(intent);
+                break;
+            case R.id.ll_czuan:
+                intent = new Intent(getActivity(), ChaoZhiGouTypesActivity.class);
+                intent.putExtra("type", "2");
+                startActivity(intent);
+                break;
         }
     }
 
@@ -1006,7 +1177,75 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     intent.putExtra("type", "0");
                     startActivity(intent);
                     break;
+                case 2:
+                    if ("beibei".equals(domain1)
+                            || "jd".equals(domain1) || "taobao".equals(domain1)
+                            || "tmall".equals(domain1) || "suning".equals(domain1)) {
+                        clipboardManager = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
+                        intent = new Intent(getActivity(), IntentActivity.class);
+                        if (url1 != null) {
+                            intent.putExtra("url", url1);
+                        }
+                        if (title1 != null) {
+                            intent.putExtra("title",title1);
+                        }
+                        if (domain1 != null) {
+                            intent.putExtra("domain", domain1);
+                        }
+                        intent.putExtra("isczg", "0");
+                        if (bprice1 != null) {
+                            intent.putExtra("bprice", bprice1);
+                        }
+                        if (quan1 != null && !quan1.equals("0")) {
+                            intent.putExtra("quan", quan1);
+                        }
+                        if (zuan1 != null) {
+                            intent.putExtra("zuan", zuan1);
+                        }
+                        intent.putExtra("type", "miaosha");
+                    } else {
+                        intent = new Intent(getActivity(), WebViewActivity.class);
+                        intent.putExtra("url", url1);
+                        intent.putExtra("title", title1);
+                    }
+                      startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(getActivity(), BrowseActivity.class);
+                    updataDialog.dismiss();
+                    cancelCheck = false;
+                    startActivity(intent);
+                    break;
             }
         }
+    }
+
+    @Override
+    public void IntentLog(String url, String title, String domain, String isczg, String bprice, String quan,String zuan, String type) {
+        url1 = url;
+        title1 = title;
+        domain1 = domain;
+        isczg1 = isczg;
+        bprice1 = bprice;
+        quan1 = quan;
+        type1 = type;
+        zuan1 = zuan;
+        Intent intent = new Intent(getActivity(), UserLoginNewActivity.class);
+        startActivityForResult(intent, 2);
+    }
+
+    @Override
+    public void IntentPinTuanLog(String url, String title, String domain, String isczg, String bprice, String quan, String zuan,String type) {
+        url1 = url;
+        title1 = title;
+        domain1 = domain;
+        isczg1 = isczg;
+        bprice1 = bprice;
+        quan1 = quan;
+        type1 = type;
+        zuan1 = zuan;
+        Intent intent = new Intent(getActivity(), UserLoginNewActivity.class);
+        startActivityForResult(intent, 2);
     }
 }

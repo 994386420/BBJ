@@ -10,10 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         />
+
+    <include layout="@layout/title_layout"
+        android:visibility="gone"/>
     <RelativeLayout
         android:id="@+id/topbar_layout"
         android:layout_width="match_parent"
         android:layout_height="46dp"
+        android:visibility="visible"
         android:background="#FFF" >
 
         <TextView
@@ -22,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="爆料吧"
+            android:textColor="@color/tuiguang_color3"
             android:textSize="21dp" />
     </RelativeLayout>
     <View

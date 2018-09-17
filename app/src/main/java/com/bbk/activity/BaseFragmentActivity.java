@@ -93,7 +93,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 	protected void onStart() {
 		super.onStart();
 		String custom = SharedPreferencesUtil.getSharedData(this, "custom", "custom");
-		Logg.e(custom+"===================>>>>>>");
+//		Logg.e(custom+"===================>>>>>>");
 		if (custom != null && !custom.equals("")){
 			try {
 				JSONObject obj = new JSONObject(custom);
@@ -109,6 +109,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 		cancelCheck = true;
 		clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 //		Logg.e(clipboardManager.getPrimaryClip());
+				Logg.e(MainActivity.isShowCheck+"===================>>>>>>");
 		if ( clipboardManager.getText() != null){
 			if (MainActivity.isShowCheck == false){
 //				Logg.e(NewHomeFragment.isShowCheck);
@@ -330,6 +331,28 @@ public class BaseFragmentActivity extends FragmentActivity {
 			tvQuan.setText(checkBean.getMessage2());
 			TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
 			tv_update_gengxin.setText("查看优惠");
+			LinearLayout llYouhui = updataDialog.findViewById(R.id.ll_youhui);
+			llYouhui.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					updataDialog.dismiss();
+					NewConstants.showdialogFlg = "1";
+					Intent intent = new Intent(context, IntentActivity.class);
+					if (checkBean.getUrl() != null && !checkBean.getUrl().equals("")) {
+						intent.putExtra("url", checkBean.getUrl());
+					}
+					if (checkBean.getDomain() != null && !checkBean.getDomain().equals("")) {
+						intent.putExtra("domain", checkBean.getDomain());
+					}
+					if (checkBean.getRowkey() != null && !checkBean.getRowkey().equals("")) {
+						intent.putExtra("groupRowKey", checkBean.getRowkey());
+					}
+					if (checkBean.getPrice() != null && !checkBean.getPrice().equals("")) {
+						intent.putExtra("bprice", checkBean.getPrice());
+					}
+					startActivity(intent);
+				}
+			});
 			tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

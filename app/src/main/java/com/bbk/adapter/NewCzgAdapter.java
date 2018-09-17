@@ -48,6 +48,7 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
     private Context context;
     List<NewHomeCzgBean> newHomeCzgBean;
     private ClipboardManager clipboardManager;
+    private int drawS;
 
     public NewCzgAdapter(Context context, List<NewHomeCzgBean> newHomeCzgBean) {
 //        this.list = list;
@@ -136,8 +137,9 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
             String dianpu = newHomeCzgBean.get(position).getDianpu();
             String youhui = newHomeCzgBean.get(position).getYouhui();
             String mbidprice = newHomeCzgBean.get(position).getHislowprice();//最低价
+            viewHolder.tvSale.setVisibility(View.VISIBLE);
             viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale() + "人付款");
-            viewHolder.item_title.setText("             " + title);
+            viewHolder.item_title.setText("      " + title);
             try {
                 if (mbidprice != null) {
                     viewHolder.mbidprice.setText("最低价 " + mbidprice);
@@ -148,12 +150,16 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
             String domin = newHomeCzgBean.get(position).getDomain();
             if (domin != null) {
                 if (domin.equals("taobao")) {
-                    viewHolder.tvMall.setText("淘宝");
+//                    viewHolder.tvMall.setText("淘宝");
+                    drawS = context.getResources().getIdentifier("home_logo_03", "mipmap", context.getPackageName());
                 } else if (domin.equals("tmall")) {
-                    viewHolder.tvMall.setText("天猫");
+//                    viewHolder.tvMall.setText("天猫");
+                    drawS = context.getResources().getIdentifier("home_logo_01", "mipmap", context.getPackageName());
                 } else {
-                    viewHolder.tvMall.setText("京东");
+//                    viewHolder.tvMall.setText("京东");
+                    drawS = context.getResources().getIdentifier("home_logo_02", "mipmap", context.getPackageName());
                 }
+                viewHolder.tvMall.setBackgroundResource(drawS);
             } else {
                 viewHolder.tvMall.setVisibility(View.GONE);
             }
@@ -164,9 +170,9 @@ public class NewCzgAdapter extends RecyclerView.Adapter {
                 viewHolder.bprice.setVisibility(View.GONE);
             }
             viewHolder.price.setText(price);
-            if (newHomeCzgBean.get(position).getQuan() !=null){
+            if (newHomeCzgBean.get(position).getQuan1() !=null){
                 viewHolder.llQuan.setVisibility(View.VISIBLE);
-                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
+                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan1());
             }else {
                 viewHolder.llQuan.setVisibility(View.GONE);
             }

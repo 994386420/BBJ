@@ -127,7 +127,7 @@ public class JumpDetailActivty extends BaseActivity {
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
-    private String url, rowkey, domain, quans,jumpdomain;
+    private String url, rowkey, domain, quans,jumpdomain,zuan;
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
     public static String Flag = "";
@@ -178,6 +178,7 @@ public class JumpDetailActivty extends BaseActivity {
         rowkey = jumpBean.getRowkey();
         domain = jumpBean.getDomain();
         quans = jumpBean.getQuan();
+        zuan = jumpBean.getYongjin();
         if (rowkey != null && jumpBean.getTitle() != null) {
             getIndexByType(rowkey,jumpBean.getTitle());
         }
@@ -269,6 +270,8 @@ public class JumpDetailActivty extends BaseActivity {
      * @param rowkey
      */
     private void getIndexByType(String rowkey,String title) {
+        llShare.setClickable(false);
+        llLingquan.setClickable(false);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("type", "1");
@@ -299,6 +302,8 @@ public class JumpDetailActivty extends BaseActivity {
                     protected void hideDialog() {
                         DialogSingleUtil.dismiss(0);
                         refresh.finishRefresh();
+                        llShare.setClickable(true);
+                        llLingquan.setClickable(true);
                     }
 
                     @Override
@@ -731,7 +736,21 @@ public class JumpDetailActivty extends BaseActivity {
             LinearLayout img_close = updataDialog.findViewById(R.id.ll_close);
             ImageView imgLoading = updataDialog.findViewById(R.id.img_loading);
             ImageView imageView = updataDialog.findViewById(R.id.img_app);
-            AdaptionSizeTextView adaptionSizeTextView = updataDialog.findViewById(R.id.quan);
+//            AdaptionSizeTextView adaptionSizeTextView = updataDialog.findViewById(R.id.quan);
+//            if (domain.equals("jd")){
+//                jumpdomain = "jumpjd";
+//            }else if (domain.equals("tmall")){
+//                jumpdomain = "jumptmall";
+//            }else if (domain.equals("taobao")){
+//                jumpdomain = "jumptaobao";
+//            }
+//            if (quans != null && !quans.equals("") && !quans.equals("0")) {
+//                adaptionSizeTextView.setVisibility(View.VISIBLE);
+//            } else {
+//                adaptionSizeTextView.setVisibility(View.INVISIBLE);
+//            }
+            AdaptionSizeTextView adaptionSizeTextViewQuan = updataDialog.findViewById(R.id.quan);
+            AdaptionSizeTextView adaptionSizeTextViewQuan1 = updataDialog.findViewById(R.id.quan1);
             if (domain.equals("jd")){
                 jumpdomain = "jumpjd";
             }else if (domain.equals("tmall")){
@@ -740,9 +759,17 @@ public class JumpDetailActivty extends BaseActivity {
                 jumpdomain = "jumptaobao";
             }
             if (quans != null && !quans.equals("") && !quans.equals("0")) {
-                adaptionSizeTextView.setVisibility(View.VISIBLE);
+                adaptionSizeTextViewQuan1.setVisibility(View.VISIBLE);
+                adaptionSizeTextViewQuan1.setText("领券减"+quans+"元");
             } else {
-                adaptionSizeTextView.setVisibility(View.INVISIBLE);
+                adaptionSizeTextViewQuan1.setVisibility(View.INVISIBLE);
+            }
+
+            if (zuan != null && !zuan.equals("") && !zuan.equals("0")) {
+                adaptionSizeTextViewQuan.setVisibility(View.VISIBLE);
+                adaptionSizeTextViewQuan.setText("本商品赚"+zuan.replace("预估","")+"元");
+            } else {
+                adaptionSizeTextViewQuan.setVisibility(View.INVISIBLE);
             }
             int drawS = getResources().getIdentifier(jumpdomain,"mipmap", getPackageName());
             imageView.setImageResource(drawS);

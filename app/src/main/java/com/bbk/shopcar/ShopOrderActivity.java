@@ -16,6 +16,7 @@ import com.bbk.Bean.ShopOrderBean;
 import com.bbk.activity.BaseActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.activity.ShopDetailActivty;
 import com.bbk.adapter.ShopOrderWaiCengAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
@@ -196,7 +197,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
                                     } else {
                                         progress.setVisibility(View.VISIBLE);
                                         mlistview.setVisibility(View.GONE);
-                                        progress.loadSuccess(true);
+                                        progress.loadMallSuccess(ShopOrderActivity.this,true);
                                         xrefresh.setEnableLoadMore(false);
                                     }
                                 } else {

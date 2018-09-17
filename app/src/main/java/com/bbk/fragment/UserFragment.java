@@ -1,6 +1,5 @@
 package com.bbk.fragment;
 
-import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -204,6 +203,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     ImageView huodongimg;
     @BindView(R.id.tv_copy)
     TextView tvCopy;
+    @BindView(R.id.tv_dsh_num)
+    AdaptionSizeTextView tvDshNum;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -248,6 +249,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     private HongbaoDialog hongbaoDialog;
     private String hongbaoMoney;
     public static String LogFlag = "0";
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -420,7 +422,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     NewConstants.messages = Integer.parseInt(messages);
                                     mnewmsg.setText(NewConstants.messages + "");
                                     if (HomeActivity.mNumImageView != null) {
-//                                        HomeActivity.mNumImageView.setNum(NewConstants.messages);
+                                        HomeActivity.mNumImageView.setNum(NewConstants.messages);
                                     }
                                     if (NewHomeFragment.mnewmsg != null) {
                                         NewHomeFragment.mnewmsg.setText(NewConstants.messages + "");
@@ -477,7 +479,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 hongbaoMoney = userBean.getAward();
                                 if (hongbaoMoney != null && !hongbaoMoney.equals("")) {
                                     huodongimg.setVisibility(View.VISIBLE);
-                                }else {
+                                } else {
                                     huodongimg.setVisibility(View.GONE);
                                 }
                                 if (!TextUtils.isEmpty(userID)) {
@@ -518,10 +520,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     if (messages != null) {
                                         NewConstants.messages = Integer.parseInt(messages);
                                         mnewmsg.setText(NewConstants.messages + "");
-//                                        if (HomeActivity.mNumImageView != null) {
-//                                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
-//                                        }
-                                        if ( MainActivity.mnewmsg != null) {
+                                        if (HomeActivity.mNumImageView != null) {
+                                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
+                                        }
+                                        if (MainActivity.mnewmsg != null) {
                                             MainActivity.mnewmsg.setText(NewConstants.messages + "");
                                         }
                                     }
@@ -558,6 +560,15 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                             tvSs.setText(jsonObject2.optString("s3"));
                                         }
                                     }
+
+                                    if (jsonObject2.has("s2")) {
+                                        if (jsonObject2.optString("s2").equals("0")) {
+                                            tvDshNum.setVisibility(View.GONE);
+                                        } else {
+                                            tvDshNum.setVisibility(View.VISIBLE);
+                                            tvDshNum.setText(jsonObject2.optString("s2"));
+                                        }
+                                    }
                                 } else {
                                     user_name.setText("请登录");
                                     user_img.setImageResource(R.mipmap.logo_01);
@@ -572,7 +583,11 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     tvSs.setVisibility(View.GONE);
                                     tvSl.setVisibility(View.GONE);
                                     tvCopy.setVisibility(View.GONE);
+                                    tvDshNum.setVisibility(View.GONE);
                                     xrefresh.finishRefresh();
+                                    MainActivity.mnewmsg.setVisibility(View.GONE);
+                                    HomeActivity.mNumImageView.setNum(0);
+                                    mnewmsg.setVisibility(View.GONE);
                                 }
 
                                 if (userBean.getButtonlist() != null) {
@@ -1431,7 +1446,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
     @OnClick({R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
             R.id.ll_pl, R.id.ll_address, R.id.ll_tq, R.id.ll_xs, R.id.ll_cjwt, R.id.ll_yjfk, R.id.ll_woyao, R.id.ll_pudao, R.id.ll_kefu, R.id.ll_adoutbbj, R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.mjdshopcart,
-            R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu,R.id.huodongimg})
+            R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu, R.id.huodongimg})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -1688,6 +1703,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             });
         }
     }
+
     public void showHongbaoDialog(final Context context) {
         if (hongbaoDialog == null || !hongbaoDialog.isShowing()) {
             hongbaoDialog = new HongbaoDialog(context, R.layout.hongbao_dialog_layout,
@@ -1707,6 +1723,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             });
         }
     }
+
     @Override
     public void Intent(String name) {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -1765,10 +1782,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
 //                    startActivityForResult(intent, 1);
 //                } else {
-                    String url = BaseApiService.Base_URL + "mobile/user/generalize";
-                    intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("url", url);
-                    startActivity(intent);
+                String url = BaseApiService.Base_URL + "mobile/user/generalize";
+                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
 //                }
                 break;
             case "新手必看":
@@ -1777,9 +1794,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
 //                    startActivityForResult(intent, 1);
 //                } else {
-                    intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("url", "http://bibijing.com/mobile/html/introduce.jsp");
-                    startActivity(intent);
+                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", "http://bibijing.com/mobile/html/introduce.jsp");
+                startActivity(intent);
 //                }
                 break;
             case "常见问题":
@@ -1789,10 +1806,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
 //                    startActivityForResult(intent, 1);
 //                } else {
-                    String url1 = BaseApiService.Base_URL + "mobile/user/question";
-                    intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("url", url1);
-                    startActivity(intent);
+                String url1 = BaseApiService.Base_URL + "mobile/user/question";
+                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", url1);
+                startActivity(intent);
 //                }
                 break;
             case "意见反馈":
@@ -1801,8 +1818,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
 //                    startActivityForResult(intent, 1);
 //                } else {
-                    intent = new Intent(getActivity(), UserSuggestionActivity.class);
-                    startActivity(intent);
+                intent = new Intent(getActivity(), UserSuggestionActivity.class);
+                startActivity(intent);
 //                }
                 break;
             case "我要的":
@@ -1832,7 +1849,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
 //                    startActivityForResult(intent, 1);
 //                } else {
-                    startChat();
+                startChat();
 //                }
                 break;
             case "关于比比鲸":
@@ -1841,8 +1858,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
 //                    startActivityForResult(intent, 1);
 //                } else {
-                    intent = new Intent(getActivity(), AboutUsActivity.class);
-                    startActivity(intent);
+                intent = new Intent(getActivity(), AboutUsActivity.class);
+                startActivity(intent);
 //                }
                 break;
             case "我发的飙":
@@ -1900,6 +1917,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
     /**
      * 登陆回调
+     *
      * @param requestCode
      * @param resultCode
      * @param data

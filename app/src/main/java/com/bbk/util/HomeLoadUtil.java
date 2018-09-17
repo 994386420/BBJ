@@ -321,7 +321,7 @@ public class HomeLoadUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Logg.json(banner);
+//        Logg.json(banner);
         mBanner.setImages(imgUrlList)
                 .setImageLoader(new GlideImageLoader())
                 .setOnBannerListener(new OnBannerListener() {

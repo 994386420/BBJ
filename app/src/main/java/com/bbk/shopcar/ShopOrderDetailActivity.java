@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.appkefu.lib.interfaces.KFAPIs;
+import com.bbk.Bean.OrderItemBeanList;
 import com.bbk.Bean.OrderItembean;
 import com.bbk.Bean.ShopOrderDetailBean;
 import com.bbk.activity.BaseActivity;
@@ -302,6 +303,35 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 llOrder.setVisibility(View.VISIBLE);
                 llCheck.setVisibility(View.GONE);
                 llUserjinbi.setVisibility(View.VISIBLE);
+                tvQr.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new AlertDialog(ShopOrderDetailActivity.this).builder().setTitle("确定收货？")
+                                .setMsg("是否确认收货")
+                                .setPositiveButton("确认", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        receiptGoods(ordernum,dianpuid);
+                                    }
+                                }).setNegativeButton("取消", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        }).show();
+                    }
+                });
+                tvWuliu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ShopOrderDetailActivity.this, WuLiuActivity.class);
+                        if (shopOrderDetailBean != null && shopOrderDetailBean.getExpressage() != null) {
+                            intent.putExtra("expressnum", shopOrderDetailBean.getExpressage());
+                        }else {
+                            StringUtil.showToast(ShopOrderDetailActivity.this,"订单号不存在");
+                        }
+                        startActivity(intent);
+                    }
+                });
                 break;
             case "3":
                 tvStatus.setText("待评论");
@@ -629,5 +659,44 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 null);
 
     }
+    private void receiptGoods(final String orderid, String dianpuid) {
+        Map<String, String> maps = new HashMap<String, String>();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        maps.put("userid", userID);
+        maps.put("ordernum", orderid);
+        maps.put("dianpuid", dianpuid);
+        RetrofitClient.getInstance(ShopOrderDetailActivity.this).createBaseApi().receiptGoods(
+                maps, new BaseObserver<String>(ShopOrderDetailActivity.this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                StringUtil.showToast(ShopOrderDetailActivity.this, "确认收货成功");
+                                NewConstants.refeshOrderFlag = "1";
+                                Intent intent = new Intent(ShopOrderDetailActivity.this, ShopOrderActivity.class);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(ShopOrderDetailActivity.this);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(ShopOrderDetailActivity.this, e.message);
+                    }
+                });
+    }
 }

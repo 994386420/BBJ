@@ -23,10 +23,14 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.util.UpdataDialog;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.RoundImageView;
+import com.bumptech.glide.Glide;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.logg.Logg;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +41,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,7 +50,7 @@ public class IntentActivity extends BaseActivity {
 	private DataFlow3 dataFlow;
 	private String title;
 	private String url;
-	private String domain,isczg,bprice;
+	private String domain,isczg,bprice,type,quan,zuan;
 	private RoundImageView img3;
 	private RelativeLayout onclickthis;
 	private TextView text1;
@@ -68,6 +73,8 @@ public class IntentActivity extends BaseActivity {
 	String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 	private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
 	private Map<String, String> exParams;//yhhpass参数
+	private UpdataDialog updataDialog;
+	private boolean cancleJump = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +90,9 @@ public class IntentActivity extends BaseActivity {
 		rowkey = getIntent().getStringExtra("groupRowKey");
 		isczg = getIntent().getStringExtra("isczg");
 		bprice = getIntent().getStringExtra("bprice");
+		quan = getIntent().getStringExtra("quan");
+		type = getIntent().getStringExtra("type");
+		zuan = getIntent().getStringExtra("zuan");
 		initView();
 		getJumpUrl();
 	}
@@ -167,7 +177,21 @@ public class IntentActivity extends BaseActivity {
 							JSONObject jsonObject = new JSONObject(s);
 							String content = jsonObject.optString("content");
 							if (jsonObject.optString("status").equals("1")) {
-								    JumpBean jumpBean = JSON.parseObject(content,JumpBean.class);
+								Logg.json(jsonObject);
+								final JumpBean jumpBean = JSON.parseObject(content,JumpBean.class);
+								if (type != null) {
+									if (type.equals("miaosha")) {
+										handler.postDelayed(new Runnable() {
+											@Override
+											public void run() {
+												if (cancleJump) {
+													IntentThirdApp(domain, jumpBean.getUrl());
+												}
+											}
+										}, 2000);
+									}
+								}else {
+
 									isintent = false;
 //									String type = jumpBean.getType();
 //									if (type.equals("0")) {
@@ -188,41 +212,41 @@ public class IntentActivity extends BaseActivity {
 //												text1.setText(desc);
 //												taobaoLogin(IntentActivity.this,url);
 //											}else {
-												if (jumpBean.getJumpThirdPage() != null && jumpBean.getJumpThirdPage().equals("1")){
-													Intent intent = new Intent(IntentActivity.this,JumpDetailActivty.class);
-													intent.putExtra("content", content);
-													intent.putExtra("isczg", isczg);
-													startActivity(intent);
-													DialogSingleUtil.dismiss(0);
-													finish();
-												}else {
-													//jumpThirdPage 为0
-													if (jumpBean.getUrl() != null) {
-														if (jumpBean.getUrl().contains("jd")) {
-															// 通过url呼京东主站
-															// url 通过url呼京东主站的地址
-															// mKeplerAttachParameter 存储第三方传入参数
-															// mOpenAppAction  呼京东主站回调
-															KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
-																	url,
-																	mKeplerAttachParameter,
-																	mOpenAppAction);
-															DialogSingleUtil.dismiss(0);
-															finish();
-														} else if (jumpBean.getUrl().contains("taobao") || jumpBean.getUrl().contains("tmall")) {
-															alibcShowParams = new AlibcShowParams(OpenType.Native, false);
-															alibcShowParams.setClientType("taobao_scheme");
-															exParams = new HashMap<>();
-															exParams.put("isv_code", "appisvcode");
-															exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-															showUrl();
-															DialogSingleUtil.dismiss(0);
-															finish();
-														} else {
-															handler.postDelayed(runa, 0);
-														}
-													}
-												}
+									if (jumpBean.getJumpThirdPage() != null && jumpBean.getJumpThirdPage().equals("1")) {
+										Intent intent = new Intent(IntentActivity.this, JumpDetailActivty.class);
+										intent.putExtra("content", content);
+										intent.putExtra("isczg", isczg);
+										startActivity(intent);
+										DialogSingleUtil.dismiss(0);
+										finish();
+									} else {
+										//jumpThirdPage 为0
+										if (jumpBean.getUrl() != null) {
+											if (jumpBean.getUrl().contains("jd")) {
+												// 通过url呼京东主站
+												// url 通过url呼京东主站的地址
+												// mKeplerAttachParameter 存储第三方传入参数
+												// mOpenAppAction  呼京东主站回调
+												KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
+														url,
+														mKeplerAttachParameter,
+														mOpenAppAction);
+												DialogSingleUtil.dismiss(0);
+												finish();
+											} else if (jumpBean.getUrl().contains("taobao") || jumpBean.getUrl().contains("tmall")) {
+												alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+												alibcShowParams.setClientType("taobao_scheme");
+												exParams = new HashMap<>();
+												exParams.put("isv_code", "appisvcode");
+												exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+												showUrl();
+												DialogSingleUtil.dismiss(0);
+												finish();
+											} else {
+												handler.postDelayed(runa, 0);
+											}
+										}
+									}
 //											}
 //										}else {
 //											if (jumpBean.getJumpThirdPage() != null && jumpBean.getJumpThirdPage().equals("1")){
@@ -235,6 +259,7 @@ public class IntentActivity extends BaseActivity {
 //											}
 //										}
 //									}
+								}
 
 							} else {
 								StringUtil.showToast(IntentActivity.this, jsonObject.optString("errmsg"));
@@ -247,6 +272,16 @@ public class IntentActivity extends BaseActivity {
 					@Override
 					protected void hideDialog() {
 						DialogSingleUtil.dismiss(0);
+						if (type != null) {
+							if (type.equals("miaosha")) {
+								handler.postDelayed(new Runnable() {
+									@Override
+									public void run() {
+											updataDialog.dismiss();
+									}
+								}, 2000);
+							}
+						}
 					}
 
 					@Override
@@ -254,11 +289,22 @@ public class IntentActivity extends BaseActivity {
 						if (NewConstants.showdialogFlg.equals("1")) {
 							DialogSingleUtil.show(IntentActivity.this);
 						}
+						if (type != null) {
+							if (type.equals("miaosha")) {
+								showLoadingDialog(IntentActivity.this, domain, quan,zuan);
+							}
+						}
 					}
 
 					@Override
 					public void onError(ExceptionHandle.ResponeThrowable e) {
-//						DialogSingleUtil.dismiss(0);
+						if (type != null) {
+							if (type.equals("miaosha")) {
+								updataDialog.dismiss();
+							}
+						}
+						DialogSingleUtil.dismiss(0);
+						finish();
 						StringUtil.showToast(IntentActivity.this, e.message);
 					}
 				});
@@ -366,4 +412,113 @@ public class IntentActivity extends BaseActivity {
 			}
 		}
 	};
+
+	/**
+	 * 打开指定链接
+	 */
+	public void showUrll(String url) {
+		final String text = url;
+		if (TextUtils.isEmpty(text)) {
+			StringUtil.showToast(this, "URL为空");
+			return;
+		}
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+				if (cancleJump) {
+					updataDialog.dismiss();
+					AlibcTrade.show(IntentActivity.this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
+					finish();
+				}
+//			}
+//		}, 2000);
+	}
+	public void IntentThirdApp(String domain,final String url){
+		cancleJump = true;
+		alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+		alibcShowParams.setClientType("taobao_scheme");
+		exParams = new HashMap<>();
+		exParams.put("isv_code", "appisvcode");
+		exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+		if (domain != null) {
+			if (domain.equals("tmall") || domain.equals("taobao")) {
+//				showLoadingDialog(IntentActivity.this,domain,quans);
+				showUrll(url);
+			} else if (domain.equals("jd")) {
+//				showLoadingDialog(IntentActivity.this,domain,quans);
+//				handler.postDelayed(new Runnable() {
+//					@Override
+//					public void run() {
+						if (cancleJump) {
+							updataDialog.dismiss();
+							KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
+									url,
+									mKeplerAttachParameter,
+									mOpenAppAction);
+							finish();
+						}
+//					}
+//				}, 2000);
+			} else {
+				if (cancleJump) {
+					Intent intent = new Intent(IntentActivity.this, WebViewActivity.class);
+					if (url != null) {
+						intent.putExtra("url", url);
+					}
+					if (rowkey != null) {
+						intent.putExtra("rowkey", rowkey);
+					}
+					updataDialog.dismiss();
+					finish();
+					startActivity(intent);
+				}
+			}
+		}
+	}
+	public void showLoadingDialog(final Context context,String jumpdomain,String quans,String zuan) {
+		Logg.e(zuan);
+		if(updataDialog == null || !updataDialog.isShowing()) {
+			//初始化弹窗 布局 点击事件的id
+			updataDialog = new UpdataDialog(context, R.layout.disanfang_dialog,
+					new int[]{R.id.ll_close});
+			updataDialog.show();
+			LinearLayout img_close = updataDialog.findViewById(R.id.ll_close);
+			ImageView imgLoading = updataDialog.findViewById(R.id.img_loading);
+			ImageView imageView = updataDialog.findViewById(R.id.img_app);
+			AdaptionSizeTextView adaptionSizeTextViewQuan = updataDialog.findViewById(R.id.quan);
+			AdaptionSizeTextView adaptionSizeTextViewQuan1 = updataDialog.findViewById(R.id.quan1);
+			if (domain.equals("jd")){
+				jumpdomain = "jumpjd";
+			}else if (domain.equals("tmall")){
+				jumpdomain = "jumptmall";
+			}else if (domain.equals("taobao")){
+				jumpdomain = "jumptaobao";
+			}
+			if (quans != null && !quans.equals("") && !quans.equals("0")) {
+				adaptionSizeTextViewQuan1.setVisibility(View.VISIBLE);
+				adaptionSizeTextViewQuan1.setText("领券减"+quans+"元");
+			} else {
+				adaptionSizeTextViewQuan1.setVisibility(View.INVISIBLE);
+			}
+
+			if (zuan != null && !zuan.equals("") && !zuan.equals("0")) {
+				adaptionSizeTextViewQuan.setVisibility(View.VISIBLE);
+				adaptionSizeTextViewQuan.setText("本商品"+zuan.replace("预估","")+"元");
+			} else {
+				adaptionSizeTextViewQuan.setVisibility(View.INVISIBLE);
+			}
+			int drawS = getResources().getIdentifier(jumpdomain,"mipmap", getPackageName());
+			imageView.setImageResource(drawS);
+			Glide.with(context).load(R.drawable.tuiguang_d05).into(imgLoading);
+			img_close.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					updataDialog.dismiss();
+					cancleJump = false;
+					finish();
+				}
+			});
+		}
+	}
+
 }

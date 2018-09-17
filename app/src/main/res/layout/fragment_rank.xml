@@ -10,10 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />
+    <include layout="@layout/title_layout"/>
     <RelativeLayout
         android:id="@+id/topbar_layout"
         android:layout_width="match_parent"
         android:layout_height="46dp"
+        android:visibility="gone"
         android:background="#FFF" >
 
         <TextView

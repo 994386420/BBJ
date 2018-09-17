@@ -1,6 +1,7 @@
 package com.bbk.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -17,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bbk.activity.R;
+import com.bbk.activity.UserLoginNewActivity;
+import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.NewDianpuHomeActivity;
 
 /**
  * Created by Administrator on 2018/5/25/025.
@@ -40,6 +44,7 @@ public class CommonLoadingView extends FrameLayout {
     private View emptyView;
     //数据为空提示文字
     private TextView emptyText;
+    private TextView mallText;//去逛逛商城
     private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
 
 
@@ -108,6 +113,7 @@ public class CommonLoadingView extends FrameLayout {
         imageView.setAnimation(animation);
         animation.startNow();
         emptyText = rootView.findViewById(R.id.tv_message);
+        mallText = rootView.findViewById(R.id.tv_mall);
         mLoadErrorLl = rootView.findViewById(R.id.mzhanwei_layout);
         mLoadErrorLl.setOnClickListener(new OnClickListener() {
             @Override
@@ -156,6 +162,44 @@ public class CommonLoadingView extends FrameLayout {
         }
     }
 
+    public void loadHomeSuccess(final Context context,String message,String message1,boolean isEmpty){
+        emptyText.setText(message);
+        mallText.setText(message1);
+        loadingView.setVisibility(GONE);
+        loadingErrorView.setVisibility(GONE);
+        if (isEmpty) {
+            mallText.setVisibility(VISIBLE);
+            mallText.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    NewConstants.refeshFlag = "1";
+                    Intent intent = new Intent(context, UserLoginNewActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+            emptyView.setVisibility(VISIBLE);
+        }else{
+            emptyView.setVisibility(GONE);
+        }
+    }
+
+    public void loadMallSuccess(final Context context, boolean isEmpty){
+        loadingView.setVisibility(GONE);
+        loadingErrorView.setVisibility(GONE);
+        if (isEmpty) {
+            mallText.setVisibility(VISIBLE);
+            mallText.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, NewDianpuHomeActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+            emptyView.setVisibility(VISIBLE);
+        }else{
+            emptyView.setVisibility(GONE);
+        }
+    }
 
     public void loadError(){
         loadingView.setVisibility(GONE);
