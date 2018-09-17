@@ -153,6 +153,8 @@ public class CommonLoadingView extends FrameLayout {
     }
 
     public void loadSuccess(boolean isEmpty){
+        emptyText.setText(getResources().getString(R.string.app_no_message_text));
+        mallText.setVisibility(GONE);
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
         if (isEmpty) {

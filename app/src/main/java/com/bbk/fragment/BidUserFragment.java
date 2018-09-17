@@ -264,20 +264,24 @@ public class BidUserFragment extends BaseViewPagerFragment implements ResultEven
             if (TextUtils.isEmpty(userID)){
                 musername.setText("请登录");
 //                CircleImageView1.getImg(getActivity(),R.mipmap.logo_01,muserimg);
+                mshenhenum.setVisibility(View.GONE);
+                mnewmsg.setVisibility(View.GONE);
             }else {
                 String imgUrl = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "imgUrl");
                 String nickname = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(),"userInfor", "nickname");
                 musername.setText(nickname);
+                mnewmsg.setVisibility(View.VISIBLE);
+                mshenhenum.setVisibility(View.VISIBLE);
                 CircleImageView1.getImg(getActivity(),imgUrl,muserimg);
+                JSONObject object = new JSONObject(content);
+                setnum(mshenhenum,object.optString("shenhe"));
+                setnum(mjietext,object.optString("jie"));
+                setnum(mpltext,object.optString("pl"));
+                setnum(mbidjietext,object.optString("bidjie"));
+                setnum(mbidpltext,object.optString("bidpl"));
+                setnum(mnewmsg,object.optString("sysmsg"));
+                BidUserFragment.mMessage = object.optInt("sysmsg");
             }
-            JSONObject object = new JSONObject(content);
-            setnum(mshenhenum,object.optString("shenhe"));
-            setnum(mjietext,object.optString("jie"));
-            setnum(mpltext,object.optString("pl"));
-            setnum(mbidjietext,object.optString("bidjie"));
-            setnum(mbidpltext,object.optString("bidpl"));
-            setnum(mnewmsg,object.optString("sysmsg"));
-            BidUserFragment.mMessage = object.optInt("sysmsg");
         } catch (JSONException e) {
             e.printStackTrace();
         }

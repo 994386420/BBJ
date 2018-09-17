@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -46,6 +47,9 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -266,9 +270,33 @@ public class WelcomeActivity extends BaseActivity2{
 							if (jsonObject.optString("status").equals("1")) {
 								final JSONObject content = jsonObject.getJSONObject("content");
 								String img = content.optString("img");
+								getWindow().setBackgroundDrawableResource(R.color.white);
 									Glide.with(getApplicationContext())
 											.load(img)
-											.diskCacheStrategy(DiskCacheStrategy.RESULT)
+											.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+											.listener(new RequestListener<String, GlideDrawable>() {
+												@Override
+												public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+													return false;
+												}
+
+												@Override
+												public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+													if (mimg == null) {
+														return false;
+													}
+													if (mimg.getScaleType() != ImageView.ScaleType.FIT_XY) {
+														mimg.setScaleType(ImageView.ScaleType.FIT_XY);
+													}
+													ViewGroup.LayoutParams params = mimg.getLayoutParams();
+													int vw = mimg.getWidth() - mimg.getPaddingLeft() - mimg.getPaddingRight();
+													float scale = (float) vw / (float) resource.getIntrinsicWidth();
+													int vh = Math.round(resource.getIntrinsicHeight() * scale);
+													params.height = vh + mimg.getPaddingTop() + mimg.getPaddingBottom();
+													mimg.setLayoutParams(params);
+													return false;
+												}
+											})
 											.into(mimg);
 								handler2.sendEmptyMessage(time);
 								final String eventId = content.optString("eventId");

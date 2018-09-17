@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -307,7 +308,11 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 									}else {
 										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
-										zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看消息哦","去登录",true);
+										if (TextUtils.isEmpty(userID)) {
+											zLoadingView.loadHomeSuccess(getActivity(), "登录后才能查看消息哦", "去登录", true);
+										}else {
+											zLoadingView.loadSuccess(true);
+										}
 										xrefresh.setEnableLoadMore(false);
 									}
 								}else {
@@ -378,7 +383,11 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 									}else {
 										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
-										zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看评论哦","去登录",true);
+										if (TextUtils.isEmpty(userID)) {
+											zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看评论哦","去登录",true);
+										}else {
+											zLoadingView.loadSuccess(true);
+										}
 										xrefresh.setEnableLoadMore(false);
 									}
 								}else {
@@ -450,7 +459,11 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 									}else {
 										zLoadingView.setVisibility(View.VISIBLE);
 										mlistview.setVisibility(View.GONE);
-										zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看评论哦","去登录",true);
+										if (TextUtils.isEmpty(userID)) {
+											zLoadingView.loadHomeSuccess(getActivity(),"登录后才能查看评论哦","去登录",true);
+										}else {
+											zLoadingView.loadSuccess(true);
+										}
 										xrefresh.setEnableLoadMore(false);
 									}
 								}else {

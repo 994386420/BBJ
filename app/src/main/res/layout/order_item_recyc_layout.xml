@@ -17,6 +17,7 @@
     android:id="@+id/item_img"
     android:layout_width="80dp"
     android:layout_height="80dp"
+        android:scaleType="centerCrop"
     android:layout_marginLeft="10dp" />
 
     <LinearLayout

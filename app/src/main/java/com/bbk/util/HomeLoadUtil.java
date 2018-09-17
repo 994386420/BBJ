@@ -760,6 +760,7 @@ public class HomeLoadUtil {
                                 context.startActivity(intent);
                                 break;
                             case 1:
+                                HomeActivity.position = 0;
                                 SharedPreferencesUtil.putSharedData(context, "homeactivty", "type","0");
                                 intent = new Intent(context, HomeActivity.class);
                                 context.startActivity(intent);

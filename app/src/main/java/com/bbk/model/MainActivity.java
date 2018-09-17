@@ -608,7 +608,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                     int height = dm.heightPixels;
                                     ViewGroup.LayoutParams lp = bannerGuanggao.getLayoutParams();
                                     lp.width = width;
-                                    lp.height = height * 1 / 7;
+                                    lp.height = width * 1 / 4;
                                     bannerGuanggao.setLayoutParams(lp);
                                     HomeLoadUtil.loadGuanggaoBanner(getActivity(), bannerGuanggao, guanggaobanner);
                                 } else {

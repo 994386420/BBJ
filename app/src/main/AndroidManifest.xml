@@ -97,6 +97,9 @@
         android:largeHeap="true"
         tools:replace="android:allowBackup">
 
+        //全面屏适配
+        <meta-data android:name="android.max_aspect"
+                   android:value="2.5" />
         <!-- android:name=".CalligraphyApplication" -->
 
         <!--<provider-->
@@ -118,6 +121,7 @@
                 <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
                 <!--android:resource="@xml/__picker_provider_paths" />-->
         <!--</provider>-->
+
         <!-- 您从百度网站获取的 APP	KEY -->
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
