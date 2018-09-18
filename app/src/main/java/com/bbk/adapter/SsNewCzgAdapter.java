@@ -42,6 +42,7 @@ import butterknife.ButterKnife;
 public class SsNewCzgAdapter extends BaseAdapter {
     private List<NewHomeCzgBean> newHomeCzgBean;
     private Context context;
+    private int drawS;
 
     public SsNewCzgAdapter(Context context, List<NewHomeCzgBean> list) {
         this.newHomeCzgBean = list;
@@ -97,7 +98,7 @@ public class SsNewCzgAdapter extends BaseAdapter {
             String youhui = newHomeCzgBean.get(position).getYouhui();
             String mbidprice = newHomeCzgBean.get(position).getHislowprice();//最低价
             viewHolder.tvSale.setText(newHomeCzgBean.get(position).getSale() + "人付款");
-            viewHolder.item_title.setText("             " + title);
+            viewHolder.item_title.setText("      " + title);
             try {
                 if (mbidprice != null) {
                     viewHolder.mbidprice.setText("最低价 " + mbidprice);
@@ -108,15 +109,20 @@ public class SsNewCzgAdapter extends BaseAdapter {
             String domin = newHomeCzgBean.get(position).getDomain();
             if (domin != null) {
                 if (domin.equals("taobao")) {
-                    viewHolder.tvMall.setText("淘宝");
+//                    viewHolder.tvMall.setText("淘宝");
+                    drawS = context.getResources().getIdentifier("home_logo_03", "mipmap", context.getPackageName());
                 } else if (domin.equals("tmall")) {
-                    viewHolder.tvMall.setText("天猫");
+//                    viewHolder.tvMall.setText("天猫");
+                    drawS = context.getResources().getIdentifier("home_logo_01", "mipmap", context.getPackageName());
                 } else {
-                    viewHolder.tvMall.setText("京东");
+//                    viewHolder.tvMall.setText("京东");
+                    drawS = context.getResources().getIdentifier("home_logo_02", "mipmap", context.getPackageName());
                 }
+                viewHolder.tvMall.setBackgroundResource(drawS);
             } else {
                 viewHolder.tvMall.setVisibility(View.GONE);
             }
+
             if (newHomeCzgBean.get(position).getBprice() != null && !newHomeCzgBean.get(position).getBprice().equals("")) {
                 viewHolder.bprice.setText("¥" + newHomeCzgBean.get(position).getBprice());
                 viewHolder.bprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG); // 设置中划线并加清晰
@@ -124,9 +130,9 @@ public class SsNewCzgAdapter extends BaseAdapter {
                 viewHolder.bprice.setVisibility(View.GONE);
             }
             viewHolder.price.setText(price);
-            if (newHomeCzgBean.get(position).getQuan() != null && !newHomeCzgBean.get(position).getQuan().equals("")) {
+            if (newHomeCzgBean.get(position).getQuan1() != null && !newHomeCzgBean.get(position).getQuan1().equals("")) {
                 viewHolder.llQuan.setVisibility(View.VISIBLE);
-                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan());
+                viewHolder.quan.setText(newHomeCzgBean.get(position).getQuan1());
             } else {
                 viewHolder.llQuan.setVisibility(View.GONE);
             }

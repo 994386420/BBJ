@@ -159,6 +159,40 @@
                     android:textSize="13dp" />
             </LinearLayout>
 
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dbdbdb" />
+
+            <LinearLayout
+                android:id="@+id/ll_clear_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="清理缓存"
+                    android:textColor="#333333"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_app_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text=""
+                    android:textColor="#999999"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
