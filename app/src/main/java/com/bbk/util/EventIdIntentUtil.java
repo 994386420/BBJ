@@ -42,6 +42,7 @@ import com.bbk.activity.WebViewRechargeActivity;
 import com.bbk.activity.WebViewWZActivity;
 import com.bbk.activity.WebViewXGActivity;
 import com.bbk.activity.WelcomeActivity;
+import com.bbk.activity.YaoqingFriendsActivity;
 import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
@@ -409,6 +410,15 @@ public class EventIdIntentUtil {
 					context.startActivity(intent14);
 				}else {
 					parseCpsDianpuMainUrl(context, userID, "jd", jo.optString("keyword"), jo.optString("htmlUrl"));
+				}
+				break;
+			case "134":
+				if (TextUtils.isEmpty(userID)){
+					intent14 = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent14);
+				}else {
+					intent = new Intent(context, YaoqingFriendsActivity.class);
+					context.startActivity(intent);
 				}
 				break;
 

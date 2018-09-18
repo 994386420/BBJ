@@ -75,6 +75,7 @@ public class WelcomeActivity extends BaseActivity2{
 				return;
 			}
 			int curTime = msg.what;
+			getWindow().setBackgroundDrawableResource(R.color.white);
 			mbtn.setVisibility(View.VISIBLE);
 			mbtn.setText("跳过"+curTime+"秒");
 			curTime--;
@@ -270,7 +271,6 @@ public class WelcomeActivity extends BaseActivity2{
 							if (jsonObject.optString("status").equals("1")) {
 								final JSONObject content = jsonObject.getJSONObject("content");
 								String img = content.optString("img");
-								getWindow().setBackgroundDrawableResource(R.color.white);
 									Glide.with(getApplicationContext())
 											.load(img)
 											.diskCacheStrategy(DiskCacheStrategy.SOURCE)
