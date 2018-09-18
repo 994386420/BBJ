@@ -44,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -168,7 +169,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 tvAddress.setText(cofirmOrderBean.getAddr());
                                 tvName.setText(cofirmOrderBean.getReceiver());
                                 tvPhone.setText(cofirmOrderBean.getPhone());
-                                totalPrice.setText("¥" + cofirmOrderBean.getTotal());
+                                double total = Double.parseDouble(cofirmOrderBean.getTotal());
+                                totalPrice.setText("¥" + doubleToString(total));
 
                                 if (cofirmOrderBean.getUsejinbi() != null) {
                                     if (cofirmOrderBean.getUsejinbi().equals("0")) {
@@ -226,6 +228,16 @@ public class ConfirmOrderActivity extends BaseActivity {
                         StringUtil.showToast(ConfirmOrderActivity.this, e.message);
                     }
                 });
+    }
+
+    /**
+     * double转String,保留小数点后两位
+     * @param num
+     * @return
+     */
+    public static String doubleToString(double num){
+        //使用0.00不足位补0，#.##仅保留有效位
+        return new DecimalFormat("0.00").format(num);
     }
 
     @OnClick({R.id.title_back_btn, R.id.go_pay,R.id.ll_add_address})
