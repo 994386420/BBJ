@@ -50,7 +50,7 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
     private Adapter adapter;
     private String wenan;
     private ShareHaiBaoUtil shareHaiBaoUtil;
-    int pageIndex = 1;
+    int pageIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
                                 if (imgUrlList != null && imgUrlList.size() > 0) {
                                     adapter = new Adapter(getSupportFragmentManager(), imgUrlList, YaoqingFriendsActivity.this);
                                     pager.setAdapter(adapter);
-                                    pager.setCurrentItem(1);
+                                    pager.setCurrentItem(0);
                                 }
                             } else {
                                 StringUtil.showToast(YaoqingFriendsActivity.this, jsonObject.optString("errmsg"));

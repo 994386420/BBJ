@@ -303,8 +303,13 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 //                else {
                 page = 1;
 //                    x = 1;
+                try {
                     XTabLayout.Tab tabAt = tablayout.getTabAt(0);
                     tabAt.select();
+                }catch (IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                }
+
 //                }
             }
         });
