@@ -328,8 +328,8 @@
     <string name="app_wx_text">登陆前请接受并阅读以上条款</string>
     //首页底部文字
     <string name="home_new_text">首页</string>
-    <string name="home_baoliao_text">鲸港圈</string>
-    <string name="home_faxian_text">分类</string>
+    <string name="home_baoliao_text">分类</string>
+    <string name="home_faxian_text">购物车</string>
     <string name="home_my_text">我的</string>
     <string name="home_news_text">消息</string>
 

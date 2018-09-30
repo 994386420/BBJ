@@ -1,28 +1,47 @@
 package com.bbk.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.fastjson.JSON;
-import com.bbk.activity.BaseActivity;
+import com.bbk.Bean.TaoBaoCarBean;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.ShopDetailActivty;
+import com.bbk.adapter.TaoBaoAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.flow.DataFlow;
+import com.bbk.flow.DataFlowTaobao;
+import com.bbk.flow.ResultEvent;
+import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.ConfirmOrderActivity;
 import com.bbk.shopcar.NewDianpuActivity;
@@ -32,6 +51,7 @@ import com.bbk.shopcar.adapter.ShopcatAdapter;
 import com.bbk.shopcar.entity.GoodsInfo;
 import com.bbk.shopcar.entity.GoodsInfo1;
 import com.bbk.shopcar.entity.StoreInfo;
+import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -42,10 +62,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,11 +76,12 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * 购物车
  */
-public class CarFrament extends BaseViewPagerFragment implements View.OnClickListener, ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener, CommonLoadingView.LoadingHandler {
+public class CarFrament extends BaseViewPagerFragment implements View.OnClickListener, ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener, CommonLoadingView.LoadingHandler, CommonLoadingView.LogThird, ResultEvent,DataFlowTaobao.loadInterface{
     @BindView(R.id.listView)
     SwipeExpandableListView listView;
     @BindView(R.id.all_checkBox)
@@ -90,6 +114,19 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     CommonLoadingView progress;
     @BindView(R.id.ll_bottom_car)
     LinearLayout llBottomCar;
+    @BindView(R.id.tablayout)
+    XTabLayout tablayout;
+    Unbinder unbinder;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.tb_webview)
+    WebView tbWebview;
+    @BindView(R.id.ll_bottom_tb_car)
+    LinearLayout llBottomTbCar;
+    @BindView(R.id.tv_tb_car)
+    TextView tvCar;
+    @BindView(R.id.rl_title)
+    RelativeLayout rlTitle;
     private Context mcontext;
     private double mtotalPrice = 0.00;
     private int mtotalCount = 0;
@@ -98,61 +135,116 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     private ShopcatAdapter adapter;
     private List<StoreInfo> groups; //组元素的列表
     private Map<String, List<GoodsInfo>> childs; //子元素的列表
-    private String ids,nums,guiges;
+    private String ids, nums, guiges;
     private View mView;
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.shopcar_layout);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-//        View topView = findViewById(R.id.activity_car);
-//        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
-//        ButterKnife.bind(this);
-//        initPtrFrame();
-//        initActionBar();
-////        initData();
-//        NewConstants.refeshFlag = "0";
-//        queryShoppingCartByUserid();
-////        initEvents();
-//        titleText.setText("购物车");
-//        titleText2.setText("编辑");
-//        titleText2.setVisibility(View.VISIBLE);
-//        progress.setLoadingHandler(this);
-//    }
+    private int carCount;
+    private JSONObject jsonObject;
+    private String content;
+    private List<TaoBaoCarBean> taoBaoCarBeans;
+    private DataFlowTaobao dataFlow;
+    private int curPosition = 0;
+    public static boolean cancelCheck = true;// 是否取消查询
 
+    @SuppressLint("JavascriptInterface")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (null == mView) {
-            mView = inflater.inflate(R.layout.shopcar_layout, null);
+            mView = inflater.inflate(R.layout.shopcar_home_layout, null);
+            dataFlow = new DataFlowTaobao(getContext());
+            dataFlow.setLoadInterface(this);
             ButterKnife.bind(this, mView);
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
             View topView = mView.findViewById(R.id.activity_car);
             ImmersedStatusbarUtils.initAfterSetContentView(getActivity(), topView);
-            ButterKnife.bind(this,mView);
+            ButterKnife.bind(this, mView);
             initPtrFrame();
             initActionBar();
 //        initData();
 //        initEvents();
+//            init();
             titleText.setText("购物车");
             titleText2.setText("编辑");
+            rlTitle.setBackgroundResource(R.color.tuiguang_color10);
+            titleText.setTextColor(getActivity().getResources().getColor(R.color.white));
+            titleText2.setTextColor(getActivity().getResources().getColor(R.color.white));
             titleText2.setVisibility(View.VISIBLE);
             progress.setLoadingHandler(this);
+            progress.setLogThird(this);
             titleBackBtn.setVisibility(View.GONE);
+            recyclerView.setHasFixedSize(true);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
+            tablayout.setxTabDisplayNum(2);
+            tablayout.addTab(tablayout.newTab().setText("淘宝购物车"));
+//            tablayout.addTab(tablayout.newTab().setText("京东购物车"));
+            tablayout.addTab(tablayout.newTab().setText("鲸城购物车"));
+            tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(XTabLayout.Tab tab) {
+                    Logg.e(tab.getText());
+                    int j = tab.getPosition();
+                    final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                    if (j == 0) {
+                        curPosition = 0;
+                        titleText.setText("淘宝购物车");
+                        llBottomCar.setVisibility(View.GONE);
+                        listView.setVisibility(View.GONE);
+                        titleText2.setVisibility(View.GONE);
+                        showTaoBaoCar();
+                    }
+//                    else if (j == 1){
+//                        llBottomCar.setVisibility(View.GONE);
+//                        listView.setVisibility(View.GONE);
+//                        progress.setVisibility(View.VISIBLE);
+//                        progress.loadSuccess(true);
+//                        progress.loadCarSuccess(getActivity(),"登陆后可一键同步京东购物车内商品","授权登陆京东",true);
+//                        titleText2.setVisibility(View.GONE);
+//                        titleText.setText("京东购物车");
+//                    }
+                    else {
+                        curPosition = 1;
+                        llBottomTbCar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        llBottomCar.setVisibility(View.VISIBLE);
+                        listView.setVisibility(View.VISIBLE);
+                        listView.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+                        titleText.setText("购物车(" + carCount + ")");
+                        titleText2.setVisibility(View.VISIBLE);
+                        DialogSingleUtil.show(getActivity());
+                        queryShoppingCartByUserid();
+//                        progress.loadSuccess(true);
+
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(XTabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(XTabLayout.Tab tab) {
+
+                }
+            });
         }
+        unbinder = ButterKnife.bind(this, mView);
         return mView;
     }
 
     private void initPtrFrame() {
-//        final StoreHouseHeader header=new StoreHouseHeader(this);
-//        header.setPadding(dp2px(20), dp2px(20), 0, 0);
-//        header.initWithString("xiaoma is good");
         mPtrframe.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                queryShoppingCartByUserid();
-                reSet();
-
+                if (curPosition == 1) {
+                    queryShoppingCartByUserid();
+                    reSet();
+                } else {
+                    showTaoBaoCar();
+//                    getShoppingCartUrlByDomain();
+                }
             }
         });
         mPtrframe.setEnableLoadMore(false);
@@ -162,7 +254,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     /**
      * 刷新调用方法重置购物车
      */
-    private void reSet(){
+    private void reSet() {
         if (groups != null) {
             for (int i = 0; i < groups.size(); i++) {
                 StoreInfo group = groups.get(i);
@@ -222,12 +314,16 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     public void onResume() {
         super.onResume();
         Logg.e(NewConstants.refeshFlag);
-        if (NewConstants.refeshFlag.equals("1")){
+        if (NewConstants.refeshFlag.equals("1")) {
 //            mtotalCount = 0;
 //            goPay.setText("去支付(" + mtotalCount + ")");
-            queryShoppingCartByUserid();
-            reSet();
-        }else {
+            if (curPosition == 1) {
+                queryShoppingCartByUserid();
+                reSet();
+            } else {
+                showTaoBaoCar();
+            }
+        } else {
             setCartNum();
         }
     }
@@ -250,9 +346,18 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 //        Logg.e("购物车数量"+count);
         //购物车已经清空
         if (count == 0) {
-            clearCart();
+            if (curPosition == 0) {
+                titleText.setText("淘宝购物车");
+            } else {
+                clearCart();
+            }
         } else {
-            titleText.setText("购物车(" + count + ")");
+            carCount = count;
+            if (curPosition == 0) {
+                titleText.setText("淘宝购物车");
+            } else {
+                titleText.setText("购物车(" + count + ")");
+            }
         }
 
     }
@@ -312,8 +417,8 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
             }
             child.removeAll(toBeDeleteChilds);
         }
-        Logg.json(list.toString().replace("[", "").replace("]", "").replace(" ",""));
-        doShoppingCart(list.toString().replace("[", "").replace("]", "").replace(" ",""), "-1", "", listguige.toString().replace("[", "").replace("]", ""),"all");
+        Logg.json(list.toString().replace("[", "").replace("]", "").replace(" ", ""));
+        doShoppingCart(list.toString().replace("[", "").replace("]", "").replace(" ", ""), "-1", "", listguige.toString().replace("[", "").replace("]", ""), "all");
         groups.removeAll(toBeDeleteGroups);
         //重新设置购物车
         setCartNum();
@@ -420,18 +525,20 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 
     /**
      * 跳转到店铺页
+     *
      * @param dianpuid
      */
     @Override
     public void IntentGroup(String dianpuid) {
         NewConstants.refeshFlag = "0";
         Intent intent = new Intent(getActivity(), NewDianpuActivity.class);
-        intent.putExtra("dianpuid",dianpuid);
+        intent.putExtra("dianpuid", dianpuid);
         startActivity(intent);
     }
 
     /**
      * 增加购物车数量，最高99
+     *
      * @param groupPosition 组元素的位置
      * @param childPosition 子元素的位置
      * @param showCountView 用于展示变化后数量的View
@@ -452,13 +559,14 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         good.setNum(count);
         ((TextView) showCountView).setText(String.valueOf(count));
         DialogSingleUtil.show(getActivity());
-        doShoppingCart(id, "3", 1+ "", guige,"add");
+        doShoppingCart(id, "3", 1 + "", guige, "add");
         adapter.notifyDataSetChanged();
         calulate();
     }
 
     /**
      * 减少购物车数量，最低1
+     *
      * @param groupPosition
      * @param childPosition
      * @param showCountView
@@ -476,13 +584,14 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         good.setNum(count);
         ((TextView) showCountView).setText("" + count);
         DialogSingleUtil.show(getActivity());
-        doShoppingCart(id, "4", 1 + "", guige,"dec");
+        doShoppingCart(id, "4", 1 + "", guige, "dec");
         adapter.notifyDataSetChanged();
         calulate();
     }
 
     /**
      * 删除购物车商品
+     *
      * @param groupPosition
      * @param childPosition 思路:当子元素=0，那么组元素也要删除
      */
@@ -496,7 +605,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
             groups.remove(groupPosition);
         }
         Logg.e(id + "=====" + num + "====" + guige);
-        doShoppingCart(id, "-1", num + "", guige,"child");
+        doShoppingCart(id, "-1", num + "", guige, "child");
         adapter.notifyDataSetChanged();
         calulate();
 
@@ -505,6 +614,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 
     /**
      * 跳转到商品详情页
+     *
      * @param id
      */
     @Override
@@ -517,6 +627,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 
     /**
      * 直接填数量时价格刷新
+     *
      * @param groupPosition
      * @param childPosition
      * @param showCountView
@@ -526,23 +637,23 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
      * @param guige
      */
     @Override
-    public void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige,String dialognum) {
+    public void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige, String dialognum) {
 //        Logg.e("------------------------>>>>>");
         GoodsInfo good = (GoodsInfo) adapter.getChild(groupPosition, childPosition);
         if (num <= 0) {
             StringUtil.showToast(getActivity(), "数量超出范围");
-            doShoppingCart(id, "5", dialognum ,guige,"");
+            doShoppingCart(id, "5", dialognum, guige, "");
             good.setNum(1);
             adapter.notifyDataSetChanged();
         } else if (num > 99) {
             StringUtil.showToast(getActivity(), "数量超出范围");
-            doShoppingCart(id, "5", dialognum, guige,"");
+            doShoppingCart(id, "5", dialognum, guige, "");
             good.setNum(99);
             adapter.notifyDataSetChanged();
         } else {
             Logg.e(NewConstants.car);
             good.setNum(num);
-            doShoppingCart(id, "5", dialognum, guige,"");
+            doShoppingCart(id, "5", dialognum, guige, "");
         }
         calulate();
     }
@@ -597,15 +708,15 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 //                });
 //                dialog.show();
                 new com.bbk.dialog.AlertDialog(mcontext).builder().setTitle("提示")
-                        .setMsg("总计:" + mtotalCount + "种商品，" +   doubleToString(mtotalPrice) + "元")
+                        .setMsg("总计:" + mtotalCount + "种商品，" + doubleToString(mtotalPrice) + "元")
                         .setPositiveButton("支付", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 NewConstants.refeshFlag = "0";
-                                Intent intent = new Intent(getActivity(),ConfirmOrderActivity.class);
-                                intent.putExtra("ids",ids);
-                                intent.putExtra("nums",nums);
-                                intent.putExtra("guiges",guiges);
+                                Intent intent = new Intent(getActivity(), ConfirmOrderActivity.class);
+                                intent.putExtra("ids", ids);
+                                intent.putExtra("nums", nums);
+                                intent.putExtra("guiges", guiges);
                                 startActivity(intent);
                                 return;
                             }
@@ -732,12 +843,12 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                 }
             }
         }
-        Logg.json(list.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ",""));
-        Logg.json(listNum.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ",""));
-        Logg.json(listguiges.toString().replace("[", "").replace("]", "").replace(",","|"));
-        ids = list.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ","");
-        nums = listNum.toString().replace("[", "").replace("]", "").replace(",","|").replace(" ","");
-        guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",","|");
+        Logg.json(list.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", ""));
+        Logg.json(listNum.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", ""));
+        Logg.json(listguiges.toString().replace("[", "").replace("]", "").replace(",", "|"));
+        ids = list.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
+        nums = listNum.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
+        guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",", "|");
         totalPrice.setText("￥" + doubleToString(mtotalPrice) + "");
         goPay.setText("去支付(" + mtotalCount + ")");
         if (mtotalCount == 0) {
@@ -748,15 +859,18 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 
 
     }
+
     /**
      * double转String,保留小数点后两位
+     *
      * @param num
      * @return
      */
-    public static String doubleToString(double num){
+    public static String doubleToString(double num) {
         //使用0.00不足位补0，#.##仅保留有效位
         return new DecimalFormat("0.00").format(num);
     }
+
     private void setVisiable() {
         if (flag) {
             orderInfo.setVisibility(View.GONE);
@@ -803,7 +917,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
      */
     private void queryShoppingCartByUserid() {
         Map<String, String> maps = new HashMap<String, String>();
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         maps.put("userid", userID);
         RetrofitClient.getInstance(getActivity()).createBaseApi().queryShoppingCartByUserid(
                 maps, new BaseObserver<String>(getActivity()) {
@@ -841,7 +955,11 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                                     llBottomCar.setVisibility(View.GONE);
                                     titleText2.setVisibility(View.GONE);
                                     titleText.setText("购物车");
-                                    progress.loadHomeSuccess(getActivity(),"登录后才能使用购物车哦","去登录",true);
+                                    if (TextUtils.isEmpty(userID)) {
+                                        progress.loadHomeSuccess(getActivity(), "登录后才能使用购物车哦", "去登录", true);
+                                    } else {
+                                        progress.loadSuccess(true);
+                                    }
                                 }
                             } else {
                                 StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
@@ -897,9 +1015,9 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 Logg.json(jsonObject);
-                                if (flag.equals("all")){
+                                if (flag.equals("all")) {
                                     queryShoppingCartByUserid();
-                                }else {
+                                } else {
 
                                 }
                             } else {
@@ -930,13 +1048,381 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     @Override
     public void doRequestData() {
         progress.setVisibility(View.GONE);
-        queryShoppingCartByUserid();
+        if (curPosition == 0){
+            showTaoBaoCar();
+        }else {
+            queryShoppingCartByUserid();
+        }
     }
 
     @Override
     protected void loadLazyData() {
         NewConstants.refeshFlag = "0";
-        DialogSingleUtil.show(getActivity());
-        queryShoppingCartByUserid();
+        llBottomCar.setVisibility(View.GONE);
+        titleText2.setVisibility(View.GONE);
+        llBottomTbCar.setVisibility(View.VISIBLE);
+        titleText.setText("淘宝购物车");
+        showTaoBaoCar();
     }
+
+    /**
+     * 购物车显示方法
+     */
+    private void showTaoBaoCar() {
+        mPtrframe.finishRefresh();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (TextUtils.isEmpty(userID)) {
+            progress.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            llBottomTbCar.setVisibility(View.GONE);
+            progress.loadHomeSuccess(getActivity(), "登录后才能使用购物车哦", "去登录", true);
+        } else {
+            if (!AlibcLogin.getInstance().isLogin()) {
+                listView.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+                progress.loadCarSuccess(getActivity(), "登陆后可一键同步淘宝购物车内商品", "授权登陆淘宝", true);
+            } else {
+                llBottomTbCar.setVisibility(View.VISIBLE);
+                String homeContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeTbCarContent", "homeTbCarContent");
+                try {
+                    JSONObject object = new JSONObject(homeContent);
+                    if (object.length() > 0) {
+                        taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
+                        if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            progress.setVisibility(View.GONE);
+                            TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans);
+                            recyclerView.setAdapter(taoBaoAdapter);
+                        } else {
+                            recyclerView.setVisibility(View.GONE);
+                            progress.setVisibility(View.VISIBLE);
+                            progress.loadSuccess(true);
+                        }
+                    } else {
+                        synchroShoppingCart(content);
+                    }
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    /**
+     * 登陆淘宝
+     */
+    @Override
+    public void doLog() {
+        if (!AlibcLogin.getInstance().isLogin()) {
+            DialogSingleUtil.show(getActivity(), "授权中...");
+            final AlibcLogin alibcLogin = AlibcLogin.getInstance();
+            alibcLogin.showLogin(getActivity(), new AlibcLoginCallback() {
+                @Override
+                public void onSuccess() {
+                    DialogSingleUtil.dismiss(0);
+                    StringUtil.showToast(getActivity(), "登录成功 ");
+                    SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    String date = sDateFormat.format(new Date());
+                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "taobao", "taobaodata", date);
+                    getShoppingCartUrlByDomain();
+
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+                    DialogSingleUtil.dismiss(0);
+                    StringUtil.showToast(getActivity(), "登录失败 ");
+                }
+            });
+        } else {
+            StringUtil.showToast(getActivity(), "已经登陆过了");
+        }
+    }
+
+
+    private void getShoppingCartUrlByDomain() {
+        cancelCheck =true;
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("domain", "taobao");
+        RetrofitClient.getInstance(getActivity()).createBaseApi().getShoppingCartUrlByDomain(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                Logg.json(jsonObject.optString("content"));
+//                                new Thread(networkTask).start();
+                                init(jsonObject.optString("content"));
+                            } else {
+                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+//                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogCheckYouhuiUtil.show(getActivity(),"小鲸正在努力同步中，请您耐心等等哦！");
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogCheckYouhuiUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), e.message);
+                    }
+                });
+    }
+
+    /**
+     * 获取淘宝购物车信息
+     *
+     * @param content
+     */
+    private void synchroShoppingCart(String content) {
+        Map<String, String> maps = new HashMap<String, String>();
+        Logg.json(content);
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        maps.put("userid", userID);
+        maps.put("domain", "taobao");
+        maps.put("client", "android");
+        maps.put("content", content);
+        dataFlow.requestData(1, "newService/synchroShoppingCart", maps, this, false);
+//        RetrofitClient.getInstance(getActivity()).createBaseApi().synchroShoppingCart(
+//                maps, new BaseObserver<String>(getActivity()) {
+//                    @Override
+//                    public void onNext(String s) {
+//                        try {
+//                            final JSONObject jsonObject = new JSONObject(s);
+//                            if (jsonObject.optString("status").equals("1")) {
+////                                Logg.json("=========>>>>",jsonObject);
+//                                taoBaoCarBeans = JSON.parseArray(jsonObject.optString("content"), TaoBaoCarBean.class);
+//                                if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+//                                    recyclerView.setVisibility(View.VISIBLE);
+//                                    progress.setVisibility(View.GONE);
+//                                    TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans);
+//                                    recyclerView.setAdapter(taoBaoAdapter);
+//                                } else {
+//                                    recyclerView.setVisibility(View.GONE);
+//                                    progress.setVisibility(View.VISIBLE);
+//                                    progress.loadSuccess(true);
+//                                }
+//                            } else {
+//                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected void hideDialog() {
+//                        DialogSingleUtil.dismiss(0);
+//                    }
+//
+//                    @Override
+//                    protected void showDialog() {
+//                        DialogSingleUtil.show(getActivity());
+//                    }
+//
+//                    @Override
+//                    public void onError(ExceptionHandle.ResponeThrowable e) {
+//                        DialogSingleUtil.dismiss(0);
+//                        StringUtil.showToast(getActivity(), e.message);
+//                    }
+//                });
+    }
+
+//    /**
+//     * 网络操作相关的子线程
+//     */
+//    Runnable networkTask = new Runnable() {
+//        @Override
+//        public void run() {
+//            // 在这里进行 http request.网络请求相关操作
+//            try {
+////                content = HtmlRequest.getHtml(jsonObject.optString("content"));
+////                Logg.json(content);
+//                handler.sendEmptyMessageDelayed(0, 2000);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    };
+//
+//    private Handler handler = new Handler() {
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case 0:
+//                    try {
+////                        synchroShoppingCart(content);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//            }
+//        }
+//    };
+
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void init(String url) {
+        // 开启JavaScript支持
+        tbWebview.getSettings().setJavaScriptEnabled(true);
+
+        tbWebview.addJavascriptInterface(new InJavaScriptLocalObj(), "java_obj");
+
+        // 设置WebView是否支持使用屏幕控件或手势进行缩放，默认是true，支持缩放
+        tbWebview.getSettings().setSupportZoom(true);
+
+        // 设置WebView是否使用其内置的变焦机制，该机制集合屏幕缩放控件使用，默认是false，不使用内置变焦机制。
+        tbWebview.getSettings().setBuiltInZoomControls(true);
+
+        // 设置是否开启DOM存储API权限，默认false，未开启，设置为true，WebView能够使用DOM storage API
+        tbWebview.getSettings().setDomStorageEnabled(true);
+
+        // 触摸焦点起作用.如果不设置，则在点击网页文本输入框时，不能弹出软键盘及不响应其他的一些事件。
+        tbWebview.requestFocus();
+
+        // 设置此属性,可任意比例缩放,设置webview推荐使用的窗口
+        tbWebview.getSettings().setUseWideViewPort(true);
+
+        // 设置webview加载的页面的模式,缩放至屏幕的大小
+        tbWebview.getSettings().setLoadWithOverviewMode(true);
+
+        // 加载链接
+        tbWebview.loadUrl(url);
+
+        tbWebview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                // 在开始加载网页时会回调
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // 拦截 url 跳转,在里边添加点击链接跳转或者操作
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // 在结束加载网页时会回调
+
+                // 获取页面内容
+                view.loadUrl("javascript:window.java_obj.showSource("
+                        + "document.getElementsByTagName('html')[0].innerHTML);");
+
+                // 获取解析<meta name="share-description" content="获取到的值">
+                view.loadUrl("javascript:window.java_obj.showDescription("
+                        + "document.querySelector('meta[name=\"share-description\"]').getAttribute('content')"
+                        + ");");
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode,
+                                        String description, String failingUrl) {
+                // 加载错误的时候会回调，在其中可做错误处理，比如再请求加载一次，或者提示404的错误页面
+                super.onReceivedError(view, errorCode, description, failingUrl);
+            }
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view,
+                                                              WebResourceRequest request) {
+                // 在每一次请求资源时，都会通过这个函数来回调
+                return super.shouldInterceptRequest(view, request);
+            }
+
+        });
+    }
+
+    @Override
+    public void onResultData(int requestCode, String api, JSONObject jsonObject, String content) {
+//        final JSONObject jsonObject;
+        try {
+            if (jsonObject.optString("status").equals("1")) {
+                mPtrframe.finishRefresh();
+                Logg.json("=========>>>>", jsonObject);
+                if (cancelCheck) {
+                    SharedPreferencesUtil.putSharedData(getActivity(), "homeTbCarContent", "homeTbCarContent", jsonObject.toString());
+                    taoBaoCarBeans = JSON.parseArray(jsonObject.optString("content"), TaoBaoCarBean.class);
+                    if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+                        TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans);
+                        recyclerView.setAdapter(taoBaoAdapter);
+                        DialogCheckYouhuiUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), "已同步最新宝贝数据");
+                    } else {
+                        recyclerView.setVisibility(View.GONE);
+                        progress.setVisibility(View.VISIBLE);
+                        progress.loadSuccess(true);
+                    }
+                }
+            } else {
+                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 刷新购物车
+     */
+    @OnClick(R.id.tv_tb_car)
+    public void onViewClicked() {
+        getShoppingCartUrlByDomain();
+    }
+
+    @Override
+    public void timeOut() {
+        DialogCheckYouhuiUtil.dismiss(0);
+        progress.setVisibility(View.VISIBLE);
+        progress.loadError();
+        recyclerView.setVisibility(View.GONE);
+        listView.setVisibility(View.GONE);
+        mPtrframe.finishRefresh();
+        llBottomTbCar.setVisibility(View.GONE);
+        llBottomCar.setVisibility(View.GONE);
+        StringUtil.showToast(getActivity(),"连接超时");
+    }
+
+    @Override
+    public void loadFail() {
+
+    }
+
+    public final class InJavaScriptLocalObj {
+        @JavascriptInterface
+        public void showSource(String html) {
+            System.out.println("====>html=" + html);
+            content = html;
+            synchroShoppingCart(content);
+        }
+
+        @JavascriptInterface
+        public void showDescription(String str) {
+            System.out.println("====>html=" + str);
+        }
+    }
+
 }

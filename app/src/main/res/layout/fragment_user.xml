@@ -298,11 +298,7 @@
             </LinearLayout>
 
             <include layout="@layout/new_order_user_top_layout"/>
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="#f3f3f3" />
+
 
             //推广合伙人
             <LinearLayout

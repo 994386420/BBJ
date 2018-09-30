@@ -354,7 +354,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
                     String[] str1 = {"邀请好友下载APP", "收益奖励", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享鲸港圈", "分享文章", "评论文章"};
                     String[] str2 = {"+"+invitedReward+"鲸币", "+5000鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币", "+20鲸币", "+10鲸币", "+10鲸币"};
                     String[] str3 = {"成功邀请一个好友使用微信登录", "月返利收入≥100元", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日）", "分享一条鲸港圈的商品（限10次/日）",
-                            "对“发现”文章进行分享（限10次/日）", "对“发现”文章进行评论"};
+                            "对“数据”文章进行分享（限10次/日）", "对“数据”文章进行评论"};
                     int[] drawable = {R.mipmap.rw_1, R.mipmap.jingbi_img14, R.mipmap.rw_7, R.mipmap.coin_weixin, R.mipmap.rw_4,
                             R.mipmap.rw_10, R.mipmap.jinbi_clsj, R.mipmap.jingbi_img15, R.mipmap.jingbi_img16, R.mipmap.rw_8};
                     for (int i = 0; i < str1.length; i++) {
@@ -673,9 +673,9 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
 //                    startActivity(intent);
                     break;
                 case 7:
-                    HomeActivity.position = 1;
-                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "1");
-                    intent = new Intent(this, HomeActivity.class);
+//                    HomeActivity.position = 1;
+//                    SharedPreferencesUtil.putSharedData(getApplicationContext(), "homeactivty", "type", "1");
+                    intent = new Intent(this, FenXiangActivty.class);
                     startActivity(intent);
                     break;
                 case 8:

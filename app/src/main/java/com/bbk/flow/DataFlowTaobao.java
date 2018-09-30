@@ -1,39 +1,46 @@
 package com.bbk.flow;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.bbk.client.BaseApiService;
-import com.bbk.resource.Constants;
+import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HttpUtil;
 import com.bbk.util.StringUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressLint("HandlerLeak")
-public class DataFlow{
+public class DataFlowTaobao {
 	private Context context;
-	public DataFlow(Context context) {
+	private loadInterface loadInterface;
+	public DataFlowTaobao(Context context) {
 		this.context = context;
 	}
-	public void requestData(final int requestCode,final String api,Map<String, String> paramsMap,final ResultEvent event,boolean isShowDialog,String tips){
+
+	public DataFlowTaobao.loadInterface getLoadInterface() {
+		return loadInterface;
+	}
+
+	public void setLoadInterface(DataFlowTaobao.loadInterface loadInterface) {
+		this.loadInterface = loadInterface;
+	}
+
+	public void requestData(final int requestCode, final String api, Map<String, String> paramsMap, final ResultEvent event, boolean isShowDialog, String tips){
 		if(isShowDialog == true){
-			if(TextUtils.isEmpty(tips)){
-				DialogSingleUtil.show(context);
-			}else{
-				DialogSingleUtil.show(context);
-			}
+//			if(TextUtils.isEmpty(tips)){
+//				DialogCheckYouhuiUtil.show(context);
+//			}else{
+				DialogCheckYouhuiUtil.show(context,"小鲸正在努力同步中，请您耐心等等哦！");
+//			}
 		}
 		final Map<String, String> params;
 		if(paramsMap == null)
@@ -89,9 +96,11 @@ public class DataFlow{
 				}
 				data.event.onResultData(requestCode,api,dataJo,content);
 			}catch(Exception e){
-				DialogSingleUtil.dismiss(0);
+//				DialogCheckYouhuiUtil.dismiss(0);
+//				StringUtil.showToast(context,"连接超时");
+				loadInterface.timeOut();
 			}
-			DialogSingleUtil.dismiss(0);
+			DialogCheckYouhuiUtil.dismiss(0);
 		}
 	};	
 	private static class Data{
@@ -101,5 +110,8 @@ public class DataFlow{
 		public ResultEvent event;
 	}
 
-
+	public interface loadInterface{
+		void timeOut();
+		void loadFail();
+	}
 }

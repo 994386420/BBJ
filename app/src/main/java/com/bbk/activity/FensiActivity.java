@@ -22,7 +22,6 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
-import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -67,6 +66,10 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
     LinearLayout llYaoqing;
     @BindView(R.id.fensi_recyclerview1)
     RecyclerView fensiRecyclerview1;
+    @BindView(R.id.tv_tixing)
+    TextView tvTixing;
+    @BindView(R.id.ll_reamind)
+    LinearLayout llReamind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +148,7 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                                 friendsNum.setText("共" + object.optString("count") + "位好友");
                                 invitedBeans = JSON.parseArray(object.optString("arr2"), InvitedBean.class);
                                 if (x == 1) {
+                                    llReamind.setVisibility(View.VISIBLE);
                                     fensiBeans = JSON.parseArray(object.optString("arr"), FensiBean.class);
                                     if (fensiBeans.size() > 0 && fensiBeans != null) {
                                         fenSiAdapter = new FenSiAdapter(FensiActivity.this, fensiBeans);
@@ -165,14 +169,15 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                                         refreshLayout.setEnableLoadMore(false);
                                     }
 //                                    Logg.json("==========>>>>>>>",fensiBeans.size()+"==="+invitedBeans.size());
-                                    if (fensiBeans.size() == 0&& invitedBeans.size() == 0){
+                                    if (fensiBeans.size() == 0 && invitedBeans.size() == 0) {
                                         progress.setVisibility(View.VISIBLE);
                                         fensiRecyclerview.setVisibility(View.GONE);
                                         fensiRecyclerview1.setVisibility(View.GONE);
                                         progress.loadSuccess(true);
+                                        llReamind.setVisibility(View.GONE);
                                     }
                                 } else {
-                                    if (invitedBeans.size() > 0 && invitedBeans!= null) {
+                                    if (invitedBeans.size() > 0 && invitedBeans != null) {
                                         fenSiInvitedAdapter.notifyData(invitedBeans);
                                     } else {
                                         refreshLayout.finishLoadMoreWithNoMoreData();
@@ -213,6 +218,53 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
                 });
     }
 
+
+    /**
+     * 一键提醒下单
+     */
+    private void remindFriendBuyGoods() {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userID);
+        RetrofitClient.getInstance(this).createBaseApi().remindFriendBuyGoods(
+                maps, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            if (jsonObject.optString("status").equals("1")) {
+                                StringUtil.showToast(FensiActivity.this, "提醒成功");
+                                tvTixing.setBackgroundResource(R.drawable.bg_czg6);
+                                tvTixing.setTextColor(getResources().getColor(R.color.tuiguang_color4));
+                                tvTixing.setText("已经提醒过了");
+                                tvTixing.setClickable(false);
+                            } else {
+                                StringUtil.showToast(FensiActivity.this, jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(FensiActivity.this);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(FensiActivity.this, e.message);
+                    }
+                });
+    }
+
+
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -224,7 +276,7 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
         queryUserBrokerage();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.ll_yaoqing})
+    @OnClick({R.id.title_back_btn, R.id.ll_yaoqing, R.id.tv_tixing})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_back_btn:
@@ -235,6 +287,9 @@ public class FensiActivity extends BaseActivity implements CommonLoadingView.Loa
 //                intent.putExtra("type", "1");
                 Intent intent = new Intent(FensiActivity.this, YaoqingFriendsActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.tv_tixing:
+                remindFriendBuyGoods();
                 break;
         }
     }

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">//粉丝
+    android:orientation="vertical">
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="50dp"
+        android:background="@color/__picker_common_primary">//粉丝
     <include layout="@layout/title_layout"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -96,4 +101,27 @@
 </LinearLayout>
         </com.bbk.view.MyScrollViewNew>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-</LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_reamind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:background="@color/white">
+    <TextView
+        android:id="@+id/tv_tixing"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:text="一键提醒下单"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_czg1" />
+    </LinearLayout>
+</RelativeLayout>

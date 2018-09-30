@@ -3,6 +3,7 @@
     xmlns:app1="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/topbar_layout"
     android:orientation="vertical">
     <View
         android:id="@+id/data_head"
@@ -14,7 +15,6 @@
     <include layout="@layout/title_layout"
         android:visibility="gone"/>
     <RelativeLayout
-        android:id="@+id/topbar_layout"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:visibility="visible"

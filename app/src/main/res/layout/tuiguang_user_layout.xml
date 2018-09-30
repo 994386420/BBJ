@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
     <!--<LinearLayout-->
         <!--android:id="@+id/ll_tuiguang"-->
         <!--android:layout_width="match_parent"-->
@@ -200,17 +199,25 @@
         <!--</LinearLayout>-->
     <!--</LinearLayout>-->
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="#f3f3f3" />
     <LinearLayout
         android:id="@+id/ll_tuiguang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|bottom"
         android:orientation="horizontal"
-        android:paddingBottom="15dp"
+        android:paddingBottom="10dp"
         android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:paddingTop="15dp" >
+        android:paddingRight="15dp"
+        android:paddingTop="10dp" >
 
 
         <TextView
@@ -223,6 +230,7 @@
             android:textSize="16dp"
             android:textColor="@color/tuiguang_color3"
             android:text="可提现金额0.0" />
+
 
         <TextView
             android:id="@+id/tv_tuiguang_tule"
@@ -339,4 +347,12 @@
                     android:text="本月预估"/>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/img_hongbao"
+        android:layout_width="55dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="175dp"
+        android:visibility="gone"
+        android:background="@mipmap/hongbao_01"/>
+</RelativeLayout>

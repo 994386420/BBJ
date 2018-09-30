@@ -21,7 +21,9 @@ import com.bbk.activity.BaseActivity;
 import com.bbk.activity.BaseFragmentActivity;
 import com.bbk.activity.R;
 import com.bbk.adapter.FenXiangListAdapter;
+import com.bbk.fragment.CarFrament;
 import com.bbk.fragment.NewHomeFragment;
+import com.bbk.model.MainActivity;
 
 /**
  * Created by Administrator on 2018/7/06/006.
@@ -66,7 +68,9 @@ public class CheckYouhuiAlertDialog extends Dialog {
                 BaseFragmentActivity.cancelCheck = false;
                 BaseActivity.cancelCheck = false;
                 NewHomeFragment.cancelCheck = false;
+                MainActivity.cancelCheck =false;
                 FenXiangListAdapter.cancelCheck = false;
+                CarFrament.cancelCheck = false;
             }
         });
 			final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

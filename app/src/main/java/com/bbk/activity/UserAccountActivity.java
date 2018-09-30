@@ -391,7 +391,7 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 					.setPositiveButton("确认", new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-//							NewConstants.refeshFlag = "1";
+							NewConstants.refeshFlag = "1";
 							//友盟登出
 							DialogSingleUtil.show(UserAccountActivity.this,"退出中...");
 							MobclickAgent.onProfileSignOff();

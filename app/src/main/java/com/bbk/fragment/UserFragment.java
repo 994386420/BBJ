@@ -205,6 +205,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     TextView tvCopy;
     @BindView(R.id.tv_dsh_num)
     AdaptionSizeTextView tvDshNum;
+    @BindView(R.id.img_hongbao)
+    ImageView imgHongbao;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -239,7 +241,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     @BindView(R.id.tv_tuiguang_tule)
     TextView tvTuiguangTule;
     @BindView(R.id.tuiguang_user)
-    LinearLayout llTuiguang;
+    RelativeLayout llTuiguang;
     @BindView(R.id.ll_brokerage)
     LinearLayout llBrokerage;
     String isFirstResultUse;
@@ -247,7 +249,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     private Map<String, String> exParams;//yhhpass参数
     private UpdataDialog updataDialog;
     private HongbaoDialog hongbaoDialog;
-    private String hongbaoMoney;
+    private String hongbaoMoney,hongbaoMoney1;
     public static String LogFlag = "0";
 
     @Override
@@ -487,6 +489,14 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     tvLevel.setVisibility(View.VISIBLE);
                                     mJlzText.setVisibility(View.VISIBLE);
                                     tvYaoqingma.setVisibility(View.VISIBLE);
+
+                                    if (userBean.getSingleMoney() != null && !userBean.getSingleMoney().equals("")){
+                                        imgHongbao.setVisibility(View.VISIBLE);
+                                        hongbaoMoney1 = userBean.getSingleMoney();
+                                    }else {
+                                        imgHongbao.setVisibility(View.GONE);
+                                    }
+
                                     if (partner.equals("0")) {
                                         llTuiguang.setVisibility(View.GONE);
                                         llTuiguang_user.setVisibility(View.GONE);
@@ -1446,7 +1456,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
     @OnClick({R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
             R.id.ll_pl, R.id.ll_address, R.id.ll_tq, R.id.ll_xs, R.id.ll_cjwt, R.id.ll_yjfk, R.id.ll_woyao, R.id.ll_pudao, R.id.ll_kefu, R.id.ll_adoutbbj, R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.mjdshopcart,
-            R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu, R.id.huodongimg})
+            R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu, R.id.huodongimg,R.id.img_hongbao})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -1662,6 +1672,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             case R.id.huodongimg:
                 showHongbaoDialog(getActivity());
                 break;
+            case R.id.img_hongbao:
+                showHongbaoDialog1(getActivity());
+                break;
         }
     }
 
@@ -1723,6 +1736,77 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             });
         }
     }
+    public void showHongbaoDialog1(final Context context) {
+        if (hongbaoDialog == null || !hongbaoDialog.isShowing()) {
+            hongbaoDialog = new HongbaoDialog(context, R.layout.hongbao_dialog_layout1,
+                    new int[]{R.id.mclose});
+            hongbaoDialog.show();
+            hongbaoDialog.setCanceledOnTouchOutside(true);
+            AdaptionSizeTextView textView = hongbaoDialog.findViewById(R.id.tv_hongbao_money);
+            AdaptionSizeTextView tvLingqu = hongbaoDialog.findViewById(R.id.tv_lingqu);
+            if (hongbaoMoney1 != null) {
+                textView.setText(hongbaoMoney1);
+            }
+            LinearLayout llclose = hongbaoDialog.findViewById(R.id.mclose);
+            llclose.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hongbaoDialog.dismiss();
+                }
+            });
+            tvLingqu.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getSurpriseGift();
+                }
+            });
+        }
+    }
+
+    /**
+     * 领取红包
+     */
+    private void getSurpriseGift() {
+        Map<String, String> maps = new HashMap<String, String>();
+        final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        maps.put("userid", userID);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().getSurpriseGift(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                Logg.json(jsonObject);
+                                StringUtil.showToast(getActivity(),"红包领取成功");
+                                hongbaoDialog.dismiss();
+                                queryUserCenter();
+                            } else {
+                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(getActivity());
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), e.message);
+                    }
+                });
+    }
+
 
     @Override
     public void Intent(String name) {

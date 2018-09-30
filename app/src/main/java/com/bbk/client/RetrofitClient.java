@@ -599,6 +599,31 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void getSurpriseGift(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getSurpriseGift(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void remindFriendBuyGoods(Map<String, String> parameters, Observer<?> observer) {
+        apiService.remindFriendBuyGoods(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void synchroShoppingCart(Map<String, String> parameters, Observer<?> observer) {
+        apiService.synchroShoppingCart(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void getShoppingCartUrlByDomain(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getShoppingCartUrlByDomain(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

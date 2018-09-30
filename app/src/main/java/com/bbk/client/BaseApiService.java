@@ -246,4 +246,18 @@ public interface BaseApiService<T> {
     @POST("newService/parseCpsDianpuMainUrl")
     Observable<String> parseCpsDianpuMainUrl(@QueryMap Map<String, String> map);
 
+    //点击领取用户收益页面红包
+    @POST("newService/getSurpriseGift")
+    Observable<String> getSurpriseGift(@QueryMap Map<String, String> map);
+    //一键提醒下单
+    @POST("newService/remindFriendBuyGoods")
+    Observable<String> remindFriendBuyGoods(@QueryMap Map<String, String> map);
+    //获取淘宝购物车
+    @POST("newService/synchroShoppingCart")
+    Observable<String> synchroShoppingCart(@QueryMap Map<String, String> map);
+
+    //获取电商网站的购物车h5页面url
+    @POST("newService/getShoppingCartUrlByDomain")
+    Observable<String> getShoppingCartUrlByDomain(@QueryMap Map<String, String> map);
+
 }

@@ -17,6 +17,15 @@ public class NewUserBean {
     private String buttonlist;
     private String showOrders;//1表示显示订单，没有或者0表示不显示
     private String award;
+    private String singleMoney;//空不显示红包，有值显示红包
+
+    public String getSingleMoney() {
+        return singleMoney;
+    }
+
+    public void setSingleMoney(String singleMoney) {
+        this.singleMoney = singleMoney;
+    }
 
     public String getAward() {
         return award;

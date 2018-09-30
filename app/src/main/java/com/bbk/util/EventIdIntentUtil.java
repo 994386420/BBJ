@@ -291,9 +291,9 @@ public class EventIdIntentUtil {
 				context.startActivity(intent);
 				break;
 			case "113":
-				HomeActivity.position = 1;
-				SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "1");
-				intent = new Intent(context,HomeActivity.class);
+//				HomeActivity.position = 1;
+//				SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "1");
+				intent = new Intent(context,FenXiangActivty.class);
 				context.startActivity(intent);
 				break;
 			case "114":

@@ -43,16 +43,13 @@ import com.bbk.Bean.PinTuanBean;
 import com.bbk.Bean.TagBean;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BrowseActivity;
-import com.bbk.activity.FenXiangActivty;
 import com.bbk.activity.IntentActivity;
-import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
-import com.bbk.adapter.FenXiangListAdapter;
 import com.bbk.adapter.MyHomeTagAdapter;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.TypeGridAdapter;
@@ -98,7 +95,7 @@ import butterknife.Unbinder;
 /**
  * 首页新版
  */
-public class MainActivity extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler,HomeGridAdapter.LogInterface,HomeGridPinTuanAdapter.LogPinTuanInterface {
+public class MainActivity extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler, HomeGridAdapter.LogInterface, HomeGridPinTuanAdapter.LogPinTuanInterface {
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.banner_layout)
@@ -206,6 +203,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     RushBuyCountDownTimerHomeView mtime;
     @BindView(R.id.ll_huodong)
     LinearLayout llHuodong;
+    @BindView(R.id.view_miaosha)
+    View viewMiaosha;
+    @BindView(R.id.view_pingtuan)
+    View viewPingtuan;
+    @BindView(R.id.view_czuan)
+    View viewCzuan;
     private View mView;
     private boolean isshowzhezhao = true;
     private int page = 1, x = 1;
@@ -228,7 +231,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private static UpdataDialog updataDialog;
     private HomeLoadUtil homeLoadUtil;
     private int showTime = 0, curposition = 0;
-    private String url1,title1,domain1,type1,isczg1,bprice1,quan1,zuan1;
+    private String url1, title1, domain1, type1, isczg1, bprice1, quan1, zuan1;
 
     @Nullable
     @Override
@@ -306,7 +309,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 try {
                     XTabLayout.Tab tabAt = tablayout.getTabAt(0);
                     tabAt.select();
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
 
@@ -485,212 +488,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 JSONObject object = jsonObject.optJSONObject("content");
-                                //活动图标
-                                if (object.has("fubiao")) {
-                                    huodongimg.setVisibility(View.VISIBLE);
-                                    final JSONObject jo;
-                                    try {
-                                        jo = object.getJSONObject("fubiao");
-                                        Glide.with(getActivity()).load(jo.optString("img")).into(huodongimg);
-                                        huodongimg.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                EventIdIntentUtil.EventIdIntent(getActivity(), jo);
-                                            }
-                                        });
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                } else {
-                                    huodongimg.setVisibility(View.GONE);
-                                }
-
-                                //分类
-                                if (object.has("chaozhigouTypes")) {
-                                    JSONArray chaozhigouTypes = object.optJSONArray("chaozhigouTypes");
-                                    chaozhigouTypesBeans = JSON.parseArray(object.optString("chaozhigouTypes"), ChaozhigouTypesBean.class);
-                                    if (showTime == 0) {
-                                        showTime++;
-                                        typeGridAdapter = new TypeGridAdapter(getActivity(), chaozhigouTypesBeans);
-                                        typeGrid.setAdapter(typeGridAdapter);
-                                        typeGrid.setOnItemClickListener(onItemClickListener);
-                                        for (int i = 0; i < chaozhigouTypes.length(); i++) {
-                                            Map<String, String> map1 = new HashMap<>();
-                                            String keyword = chaozhigouTypes.getJSONObject(i).optString("name");
-                                            if (i == 0) {
-                                                tablayout.addTab(tablayout.newTab().setText("超值购"));
-//                                            viewPagerAdapter.addItem(new DemoFragment(), "超值购");
-                                            }
-                                            tablayout.addTab(tablayout.newTab().setText(keyword));
-//                                        viewPagerAdapter.addItem(new DemoFragment(), keyword);
-//                                        viewpager.setAdapter(viewPagerAdapter);
-//                                        tablayout.setupWithViewPager(viewpager);
-                                        }
-                                    }
-                                }
-                                //banner
-                                if (object.has("banner")) {
-                                    JSONArray bannerarray = object.optJSONArray("banner");
-                                    if (bannerarray != null && bannerarray.length() > 0) {
-                                        HomeLoadUtil.loadbanner(getActivity(), banner, bannerarray);
-                                    }
-                                }
-                                //tag
-                                if (object.has("tag")) {
-                                    List<TagBean> tagBeans = JSON.parseArray(object.optString("tag"), TagBean.class);
-                                    JSONArray tag = object.optJSONArray("tag");
-//                                    Logg.json(object.optString("tag"));
-//                                    List<Map<String, String>> taglist = new ArrayList<>();
-//                                    if (tag != null && tag.length() > 0) {
-//                                        HomeLoadUtil.loadTag(getActivity(), taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
-//                                    }
-                                    Logg.json(tag);
-                                    if (tagBeans != null && tagBeans.size() > 0) {
-                                        tagList.setVisibility(View.VISIBLE);
-                                        MyHomeTagAdapter myHomeTagAdapter = new MyHomeTagAdapter(getActivity(), tagBeans, tag);
-                                        tagList.setAdapter(myHomeTagAdapter);
-                                    }
-                                }
-                                //今日秒杀
-                                Logg.e(object.optString("pintuan"));
-                                mtime.addsum(object.optString("miaoshatime"), "#FFFFFFFF");
-                                mtime.start();
-                                if (object.has("miaosha")) {
-                                    List<MiaoShaBean> miaoShaBeans = JSON.parseArray(object.optString("miaosha"), MiaoShaBean.class);
-                                    hotRecyclerview.setVisibility(View.VISIBLE);
-                                    hotRecyclerview.setHasFixedSize(true);
-                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                                    linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
-                                    hotRecyclerview.setLayoutManager(linearLayoutManager);
-                                    if (miaoShaBeans != null && miaoShaBeans.size() > 0) {
-                                        HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), miaoShaBeans);
-                                        hotRecyclerview.setAdapter(homeGridAdapter);
-                                        homeGridAdapter.setLogInterface(MainActivity.this);
-                                    }
-                                }
-                                //超值拼团
-                                if (object.has("pintuan")) {
-                                    List<PinTuanBean> pinTuanBeans = JSON.parseArray(object.optString("pintuan"), PinTuanBean.class);
-                                    pingtuanRecyclerview.setVisibility(View.VISIBLE);
-                                    pingtuanRecyclerview.setHasFixedSize(true);
-                                    LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
-                                    linearLayoutManager1.setOrientation(linearLayoutManager1.HORIZONTAL);
-                                    pingtuanRecyclerview.setLayoutManager(linearLayoutManager1);
-                                    if (pinTuanBeans != null && pinTuanBeans.size() > 0) {
-                                        HomeGridPinTuanAdapter homeGridPinTuanAdapter = new HomeGridPinTuanAdapter(getActivity(), pinTuanBeans);
-                                        pingtuanRecyclerview.setAdapter(homeGridPinTuanAdapter);
-                                        homeGridPinTuanAdapter.setLogPinTuanInterface(MainActivity.this);
-                                    }
-                                }
-                                //超高赚
-                                if (object.has("chaojifan")) {
-                                    List<ChaoJiFanBean> chaoJiFanBeans = JSON.parseArray(object.optString("chaojifan"), ChaoJiFanBean.class);
-                                    czuanRecyclerview.setVisibility(View.VISIBLE);
-                                    czuanRecyclerview.setHasFixedSize(true);
-                                    LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
-                                    linearLayoutManager2.setOrientation(linearLayoutManager2.HORIZONTAL);
-                                    czuanRecyclerview.setLayoutManager(linearLayoutManager2);
-                                    if (chaoJiFanBeans != null && chaoJiFanBeans.size() > 0) {
-                                        czuanRecyclerview.setAdapter(new HomeGridChaojiFanAdapter(getActivity(), chaoJiFanBeans));
-                                    }
-                                }
-                                llHuodong.setVisibility(View.VISIBLE);
-                                //发镖滚动信息
-                                if (object.has("fabiao")) {
-                                    JSONArray fabiao = object.optJSONArray("fabiao");
-                                    if (fabiao != null && fabiao.length() > 0) {
-                                        HomeLoadUtil.loadViewflipper(getActivity(), mviewflipper, fabiao);
-                                    }
-                                }
-
-                                //通栏广告
-                                if (object.has("tonglanguanggaoandroid")) {
-                                    guanggaoLayout.setVisibility(View.VISIBLE);
-                                    JSONObject guanggaobanner = object.optJSONObject("tonglanguanggaoandroid");
-                                    DisplayMetrics dm = new DisplayMetrics();
-                                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-                                    int width = dm.widthPixels;
-                                    int height = dm.heightPixels;
-                                    ViewGroup.LayoutParams lp = bannerGuanggao.getLayoutParams();
-                                    lp.width = width;
-                                    lp.height = width * 1 / 4;
-                                    bannerGuanggao.setLayoutParams(lp);
-                                    HomeLoadUtil.loadGuanggaoBanner(getActivity(), bannerGuanggao, guanggaobanner);
-                                } else {
-                                    guanggaoLayout.setVisibility(View.GONE);
-                                }
-
-                                //未读消息
-                                if (object.has("messages")) {
-                                    NewConstants.messages = object.optInt("messages");
-                                }
-
-                                //引导页
-                                img3.post(new Runnable() {
-                                    //                    @Override
-                                    public void run() {
-                                        //首页引导页只显示一次
-                                        String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
-                                        if (TextUtils.isEmpty(isFirstResultUse)) {
-                                            isFirstResultUse = "yes";
-                                        }
-                                        if (isFirstResultUse.equals("yes")) {
-                                            HomeLoadUtil.showGuideView(getActivity(), img3, img4);
-                                        }
-                                    }
-                                });
-
-                                chaozhigou = object.optString("chaozhigou");
-                                //第一页超值购数据
-                                czgBeans = JSON.parseArray(chaozhigou, NewHomeCzgBean.class);
-                                if (czgBeans != null && czgBeans.size() > 0) {
-                                    if (typeGridAdapter != null) {
-                                        typeGridAdapter.setSeclection(curposition);
-                                        typeGridAdapter.notifyDataSetChanged();
-                                    }
-                                    refresh.setEnableLoadMore(true);
-                                    recyclerView.setVisibility(View.VISIBLE);
-                                    newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
-                                    recyclerView.setAdapter(newCzgAdapter);
-                                } else {
-                                    refresh.setEnableLoadMore(false);
-                                    recyclerView.setVisibility(View.GONE);
-                                }
-
-
-                                //eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao 未登录 显示preguanggao
-                                String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                                if (TextUtils.isEmpty(userID)) {
-                                    if (object.has("preguanggao")) {
-                                        if (isshowzhezhao) {
-                                            final JSONObject preguanggao = object.optJSONObject("preguanggao");
-                                            new HomeAlertDialog(getActivity()).builder()
-                                                    .setimag(preguanggao.optString("img"))
-                                                    .setonclick(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View arg0) {
-                                                            EventIdIntentUtil.EventIdIntent(getActivity(), preguanggao);
-                                                        }
-                                                    }).show();
-                                            isshowzhezhao = false;
-                                        }
-                                    }
-                                } else {
-                                    if (object.has("guanggao")) {
-                                        if (isshowzhezhao) {
-                                            final JSONObject jo = object.optJSONObject("guanggao");
-                                            new HomeAlertDialog(getActivity()).builder()
-                                                    .setimag(jo.optString("img"))
-                                                    .setonclick(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View arg0) {
-                                                            EventIdIntentUtil.EventIdIntent(getActivity(), jo);
-                                                        }
-                                                    }).show();
-                                            isshowzhezhao = false;
-                                        }
-                                    }
-                                }
+                                SharedPreferencesUtil.putSharedData(getActivity(), "homeContent", "homeContent", object.toString());
+//                                String homeContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeContent", "homeContent");
+//                                JSONObject jsonObject1 = new JSONObject(homeContent);
+//                                Logg.json(jsonObject1.length());
+                                LoadHomeData(object);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -739,17 +541,267 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogHomeUtil.dismiss(0);
-                        if (zLoadingView != null) {
-                            zLoadingView.setVisibility(View.VISIBLE);
-                            zLoadingView.loadError();
+                        String homeContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeContent", "homeContent");
+                        try {
+                            JSONObject object = new JSONObject(homeContent);
+                            if (object.length() > 0) {
+                                LoadHomeData(object);
+                            }else {
+                                if (zLoadingView != null) {
+                                    zLoadingView.setVisibility(View.VISIBLE);
+                                    zLoadingView.loadError();
+                                }
+                                refreshLayout.finishRefresh();
+                                refreshLayout.setVisibility(View.GONE);
+                                StringUtil.showToast(getActivity(), e.message);
+                            }
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
                         }
-                        refreshLayout.finishRefresh();
-                        refreshLayout.setVisibility(View.GONE);
-                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }
 
+    /**
+     * 加载首页数据
+     * @param object
+     */
+    private void LoadHomeData(JSONObject object){
+        try {
+        //活动图标
+        if (object.has("fubiao")) {
+            huodongimg.setVisibility(View.VISIBLE);
+            final JSONObject jo;
+            try {
+                jo = object.getJSONObject("fubiao");
+                Glide.with(getActivity()).load(jo.optString("img")).into(huodongimg);
+                huodongimg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            huodongimg.setVisibility(View.GONE);
+        }
+
+        //分类
+        if (object.has("chaozhigouTypes")) {
+            JSONArray chaozhigouTypes = object.optJSONArray("chaozhigouTypes");
+            chaozhigouTypesBeans = JSON.parseArray(object.optString("chaozhigouTypes"), ChaozhigouTypesBean.class);
+            if (showTime == 0) {
+                showTime++;
+                typeGridAdapter = new TypeGridAdapter(getActivity(), chaozhigouTypesBeans);
+                typeGrid.setAdapter(typeGridAdapter);
+                typeGrid.setOnItemClickListener(onItemClickListener);
+                for (int i = 0; i < chaozhigouTypes.length(); i++) {
+                    Map<String, String> map1 = new HashMap<>();
+                    String keyword = chaozhigouTypes.getJSONObject(i).optString("name");
+                    if (i == 0) {
+                        tablayout.addTab(tablayout.newTab().setText("超值购"));
+//                                            viewPagerAdapter.addItem(new DemoFragment(), "超值购");
+                    }
+                    tablayout.addTab(tablayout.newTab().setText(keyword));
+//                                        viewPagerAdapter.addItem(new DemoFragment(), keyword);
+//                                        viewpager.setAdapter(viewPagerAdapter);
+//                                        tablayout.setupWithViewPager(viewpager);
+                }
+            }
+        }
+        //banner
+        if (object.has("banner")) {
+            JSONArray bannerarray = object.optJSONArray("banner");
+            if (bannerarray != null && bannerarray.length() > 0) {
+                HomeLoadUtil.loadbanner(getActivity(), banner, bannerarray);
+            }
+        }
+        //tag
+        if (object.has("tag")) {
+            List<TagBean> tagBeans = JSON.parseArray(object.optString("tag"), TagBean.class);
+            JSONArray tag = object.optJSONArray("tag");
+//                                    Logg.json(object.optString("tag"));
+//                                    List<Map<String, String>> taglist = new ArrayList<>();
+//                                    if (tag != null && tag.length() > 0) {
+//                                        HomeLoadUtil.loadTag(getActivity(), taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
+//                                    }
+//            Logg.json(tag);
+            if (tagBeans != null && tagBeans.size() > 0) {
+                tagList.setVisibility(View.VISIBLE);
+                MyHomeTagAdapter myHomeTagAdapter = new MyHomeTagAdapter(getActivity(), tagBeans, tag);
+                tagList.setAdapter(myHomeTagAdapter);
+            }
+        }
+        //今日秒杀
+//        Logg.e(object.optString("pintuan"));
+        mtime.addsum(object.optString("miaoshatime"), "#FFFFFFFF");
+        mtime.start();
+        if (object.has("miaosha")) {
+            List<MiaoShaBean> miaoShaBeans = JSON.parseArray(object.optString("miaosha"), MiaoShaBean.class);
+            hotRecyclerview.setVisibility(View.VISIBLE);
+            hotRecyclerview.setHasFixedSize(true);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+            hotRecyclerview.setLayoutManager(linearLayoutManager);
+            if (miaoShaBeans != null && miaoShaBeans.size() > 0) {
+                llMiaosha.setVisibility(View.VISIBLE);
+                viewMiaosha.setVisibility(View.VISIBLE);
+                HomeGridAdapter homeGridAdapter = new HomeGridAdapter(getActivity(), miaoShaBeans);
+                hotRecyclerview.setAdapter(homeGridAdapter);
+                homeGridAdapter.setLogInterface(MainActivity.this);
+            } else {
+                llMiaosha.setVisibility(View.GONE);
+                viewMiaosha.setVisibility(View.GONE);
+            }
+        } else {
+            llMiaosha.setVisibility(View.GONE);
+            viewMiaosha.setVisibility(View.GONE);
+        }
+        //超值拼团
+        if (object.has("pintuan")) {
+            List<PinTuanBean> pinTuanBeans = JSON.parseArray(object.optString("pintuan"), PinTuanBean.class);
+            pingtuanRecyclerview.setVisibility(View.VISIBLE);
+            pingtuanRecyclerview.setHasFixedSize(true);
+            LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
+            linearLayoutManager1.setOrientation(linearLayoutManager1.HORIZONTAL);
+            pingtuanRecyclerview.setLayoutManager(linearLayoutManager1);
+            if (pinTuanBeans != null && pinTuanBeans.size() > 0) {
+                llPingtuan.setVisibility(View.VISIBLE);
+                viewPingtuan.setVisibility(View.VISIBLE);
+                HomeGridPinTuanAdapter homeGridPinTuanAdapter = new HomeGridPinTuanAdapter(getActivity(), pinTuanBeans);
+                pingtuanRecyclerview.setAdapter(homeGridPinTuanAdapter);
+                homeGridPinTuanAdapter.setLogPinTuanInterface(MainActivity.this);
+            }else {
+                llPingtuan.setVisibility(View.GONE);
+                viewPingtuan.setVisibility(View.GONE);
+            }
+        }else {
+            llPingtuan.setVisibility(View.GONE);
+            viewPingtuan.setVisibility(View.GONE);
+        }
+        //超高赚
+        if (object.has("chaojifan")) {
+            List<ChaoJiFanBean> chaoJiFanBeans = JSON.parseArray(object.optString("chaojifan"), ChaoJiFanBean.class);
+            czuanRecyclerview.setVisibility(View.VISIBLE);
+            czuanRecyclerview.setHasFixedSize(true);
+            LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
+            linearLayoutManager2.setOrientation(linearLayoutManager2.HORIZONTAL);
+            czuanRecyclerview.setLayoutManager(linearLayoutManager2);
+            if (chaoJiFanBeans != null && chaoJiFanBeans.size() > 0) {
+                llCzuan.setVisibility(View.VISIBLE);
+                viewCzuan.setVisibility(View.VISIBLE);
+                czuanRecyclerview.setAdapter(new HomeGridChaojiFanAdapter(getActivity(), chaoJiFanBeans));
+            }else {
+                llCzuan.setVisibility(View.GONE);
+                viewCzuan.setVisibility(View.GONE);
+            }
+        }else {
+            llCzuan.setVisibility(View.GONE);
+            viewCzuan.setVisibility(View.GONE);
+        }
+        llHuodong.setVisibility(View.VISIBLE);
+        //发镖滚动信息
+        if (object.has("fabiao")) {
+            JSONArray fabiao = object.optJSONArray("fabiao");
+            if (fabiao != null && fabiao.length() > 0) {
+                HomeLoadUtil.loadViewflipper(getActivity(), mviewflipper, fabiao);
+            }
+        }
+
+        //通栏广告
+        if (object.has("tonglanguanggaoandroid")) {
+            guanggaoLayout.setVisibility(View.VISIBLE);
+            JSONObject guanggaobanner = object.optJSONObject("tonglanguanggaoandroid");
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int width = dm.widthPixels;
+            int height = dm.heightPixels;
+            ViewGroup.LayoutParams lp = bannerGuanggao.getLayoutParams();
+            lp.width = width;
+            lp.height = width * 1 / 4;
+            bannerGuanggao.setLayoutParams(lp);
+            HomeLoadUtil.loadGuanggaoBanner(getActivity(), bannerGuanggao, guanggaobanner);
+        } else {
+            guanggaoLayout.setVisibility(View.GONE);
+        }
+
+        //未读消息
+        if (object.has("messages")) {
+            NewConstants.messages = object.optInt("messages");
+        }
+
+        //引导页
+        img3.post(new Runnable() {
+            //                    @Override
+            public void run() {
+                //首页引导页只显示一次
+                String isFirstResultUse = SharedPreferencesUtil.getSharedData(getActivity(), "isFirstHomeUse", "isFirstHomeUserUse");
+                if (TextUtils.isEmpty(isFirstResultUse)) {
+                    isFirstResultUse = "yes";
+                }
+                if (isFirstResultUse.equals("yes")) {
+                    HomeLoadUtil.showGuideView(getActivity(), img3, img4);
+                }
+            }
+        });
+
+        chaozhigou = object.optString("chaozhigou");
+        //第一页超值购数据
+        czgBeans = JSON.parseArray(chaozhigou, NewHomeCzgBean.class);
+        if (czgBeans != null && czgBeans.size() > 0) {
+            if (typeGridAdapter != null) {
+                typeGridAdapter.setSeclection(curposition);
+                typeGridAdapter.notifyDataSetChanged();
+            }
+            refresh.setEnableLoadMore(true);
+            recyclerView.setVisibility(View.VISIBLE);
+            newCzgAdapter = new NewCzgAdapter(getActivity(), czgBeans);
+            recyclerView.setAdapter(newCzgAdapter);
+        } else {
+            refresh.setEnableLoadMore(false);
+            recyclerView.setVisibility(View.GONE);
+        }
+
+
+        //eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao 未登录 显示preguanggao
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (TextUtils.isEmpty(userID)) {
+            if (object.has("preguanggao")) {
+                if (isshowzhezhao) {
+                    final JSONObject preguanggao = object.optJSONObject("preguanggao");
+                    new HomeAlertDialog(getActivity()).builder()
+                            .setimag(preguanggao.optString("img"))
+                            .setonclick(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View arg0) {
+                                    EventIdIntentUtil.EventIdIntent(getActivity(), preguanggao);
+                                }
+                            }).show();
+                    isshowzhezhao = false;
+                }
+            }
+        } else {
+            if (object.has("guanggao")) {
+                if (isshowzhezhao) {
+                    final JSONObject jo = object.optJSONObject("guanggao");
+                    new HomeAlertDialog(getActivity()).builder()
+                            .setimag(jo.optString("img"))
+                            .setonclick(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View arg0) {
+                                    EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                                }
+                            }).show();
+                    isshowzhezhao = false;
+                }
+            }
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 超值购数据请求
      *
@@ -1186,14 +1238,14 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     if ("beibei".equals(domain1)
                             || "jd".equals(domain1) || "taobao".equals(domain1)
                             || "tmall".equals(domain1) || "suning".equals(domain1)) {
-                        clipboardManager = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                         clipboardManager.setPrimaryClip(ClipData.newPlainText(null, ""));
                         intent = new Intent(getActivity(), IntentActivity.class);
                         if (url1 != null) {
                             intent.putExtra("url", url1);
                         }
                         if (title1 != null) {
-                            intent.putExtra("title",title1);
+                            intent.putExtra("title", title1);
                         }
                         if (domain1 != null) {
                             intent.putExtra("domain", domain1);
@@ -1214,7 +1266,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                         intent.putExtra("url", url1);
                         intent.putExtra("title", title1);
                     }
-                      startActivity(intent);
+                    startActivity(intent);
                     break;
                 case 3:
                     intent = new Intent(getActivity(), BrowseActivity.class);
@@ -1227,7 +1279,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     }
 
     @Override
-    public void IntentLog(String url, String title, String domain, String isczg, String bprice, String quan,String zuan, String type) {
+    public void IntentLog(String url, String title, String domain, String isczg, String bprice, String quan, String zuan, String type) {
         url1 = url;
         title1 = title;
         domain1 = domain;
@@ -1241,7 +1293,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     }
 
     @Override
-    public void IntentPinTuanLog(String url, String title, String domain, String isczg, String bprice, String quan, String zuan,String type) {
+    public void IntentPinTuanLog(String url, String title, String domain, String isczg, String bprice, String quan, String zuan, String type) {
         url1 = url;
         title1 = title;
         domain1 = domain;

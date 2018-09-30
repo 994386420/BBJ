@@ -36,6 +36,8 @@ public class CommonLoadingView extends FrameLayout {
     protected RelativeLayout mLoadErrorLl;
     //加载错误点击事件处理
     private LoadingHandler mLoadingHandler;
+
+    private LogThird logThird;
     //加载view
     private View loadingView;
     //加载失败view
@@ -45,6 +47,7 @@ public class CommonLoadingView extends FrameLayout {
     //数据为空提示文字
     private TextView emptyText;
     private TextView mallText;//去逛逛商城
+    private TextView carText;
     private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
 
 
@@ -59,6 +62,10 @@ public class CommonLoadingView extends FrameLayout {
 
     public void setLoadingHandler(LoadingHandler loadingHandler) {
         mLoadingHandler = loadingHandler;
+    }
+
+    public void setLogThird(LogThird logThird) {
+        this.logThird = logThird;
     }
 
     public void setLoadingErrorView(View loadingErrorView) {
@@ -115,6 +122,7 @@ public class CommonLoadingView extends FrameLayout {
         emptyText = rootView.findViewById(R.id.tv_message);
         mallText = rootView.findViewById(R.id.tv_mall);
         mLoadErrorLl = rootView.findViewById(R.id.mzhanwei_layout);
+        carText = rootView.findViewById(R.id.tv_car);
         mLoadErrorLl.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,12 +177,13 @@ public class CommonLoadingView extends FrameLayout {
         mallText.setText(message1);
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
+        carText.setVisibility(GONE);
         if (isEmpty) {
             mallText.setVisibility(VISIBLE);
             mallText.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    NewConstants.refeshFlag = "1";
+                    NewConstants.refeshFlag = "1";
                     Intent intent = new Intent(context, UserLoginNewActivity.class);
                     context.startActivity(intent);
                 }
@@ -184,6 +193,32 @@ public class CommonLoadingView extends FrameLayout {
             emptyView.setVisibility(GONE);
         }
     }
+
+    public void loadCarSuccess(final Context context,String message,String message1,boolean isEmpty){
+        emptyText.setText(message);
+        carText.setText(message1);
+        mallText.setVisibility(GONE);
+        loadingView.setVisibility(GONE);
+        loadingErrorView.setVisibility(GONE);
+        if (isEmpty) {
+            carText.setVisibility(VISIBLE);
+            carText.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    NewConstants.refeshFlag = "1";
+//                    Intent intent = new Intent(context, UserLoginNewActivity.class);
+//                    context.startActivity(intent);
+                    if (logThird != null){
+                        logThird.doLog();
+                    }
+                }
+            });
+            emptyView.setVisibility(VISIBLE);
+        }else{
+            emptyView.setVisibility(GONE);
+        }
+    }
+
 
     public void loadMallSuccess(final Context context, boolean isEmpty){
         loadingView.setVisibility(GONE);
@@ -211,5 +246,8 @@ public class CommonLoadingView extends FrameLayout {
 
     public interface LoadingHandler{
         void doRequestData();
+    }
+    public interface LogThird{
+        void doLog();
     }
 }
