@@ -37,6 +37,7 @@ import com.bbk.resource.NewConstants;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogCheckYouhuiUtil;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -44,7 +45,9 @@ import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KelperTask;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.logg.Logg;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
@@ -66,6 +69,8 @@ import java.util.Map;
 	 private static UpdataDialog updataDialog;
 	public static boolean cancelCheck = true;// 是否取消查询
 	 private String copytext;
+	 KelperTask mKelperTask;
+	 private String url;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -361,10 +366,17 @@ import java.util.Map;
 		 if (url.contains("tmall") || url.contains("taobao")) {
 			 showUrl(url);
 		 } else if (url.contains("jd")) {
-			 KeplerApiManager.getWebViewService().openAppWebViewPage(BaseActivity.this,
-					 url,
-					 mKeplerAttachParameter,
-					 mOpenAppAction);
+			 try {
+				 KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter, this, mOpenAppAction, 1500);
+			 } catch (KeplerBufferOverflowException e) {
+				 e.printStackTrace();
+			 } catch (JSONException e) {
+				 e.printStackTrace();
+			 }
+//			 (BaseActivity.this,
+//					 url,
+//					 mKeplerAttachParameter,
+//					 mOpenAppAction);
 //					DialogSingleUtil.dismiss(100);
 		 } else {
 			 Intent intent = new Intent(BaseActivity.this, WebViewActivity.class);
@@ -397,37 +409,23 @@ import java.util.Map;
 
 	 OpenAppAction mOpenAppAction = new OpenAppAction() {
 		 @Override
-		 public void onStatus(final int status, final String url) {
+		 public void onStatus(final int status) {
 			 Intent intent;
 			 if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
 //				DialogSingleUtil.show(context);
 			 } else {
-//				DialogSingleUtil.dismiss(0);
+			 	mKelperTask = null;
+				DialogSingleUtil.dismiss(0);
 			 }
-			 if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-				 StringUtil.showToast(BaseActivity.this, "未安装京东");
-				 intent = new Intent(BaseActivity.this, WebViewActivity.class);
-				 if (url != null) {
-					 intent.putExtra("url", url);
-				 }
-//				if (rowkey != null) {
-//					intent.putExtra("rowkey", rowkey);
-//				}
-				 startActivity(intent);
-				 //未安装京东
-			 } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
-				 StringUtil.showToast(BaseActivity.this, "不在白名单");
-				 //不在白名单
-			 } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
-				 StringUtil.showToast(BaseActivity.this, "协议错误");
-				 //协议错误
-			 } else if (status == OpenAppAction.OpenAppAction_result_APP) {
-				 //呼京东成功
-			 } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
-				 StringUtil.showToast(BaseActivity.this, "网络异常");
-				 //网络异常
-			 }
-		 }
+//			 if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+//				 StringUtil.showToast(BaseActivity.this, "未安装京东");
+//				 intent = new Intent(BaseActivity.this, WebViewActivity.class);
+////				 if (url != null) {
+//					 intent.putExtra("url", "https://item.jd.com/7641991.html");
+////				 }
+//				startActivity(intent);
+//			 }
+	 };
 	 };
 
 

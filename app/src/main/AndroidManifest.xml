@@ -205,6 +205,39 @@
             </intent-filter>
         </activity>
 
+        <!-- 京东开普勒 -->
+        <!-- 需要添加 -->
+        <activity
+            android:name="com.kepler.jd.login.AuthSuccessActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+            <intent-filter android:priority="0x7FFFFFFF">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+
+            </intent-filter>
+
+
+        </activity>
+        <!--201版本添加-->
+        <activity
+            android:name="com.kepler.jd.sdk.KeplerMidActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+
+        <activity
+            android:name="com.kepler.jd.sdk.WebViewActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <!-- ================================================================================================== -->
+
         <!-- 直接回呼 -->
         <activity android:exported="true" android:name="com.kepler.jd.sdk.KeplerBackActivity" android:theme="@android:style/Theme.Translucent">
             <intent-filter>

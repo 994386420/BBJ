@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.bbk.flow.DataFlow;
 import com.bbk.resource.Constants;
 import com.bbk.wxpay.Util;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.logg.Logg;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
@@ -41,6 +43,10 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,9 +66,11 @@ public class ShareJumpUtil {
     private String url;
     private String type = "";
     private String imageurl,wenan;
+    private Bitmap bitmap;
+    Handler handler = new Handler();
 
 
-    public ShareJumpUtil(final Activity activity, String title, String content, String url, String type,String imageurl,String wenan) {
+    public ShareJumpUtil(final Activity activity, String title, String content, String url, String type,String imageurl,String wenan,Bitmap bitmap) {
         this.title = title;
         this.content = content;
         this.url = url;
@@ -70,13 +78,14 @@ public class ShareJumpUtil {
         this.type = type;
         this.imageurl = imageurl;
         this.wenan = wenan;
+        this.bitmap = bitmap;
     }
     public static void showShareDialog(View view, Activity activity) {
         ShareUtil shareUtil = new ShareUtil(activity,null,null,null,"");
         shareUtil.showShareDialog(view);
     }
-    public static void showShareDialog(View view, Activity activity, String title, String content, String url, String imgurl,String type, ImageView imageView,String wenan) {
-        ShareJumpUtil shareUtil = new ShareJumpUtil(activity,title,content,url,imgurl,type,wenan);
+    public static void showShareDialog(View view, Activity activity, String title, String content, String url, String imgurl,String type, ImageView imageView,String wenan,Bitmap bitmap) {
+        ShareJumpUtil shareUtil = new ShareJumpUtil(activity,title,content,url,imgurl,type,wenan,bitmap);
         shareUtil.showShareDialog(view,imageView);
     }
 
@@ -94,7 +103,23 @@ public class ShareJumpUtil {
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShareJumpUtil.this.qqShare(qqListener);
+//                        ShareJumpUtil.this.qqShare(qqListener);
+//                        Logg.e(imageurl);
+//                        StringUtil.showToast(activity,imageurl);
+
+                        if (StringUtil.isWeixinAvilible(activity)) {// 判断是否安装微信客户端
+                            DialogSingleUtil.show(activity);
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (bitmap != null) {
+                                        ShareManager.sharedToQQ(activity, bitmap);
+                                    }
+                                }
+                            },0);
+                        } else {
+                            StringUtil.showToast(activity, "请安装QQ客户端");
+                        }
                         popupWindow.dismiss();
                     }
                 });
@@ -170,7 +195,20 @@ public class ShareJumpUtil {
             }
         });
     }
+    /**
+     * 网络操作相关的子线程
+     */
+    Runnable networkTask = new Runnable() {
+        @Override
+        public void run() {
+            // 在这里进行 http request.网络请求相关操作
+            try {
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
     /**
      * qq分享
      */
@@ -179,12 +217,12 @@ public class ShareJumpUtil {
         Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,
                 QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-            params.putString(QQShare.SHARE_TO_QQ_TITLE, title); // 分享标题
-            params.putString(QQShare.SHARE_TO_QQ_SUMMARY, content); // 分享摘要
-            params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url); // 分享链接
-            //分享的图片URL
-            params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,
-                    imageurl);
+        params.putString(QQShare.SHARE_TO_QQ_TITLE, title); // 分享标题
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY, content); // 分享摘要
+        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url); // 分享链接
+        //分享的图片URL
+        params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,
+                imageurl);
         mTencent.shareToQQ(activity, params, iUiListener);
         loadData();
     }

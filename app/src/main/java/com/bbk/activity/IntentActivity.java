@@ -3,6 +3,7 @@ package com.bbk.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.alibaba.baichuan.android.trade.AlibcTrade;
@@ -30,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.logg.Logg;
 
 import android.content.Context;
@@ -227,10 +229,10 @@ public class IntentActivity extends BaseActivity {
 												// url 通过url呼京东主站的地址
 												// mKeplerAttachParameter 存储第三方传入参数
 												// mOpenAppAction  呼京东主站回调
-												KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
-														url,
-														mKeplerAttachParameter,
-														mOpenAppAction);
+//												KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
+//														url,
+//														mKeplerAttachParameter,
+//														mOpenAppAction);
 												DialogSingleUtil.dismiss(0);
 												finish();
 											} else if (jumpBean.getUrl().contains("taobao") || jumpBean.getUrl().contains("tmall")) {
@@ -378,41 +380,6 @@ public class IntentActivity extends BaseActivity {
 
 	private KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
 
-	OpenAppAction mOpenAppAction = new OpenAppAction() {
-		@Override
-		public void onStatus(final int status, final String url) {
-			Intent intent;
-			if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
-				DialogSingleUtil.show(IntentActivity.this);
-			}else {
-				DialogSingleUtil.dismiss(0);
-			}
-			if(status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-				StringUtil.showToast(IntentActivity.this,"未安装京东");
-				intent = new Intent(IntentActivity.this, WebViewActivity.class);
-				if (url != null) {
-					intent.putExtra("url", url);
-				}
-				if (rowkey != null) {
-					intent.putExtra("rowkey", rowkey);
-				}
-				startActivity(intent);
-				//未安装京东
-			}else if(status == OpenAppAction.OpenAppAction_result_BlackUrl){
-				StringUtil.showToast(IntentActivity.this,"不在白名单");
-				//不在白名单
-			}else if(status == OpenAppAction.OpenAppAction_result_ErrorScheme){
-				StringUtil.showToast(IntentActivity.this,"协议错误");
-				//协议错误
-			}else if(status == OpenAppAction.OpenAppAction_result_APP){
-				//呼京东成功
-			}else if(status == OpenAppAction.OpenAppAction_result_NetError){
-				StringUtil.showToast(IntentActivity.this,"网络异常");
-				//网络异常
-			}
-		}
-	};
-
 	/**
 	 * 打开指定链接
 	 */
@@ -451,10 +418,17 @@ public class IntentActivity extends BaseActivity {
 //					public void run() {
 						if (cancleJump) {
 							updataDialog.dismiss();
-							KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
-									url,
-									mKeplerAttachParameter,
-									mOpenAppAction);
+//							KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
+//									url,
+//									mKeplerAttachParameter,
+//									mOpenAppAction);
+							try {
+								KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,IntentActivity.this, mOpenAppAction, 1500);
+							} catch (KeplerBufferOverflowException e) {
+								e.printStackTrace();
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 							finish();
 						}
 //					}

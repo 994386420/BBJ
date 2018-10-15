@@ -1303,10 +1303,10 @@ public class NewHomeFragment extends BaseViewPagerFragment implements  CommonLoa
         if (url.contains("tmall") || url.contains("taobao")) {
             showUrl(url);
         } else if (url.contains("jd")) {
-            KeplerApiManager.getWebViewService().openAppWebViewPage(getActivity(),
-                    url,
-                    mKeplerAttachParameter,
-                    mOpenAppAction);
+//            KeplerApiManager.getWebViewService().openAppWebViewPage(getActivity(),
+//                    url,
+//                    mKeplerAttachParameter,
+//                    mOpenAppAction);
         } else {
             Intent intent = new Intent(getActivity(), WebViewActivity.class);
             if (url != null) {
@@ -1330,33 +1330,33 @@ public class NewHomeFragment extends BaseViewPagerFragment implements  CommonLoa
 
     private static KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
 
-    OpenAppAction mOpenAppAction = new OpenAppAction() {
-        @Override
-        public void onStatus(final int status, final String url) {
-            Intent intent;
-            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
-            } else {
-            }
-            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-                StringUtil.showToast(getActivity(), "未安装京东");
-                intent = new Intent(getActivity(), WebViewActivity.class);
-                if (url != null) {
-                    intent.putExtra("url", url);
-                }
-                startActivity(intent);
-                //未安装京东
-            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
-                StringUtil.showToast(getActivity(), "不在白名单");
-                //不在白名单
-            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
-                StringUtil.showToast(getActivity(), "协议错误");
-                //协议错误
-            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
-                //呼京东成功
-            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
-                StringUtil.showToast(getActivity(), "网络异常");
-                //网络异常
-            }
-        }
-    };
+//    OpenAppAction mOpenAppAction = new OpenAppAction() {
+//        @Override
+//        public void onStatus(final int status, final String url) {
+//            Intent intent;
+//            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+//            } else {
+//            }
+//            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+//                StringUtil.showToast(getActivity(), "未安装京东");
+//                intent = new Intent(getActivity(), WebViewActivity.class);
+//                if (url != null) {
+//                    intent.putExtra("url", url);
+//                }
+//                startActivity(intent);
+//                //未安装京东
+//            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+//                StringUtil.showToast(getActivity(), "不在白名单");
+//                //不在白名单
+//            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+//                StringUtil.showToast(getActivity(), "协议错误");
+//                //协议错误
+//            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
+//                //呼京东成功
+//            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+//                StringUtil.showToast(getActivity(), "网络异常");
+//                //网络异常
+//            }
+//        }
+//    };
 }

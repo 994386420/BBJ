@@ -54,11 +54,30 @@
         app:xTabDividerHeight="0dp"
         app:xTabDividerColor="#000"
         />
+        <com.bbk.view.AdaptionSizeTextView
+            android:id="@+id/tishi"
+            android:layout_below="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:text="下列商品需点击后才可得佣金，可到购物车一起结算。"
+            android:textSize="12dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/tuiguang_color1"/>
+        <ImageView
+            android:id="@+id/img_tishi"
+            android:layout_below="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:src="@mipmap/shopping_cart_02"
+            android:visibility="gone"
+            android:scaleType="fitXY"/>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:background="#f1f1f1"
         android:id="@+id/mPtrframe"
         android:layout_marginBottom="60dp"
-        android:layout_below="@+id/tablayout"
+        android:layout_below="@+id/img_tishi"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
@@ -70,14 +89,14 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <com.bbk.shopcar.SwipeExpandableListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="0dp"
                     android:divider="@color/__picker_common_primary"
-                    android:dividerHeight="0dp" />
-
+                    android:dividerHeight="0dp"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -102,23 +121,61 @@
         android:id="@+id/ll_bottom_tb_car"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:layout_height="60dp"
-        android:visibility="gone"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/ll_refresh_car"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_weight="1">
+        <ImageView
+            android:id="@+id/img_refresh"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="45dp"
+            android:background="@mipmap/shopping_cart_01"/>
         <TextView
             android:id="@+id/tv_tb_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="刷新购物车"
-            android:textSize="13dp"
-            android:background="@drawable/bg_tuiguang1"
-            android:textColor="@color/white"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
+            android:textSize="14dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/tuiguang_color1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_third_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
             android:paddingRight="30dp"
-            android:paddingLeft="30dp" />
+            android:paddingLeft="30dp"
+            android:gravity="center"
+            android:background="@drawable/bg_tuiguang1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_intent_car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="去结算"
+                android:textSize="13dp"
+                android:textColor="@color/white" />
+            <com.bbk.view.AdaptionSizeTextView
+                android:id="@+id/tv_wei_tz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未跳转的的不可得佣金"
+                android:textSize="8dp"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
 
     </LinearLayout>
     <LinearLayout

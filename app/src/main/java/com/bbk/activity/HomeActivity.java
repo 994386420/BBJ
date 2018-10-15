@@ -90,7 +90,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
     private LinearLayout tabParentLayout;
     private int[] tabImgBlue = {R.mipmap.bottom_01, R.mipmap.bottom_07,
-            R.mipmap.bottom_03, R.mipmap.bottom_08, R.mipmap.bottom_06};
+            R.mipmap.bottom_03, R.mipmap.bottom_08, R.mipmap.bottom_05};
     private int[] tabImgGray = {R.mipmap.bottom_11, R.mipmap.bottom_17,
             R.mipmap.bottom_13, R.mipmap.bottom_18, R.mipmap.bottom_15};
     private List<String> tabImgBlue2 = new ArrayList<>();

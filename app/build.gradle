@@ -280,6 +280,9 @@ dependencies {
     implementation 'com.android.support:cardview-v7:23.1.1'
     implementation 'com.logg:Logg:1.5.1'
 //    compile 'com.zaaach:toprightmenu:1.1.2'
+    //右上角全局弹窗
     implementation project(':toprightmenu')
+    //京东开普勒
+    implementation project(':jdsdk_lib')
 }
 

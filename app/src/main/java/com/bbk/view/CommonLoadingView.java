@@ -165,6 +165,7 @@ public class CommonLoadingView extends FrameLayout {
         mallText.setVisibility(GONE);
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
+        carText.setVisibility(GONE);
         if (isEmpty) {
             emptyView.setVisibility(VISIBLE);
         }else{
@@ -240,6 +241,7 @@ public class CommonLoadingView extends FrameLayout {
 
     public void loadError(){
         loadingView.setVisibility(GONE);
+        emptyView.setVisibility(GONE);
         loadingErrorView.setVisibility(VISIBLE);
     }
 

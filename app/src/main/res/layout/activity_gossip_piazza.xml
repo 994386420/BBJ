@@ -12,12 +12,11 @@
         android:layout_height="0dp"
         />
 
-    <include layout="@layout/title_layout"
-        android:visibility="gone"/>
+    <include layout="@layout/title_layout" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="#FFF" >
 
         <TextView

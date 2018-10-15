@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -23,14 +25,21 @@ import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
+import com.alibaba.baichuan.android.trade.model.OpenType;
+import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.alibaba.fastjson.JSON;
+import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.Bean.TaoBaoCarBean;
+import com.bbk.Bean.TaobaoCarListBean;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.ShopDetailActivty;
@@ -38,7 +47,6 @@ import com.bbk.adapter.TaoBaoAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
-import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlowTaobao;
 import com.bbk.flow.ResultEvent;
 import com.bbk.model.tablayout.XTabLayout;
@@ -56,12 +64,21 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.CommonLoadingView;
+import com.kepler.jd.Listener.ActionCallBck;
+import com.kepler.jd.Listener.LoginListener;
+import com.kepler.jd.Listener.OpenAppAction;
+import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KelperTask;
+import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,7 +98,7 @@ import butterknife.Unbinder;
 /**
  * 购物车
  */
-public class CarFrament extends BaseViewPagerFragment implements View.OnClickListener, ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener, CommonLoadingView.LoadingHandler, CommonLoadingView.LogThird, ResultEvent,DataFlowTaobao.loadInterface{
+public class CarFrament extends BaseViewPagerFragment implements View.OnClickListener, ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener, CommonLoadingView.LoadingHandler, CommonLoadingView.LogThird, ResultEvent, DataFlowTaobao.loadInterface {
     @BindView(R.id.listView)
     SwipeExpandableListView listView;
     @BindView(R.id.all_checkBox)
@@ -127,6 +144,20 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     TextView tvCar;
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle;
+    @BindView(R.id.tishi)
+    AdaptionSizeTextView tishi;
+    @BindView(R.id.ll_refresh_car)
+    LinearLayout llRefreshCar;
+    @BindView(R.id.tv_intent_car)
+    TextView tvIntentCar;
+    //    @BindView(R.id.tv_wei_tz)
+    public static TextView tvWeiTz;
+    @BindView(R.id.ll_third_car)
+    LinearLayout llThirdCar;
+    @BindView(R.id.img_tishi)
+    ImageView imgTishi;
+    @BindView(R.id.img_refresh)
+    ImageView imgRefresh;
     private Context mcontext;
     private double mtotalPrice = 0.00;
     private int mtotalCount = 0;
@@ -144,6 +175,12 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     private DataFlowTaobao dataFlow;
     private int curPosition = 0;
     public static boolean cancelCheck = true;// 是否取消查询
+    Handler mHandler;
+    private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
+    private Map<String, String> exParams;//yhhpass参数
+    KelperTask mKelperTask;
+    List<TaobaoCarListBean> taobaoCarListBeans;
+    private int sum = 0;//定义一个变量
 
     @SuppressLint("JavascriptInterface")
     @Nullable
@@ -151,6 +188,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (null == mView) {
             mView = inflater.inflate(R.layout.shopcar_home_layout, null);
+            mHandler = new Handler();
             dataFlow = new DataFlowTaobao(getContext());
             dataFlow.setLoadInterface(this);
             ButterKnife.bind(this, mView);
@@ -163,6 +201,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 //        initData();
 //        initEvents();
 //            init();
+            tvWeiTz = mView.findViewById(R.id.tv_wei_tz);
             titleText.setText("购物车");
             titleText2.setText("编辑");
             rlTitle.setBackgroundResource(R.color.tuiguang_color10);
@@ -175,9 +214,9 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
             recyclerView.setHasFixedSize(true);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
-            tablayout.setxTabDisplayNum(2);
+            tablayout.setxTabDisplayNum(3);
             tablayout.addTab(tablayout.newTab().setText("淘宝购物车"));
-//            tablayout.addTab(tablayout.newTab().setText("京东购物车"));
+            tablayout.addTab(tablayout.newTab().setText("京东购物车"));
             tablayout.addTab(tablayout.newTab().setText("鲸城购物车"));
             tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
                 @Override
@@ -187,23 +226,26 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                     final String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     if (j == 0) {
                         curPosition = 0;
+                        sum = 0;
                         titleText.setText("淘宝购物车");
                         llBottomCar.setVisibility(View.GONE);
                         listView.setVisibility(View.GONE);
                         titleText2.setVisibility(View.GONE);
+                        DialogSingleUtil.show(getActivity());
                         showTaoBaoCar();
-                    }
-//                    else if (j == 1){
-//                        llBottomCar.setVisibility(View.GONE);
-//                        listView.setVisibility(View.GONE);
-//                        progress.setVisibility(View.VISIBLE);
-//                        progress.loadSuccess(true);
-//                        progress.loadCarSuccess(getActivity(),"登陆后可一键同步京东购物车内商品","授权登陆京东",true);
-//                        titleText2.setVisibility(View.GONE);
-//                        titleText.setText("京东购物车");
-//                    }
-                    else {
+                    } else if (j == 1) {
+                        curPosition = 2;
+                        sum = 0;
+                        llBottomCar.setVisibility(View.GONE);
+                        listView.setVisibility(View.GONE);
+                        titleText2.setVisibility(View.GONE);
+                        titleText.setText("京东购物车");
+                        DialogSingleUtil.show(getActivity());
+                        showJdCar();
+                    } else {
                         curPosition = 1;
+                        tishi.setVisibility(View.GONE);
+                        imgTishi.setVisibility(View.GONE);
                         llBottomTbCar.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                         llBottomCar.setVisibility(View.VISIBLE);
@@ -241,7 +283,11 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                 if (curPosition == 1) {
                     queryShoppingCartByUserid();
                     reSet();
+                } else if (curPosition == 2) {
+                    sum = 0;
+                    showJdCar();
                 } else {
+                    sum = 0;
                     showTaoBaoCar();
 //                    getShoppingCartUrlByDomain();
                 }
@@ -320,6 +366,8 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
             if (curPosition == 1) {
                 queryShoppingCartByUserid();
                 reSet();
+            } else if (curPosition == 2) {
+                showJdCar();
             } else {
                 showTaoBaoCar();
             }
@@ -348,6 +396,8 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         if (count == 0) {
             if (curPosition == 0) {
                 titleText.setText("淘宝购物车");
+            } else if (curPosition == 2) {
+                titleText.setText("京东购物车");
             } else {
                 clearCart();
             }
@@ -355,6 +405,8 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
             carCount = count;
             if (curPosition == 0) {
                 titleText.setText("淘宝购物车");
+            } else if (curPosition == 2) {
+                titleText.setText("京东购物车");
             } else {
                 titleText.setText("购物车(" + count + ")");
             }
@@ -897,7 +949,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         mtotalCount = 0;
     }
 
-    @OnClick({R.id.title_back_btn, R.id.title_text2})
+    @OnClick({R.id.title_back_btn, R.id.title_text2, R.id.ll_refresh_car, R.id.ll_third_car})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_back_btn:
@@ -908,9 +960,64 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 //                setActionBarEditor();
                 setVisiable();
                 break;
+            case R.id.ll_refresh_car:
+//                RotateAnimation ra = new RotateAnimation(0, 360);
+                //还可指明绕着某一点旋转,RotateAnimation(0,360,x坐标,y坐标)
+//                RotateAnimation ra = new RotateAnimation(0,360,200,200);
+//                使用相对坐标
+                RotateAnimation ra = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                ra.setDuration(1000);
+                imgRefresh.startAnimation(ra);
+                if (curPosition == 2) {
+                    getShoppingCartUrlByDomain("jd");
+                } else {
+                    getShoppingCartUrlByDomain("taobao");
+                }
+                break;
+            case R.id.ll_third_car:
+                if (curPosition == 2) {
+                    getShoppingCartUrlByDomainAndIntent("jd");
+                } else {
+                    getShoppingCartUrlByDomainAndIntent("taobao");
+                }
+                break;
         }
     }
 
+    private KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
+    OpenAppAction mOpenAppAction = new OpenAppAction() {
+        @Override
+        public void onStatus(final int status) {
+            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+            } else {
+                mKelperTask = null;
+            }
+        }
+    };
+
+    /**
+     * 打开指定链接
+     */
+    public void showUrl(String url) {
+        Handler handler = new Handler();
+        alibcShowParams = new AlibcShowParams(OpenType.Native, false);
+        alibcShowParams.setClientType("taobao_scheme");
+        exParams = new HashMap<>();
+        exParams.put("isv_code", "appisvcode");
+        exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+        final String text = url;
+        if (TextUtils.isEmpty(text)) {
+            StringUtil.showToast(getActivity(), "URL为空");
+            return;
+        }
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DialogSingleUtil.dismiss(0);
+                AlibcTrade.show(getActivity(), new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
+            }
+        }, 0);
+    }
 
     /**
      * 根据id查购物车内容
@@ -1048,9 +1155,18 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     @Override
     public void doRequestData() {
         progress.setVisibility(View.GONE);
-        if (curPosition == 0){
-            showTaoBaoCar();
-        }else {
+        if (curPosition == 0) {
+//            showTaoBaoCar();
+            sum = 0;
+            DialogCheckYouhuiUtil.show(getActivity(), "小鲸正在努力同步中，请您耐心等等哦！");
+            getShoppingCartUrlByDomain("taobao");
+        } else if (curPosition == 2) {
+//            showJdCar();
+            sum = 0;
+            DialogCheckYouhuiUtil.show(getActivity(), "小鲸正在努力同步中，请您耐心等等哦！");
+            getShoppingCartUrlByDomain("jd");
+        } else {
+            DialogSingleUtil.show(getActivity());
             queryShoppingCartByUserid();
         }
     }
@@ -1060,7 +1176,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         NewConstants.refeshFlag = "0";
         llBottomCar.setVisibility(View.GONE);
         titleText2.setVisibility(View.GONE);
-        llBottomTbCar.setVisibility(View.VISIBLE);
+//        llBottomTbCar.setVisibility(View.VISIBLE);
         titleText.setText("淘宝购物车");
         showTaoBaoCar();
     }
@@ -1075,15 +1191,24 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
             progress.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             llBottomTbCar.setVisibility(View.GONE);
+            tishi.setVisibility(View.GONE);
+            imgTishi.setVisibility(View.GONE);
             progress.loadHomeSuccess(getActivity(), "登录后才能使用购物车哦", "去登录", true);
+            DialogSingleUtil.dismiss(0);
         } else {
             if (!AlibcLogin.getInstance().isLogin()) {
                 listView.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 progress.loadCarSuccess(getActivity(), "登陆后可一键同步淘宝购物车内商品", "授权登陆淘宝", true);
+                llBottomTbCar.setVisibility(View.GONE);
+                tishi.setVisibility(View.GONE);
+                imgTishi.setVisibility(View.GONE);
+                DialogSingleUtil.dismiss(0);
             } else {
                 llBottomTbCar.setVisibility(View.VISIBLE);
+                tishi.setVisibility(View.VISIBLE);
+//                imgTishi.setVisibility(View.VISIBLE);
                 String homeContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeTbCarContent", "homeTbCarContent");
                 try {
                     JSONObject object = new JSONObject(homeContent);
@@ -1092,20 +1217,99 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                         if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
                             recyclerView.setVisibility(View.VISIBLE);
                             progress.setVisibility(View.GONE);
-                            TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans);
-                            recyclerView.setAdapter(taoBaoAdapter);
+                            getAllNum();
+                            DialogSingleUtil.dismiss(0);
                         } else {
                             recyclerView.setVisibility(View.GONE);
                             progress.setVisibility(View.VISIBLE);
                             progress.loadSuccess(true);
+                            tishi.setVisibility(View.GONE);
+                            imgTishi.setVisibility(View.GONE);
+                            DialogSingleUtil.dismiss(0);
                         }
                     } else {
-                        synchroShoppingCart(content);
+                        synchroShoppingCart(content, "taobao");
                     }
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
             }
+        }
+    }
+
+    /**
+     * 京东购物车显示方法
+     */
+    private void showJdCar() {
+        mPtrframe.finishRefresh();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (TextUtils.isEmpty(userID)) {
+            progress.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            llBottomTbCar.setVisibility(View.GONE);
+            tishi.setVisibility(View.GONE);
+            imgTishi.setVisibility(View.GONE);
+            progress.loadHomeSuccess(getActivity(), "登录后才能使用购物车哦", "去登录", true);
+            DialogSingleUtil.dismiss(0);
+        } else {
+            KeplerApiManager.getWebViewService().checkLoginState(new ActionCallBck() {
+                @Override
+                public boolean onDateCall(int key, String info) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Logg.e("已登陆京东");
+                            llBottomTbCar.setVisibility(View.VISIBLE);
+                            tishi.setVisibility(View.VISIBLE);
+//                            imgTishi.setVisibility(View.VISIBLE);
+                            String homeJdContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeJdCarContent", "homeJdCarContent");
+                            try {
+                                JSONObject object = new JSONObject(homeJdContent);
+                                if (object.length() > 0) {
+                                    taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
+                                    if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        progress.setVisibility(View.GONE);
+                                        getAllNum();
+                                        DialogSingleUtil.dismiss(0);
+                                    } else {
+                                        recyclerView.setVisibility(View.GONE);
+                                        progress.setVisibility(View.VISIBLE);
+                                        progress.loadSuccess(true);
+                                        tishi.setVisibility(View.GONE);
+                                        imgTishi.setVisibility(View.GONE);
+                                        DialogSingleUtil.dismiss(0);
+                                    }
+                                } else {
+                                    synchroShoppingCart(content, "jd");
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    });
+                    return false;
+                }
+
+                @Override
+                public boolean onErrCall(int key, String error) {
+                    Logg.e("未登陆京东");
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listView.setVisibility(View.GONE);
+                            progress.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                            progress.loadCarSuccess(getActivity(), "登陆后可一键同步京东购物车内商品", "授权登陆京东", true);
+                            llBottomTbCar.setVisibility(View.GONE);
+                            tishi.setVisibility(View.GONE);
+                            imgTishi.setVisibility(View.GONE);
+                            DialogSingleUtil.dismiss(0);
+                        }
+                    });
+                    return false;
+                }
+            });
         }
     }
 
@@ -1116,47 +1320,149 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     }
 
     /**
+     * 调用验证登录态接口判断是否登录状态
+     */
+    private void checkLoginStatus() {
+        KeplerApiManager.getWebViewService().checkLoginState(new ActionCallBck() {
+            @Override
+            public boolean onDateCall(int key, String info) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+//                        login_lin.setVisibility(View.VISIBLE);
+                    }
+                });
+                return false;
+            }
+
+            @Override
+            public boolean onErrCall(int key, String error) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+//                        login_lin.setVisibility(View.INVISIBLE);
+                    }
+                });
+                return false;
+            }
+        });
+
+    }
+
+    LoginListener mLoginListener = new LoginListener() {
+
+        @Override
+        public void authSuccess(final Object token) {
+
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    StringUtil.showToast(getActivity(), "登录成功");
+                    checkLoginStatus();
+                    llBottomTbCar.setVisibility(View.VISIBLE);
+                    getShoppingCartUrlByDomain("jd");
+                }
+            });
+
+        }
+
+        @Override
+        public void authFailed(final int errorCode) {
+            switch (errorCode) {
+                case KeplerApiManager.KeplerApiManagerLoginErr_Init:// 初始化失败
+                    break;
+                case KeplerApiManager.KeplerApiManagerLoginErr_InitIng:// 初始化没有完成
+                    break;
+                case KeplerApiManager.KeplerApiManagerLoginErr_openH5authPageURLSettingNull:// 跳转url
+                    break;
+                case KeplerApiManager.KeplerApiManagerLoginErr_getTokenErr:// 获取失败(oath授权之后，获取cookie过程出错)
+                    break;
+                case KeplerApiManager.KeplerApiManagerLoginErr_User_Cancel:// 用户取消
+                    break;
+                case KeplerApiManager.KeplerApiManagerLoginErr_AuthErr_ActivityOpen:// 打开授权页面失败
+                    break;
+                default:
+                    break;
+            }
+            if (!(errorCode == KeplerApiManager.KeplerApiManagerLoginErr_LoginNoConfirm ||
+                    errorCode == KeplerApiManager.KeplerApiManagerLoginErr_TokenNoUse)) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+//                        Toast.makeText(getActivity(), errorCode + ":authFailed", Toast.LENGTH_SHORT).show();
+                        StringUtil.showToast(getActivity(), "登录失败");
+                    }
+                });
+            }
+        }
+    };
+
+    /**
      * 登陆淘宝
      */
     @Override
     public void doLog() {
-        if (!AlibcLogin.getInstance().isLogin()) {
-            DialogSingleUtil.show(getActivity(), "授权中...");
-            final AlibcLogin alibcLogin = AlibcLogin.getInstance();
-            alibcLogin.showLogin(getActivity(), new AlibcLoginCallback() {
+        if (curPosition == 2) {
+            KeplerApiManager.getWebViewService().checkLoginState(new ActionCallBck() {
                 @Override
-                public void onSuccess() {
-                    DialogSingleUtil.dismiss(0);
-                    StringUtil.showToast(getActivity(), "登录成功 ");
-                    SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    String date = sDateFormat.format(new Date());
-                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "taobao", "taobaodata", date);
-                    getShoppingCartUrlByDomain();
-
+                public boolean onDateCall(int key, String info) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            StringUtil.showToast(getActivity(), "已登录");
+                        }
+                    });
+                    return false;
                 }
 
                 @Override
-                public void onFailure(int code, String msg) {
-                    DialogSingleUtil.dismiss(0);
-                    StringUtil.showToast(getActivity(), "登录失败 ");
+                public boolean onErrCall(int key, String error) {
+                    // 直接授权登录京东​
+                    KeplerApiManager.getWebViewService().login(
+                            getActivity(), mLoginListener);
+                    return false;
                 }
             });
         } else {
-            StringUtil.showToast(getActivity(), "已经登陆过了");
+            if (!AlibcLogin.getInstance().isLogin()) {
+                DialogSingleUtil.show(getActivity(), "授权中...");
+                final AlibcLogin alibcLogin = AlibcLogin.getInstance();
+                alibcLogin.showLogin(getActivity(), new AlibcLoginCallback() {
+                    @Override
+                    public void onSuccess() {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), "登录成功 ");
+                        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        String date = sDateFormat.format(new Date());
+                        SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "taobao", "taobaodata", date);
+                        getShoppingCartUrlByDomain("taobao");
+
+                    }
+
+                    @Override
+                    public void onFailure(int code, String msg) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), "登录失败 ");
+                    }
+                });
+            } else {
+                StringUtil.showToast(getActivity(), "已经登陆过了");
+            }
         }
     }
 
 
-    private void getShoppingCartUrlByDomain() {
-        cancelCheck =true;
+    private void getShoppingCartUrlByDomain(String domain) {
+        cancelCheck = true;
         Map<String, String> maps = new HashMap<String, String>();
-        maps.put("domain", "taobao");
+        maps.put("domain", domain);
         RetrofitClient.getInstance(getActivity()).createBaseApi().getShoppingCartUrlByDomain(
                 maps, new BaseObserver<String>(getActivity()) {
                     @Override
                     public void onNext(String s) {
                         try {
                             jsonObject = new JSONObject(s);
+                            Logg.json("jdurl" + jsonObject);
                             if (jsonObject.optString("status").equals("1")) {
                                 Logg.json(jsonObject.optString("content"));
 //                                new Thread(networkTask).start();
@@ -1176,7 +1482,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 
                     @Override
                     protected void showDialog() {
-                        DialogCheckYouhuiUtil.show(getActivity(),"小鲸正在努力同步中，请您耐心等等哦！");
+                        DialogCheckYouhuiUtil.show(getActivity(), "小鲸正在努力同步中，请您耐心等等哦！");
                     }
 
                     @Override
@@ -1188,16 +1494,70 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     }
 
     /**
+     * 跳转购物车
+     *
+     * @param domain
+     */
+    private void getShoppingCartUrlByDomainAndIntent(String domain) {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("domain", domain);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().getShoppingCartUrlByDomain(
+                maps, new BaseObserver<String>(getActivity()) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            jsonObject = new JSONObject(s);
+                            Logg.json("jdurl" + jsonObject);
+                            if (jsonObject.optString("status").equals("1")) {
+//                                init(jsonObject.optString("content"));
+                                if (curPosition == 2) {
+                                    try {
+                                        KeplerApiManager.getWebViewService().openJDUrlPage(jsonObject.optString("content"), mKeplerAttachParameter, getActivity(), mOpenAppAction, 1500);
+                                    } catch (KeplerBufferOverflowException e) {
+                                        e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    showUrl(jsonObject.optString("content"));
+                                }
+                            } else {
+                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(getActivity());
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(getActivity(), e.message);
+                    }
+                });
+    }
+
+    /**
      * 获取淘宝购物车信息
      *
      * @param content
      */
-    private void synchroShoppingCart(String content) {
+    private void synchroShoppingCart(String content, String domain) {
         Map<String, String> maps = new HashMap<String, String>();
         Logg.json(content);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         maps.put("userid", userID);
-        maps.put("domain", "taobao");
+        maps.put("domain", domain);
         maps.put("client", "android");
         maps.put("content", content);
         dataFlow.requestData(1, "newService/synchroShoppingCart", maps, this, false);
@@ -1362,19 +1722,27 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                 mPtrframe.finishRefresh();
                 Logg.json("=========>>>>", jsonObject);
                 if (cancelCheck) {
-                    SharedPreferencesUtil.putSharedData(getActivity(), "homeTbCarContent", "homeTbCarContent", jsonObject.toString());
+                    if (curPosition == 2) {
+                        SharedPreferencesUtil.putSharedData(getActivity(), "homeJdCarContent", "homeJdCarContent", jsonObject.toString());
+                    } else {
+                        SharedPreferencesUtil.putSharedData(getActivity(), "homeTbCarContent", "homeTbCarContent", jsonObject.toString());
+                    }
                     taoBaoCarBeans = JSON.parseArray(jsonObject.optString("content"), TaoBaoCarBean.class);
                     if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
                         recyclerView.setVisibility(View.VISIBLE);
                         progress.setVisibility(View.GONE);
-                        TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans);
-                        recyclerView.setAdapter(taoBaoAdapter);
+                        tishi.setVisibility(View.VISIBLE);
+//                        imgTishi.setVisibility(View.VISIBLE);
+                        getAllNum();
                         DialogCheckYouhuiUtil.dismiss(0);
                         StringUtil.showToast(getActivity(), "已同步最新宝贝数据");
+                        llBottomTbCar.setVisibility(View.VISIBLE);
                     } else {
                         recyclerView.setVisibility(View.GONE);
                         progress.setVisibility(View.VISIBLE);
                         progress.loadSuccess(true);
+                        tishi.setVisibility(View.GONE);
+                        imgTishi.setVisibility(View.GONE);
                     }
                 }
             } else {
@@ -1388,9 +1756,59 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
     /**
      * 刷新购物车
      */
-    @OnClick(R.id.tv_tb_car)
-    public void onViewClicked() {
-        getShoppingCartUrlByDomain();
+//    @OnClick(R.id.tv_tb_car)
+//    public void onViewClicked() {
+//        sum = 0;
+//        if (curPosition == 2) {
+//            getShoppingCartUrlByDomain("jd");
+//        } else {
+//            getShoppingCartUrlByDomain("taobao");
+//        }
+//    }
+
+    /**
+     * 获取总的数量
+     */
+    private void getAllNum() {
+        List<String> arr = new ArrayList<>();
+        List<String> arrjdzy = new ArrayList<>();
+        List<String> arrjdcs = new ArrayList<>();
+        for (int i = 0; i < taoBaoCarBeans.size(); i++) {
+            taobaoCarListBeans = JSON.parseArray(taoBaoCarBeans.get(i).getList(), TaobaoCarListBean.class);
+            arr.add(String.valueOf(taobaoCarListBeans.size()));
+            if (taoBaoCarBeans.get(i).getName().equals("京东自营")) {
+                try {
+                    JSONArray jsonArray = new JSONArray(taoBaoCarBeans.get(i).getList());
+                    List<TaobaoCarListBean> jdzyCarListBeans = JSON.parseArray(taoBaoCarBeans.get(i).getList(), TaobaoCarListBean.class);
+                    Logg.json(jdzyCarListBeans.size() + "====" + jsonArray);
+                    for (int j = 0; j < jdzyCarListBeans.size(); j++) {
+                        Logg.json("isma" + jdzyCarListBeans.get(j).getIsJDMarket());
+                        if (jdzyCarListBeans.get(j).getIsJDMarket().equals("1")) {
+                            arrjdcs.add(jdzyCarListBeans.get(j).getIsJDMarket());
+                        } else if (jdzyCarListBeans.get(j).getIsJDMarket().equals("0")) {
+                            arrjdzy.add(jdzyCarListBeans.get(j).getIsJDMarket());
+                        }
+                    }
+                    NewConstants.jdcsNum = arrjdcs.size();
+                    NewConstants.jdzyNum = arrjdzy.size();
+//                    Logg.json(arrjdcs.size()+"==============="+arrjdzy.size());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        for (int i = 0; i < arr.size(); i++) {
+//            sum = sum+Integer.parseInt(arr.get(i));//通过for循环，去除数组中的元素，累加到sum中
+        }
+        if (curPosition == 2) {
+            sum = taoBaoCarBeans.size() + NewConstants.jdcsNum + NewConstants.jdzyNum - 1;
+            TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans, "jd", sum);
+            recyclerView.setAdapter(taoBaoAdapter);
+        } else {
+            sum = taoBaoCarBeans.size();
+            TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans, "taobao", sum);
+            recyclerView.setAdapter(taoBaoAdapter);
+        }
     }
 
     @Override
@@ -1403,7 +1821,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         mPtrframe.finishRefresh();
         llBottomTbCar.setVisibility(View.GONE);
         llBottomCar.setVisibility(View.GONE);
-        StringUtil.showToast(getActivity(),"连接超时");
+        StringUtil.showToast(getActivity(), "连接超时");
     }
 
     @Override
@@ -1411,12 +1829,17 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 
     }
 
+
     public final class InJavaScriptLocalObj {
         @JavascriptInterface
         public void showSource(String html) {
             System.out.println("====>html=" + html);
             content = html;
-            synchroShoppingCart(content);
+            if (curPosition == 2) {
+                synchroShoppingCart(content, "jd");
+            } else {
+                synchroShoppingCart(content, "taobao");
+            }
         }
 
         @JavascriptInterface

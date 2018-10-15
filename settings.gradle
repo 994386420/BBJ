@@ -1,1 +1,1 @@
-include ':app', ':sdk', ':presentation', ':ui', ':tlslibrary', ':guideview', ':jdlmm', ':toprightmenu'
+include ':app', ':sdk', ':presentation', ':ui', ':tlslibrary', ':guideview', ':jdlmm', ':toprightmenu', ':jdsdk_lib'

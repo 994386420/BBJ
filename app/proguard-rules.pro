@@ -236,6 +236,14 @@
 -dontwarn com.appkefu.**
 -keep class com.appkefu.** { *;}
 
+# 京东开普勒
+-keep class com.kepler.**{*;}
+-dontwarn com.kepler.**
+-keep class com.jingdong.jdma.**{*;}
+-dontwarn com.jingdong.jdma.**
+-keep class com.jingdong.crash.**{*;}
+-dontwarn com.jingdong.crash.**
+
 # 友盟消息推送
 -dontwarn com.umeng.**
 -dontwarn com.taobao.**

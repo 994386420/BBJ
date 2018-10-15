@@ -14,6 +14,34 @@ public class TaobaoCarListBean {
     private String imgurl;
     private String quan1;
     private String num;
+    private boolean click;
+    private String rowkey;
+    private String isJDMarket;//1表示京东超市，0是京东自营
+
+
+    public String getIsJDMarket() {
+        return isJDMarket;
+    }
+
+    public void setIsJDMarket(String isJDMarket) {
+        this.isJDMarket = isJDMarket;
+    }
+
+    public String getRowkey() {
+        return rowkey;
+    }
+
+    public void setRowkey(String rowkey) {
+        this.rowkey = rowkey;
+    }
+
+    public boolean isClick() {
+        return click;
+    }
+
+    public void setClick(boolean click) {
+        this.click = click;
+    }
 
     public String getNum() {
         return num;

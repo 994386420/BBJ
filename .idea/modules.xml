@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/bibijing.iml" filepath="$PROJECT_DIR$/bibijing.iml" />
       <module fileurl="file://$PROJECT_DIR$/guideview/guideview.iml" filepath="$PROJECT_DIR$/guideview/guideview.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdlmm/jdlmm.iml" filepath="$PROJECT_DIR$/jdlmm/jdlmm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdsdk_lib/jdsdk_lib.iml" filepath="$PROJECT_DIR$/jdsdk_lib/jdsdk_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/presentation/presentation.iml" filepath="$PROJECT_DIR$/presentation/presentation.iml" />
       <module fileurl="file://$PROJECT_DIR$/sdk/sdk.iml" filepath="$PROJECT_DIR$/sdk/sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/tlslibrary/tlslibrary.iml" filepath="$PROJECT_DIR$/tlslibrary/tlslibrary.iml" />

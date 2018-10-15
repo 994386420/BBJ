@@ -1,6 +1,5 @@
 package com.bbk.adapter;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.bbk.Bean.ConfrimOredetItemBean;
 import com.bbk.Bean.TaoBaoCarBean;
 import com.bbk.Bean.TaobaoCarListBean;
+import com.bbk.Bean.ZiYingCarListBean;
 import com.bbk.activity.R;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -32,10 +28,16 @@ import butterknife.ButterKnife;
 public class TaoBaoAdapter extends RecyclerView.Adapter {
     private Context context;
     List<TaoBaoCarBean> taoBaoCarBeans;
+    private String domain;
+    List<ZiYingCarListBean> ziYingCarListBeans;
+    List<TaobaoCarListBean> taobaoCarListBeans;
+    private int allMun;
 
-    public TaoBaoAdapter(Context context, List<TaoBaoCarBean> taoBaoCarBeans) {
+    public TaoBaoAdapter(Context context, List<TaoBaoCarBean> taoBaoCarBeans, String domain, int allMun) {
         this.context = context;
         this.taoBaoCarBeans = taoBaoCarBeans;
+        this.domain = domain;
+        this.allMun = allMun;
     }
 
     @Override
@@ -85,6 +87,8 @@ public class TaoBaoAdapter extends RecyclerView.Adapter {
         RecyclerView recyclerviewTaobaoItem;
         @BindView(R.id.result_item)
         LinearLayout resultItem;
+        @BindView(R.id.img_tishi)
+        ImageView imgTishi;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -95,6 +99,11 @@ public class TaoBaoAdapter extends RecyclerView.Adapter {
     private void initTop(final ViewHolder viewHolder, final int position) {
         try {
             final TaoBaoCarBean taoBaoCarBean = taoBaoCarBeans.get(position);
+            if (position == 0){
+                viewHolder.imgTishi.setVisibility(View.VISIBLE);
+            }else {
+                viewHolder.imgTishi.setVisibility(View.GONE);
+            }
             viewHolder.mdianpu.setText(taoBaoCarBean.getName());
 //            Glide.with(context)
 //                    .load(taoBaoCarBean.getDpimgurl())
@@ -111,8 +120,14 @@ public class TaoBaoAdapter extends RecyclerView.Adapter {
 
             };
             viewHolder.recyclerviewTaobaoItem.setLayoutManager(linearLayoutManager);
-            List<TaobaoCarListBean> taobaoCarListBeans = JSON.parseArray(taoBaoCarBean.getList(), TaobaoCarListBean.class);
-            viewHolder.recyclerviewTaobaoItem.setAdapter(new TaoBaoListAdapter(context, taobaoCarListBeans));
+            viewHolder.recyclerviewTaobaoItem.setFocusable(false);
+//            if (taoBaoCarBean.getName().equals("京东自营")){
+//                ziYingCarListBeans = JSON.parseArray(taoBaoCarBean.getList(), ZiYingCarListBean.class);
+//            }else {
+            taobaoCarListBeans = JSON.parseArray(taoBaoCarBean.getList(), TaobaoCarListBean.class);
+//            }
+//            Logg.e(taobaoCarListBeans.size()+"===============>>>");
+            viewHolder.recyclerviewTaobaoItem.setAdapter(new TaoBaoListAdapter(context, taobaoCarListBeans, allMun, domain, taoBaoCarBean.getName(), taoBaoCarBean.getList()));
         } catch (Exception e) {
             e.printStackTrace();
         }

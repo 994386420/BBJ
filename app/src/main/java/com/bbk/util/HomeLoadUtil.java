@@ -55,7 +55,9 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KelperTask;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.logg.Logg;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -85,6 +87,7 @@ public class HomeLoadUtil {
     private static UpdataDialog updataDialog;
     private static AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private static Map<String, String> exParams;//yhhpass参数
+    KelperTask mKelperTask;
 
     public HomeLoadUtil(Context context){
         this.context = context;
@@ -672,10 +675,17 @@ public class HomeLoadUtil {
         if (url.contains("tmall") || url.contains("taobao")) {
             showUrl(url);
         } else if (url.contains("jd")) {
-            KeplerApiManager.getWebViewService().openAppWebViewPage(context,
-                    url,
-                    mKeplerAttachParameter,
-                    mOpenAppAction);
+//            KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+//                    url,
+//                    mKeplerAttachParameter,
+//                    mOpenAppAction);
+            try {
+                KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,context, mOpenAppAction, 1500);
+            } catch (KeplerBufferOverflowException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } else {
             Intent intent = new Intent(context, WebViewActivity.class);
             if (url != null) {
@@ -698,36 +708,44 @@ public class HomeLoadUtil {
     }
 
     private static KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
-
     OpenAppAction mOpenAppAction = new OpenAppAction() {
         @Override
-        public void onStatus(final int status, final String url) {
-            Intent intent;
+        public void onStatus(final int status) {
             if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
             } else {
-            }
-            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-                StringUtil.showToast(context, "未安装京东");
-                intent = new Intent(context, WebViewActivity.class);
-                if (url != null) {
-                    intent.putExtra("url", url);
-                }
-                context.startActivity(intent);
-                //未安装京东
-            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
-                StringUtil.showToast(context, "不在白名单");
-                //不在白名单
-            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
-                StringUtil.showToast(context, "协议错误");
-                //协议错误
-            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
-                //呼京东成功
-            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
-                StringUtil.showToast(context, "网络异常");
-                //网络异常
+                mKelperTask = null;
             }
         }
     };
+//    OpenAppAction mOpenAppAction = new OpenAppAction() {
+//        @Override
+//        public void onStatus(final int status, final String url) {
+//            Intent intent;
+//            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+//            } else {
+//            }
+//            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+//                StringUtil.showToast(context, "未安装京东");
+//                intent = new Intent(context, WebViewActivity.class);
+//                if (url != null) {
+//                    intent.putExtra("url", url);
+//                }
+//                context.startActivity(intent);
+//                //未安装京东
+//            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+//                StringUtil.showToast(context, "不在白名单");
+//                //不在白名单
+//            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+//                StringUtil.showToast(context, "协议错误");
+//                //协议错误
+//            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
+//                //呼京东成功
+//            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+//                StringUtil.showToast(context, "网络异常");
+//                //网络异常
+//            }
+//        }
+//    };
 
 
     /**

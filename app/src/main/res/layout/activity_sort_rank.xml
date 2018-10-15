@@ -74,7 +74,7 @@
 			    	android:layout_height="wrap_content"
 			    	android:layout_centerVertical="true"
 			    	android:textColor="#999999"
-			    	android:text="粘贴宝贝链接/标题，购物省钱又赚钱"
+			    	android:text="粘贴宝贝标题，购物省钱又赚钱"
 			    	android:textSize="12dp"/>
             </RelativeLayout>
     		<LinearLayout

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +45,7 @@ import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.NoFastClickUtils;
 import com.bbk.util.ShareFenXiangUtil;
 import com.bbk.util.ShareJumpUtil;
+import com.bbk.util.ShareManager;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
@@ -52,6 +55,7 @@ import com.bumptech.glide.Priority;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -64,6 +68,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -138,6 +147,8 @@ public class JumpDetailActivty extends BaseActivity {
     private Handler mHandler = new Handler();
     private boolean cancleJump = true;
     private String isczg;
+    Bitmap bitmap = null;
+    private Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -412,10 +423,17 @@ public class JumpDetailActivty extends BaseActivity {
                                     public void run() {
                                         if (cancleJump) {
                                             updataDialog.dismiss();
-                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                                                    url,
-                                                    mKeplerAttachParameter,
-                                                    mOpenAppAction);
+//                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+//                                                    url,
+//                                                    mKeplerAttachParameter,
+//                                                    mOpenAppAction);
+                                            try {
+                                                KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,JumpDetailActivty.this, mOpenAppAction, 1500);
+                                            } catch (KeplerBufferOverflowException e) {
+                                                e.printStackTrace();
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     }
                                 }, 2000);
@@ -501,7 +519,6 @@ public class JumpDetailActivty extends BaseActivity {
 
                     @Override
                     protected void hideDialog() {
-                        DialogSingleUtil.dismiss(0);
                         llShare.setClickable(true);
                         llLingquan.setClickable(true);
                     }
@@ -524,46 +541,46 @@ public class JumpDetailActivty extends BaseActivity {
 
     private KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
 
-    OpenAppAction mOpenAppAction = new OpenAppAction() {
-        @Override
-        public void onStatus(final int status, final String url) {
-//			mHandler.post(new Runnable() {
-//				@Override
-//				public void run() {
-            Intent intent;
-            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
-//                DialogSingleUtil.show(JumpDetailActivty.this);
-            } else {
-//						mKelperTask = null;
-//                DialogSingleUtil.dismiss(0);
-            }
-            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-                StringUtil.showToast(JumpDetailActivty.this, "未安装京东");
-                intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
-                if (url != null) {
-                    intent.putExtra("url", url);
-                }
-                if (rowkey != null) {
-                    intent.putExtra("rowkey", rowkey);
-                }
-                startActivity(intent);
-                //未安装京东
-            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
-                StringUtil.showToast(JumpDetailActivty.this, "不在白名单");
-                //不在白名单
-            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
-                StringUtil.showToast(JumpDetailActivty.this, "协议错误");
-                //协议错误
-            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
-                //呼京东成功
-            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
-                StringUtil.showToast(JumpDetailActivty.this, "网络异常");
-                //网络异常
-            }
+//    OpenAppAction mOpenAppAction = new OpenAppAction() {
+//        @Override
+//        public void onStatus(final int status, final String url) {
+////			mHandler.post(new Runnable() {
+////				@Override
+////				public void run() {
+//            Intent intent;
+//            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+////                DialogSingleUtil.show(JumpDetailActivty.this);
+//            } else {
+////						mKelperTask = null;
+////                DialogSingleUtil.dismiss(0);
+//            }
+//            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+//                StringUtil.showToast(JumpDetailActivty.this, "未安装京东");
+//                intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
+//                if (url != null) {
+//                    intent.putExtra("url", url);
+//                }
+//                if (rowkey != null) {
+//                    intent.putExtra("rowkey", rowkey);
+//                }
+//                startActivity(intent);
+//                //未安装京东
+//            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+//                StringUtil.showToast(JumpDetailActivty.this, "不在白名单");
+//                //不在白名单
+//            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+//                StringUtil.showToast(JumpDetailActivty.this, "协议错误");
+//                //协议错误
+//            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
+//                //呼京东成功
+//            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+//                StringUtil.showToast(JumpDetailActivty.this, "网络异常");
+//                //网络异常
+//            }
 //				}
 //			});
-        }
-    };
+//        }
+//    };
 
     @Override
     protected void onActivityResult(int arg0, int arg1, Intent arg2) {
@@ -610,10 +627,10 @@ public class JumpDetailActivty extends BaseActivity {
                                             // url 通过url呼京东主站的地址
                                             // mKeplerAttachParameter 存储第三方传入参数
                                             // mOpenAppAction  呼京东主站回调
-                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                                                    urltaobaoOrjd,
-                                                    mKeplerAttachParameter,
-                                                    mOpenAppAction);
+//                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+//                                                    urltaobaoOrjd,
+//                                                    mKeplerAttachParameter,
+//                                                    mOpenAppAction);
                                             DialogSingleUtil.dismiss(100);
                                         } else {
                                             intent = new Intent(JumpDetailActivty.this, WebViewActivity.class);
@@ -802,11 +819,18 @@ public class JumpDetailActivty extends BaseActivity {
                         @Override
                         public void run() {
                             if (cancleJump) {
-                                KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                                        url,
-                                        mKeplerAttachParameter,
-                                        mOpenAppAction);
+//                                KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+//                                        url,
+//                                        mKeplerAttachParameter,
+//                                        mOpenAppAction);
                                 updataDialog.dismiss();
+                                try {
+                                    KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,JumpDetailActivty.this, mOpenAppAction, 1500);
+                                } catch (KeplerBufferOverflowException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }, 2000);
@@ -835,8 +859,54 @@ public class JumpDetailActivty extends BaseActivity {
             ClipboardManager cm = (ClipboardManager)JumpDetailActivty.this.getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setText(wenan);
 //                                            StringUtil.showToast(JumpDetailActivty.this,"标题已复制，分享可直接粘贴");
-            ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan);
+            returnBitMap(shareBean,wenan,shareBean.getImgUrl());
         }
+    }
+
+
+    /**
+     * 获取当前分享图片的bitmap
+     * @param shareBean
+     * @param wenan
+     * @param url
+     * @return
+     */
+    public Bitmap returnBitMap(final ShareBean shareBean, final String wenan, final String url){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageurl = null;
+                try {
+                    imageurl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                    is.close();
+//                    Logg.e("======bi",bitmap);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            /**
+                             * 调起分享dialog
+                             */
+                            DialogSingleUtil.dismiss(0);
+                            ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan,bitmap);
+                        }
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        return bitmap;
     }
 
     @Override
@@ -905,10 +975,17 @@ public class JumpDetailActivty extends BaseActivity {
                                                     public void run() {
                                                         if (cancleJump) {
                                                             updataDialog.dismiss();
-                                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-                                                                    url,
-                                                                    mKeplerAttachParameter,
-                                                                    mOpenAppAction);
+//                                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
+//                                                                    url,
+//                                                                    mKeplerAttachParameter,
+//                                                                    mOpenAppAction);
+                                                            try {
+                                                                KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,JumpDetailActivty.this, mOpenAppAction, 1500);
+                                                            } catch (KeplerBufferOverflowException e) {
+                                                                e.printStackTrace();
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
                                                         }
                                                     }
                                                 }, 2000);

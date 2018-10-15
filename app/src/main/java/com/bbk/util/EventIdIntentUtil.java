@@ -1,5 +1,6 @@
 package com.bbk.util;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -57,7 +58,9 @@ import com.bbk.view.AdaptionSizeTextView;
 import com.bumptech.glide.Glide;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
+import com.kepler.jd.sdk.bean.KelperTask;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
+import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.logg.Logg;
 
 import android.annotation.SuppressLint;
@@ -86,6 +89,7 @@ public class EventIdIntentUtil {
 	private static Context contexte;
 	private static String jumpdomain;
 	private static boolean cancleJump = true;
+	static KelperTask mKelperTask;
 	public static void main(String[] args) {
 
 	}
@@ -346,10 +350,17 @@ public class EventIdIntentUtil {
 				exParams.put("isv_code", "appisvcode");
 				exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
 				if (jo.optString("htmlUrl").contains("jd")){
-					KeplerApiManager.getWebViewService().openAppWebViewPage(context,
-							jo.optString("htmlUrl"),
-							mKeplerAttachParameter,
-							mOpenAppAction);
+//					KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+//							jo.optString("htmlUrl"),
+//							mKeplerAttachParameter,
+//							mOpenAppAction);
+					try {
+						KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,context, mOpenAppAction, 1500);
+					} catch (KeplerBufferOverflowException e) {
+						e.printStackTrace();
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 				}else {
 					showUrl(context,jo.optString("htmlUrl"));
 				}
@@ -561,32 +572,44 @@ public class EventIdIntentUtil {
 
 	static OpenAppAction mOpenAppAction = new OpenAppAction() {
 		@Override
-		public void onStatus(final int status, final String url) {
+		public void onStatus(final int status) {
+			Intent intent;
 			if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+//				DialogSingleUtil.show(context);
 			} else {
-			}
-			if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-				StringUtil.showToast(contexte, "未安装京东");
-				Intent intent = new Intent(contexte, WebViewActivity.class);
-				if (url != null) {
-					intent.putExtra("url", url);
-				}
-				contexte.startActivity(intent);
-				//未安装京东
-			} else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
-//				StringUtil.showToast(context, "不在白名单");
-				//不在白名单
-			} else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
-//				StringUtil.showToast(context, "协议错误");
-				//协议错误
-			} else if (status == OpenAppAction.OpenAppAction_result_APP) {
-				//呼京东成功
-			} else if (status == OpenAppAction.OpenAppAction_result_NetError) {
-//				StringUtil.showToast(context, "网络异常");
-				//网络异常
+				mKelperTask = null;
+				DialogSingleUtil.dismiss(0);
 			}
 		}
 	};
+//	static OpenAppAction mOpenAppAction = new OpenAppAction() {
+//		@Override
+//		public void onStatus(final int status, final String url) {
+//			if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
+//			} else {
+//			}
+//			if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
+//				StringUtil.showToast(contexte, "未安装京东");
+//				Intent intent = new Intent(contexte, WebViewActivity.class);
+//				if (url != null) {
+//					intent.putExtra("url", url);
+//				}
+//				contexte.startActivity(intent);
+//				//未安装京东
+//			} else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
+////				StringUtil.showToast(context, "不在白名单");
+//				//不在白名单
+//			} else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
+////				StringUtil.showToast(context, "协议错误");
+//				//协议错误
+//			} else if (status == OpenAppAction.OpenAppAction_result_APP) {
+//				//呼京东成功
+//			} else if (status == OpenAppAction.OpenAppAction_result_NetError) {
+////				StringUtil.showToast(context, "网络异常");
+//				//网络异常
+//			}
+//		}
+//	};
 
 
 	/**
@@ -613,10 +636,17 @@ public class EventIdIntentUtil {
 									if (domain.equals("taobao")) {
 										showUrl(context, url);
 									} else if (domain.equals("jd")) {
-										KeplerApiManager.getWebViewService().openAppWebViewPage(context,
-												url,
-												mKeplerAttachParameter,
-												mOpenAppAction);
+//										KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+//												url,
+//												mKeplerAttachParameter,
+//												mOpenAppAction);
+										try {
+											KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,context, mOpenAppAction, 1500);
+										} catch (KeplerBufferOverflowException e) {
+											e.printStackTrace();
+										} catch (JSONException e) {
+											e.printStackTrace();
+										}
 									}
 								}
 							} else {
@@ -715,11 +745,18 @@ public class EventIdIntentUtil {
 				// url 通过url呼京东主站的地址
 				// mKeplerAttachParameter 存储第三方传入参数
 				// mOpenAppAction  呼京东主站回调
-				KeplerApiManager.getWebViewService().openAppWebViewPage(context,
-						jsonObject1.optString("url"),
-						mKeplerAttachParameter,
-						mOpenAppAction);
+//				KeplerApiManager.getWebViewService().openAppWebViewPage(context,
+//						jsonObject1.optString("url"),
+//						mKeplerAttachParameter,
+//						mOpenAppAction);
 				DialogSingleUtil.dismiss(100);
+				try {
+					KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,context, mOpenAppAction, 1500);
+				} catch (KeplerBufferOverflowException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
