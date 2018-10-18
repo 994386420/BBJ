@@ -1,5 +1,6 @@
 package com.bbk.activity;
 
+import java.net.IDN;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class IntentActivity extends BaseActivity {
 	private DataFlow3 dataFlow;
 	private String title;
 	private String url;
-	private String domain,isczg,bprice,type,quan,zuan;
+	private String domain,isczg,bprice,type,quan,zuan,tljid;
 	private RoundImageView img3;
 	private RelativeLayout onclickthis;
 	private TextView text1;
@@ -95,6 +96,9 @@ public class IntentActivity extends BaseActivity {
 		quan = getIntent().getStringExtra("quan");
 		type = getIntent().getStringExtra("type");
 		zuan = getIntent().getStringExtra("zuan");
+		if (getIntent().getStringExtra("tljid") != null) {
+			tljid = getIntent().getStringExtra("tljid");
+		}
 		initView();
 		getJumpUrl();
 	}
@@ -218,6 +222,7 @@ public class IntentActivity extends BaseActivity {
 										Intent intent = new Intent(IntentActivity.this, JumpDetailActivty.class);
 										intent.putExtra("content", content);
 										intent.putExtra("isczg", isczg);
+										intent.putExtra("tljid",tljid);
 										startActivity(intent);
 										DialogSingleUtil.dismiss(0);
 										finish();

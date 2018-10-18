@@ -24,6 +24,42 @@ public class JumpBean {
     private String desc;
     private String service;
     private String imgurl;
+    private String tlj;//该字段存在并且值为1显示鲸币抵扣
+    private String tljMsg;//显示鲸币抵扣的内容
+    private String tljprice;//鲸币抵扣之后的价格
+    private String tljNumber;
+
+    public String getTljNumber() {
+        return tljNumber;
+    }
+
+    public void setTljNumber(String tljNumber) {
+        this.tljNumber = tljNumber;
+    }
+
+    public String getTlj() {
+        return tlj;
+    }
+
+    public void setTlj(String tlj) {
+        this.tlj = tlj;
+    }
+
+    public String getTljMsg() {
+        return tljMsg;
+    }
+
+    public void setTljMsg(String tljMsg) {
+        this.tljMsg = tljMsg;
+    }
+
+    public String getTljprice() {
+        return tljprice;
+    }
+
+    public void setTljprice(String tljprice) {
+        this.tljprice = tljprice;
+    }
 
     public String getImgurl() {
         return imgurl;

@@ -611,6 +611,10 @@
             android:name="com.bbk.model.ChaoZhiGouTypesActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.model.ZeroBuyShopActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".FenXiangActivty"

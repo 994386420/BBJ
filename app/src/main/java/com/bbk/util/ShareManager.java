@@ -74,6 +74,7 @@ public class ShareManager {
                         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
                         mContext.startActivity(intent);
                         DialogSingleUtil.dismiss(0);
+                        SharedPreferencesUtil.putSharedData(mContext, "isShare", "isShare", "1");
                         loadData();
                     }
                 }).start();
@@ -112,6 +113,7 @@ public class ShareManager {
             intent.setPackage("com.tencent.mobileqq");
             intent.setClassName("com.tencent.mobileqq", "com.tencent.mobileqq.activity.JumpActivity");//QQ
             DialogSingleUtil.dismiss(0);
+//            SharedPreferencesUtil.putSharedData(context, "isShare", "isShare", "1");
             context.startActivity(intent);
         }
     }
@@ -171,7 +173,6 @@ public class ShareManager {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             path = Environment.getExternalStorageDirectory() + File.separator;//保存到sd根目录下
         }
-        //        File f = new File(path, System.currentTimeMillis() + ".jpg");
         File f = new File(path, "share" + ".jpg");
         if (f.exists()) {
             f.delete();

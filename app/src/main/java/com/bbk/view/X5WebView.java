@@ -76,6 +76,8 @@ public class X5WebView extends WebView {
 		// webSetting.setDatabaseEnabled(true);
 		webSetting.setDomStorageEnabled(true);
 		webSetting.setGeolocationEnabled(true);
+		webSetting.setLoadWithOverviewMode(true);
+		webSetting.setDisplayZoomControls(false);//不显示缩放按钮
 		webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
 		// webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
 		webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);

@@ -287,6 +287,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                                 }
                                             }
                                         } else {
+                                            Logg.json("====>>>京东自营");
                                             viewHolder.tvClickStatu.setText("点击跳转得佣金");
                                             viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle12);
                                             viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.white));
@@ -294,6 +295,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                     }
                                 }
                             } else {
+                                Logg.json("jd====>>>京东"+NewConstants.mJdMessageMap.get(list));
                                 if (NewConstants.mJdMessageMap.get(list) != null) {
                                     if (NewConstants.mJdMessageMap.get(list).equals(list)) {
                                         if (NewConstants.mJdzycsMessageMap.size() == 2) {
@@ -340,9 +342,68 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                         viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
                                     }
                                 } else {
-                                    viewHolder.tvClickStatu.setText("点击跳转得佣金");
-                                    viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle12);
-                                    viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.white));
+                                    Logg.json("jd====>>>京东1"+NewConstants.mJdMessageMap.get(list)+"==="+NewConstants.mJdzycsMessageMap.size());
+//                                    viewHolder.tvClickStatu.setText("结算可得佣金");
+//                                    viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
+//                                    viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
+                                    if (NewConstants.mJdzycsMessageMap.size() == 2) {
+                                        if (NewConstants.mJdzycsMessageMap.get("1").equals("1") && NewConstants.mJdzycsMessageMap.get("0").equals("0")) {
+                                            num = carNum - NewConstants.mJdMessageMap.size() - NewConstants.jdzyNum - NewConstants.jdcsNum;
+                                            if (CarFrament.tvWeiTz !=null) {
+                                                CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                            if (CarActivity.tvWeiTz != null) {
+                                                CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                        }
+                                        viewHolder.tvClickStatu.setText("结算可得佣金");
+                                        viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
+                                        viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
+                                    }else if (NewConstants.mJdzycsMessageMap.size()==1){
+                                        if (taobaoCarListBean.getIsJDMarket() != null) {
+                                            if (NewConstants.mJdzycsMessageMap.get(taobaoCarListBean.getIsJDMarket()).equals("1")) {
+                                                num = carNum - NewConstants.mJdMessageMap.size() - NewConstants.jdcsNum;
+                                                if (CarFrament.tvWeiTz !=null) {
+                                                    CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                                }
+                                                if (CarActivity.tvWeiTz != null) {
+                                                    CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                                }
+                                            } else if (NewConstants.mJdzycsMessageMap.get(taobaoCarListBean.getIsJDMarket()).equals("0")) {
+                                                num = carNum - NewConstants.mJdMessageMap.size() - NewConstants.jdzyNum;
+                                                if (CarFrament.tvWeiTz !=null) {
+                                                    CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                                }
+                                                if (CarActivity.tvWeiTz != null) {
+                                                    CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                                }
+                                            }
+                                        }else {
+                                            Logg.json("jd====>>>京东2"+NewConstants.mJdMessageMap.get(list));
+
+                                            if (NewConstants.mJdMessageMap.get(list) == null) {
+                                                viewHolder.tvClickStatu.setText("点击跳转得佣金");
+                                                viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle12);
+                                                viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.white));
+                                            }else {
+                                                viewHolder.tvClickStatu.setText("结算可得佣金");
+                                                viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
+                                                viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
+                                            }
+                                        }
+
+                                    }else if (NewConstants.mJdzycsMessageMap.size()==0){
+                                        viewHolder.tvClickStatu.setText("点击跳转得佣金");
+                                        viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle12);
+                                        viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.white));
+                                        num = carNum - NewConstants.mJdMessageMap.size();
+                                        if (CarFrament.tvWeiTz !=null) {
+                                            CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                        }
+                                        if (CarActivity.tvWeiTz != null) {
+                                            CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -394,9 +455,52 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                         }
                                     }
                                 } else {
-                                    viewHolder.tvClickStatu.setText("点击跳转得佣金");
-                                    viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle12);
-                                    viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.white));
+                                    if (NewConstants.mJdzycsMessageMap.size() == 2) {
+                                        if (NewConstants.mJdzycsMessageMap.get("1").equals("1") && NewConstants.mJdzycsMessageMap.get("0").equals("0")) {
+                                            num = carNum - NewConstants.mJdMessageMap.size() - NewConstants.jdzyNum - NewConstants.jdcsNum;
+                                            if (CarFrament.tvWeiTz !=null) {
+                                                CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                            if (CarActivity.tvWeiTz != null) {
+                                                CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                        }
+                                        viewHolder.tvClickStatu.setText("结算可得佣金");
+                                        viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
+                                        viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
+                                    } else if (NewConstants.mJdzycsMessageMap.size()==1){
+                                        if (NewConstants.mJdzycsMessageMap.get(taobaoCarListBean.getIsJDMarket()).equals("1")) {
+                                            num = carNum - NewConstants.mJdMessageMap.size() - NewConstants.jdcsNum;
+                                            if (CarFrament.tvWeiTz !=null) {
+                                                CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                            if (CarActivity.tvWeiTz != null) {
+                                                CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                        } else if (NewConstants.mJdzycsMessageMap.get(taobaoCarListBean.getIsJDMarket()).equals("0")) {
+                                            num = carNum - NewConstants.mJdMessageMap.size() - NewConstants.jdzyNum;
+                                            if (CarFrament.tvWeiTz !=null) {
+                                                CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                            if (CarActivity.tvWeiTz != null) {
+                                                CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                            }
+                                        }
+                                        viewHolder.tvClickStatu.setText("结算可得佣金");
+                                        viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
+                                        viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
+                                    }else if (NewConstants.mJdzycsMessageMap.size()==0){
+                                        viewHolder.tvClickStatu.setText("点击跳转得佣金");
+                                        viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle12);
+                                        viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.white));
+                                        num = carNum - NewConstants.mJdMessageMap.size();
+                                        if (CarFrament.tvWeiTz !=null) {
+                                            CarFrament.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                        }
+                                        if (CarActivity.tvWeiTz != null) {
+                                            CarActivity.tvWeiTz.setText("未跳转的" + num + "条不可得佣金");
+                                        }
+                                    }
                                 }
                             }
                         }else {
@@ -414,6 +518,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                         String result = sharedPreferences.getString("action", null);
                         if (result != null && result.length() > 0) {
                             NewConstants.mMessageMap = NewConstants.getJsonObject(result);
+                            Logg.json("TAOBAO===>>>",NewConstants.mMessageMap.get(list));
                             if (NewConstants.mMessageMap.get(list) != null) {
                                 NewConstants.carnum = carNum - NewConstants.mMessageMap.size();
                                 if (CarFrament.tvWeiTz !=null) {

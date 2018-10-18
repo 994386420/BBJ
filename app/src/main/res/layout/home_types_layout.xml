@@ -19,6 +19,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/__picker_common_primary"/>
+        <ImageView
+            android:id="@+id/img_tishi"
+            android:layout_below="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:visibility="gone"
+            android:scaleType="centerCrop"/>
         <GridView
             android:id="@+id/miaosha_status"
             android:layout_width="match_parent"

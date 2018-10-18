@@ -316,6 +316,63 @@
                             android:visibility="gone"
                             android:orientation="vertical">
                             <View
+                                android:id="@+id/view_zerobuy"
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:background="#f3f3f3" />
+                            //好货拼团
+                            <LinearLayout
+                                android:id="@+id/ll_zerobuy"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:background="@drawable/btn_seclecter"
+                                android:paddingBottom="15dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="15dp" >
+
+
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="25dp"
+                                    android:background="@mipmap/home_title_04"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginLeft="5dp"
+                                    android:textSize="16dp"
+                                    android:textColor="@color/tuiguang_color3"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:text="查看全部"
+                                    android:gravity="center"
+                                    android:textSize="12dp"
+                                    android:paddingBottom="2dp"
+                                    android:paddingTop="1dp"
+                                    android:paddingRight="5dp"
+                                    android:paddingLeft="10dp"
+                                    android:textColor="@color/shop_color1"
+                                    />
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@mipmap/enter01" />
+                            </LinearLayout>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/zerobuy_recyclerview"
+                                android:layout_width="match_parent"
+                                android:descendantFocusability="afterDescendants"
+                                android:layout_height="match_parent"
+                                android:visibility="gone"/>
+                            <View
                                 android:id="@+id/view_miaosha"
                                 android:layout_width="match_parent"
                                 android:layout_height="10dp"

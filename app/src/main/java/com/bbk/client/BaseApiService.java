@@ -259,5 +259,13 @@ public interface BaseApiService<T> {
     //获取电商网站的购物车h5页面url
     @POST("newService/getShoppingCartUrlByDomain")
     Observable<String> getShoppingCartUrlByDomain(@QueryMap Map<String, String> map);
-
+    //查询0元购
+    @POST("apiService/queryCpsZeroBuy")
+    Observable<String> queryCpsZeroBuy(@QueryMap Map<String, String> map);
+    //0元购 转换链接接口
+    @POST("newService/getTaolijinUrl0Buy")
+    Observable<String> getTaolijinUrl0Buy(@QueryMap Map<String, String> map);
+    //普通三级页面链接转换接口
+    @POST("newService/getTaolijinUrlNormal")
+    Observable<String> getTaolijinUrlNormal(@QueryMap Map<String, String> map);
 }

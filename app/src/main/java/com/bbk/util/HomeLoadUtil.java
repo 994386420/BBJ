@@ -337,7 +337,7 @@ public class HomeLoadUtil {
                         }
                     }
                 })
-                .setDelayTime(3000)
+                .setDelayTime(5000)
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 .setIndicatorGravity(BannerConfig.CENTER)
                 .start();

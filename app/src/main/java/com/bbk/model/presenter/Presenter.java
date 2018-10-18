@@ -11,4 +11,5 @@ import com.bbk.shopcar.view.View;
 public interface Presenter {
     void attachView(View view);
     void attachTypesView(View view);
+    void attachZeroBuyView(View view);
 }

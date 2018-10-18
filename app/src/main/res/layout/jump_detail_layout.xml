@@ -112,7 +112,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/biao_color"
+                    android:textColor="@color/tuiguang_color1"
                     android:layout_marginLeft="2dp"
                     android:textSize="14dp"
                     android:text="¥"/>
@@ -146,7 +146,32 @@
             android:textSize="13dp"
             android:background="@mipmap/tuiguang_07"/>
     </FrameLayout>
+            <LinearLayout
+                android:id="@+id/ll_check"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@color/white">
 
+                <TextView
+                    android:id="@+id/tv_dikou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
+                    android:textSize="14dp"
+                    android:text="" />
+
+                <CheckBox
+                    android:id="@+id/ck_dikou"
+                    android:layout_width="45dp"
+                    android:layout_height="25dp"
+                    android:button="@null"
+                    android:checked="false"
+                    android:background="@drawable/checkbox_zerobuy"/>
+            </LinearLayout>
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
@@ -298,12 +323,37 @@
         android:layout_marginTop="25dp"
         android:layout_marginLeft="10dp"
         android:background="@mipmap/icon_details_goback"/>
-
     <LinearLayout
+        android:id="@+id/ll_zerobuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/white">
+    <TextView
+        android:id="@+id/tv_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="新人0元购"
+        android:textSize="13dp"
+        android:background="@drawable/bg_tuiguang1"
+        android:textColor="@color/white"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="40dp"
+        android:paddingLeft="40dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_shareorlingquan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
+        android:visibility="gone"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">

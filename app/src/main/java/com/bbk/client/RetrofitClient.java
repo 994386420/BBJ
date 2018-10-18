@@ -624,6 +624,26 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void queryCpsZeroBuy(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCpsZeroBuy(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void getTaolijinUrl0Buy(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getTaolijinUrl0Buy(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void getTaolijinUrlNormal(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getTaolijinUrlNormal(parameters)
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

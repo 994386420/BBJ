@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.MiaoShaBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.PinTuanBean;
+import com.bbk.Bean.ZeroBuyBean;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.model.view.ChaoZhiTypesView;
 import com.bbk.model.view.ChaoZhiView;
+import com.bbk.model.view.ZeroBuyView;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.view.View;
 import com.bbk.util.DialogSingleUtil;
@@ -28,11 +30,13 @@ import java.util.Map;
 public class ChaoZhiPresenter implements Presenter {
     private ChaoZhiView chaoZhiView;
     private ChaoZhiTypesView chaoZhiTypesView;
+    private ZeroBuyView zeroBuyView;
     private Context mContext;
     private String Flag;
     List<NewHomeCzgBean> czgBeans;
     List<MiaoShaBean> miaoShaBeans;
     List<PinTuanBean> pinTuanBeans;
+    List<ZeroBuyBean> zeroBuyBeans;
 
     public ChaoZhiPresenter(Context mContext){
         this.mContext = mContext;
@@ -46,6 +50,11 @@ public class ChaoZhiPresenter implements Presenter {
     @Override
     public void attachTypesView(View view) {
         chaoZhiTypesView = (ChaoZhiTypesView) view;
+    }
+
+    @Override
+    public void attachZeroBuyView(View view) {
+        zeroBuyView = (ZeroBuyView) view;
     }
 
 
@@ -172,6 +181,56 @@ public class ChaoZhiPresenter implements Presenter {
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
                         chaoZhiTypesView.onFailed();
+                        StringUtil.showToast(mContext, e.message);
+                    }
+                });
+    }
+
+
+    /**
+     * o元购
+     * @param type
+     * @param page
+     */
+    public void queryCpsZeroBuy(int page,String type) {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("page", page + "");
+        maps.put("type", type);
+        RetrofitClient.getInstance(mContext).createBaseApi().queryCpsZeroBuy(
+                maps, new BaseObserver<String>(mContext) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            JSONObject jsonObject1 = new JSONObject(content);
+                            if (jsonObject.optString("status").equals("1")) {
+//                                Logg.json("0元购数据",jsonObject1.optString("banner")+jsonObject1.optString("rule"));
+                                zeroBuyBeans =JSON.parseArray(jsonObject1.optString("arr"),ZeroBuyBean.class);
+                                zeroBuyView.onSuccess(zeroBuyBeans,jsonObject1.optString("banner"),jsonObject1.optString("rule"));
+                            } else {
+                                chaoZhiTypesView.onError(jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        zeroBuyView.onHide();
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(mContext);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zeroBuyView.onFailed();
                         StringUtil.showToast(mContext, e.message);
                     }
                 });
