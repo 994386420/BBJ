@@ -1,15 +1,10 @@
 package com.bbk.activity;
 
-import java.net.IDN;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.alibaba.baichuan.android.trade.AlibcTrade;
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
@@ -29,18 +24,15 @@ import com.bbk.util.UpdataDialog;
 import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.RoundImageView;
 import com.bumptech.glide.Glide;
-import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
 import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
 import com.logg.Logg;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -197,47 +189,19 @@ public class IntentActivity extends BaseActivity {
 										}, 2000);
 									}
 								}else {
-
 									isintent = false;
-//									String type = jumpBean.getType();
-//									if (type.equals("0")) {
-//										intentbuy.setVisibility(View.VISIBLE);
-//										onclickthis.setVisibility(View.VISIBLE);
-//										url = jumpBean.getUrl();
-//										if (!jumpBean.getDomainCh().isEmpty()) {
-//											String domainCh = jumpBean.getDomainCh();
-//											text1.setText("此商品已下架，将跳转至"+domainCh+"搜索页");
-//										}else{
-//											text1.setText("此商品已下架，将跳转至该商城搜索页");
-//										}
-//									}else{
-//										url = jumpBean.getUrl();
-//										if (jumpBean.getDesc() != null){
-//											String desc = jumpBean.getDesc();
-//											if (!"".equals(desc)){
-//												text1.setText(desc);
-//												taobaoLogin(IntentActivity.this,url);
-//											}else {
 									if (jumpBean.getJumpThirdPage() != null && jumpBean.getJumpThirdPage().equals("1")) {
+										DialogSingleUtil.dismiss(0);
 										Intent intent = new Intent(IntentActivity.this, JumpDetailActivty.class);
 										intent.putExtra("content", content);
 										intent.putExtra("isczg", isczg);
 										intent.putExtra("tljid",tljid);
 										startActivity(intent);
-										DialogSingleUtil.dismiss(0);
 										finish();
 									} else {
 										//jumpThirdPage 为0
 										if (jumpBean.getUrl() != null) {
 											if (jumpBean.getUrl().contains("jd")) {
-												// 通过url呼京东主站
-												// url 通过url呼京东主站的地址
-												// mKeplerAttachParameter 存储第三方传入参数
-												// mOpenAppAction  呼京东主站回调
-//												KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
-//														url,
-//														mKeplerAttachParameter,
-//														mOpenAppAction);
 												DialogSingleUtil.dismiss(0);
 												finish();
 											} else if (jumpBean.getUrl().contains("taobao") || jumpBean.getUrl().contains("tmall")) {
@@ -254,18 +218,6 @@ public class IntentActivity extends BaseActivity {
 											}
 										}
 									}
-//											}
-//										}else {
-//											if (jumpBean.getJumpThirdPage() != null && jumpBean.getJumpThirdPage().equals("1")){
-//												Intent intent = new Intent(IntentActivity.this,JumpDetailActivty.class);
-//												intent.putExtra("content", content);
-//												startActivity(intent);
-//												finish();
-//											}else {
-//												handler.postDelayed(runa, 0);
-//											}
-//										}
-//									}
 								}
 
 							} else {
@@ -316,61 +268,6 @@ public class IntentActivity extends BaseActivity {
 					}
 				});
 	}
-//	private void initData() {
-//		HashMap<String, String> params = new HashMap<String, String>();
-//		params.put("title", title);
-//		params.put("url", url);
-//		params.put("domain", domain);
-//		params.put("client", "andorid");
-////		dataFlow.requestData(1, "newApp/getJumpUrl", params, this);
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-////				try {
-////					Thread.sleep(5000);
-////					if (isintent) {
-////						Intent intent = new Intent(IntentActivity.this,WebViewActivity.class);
-////						intent.putExtra("url", url);
-////						startActivity(intent);
-////						finish();
-////					}
-////				} catch (InterruptedException e) {
-////					// TODO Auto-generated catch block
-////					e.printStackTrace();
-////				}
-//			}
-//		}).start();
-//	}
-//
-//	public void  taobaoLogin(final Context context, final String url){
-//		if (AlibcLogin.getInstance().getSession()!= null){
-//			String nick = AlibcLogin.getInstance().getSession().nick;
-//			if (nick!= null && !"".equals(nick)) {
-//				handler.postDelayed(runa, 0);
-//			}else {
-//				AlibcLogin alibcLogin = AlibcLogin.getInstance();
-//
-//				alibcLogin.showLogin(IntentActivity.this, new AlibcLoginCallback() {
-//
-//
-//					@Override
-//					public void onSuccess() {
-//
-//					}
-//
-//					@Override
-//					public void onFailure(int i, String s) {
-//
-//					}
-//				});
-//		}
-//
-//		}else {
-//			handler.postDelayed(runa, 0);
-//		}
-//
-//	}
 	/**
 	 * 打开指定链接
 	 */
@@ -394,16 +291,11 @@ public class IntentActivity extends BaseActivity {
 			StringUtil.showToast(this, "URL为空");
 			return;
 		}
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-				if (cancleJump) {
-					updataDialog.dismiss();
-					AlibcTrade.show(IntentActivity.this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
-					finish();
-				}
-//			}
-//		}, 2000);
+		if (cancleJump) {
+			updataDialog.dismiss();
+			AlibcTrade.show(IntentActivity.this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
+			finish();
+		}
 	}
 	public void IntentThirdApp(String domain,final String url){
 		cancleJump = true;
@@ -414,19 +306,10 @@ public class IntentActivity extends BaseActivity {
 		exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
 		if (domain != null) {
 			if (domain.equals("tmall") || domain.equals("taobao")) {
-//				showLoadingDialog(IntentActivity.this,domain,quans);
 				showUrll(url);
 			} else if (domain.equals("jd")) {
-//				showLoadingDialog(IntentActivity.this,domain,quans);
-//				handler.postDelayed(new Runnable() {
-//					@Override
-//					public void run() {
 						if (cancleJump) {
 							updataDialog.dismiss();
-//							KeplerApiManager.getWebViewService().openAppWebViewPage(IntentActivity.this,
-//									url,
-//									mKeplerAttachParameter,
-//									mOpenAppAction);
 							try {
 								KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,IntentActivity.this, mOpenAppAction, 1500);
 							} catch (KeplerBufferOverflowException e) {
@@ -436,8 +319,6 @@ public class IntentActivity extends BaseActivity {
 							}
 							finish();
 						}
-//					}
-//				}, 2000);
 			} else {
 				if (cancleJump) {
 					Intent intent = new Intent(IntentActivity.this, WebViewActivity.class);

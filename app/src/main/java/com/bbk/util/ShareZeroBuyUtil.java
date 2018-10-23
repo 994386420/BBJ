@@ -107,8 +107,8 @@ public class ShareZeroBuyUtil {
                                 @Override
                                 public void run() {
                                     if (bitmap != null) {
+                                        //1为QQ空间 0为QQ好友
                                         sharePicToQQ(activity, 1,bitmap );
-//                                        ShareManager.sharedToQQ(activity, bitmap);
                                     }
                                 }
                             },0);
@@ -123,7 +123,6 @@ public class ShareZeroBuyUtil {
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        share2weixin(1,imageView);
                         DialogSingleUtil.show(activity);
                         share(activity,1,"");
                         ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -152,7 +151,6 @@ public class ShareZeroBuyUtil {
                     public void onClick(View v) {
                         ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
                         cm.setText(url);
-//                        popupWindow.dismiss();
                         StringUtil.showToast(activity,"复制成功");
                     }
                 });
@@ -185,32 +183,7 @@ public class ShareZeroBuyUtil {
         shareManager = new ShareManager(context);
         shareManager.setShareImage(i,DetailimgUrlList,s);
     }
-    /**
-     * 微信分享
-     *
-     * @param flag
-     *            1是朋友圈 0是好友
-     */
-    public void share2weixin(int flag,ImageView imageView) {
-        wxApi = WXAPIFactory.createWXAPI(activity, Constants.WX_APP_ID);
-        if (imageView !=null) {
-            if (imageView.getDrawable()!=null) {
-                Bitmap thumb = ((GlideBitmapDrawable) imageView.getDrawable()).getBitmap();
-                WXImageObject wxImageObject = new WXImageObject(thumb);
-                WXMediaMessage msg = new WXMediaMessage();
-                msg.mediaObject = wxImageObject;
-                Bitmap bitmap = Bitmap.createScaledBitmap(thumb, 120, 120, true);
-//        thumb.recycle();
-                msg.thumbData = Util.bmpToByteArray(bitmap, true);
-                SendMessageToWX.Req req = new SendMessageToWX.Req();
-                req.transaction = buildTransaction("img");
-                req.message = msg;
-                req.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
-                wxApi.sendReq(req);
-                loadData();
-            }
-        }
-    }
+
     /**
      * 微博分享
      *
@@ -285,14 +258,5 @@ public class ShareZeroBuyUtil {
                 String s = HttpUtil.getHttp(paramsMap, url1);
             }
         }).start();
-    }
-    /**
-     * 构建一个唯一标志
-     *
-     * @param type 分享的类型分字符串
-     * @return 返回唯一字符串
-     */
-    private static String buildTransaction(String type) {
-        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 }

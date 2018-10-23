@@ -91,7 +91,7 @@ public class MesageCListSysAdapter extends BaseAdapter{
 		vh.itemlayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				EventIdIntentUtil.EventIdIntent(context,systemMessageBean.getEventId());
+				EventIdIntentUtil.EventIdIntent(context,systemMessageBean.getEventId(),systemMessageBean.getHtmlUrl());
 				Log.i("============>>>",systemMessageBean.getEventId());
 				if (!systemMessageBean.getIsread().equals("1")) {
 					systemMessageBean.setIsread("1");

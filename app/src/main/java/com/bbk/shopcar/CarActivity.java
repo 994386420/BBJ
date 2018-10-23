@@ -903,7 +903,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_back_btn:
-//                finish();
+                finish();
                 break;
             case R.id.title_text2:
                 flag = !flag;
@@ -1242,6 +1242,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                 tishi.setVisibility(View.VISIBLE);
                 String homeContent = SharedPreferencesUtil.getSharedData(CarActivity.this, "homeTbCarContent", "homeTbCarContent");
                 try {
+                    if (homeContent != null && !homeContent.equals("")) {
                     JSONObject object = new JSONObject(homeContent);
                     if (object.length() > 0) {
                         taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
@@ -1257,6 +1258,9 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                             tishi.setVisibility(View.GONE);
                             DialogSingleUtil.dismiss(0);
                         }
+                    }else {
+                        DialogSingleUtil.dismiss(0);
+                    }
                     } else {
                         synchroShoppingCart(content, "taobao");
                     }
@@ -1292,6 +1296,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                             llBottomTbCar.setVisibility(View.VISIBLE);
                             String homeJdContent = SharedPreferencesUtil.getSharedData(CarActivity.this, "homeJdCarContent", "homeJdCarContent");
                             try {
+                                if (homeJdContent != null && !homeJdContent.equals("")) {
                                 JSONObject object = new JSONObject(homeJdContent);
                                 if (object.length() > 0) {
                                     taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
@@ -1307,8 +1312,12 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                         tishi.setVisibility(View.GONE);
                                         DialogSingleUtil.dismiss(0);
                                     }
+                                }else {
+                                    DialogSingleUtil.dismiss(0);
+                                }
                                 } else {
-                                    synchroShoppingCart(content, "jd");
+                                    DialogSingleUtil.dismiss(0);
+                                    getShoppingCartUrlByDomain("jd");
                                 }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();

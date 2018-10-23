@@ -142,7 +142,7 @@ public class JumpDetailActivty extends BaseActivity {
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
-    private String url, rowkey, domain, quans, jumpdomain, zuan,tljNumber;
+    private String url, rowkey, domain, quans, jumpdomain, zuan,tljNumber,isOldUser;
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
     public static String Flag = "";
@@ -204,6 +204,7 @@ public class JumpDetailActivty extends BaseActivity {
         quans = jumpBean.getQuan();
         zuan = jumpBean.getYongjin();
         tljNumber = jumpBean.getTljNumber();
+        isOldUser = jumpBean.getIsOldUser();
         if (rowkey != null && jumpBean.getTitle() != null) {
             getIndexByType(rowkey, jumpBean.getTitle());
         }
@@ -1111,29 +1112,59 @@ public class JumpDetailActivty extends BaseActivity {
             updataDialog.setCanceledOnTouchOutside(true);
             TextView title = updataDialog.findViewById(R.id.title);
             TextView tv_update = updataDialog.findViewById(R.id.tv_update);
-            title.setText("抢单成功");
-            tv_update.setText("分享朋友圈立即0元购");
             tvShare = updataDialog.findViewById(R.id.tv_update_refuse);
             tvZeroBuy = updataDialog.findViewById(R.id.tv_update_gengxin);
-            String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
             tvShare.setVisibility(View.VISIBLE);
             tvShare.setText("分享");
             tvZeroBuy.setText("下单");
-            //判断是否分享
-            if (TextUtils.isEmpty(isShare)) {
+            ImageView img_close = updataDialog.findViewById(R.id.img_close);
+            if (isOldUser != null && isOldUser.equals("0")) {
+                title.setText("抢单成功");
+                tv_update.setText("分享朋友圈立即0元购");
+                String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
+                //判断是否分享
+                if (TextUtils.isEmpty(isShare)) {
+                    tvShare.setBackgroundResource(R.drawable.bg_czg1);
+                    tvShare.setTextColor(getResources().getColor(R.color.white));
+                    tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
+                    tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
+                    tvZeroBuy.setClickable(false);
+                    tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updataDialog.dismiss();
+                            StringUtil.showToast(context,"分享后才能下单哦");
+                        }
+                    });
+                }else {
+                    tvShare.setBackgroundResource(R.drawable.bg_czg1);
+                    tvShare.setTextColor(getResources().getColor(R.color.white));
+                    tvZeroBuy.setBackgroundResource(R.drawable.bg_czg1);
+                    tvZeroBuy.setTextColor(getResources().getColor(R.color.white));
+                    tvZeroBuy.setClickable(true);
+                    tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updataDialog.dismiss();
+                            getTaolijinUrl0Buy(context);
+                        }
+                    });
+                }
+            }else {
                 tvShare.setBackgroundResource(R.drawable.bg_czg1);
                 tvShare.setTextColor(getResources().getColor(R.color.white));
                 tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
                 tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
-                tvZeroBuy.setClickable(false);
-            }else {
-                tvShare.setBackgroundResource(R.drawable.bg_czg1);
-                tvShare.setTextColor(getResources().getColor(R.color.white));
-                tvZeroBuy.setBackgroundResource(R.drawable.bg_czg1);
-                tvZeroBuy.setTextColor(getResources().getColor(R.color.white));
-                tvZeroBuy.setClickable(true);
+                title.setText("新用户才能享受此特权哦\n分享给好友0元购吧");
+                tv_update.setVisibility(View.GONE);
+                tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updataDialog.dismiss();
+                        StringUtil.showToast(context,"新用户才能享受此特权");
+                    }
+                });
             }
-            ImageView img_close = updataDialog.findViewById(R.id.img_close);
             img_close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1145,13 +1176,6 @@ public class JumpDetailActivty extends BaseActivity {
                 public void onClick(View v) {
                     updataDialog.dismiss();
                     shareCpsZeroBuyInfo();
-                }
-            });
-            tvZeroBuy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updataDialog.dismiss();
-                    getTaolijinUrl0Buy(context);
                 }
             });
         }
@@ -1184,6 +1208,9 @@ public class JumpDetailActivty extends BaseActivity {
                                 ClipboardManager cm = (ClipboardManager) JumpDetailActivty.this.getSystemService(Context.CLIPBOARD_SERVICE);
                                 cm.setText(wenan);
                                 returnZeroBuyBitMap(shareBean, wenan, shareBean.getImgUrl());
+                            }else {
+                                DialogSingleUtil.dismiss(0);
+                                StringUtil.showToast(JumpDetailActivty.this,jsonObject.optString("errmsg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

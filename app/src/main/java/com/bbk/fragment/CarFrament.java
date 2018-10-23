@@ -1211,6 +1211,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 //                imgTishi.setVisibility(View.VISIBLE);
                 String homeContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeTbCarContent", "homeTbCarContent");
                 try {
+                    if (homeContent != null && !homeContent.equals("")) {
                     JSONObject object = new JSONObject(homeContent);
                     if (object.length() > 0) {
                         taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
@@ -1227,8 +1228,12 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                             imgTishi.setVisibility(View.GONE);
                             DialogSingleUtil.dismiss(0);
                         }
-                    } else {
-                        synchroShoppingCart(content, "taobao");
+                    }else {
+                        DialogSingleUtil.dismiss(0);
+                    }
+                   } else {
+                        DialogSingleUtil.dismiss(0);
+                        getShoppingCartUrlByDomain("taobao");
                     }
                 } catch (JSONException e1) {
                     e1.printStackTrace();
@@ -1264,24 +1269,30 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
 //                            imgTishi.setVisibility(View.VISIBLE);
                             String homeJdContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeJdCarContent", "homeJdCarContent");
                             try {
-                                JSONObject object = new JSONObject(homeJdContent);
-                                if (object.length() > 0) {
-                                    taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
-                                    if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
-                                        recyclerView.setVisibility(View.VISIBLE);
-                                        progress.setVisibility(View.GONE);
-                                        getAllNum();
-                                        DialogSingleUtil.dismiss(0);
-                                    } else {
-                                        recyclerView.setVisibility(View.GONE);
-                                        progress.setVisibility(View.VISIBLE);
-                                        progress.loadSuccess(true);
-                                        tishi.setVisibility(View.GONE);
-                                        imgTishi.setVisibility(View.GONE);
+                                Logg.json(homeJdContent+"==========");
+                                if (homeJdContent != null && !homeJdContent.equals("")) {
+                                    JSONObject object = new JSONObject(homeJdContent);
+                                    if (object.length() > 0) {
+                                        taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
+                                        if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+                                            recyclerView.setVisibility(View.VISIBLE);
+                                            progress.setVisibility(View.GONE);
+                                            getAllNum();
+                                            DialogSingleUtil.dismiss(0);
+                                        } else {
+                                            recyclerView.setVisibility(View.GONE);
+                                            progress.setVisibility(View.VISIBLE);
+                                            progress.loadSuccess(true);
+                                            tishi.setVisibility(View.GONE);
+                                            imgTishi.setVisibility(View.GONE);
+                                            DialogSingleUtil.dismiss(0);
+                                        }
+                                    }else {
                                         DialogSingleUtil.dismiss(0);
                                     }
-                                } else {
-                                    synchroShoppingCart(content, "jd");
+                                }else {
+                                    DialogSingleUtil.dismiss(0);
+                                    getShoppingCartUrlByDomain("jd");
                                 }
                             } catch (JSONException e1) {
                                 e1.printStackTrace();
@@ -1753,18 +1764,6 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         }
     }
 
-    /**
-     * 刷新购物车
-     */
-//    @OnClick(R.id.tv_tb_car)
-//    public void onViewClicked() {
-//        sum = 0;
-//        if (curPosition == 2) {
-//            getShoppingCartUrlByDomain("jd");
-//        } else {
-//            getShoppingCartUrlByDomain("taobao");
-//        }
-//    }
 
     /**
      * 获取总的数量

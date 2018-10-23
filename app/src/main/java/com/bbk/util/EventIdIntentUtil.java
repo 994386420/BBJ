@@ -762,9 +762,40 @@ public class EventIdIntentUtil {
 	}
 
 
-	public static void EventIdIntent(Context context,String eventId){
+	public static void EventIdIntent(Context context,String eventId,String htmlUrl){
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		switch (eventId) {
+			case "5":
+				Intent intent4;
+				if (htmlUrl.contains("@@")){
+					if (htmlUrl.contains("user")){
+						if (TextUtils.isEmpty(userID)){
+							intent4= new Intent(context, UserLoginNewActivity.class);
+							intent4.putExtra("url", htmlUrl);
+							context.startActivity(intent4);
+						}else {
+							String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
+							intent4= new Intent(context, WebViewActivity111.class);
+							intent4.putExtra("url", htmlUrl);
+							intent4.putExtra("mid",mid);
+							context.startActivity(intent4);
+						}
+					}else {
+						String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
+						if (TextUtils.isEmpty(mid)){
+							mid = "";
+						}
+						intent4= new Intent(context, WebViewActivity111.class);
+						intent4.putExtra("url", htmlUrl);
+						intent4.putExtra("mid",mid);
+						context.startActivity(intent4);
+					}
+				}else {
+					intent4= new Intent(context, WebViewActivity.class);
+					intent4.putExtra("url", htmlUrl);
+					context.startActivity(intent4);
+				}
+				break;
 			case "102":
 				Intent intent102 = new Intent(context, CollectionActivity.class);
 				intent102.putExtra("type", "1");

@@ -10,6 +10,15 @@ public class SystemMessageBean {
     private String isread;
     private String mid;
     private String eventId;
+    private String htmlUrl;
+
+    public String getHtmlUrl() {
+        return htmlUrl;
+    }
+
+    public void setHtmlUrl(String htmlUrl) {
+        this.htmlUrl = htmlUrl;
+    }
 
     public String getIsread() {
         return isread;

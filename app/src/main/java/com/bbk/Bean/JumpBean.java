@@ -28,6 +28,15 @@ public class JumpBean {
     private String tljMsg;//显示鲸币抵扣的内容
     private String tljprice;//鲸币抵扣之后的价格
     private String tljNumber;
+    private String isOldUser;//1表示老用户   0表示新用户
+
+    public String getIsOldUser() {
+        return isOldUser;
+    }
+
+    public void setIsOldUser(String isOldUser) {
+        this.isOldUser = isOldUser;
+    }
 
     public String getTljNumber() {
         return tljNumber;

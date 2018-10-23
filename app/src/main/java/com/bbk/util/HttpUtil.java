@@ -48,16 +48,16 @@ public class HttpUtil {
 	private static int code;
 
 	public static String getHttp (Map<String, String> map, String url,Context context) {
-		return getWebService(buildHttpParam(map), url,50*1000);
+		return getWebService(buildHttpParam(map), url,25*1000);
 	}
 	public static String getHttp (Map<String, String> map, String url) {
-		return getWebService(buildHttpParam(map), url,50*1000);
+		return getWebService(buildHttpParam(map), url,25*1000);
 	}
 	public static String getHttp1 (Map<String, String> map, String url,Context context,String referrer) {
-		return getWebService1(buildHttpParam(map), url,50*1000,context, referrer);
+		return getWebService1(buildHttpParam(map), url,25*1000,context, referrer);
 	}
 	public static String getHttp2 (Map<String, String> map, String url,Context context) {
-		return getWebService2(buildHttpParam(map), url,50*1000,context);
+		return getWebService2(buildHttpParam(map), url,25*1000,context);
 	}
 	public static String getHttp (Map<String, String> map, String url,Context context,int timeOut) {
 		return getWebService(buildHttpParam(map), url,timeOut);

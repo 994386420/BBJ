@@ -10,8 +10,8 @@ android {
         applicationId "com.bbk.activity"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 50
-        versionName '5.1.4'
+        versionCode 51
+        versionName '5.1.5'
         multiDexEnabled true
     }
     android {

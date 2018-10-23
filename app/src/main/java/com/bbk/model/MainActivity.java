@@ -258,18 +258,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             }
 
         }
-//        String customContent;
-//        if (getActivity().getIntent().getStringExtra("customContent") != null) {
-//            customContent = getActivity().getIntent().getStringExtra("customContent");
-//            try {
-//                JSONObject obj = new JSONObject(customContent);
-//                if (!obj.isNull("eventId")) {
-//                    EventIdIntentUtil.EventIdIntent(getActivity(), obj);
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         if (null == mView) {
             getActivity().getWindow().setBackgroundDrawable(null);
@@ -279,9 +267,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             homeLoadUtil = new HomeLoadUtil(getActivity());
             imageMessage.setBackgroundResource(R.mipmap.praise);
             setToolBar();
-//            viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-//            viewpager.setAdapter(viewPagerAdapter);
-//            viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
             refresh();
 
         }
@@ -309,21 +294,13 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
                 queryAppIndexInfo();
-//                if (keyword.equals("")) {
-//
-//                    initDataCzg(keyword);
-//                }
-//                else {
                 page = 1;
-//                    x = 1;
                 try {
                     XTabLayout.Tab tabAt = tablayout.getTabAt(0);
                     tabAt.select();
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
-
-//                }
             }
         });
         refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -499,9 +476,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                             if (jsonObject.optString("status").equals("1")) {
                                 JSONObject object = jsonObject.optJSONObject("content");
                                 SharedPreferencesUtil.putSharedData(getActivity(), "homeContent", "homeContent", object.toString());
-//                                String homeContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeContent", "homeContent");
-//                                JSONObject jsonObject1 = new JSONObject(homeContent);
-//                                Logg.json(jsonObject1.length());
                                 LoadHomeData(object);
                             }
                         } catch (Exception e) {
@@ -613,12 +587,8 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                         String keyword = chaozhigouTypes.getJSONObject(i).optString("name");
                         if (i == 0) {
                             tablayout.addTab(tablayout.newTab().setText("超值购"));
-//                                            viewPagerAdapter.addItem(new DemoFragment(), "超值购");
                         }
                         tablayout.addTab(tablayout.newTab().setText(keyword));
-//                                        viewPagerAdapter.addItem(new DemoFragment(), keyword);
-//                                        viewpager.setAdapter(viewPagerAdapter);
-//                                        tablayout.setupWithViewPager(viewpager);
                     }
                 }
             }
@@ -633,12 +603,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             if (object.has("tag")) {
                 List<TagBean> tagBeans = JSON.parseArray(object.optString("tag"), TagBean.class);
                 JSONArray tag = object.optJSONArray("tag");
-//                                    Logg.json(object.optString("tag"));
-//                                    List<Map<String, String>> taglist = new ArrayList<>();
-//                                    if (tag != null && tag.length() > 0) {
-//                                        HomeLoadUtil.loadTag(getActivity(), taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
-//                                    }
-//            Logg.json(tag);
                 if (tagBeans != null && tagBeans.size() > 0) {
                     tagList.setVisibility(View.VISIBLE);
                     MyHomeTagAdapter myHomeTagAdapter = new MyHomeTagAdapter(getActivity(), tagBeans, tag);
@@ -798,7 +762,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 recyclerView.setVisibility(View.GONE);
             }
 
-
             //eventid 为108 表示点击之后跳到登录页面。如果已经登录，则不显示preguanggao，显示guanggao 未登录 显示preguanggao
             String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
             if (TextUtils.isEmpty(userID)) {
@@ -843,7 +806,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      * @param keyword
      */
     private void initDataCzg(String keyword) {
-//        Logg.e(keyword+"=====================");
         refresh.setNoMoreData(false);
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("keyword", keyword);
@@ -906,23 +868,21 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                         refreshLayout.finishRefresh();
                         refresh.setEnableRefresh(false);
                         DialogHomeUtil.dismiss(0);
-//                        newCzgAdapter.notifyData(czgBeans);
                     }
 
                     @Override
                     protected void showDialog() {
-//                        DialogSingleUtil.show(getActivity());
                     }
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        refreshLayout.setVisibility(View.GONE);
-                        zLoadingView.setVisibility(View.VISIBLE);
-                        zLoadingView.loadError();
+//                        refreshLayout.setVisibility(View.GONE);
+//                        zLoadingView.setVisibility(View.VISIBLE);
+//                        zLoadingView.loadError();
                         refresh.finishLoadMore();
                         refresh.finishRefresh();
                         DialogHomeUtil.dismiss(0);
-                        recyclerView.setVisibility(View.GONE);
+//                        recyclerView.setVisibility(View.GONE);
                         StringUtil.showToast(getActivity(), e.message);
                     }
                 });
@@ -1016,7 +976,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 public void onClick(View v) {
                     String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                     if (TextUtils.isEmpty(userID)) {
-//                        JumpDetailActivty.Flag = "home";
                         Intent intent = new Intent(context, UserLoginNewActivity.class);
                         startActivityForResult(intent, 3);
                     } else {
@@ -1171,9 +1130,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             typeGridAdapter.setSeclection(curposition);
             typeGridAdapter.notifyDataSetChanged();
             keyword = chaozhigouTypesBeans.get(position).getKeyword();
-//            x = 1;
-//            page = 1;
-//            initDataCzg(keyword);
             XTabLayout.Tab tabAt = tablayout.getTabAt(position + 1);
             tabAt.select();
             showGlobalMenu();
