@@ -1,5 +1,6 @@
 package com.bbk.shopcar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,7 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,28 +29,26 @@ import com.bbk.Bean.DianPuHomeBean;
 import com.bbk.Bean.PinpaiBean;
 import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.activity.BaseActivity;
-import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.adapter.DianPuGridAdapter;
 import com.bbk.adapter.DianPuHoHotGridAdapter;
 import com.bbk.adapter.DianPuHomePinpaiGridAdapter;
-import com.bbk.client.BaseObserver;
-import com.bbk.client.ExceptionHandle;
-import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.HomeAlertDialog;
+import com.bbk.model.DianpuSearchActivity;
 import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.shopcar.presenter.DianpuHomePresenter;
 import com.bbk.shopcar.view.DianpuHomeView;
 import com.bbk.shopcar.view.DianpuListView;
-import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bbk.view.AdaptionSizeTextView;
+import com.bbk.view.ClearableEditText;
 import com.bbk.view.CommonLoadingView;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -57,11 +58,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +71,7 @@ import butterknife.OnClick;
 /**
  * 商城首页
  */
-public class NewDianpuHomeActivity extends BaseActivity implements CommonLoadingView.LoadingHandler {
+public class NewDianpuHomeActivity extends BaseActivity implements CommonLoadingView.LoadingHandler, View.OnKeyListener {
     @BindView(R.id.lin)
     LinearLayout lin;
     @BindView(R.id.ll_top)
@@ -119,8 +118,8 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     RecyclerView pinpaiRecyclerview;
     @BindView(R.id.title_back_btn1)
     ImageButton titleBackBtn1;
-    @BindView(R.id.tv_dianpu_top)
-    TextView tvDianpuTop;
+    //    @BindView(R.id.tv_dianpu_top)
+//    TextView tvDianpuTop;
     @BindView(R.id.ll_back)
     LinearLayout llBack;
     @BindView(R.id.img_car)
@@ -149,6 +148,30 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     CommonLoadingView loadingProgress;
     @BindView(R.id.img_more_black)
     ImageView imgMoreBlack;
+    @BindView(R.id.topbar_search_input)
+    ClearableEditText topbarSearchInput;
+    @BindView(R.id.msearch)
+    LinearLayout msearch;
+    @BindView(R.id.mseach_tubiao)
+    ImageView mseachTubiao;
+    @BindView(R.id.img6)
+    ImageView img6;
+    @BindView(R.id.text6)
+    AdaptionSizeTextView text6;
+    @BindView(R.id.box6)
+    LinearLayout box6;
+    @BindView(R.id.img7)
+    ImageView img7;
+    @BindView(R.id.text7)
+    AdaptionSizeTextView text7;
+    @BindView(R.id.box7)
+    LinearLayout box7;
+    @BindView(R.id.img8)
+    ImageView img8;
+    @BindView(R.id.text8)
+    AdaptionSizeTextView text8;
+    @BindView(R.id.box8)
+    LinearLayout box8;
     private int page = 1, x = 1;
     private String keyword = "";
     private int showTime = 0;
@@ -172,7 +195,8 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         dianpuHomePresenter.attachListView(dianpuListView);
         initView();
         setToolBar();
-        dianpuHomePresenter.queryIndexMain(refreshLayout,mrecyclerview,zLoadingView);
+        topbarSearchInput.setOnKeyListener(this);
+        dianpuHomePresenter.queryIndexMain(refreshLayout, mrecyclerview, zLoadingView);
         tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(XTabLayout.Tab tab) {
@@ -183,7 +207,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                 keyword = tab.getText().toString();
                 page = 1;
                 x = 1;
-                dianpuHomePresenter.queryProductListByKeyword("","",keyword,refresh,refreshLayout,loadingProgress,mrecyclerview,page);
+                dianpuHomePresenter.queryZiyingListByKeyword("", keyword, "", refresh, refreshLayout, loadingProgress, mrecyclerview, page);
             }
 
             @Override
@@ -214,11 +238,16 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                 }
                 List<Map<String, String>> taglist = new ArrayList<>();
                 //店铺tag
-                if (dianPuHomeBean.getTag() != null) {
-                    JSONArray tag = new JSONArray(dianPuHomeBean.getTag());
-                    if (tag != null && tag.length() > 0) {
-                        HomeLoadUtil.loaddianpuTag(NewDianpuHomeActivity.this, taglist, tag, img1, img2, img3, img4, img5, text1, text2, text3, text4, text5, box1, box2, box3, box4, box5);
+                try {
+                    if (dianPuHomeBean.getTag() != null) {
+                        JSONArray tag = new JSONArray(dianPuHomeBean.getTag());
+                        if (tag != null && tag.length() > 0) {
+                            HomeLoadUtil.loaddianpuTag(NewDianpuHomeActivity.this, taglist, tag, img1, img2, img3, img4, img5,img6,img7,img8 ,text1, text2, text3, text4, text5,
+                                    text6,text7,text8,box1, box2, box3, box4, box5,box6,box7,box8);
+                        }
                     }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
                 //分类
                 if (dianPuHomeBean.getTypes() != null) {
@@ -273,19 +302,19 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     }
 
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         @Override
         public void onError(String result) {
-            StringUtil.showToast(NewDianpuHomeActivity.this,result);
+            StringUtil.showToast(NewDianpuHomeActivity.this, result);
         }
     };
 
     /**
-     *商品列表
+     * 商品列表
      */
     private DianpuListView dianpuListView = new DianpuListView() {
         @Override
@@ -314,9 +343,10 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
 
         @Override
         public void onError(String result) {
-            StringUtil.showToast(NewDianpuHomeActivity.this,result);
+            StringUtil.showToast(NewDianpuHomeActivity.this, result);
         }
     };
+
     /**
      * 初始化setToolBar
      */
@@ -339,8 +369,12 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     llBtnBottom.setVisibility(View.GONE);
                     toolbaretail.setBackgroundResource(R.drawable.bg_home_yinying);
                     titleBackBtn1.setBackgroundResource(R.mipmap.shop_back_img);
-                    tvDianpuTop.setTextColor(Color.WHITE);
+//                    tvDianpuTop.setTextColor(Color.WHITE);
+                    msearch.setBackgroundResource(R.drawable.msearch_bg);
+                    topbarSearchInput.setTextColor(getResources().getColor(R.color.white));
+                    topbarSearchInput.setHintTextColor(getResources().getColor(R.color.white));
                     imgMoreBlack.setBackgroundResource(R.mipmap.store_06);
+                    mseachTubiao.setBackgroundResource(R.mipmap.msearch_white);
                 } else if (Offset < appBarLayout.getTotalScrollRange() / 2) {
                     toolbaretail.setTitle("");
                     float scale = (float) Offset / appBarLayout.getTotalScrollRange();
@@ -348,14 +382,19 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     toolbaretail.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
                     titleBackBtn1.setBackgroundResource(R.mipmap.goback_btn);
                     imgMoreBlack.setBackgroundResource(R.mipmap.store_05);
-                    tvDianpuTop.setTextColor(Color.argb((int) alpha, 0, 0, 0));
+//                    tvDianpuTop.setTextColor(Color.argb((int) alpha, 0, 0, 0));
                     /**
+                     /**
                      * 从最低浮动开始渐显 当前 Offset就是  appBarLayout.getTotalScrollRange() / 2
                      * 所以 Offset - appBarLayout.getTotalScrollRange() / 2
                      */
                 } else if (Offset > appBarLayout.getTotalScrollRange() / 2) {
                     toolbaretail.setTitle("");
                     toolbaretail.setBackgroundResource(R.color.white);
+                    msearch.setBackgroundResource(R.drawable.msearch_bg1);
+                    topbarSearchInput.setTextColor(getResources().getColor(R.color.tuiguang_color4));
+                    topbarSearchInput.setHintTextColor(getResources().getColor(R.color.tuiguang_color4));
+                    mseachTubiao.setBackgroundResource(R.mipmap.msearch_black);
                     if (Offset == appBarLayout.getTotalScrollRange()) {
                         llBtnBottom.setVisibility(View.VISIBLE);
                     } else {
@@ -387,10 +426,10 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayoutt) {
-                dianpuHomePresenter.queryIndexMain(refreshLayout,mrecyclerview,zLoadingView);
+                dianpuHomePresenter.queryIndexMain(refreshLayout, mrecyclerview, zLoadingView);
                 x = 1;
                 page = 1;
-                dianpuHomePresenter.queryProductListByKeyword("","",keyword,refresh,refreshLayout,loadingProgress,mrecyclerview,page);
+                dianpuHomePresenter.queryZiyingListByKeyword("", keyword, "", refresh, refreshLayout, loadingProgress, mrecyclerview, page);
             }
         });
         refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -398,7 +437,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
             public void onLoadMore(RefreshLayout refreshLayoutt) {
                 page++;
                 x = 2;
-                dianpuHomePresenter.queryProductListByKeyword("","",keyword,refresh,refreshLayout,loadingProgress,mrecyclerview,page);
+                dianpuHomePresenter.queryZiyingListByKeyword("", keyword, "", refresh, refreshLayout, loadingProgress, mrecyclerview, page);
             }
         });
     }
@@ -411,7 +450,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         DialogSingleUtil.show(this);
         zLoadingView.setVisibility(View.GONE);
         loadingProgress.setVisibility(View.GONE);
-        dianpuHomePresenter.queryIndexMain(refreshLayout,mrecyclerview,zLoadingView);
+        dianpuHomePresenter.queryIndexMain(refreshLayout, mrecyclerview, zLoadingView);
         x = 1;
         page = 1;
     }
@@ -427,7 +466,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
      *
      * @param view
      */
-    @OnClick({R.id.to_top_btn, R.id.title_back_btn1, R.id.ll_back,R.id.img_more_black,R.id.img_car})
+    @OnClick({R.id.to_top_btn, R.id.title_back_btn1, R.id.ll_back, R.id.img_more_black, R.id.img_car})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -457,7 +496,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    HomeLoadUtil.showItemPop(this,imgMoreBlack);
+                    HomeLoadUtil.showItemPop(this, imgMoreBlack);
                 }
                 break;
             case R.id.img_car:
@@ -467,6 +506,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                     startActivityForResult(intent, 1);
                 } else {
                     intent = new Intent(this, CarActivity.class);
+                    intent.putExtra("ziying","yes");
                     startActivity(intent);
                 }
                 break;
@@ -476,6 +516,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
 
     /**
      * 登陆回调
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -494,11 +535,41 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
                             break;
                         case "2":
                             intent = new Intent(this, CarActivity.class);
+                            intent.putExtra("ziying","yes");
                             startActivity(intent);
                             break;
                     }
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            InputMethodManager imm = (InputMethodManager) v.getContext()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm.isActive()) {
+                imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+            }
+            doSearch();
+            return true;
+        }
+        return false;
+    }
+
+    public void doSearch() {
+        String sarechword = topbarSearchInput.getText().toString();
+        if (sarechword == null || sarechword.equals("")) {
+            StringUtil.showToast(this, "搜索内容为空");
+            return;
+        }
+        Intent intent = new Intent(this, DianpuSearchActivity.class);
+        intent.putExtra("dianpuid", "");
+        intent.putExtra("producttype", "");
+        intent.putExtra("plevel", "");
+        intent.putExtra("keyword", sarechword);
+        startActivity(intent);
     }
 }

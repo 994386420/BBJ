@@ -249,6 +249,7 @@
                 android:background="@color/__picker_common_primary"
                 android:layout_marginTop="15dp"/>
             <RelativeLayout
+                android:id="@+id/rl_guess_like"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp">

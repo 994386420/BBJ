@@ -76,10 +76,11 @@
                         android:textSize="14dp" />
 
                     <TextView
+                        android:id="@+id/tv_txmoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:text="满1元即可微信提现"
+                        android:text=""
                         android:textColor="#ffffff"
                         android:textSize="12dp" />
                 </LinearLayout>

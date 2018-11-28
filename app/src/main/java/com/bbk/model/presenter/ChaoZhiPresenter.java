@@ -5,14 +5,20 @@ import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.MiaoShaBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.PinTuanBean;
+import com.bbk.Bean.ShopDianpuBean;
+import com.bbk.Bean.ShopFenLeiBean;
 import com.bbk.Bean.ZeroBuyBean;
+import com.bbk.adapter.DianPuGridAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.model.view.ChaoZhiTypesView;
 import com.bbk.model.view.ChaoZhiView;
+import com.bbk.model.view.DianpuSearchView;
 import com.bbk.model.view.ZeroBuyView;
+import com.bbk.model.view.ZiyingFelileiView;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.DianpuTypesActivity;
 import com.bbk.shopcar.view.View;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.StringUtil;
@@ -31,12 +37,16 @@ public class ChaoZhiPresenter implements Presenter {
     private ChaoZhiView chaoZhiView;
     private ChaoZhiTypesView chaoZhiTypesView;
     private ZeroBuyView zeroBuyView;
+    private DianpuSearchView dianpuSearchView;
+    private ZiyingFelileiView ziyingFelileiView;
     private Context mContext;
     private String Flag;
     List<NewHomeCzgBean> czgBeans;
     List<MiaoShaBean> miaoShaBeans;
     List<PinTuanBean> pinTuanBeans;
     List<ZeroBuyBean> zeroBuyBeans;
+    List<ShopDianpuBean> shopDianpuBeans;
+    List<ShopFenLeiBean> shopFenLeiBeans;
 
     public ChaoZhiPresenter(Context mContext){
         this.mContext = mContext;
@@ -55,6 +65,16 @@ public class ChaoZhiPresenter implements Presenter {
     @Override
     public void attachZeroBuyView(View view) {
         zeroBuyView = (ZeroBuyView) view;
+    }
+
+    @Override
+    public void attachDianpuSearchView(View view) {
+        dianpuSearchView = (DianpuSearchView) view;
+    }
+
+    @Override
+    public void attachZiyingFelileiView(View view) {
+        ziyingFelileiView = (ZiyingFelileiView) view;
     }
 
 
@@ -109,12 +129,6 @@ public class ChaoZhiPresenter implements Presenter {
                             }else {
                                 chaoZhiView.onError(jsonObject.optString("errmsg"));
                             }
-//                            if (jsonObject.optString("status").equals("1")) {
-//                                    List<NewHomeCzgBean> czgBeans = JSON.parseArray(content, NewHomeCzgBean.class);
-//                                    chaoZhiView.onSuccess(czgBeans);
-//                                } else {
-//                                    chaoZhiView.onError(jsonObject.optString("errmsg"));
-//                                }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -156,7 +170,6 @@ public class ChaoZhiPresenter implements Presenter {
                             JSONObject jsonObject = new JSONObject(s);
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
-//                                Logg.json(content);
                                 chaoZhiTypesView.onSuccess(content);
                             } else {
                                 chaoZhiTypesView.onError(jsonObject.optString("errmsg"));
@@ -169,7 +182,6 @@ public class ChaoZhiPresenter implements Presenter {
                     @Override
                     protected void hideDialog() {
                         chaoZhiTypesView.onHide();
-//                        DialogSingleUtil.dismiss(0);
                     }
 
                     @Override
@@ -186,17 +198,14 @@ public class ChaoZhiPresenter implements Presenter {
                 });
     }
 
-
     /**
-     * o元购
-     * @param type
+     * o元购新
      * @param page
      */
-    public void queryCpsZeroBuy(int page,String type) {
+    public void queryCpsZeroBuyNew(int page) {
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("page", page + "");
-        maps.put("type", type);
-        RetrofitClient.getInstance(mContext).createBaseApi().queryCpsZeroBuy(
+        RetrofitClient.getInstance(mContext).createBaseApi().queryCpsZeroBuyNew(
                 maps, new BaseObserver<String>(mContext) {
                     @Override
                     public void onNext(String s) {
@@ -205,7 +214,6 @@ public class ChaoZhiPresenter implements Presenter {
                             String content = jsonObject.optString("content");
                             JSONObject jsonObject1 = new JSONObject(content);
                             if (jsonObject.optString("status").equals("1")) {
-//                                Logg.json("0元购数据",jsonObject1.optString("banner")+jsonObject1.optString("rule"));
                                 zeroBuyBeans =JSON.parseArray(jsonObject1.optString("arr"),ZeroBuyBean.class);
                                 zeroBuyView.onSuccess(zeroBuyBeans,jsonObject1.optString("banner"),jsonObject1.optString("rule"));
                             } else {
@@ -231,6 +239,155 @@ public class ChaoZhiPresenter implements Presenter {
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogSingleUtil.dismiss(0);
                         zeroBuyView.onFailed();
+                        StringUtil.showToast(mContext, e.message);
+                    }
+                });
+    }
+
+    /**
+     * o元购
+     * @param type
+     * @param page
+     */
+    public void queryCpsZeroBuy(int page,String type) {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("page", page + "");
+        maps.put("type", type);
+        RetrofitClient.getInstance(mContext).createBaseApi().queryCpsZeroBuy(
+                maps, new BaseObserver<String>(mContext) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            JSONObject jsonObject1 = new JSONObject(content);
+                            if (jsonObject.optString("status").equals("1")) {
+                                zeroBuyBeans =JSON.parseArray(jsonObject1.optString("arr"),ZeroBuyBean.class);
+                                zeroBuyView.onSuccess(zeroBuyBeans,jsonObject1.optString("banner"),jsonObject1.optString("rule"));
+                            } else {
+                                chaoZhiTypesView.onError(jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        zeroBuyView.onHide();
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(mContext);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zeroBuyView.onFailed();
+                        StringUtil.showToast(mContext, e.message);
+                    }
+                });
+    }
+
+    /**
+     * 查询商品
+     * @param dianpuid
+     * @param producttype
+     * @param keyword
+     * @param plevel 分类级别（1,2,3）当plevel==2时，除了返回的list，还返回thirdLevels（jsonarray，页面上方的3级分类）
+     * @param page
+     */
+    public void queryZiyingListByKeyword(String dianpuid, String producttype, String keyword,String plevel,int page) {
+        Logg.e(keyword);
+        Map<String, String> maps = new HashMap<String, String>();
+        Logg.json(producttype+"==="+plevel+"===="+keyword+"===="+dianpuid);
+        maps.put("dianpu", dianpuid);
+        maps.put("keyword", keyword);
+        maps.put("producttype",producttype);
+        maps.put("plevel",plevel);
+        maps.put("page", page + "");
+        RetrofitClient.getInstance(mContext).createBaseApi().queryZiyingListByKeyword(
+                maps, new BaseObserver<String>(mContext) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            JSONObject jsonObject1 = new JSONObject(content);
+                            if (jsonObject.optString("status").equals("1")) {
+                                shopDianpuBeans = JSON.parseArray(jsonObject1.optString("list"), ShopDianpuBean.class);
+                                dianpuSearchView.onSuccess(shopDianpuBeans,jsonObject1.optString("thirdLevels"));
+                            } else {
+                                dianpuSearchView.onError(jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        dianpuSearchView.onHide();
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(mContext);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        dianpuSearchView.onFailed();
+                        StringUtil.showToast(mContext, e.message);
+                    }
+                });
+    }
+
+
+    /**
+     * 自营全部分类
+     */
+    public void queryZiyingProducttype() {
+        Map<String, String> maps = new HashMap<String, String>();
+        RetrofitClient.getInstance(mContext).createBaseApi().queryZiyingProducttype(
+                maps, new BaseObserver<String>(mContext) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            Logg.json(content);
+                            if (jsonObject.optString("status").equals("1")) {
+                                shopFenLeiBeans = JSON.parseArray(content, ShopFenLeiBean.class);
+                                ziyingFelileiView.onSuccess(shopFenLeiBeans);
+                            } else {
+                                ziyingFelileiView.onError(jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        ziyingFelileiView.onHide();
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(mContext);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        ziyingFelileiView.onFailed();
                         StringUtil.showToast(mContext, e.message);
                     }
                 });

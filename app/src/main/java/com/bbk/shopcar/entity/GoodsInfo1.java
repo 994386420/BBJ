@@ -13,6 +13,7 @@ public class GoodsInfo1 {
 //    private String dtime;
     private String dianpu;
     private String dianpuid;
+    private String dianpuyouhui;
     private String list;
 //    private String guige;
 //    private String imgurl;
@@ -20,6 +21,14 @@ public class GoodsInfo1 {
 //    private boolean isChoosed;
 //    private double price;
 
+
+    public String getDianpuyouhui() {
+        return dianpuyouhui;
+    }
+
+    public void setDianpuyouhui(String dianpuyouhui) {
+        this.dianpuyouhui = dianpuyouhui;
+    }
 
     public String getDianpuid() {
         return dianpuid;

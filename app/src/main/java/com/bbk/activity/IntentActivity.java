@@ -210,7 +210,7 @@ public class IntentActivity extends BaseActivity {
 												exParams = new HashMap<>();
 												exParams.put("isv_code", "appisvcode");
 												exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-												showUrl();
+												showUrl(jumpBean.getUrl());
 												DialogSingleUtil.dismiss(0);
 												finish();
 											} else {
@@ -271,7 +271,7 @@ public class IntentActivity extends BaseActivity {
 	/**
 	 * 打开指定链接
 	 */
-	public void showUrl() {
+	public void showUrl(String url) {
 		String text = url;
 		if(TextUtils.isEmpty(text)) {
 			StringUtil.showToast(this, "URL为空");
@@ -282,9 +282,6 @@ public class IntentActivity extends BaseActivity {
 
 	private KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
 
-	/**
-	 * 打开指定链接
-	 */
 	public void showUrll(String url) {
 		final String text = url;
 		if (TextUtils.isEmpty(text)) {

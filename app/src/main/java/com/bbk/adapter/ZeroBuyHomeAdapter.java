@@ -22,6 +22,7 @@ import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.ShopDetailActivty;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.activity.ZiYingZeroBuyDetailActivty;
 import com.bbk.adapter.FenXiangListAdapter;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.SharedPreferencesUtil;
@@ -150,26 +151,54 @@ public class ZeroBuyHomeAdapter extends RecyclerView.Adapter {
                     .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.itemImg);
             if (miaoShaBean.getBili().equals("100")){
-                StringUtil.showToast(context,"已经抢完了！");
+                viewHolder.resultItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        StringUtil.showToast(context,"已经抢完了！");
+                    }
+                });
             }else {
                 viewHolder.resultItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent;
                         NewConstants.showdialogFlg = "1";
-                        intent = new Intent(context, IntentActivity.class);
-                        if (miaoShaBean.getTitle() != null) {
-                            intent.putExtra("title", miaoShaBean.getTitle());
+                        if (miaoShaBean.getZeroBuyDomain() != null){
+                            if (miaoShaBean.getZeroBuyDomain().equals("taobao")){
+                                intent = new Intent(context, IntentActivity.class);
+                                if (miaoShaBean.getTitle() != null) {
+                                    intent.putExtra("title", miaoShaBean.getTitle());
+                                }
+                                if (miaoShaBean.getRowkey() != null) {
+                                    intent.putExtra("groupRowKey", miaoShaBean.getRowkey());
+                                }
+                                intent.putExtra("isczg", "0");
+                                intent.putExtra("tljid", miaoShaBean.getId());
+                                if (miaoShaBean.getBprice() != null) {
+                                    intent.putExtra("bprice", miaoShaBean.getBprice());
+                                }
+                                context.startActivity(intent);
+                            }else {
+                                intent = new Intent(context, ZiYingZeroBuyDetailActivty.class);
+                                intent.putExtra("gid", miaoShaBean.getGid());
+                                intent.putExtra("id", miaoShaBean.getId());
+                                context.startActivity(intent);
+                            }
+                        }else {
+                            intent = new Intent(context, IntentActivity.class);
+                            if (miaoShaBean.getTitle() != null) {
+                                intent.putExtra("title", miaoShaBean.getTitle());
+                            }
+                            if (miaoShaBean.getRowkey() != null) {
+                                intent.putExtra("groupRowKey", miaoShaBean.getRowkey());
+                            }
+                            intent.putExtra("isczg", "0");
+                            intent.putExtra("tljid", miaoShaBean.getId());
+                            if (miaoShaBean.getBprice() != null) {
+                                intent.putExtra("bprice", miaoShaBean.getBprice());
+                            }
+                            context.startActivity(intent);
                         }
-                        if (miaoShaBean.getRowkey() != null) {
-                            intent.putExtra("groupRowKey", miaoShaBean.getRowkey());
-                        }
-                        intent.putExtra("isczg", "0");
-                        intent.putExtra("tljid", miaoShaBean.getId());
-                        if (miaoShaBean.getBprice() != null) {
-                            intent.putExtra("bprice", miaoShaBean.getBprice());
-                        }
-                        context.startActivity(intent);
                     }
                 });
             }

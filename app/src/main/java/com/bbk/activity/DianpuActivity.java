@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.appkefu.lib.interfaces.KFAPIs;
 import com.bbk.Bean.DianPuTypesBean;
 import com.bbk.Bean.DianpuBean;
 import com.bbk.Bean.ShopDianpuBean;
@@ -25,10 +24,12 @@ import com.bbk.adapter.DianpuTypesAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.model.MainActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
 import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
@@ -429,7 +430,8 @@ public class DianpuActivity extends BaseActivity implements MyScrollViewNew.Scro
                 finish();
                 break;
             case R.id.ll_kefu:
-                startChat();
+//                HomeLoadUtil.startChat(this);
+                MainActivity.consultService(this, "", "店铺",null);
                 break;
             case R.id.img_car:
                 Intent intent = new Intent(this, CarActivity.class);
@@ -499,24 +501,24 @@ public class DianpuActivity extends BaseActivity implements MyScrollViewNew.Scro
         queryProductListByKeyword(dianpuid, sortway, keyword);
     }
 
-    private void startChat() {
-        //
-        KFAPIs.startChat(this,
-                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
-                "比比鲸客服", // 2. 会话界面标题，可自定义
-                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
-                // 如果不想发送此信息，可以将此信息设置为""或者null
-                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
-                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
-                // 显示:true, 不显示:false
-                5, // 5. 默认显示消息数量
-                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
-                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
-                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
-                false, // 8. 默认机器人应答
-                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
-                null);
-
-    }
+//    private void startChat() {
+//        //
+//        KFAPIs.startChat(this,
+//                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
+//                "比比鲸客服", // 2. 会话界面标题，可自定义
+//                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
+//                // 如果不想发送此信息，可以将此信息设置为""或者null
+//                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
+//                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
+//                // 显示:true, 不显示:false
+//                5, // 5. 默认显示消息数量
+//                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
+//                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
+//                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
+//                false, // 8. 默认机器人应答
+//                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
+//                null);
+//
+//    }
 
 }

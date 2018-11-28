@@ -28,6 +28,15 @@ public class ShopOrderDetailBean {
 
     private String youhui;
     private String leastjin;//至少使用多少个金币
+    private String kuaidiM;
+
+    public String getKuaidiM() {
+        return kuaidiM;
+    }
+
+    public void setKuaidiM(String kuaidiM) {
+        this.kuaidiM = kuaidiM;
+    }
 
     public String getLeastjin() {
         return leastjin;

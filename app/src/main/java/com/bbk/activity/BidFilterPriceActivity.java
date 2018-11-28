@@ -10,15 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.bbk.adapter.BidDetailListAdapter;
-import com.bbk.chat.ui.ChatActivity;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
-import com.tencent.imsdk.TIMConversationType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -158,12 +154,12 @@ public class BidFilterPriceActivity extends BaseActivity implements ResultEvent,
                     Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
                     startActivity(intent4);
                 }else {
-                    Intent intent = new Intent(BidFilterPriceActivity.this, ChatActivity.class);
-                    if (biduserid != null) {
-                        intent.putExtra("identify","bbj"+biduserid);
-                        intent.putExtra("type", TIMConversationType.C2C);
-                        startActivity(intent);
-                    }
+//                    Intent intent = new Intent(BidFilterPriceActivity.this, ChatActivity.class);
+//                    if (biduserid != null) {
+//                        intent.putExtra("identify","bbj"+biduserid);
+//                        intent.putExtra("type", TIMConversationType.C2C);
+//                        startActivity(intent);
+//                    }
                 }
                 break;
         }

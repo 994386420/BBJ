@@ -8,7 +8,7 @@ android {
     aaptOptions.useNewCruncher = false
     defaultConfig {
         applicationId "com.bbk.activity"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 21
         versionCode 51
         versionName '5.1.5'
@@ -92,6 +92,21 @@ android {
     }
     productFlavors {
     }
+
+//    // 避免 lint 检测出错时停止构建
+//    lintOptions {
+//        abortOnError false
+//    }
+//
+//    // 防止出现rxjava重复报错： Duplicated file rxjava.properties
+//    packagingOptions {
+//        exclude 'META-INF/rxjava.properties'
+//    }
+//
+//    dataBinding {
+//        enabled = true
+//    }
+
 }
 repositories {
     flatDir {
@@ -118,17 +133,16 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.41'
 
     //    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.12'
-
     //noinspection GradleCompatible,GradleCompatible
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    //微信支付SDK
+    implementation files('libs/libammsdk.jar')
+
+
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
-    implementation 'com.android.support:support-v4:26.1.0'
     implementation files('libs/Baidu_Mtj_3.7.2.0.jar')
 
     //    compile files('libs/gson-2.2.4.jar')
-    implementation files('libs/appkefu_kefu_sdk4.jar')
     implementation files('libs/jd_crash_lib_release_210.jar')
     implementation files('libs/JDSDK_h.jar')
     implementation files('libs/jg_filter_sdk_1.1.jar')
@@ -147,11 +161,9 @@ dependencies {
     //刷新控件
     implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
 
     //    compile 'com.umeng.analytics:analytics:latest.integration'
-    implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:multidex:1.0.1'
     implementation('com.alibaba.android:vlayout:1.2.2@aar') {
         transitive = true
@@ -199,15 +211,15 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.10'
 
     //最新版本
-    implementation project(':presentation')
-    implementation project(':sdk')
-    implementation project(':tlslibrary')
-    implementation project(':ui')
+//    implementation project(':presentation')
+//    implementation project(':sdk')
+//    implementation project(':tlslibrary')
+//    implementation project(':ui')
 
     //    implementation files('libs/okio-1.6.0.jar')
 
     //    implementation files('libs/okhttp-3.2.0.jar')
-    provided files('libs/open_sdk.jar')
+    implementation files('libs/open_sdk.jar')
     implementation 'me.zhanghai.android.materialratingbar:library:1.2.0'
 
     //第三方webview
@@ -261,7 +273,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.0.0'
 
     //引入rxandroid
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'com.google.code.gson:gson:2.7'
     implementation project(':guideview')
     implementation project(':jdlmm')
@@ -274,7 +286,6 @@ dependencies {
     //必须加上，不然报空异常
 
 //    compile 'com.github.jdsjlzx:LRecyclerView:1.5.0'
-    compile 'com.android.support:design:24.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     implementation 'com.android.support:cardview-v7:23.1.1'
@@ -284,5 +295,18 @@ dependencies {
     implementation project(':toprightmenu')
     //京东开普勒
     implementation project(':jdsdk_lib')
+
+    //  萝卜丝客服 加载核心库
+    implementation 'com.bytedesk:core:1.0.6'
+   // 萝卜丝客服UI
+    implementation project(':bytedesk-ui')
+
+    compile 'com.qiyukf.unicorn:unicorn:4.6.0'
+
+    implementation 'com.android.support:support-v4:' + rootProject.supportLibVersion
+    implementation 'com.android.support:appcompat-v7:' + rootProject.supportLibVersion
+    implementation 'com.android.support:design:' + rootProject.supportLibVersion
+    implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
+    testImplementation 'junit:junit:4.12'
 }
 

@@ -1,5 +1,7 @@
 package com.bbk.activity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -10,10 +12,13 @@ import org.json.JSONObject;
 import com.bbk.dialog.WebViewAlertDialog;
 import com.bbk.flow.DataFlow4;
 import com.bbk.flow.ResultEvent;
+import com.bbk.model.DianpuSearchActivity;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.X5WebView;
+import com.logg.Logg;
 import com.tamic.jswebview.view.NumberProgressBar;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -279,7 +284,52 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				if (!isintent) {
 					if (url.contains("bbjtech://")) {
-//						Log.i("===",url);
+						String [] stringsIntent =  url.replace("bbjtech://?","").replace("@@","=").split("=");
+						switch (stringsIntent [1]){
+							case "12":
+								Intent intent = new Intent(WebViewActivity.this, SearchMainActivity.class);
+								try {
+									intent.putExtra("keyword", URLDecoder.decode(stringsIntent[3], "utf-8"));
+									SharedPreferencesUtil.putSharedData(WebViewActivity.this, "shaixuan", "shaixuan", "yes");
+									NewConstants.clickpositionFenlei = 5200;
+									NewConstants.clickpositionDianpu = 5200;
+									NewConstants.clickpositionMall = 5200;
+									startActivity(intent);
+								} catch (UnsupportedEncodingException e) {
+									e.printStackTrace();
+								}
+								break;
+							case "121":
+								intent = new Intent(WebViewActivity.this, MesageCenterActivity.class);
+								intent.putExtra("type", "0");
+								startActivity(intent);
+								break;
+							case "124":
+								NewConstants.showdialogFlg = "1";
+								Logg.json(stringsIntent[3]+stringsIntent[4]);
+								intent = new Intent(WebViewActivity.this, IntentActivity.class);
+								intent.putExtra("url",  stringsIntent[3]+"="+stringsIntent[4]);
+								startActivity(intent);
+								break;
+							case "a3":
+								intent = new Intent(WebViewActivity.this,ShopDetailActivty.class);
+								intent.putExtra("id", stringsIntent[3]);
+								startActivity(intent);
+								break;
+							case "a4":
+								try {
+									intent = new Intent(WebViewActivity.this,DianpuSearchActivity.class);
+									intent.putExtra("keyword", "");
+									intent.putExtra("dianpuid", "");
+									intent.putExtra("producttype", URLDecoder.decode(stringsIntent[3], "utf-8"));
+									intent.putExtra("plevel", "2");
+									startActivity(intent);
+								} catch (UnsupportedEncodingException e) {
+									e.printStackTrace();
+								}
+								break;
+						}
+
 						if (url.contains("goJump")){
 							String [] strings = url.split("=");
 //							Log.i("===",strings[2]);
@@ -659,37 +709,4 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		loadWebPage(url);
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
-
-//	private KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
-//
-//	OpenAppAction mOpenAppAction = new OpenAppAction() {
-//		@Override
-//		public void onStatus(final int status, final String url) {
-////			mHandler.post(new Runnable() {
-////				@Override
-////				public void run() {
-//					if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
-//						DialogSingleUtil.show(WebViewActivity.this);
-//					}else {
-////						mKelperTask = null;
-//						DialogSingleUtil.dismiss(0);
-//					}
-//					if(status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-//						StringUtil.showToast(WebViewActivity.this,"未安装京东");
-//						//未安装京东
-//					}else if(status == OpenAppAction.OpenAppAction_result_BlackUrl){
-//						//不在白名单
-//					}else if(status == OpenAppAction.OpenAppAction_result_ErrorScheme){
-//						//协议错误
-//					}else if(status == OpenAppAction.OpenAppAction_result_APP){
-//						//呼京东成功
-//					}else if(status == OpenAppAction.OpenAppAction_result_NetError){
-//						//网络异常
-//					}
-////				}
-////			});
-//		}
-//	};
-
 }

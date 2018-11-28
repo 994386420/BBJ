@@ -22,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.appkefu.lib.interfaces.KFAPIs;
 import com.bbk.Bean.DianPuTypesBean;
 import com.bbk.Bean.DianpuBean;
 import com.bbk.Bean.ShopDianpuBean;
@@ -32,9 +31,8 @@ import com.bbk.activity.R;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.adapter.DianPuGridAdapter;
 import com.bbk.adapter.DianpuTypesAdapter;
-import com.bbk.client.BaseObserver;
-import com.bbk.client.ExceptionHandle;
-import com.bbk.client.RetrofitClient;
+import com.bbk.model.DianpuSearchActivity;
+import com.bbk.model.MainActivity;
 import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.Utils.ShopDialog;
@@ -49,17 +47,12 @@ import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +61,7 @@ import butterknife.OnClick;
 /**
  * 店铺
  */
-public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapter.TypeInterface,CommonLoadingView.LoadingHandler {
+public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapter.TypeInterface, CommonLoadingView.LoadingHandler {
     String dianpuid;
     @BindView(R.id.banner)
     ImageView banner;
@@ -122,13 +115,15 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
     RelativeLayout rlHome;
     @BindView(R.id.img_more_black)
     ImageView imgMoreBlack;
+    @BindView(R.id.ll_search)
+    LinearLayout llSearch;
     private int page = 1, x = 1;
     DianPuGridAdapter dianPuGridAdapter;
     private String sortway = "1", keywordType = "";
     private ShopDialog shopDialog;
-    DianpuBean dianpuBean;
-    DianpuTypesAdapter dianpuTypesAdapter;
-    List<DianPuTypesBean> dianPuTypesBeans;
+    private DianpuBean dianpuBean;
+    private DianpuTypesAdapter dianpuTypesAdapter;
+    private List<DianPuTypesBean> dianPuTypesBeans;
     private DianpuPresenter dianpuPresenter = new DianpuPresenter(this);
     private String LogFlag;
 
@@ -169,7 +164,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                 }
                 x = 1;
                 page = 1;
-                dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
+                dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
             }
 
             @Override
@@ -184,8 +179,8 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         });
         if (getIntent().getStringExtra("dianpuid") != null) {
             dianpuid = getIntent().getStringExtra("dianpuid");
-            dianpuPresenter.queryDianpuMainInfo(dianpuid,refreshLayout);
-            dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
+            dianpuPresenter.queryDianpuMainInfo(dianpuid, refreshLayout);
+            dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
         }
     }
 
@@ -217,12 +212,12 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
 
         @Override
         public void onError(String result) {
-            StringUtil.showToast(NewDianpuActivity.this,result);
+            StringUtil.showToast(NewDianpuActivity.this, result);
         }
     };
 
     /**
-     *搜索商品结果
+     * 搜索商品结果
      */
     private DianpuListView dianpuListView = new DianpuListView() {
 
@@ -253,7 +248,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
 
         @Override
         public void onError(String result) {
-            StringUtil.showToast(NewDianpuActivity.this,result);
+            StringUtil.showToast(NewDianpuActivity.this, result);
         }
     };
 
@@ -269,8 +264,8 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
             public void onRefresh(RefreshLayout refreshLayoutt) {
                 x = 1;
                 page = 1;
-                dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
-                dianpuPresenter.queryDianpuMainInfo(dianpuid,refreshLayout);
+                dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
+                dianpuPresenter.queryDianpuMainInfo(dianpuid, refreshLayout);
             }
         });
         refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -278,7 +273,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
             public void onLoadMore(RefreshLayout refreshLayoutt) {
                 x = 2;
                 page++;
-                dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
+                dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
             }
         });
 
@@ -345,9 +340,10 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
 
     /**
      * 点击事件
+     *
      * @param view
      */
-    @OnClick({R.id.title_back_btn, R.id.ll_mall_choose, R.id.ll_back1, R.id.ll_back, R.id.ll_kefu, R.id.img_car, R.id.to_top_btn,R.id.img_more_black})
+    @OnClick({R.id.title_back_btn, R.id.ll_mall_choose, R.id.ll_back1, R.id.ll_back, R.id.ll_kefu, R.id.img_car, R.id.to_top_btn, R.id.img_more_black,R.id.ll_search})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -369,7 +365,8 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    startChat();
+//                    HomeLoadUtil.startChat(NewDianpuActivity.this);
+                    MainActivity.consultService(this, "", "店铺",null);
                 }
                 break;
             case R.id.img_car:
@@ -379,6 +376,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                     startActivityForResult(intent, 1);
                 } else {
                     intent = new Intent(this, CarActivity.class);
+                    intent.putExtra("ziying","yes");
                     startActivity(intent);
                 }
                 break;
@@ -403,14 +401,23 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    HomeLoadUtil.showItemPop(this,imgMoreBlack);
+                    HomeLoadUtil.showItemPop(this, imgMoreBlack);
                 }
+                break;
+            case R.id.ll_search:
+                intent = new Intent(this, DianpuSearchActivity.class);
+                intent.putExtra("dianpuid", dianpuid);
+                intent.putExtra("producttype", "");
+                intent.putExtra("plevel", "3");
+                intent.putExtra("keyword", "");
+                startActivity(intent);
                 break;
         }
     }
 
     /**
      * 登陆回调
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -429,6 +436,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                             break;
                         case "2":
                             intent = new Intent(this, CarActivity.class);
+                            intent.putExtra("ziying","yes");
                             startActivity(intent);
                             break;
                     }
@@ -491,32 +499,33 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         keywordType = keyword;
         x = 1;
         page = 1;
-        dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
+        dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
     }
 
-    private void startChat() {
-        //
-        KFAPIs.startChat(this,
-                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
-                "比比鲸客服", // 2. 会话界面标题，可自定义
-                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
-                // 如果不想发送此信息，可以将此信息设置为""或者null
-                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
-                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
-                // 显示:true, 不显示:false
-                5, // 5. 默认显示消息数量
-                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
-                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
-                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
-                false, // 8. 默认机器人应答
-                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
-                null);
-
-    }
+//    private void startChat() {
+//        //
+//        KFAPIs.startChat(this,
+//                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
+//                "比比鲸客服", // 2. 会话界面标题，可自定义
+//                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
+//                // 如果不想发送此信息，可以将此信息设置为""或者null
+//                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
+//                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
+//                // 显示:true, 不显示:false
+//                5, // 5. 默认显示消息数量
+//                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
+//                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
+//                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
+//                false, // 8. 默认机器人应答
+//                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
+//                null);
+//
+//    }
 
     @Override
     public void doRequestData() {
         progress.setVisibility(View.GONE);
-        dianpuPresenter.queryProductListByKeyword(dianpuid,sortway,keywordType,refresh,refreshLayout,progress,mrecycler,page);
+        dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
     }
+
 }

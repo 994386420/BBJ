@@ -55,6 +55,22 @@
             android:layout_toRightOf="@id/store_name"
             android:background="@drawable/right_arrow"/>
 
+        <com.bbk.view.AdaptionSizeTextView
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:text=""
+            android:gravity="center"
+            android:paddingRight="2dp"
+            android:paddingLeft="2dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:id="@+id/youhui_name"
+            android:background="@mipmap/bg_youhui"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:visibility="gone"/>
+
         <Button
             android:background="@color/transparent"
             android:textColor="@color/grey_color2"

@@ -7,10 +7,10 @@ import retrofit2.http.QueryMap;
 
 public interface BaseApiService<T> {
 
-    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
+//    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
 //    public static final String Base_URL = "http://125.64.92.222:8097/APIService/";//正式测试接口
 //    public static final String Base_URL = "http://192.168.20.165/APIService/";//内网测试接口
-//    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
+    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
     //新版首页超值购等分类模块
     @POST("newService/queryAppIndexByType")
     Observable<String> queryAppIndexByType(@QueryMap Map<String, String> map);
@@ -93,8 +93,8 @@ public interface BaseApiService<T> {
     //获取分类数据
     @POST("newService/queryIndexTuijianByToken")
     Observable<String> queryIndexTuijianByToken(@QueryMap Map<String, String> map);
-    @POST("newService/queryIndexSeeByToken")
-    Observable<String> queryIndexSeeByToken(@QueryMap Map<String, String> map);
+//    @POST("newService/queryIndexSeeByToken")
+//    Observable<String> queryIndexSeeByToken(@QueryMap Map<String, String> map);
     @POST("newService/checkExsistCps")//checkExsistProduct 替换为 checkExsistCps
     Observable<String> checkExsistProduct(@QueryMap Map<String, String> map);
     //获取比价信息
@@ -196,12 +196,12 @@ public interface BaseApiService<T> {
     @POST("mallService/queryDianpuMainInfo")
     Observable<String> queryDianpuMainInfo(@QueryMap Map<String, String> map);
     //商城首页
-    @POST("mallService/queryIndexMain")
+    @POST("mallService/queryIndexMain1123")
     Observable<String> queryIndexMain(@QueryMap Map<String, String> map);
     //
-    @POST("mallService/queryMyOrderToPay")
+    @POST("mallService/queryMyOrderToPay3")
     Observable<String> queryMyOrderToPay(@QueryMap Map<String, String> map);
-    @POST("appPayService/getOrderInfo")
+    @POST("appPayService/getOrderInfoNew")
     Observable<String> getOrderInfo(@QueryMap Map<String, String> map);
     @POST("appPayService/getOrderInfo")
     Observable<String> getOrderInfoByJinbi(@QueryMap Map<String, String> map);
@@ -268,4 +268,16 @@ public interface BaseApiService<T> {
     //普通三级页面链接转换接口
     @POST("newService/getTaolijinUrlNormal")
     Observable<String> getTaolijinUrlNormal(@QueryMap Map<String, String> map);
+    //自营查询商品
+    @POST("mallService/queryZiyingListByKeyword")
+    Observable<String> queryZiyingListByKeyword(@QueryMap Map<String, String> map);
+    //自营全部分类
+    @POST("mallService/queryZiyingProducttype")
+    Observable<String> queryZiyingProducttype(@QueryMap Map<String, String> map);
+    // 0元购支付接口
+    @POST("appPayService/getZeroBuyOrder")
+    Observable<String> getZeroBuyOrder(@QueryMap Map<String, String> map);
+    //新0元购接口
+    @POST("apiService/queryCpsZeroBuyNew")
+    Observable<String> queryCpsZeroBuyNew(@QueryMap Map<String, String> map);
 }

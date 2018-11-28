@@ -1,47 +1,52 @@
 package com.bbk.activity;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.appkefu.lib.interfaces.KFAPIs;
-import com.appkefu.lib.interfaces.KFCallBack;
 import com.bbk.Bean.CanshuBean;
 import com.bbk.Bean.PlBean;
 import com.bbk.Bean.ShopDetailBean;
 import com.bbk.Bean.ShopTuijianBean;
+import com.bbk.Bean.TypesChooseBean;
+import com.bbk.Bean.TypesChooseLevelOneBean;
+import com.bbk.Bean.TypesChooseSizeBean;
+import com.bbk.Bean.TypesLevelBean;
 import com.bbk.adapter.DetailImageAdapter;
 import com.bbk.adapter.ShopCanshuAdapter;
+import com.bbk.adapter.SizeChooseAdapter;
 import com.bbk.adapter.TuijianGridAdapter;
+import com.bbk.adapter.TypeChooseAdapter;
+import com.bbk.adapter.TypeChooseLevelOneAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.model.MainActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
 import com.bbk.shopcar.ConfirmOrderActivity;
@@ -50,7 +55,6 @@ import com.bbk.shopcar.NewDianpuActivity;
 import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.shopcar.view.IdeaScrollView;
-import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageGuanggaoLoader;
 import com.bbk.util.HomeLoadUtil;
@@ -68,8 +72,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
-import com.zaaach.toprightmenu.MenuItem;
-import com.zaaach.toprightmenu.TopRightMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -187,6 +189,8 @@ public class ShopDetailActivty extends BaseActivity {
     LinearLayout llMore;
     @BindView(R.id.img_more_black)
     ImageView imgMoreBlack;
+    @BindView(R.id.tv_des)
+    TextView tvDes;
     private String id;
     private DetailImageAdapter detailImageAdapter;
     private ShopDetailBean shopDetailBean;
@@ -219,6 +223,21 @@ public class ShopDetailActivty extends BaseActivity {
     private boolean isNeedScrollTo = true;
     private String mKefuDescription;
     private String LogFlag;
+    private TypeChooseAdapter typeGridAdapter;
+    private TypeChooseLevelOneAdapter typeChooseLevelOneAdapter;
+    private SizeChooseAdapter sizeChooseAdapter;
+    private int curposition = 0, sizeCurposition = 0;
+    private List<TypesChooseBean> typesChooseBeans;
+    private List<TypesChooseSizeBean> typesChooseSizeBeans;
+    private List<TypesLevelBean> typesLevelBeans;
+    private List<TypesChooseLevelOneBean> typesChooseLevelOneBeans;
+    private GridView gridViewName;
+    private GridView gridViewSize;
+    private TextView tvHasChoose;
+    private TextView tvMoney,tvSize,tvColor;
+    private String chooseGuigeColor, chooseGuigeSize;
+    private boolean isChooseColor = false;//判断是否旋转过颜色
+    private int countNum = 1;//购买商品数量
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -350,15 +369,21 @@ public class ShopDetailActivty extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
-//                                Logg.json(jsonObject);
+                                Logg.json(jsonObject);
                                 shopDetailBean = JSON.parseObject(jsonObject.optString("content"), ShopDetailBean.class);
                                 shopAddress.setText(shopDetailBean.getFahuodi());
-
+                                Logg.json(shopDetailBean.getGuigetype() + "=====>>>" + shopDetailBean.getGuigepro() + "=====>>>" + shopDetailBean.getGuige()
+                                        + "=====>>>" + shopDetailBean.getYouhui());
                                 if (shopDetailBean.getYouhui() != null && !shopDetailBean.getYouhui().equals("")) {
                                     llYouhui.setVisibility(View.VISIBLE);
                                     tvYouhui.setText(shopDetailBean.getYouhui());
                                 } else {
                                     llYouhui.setVisibility(View.GONE);
+                                }
+                                if (shopDetailBean.getDescrible() != null && !shopDetailBean.getDescrible().equals("")) {
+                                    tvDes.setText(shopDetailBean.getDescrible());
+                                }else {
+                                    tvDes.setVisibility(View.GONE);
                                 }
                                 if (shopDetailBean != null) {
                                     Glide.with(ShopDetailActivty.this)
@@ -507,7 +532,7 @@ public class ShopDetailActivty extends BaseActivity {
     }
 
     @OnClick({R.id.title_back_btn, R.id.ll_add_car, R.id.ll_buy_now, R.id.ll_fuwu, R.id.ll_shuxing, R.id.ll_canshu, R.id.tv_dianpu, R.id.back_image, R.id.tv_all_mall,
-            R.id.ll_dianpu, R.id.ll_car, R.id.ll_pl, R.id.ll_kefu,R.id.ll_more, R.id.img_more_black,R.id.img_car_black})
+            R.id.ll_dianpu, R.id.ll_car, R.id.ll_pl, R.id.ll_kefu, R.id.ll_more, R.id.img_more_black, R.id.img_car_black})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -522,7 +547,8 @@ public class ShopDetailActivty extends BaseActivity {
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
-                        doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
+//                        doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
+                        showChooseGuigeDialog(this);
                     }
                 }
                 break;
@@ -533,11 +559,12 @@ public class ShopDetailActivty extends BaseActivity {
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
-                        intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
-                        intent.putExtra("ids", shopDetailBean.getId());
-                        intent.putExtra("nums", "1");
-                        intent.putExtra("guiges", " ");
-                        startActivity(intent);
+//                        intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
+//                        intent.putExtra("ids", shopDetailBean.getId());
+//                        intent.putExtra("nums", "1");
+//                        intent.putExtra("guiges", " ");
+//                        startActivity(intent);
+                        showChooseGuigeDialog(this);
                     }
                 }
                 break;
@@ -547,6 +574,15 @@ public class ShopDetailActivty extends BaseActivity {
                 }
                 break;
             case R.id.ll_shuxing:
+                if (shopDetailBean != null) {
+                    if (TextUtils.isEmpty(userID)) {
+                        LogFlag = "9";
+                        intent = new Intent(this, UserLoginNewActivity.class);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        showChooseGuigeDialog(this);
+                    }
+                }
                 break;
             case R.id.ll_canshu:
                 if (shopDetailBean != null) {
@@ -590,6 +626,7 @@ public class ShopDetailActivty extends BaseActivity {
                     startActivityForResult(intent, 1);
                 } else {
                     intent = new Intent(this, CarActivity.class);
+                    intent.putExtra("ziying","yes");
                     startActivity(intent);
                 }
                 break;
@@ -616,7 +653,8 @@ public class ShopDetailActivty extends BaseActivity {
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
-                        startECChat();
+//                        HomeLoadUtil.startChat(this);
+                        MainActivity.consultService(this, "", "商品详情",null);
                     }
                 }
                 break;
@@ -645,6 +683,7 @@ public class ShopDetailActivty extends BaseActivity {
                     startActivityForResult(intent, 1);
                 } else {
                     intent = new Intent(this, CarActivity.class);
+                    intent.putExtra("ziying","yes");
                     startActivity(intent);
                 }
                 break;
@@ -652,9 +691,9 @@ public class ShopDetailActivty extends BaseActivity {
     }
 
 
-
     /**
      * 登陆回调
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -664,24 +703,19 @@ public class ShopDetailActivty extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Intent intent;
-        if (userID != null && !userID.equals("")){
+        if (userID != null && !userID.equals("")) {
             switch (requestCode) {
                 case 1:
-                    switch (LogFlag){
+                    switch (LogFlag) {
                         case "1":
-                            doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
+                            showChooseGuigeDialog(this);
                             break;
                         case "2":
-                            if (shopDetailBean != null) {
-                                intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
-                                intent.putExtra("ids", shopDetailBean.getId());
-                                intent.putExtra("nums", "1");
-                                intent.putExtra("guiges", " ");
-                                startActivity(intent);
-                            }
+                            showChooseGuigeDialog(this);
                             break;
                         case "3":
                             intent = new Intent(this, CarActivity.class);
+                            intent.putExtra("ziying","yes");
                             startActivity(intent);
                             break;
                         case "4":
@@ -696,7 +730,8 @@ public class ShopDetailActivty extends BaseActivity {
                             break;
                         case "5":
                             if (shopDetailBean != null) {
-                                startECChat();
+//                                HomeLoadUtil.startChat(this);
+                                MainActivity.consultService(this, "", "我的",null);
                             }
                             break;
                         case "6":
@@ -707,12 +742,16 @@ public class ShopDetailActivty extends BaseActivity {
                             break;
                         case "8":
                             intent = new Intent(this, CarActivity.class);
+                            intent.putExtra("ziying","yes");
                             startActivity(intent);
                             break;
-                       }
+                        case "9":
+                            showChooseGuigeDialog(this);
+                            break;
+                    }
                     break;
-                }
             }
+        }
     }
 
     /**
@@ -790,6 +829,7 @@ public class ShopDetailActivty extends BaseActivity {
             recyclerView.setVisibility(View.VISIBLE);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            Logg.json(shopDetailBean.getProperty());
             if (shopDetailBean != null) {
                 if (shopDetailBean.getProperty() != null) {
                     List<CanshuBean> canshuBean = JSON.parseArray(shopDetailBean.getProperty(), CanshuBean.class);
@@ -847,198 +887,345 @@ public class ShopDetailActivty extends BaseActivity {
         }
     }
 
+    /**
+     * 选择规格
+     *
+     * @param context
+     */
+    public void showChooseGuigeDialog(final Context context) {
+        if (shopDialog == null || !shopDialog.isShowing()) {
+            isChooseColor = false;
+            chooseGuigeColor = null;
+            chooseGuigeSize = null;
+            countNum = 1;
+            shopDialog = new ShopDialog(context, R.layout.shop_dialog,
+                    new int[]{R.id.ll_close});
+            shopDialog.show();
+            shopDialog.setCanceledOnTouchOutside(true);
+            LinearLayout ll_close = shopDialog.findViewById(R.id.ll_close);
+            gridViewName = shopDialog.findViewById(R.id.type_grid_name);
+            gridViewSize = shopDialog.findViewById(R.id.type_grid_size);
+            tvHasChoose = shopDialog.findViewById(R.id.tv_have_choose);
+            tvMoney = shopDialog.findViewById(R.id.tv_money);
+            tvColor = shopDialog.findViewById(R.id.tv_color);
+            tvSize = shopDialog.findViewById(R.id.tv_size);
+            LinearLayout lltype = shopDialog.findViewById(R.id.ll_type);
+            ImageView ivSub = shopDialog.findViewById(R.id.iv_sub);
+            final EditText etGoodNum = shopDialog.findViewById(R.id.et_good_num);
+            ImageView ivAdd = shopDialog.findViewById(R.id.iv_add);
+            LinearLayout llAddCar = shopDialog.findViewById(R.id.ll_add_car);
+            LinearLayout llBuyNow = shopDialog.findViewById(R.id.ll_buy_now);
+            tvMoney.setText("¥ " + shopDetailBean.getPrice());
+            ImageView imageView = shopDialog.findViewById(R.id.iv_image);
+            Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+            gridViewSize.setSelector(new ColorDrawable(Color.TRANSPARENT));
+            gridViewName.setSelector(new ColorDrawable(Color.TRANSPARENT));
+            typesLevelBeans =  JSON.parseArray(shopDetailBean.getGuigepro(), TypesLevelBean.class);
 
-
-    private void addCart(LinearLayout iv) {
-//      一、创造出执行动画的主题---imageview
-        //代码new一个imageview，图片资源是上面的imageview的图片
-        // (这个图片就是执行动画的图片，从开始位置出发，经过一个抛物线（贝塞尔曲线），移动到购物车里)
-        final ImageView goods = new ImageView(this);
-//        goods.setImageDrawable(iv.getDrawable());
-        goods.setImageDrawable(getResources().getDrawable(R.mipmap.loading_01));
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(DensityUtils.dp2px(getApplicationContext(), 20), DensityUtils.dp2px(getApplicationContext(), 20));
-        layout.addView(goods, params);
-//        二、计算动画开始/结束点的坐标的准备工作
-        //得到父布局的起始点坐标（用于辅助计算动画开始/结束时的点的坐标）
-        int[] parentLocation = new int[2];
-        layout.getLocationInWindow(parentLocation);
-
-        //得到商品图片的坐标（用于计算动画开始的坐标）
-        int startLoc[] = new int[2];
-        iv.getLocationInWindow(startLoc);
-
-        //得到购物车图片的坐标(用于计算动画结束后的坐标)
-        int endLoc[] = new int[2];
-//        mBottomCarImage.getLocationInWindow(endLoc);
-//        三、正式开始计算动画开始/结束的坐标
-        //开始掉落的商品的起始点：商品起始点-父布局起始点+该商品图片的一半
-        float startX = startLoc[0] - parentLocation[0] + iv.getWidth() / 2;
-        float startY = startLoc[1] - parentLocation[1] + iv.getHeight() / 2 - DensityUtils.dp2px(getApplicationContext(), 50);
-
-        //商品掉落后的终点坐标：购物车起始点-父布局起始点+购物车图片的1/5
-//        float toX = endLoc[0] - parentLocation[0] + mBottomCarImage.getWidth() / 5;
-        float toY = endLoc[1] - parentLocation[1] - DensityUtils.dp2px(getApplicationContext(), 50);
-
-//        四、计算中间动画的插值坐标（贝塞尔曲线）（其实就是用贝塞尔曲线来完成起终点的过程）
-        //开始绘制贝塞尔曲线
-        Path path = new Path();
-        //移动到起始点（贝塞尔曲线的起点）
-        path.moveTo(startX, startY);
-        //使用二次萨贝尔曲线：注意第一个起始坐标越大，贝塞尔曲线的横向距离就会越大，一般按照下面的式子取即可
-//        path.quadTo(startX, startY-DensityUtils.dp2px(getApplicationContext(),100), toX+DensityUtils.dp2px(getApplicationContext(),25), toY);
-        //mPathMeasure用来计算贝塞尔曲线的曲线长度和贝塞尔曲线中间插值的坐标，
-        // 如果是true，path会形成一个闭环
-        mPathMeasure = new PathMeasure(path, false);
-//        float cx = mBottomCarImage.getX();
-
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, mPathMeasure.getLength());
-        valueAnimator.setDuration(700);
-        // 匀速线性插值器
-        valueAnimator.setInterpolator(new LinearInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                // 当插值计算进行时，获取中间的每个值，
-                // 这里这个值是中间过程中的曲线长度（下面根据这个值来得出中间点的坐标值）
-                float value = (Float) animation.getAnimatedValue();
-                // ★★★★★获取当前点坐标封装到mCurrentPosition
-                // boolean getPosTan(float distance, float[] pos, float[] tan) ：
-                // 传入一个距离distance(0<=distance<=getLength())，然后会计算当前距
-                // 离的坐标点和切线，pos会自动填充上坐标，这个方法很重要。
-                mPathMeasure.getPosTan(value, mCurrentPosition, null);//mCurrentPosition此时就是中间距离点的坐标值
-                // 移动的商品图片（动画图片）的坐标设置为该中间点的坐标
-                goods.setTranslationX(mCurrentPosition[0]);
-                goods.setTranslationY(mCurrentPosition[1]);
+            /**
+             * 0无规格选	1一种规格  2两种规格
+             */
+            switch (shopDetailBean.getGuigetype()) {
+                case "0":
+                    //无规格选
+                    lltype.setVisibility(View.GONE);
+                    break;
+                case "1":
+                    //一种规格
+                    //两种规格
+                    tvColor.setText(typesLevelBeans.get(0).getName());
+                    tvSize.setVisibility(View.GONE);
+                    gridViewSize.setVisibility(View.GONE);
+                    gridViewName.setVisibility(View.VISIBLE);
+                    typesChooseLevelOneBeans = JSON.parseArray(shopDetailBean.getGuige(), TypesChooseLevelOneBean.class);
+                    typeChooseLevelOneAdapter = new TypeChooseLevelOneAdapter(context, typesChooseLevelOneBeans);
+                    gridViewName.setAdapter(typeChooseLevelOneAdapter);
+                    gridViewName.setOnItemClickListener(onItemClickLevelOneListener);
+                    llAddCar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (chooseGuigeColor != null) {
+                                doShoppingCart(shopDetailBean.getId(), "1", etGoodNum.getText().toString(), chooseGuigeColor);
+                                shopDialog.dismiss();
+                            } else {
+                                StringUtil.showToast(ShopDetailActivty.this, "请选择商品规格");
+                            }
+                        }
+                    });
+                    break;
+                case "2":
+                    //两种规格
+                    tvColor.setText(typesLevelBeans.get(0).getName());
+                    tvSize.setText(typesLevelBeans.get(1).getName());
+                    gridViewSize.setVisibility(View.VISIBLE);
+                    gridViewName.setVisibility(View.VISIBLE);
+                    typesChooseBeans = JSON.parseArray(shopDetailBean.getGuige(), TypesChooseBean.class);
+                    typeGridAdapter = new TypeChooseAdapter(context, typesChooseBeans);
+                    gridViewName.setAdapter(typeGridAdapter);
+                    gridViewName.setOnItemClickListener(onItemClickListener);
+                    gridViewSize.setOnItemClickListener(onItemSizeClickListener);
+                    List<String> list = new ArrayList<>();
+                    if (typesChooseBeans != null && typesChooseBeans.size() > 0) {
+                        for (int i = 0; i < typesChooseBeans.size(); i++) {
+                            typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(i).getList(), TypesChooseSizeBean.class);
+                            for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
+                                Logg.json(typesChooseSizeBeans.get(j).getSize());
+                                list.add(typesChooseSizeBeans.get(j).getSize());
+                            }
+                        }
+                    }
+                    sizeChooseAdapter = new SizeChooseAdapter(context, StringUtil.removeDuplicate(list), StringUtil.removeDuplicate(list));
+                    gridViewSize.setAdapter(sizeChooseAdapter);
+                    break;
             }
-        });
-//      五、 开始执行动画
-        valueAnimator.start();
-//      六、动画结束后的处理
-        valueAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
 
-            //当动画结束后：
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                // 把移动的图片imageview从父布局里移除
-                layout.removeView(goods);
-                DialogSingleUtil.dismiss(0);
-            }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
+            /**
+             * 加入购物车
+             */
+            llAddCar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (shopDetailBean.getGuigetype()) {
+                        case "0":
+                            //无规格选
+                            doShoppingCart(shopDetailBean.getId(), "1", etGoodNum.getText().toString(),  "");
+                            shopDialog.dismiss();
+                            break;
+                        case "1":
+                            if (chooseGuigeColor != null) {
+                                doShoppingCart(shopDetailBean.getId(), "1", etGoodNum.getText().toString(), chooseGuigeColor);
+                                shopDialog.dismiss();
+                                return;
+                            }
+                            StringUtil.showToast(ShopDetailActivty.this, "请选择商品规格");
+                            break;
+                        case "2":
+                            if (chooseGuigeColor != null && chooseGuigeSize != null) {
+                                doShoppingCart(shopDetailBean.getId(), "1", etGoodNum.getText().toString(), chooseGuigeColor + " " + chooseGuigeSize);
+                                shopDialog.dismiss();
+                                return;
+                            }
+                            StringUtil.showToast(ShopDetailActivty.this, "请选择商品规格");
+                            break;
+                    }
+                }
+            });
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
+
+            /**
+             * 立即购买
+             */
+            llBuyNow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent;
+                    switch (shopDetailBean.getGuigetype()) {
+                        case "0":
+                            //无规格选
+                            intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
+                            intent.putExtra("ids", shopDetailBean.getId());
+                            intent.putExtra("nums", etGoodNum.getText().toString());
+                            intent.putExtra("guiges", "");
+                            startActivity(intent);
+                            shopDialog.dismiss();
+                            break;
+                        case "1":
+                            if (chooseGuigeColor != null) {
+                                intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
+                                intent.putExtra("ids", shopDetailBean.getId());
+                                intent.putExtra("nums", etGoodNum.getText().toString());
+                                intent.putExtra("guiges", chooseGuigeColor);
+                                startActivity(intent);
+                                shopDialog.dismiss();
+                                return;
+                            }
+                            StringUtil.showToast(ShopDetailActivty.this, "请选择商品规格");
+                            break;
+                        case "2":
+                            if (chooseGuigeColor != null && chooseGuigeSize != null) {
+                                intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
+                                intent.putExtra("ids", shopDetailBean.getId());
+                                intent.putExtra("nums", etGoodNum.getText().toString());
+                                intent.putExtra("guiges", chooseGuigeColor + " " + chooseGuigeSize);
+                                startActivity(intent);
+                                shopDialog.dismiss();
+                                return;
+                            }
+                            StringUtil.showToast(ShopDetailActivty.this, "请选择商品规格");
+                            break;
+                    }
+                }
+            });
+            /**
+             * 增加数量
+             */
+            ivAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (countNum < 99) {
+                        countNum = countNum + 1;
+                        etGoodNum.setText(countNum + "");
+                    } else {
+                        StringUtil.showToast(ShopDetailActivty.this, "不能再加啦!");
+                    }
+                }
+            });
+            /**
+             * 减少数量
+             */
+            ivSub.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (countNum > 1) {
+                        countNum = countNum - 1;
+                        etGoodNum.setText(countNum + "");
+                    } else {
+                        StringUtil.showToast(ShopDetailActivty.this, "不能再减啦!");
+                    }
+                }
+            });
+            /**
+             * 数量监听
+             */
+            etGoodNum.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.toString().startsWith("0") && s.toString().trim().length() > 1) {
+                        if (!s.toString().substring(1, 2).equals(".")) {
+                            etGoodNum.setText(s.subSequence(0, 1));
+                            etGoodNum.setSelection(1);
+                            return;
+                        }
+                    }
+                    if (s.length() > 0) {
+                        if (Integer.parseInt(s.toString().trim()) > 99) {
+                            countNum = 99;
+                            etGoodNum.setText("99");
+                            StringUtil.showToast(ShopDetailActivty.this, "不能再加啦!");
+                        } else if (Integer.parseInt(s.toString().trim()) < 1) {
+                            countNum = 1;
+                            etGoodNum.setText("1");
+                            StringUtil.showToast(ShopDetailActivty.this, "不能再减啦!");
+                        } else {
+                            countNum = Integer.parseInt(s.toString().trim());
+                        }
+                    } else {
+
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            /**
+             * 关闭弹窗
+             */
+            ll_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+        }
     }
 
-    // 电商专用咨询页面
-    private void startECChat() {
-        //"<img border=\\\"0\" src=\"" + shopDetailBean.getImgurl() + "\" />   <p>商品名称：" + shopDetailBean.getTitle() + "</p> <p>\\"+shopDetailBean.getPrice()+"</p> "
-        mKefuDescription = "<img border='0' src='" + shopDetailBean.getImgurl() + "' /> <p>商品名称：" + shopDetailBean.getTitle() + " </p>   <p>商品价格：" + shopDetailBean.getPrice() + "</p> ";
-        KFAPIs.startECChat(this,
-                "bbjkfxz",//1. 客服工作组名称(请务必保证大小写一致)，请在管理后台分配
-                "比比鲸客服",//2. 会话界面标题，可自定义
-                mKefuDescription,//3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
-                //   如果不想发送此信息，可以将此信息设置为""或者null
-                true,//4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
-                //	请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
-                //	显示:true, 不显示:false
-                5,//5. 默认显示消息数量
-                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
-                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
-                false,                    //8. 默认机器人应答
-                true,                    //9. 是否显示商品详情，显示：true；不显示：false
-                shopDetailBean.getImgurl(),//10.商品详情图片
-                shopDetailBean.getTitle(),                    //11.商品详情简介
-                shopDetailBean.getPrice(),                                            //12.商品详情价格
-                "http://www.bibijing.com/images/zhanwei/logo.png",                            //13.商品网址链接
-                "goodsCallbackId",                                //14.点击商品详情布局回调参数
-                false,                                            //15.退出对话的时候是否强制评价，强制：true，不评价：false
-                new KFCallBack() {        //15. 会话页面右上角回调函数
+    /**
+     * 一级点击监听
+     */
+    AdapterView.OnItemClickListener onItemClickLevelOneListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            isChooseColor = true;
+            curposition = position;
+            typeChooseLevelOneAdapter.setSeclection(position);
+            typeChooseLevelOneAdapter.notifyDataSetChanged();
+            if (!typesChooseLevelOneBeans.get(position).getPrice().equals("")) {
+                tvMoney.setText("¥ " + typesChooseLevelOneBeans.get(position).getPrice());
+            }else {
+                tvMoney.setText("¥ " + shopDetailBean.getPrice());
+            }
+            StringBuffer sb = new StringBuffer();
+            chooseGuigeColor = typesChooseLevelOneBeans.get(position).getName();
+            tvHasChoose.setText(sb.append("已选择:").append(typesChooseLevelOneBeans.get(position).getName()).toString());
+        }
+    };
 
-                    /**
-                     * 16.是否使用对话界面右上角默认动作. 使用默认动作返回：true, 否则返回false
-                     */
-                    @Override
-                    public Boolean useTopRightBtnDefaultAction() {
+    /**
+     * 二级点击监听
+     */
+    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            isChooseColor = true;
+            chooseGuigeColor = null;
+            chooseGuigeSize = null;
+            curposition = position;
+            typeGridAdapter.setSeclection(position);
+            typeGridAdapter.notifyDataSetChanged();
+            tvMoney.setText("¥ " + shopDetailBean.getPrice());
+            StringBuffer sb = new StringBuffer();
+            List<String> list = new ArrayList<>();
+            List<String> listSize = new ArrayList<>();
+            List<String> listPrice = new ArrayList<>();
+            for (int i = 0; i < typesChooseBeans.size(); i++) {
+                Logg.json(typesChooseBeans.get(position).getList());
+                typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(position).getList(), TypesChooseSizeBean.class);
+                for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
+                    listSize.add(typesChooseSizeBeans.get(j).getSize());
+                    list.add(typesChooseSizeBeans.get(j).getSize());
+                    listPrice.add(typesChooseSizeBeans.get(j).getPrice());
+                }
+            }
+            tvHasChoose.setText(sb.append("已选择:").append(typesChooseBeans.get(position).getName()).toString());
+            sizeChooseAdapter = new SizeChooseAdapter(ShopDetailActivty.this, StringUtil.removeDuplicate(listSize), StringUtil.removeDuplicate(listSize));
+            gridViewSize.setAdapter(sizeChooseAdapter);
+        }
+    };
 
-                        return true;
-                    }
+    /**
+     * 二级点击监听
+     */
+    AdapterView.OnItemClickListener onItemSizeClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (isChooseColor) {
+                sizeCurposition = position;
+                sizeChooseAdapter.setSeclection(position);
+                sizeChooseAdapter.notifyDataSetChanged();
+                StringBuffer sb = new StringBuffer();
+                StringBuffer sbMoney = new StringBuffer();
+                List<String> listSize = new ArrayList<>();
+                List<String> listPrice = new ArrayList<>();
+                for (int i = 0; i < typesChooseSizeBeans.size(); i++) {
+                    Logg.json(typesChooseSizeBeans.get(position).getPrice());
+//                    typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(position).getList(), TypesChooseSizeBean.class);
+//                    for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
+                        listSize.add(typesChooseSizeBeans.get(i).getSize());
+                        listPrice.add(typesChooseSizeBeans.get(i).getPrice());
+//                    }
+                }
 
-                    /**
-                     * 17.点击对话界面右上角按钮动作，依赖于 上面一个函数的返回结果
-                     */
-                    @Override
-                    public void OnChatActivityTopRightButtonClicked() {
-                        // TODO Auto-generated method stub
-                        Log.d("KFMainActivity", "右上角回调接口调用");
-
-                    }
-
-                    /**
-                     * 18.点击商品详情图片回调函数
-                     */
-                    @Override
-                    public void OnECGoodsImageViewClicked(String imageViewURL) {
-                        // TODO Auto-generated method stub
-
-                        Log.d("KFMainActivity", "OnECGoodsImageViewClicked" + imageViewURL);
-
-                    }
-
-                    /**
-                     * 19.点击商品详情简介回调函数
-                     */
-                    @Override
-                    public void OnECGoodsTitleDetailClicked(String titleDetailString) {
-                        // TODO Auto-generated method stub
-                        Log.d("KFMainActivity", "OnECGoodsIntroductionClicked" + titleDetailString);
-
-                    }
-
-                    /**
-                     * 20.点击商品详情价格回调函数
-                     */
-                    @Override
-                    public void OnECGoodsPriceClicked(String priceString) {
-                        // TODO Auto-generated method stub
-                        Log.d("KFMainActivity", "OnECGoodsPriceClicked" + priceString);
-
-                    }
-
-                    /**
-                     * 21.点击商品详情布局回调函数
-                     */
-                    @Override
-                    public void OnEcGoodsInfoClicked(String callbackId) {
-                        // TODO Auto-generated method stub
-                        Log.d("KFMainActivity", "OnEcGoodsInfoClicked" + callbackId);
-
-                    }
-
-                    /**
-                     * 用户点击会话页面下方“常见问题”按钮时，是否使用自定义action，如果返回true,
-                     * 则默认action将不起作用，会调用下方OnFaqButtonClicked函数
-                     */
-                    public Boolean userSelfFaqAction() {
-                        return false;
-                    }
-
-                    /**
-                     * 用户点击“常见问题”按钮时，自定义action回调函数接口
-                     */
-                    @Override
-                    public void OnFaqButtonClicked() {
-                        Log.d("KFMainActivity", "OnFaqButtonClicked");
-                    }
-
-                });
-
-    }
+                if (!listPrice.get(position).equals("")) {
+                    tvMoney.setText(sbMoney.append("¥ ").append(listPrice.get(position).toString()));
+                }else {
+                    tvMoney.setText(sbMoney.append("¥ ").append(shopDetailBean.getPrice()));
+                }
+                tvHasChoose.setText(sb.append("已选择:").append(typesChooseBeans.get(curposition).getName()).append(" ").append(listSize.get(position).toString()).toString());
+                chooseGuigeColor = typesChooseBeans.get(curposition).getName();
+                chooseGuigeSize = listSize.get(position).toString();
+            } else {
+                StringUtil.showToast(ShopDetailActivty.this, "请选择商品颜色");
+            }
+        }
+    };
+//        //"<img border=\\\"0\" src=\"" + shopDetailBean.getImgurl() + "\" />   <p>商品名称：" + shopDetailBean.getTitle() + "</p> <p>\\"+shopDetailBean.getPrice()+"</p> "
+//        mKefuDescription = "<img border='0' src='" + shopDetailBean.getImgurl() + "' /> <p>商品名称：" + shopDetailBean.getTitle() + " </p>   <p>商品价格：" + shopDetailBean.getPrice() + "</p> ";
 }

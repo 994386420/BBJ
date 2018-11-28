@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bbk.Bean.ZeroBuyBean;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.R;
+import com.bbk.activity.ZiYingZeroBuyDetailActivty;
 import com.bbk.model.view.CustomProgressBar;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.StringUtil;
@@ -188,20 +189,56 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
                     if (zeroBuyBean.getBili().equals("100")) {
                         StringUtil.showToast(context,"已经抢完了！");
                     }else {
-                        intent = new Intent(context, IntentActivity.class);
-                        if (zeroBuyBean.getTitle() != null) {
-                            intent.putExtra("title", zeroBuyBean.getTitle());
+//                        intent = new Intent(context, IntentActivity.class);
+//                        if (zeroBuyBean.getTitle() != null) {
+//                            intent.putExtra("title", zeroBuyBean.getTitle());
+//                        }
+//                        if (zeroBuyBean.getRowkey() != null) {
+//                            intent.putExtra("groupRowKey", zeroBuyBean.getRowkey());
+//                        }
+//                        intent.putExtra("isczg", "0");
+//                        intent.putExtra("tljid", zeroBuyBean.getId());
+//                        if (zeroBuyBean.getBprice() != null) {
+//                            intent.putExtra("bprice", zeroBuyBean.getBprice());
+//                            intent.putExtra("bprice", zeroBuyBean.getBprice());
+//                        }
+//                        context.startActivity(intent);
+                        if (zeroBuyBean.getZeroBuyDomain() != null){
+                            if (zeroBuyBean.getZeroBuyDomain().equals("taobao")){
+                                intent = new Intent(context, IntentActivity.class);
+                                if (zeroBuyBean.getTitle() != null) {
+                                    intent.putExtra("title", zeroBuyBean.getTitle());
+                                }
+                                if (zeroBuyBean.getRowkey() != null) {
+                                    intent.putExtra("groupRowKey", zeroBuyBean.getRowkey());
+                                }
+                                intent.putExtra("isczg", "0");
+                                intent.putExtra("tljid", zeroBuyBean.getId());
+                                if (zeroBuyBean.getBprice() != null) {
+                                    intent.putExtra("bprice", zeroBuyBean.getBprice());
+                                }
+                                context.startActivity(intent);
+                            }else {
+                                intent = new Intent(context, ZiYingZeroBuyDetailActivty.class);
+                                intent.putExtra("gid", zeroBuyBean.getGid());
+                                intent.putExtra("id", zeroBuyBean.getId());
+                                context.startActivity(intent);
+                            }
+                        }else {
+                            intent = new Intent(context, IntentActivity.class);
+                            if (zeroBuyBean.getTitle() != null) {
+                                intent.putExtra("title", zeroBuyBean.getTitle());
+                            }
+                            if (zeroBuyBean.getRowkey() != null) {
+                                intent.putExtra("groupRowKey", zeroBuyBean.getRowkey());
+                            }
+                            intent.putExtra("isczg", "0");
+                            intent.putExtra("tljid", zeroBuyBean.getId());
+                            if (zeroBuyBean.getBprice() != null) {
+                                intent.putExtra("bprice", zeroBuyBean.getBprice());
+                            }
+                            context.startActivity(intent);
                         }
-                        if (zeroBuyBean.getRowkey() != null) {
-                            intent.putExtra("groupRowKey", zeroBuyBean.getRowkey());
-                        }
-                        intent.putExtra("isczg", "0");
-                        intent.putExtra("tljid", zeroBuyBean.getId());
-                        if (zeroBuyBean.getBprice() != null) {
-                            intent.putExtra("bprice", zeroBuyBean.getBprice());
-                            intent.putExtra("bprice", zeroBuyBean.getBprice());
-                        }
-                        context.startActivity(intent);
                     }
                 }
             });

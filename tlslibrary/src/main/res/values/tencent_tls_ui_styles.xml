@@ -1,6 +1,0 @@
-<resources>
-
-    <style name="tencent_tls_ui_theme" parent="android:Theme.Holo.Light.NoActionBar">
-    </style>
-
-</resources>

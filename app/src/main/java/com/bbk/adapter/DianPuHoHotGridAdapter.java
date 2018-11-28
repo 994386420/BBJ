@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.activity.R;
 import com.bbk.activity.ShopDetailActivty;
+import com.bbk.view.AdaptionSizeTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 
@@ -63,7 +64,7 @@ public class DianPuHoHotGridAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
             return shopDianpuBeans.size();
-        }else {
+        } else {
             return 0;
         }
     }
@@ -92,6 +93,8 @@ public class DianPuHoHotGridAdapter extends RecyclerView.Adapter {
         TextView tvSale;
         @BindView(R.id.tv_sale1)
         TextView tvSale1;
+        @BindView(R.id.tv_youhui)
+        AdaptionSizeTextView tvYouhui;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -123,6 +126,12 @@ public class DianPuHoHotGridAdapter extends RecyclerView.Adapter {
             viewHolder.tvSale1.setVisibility(View.VISIBLE);
             viewHolder.tvSale1.setText(shopTuijianBean.getSale() + "人已买");
             viewHolder.tvSale1.setVisibility(View.GONE);
+            if (shopTuijianBean.getYouhui() != null && !shopTuijianBean.getYouhui().equals("")) {
+                viewHolder.tvYouhui.setVisibility(View.VISIBLE);
+                viewHolder.tvYouhui.setText(shopTuijianBean.getYouhui());
+            }else {
+                viewHolder.tvYouhui.setVisibility(View.INVISIBLE);
+            }
             Glide.with(context)
                     .load(shopTuijianBean.getImgurl())
                     .priority(Priority.HIGH)

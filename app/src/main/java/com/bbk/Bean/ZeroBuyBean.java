@@ -17,6 +17,24 @@ public class ZeroBuyBean {
     private String domain;
     private String price;
     private String bili;
+    private String zeroBuyDomain;
+    private String gid;
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
+    }
+
+    public String getZeroBuyDomain() {
+        return zeroBuyDomain;
+    }
+
+    public void setZeroBuyDomain(String zeroBuyDomain) {
+        this.zeroBuyDomain = zeroBuyDomain;
+    }
 
     public String getBili() {
         return bili;

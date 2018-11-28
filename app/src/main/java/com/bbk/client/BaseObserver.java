@@ -15,7 +15,6 @@ public abstract class BaseObserver<T> implements Observer<T> {
     }
     @Override
     public void onError(Throwable e) {
-//        Log.e("lvr", e.getMessage());
         // todo error somthing
         if(e instanceof ExceptionHandle.ResponeThrowable){
             onError((ExceptionHandle.ResponeThrowable)e);
@@ -26,8 +25,6 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onSubscribe(Disposable d) {
-//        Toast.makeText(context, "建立连接", Toast.LENGTH_SHORT).show();
-
         //可以弹出Dialog 提示正在加载
         showDialog();
 
@@ -39,8 +36,6 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
-
-//        Toast.makeText(context, "请求完毕", Toast.LENGTH_SHORT).show();
         //可以取消Dialog 加载完毕
         hideDialog();
     }

@@ -85,41 +85,41 @@ public class MyListView extends ListView{
     float down = 0;
     float y;
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                down = event.getRawY();
-
-                getParent().requestDisallowInterceptTouchEvent(true);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                y = event.getRawY();
-                if (isTop()) {
-                    if (y - down > 1) {
-//                        到顶端,向下滑动 把事件教给父类
-                        getParent().requestDisallowInterceptTouchEvent(false);
-                    } else {
-                        //                        到顶端,向上滑动 把事件拦截 由自己处理
-                        getParent().requestDisallowInterceptTouchEvent(true);
-                    }
-                }
-
-                if (isBottom()) {
-                    if (y - down > 1) {
-//                        到底端,向下滑动 把事件拦截 由自己处理
-                        getParent().requestDisallowInterceptTouchEvent(true);
-                    } else {
-//                        到底端,向上滑动 把事件教给父类
-                        getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-
-        return super.dispatchTouchEvent(event);
-    }
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent event) {
+//
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                down = event.getRawY();
+//
+//                getParent().requestDisallowInterceptTouchEvent(true);
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                y = event.getRawY();
+//                if (isTop()) {
+//                    if (y - down > 1) {
+////                        到顶端,向下滑动 把事件教给父类
+//                        getParent().requestDisallowInterceptTouchEvent(false);
+//                    } else {
+//                        //                        到顶端,向上滑动 把事件拦截 由自己处理
+//                        getParent().requestDisallowInterceptTouchEvent(true);
+//                    }
+//                }
+//
+//                if (isBottom()) {
+//                    if (y - down > 1) {
+////                        到底端,向下滑动 把事件拦截 由自己处理
+//                        getParent().requestDisallowInterceptTouchEvent(true);
+//                    } else {
+////                        到底端,向上滑动 把事件教给父类
+//                        getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//
+//        return super.dispatchTouchEvent(event);
+//    }
 }

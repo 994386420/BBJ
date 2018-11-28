@@ -18,7 +18,6 @@ import com.bbk.Bean.PubaDetailBean;
 import com.bbk.adapter.BidDetailListAdapter;
 import com.bbk.adapter.BidListDetailAdapter;
 import com.bbk.adapter.XjppAdapter;
-import com.bbk.chat.ui.ChatActivity;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -33,12 +32,7 @@ import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.HorizontalListView;
 import com.bbk.view.MyListView;
-import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
-import com.tencent.imsdk.TIMConversationType;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -427,7 +421,7 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
             if (i<3){
                 list.add(map);
                 //判断发镖用户id是否一致，一直则隐藏聊天
-                mcontact.setVisibility(View.VISIBLE);
+                mcontact.setVisibility(View.GONE);
                 final int finalI = i;
                 mcontact.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -437,10 +431,10 @@ public class BidBillDetailActivity extends BaseActivity implements ResultEvent,C
                             Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
                             startActivity(intent4);
                         }else {
-                            Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
-                            intent.putExtra("identify","bbj"+list.get(finalI).get("biduserid"));
-                            intent.putExtra("type", TIMConversationType.C2C);
-                            startActivity(intent);
+//                            Intent intent = new Intent(BidBillDetailActivity.this,ChatActivity.class);
+//                            intent.putExtra("identify","bbj"+list.get(finalI).get("biduserid"));
+//                            intent.putExtra("type", TIMConversationType.C2C);
+//                            startActivity(intent);
                         }
                     }
                 });

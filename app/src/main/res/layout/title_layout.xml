@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_marginBottom="8dp"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
         android:background="#FFF" >
 
         <ImageButton
@@ -24,7 +26,28 @@
             android:paddingRight="18dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/goback_btn" />
-
+        <com.bbk.view.ClearableEditText
+            android:layout_weight="1"
+            android:layout_toRightOf="@+id/title_back_btn"
+            android:id="@+id/topbar_search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/msearch_bg1"
+            android:drawablePadding="5.0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="55dp"
+            android:drawableRight="@mipmap/icon_clean"
+            android:ems="6"
+            android:layout_centerInParent="true"
+            android:hint="搜索商品"
+            android:imeOptions="actionSearch"
+            android:padding="7dp"
+            android:singleLine="true"
+            android:textColor="@color/tuiguang_color4"
+            android:textColorHint="@color/tuiguang_color4"
+            android:textCursorDrawable="@drawable/text_cursor_color"
+            android:textSize="14sp"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"

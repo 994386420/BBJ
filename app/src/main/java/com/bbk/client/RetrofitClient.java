@@ -1,10 +1,14 @@
 package com.bbk.client;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
+import com.bbk.activity.MyApplication;
+import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.SystemUtil;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.io.File;
 import java.util.Map;
@@ -18,8 +22,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -113,7 +115,7 @@ public class RetrofitClient {
         } catch (Exception e) {
             Log.e("OKHttp", "Could not create http cache", e);
         }
-        //okhttp创建了
+        //okhttp创建
         okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(
                         new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
@@ -124,7 +126,7 @@ public class RetrofitClient {
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .build();
-        //retrofit创建了
+        //retrofit创建
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -133,513 +135,578 @@ public class RetrofitClient {
                 .build();
 
     }
+    /**
+     * make true current connect service is wifi
+     * @param mContext
+     * @return
+     */
+    private static boolean isWifi(Context mContext) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 统一参数传递
+     * @param parameters
+     * @return
+     */
+    private Map<String, String> getMap(Map<String, String> parameters){
+        String userId = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        String string =  SystemUtil.getDeviceBrand()+" "+SystemUtil.getSystemModel()+" android:"+SystemUtil.getSystemVersion();
+        if (userId != null) {
+        parameters.put("useridbbj", userId);
+        }else {
+        parameters.put("useridbbj", "");
+        }
+        parameters.put("areabbj","");
+        parameters.put("clientbbj","android");
+        parameters.put("phonesysbbj",string);
+        if (isWifi(MyApplication.getContext())) {
+            parameters.put("networkbbj", "wifi");
+        }else {
+            parameters.put("networkbbj", "流量");
+        }
+        return parameters;
+    }
 
     public  void queryAppIndexByType(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryAppIndexByType(parameters)
+        apiService.queryAppIndexByType(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void userSign(Map<String, String> parameters, Observer<?> observer) {
-        apiService.userSign(parameters)
+        apiService.userSign(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryAppIndexInfo(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryAppIndexInfo(parameters)
+        apiService.queryAppIndexInfo(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getPageList(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getPageList(parameters)
+        apiService.getPageList(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryBaoliaoMessage(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryBaoliaoMessage(parameters)
+        apiService.queryBaoliaoMessage(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryArticleByType(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryArticleByType(parameters)
+        apiService.queryArticleByType(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getSearchHotWord(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getSearchHotWord(parameters)
+        apiService.getSearchHotWord(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getPageListChaozhigou(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getPageListChaozhigou(parameters)
+        apiService.getPageListChaozhigou(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getAutoApp(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getAutoApp(parameters)
+        apiService.getAutoApp(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void querySysMessage(Map<String, String> parameters, Observer<?> observer) {
-        apiService.querySysMessage(parameters)
+        apiService.querySysMessage(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void readSysmsg(Map<String, String> parameters, Observer<?> observer) {
-        apiService.readSysmsg(parameters)
+        apiService.readSysmsg(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryIndex(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryIndex(parameters)
+        apiService.queryIndex(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryBidList(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryBidList(parameters)
+        apiService.queryBidList(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryBidByStatus(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryBidByStatus(parameters)
+        apiService.queryBidByStatus(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryJBiaoMsgByStatuss(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryJBiaoMsgByStatus(parameters)
+        apiService.queryJBiaoMsgByStatus(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void querySysTMessage(Map<String, String> parameters, Observer<?> observer) {
-        apiService.querySysTMessage(parameters)
+        apiService.querySysTMessage(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryPLMyRe(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryPLMyRe(parameters)
+        apiService.queryPLMyRe(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryPLOtherRe(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryPLOtherRe(parameters)
+        apiService.queryPLOtherRe(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void insertMessageRead(Map<String, String> parameters, Observer<?> observer) {
-        apiService.insertMessageRead(parameters)
+        apiService.insertMessageRead(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void insertWenzhangGuanzhu(Map<String, String> parameters, Observer<?> observer) {
-        apiService.insertWenzhangGuanzhu(parameters)
+        apiService.insertWenzhangGuanzhu(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void insertPL(Map<String, String> parameters, Observer<?> observer) {
-        apiService.insertPL(parameters)
+        apiService.insertPL(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryArticlesFootAndCollect(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryArticlesFootAndCollect(parameters)
+        apiService.queryArticlesFootAndCollect(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryBidDetail(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryBidDetail(parameters)
+        apiService.queryBidDetail(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryCatagTree(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryCatagTree(parameters)
+        apiService.queryCatagTree(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryYouhuilist(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryYouhuilist(parameters)
+        apiService.queryYouhuilist(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryAppGuanggao(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryAppGuanggao(parameters)
+        apiService.queryAppGuanggao(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryIndexMenu(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryIndexMenu(parameters)
+        apiService.queryIndexMenu(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
-    public  void queryIndexSeeByToken(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryIndexSeeByToken(parameters)
-                .compose(schedulersTransformer)
-//                .compose(transformer)
-                .subscribe(observer);
-    }
+//    public  void queryIndexSeeByToken(Map<String, String> parameters, Observer<?> observer) {
+//        apiService.queryIndexSeeByToken(getMap(parameters))
+//                .compose(schedulersTransformer)
+////                .compose(transformer)
+//                .subscribe(observer);
+//    }
     public  void queryIndexTuijianByToken(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryIndexTuijianByToken(parameters)
+        apiService.queryIndexTuijianByToken(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void checkExsistProduct(Map<String, String> parameters, Observer<?> observer) {
-        apiService.checkExsistProduct(parameters)
+        apiService.checkExsistProduct(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getBijiaArr(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getBijiaArr(parameters)
+        apiService.getBijiaArr(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void updateCooperationByUserid(Map<String, String> parameters, Observer<?> observer) {
-        apiService.updateCooperationByUserid(parameters)
+        apiService.updateCooperationByUserid(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryUserInfoMain(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryUserInfoMain(parameters)
+        apiService.queryUserInfoMain(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryUserBrokerage(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryUserBrokerage(parameters)
+        apiService.queryUserBrokerage(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void querySignFanLi(Map<String, String> parameters, Observer<?> observer) {
-        apiService.querySignFanLi(parameters)
+        apiService.querySignFanLi(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getMoneySignFanLi(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getMoneySignFanLi(parameters)
+        apiService.getMoneySignFanLi(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getJumpUrl(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getJumpUrl(parameters)
+        apiService.getJumpUrl(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryBrokerageDetail(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryBrokerageDetail(parameters)
+        apiService.queryBrokerageDetail(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void shareCpsInfo(Map<String, String> parameters, Observer<?> observer) {
-        apiService.shareCpsInfo(parameters)
+        apiService.shareCpsInfo(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryCompareByUrl(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryCompareByUrl(parameters)
+        apiService.queryCompareByUrl(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void parseCpsDomainMainUrl(Map<String, String> parameters, Observer<?> observer) {
-        apiService.parseCpsDomainMainUrl(parameters)
+        apiService.parseCpsDomainMainUrl(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryCpsShareList(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryCpsShareList(parameters)
+        apiService.queryCpsShareList(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void shareCpsInfos(Map<String, String> parameters, Observer<?> observer) {
-        apiService.shareCpsInfos(parameters)
+        apiService.shareCpsInfos(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryCpsOrderList(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryCpsOrderList(parameters)
+        apiService.queryCpsOrderList(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryCpsOrderDetail(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryCpsOrderDetail(parameters)
+        apiService.queryCpsOrderDetail(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void insertCpsOrderCheck(Map<String, String> parameters, Observer<?> observer) {
-        apiService.insertCpsOrderCheck(parameters)
+        apiService.insertCpsOrderCheck(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryYongjinListByUserid(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryYongjinListByUserid(parameters)
+        apiService.queryYongjinListByUserid(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void newInvitedFriend(Map<String, String> parameters, Observer<?> observer) {
-        apiService.newInvitedFriend(parameters)
+        apiService.newInvitedFriend(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void noticeInvitedUserSign(Map<String, String> parameters, Observer<?> observer) {
-        apiService.noticeInvitedUserSign(parameters)
+        apiService.noticeInvitedUserSign(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void queryCpsOrderCheck(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryCpsOrderCheck(parameters)
+        apiService.queryCpsOrderCheck(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void doShoppingCart(Map<String, String> parameters, Observer<?> observer) {
-        apiService.doShoppingCart(parameters)
+        apiService.doShoppingCart(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryProductDetailById(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryProductDetailById(parameters)
+        apiService.queryProductDetailById(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryShoppingCartByUserid(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryShoppingCartByUserid(parameters)
+        apiService.queryShoppingCartByUserid(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryProductListByKeyword(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryProductListByKeyword(parameters)
+        apiService.queryProductListByKeyword(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void queryMyOrder(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryMyOrder(parameters)
+        apiService.queryMyOrder(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void deleteMyOrder(Map<String, String> parameters, Observer<?> observer) {
-        apiService.deleteMyOrder(parameters)
+        apiService.deleteMyOrder(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryMyOrderDetail(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryMyOrderDetail(parameters)
+        apiService.queryMyOrderDetail(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryMyLogistics(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryMyLogistics(parameters)
+        apiService.queryMyLogistics(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryDianpuMainInfo(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryDianpuMainInfo(parameters)
+        apiService.queryDianpuMainInfo(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void queryIndexMain(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryIndexMain(parameters)
+        apiService.queryIndexMain(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryMyOrderToPay(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryMyOrderToPay(parameters)
+        apiService.queryMyOrderToPay(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getOrderInfo(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getOrderInfo(parameters)
+        apiService.getOrderInfo(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getOrderInfoByJinbi(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getOrderInfoByJinbi(parameters)
+        apiService.getOrderInfoByJinbi(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void queryAddro(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryAddro(parameters)
+        apiService.queryAddro(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void removeAddr(Map<String, String> parameters, Observer<?> observer) {
-        apiService.removeAddr(parameters)
+        apiService.removeAddr(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void modifyAddr(Map<String, String> parameters, Observer<?> observer) {
-        apiService.modifyAddr(parameters)
+        apiService.modifyAddr(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void queryUserCenter(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryUserCenter(parameters)
+        apiService.queryUserCenter(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void refundGoods(Map<String, String> parameters, Observer<?> observer) {
-        apiService.refundGoods(parameters)
+        apiService.refundGoods(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void queryPLByProductid(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryPLByProductid(parameters)
+        apiService.queryPLByProductid(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void insertPinlun(Map<String, String> parameters, Observer<?> observer) {
-        apiService.insertPinlun(parameters)
+        apiService.insertPinlun(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void receiptGoods(Map<String, String> parameters, Observer<?> observer) {
-        apiService.receiptGoods(parameters)
+        apiService.receiptGoods(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void queryRefundProgress(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryRefundProgress(parameters)
+        apiService.queryRefundProgress(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void getPageListChaozhigou99Types(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getPageListChaozhigou99Types(parameters)
+        apiService.getPageListChaozhigou99Types(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void getPageListChaozhigou99(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getPageListChaozhigou99(parameters)
+        apiService.getPageListChaozhigou99(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void parseCpsDianpuMainUrl(Map<String, String> parameters, Observer<?> observer) {
-        apiService.parseCpsDianpuMainUrl(parameters)
+        apiService.parseCpsDianpuMainUrl(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void getSurpriseGift(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getSurpriseGift(parameters)
+        apiService.getSurpriseGift(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void remindFriendBuyGoods(Map<String, String> parameters, Observer<?> observer) {
-        apiService.remindFriendBuyGoods(parameters)
+        apiService.remindFriendBuyGoods(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void synchroShoppingCart(Map<String, String> parameters, Observer<?> observer) {
-        apiService.synchroShoppingCart(parameters)
+        apiService.synchroShoppingCart(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getShoppingCartUrlByDomain(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getShoppingCartUrlByDomain(parameters)
+        apiService.getShoppingCartUrlByDomain(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void queryCpsZeroBuy(Map<String, String> parameters, Observer<?> observer) {
-        apiService.queryCpsZeroBuy(parameters)
+        apiService.queryCpsZeroBuy(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
     public  void getTaolijinUrl0Buy(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getTaolijinUrl0Buy(parameters)
+        apiService.getTaolijinUrl0Buy(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);
     }
 
     public  void getTaolijinUrlNormal(Map<String, String> parameters, Observer<?> observer) {
-        apiService.getTaolijinUrlNormal(parameters)
+        apiService.getTaolijinUrlNormal(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryZiyingListByKeyword(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryZiyingListByKeyword(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryZiyingProducttype(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryZiyingProducttype(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void getZeroBuyOrder(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getZeroBuyOrder(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryCpsZeroBuyNew(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCpsZeroBuyNew(getMap(parameters))
                 .compose(schedulersTransformer)
 //                .compose(transformer)
                 .subscribe(observer);

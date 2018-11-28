@@ -127,9 +127,9 @@ public class HomeMessageFragment extends BaseViewPagerFragment implements Result
     }
     public void initViewPagerData() {
         BidInformFragment bidInformFragment = new BidInformFragment();
-        BidChatFragment bidChatFragment = new BidChatFragment();
+//        BidChatFragment bidChatFragment = new BidChatFragment();
         fragments.add(bidInformFragment);
-        fragments.add(bidChatFragment);
+//        fragments.add(bidChatFragment);
         mPagerAdapter.notifyDataSetChanged();
     }
 

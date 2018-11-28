@@ -172,7 +172,18 @@ public class CommonLoadingView extends FrameLayout {
             emptyView.setVisibility(GONE);
         }
     }
-
+    public void loadSuccess(boolean isEmpty,String message){
+        emptyText.setText(message);
+        mallText.setVisibility(GONE);
+        loadingView.setVisibility(GONE);
+        loadingErrorView.setVisibility(GONE);
+        carText.setVisibility(GONE);
+        if (isEmpty) {
+            emptyView.setVisibility(VISIBLE);
+        }else{
+            emptyView.setVisibility(GONE);
+        }
+    }
     public void loadHomeSuccess(final Context context,String message,String message1,boolean isEmpty){
         emptyText.setText(message);
         mallText.setText(message1);

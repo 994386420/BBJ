@@ -51,10 +51,13 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
+import com.qiyukf.nimlib.sdk.NimIntent;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+
+import static com.bbk.model.MainActivity.consultService;
 
 
 public class WelcomeActivity extends BaseActivity2{
@@ -132,6 +135,7 @@ public class WelcomeActivity extends BaseActivity2{
 		 */
 		super.onCreate(savedInstanceState);
 		instance = this;
+		parseIntent();
 		//友盟统计
 //		MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
 		verifyStoragePermissions(this);
@@ -225,6 +229,21 @@ public class WelcomeActivity extends BaseActivity2{
 			if (grantResult == PackageManager.PERMISSION_DENIED) {
 				finish();
 			}
+		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		setIntent(intent);
+		parseIntent();
+	}
+
+	private void parseIntent() {
+		Intent intent = getIntent();
+		if (intent.hasExtra(NimIntent.EXTRA_NOTIFY_CONTENT)) {
+			consultService(this, null, null, null);
+			// 最好将intent清掉，以免从堆栈恢复时又打开客服窗口
+			setIntent(new Intent());
 		}
 	}
 
@@ -404,48 +423,48 @@ public class WelcomeActivity extends BaseActivity2{
 	private void loadData() {
 		TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 		String token = TelephonyMgr.getDeviceId();
-		queryIndexSeeByToken(token);
+//		queryIndexSeeByToken(token);
 //		queryIndexTuijianByToken(token);
 		loadhotKeyword("2");
 	}
-	private void queryIndexSeeByToken(String token) {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("token", token);
-		params.put("page", "1");
-		RetrofitClient.getInstance(this).createBaseApi().queryIndexSeeByToken(
-				params, new BaseObserver<String>(this) {
-					@Override
-					public void onNext(String s) {
-						try {
-							JSONObject jsonObject = new JSONObject(s);
-							if (jsonObject.optString("status").equals("1")) {
-								String content = jsonObject.optString("content");
-								if (content!= null && !"".equals(content)) {
-									SharedPreferencesUtil.putSharedData(
-											getApplicationContext(), "homedata",
-											"seelike", content);
-								}
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-					@Override
-					protected void hideDialog() {
-
-					}
-
-					@Override
-					protected void showDialog() {
-
-					}
-
-					@Override
-					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(WelcomeActivity.this, e.message);
-					}
-				});
-	}
+//	private void queryIndexSeeByToken(String token) {
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put("token", token);
+//		params.put("page", "1");
+//		RetrofitClient.getInstance(this).createBaseApi().queryIndexSeeByToken(
+//				params, new BaseObserver<String>(this) {
+//					@Override
+//					public void onNext(String s) {
+//						try {
+//							JSONObject jsonObject = new JSONObject(s);
+//							if (jsonObject.optString("status").equals("1")) {
+//								String content = jsonObject.optString("content");
+//								if (content!= null && !"".equals(content)) {
+//									SharedPreferencesUtil.putSharedData(
+//											getApplicationContext(), "homedata",
+//											"seelike", content);
+//								}
+//							}
+//						} catch (JSONException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//					@Override
+//					protected void hideDialog() {
+//
+//					}
+//
+//					@Override
+//					protected void showDialog() {
+//
+//					}
+//
+//					@Override
+//					public void onError(ExceptionHandle.ResponeThrowable e) {
+//						StringUtil.showToast(WelcomeActivity.this, e.message);
+//					}
+//				});
+//	}
 //	private void queryIndexTuijianByToken(String token) {
 //		Map<String, String> params = new HashMap<String, String>();
 //		params.put("token", token);

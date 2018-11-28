@@ -15,35 +15,31 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
-
 import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
-import com.appkefu.lib.interfaces.KFAPIs;
 import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
-import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.HomeActivity;
-import com.bbk.activity.IntentActivity;
-import com.bbk.activity.JumpDetailActivty;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.ShopDetailActivty;
-import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.UserSuggestionActivity;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.component.HomeAllComponent;
 import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeAllComponent7;
 import com.bbk.component.HomeBijiaComponent;
 import com.bbk.component.SimpleComponent;
+import com.bbk.component.ZiyingComponent;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.fragment.OnClickHomeListioner;
 import com.bbk.fragment.OnClickMallListioner;
+import com.bbk.model.MainActivity;
+import com.bbk.model.ShopFenleiActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.DianpuHomeActivity;
 import com.bbk.shopcar.DianpuTypesActivity;
@@ -53,6 +49,7 @@ import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bytedesk.ui.api.BDUiApi;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KelperTask;
@@ -176,7 +173,8 @@ public class HomeLoadUtil {
      * @throws Exception
      */
     public static void loaddianpuTag(final Context context, List<Map<String, String>> taglist, final JSONArray tag,ImageView mImageView1,ImageView mImageView2,ImageView mImageView3,ImageView mImageView4,ImageView mImageView5
-            ,TextView mTextView1 ,TextView mTextView2 ,TextView mTextView3 ,TextView mTextView4 ,TextView mTextView5,LinearLayout mLlLayout1,LinearLayout mLlLayout2,LinearLayout mLlLayout3,LinearLayout mLlLayout4,LinearLayout mLlLayout5) throws Exception {
+            ,ImageView mImageView6,ImageView mImageView7,ImageView mImageView8,TextView mTextView1 ,TextView mTextView2 ,TextView mTextView3 ,TextView mTextView4 ,TextView mTextView5,TextView mTextView6,TextView mTextView7,TextView mTextView8,
+                                     LinearLayout mLlLayout1,LinearLayout mLlLayout2,LinearLayout mLlLayout3, LinearLayout mLlLayout4,LinearLayout mLlLayout5,LinearLayout mLlLayout6,LinearLayout mLlLayout7,LinearLayout mLlLayout8) throws Exception {
         taglist.clear();
         Logg.json(tag.toString());
         for (int i = 0; i < tag.length(); i++) {
@@ -202,16 +200,25 @@ public class HomeLoadUtil {
         imglist.add(mImageView3);
         imglist.add(mImageView4);
         imglist.add(mImageView5);
+        imglist.add(mImageView6);
+        imglist.add(mImageView7);
+        imglist.add(mImageView8);
         textlist.add(mTextView1);
         textlist.add(mTextView2);
         textlist.add(mTextView3);
         textlist.add(mTextView4);
         textlist.add(mTextView5);
+        textlist.add(mTextView6);
+        textlist.add(mTextView7);
+        textlist.add(mTextView8);
         boxlist.add(mLlLayout1);
         boxlist.add(mLlLayout2);
         boxlist.add(mLlLayout3);
         boxlist.add(mLlLayout4);
         boxlist.add(mLlLayout5);
+        boxlist.add(mLlLayout6);
+        boxlist.add(mLlLayout7);
+        boxlist.add(mLlLayout8);
         for (int i = 0; i < boxlist.size(); i++) {
             final int position = i;
             TextView textView = textlist.get(position);
@@ -235,14 +242,19 @@ public class HomeLoadUtil {
                         if (NoFastClickUtils.isFastClick()){
                             StringUtil.showToast(context,"对不起，您的点击太快了，请休息一下");
                         }else {
-                            if (map.get("eventId").toString().equals("a2")) {
-                                Intent intent = new Intent(context, DianpuTypesActivity.class);
-                                intent.putExtra("tag", tag.toString());
-                                intent.putExtra("keyword", map.get("keyword").toString());
-                                intent.putExtra("position", position + "");
+                            if (position == 7) {
+                                Intent intent = new Intent(context, ShopFenleiActivity.class);
                                 context.startActivity(intent);
                             }else {
-                                EventIdIntentUtil.EventIdIntent(context, tag.getJSONObject(position));
+                                if (map.get("eventId").toString().equals("a2")) {
+                                    Intent intent = new Intent(context, DianpuTypesActivity.class);
+                                    intent.putExtra("tag", tag.toString());
+                                    intent.putExtra("keyword", map.get("keyword").toString());
+                                    intent.putExtra("position", position + "");
+                                    context.startActivity(intent);
+                                }else {
+                                    EventIdIntentUtil.EventIdIntent(context, tag.getJSONObject(position));
+                                }
                             }
                         }
                     } catch (Exception e) {
@@ -658,6 +670,33 @@ public class HomeLoadUtil {
         guide.setShouldCheckLocInWindow(true);
         guide.show((Activity) context);
     }
+    public static void showGuideViewZiying(final Context context, final View targetView3, final View targetView4, View targetView6) {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(targetView6)
+//                .setFullingViewId(R.id.ll_view_group)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingBottom(70)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingLeft(10)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+            }
+
+            @Override
+            public void onDismiss() {
+                HomeLoadUtil.showGuideView(context, targetView3, targetView4);
+            }
+        });
+
+        builder.addComponent(new ZiyingComponent()).addComponent(new HomeAllComponent7());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show((Activity) context);
+    }
 
 
 
@@ -784,7 +823,7 @@ public class HomeLoadUtil {
                                 context.startActivity(intent);
                                 break;
                             case 2:
-                                startChat(context);
+                                MainActivity.consultService(context, "", "",null);
                                 break;
                             case 3:
                                 intent = new Intent(context, UserSuggestionActivity.class);
@@ -796,25 +835,13 @@ public class HomeLoadUtil {
                 .showAsDropDown(view, -315, 0);
     }
 
-
-    private static void startChat(Context context) {
-        //
-        KFAPIs.startChat(context,
-                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
-                "比比鲸客服", // 2. 会话界面标题，可自定义
-                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
-                // 如果不想发送此信息，可以将此信息设置为""或者null
-                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
-                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
-                // 显示:true, 不显示:false
-                5, // 5. 默认显示消息数量
-                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
-                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
-                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
-                false, // 8. 默认机器人应答
-                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
-                null);
-
-    }
-
+    /**
+     * 联系客服
+     */
+//    public static void startChat(final Context context){
+//        String uId = "201811081303171";
+//        String wId = "201811081302381";
+//        String mTitle = "小鲸";
+//        BDUiApi.visitorStartChatActivity(context, uId, wId, mTitle);
+//    }
 }

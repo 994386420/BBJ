@@ -17,6 +17,7 @@ import com.bbk.util.ShareUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.MyWebView;
 import com.bbk.view.X5WebView;
+import com.logg.Logg;
 import com.tamic.jswebview.browse.JsWeb.CustomWebChromeClient;
 import com.tamic.jswebview.browse.JsWeb.CustomWebViewClient;
 import com.tamic.jswebview.view.ProgressBarWebView;
@@ -82,7 +83,7 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
         // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         // MyApplication.getInstance().addActivity(this);
-        content = getIntent().getStringExtra("url");
+        content = getIntent().getStringExtra("url").replace("\r\n\r\n","");
         if (content.contains("@@")){
             String[] split = content.split("@@");
             url = split[0];
@@ -150,24 +151,14 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
 
             @Override
             public void onClick(View arg0) {
-//                if (mPbWebview.canGoBack()) {
-//                    webViewLayout.goBack();
-//                } else {
+                if (mPbWebview.canGoBack()) {
+                    mPbWebview.goBack();
+                } else {
                     finish();
-//                }
+                }
             }
         });
-//        mPbWebview = $(R.id.mProgressBar);
         fengxiang.setOnClickListener(this);
-//        // 支持JS
-//        WebSettings settings = mPbWebview.getSettings();
-//        settings.setJavaScriptEnabled(true);
-//        // 支持屏幕缩放
-//        settings.setSupportZoom(true);
-//        settings.setBuiltInZoomControls(true);
-//        // 不显示webview缩放按钮
-//        settings.setDisplayZoomControls(false);
-
         loadWebPage(url);
     }
 
@@ -175,17 +166,12 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
         if (TextUtils.isEmpty(pageUrl)) {
             return;
         }
-
-//        WebSettings wSet = mPbWebview.getSettings();
-//        wSet.setJavaScriptEnabled(true);
-
         mPbWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (!isintent) {
                     if (url.contains("bbjtech://")) {
                         Uri uri = Uri.parse(url);
-
                         try {
                             JSONObject jsonObject = new JSONObject();
                             // String host = uri.getHost();
@@ -243,8 +229,6 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 Toast.makeText(WebViewActivity111.this, description, Toast.LENGTH_SHORT).show();
-                // super.onReceivedError(view, errorCode, description,
-                // failingUrl);
             }
 
         });
@@ -262,6 +246,7 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
                 String useid = SharedPreferencesUtil.getSharedData(
                         getApplicationContext(), "userInfor", "userID");
                 if (!TextUtils.isEmpty(useid)) {
+                    Logg.e(content);
                     ShareUtil.showShareDialog(v, this, "专业的网购比价、导购平台", title, shareurl,type);
                 }else{
                     Intent intent14 = new Intent(this, UserLoginNewActivity.class);
@@ -280,16 +265,13 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            if (webViewLayout.canGoBack()) {
-//                webViewLayout.goBack();
-//                return true;
-//            } else {
-                finish();
-//                webViewLayout.clearCache(true);
-//            }
+        if(keyCode == KeyEvent.KEYCODE_BACK && mPbWebview.canGoBack()){
+            mPbWebview.goBack();
+            return true;
+        }else{
+            finish();
         }
-        return super.onKeyDown(keyCode, event);
+        return true;
     }
 
 
@@ -306,54 +288,15 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         isintent = false;
         if (!TextUtils.isEmpty(userID)){
-            int i = url.indexOf("userid=");
-            url = url.substring(0,i) + "userid=" + userID;
-            mPbWebview.loadUrl(url);
-//            mPbWebview.postDelayed(new Runnable()
-//            {
-//                @Override
-//                public void run()
-//                {
-//                   mPbWebview.clearHistory();
-//                }
-//            }, 1000);
+//            int i = url.indexOf("userid=");
+//            url = url.substring(0,i) + "userid=" + userID;
+//            mPbWebview.loadUrl(url);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onDestroy() {
-//        if (webViewLayout != null) {
-//            webViewLayout.setVisibility(View.GONE);
-//            // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
-//            // destory()
-//            ViewParent parent = webViewLayout.getParent();
-//            if (parent != null) {
-//                ((ViewGroup) parent).removeView(webViewLayout);
-//            }
-//
-//            webViewLayout.stopLoading();
-//            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
-//            webViewLayout.getSettings().setJavaScriptEnabled(false);
-//            webViewLayout.clearHistory();
-//            webViewLayout.clearView();
-//            webViewLayout.clearCache(true);
-//            webViewLayout.removeAllViews();
-//
-//            try {
-//                webViewLayout.destroy();
-//            } catch (Throwable ex) {
-//
-//            }
-//        if (mPbWebview != null) {
-//            mPbWebview .destroy();
-////			mFl_web_view_layout.removeView(mWebView);
-//            ViewParent parent = mPbWebview .getParent();
-//            if (parent != null) {
-//                ((ViewGroup) parent).removeView(mPbWebview );
-//            }
-//            mPbWebview  = null;
-//        }
         if(null!=mPbWebview) {
             if (null != this.mPbWebview.getView()) {
                 this.mPbWebview.getView().setVisibility(View.GONE);

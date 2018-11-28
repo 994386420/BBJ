@@ -22,6 +22,9 @@ allprojects {
             url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
         }
         maven { url "https://raw.githubusercontent.com/HyphenateInc/Hyphenate-SDK-Android/master/repository" }
+        maven {
+            url  "https://dl.bintray.com/jackning/maven"
+        }
         google()
     }
 }
@@ -29,4 +32,41 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+//添加此处 解决rootProject.ext.compileSdkVersion 不存在的问题
+//ext {
+//    compileSdkVersion = 26
+//    buildToolsVersion = "26.0.2"
+//    minSdkVersion = 15
+//    targetSdkVersion = 21
+//}
+ext {
+    // Sdk and tools
+    minSdkVersion = 16
+    targetSdkVersion = 21
+    compileSdkVersion = 26
+    buildToolsVersion = '26.0.2'
+    supportLibVersion = '27.0.1'
+
+    archLifecycleVersion = "1.1.1"
+    archRoomVersion = "1.0.0"
+}
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name
+
+                    .contains('multidex') ) {
+                details.useVersion "27.0.2"
+            }
+            if (details.requested.group == 'android.arch.lifecycle'
+                    && !details.requested.name
+
+                    .contains('multidex') ) {
+                details.useVersion "1.1.1"
+            }
+        }
+    }
 }

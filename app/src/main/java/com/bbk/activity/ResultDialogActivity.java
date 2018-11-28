@@ -27,7 +27,6 @@ import com.bbk.util.JumpIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.MyListView;
-import com.tencent.qcloud.sdk.Constant;
 import com.zyao89.view.zloading.ZLoadingView;
 import com.zyao89.view.zloading.Z_TYPE;
 

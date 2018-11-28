@@ -29,8 +29,6 @@ import com.bbk.client.BaseApiService;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;

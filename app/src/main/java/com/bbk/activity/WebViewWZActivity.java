@@ -463,10 +463,10 @@ public class WebViewWZActivity extends BaseActivity implements OnClickListener, 
 	        }
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		 if (userID != null && !userID.equals("")) {
-			 int i = url.indexOf("userid=");
-			 url = url.substring(0, i) + "userid=" + userID;
-			 isintent = false;
-			 mPbWebview.loadUrl(url);
+//			 int i = url.indexOf("userid=");
+//			 url = url.substring(0, i) + "userid=" + userID;
+//			 isintent = false;
+//			 mPbWebview.loadUrl(url);
 		 }
 //		mPbWebview.postDelayed(new Runnable()
 //        {

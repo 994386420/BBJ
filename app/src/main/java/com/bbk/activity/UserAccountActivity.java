@@ -396,10 +396,10 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 							DialogSingleUtil.show(UserAccountActivity.this,"退出中...");
 							MobclickAgent.onProfileSignOff();
 							StatService.onEvent(UserAccountActivity.this, "loginout", "退出登录:个人设置页面");
-							Tencent mTencent = Tencent.createInstance(Constants.QQ_APP_ID, UserAccountActivity.this);
-							mTencent.logout(getApplicationContext());
+//							Tencent mTencent = Tencent.createInstance(Constants.QQ_APP_ID, UserAccountActivity.this);
+//							mTencent.logout(getApplicationContext());
 							//退出腾讯云通讯
-							TencentLoginUtil.Loginout(getApplicationContext());
+//							TencentLoginUtil.Loginout(getApplicationContext());
 							//清除用户信息
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "userInfor");
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "isFirstClick");

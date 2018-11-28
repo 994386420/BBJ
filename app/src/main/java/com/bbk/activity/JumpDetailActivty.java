@@ -22,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.baichuan.android.trade.AlibcTrade;
+import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
+import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
@@ -35,6 +37,7 @@ import com.bbk.adapter.NewCzgGridAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageGuanggaoLoader;
 import com.bbk.util.HomeLoadUtil;
@@ -69,7 +72,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,7 +147,7 @@ public class JumpDetailActivty extends BaseActivity {
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
-    private String url, rowkey, domain, quans, jumpdomain, zuan,tljNumber,isOldUser;
+    private String url, rowkey, domain, quans, jumpdomain, zuan,tljNumber,isOldUser,title,bPrice;
     private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
     private Map<String, String> exParams;//yhhpass参数
     public static String Flag = "";
@@ -205,6 +210,8 @@ public class JumpDetailActivty extends BaseActivity {
         zuan = jumpBean.getYongjin();
         tljNumber = jumpBean.getTljNumber();
         isOldUser = jumpBean.getIsOldUser();
+        title = jumpBean.getTitle();
+        bPrice = jumpBean.getBprice();
         if (rowkey != null && jumpBean.getTitle() != null) {
             getIndexByType(rowkey, jumpBean.getTitle());
         }
@@ -584,18 +591,13 @@ public class JumpDetailActivty extends BaseActivity {
     protected void onActivityResult(int arg0, int arg1, Intent arg2) {
         switch (arg0) {
             case 1:
-                if (LogFlag.equals("3")) {
-                    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                    if (!TextUtils.isEmpty(userID)) {
-                        showZeroBuyDiscountDialog(JumpDetailActivty.this);
-                    }
-                }else {
                     getJumpUrl();
-                }
                 break;
         }
         super.onActivityResult(arg0, arg1, arg2);
     }
+
+
 
     /**
      * 成为合伙人
@@ -773,19 +775,6 @@ public class JumpDetailActivty extends BaseActivity {
             LinearLayout img_close = updataDialog.findViewById(R.id.ll_close);
             ImageView imgLoading = updataDialog.findViewById(R.id.img_loading);
             ImageView imageView = updataDialog.findViewById(R.id.img_app);
-//            AdaptionSizeTextView adaptionSizeTextView = updataDialog.findViewById(R.id.quan);
-//            if (domain.equals("jd")){
-//                jumpdomain = "jumpjd";
-//            }else if (domain.equals("tmall")){
-//                jumpdomain = "jumptmall";
-//            }else if (domain.equals("taobao")){
-//                jumpdomain = "jumptaobao";
-//            }
-//            if (quans != null && !quans.equals("") && !quans.equals("0")) {
-//                adaptionSizeTextView.setVisibility(View.VISIBLE);
-//            } else {
-//                adaptionSizeTextView.setVisibility(View.INVISIBLE);
-//            }
             AdaptionSizeTextView adaptionSizeTextViewQuan = updataDialog.findViewById(R.id.quan);
             AdaptionSizeTextView adaptionSizeTextViewQuan1 = updataDialog.findViewById(R.id.quan1);
             if (domain.equals("jd")) {
@@ -839,10 +828,6 @@ public class JumpDetailActivty extends BaseActivity {
                         @Override
                         public void run() {
                             if (cancleJump) {
-//                                KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-//                                        url,
-//                                        mKeplerAttachParameter,
-//                                        mOpenAppAction);
                                 updataDialog.dismiss();
                                 try {
                                     KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter, JumpDetailActivty.this, mOpenAppAction, 1500);
@@ -863,7 +848,6 @@ public class JumpDetailActivty extends BaseActivity {
                         intent.putExtra("rowkey", rowkey);
                     }
                     startActivity(intent);
-//                    updataDialog.dismiss();
                 }
             }
 
@@ -878,7 +862,6 @@ public class JumpDetailActivty extends BaseActivity {
             }
             ClipboardManager cm = (ClipboardManager) JumpDetailActivty.this.getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setText(wenan);
-//                                            StringUtil.showToast(JumpDetailActivty.this,"标题已复制，分享可直接粘贴");
             returnBitMap(shareBean, wenan, shareBean.getImgUrl());
         }
     }
@@ -1018,8 +1001,15 @@ public class JumpDetailActivty extends BaseActivity {
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
                                 JumpBean jumpBean = JSON.parseObject(content, JumpBean.class);
+                                isOldUser = jumpBean.getIsOldUser();
                                 url = jumpBean.getUrl();
                                 switch (LogFlag) {
+                                    case "3":
+                                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                                        if (!TextUtils.isEmpty(userID)) {
+                                            showZeroBuyDiscountDialog(JumpDetailActivty.this);
+                                        }
+                                        break;
                                     case "1":
                                         llShare.setClickable(false);
                                         cancleJump = true;
@@ -1043,10 +1033,6 @@ public class JumpDetailActivty extends BaseActivity {
                                                     public void run() {
                                                         if (cancleJump) {
                                                             updataDialog.dismiss();
-//                                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-//                                                                    url,
-//                                                                    mKeplerAttachParameter,
-//                                                                    mOpenAppAction);
                                                             try {
                                                                 KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter, JumpDetailActivty.this, mOpenAppAction, 1500);
                                                             } catch (KeplerBufferOverflowException e) {
@@ -1146,7 +1132,26 @@ public class JumpDetailActivty extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             updataDialog.dismiss();
-                            getTaolijinUrl0Buy(context);
+                            if (!AlibcLogin.getInstance().isLogin()) {
+                                DialogSingleUtil.show(context);
+                                final AlibcLogin alibcLogin = AlibcLogin.getInstance();
+                                alibcLogin.showLogin(JumpDetailActivty.this, new AlibcLoginCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        DialogSingleUtil.dismiss(0);
+                                        StringUtil.showToast(context, "登录成功 ");
+                                        getTaolijinUrl0Buy(context);
+                                    }
+
+                                    @Override
+                                    public void onFailure(int code, String msg) {
+                                        DialogSingleUtil.dismiss(0);
+                                        StringUtil.showToast(context, "登录失败 ");
+                                    }
+                                });
+                            }else {
+                                getTaolijinUrl0Buy(context);
+                            }
                         }
                     });
                 }

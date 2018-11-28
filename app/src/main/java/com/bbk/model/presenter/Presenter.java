@@ -12,4 +12,6 @@ public interface Presenter {
     void attachView(View view);
     void attachTypesView(View view);
     void attachZeroBuyView(View view);
+    void attachDianpuSearchView(View view);
+    void attachZiyingFelileiView(View view);
 }

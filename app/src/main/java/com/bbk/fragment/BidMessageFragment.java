@@ -21,9 +21,6 @@ import android.widget.TextView;
 import com.bbk.activity.BidMyListDetailActivity;
 import com.bbk.activity.R;
 import com.bbk.adapter.MyFragmentPagerAdapter;
-import com.bbk.chat.ui.ContactFragment;
-import com.bbk.chat.ui.ConversationFragment;
-import com.bbk.chat.ui.SettingFragment;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.DataFlow6;
 import com.bbk.flow.ResultEvent;
@@ -134,9 +131,9 @@ public class BidMessageFragment extends BaseViewPagerFragment implements ResultE
     }
     public void initViewPagerData() {
         BidInformFragment bidInformFragment = new BidInformFragment();
-        BidChatFragment bidChatFragment = new BidChatFragment();
+//        BidChatFragment bidChatFragment = new BidChatFragment();
         fragments.add(bidInformFragment);
-        fragments.add(bidChatFragment);
+//        fragments.add(bidChatFragment);
         mPagerAdapter.notifyDataSetChanged();
     }
 

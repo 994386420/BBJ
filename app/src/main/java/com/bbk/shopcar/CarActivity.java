@@ -202,7 +202,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         tablayout.setxTabDisplayNum(3);
         tablayout.addTab(tablayout.newTab().setText("淘宝购物车"));
         tablayout.addTab(tablayout.newTab().setText("京东购物车"));
-        tablayout.addTab(tablayout.newTab().setText("鲸城购物车"));
+        tablayout.addTab(tablayout.newTab().setText("自营购物车"));
         tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(XTabLayout.Tab tab) {
@@ -255,6 +255,13 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
 
             }
         });
+        /**
+         * 从商城进入购物车跳自营
+         */
+        if (getIntent().getStringExtra("ziying") != null){
+            XTabLayout.Tab tabAt = tablayout.getTabAt(2);
+            tabAt.select();
+        }
     }
 
     private void initPtrFrame() {
@@ -1047,7 +1054,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                     llBottomCar.setVisibility(View.VISIBLE);
                                     titleText2.setVisibility(View.VISIBLE);
                                     for (int i = 0; i < goods.size(); i++) {
-                                        groups.add(new StoreInfo(goods.get(i).getDianpuid(), goods.get(i).getDianpu()));
+                                        groups.add(new StoreInfo(goods.get(i).getDianpuid(), goods.get(i).getDianpu(),goods.get(i).getDianpuyouhui()));
                                         for (int j = 0; j <= i; j++) {
 //                                        Logg.json(goods.get(i).getList());
                                             List<GoodsInfo> goods1 = JSON.parseArray(goods.get(i).getList(), GoodsInfo.class);

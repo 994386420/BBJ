@@ -1,6 +1,7 @@
 package com.bbk.model;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -40,6 +41,8 @@ import com.bbk.Bean.CheckBean;
 import com.bbk.Bean.MiaoShaBean;
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.Bean.PinTuanBean;
+import com.bbk.Bean.PinpaiBean;
+import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.Bean.TagBean;
 import com.bbk.Bean.ZeroBuyBean;
 import com.bbk.activity.BidHomeActivity;
@@ -51,6 +54,8 @@ import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
 import com.bbk.activity.UserLoginNewActivity;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.adapter.DianPuHoHotGridAdapter;
+import com.bbk.adapter.DianPuHomePinpaiGridAdapter;
 import com.bbk.adapter.MyHomeTagAdapter;
 import com.bbk.adapter.NewCzgAdapter;
 import com.bbk.adapter.TypeGridAdapter;
@@ -62,17 +67,24 @@ import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.fragment.BaseViewPagerFragment;
 import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.HomeLoadUtil;
+import com.bbk.util.QiYuCache;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.RushBuyCountDownTimerHomeView;
 import com.bumptech.glide.Glide;
+import com.bytedesk.core.api.BDCoreApi;
+import com.bytedesk.core.callback.LoginCallback;
 import com.logg.Logg;
+import com.qiyukf.unicorn.api.ConsultSource;
+import com.qiyukf.unicorn.api.ProductDetail;
+import com.qiyukf.unicorn.api.Unicorn;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -217,6 +229,34 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     LinearLayout llZerobuy;
     @BindView(R.id.zerobuy_recyclerview)
     RecyclerView zerobuyRecyclerview;
+    @BindView(R.id.ll_zerobuy_new)
+    LinearLayout llZerobuyNew;
+    @BindView(R.id.zerobuy_new_recyclerview)
+    RecyclerView zerobuyNewRecyclerview;
+    @BindView(R.id.view_zerobuy_new)
+    View viewZerobuyNew;
+    @BindView(R.id.ll_everyday_goodsshop)
+    LinearLayout llEverydayGoodsshop;
+    @BindView(R.id.everyday_goodsshop_recyclerview)
+    RecyclerView everydayGoodsshopRecyclerview;
+    @BindView(R.id.view_everyday_goodsshop)
+    View viewEverydayGoodsshop;
+    @BindView(R.id.ll_gooddianpu)
+    LinearLayout llGooddianpu;
+    @BindView(R.id.gooddianpu_recyclerview)
+    RecyclerView gooddianpuRecyclerview;
+    @BindView(R.id.img6)
+    ImageView img6;
+    @BindView(R.id.tv_sub1)
+    TextView tvSub1;
+    @BindView(R.id.tv_sub2)
+    TextView tvSub2;
+    @BindView(R.id.tv_sub3)
+    TextView tvSub3;
+    @BindView(R.id.tv_sub4)
+    TextView tvSub4;
+    @BindView(R.id.ll_sub)
+    LinearLayout llSub;
     Unbinder unbinder1;
     private View mView;
     private boolean isshowzhezhao = true;
@@ -241,6 +281,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private HomeLoadUtil homeLoadUtil;
     private int showTime = 0, curposition = 0;
     private String url1, title1, domain1, type1, isczg1, bprice1, quan1, zuan1;
+    public static final String appkey = "201811081252322";
+    public static final String subdomain = "236461";
+    JSONArray chaozhigouTypes;
 
     @Nullable
     @Override
@@ -268,8 +311,34 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             imageMessage.setBackgroundResource(R.mipmap.praise);
             setToolBar();
             refresh();
+            /**
+             * 萝卜丝客服
+             */
+            BDCoreApi.visitorLogin(getActivity(), appkey, subdomain, new LoginCallback() {
+                @Override
+                public void onSuccess(JSONObject object) {
+                    //
+                    try {
+                        Logg.json("login success message===>>>>: " + object.get("message") + " status_code:" + object.get("status_code"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(JSONObject object) {
+                    try {
+                        Logg.json("login failed message: " + object.get("message")
+                                + " status_code:" + object.get("status_code")
+                                + " data:" + object.get("data"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
         }
+
         unbinder1 = ButterKnife.bind(this, mView);
         return mView;
     }
@@ -409,6 +478,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 Logg.e(tab.getText());
                 int j = tab.getPosition();
                 if (j == 0) {
+                    llSub.setVisibility(View.GONE);
                     keyword = "";
                     curposition = 0;
                     czgBeans = JSON.parseArray(chaozhigou, NewHomeCzgBean.class);
@@ -431,6 +501,49 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     keyword = tab.getText().toString();
                     page = 1;
                     x = 1;
+                    try {
+                        String[] sub = chaozhigouTypes.getJSONObject(curposition).optString("sub").split("\\|");
+                        Logg.json(chaozhigouTypes.getJSONObject(curposition).optString("sub") + sub[0] + sub[1] + "===" + sub.length);
+                        if (sub.length > 0) {
+                            llSub.setVisibility(View.VISIBLE);
+                            switch (sub.length) {
+                                case 1:
+                                    tvSub1.setText(sub[0]);
+                                    break;
+                                case 2:
+                                    tvSub1.setText(sub[0]);
+                                    tvSub2.setText(sub[1]);
+                                    break;
+                                case 3:
+                                    tvSub1.setText(sub[0]);
+                                    tvSub2.setText(sub[1]);
+                                    tvSub3.setText(sub[2]);
+                                    break;
+                                case 4:
+                                    tvSub1.setText(sub[0]);
+                                    tvSub2.setText(sub[1]);
+                                    tvSub3.setText(sub[2]);
+                                    tvSub4.setText(sub[3]);
+                                    break;
+                            }
+                        } else {
+                            llSub.setVisibility(View.GONE);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    tvSub1.setClickable(true);
+                    tvSub2.setClickable(true);
+                    tvSub3.setClickable(true);
+                    tvSub4.setClickable(true);
+                    tvSub1.setBackgroundResource(R.drawable.bg_sub);
+                    tvSub1.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                    tvSub2.setBackgroundResource(R.drawable.bg_sub);
+                    tvSub2.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                    tvSub3.setBackgroundResource(R.drawable.bg_sub);
+                    tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                    tvSub4.setBackgroundResource(R.drawable.bg_sub);
+                    tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
                     initDataCzg(keyword);
                 }
             }
@@ -573,9 +686,10 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 huodongimg.setVisibility(View.GONE);
             }
 
+            Logg.json("分类", object.optString("chaozhigouTypes"));
             //分类
             if (object.has("chaozhigouTypes")) {
-                JSONArray chaozhigouTypes = object.optJSONArray("chaozhigouTypes");
+                chaozhigouTypes = object.optJSONArray("chaozhigouTypes");
                 chaozhigouTypesBeans = JSON.parseArray(object.optString("chaozhigouTypes"), ChaozhigouTypesBean.class);
                 if (showTime == 0) {
                     showTime++;
@@ -609,7 +723,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     tagList.setAdapter(myHomeTagAdapter);
                 }
             }
-            Logg.json("0元购"+object.optString("zerobuy"));
+            Logg.json("0元购" + object.optString("zerobuy"));
             //0元购
             if (object.has("zerobuy")) {
                 List<ZeroBuyBean> zeroBuyBeans = JSON.parseArray(object.optString("zerobuy"), ZeroBuyBean.class);
@@ -699,6 +813,69 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 llCzuan.setVisibility(View.GONE);
                 viewCzuan.setVisibility(View.GONE);
             }
+            Logg.json("=====>>>>>>>>>>", object.optString("hotlist"));
+            //每日好货
+            if (object.has("hotlist")) {
+                List<ShopDianpuBean> shopDianpuBeans = JSON.parseArray(object.optString("hotlist"), ShopDianpuBean.class);
+                everydayGoodsshopRecyclerview.setVisibility(View.VISIBLE);
+                everydayGoodsshopRecyclerview.setHasFixedSize(true);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+                if (shopDianpuBeans != null && shopDianpuBeans.size() > 0) {
+                    llEverydayGoodsshop.setVisibility(View.VISIBLE);
+                    viewEverydayGoodsshop.setVisibility(View.VISIBLE);
+                    everydayGoodsshopRecyclerview.setLayoutManager(linearLayoutManager);
+                    everydayGoodsshopRecyclerview.setAdapter(new DianPuHoHotGridAdapter(getActivity(), shopDianpuBeans));
+                } else {
+                    llGooddianpu.setVisibility(View.GONE);
+                    viewEverydayGoodsshop.setVisibility(View.GONE);
+                }
+            } else {
+                llEverydayGoodsshop.setVisibility(View.GONE);
+                viewEverydayGoodsshop.setVisibility(View.GONE);
+            }
+            //精选好店
+            if (object.has("activity")) {
+                List<PinpaiBean> pinpaiBeans = JSON.parseArray(object.optString("activity"), PinpaiBean.class);
+                gooddianpuRecyclerview.setVisibility(View.VISIBLE);
+                gooddianpuRecyclerview.setHasFixedSize(true);
+                LinearLayoutManager linearLayoutManagePp = new LinearLayoutManager(getActivity());
+                linearLayoutManagePp.setOrientation(linearLayoutManagePp.HORIZONTAL);
+                if (pinpaiBeans != null && pinpaiBeans.size() > 0) {
+                    llGooddianpu.setVisibility(View.VISIBLE);
+                    viewZerobuy.setVisibility(View.VISIBLE);
+                    gooddianpuRecyclerview.setLayoutManager(linearLayoutManagePp);
+                    gooddianpuRecyclerview.setAdapter(new DianPuHomePinpaiGridAdapter(getActivity(), pinpaiBeans));
+                } else {
+                    llGooddianpu.setVisibility(View.GONE);
+                    viewZerobuy.setVisibility(View.GONE);
+                }
+            } else {
+                llGooddianpu.setVisibility(View.GONE);
+                viewZerobuy.setVisibility(View.GONE);
+            }
+            Logg.json(object.optString("zerobuynew"));
+            //新0元购
+            if (object.has("zerobuynew")) {
+                List<ZeroBuyBean> zeroBuyBeans = JSON.parseArray(object.optString("zerobuynew"), ZeroBuyBean.class);
+                zerobuyNewRecyclerview.setVisibility(View.VISIBLE);
+                zerobuyNewRecyclerview.setHasFixedSize(true);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                linearLayoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+                zerobuyNewRecyclerview.setLayoutManager(linearLayoutManager);
+                if (zeroBuyBeans != null && zeroBuyBeans.size() > 0) {
+                    llZerobuyNew.setVisibility(View.VISIBLE);
+                    viewZerobuyNew.setVisibility(View.VISIBLE);
+                    ZeroBuyHomeAdapter homeGridAdapter = new ZeroBuyHomeAdapter(getActivity(), zeroBuyBeans);
+                    zerobuyNewRecyclerview.setAdapter(homeGridAdapter);
+                } else {
+                    llZerobuyNew.setVisibility(View.GONE);
+                    viewZerobuyNew.setVisibility(View.GONE);
+                }
+            } else {
+                llZerobuyNew.setVisibility(View.GONE);
+                viewZerobuyNew.setVisibility(View.GONE);
+            }
             llHuodong.setVisibility(View.VISIBLE);
             //发镖滚动信息
             if (object.has("fabiao")) {
@@ -731,7 +908,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             }
 
             //引导页
-            img3.post(new Runnable() {
+            img6.post(new Runnable() {
                 //                    @Override
                 public void run() {
                     //首页引导页只显示一次
@@ -740,7 +917,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                         isFirstResultUse = "yes";
                     }
                     if (isFirstResultUse.equals("yes")) {
-                        HomeLoadUtil.showGuideView(getActivity(), img3, img4);
+                        HomeLoadUtil.showGuideViewZiying(getActivity(), img3, img4, img6);
                     }
                 }
             });
@@ -1142,7 +1319,8 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      *
      * @param view
      */
-    @OnClick({R.id.msearch, R.id.msort, R.id.type_image, R.id.ll_shouqi, R.id.image_puba, R.id.to_top_btn, R.id.ll_miaosha, R.id.ll_pingtuan, R.id.ll_czuan,R.id.ll_zerobuy})
+    @OnClick({R.id.msearch, R.id.msort, R.id.type_image, R.id.ll_shouqi, R.id.image_puba, R.id.to_top_btn, R.id.ll_miaosha, R.id.ll_pingtuan, R.id.ll_czuan, R.id.ll_zerobuy, R.id.ll_zerobuy_new,
+            R.id.ll_everyday_goodsshop, R.id.ll_gooddianpu,R.id.tv_sub1, R.id.tv_sub2, R.id.tv_sub3, R.id.tv_sub4})
     public void onViewClicked(View view) {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Intent intent;
@@ -1203,6 +1381,82 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             case R.id.ll_zerobuy:
                 intent = new Intent(getActivity(), ZeroBuyShopActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.ll_zerobuy_new:
+                intent = new Intent(getActivity(), ZiYingZeroBuyShopActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_everyday_goodsshop:
+                intent = new Intent(getActivity(), NewDianpuHomeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_gooddianpu:
+                intent = new Intent(getActivity(), NewDianpuHomeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_sub1:
+                DialogHomeUtil.show(getActivity());
+                tvSub1.setClickable(false);
+                tvSub2.setClickable(true);
+                tvSub3.setClickable(true);
+                tvSub4.setClickable(true);
+                tvSub1.setBackgroundResource(R.drawable.bg_sub2);
+                tvSub1.setTextColor(getActivity().getResources().getColor(R.color.color_line_top));
+                tvSub2.setBackgroundResource(R.drawable.bg_sub);
+                tvSub2.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub3.setBackgroundResource(R.drawable.bg_sub);
+                tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub4.setBackgroundResource(R.drawable.bg_sub);
+                tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                initDataCzg(keyword+""+tvSub1.getText().toString());
+                break;
+            case R.id.tv_sub2:
+                DialogHomeUtil.show(getActivity());
+                tvSub1.setClickable(true);
+                tvSub2.setClickable(false);
+                tvSub3.setClickable(true);
+                tvSub4.setClickable(true);
+                tvSub1.setBackgroundResource(R.drawable.bg_sub);
+                tvSub1.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub2.setBackgroundResource(R.drawable.bg_sub2);
+                tvSub2.setTextColor(getActivity().getResources().getColor(R.color.color_line_top));
+                tvSub3.setBackgroundResource(R.drawable.bg_sub);
+                tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub4.setBackgroundResource(R.drawable.bg_sub);
+                tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                initDataCzg(keyword+""+tvSub2.getText().toString());
+                break;
+            case R.id.tv_sub3:
+                DialogHomeUtil.show(getActivity());
+                tvSub1.setClickable(true);
+                tvSub2.setClickable(true);
+                tvSub3.setClickable(false);
+                tvSub4.setClickable(true);
+                tvSub1.setBackgroundResource(R.drawable.bg_sub);
+                tvSub1.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub2.setBackgroundResource(R.drawable.bg_sub);
+                tvSub2.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub3.setBackgroundResource(R.drawable.bg_sub2);
+                tvSub3.setTextColor(getActivity().getResources().getColor(R.color.color_line_top));
+                tvSub4.setBackgroundResource(R.drawable.bg_sub);
+                tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                initDataCzg(keyword+""+tvSub3.getText().toString());
+                break;
+            case R.id.tv_sub4:
+                DialogHomeUtil.show(getActivity());
+                tvSub1.setClickable(true);
+                tvSub2.setClickable(true);
+                tvSub3.setClickable(true);
+                tvSub4.setClickable(false);
+                tvSub4.setBackgroundResource(R.drawable.bg_sub2);
+                tvSub4.setTextColor(getActivity().getResources().getColor(R.color.color_line_top));
+                tvSub2.setBackgroundResource(R.drawable.bg_sub);
+                tvSub2.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub3.setBackgroundResource(R.drawable.bg_sub);
+                tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                tvSub1.setBackgroundResource(R.drawable.bg_sub);
+                tvSub1.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
+                initDataCzg(keyword+""+tvSub4.getText().toString());
                 break;
         }
     }
@@ -1301,5 +1555,17 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
         startActivityForResult(intent, 2);
     }
 
+    public static void consultService(final Context context, String uri, String title, ProductDetail productDetail) {
+        String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
+        QiYuCache.ysfOptions.uiCustomization = MyApplication.uiCustomization(img);
+        // 启动聊天界面
+        ConsultSource source = new ConsultSource(uri, title, null);
+        source.productDetail = productDetail;
+        Unicorn.openServiceActivity(context, staffName(), source);
+    }
+
+    private static String staffName() {
+        return "小鲸";
+    }
 
 }

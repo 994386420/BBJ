@@ -51,12 +51,12 @@
                                 android:id="@+id/layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingBottom="85dp">
+                                android:paddingBottom="125dp">
 
                                 <com.youth.banner.Banner
                                     android:id="@+id/banner"
                                     android:layout_width="match_parent"
-                                    android:layout_height="280dp"
+                                    android:layout_height="320dp"
                                     app:indicator_height="6dp"
                                     app:indicator_width="6dp"
                                     app:indicator_margin="2.5dp"
@@ -88,6 +88,10 @@
                                     android:paddingTop="15dp"
                                     android:paddingRight="8dp"
                                     android:paddingLeft="8dp"
+                                    android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:orientation="horizontal">
 
                                     <LinearLayout
@@ -113,7 +117,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginBottom="4dp"
-                                            android:textSize="13dp"
+                                            android:textSize="12dp"
                                             android:textColor="#666666"
                                             android:layout_gravity="center_horizontal"
                                             android:text=""/>
@@ -141,7 +145,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginBottom="4dp"
-                                            android:textSize="13dp"
+                                            android:textSize="12dp"
                                             android:textColor="#666666"
                                             android:layout_gravity="center_horizontal"
                                             android:text=""/>
@@ -169,7 +173,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginBottom="4dp"
-                                            android:textSize="13dp"
+                                            android:textSize="12dp"
                                             android:textColor="#666666"
                                             android:layout_gravity="center_horizontal"
                                             android:text=""/>
@@ -197,38 +201,129 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginBottom="4dp"
-                                            android:textSize="13dp"
+                                            android:textSize="12dp"
                                             android:textColor="#666666"
                                             android:layout_gravity="center_horizontal"
                                             android:text=""/>
                                     </LinearLayout>
-                                    <LinearLayout
-                                        android:id="@+id/box5"
-                                        android:layout_width="0dp"
-                                        android:layout_weight="1"
-                                        android:layout_height="match_parent"
-                                        android:orientation="vertical">
-                                        <ImageView
-                                            android:layout_marginLeft="20dp"
-                                            android:layout_marginRight="20dp"
-                                            android:layout_marginTop="6dp"
-                                            android:layout_marginBottom="6dp"
-                                            android:id="@+id/img5"
-                                            android:layout_width="48dp"
-                                            android:layout_height="48dp"
-                                            android:adjustViewBounds="true"
-                                            android:layout_gravity="center_horizontal"
 
-                                            />
-                                        <com.bbk.view.AdaptionSizeTextView
-                                            android:id="@+id/text5"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginBottom="4dp"
-                                            android:textSize="13dp"
-                                            android:textColor="#666666"
-                                            android:layout_gravity="center_horizontal"
-                                            android:text=""/>
+                                </LinearLayout>
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <LinearLayout
+                                            android:id="@+id/box5"
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_marginLeft="20dp"
+                                                android:layout_marginRight="20dp"
+                                                android:layout_marginTop="6dp"
+                                                android:layout_marginBottom="6dp"
+                                                android:id="@+id/img5"
+                                                android:layout_width="48dp"
+                                                android:layout_height="48dp"
+                                                android:adjustViewBounds="true"
+                                                android:layout_gravity="center_horizontal"
+
+                                                />
+                                            <com.bbk.view.AdaptionSizeTextView
+                                                android:id="@+id/text5"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="4dp"
+                                                android:textSize="12dp"
+                                                android:textColor="#666666"
+                                                android:layout_gravity="center_horizontal"
+                                                android:text=""/>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:id="@+id/box6"
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_marginLeft="20dp"
+                                                android:layout_marginRight="20dp"
+                                                android:layout_marginTop="6dp"
+                                                android:layout_marginBottom="6dp"
+                                                android:id="@+id/img6"
+                                                android:layout_width="48dp"
+                                                android:layout_height="48dp"
+                                                android:adjustViewBounds="true"
+                                                android:layout_gravity="center_horizontal"
+
+                                                />
+                                            <com.bbk.view.AdaptionSizeTextView
+                                                android:id="@+id/text6"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="4dp"
+                                                android:textSize="12dp"
+                                                android:textColor="#666666"
+                                                android:layout_gravity="center_horizontal"
+                                                android:text=""/>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:id="@+id/box7"
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_marginLeft="20dp"
+                                                android:layout_marginRight="20dp"
+                                                android:layout_marginTop="6dp"
+                                                android:layout_marginBottom="6dp"
+                                                android:id="@+id/img7"
+                                                android:layout_width="48dp"
+                                                android:layout_height="48dp"
+                                                android:adjustViewBounds="true"
+                                                android:layout_gravity="center_horizontal"
+
+                                                />
+                                            <com.bbk.view.AdaptionSizeTextView
+                                                android:id="@+id/text7"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="4dp"
+                                                android:textSize="12dp"
+                                                android:textColor="#666666"
+                                                android:layout_gravity="center_horizontal"
+                                                android:text=""/>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:id="@+id/box8"
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+                                            <ImageView
+                                                android:layout_marginLeft="20dp"
+                                                android:layout_marginRight="20dp"
+                                                android:layout_marginTop="6dp"
+                                                android:layout_marginBottom="6dp"
+                                                android:id="@+id/img8"
+                                                android:layout_width="48dp"
+                                                android:layout_height="48dp"
+                                                android:adjustViewBounds="true"
+                                                android:layout_gravity="center_horizontal"
+
+                                                />
+                                            <com.bbk.view.AdaptionSizeTextView
+                                                android:id="@+id/text8"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="4dp"
+                                                android:textSize="12dp"
+                                                android:textColor="#666666"
+                                                android:layout_gravity="center_horizontal"
+                                                android:text=""/>
+                                        </LinearLayout>
                                     </LinearLayout>
                                 </LinearLayout>
                             </android.support.v7.widget.CardView>
@@ -329,17 +424,54 @@
                                     android:visibility="visible"
                                     android:scaleType="centerCrop" />
                             </LinearLayout>
-                            <TextView
-                                android:layout_weight="1"
-                                android:id="@+id/tv_dianpu_top"
-                                android:layout_width="wrap_content"
+                            <!--<TextView-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:id="@+id/tv_dianpu_top"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:paddingRight="20dp"-->
+                                <!--android:text="自营"-->
+                                <!--android:gravity="center"-->
+                                <!--android:textSize="18dp"-->
+                                <!--android:visibility="visible"-->
+                                <!--android:textColor="@color/black" />-->
+                            <LinearLayout
+                                android:id="@+id/msearch"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingRight="20dp"
-                                android:text="洗护专区"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:visibility="visible"
-                                android:textColor="@color/black" />
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:layout_marginRight="20dp"
+                                android:paddingLeft="10dp"
+                                android:background="@drawable/msearch_bg">
+                                <ImageView
+                                    android:id="@+id/mseach_tubiao"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="10dp"
+                                    android:background="@mipmap/msearch_white"/>
+                                <com.bbk.view.ClearableEditText
+                                    android:layout_weight="1"
+                                    android:id="@+id/topbar_search_input"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawablePadding="5.0dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="5dp"
+                                    android:background="@null"
+                                    android:drawableRight="@mipmap/icon_clean"
+                                    android:ems="6"
+                                    android:hint="搜索商品"
+                                    android:imeOptions="actionSearch"
+                                    android:padding="7dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textCursorDrawable="@drawable/text_cursor_color"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
                             <ImageView
                                 android:id="@+id/img_more_black"
                                 android:layout_width="25dp"

@@ -18,6 +18,24 @@ public class CofirmOrderBean {
     private String receiver;
     private String addrid;
     private String totaljin;//总共需要使用的金币个数
+    private String yongjin;
+    private String useyongjin;
+
+    public String getYongjin() {
+        return yongjin;
+    }
+
+    public void setYongjin(String yongjin) {
+        this.yongjin = yongjin;
+    }
+
+    public String getUseyongjin() {
+        return useyongjin;
+    }
+
+    public void setUseyongjin(String useyongjin) {
+        this.useyongjin = useyongjin;
+    }
 
     public String getTotaljin() {
         return totaljin;

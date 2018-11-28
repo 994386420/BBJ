@@ -381,7 +381,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="iPhone 8等你哦！"
+                    android:text="iPhone XS等你哦！"
                     android:textColor="#999999"
                     android:textSize="12dp" />
 

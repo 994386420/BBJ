@@ -106,7 +106,28 @@
                                         android:scaleType="centerCrop" />
 
                                 </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/ll_search"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:gravity="center"
+                                    android:layout_marginRight="45dp"
+                                    android:layout_alignParentRight="true"
+                                    android:orientation="vertical">
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:background="@mipmap/msearch_white"/>
 
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:text="搜索"
+                                        android:textSize="13dp"
+                                        android:textColor="@color/white" />
+                                </LinearLayout>
                                 <LinearLayout
                                     android:id="@+id/ll_kefu"
                                     android:layout_width="wrap_content"

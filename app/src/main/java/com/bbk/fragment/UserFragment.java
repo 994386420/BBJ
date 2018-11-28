@@ -35,7 +35,6 @@ import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcBasePage;
 import com.alibaba.baichuan.android.trade.page.AlibcMyCartsPage;
 import com.alibaba.fastjson.JSON;
-import com.appkefu.lib.interfaces.KFAPIs;
 import com.bbk.Bean.ButtonListBean;
 import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.Bean.NewUserBean;
@@ -84,7 +83,9 @@ import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.HongbaoDialog;
+import com.bbk.util.QiYuCache;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
@@ -94,8 +95,6 @@ import com.bbk.view.MyScrollViewNew;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
-import com.kepler.jd.Listener.OpenAppAction;
-import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KeplerAttachParameter;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -207,6 +206,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     AdaptionSizeTextView tvDshNum;
     @BindView(R.id.img_hongbao)
     ImageView imgHongbao;
+    @BindView(R.id.hongbao_num)
+    TextView hongbaoNum;
+    @BindView(R.id.ll_hongbao)
+    RelativeLayout llHongbao;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -249,8 +252,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     private Map<String, String> exParams;//yhhpass参数
     private UpdataDialog updataDialog;
     private HongbaoDialog hongbaoDialog;
-    private String hongbaoMoney,hongbaoMoney1;
+    private String hongbaoMoney, hongbaoMoney1;
     public static String LogFlag = "0";
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -476,6 +480,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 String username = userBean.getUsername();
                                 String imgurl = userBean.getImgurl();
                                 NewConstants.imgurl = imgurl;
+                                SharedPreferencesUtil.putSharedData(getActivity(), "userImg", "img", imgurl);
                                 String exp = userBean.getExp();//鲸力值
                                 String partner = userBean.getPartner();
                                 hongbaoMoney = userBean.getAward();
@@ -490,10 +495,13 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     mJlzText.setVisibility(View.VISIBLE);
                                     tvYaoqingma.setVisibility(View.VISIBLE);
 
-                                    if (userBean.getSingleMoney() != null && !userBean.getSingleMoney().equals("")){
+                                    if (userBean.getSingleMoney() != null && !userBean.getSingleMoney().equals("")) {
+                                        llHongbao.setVisibility(View.VISIBLE);
                                         imgHongbao.setVisibility(View.VISIBLE);
+                                        hongbaoNum.setText(userBean.getSingleMoneyNumber());
                                         hongbaoMoney1 = userBean.getSingleMoney();
-                                    }else {
+                                    } else {
+                                        llHongbao.setVisibility(View.GONE);
                                         imgHongbao.setVisibility(View.GONE);
                                     }
 
@@ -1456,7 +1464,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 
     @OnClick({R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
             R.id.ll_pl, R.id.ll_address, R.id.ll_tq, R.id.ll_xs, R.id.ll_cjwt, R.id.ll_yjfk, R.id.ll_woyao, R.id.ll_pudao, R.id.ll_kefu, R.id.ll_adoutbbj, R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.mjdshopcart,
-            R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu, R.id.huodongimg,R.id.img_hongbao})
+            R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu, R.id.huodongimg, R.id.img_hongbao})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -1579,7 +1587,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    startChat();
+//                    HomeLoadUtil.startChat(getActivity());
+                    MainActivity.consultService(getActivity(), "", "我的",null);
                 }
                 break;
             case R.id.ll_car:
@@ -1736,6 +1745,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             });
         }
     }
+
     public void showHongbaoDialog1(final Context context) {
         if (hongbaoDialog == null || !hongbaoDialog.isShowing()) {
             hongbaoDialog = new HongbaoDialog(context, R.layout.hongbao_dialog_layout1,
@@ -1778,7 +1788,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 Logg.json(jsonObject);
-                                StringUtil.showToast(getActivity(),"红包领取成功");
+                                StringUtil.showToast(getActivity(), "红包领取成功");
                                 hongbaoDialog.dismiss();
                                 queryUserCenter();
                             } else {
@@ -1928,27 +1938,15 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 }
                 break;
             case "联系客服":
-//                if (TextUtils.isEmpty(userID)) {
-//                    JumpDetailActivty.Flag = "home";
-//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-//                    startActivityForResult(intent, 1);
-//                } else {
-                startChat();
-//                }
+//                HomeLoadUtil.startChat(getActivity());
+                MainActivity.consultService(getActivity(), "", "我的",null);
                 break;
             case "关于比比鲸":
-//                if (TextUtils.isEmpty(userID)) {
-//                    JumpDetailActivty.Flag = "home";
-//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-//                    startActivityForResult(intent, 1);
-//                } else {
                 intent = new Intent(getActivity(), AboutUsActivity.class);
                 startActivity(intent);
-//                }
                 break;
             case "我发的飙":
                 if (TextUtils.isEmpty(userID)) {
-//                    JumpDetailActivty.Flag = "home";
                     LogFlag = "3";
                     intent = new Intent(getActivity(), UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
@@ -1970,26 +1968,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             default:
                 break;
         }
-    }
-
-    private void startChat() {
-        //
-        KFAPIs.startChat(getActivity(),
-                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配
-                "比比鲸客服", // 2. 会话界面标题，可自定义
-                null, // 3. 附加信息，在成功对接客服之后，会自动将此信息发送给客服;
-                // 如果不想发送此信息，可以将此信息设置为""或者null
-                true, // 4. 是否显示自定义菜单,如果设置为显示,请务必首先在管理后台设置自定义菜单,
-                // 请务必至少分配三个且只分配三个自定义菜单,多于三个的暂时将不予显示
-                // 显示:true, 不显示:false
-                5, // 5. 默认显示消息数量
-                //修改SDK自带的头像有两种方式，1.直接替换appkefu_message_toitem和appkefu_message_fromitem.xml里面的头像，2.传递网络图片自定义
-                "http://www.bibijing.com/images/zhanwei/logo.png",//6. 修改默认客服头像，如果不想修改默认头像，设置此参数为null
-                NewConstants.imgurl, //7. 修改默认用户头像, 如果不想修改默认头像，设置此参数为null
-                false, // 8. 默认机器人应答
-                false,  //9. 是否强制用户在关闭会话的时候 进行“满意度”评价， true:是， false:否
-                null);
-
     }
 
     @OnClick(R.id.tv_copy)
@@ -2053,7 +2031,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                             mShopOrder(userID, "4");
                             break;
                         case "11":
-                            startChat();
+                            MainActivity.consultService(getActivity(), "", "我的",null);
                             break;
                         case "12":
                             intent = new Intent(getActivity(), ShopOrderActivity.class);

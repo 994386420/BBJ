@@ -16,7 +16,15 @@ public class ShopDianpuBean {
     private String dianpuid;
     private String bprice;
     private String leastjin;//至少使用多少个金币
+    private String youhui;
 
+    public String getYouhui() {
+        return youhui;
+    }
+
+    public void setYouhui(String youhui) {
+        this.youhui = youhui;
+    }
 
     public String getLeastjin() {
         return leastjin;

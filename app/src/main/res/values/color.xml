@@ -482,4 +482,17 @@
     <color name="grey_color3">#999999</color>
     <!-- 橙色 -->
     <color name="orange_color">#de6838</color>
+    <!--线条分割线-->
+    <color name="lineColor">#E0E0E0</color>
+    <!--背景颜色-->
+    <color name="windowBackground">#f2f2f2</color>
+
+    <!--字体颜色-->
+    <color name="textColor">#565656</color>
+    <color name="textColor1">#666666</color>
+    <color name="textColor2">#A5A3A5</color>
+    <!--金黄色-->
+    <color name="goldenYellow">#B99041</color>
+
+    <color name="color_f6">#f6f6f6</color>
 </resources>

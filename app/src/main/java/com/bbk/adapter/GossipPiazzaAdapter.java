@@ -16,33 +16,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
 import com.bbk.Bean.BiaoLiaoBean;
-import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.activity.DesPictureActivity;
 import com.bbk.activity.GossipPiazzaDetailActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.UserLoginNewActivity;
-import com.bbk.activity.WebViewActivity;
-import com.bbk.chat.model.Conversation;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.resource.Constants;
-import com.bbk.util.BaseTools;
 import com.bbk.util.ShareUtil;
 import com.bbk.util.SharedPreferencesUtil;
-import com.bbk.view.CircleImageView;
 import com.bbk.view.CircleImageView1;
-import com.bbk.view.ExpandableTextView;
 import com.bbk.view.MyGridView;
 import com.bbk.view.StretchyTextView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

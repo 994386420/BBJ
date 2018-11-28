@@ -218,6 +218,7 @@ public class ShopOrderAdapter extends RecyclerView.Adapter {
 //            vh.tvNum.setText("x" + shopOrderBean.getNumber());
 //            vh.tvShopPrice.setText("￥" + shopOrderBean.getPrice());
 //            vh.tvShopGuige.setText(shopOrderBean.getParam());
+            vh.tvShopKuaidi.setText("（含运费￥"+shopOrderBean.getKuaidiM()+"）");
             vh.tvShopNum.setText("共" + shopOrderBean.getSubnumber() + "件商品 合计￥");
             vh.recyclerviewOrderItem.setHasFixedSize(true);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,

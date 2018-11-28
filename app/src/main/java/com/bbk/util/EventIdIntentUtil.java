@@ -50,8 +50,11 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.model.ChaoZhiGouTypesActivity;
+import com.bbk.model.DianpuSearchActivity;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.CarActivity;
 import com.bbk.shopcar.DianpuHomeActivity;
+import com.bbk.shopcar.DianpuTypesActivity;
 import com.bbk.shopcar.NewDianpuActivity;
 import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.view.AdaptionSizeTextView;
@@ -98,7 +101,7 @@ public class EventIdIntentUtil {
 	 * //按eventId跳转:    1超值购    2超爆款    3潮潮潮    4美味生鲜    5html活动页面(htmlUrl)        6三级页面(groupRowkey)
 	 * 7超市    8全球购    9服饰    10充值    11榜单(type) 12搜索
 	 * 101回复评论,103签到(鲸币界面) 104优惠券,105爆料,106发现,107数据频道 109跳京东返利web  110淘宝返利web 111大转盘 112查历史价格 113鲸港圈  114收益报表  115我的订单 116粉丝
-	 * 117淘宝本月结算 118淘宝本月付款 119京东本月结算 120京东本月付款 121系统消息(非聊天) 122消息聊天  123首页banner拉起京东淘宝店铺 124经过jump跳cps三级详情 127发飙  128(9块9)  129秒杀  130好货拼团  131超高赚
+	 * 117淘宝本月结算 118淘宝本月付款 119京东本月结算 120京东本月付款 121系统消息(非聊天) 122消息聊天  123首页banner拉起京东淘宝店铺 124经过jump跳cps三级详情 127发飙  128(9块9)  129秒杀  130好货拼团  131超高赚 135购物车
 	 * @param context
 	 * @param jo
 	 */
@@ -115,11 +118,26 @@ public class EventIdIntentUtil {
 				}
 				context.startActivity(intent);
 				break;
+			case "a2":
+				intent = new Intent(context, DianpuTypesActivity.class);
+				intent.putExtra("tag", jo.toString());
+				intent.putExtra("keyword", jo.optString("keyword"));
+				intent.putExtra("position", 0 + "");
+				context.startActivity(intent);
+				break;
 			case "a3":
 				intent = new Intent(context,ShopDetailActivty.class);
 				if (jo.has("keyword")) {
 					intent.putExtra("id", jo.optString("keyword"));
 				}
+				context.startActivity(intent);
+				break;
+			case "a4":
+				intent = new Intent(context,DianpuSearchActivity.class);
+				intent.putExtra("keyword", "");
+				intent.putExtra("dianpuid", "");
+				intent.putExtra("producttype", jo.optString("keyword"));
+				intent.putExtra("plevel", "2");
 				context.startActivity(intent);
 				break;
 			case "xihujie":
@@ -432,7 +450,15 @@ public class EventIdIntentUtil {
 					context.startActivity(intent);
 				}
 				break;
-
+			case "135":
+				if (TextUtils.isEmpty(userID)){
+					intent = new Intent(context, CarActivity.class);
+					context.startActivity(intent);
+				}else {
+					intent = new Intent(context, UserLoginNewActivity.class);
+					context.startActivity(intent);
+				}
+				break;
 		case "666":
 			String url = jo.optString("url");
 			Intent intent666 = new Intent(context, WebViewActivity_copy.class);

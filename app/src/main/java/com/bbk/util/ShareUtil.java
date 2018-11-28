@@ -23,6 +23,7 @@ import com.bbk.activity.wxapi.WXEntryActivity;
 import com.bbk.client.BaseApiService;
 import com.bbk.flow.DataFlow;
 import com.bbk.resource.Constants;
+import com.logg.Logg;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
@@ -204,14 +205,15 @@ public class ShareUtil {
 			msg.description = "用数据悄悄告诉你什么值得买";
 		}else {
 			if(flag == 1){
-				msg.title = content;
+				Logg.e(flag+"========="+content.replace(" ",""));
+				msg.title = content.replace(" ","");
 			}else {
 				msg.title = title;
 			}
 			msg.description = content;
 		}
 		Bitmap thumb = BitmapFactory.decodeResource(activity.getResources(),
-				R.mipmap.icon_logo);
+				R.mipmap.new_app_icon);
 		msg.setThumbImage(thumb);
 		SendMessageToWX.Req req = new SendMessageToWX.Req();
 		req.transaction = buildTransaction("webpage");

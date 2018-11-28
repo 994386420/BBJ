@@ -348,11 +348,32 @@
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>
-    <ImageView
-        android:id="@+id/img_hongbao"
+
+
+    <RelativeLayout
+        android:id="@+id/ll_hongbao"
         android:layout_width="55dp"
-        android:layout_height="60dp"
         android:layout_marginLeft="175dp"
-        android:visibility="gone"
-        android:background="@mipmap/hongbao_01"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_hongbao"
+            android:layout_width="55dp"
+            android:layout_height="60dp"
+            android:background="@mipmap/hongbao_01"/>
+
+        <TextView
+            android:id="@+id/hongbao_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/text_result_red_more"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:textColor="#ffffff"
+            android:textSize="12dp" />
+    </RelativeLayout>
 </RelativeLayout>

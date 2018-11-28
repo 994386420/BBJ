@@ -222,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/shop_color1"
                         android:textSize="13dp"
-                        android:text="0.00" />
+                        android:text="" />
 
             </LinearLayout>
 

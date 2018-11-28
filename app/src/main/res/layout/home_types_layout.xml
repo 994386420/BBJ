@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:visibility="gone"
-            android:scaleType="centerCrop"/>
+            android:scaleType="fitXY"/>
         <GridView
             android:id="@+id/miaosha_status"
             android:layout_width="match_parent"

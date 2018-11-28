@@ -2,8 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_height="400dp"
     android:gravity="center"
     android:background="@drawable/text_view_border_shop">
     <ImageView
@@ -46,7 +45,8 @@
             android:id="@+id/recyclerview_shop_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_marginBottom="36dp">
 
         </android.support.v7.widget.RecyclerView>
     <LinearLayout
@@ -188,25 +188,29 @@
                 android:textColor="@color/tuiguang_color4"/>
         </LinearLayout>
     </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/bg_shopcar">
 
-            <TextView
-                android:id="@+id/tv_ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="完成"
-                android:textSize="14dp"
-                android:textColor="@color/white"/>
-        </LinearLayout>
+
+
+
     </LinearLayout>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_shopcar">
 
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="完成"
+            android:textSize="14dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
 </FrameLayout>

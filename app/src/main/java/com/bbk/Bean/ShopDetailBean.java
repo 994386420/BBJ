@@ -24,6 +24,79 @@ public class ShopDetailBean {
     private String fahuodi;
     private String youhui;//优惠信息
     private String leastjin;//至少使用多少个金币
+    private String guigetype;//0无规格选	1一种规格  2两种规格
+    private String guige;
+    private String guigepro;
+    private String describle;
+    private String youhui2;
+    private String youhui3;
+    private String isOldUser;
+    private String shareimg ; // 分享的图片地址
+
+
+    public String getShareimg() {
+        return shareimg;
+    }
+
+    public void setShareimg(String shareimg) {
+        this.shareimg = shareimg;
+    }
+
+    public String getIsOldUser() {
+        return isOldUser;
+    }
+
+    public void setIsOldUser(String isOldUser) {
+        this.isOldUser = isOldUser;
+    }
+
+    public String getDescrible() {
+        return describle;
+    }
+
+    public void setDescrible(String describle) {
+        this.describle = describle;
+    }
+
+    public String getYouhui2() {
+        return youhui2;
+    }
+
+    public void setYouhui2(String youhui2) {
+        this.youhui2 = youhui2;
+    }
+
+    public String getYouhui3() {
+        return youhui3;
+    }
+
+    public void setYouhui3(String youhui3) {
+        this.youhui3 = youhui3;
+    }
+
+    public String getGuigepro() {
+        return guigepro;
+    }
+
+    public void setGuigepro(String guigepro) {
+        this.guigepro = guigepro;
+    }
+
+    public String getGuige() {
+        return guige;
+    }
+
+    public void setGuige(String guige) {
+        this.guige = guige;
+    }
+
+    public String getGuigetype() {
+        return guigetype;
+    }
+
+    public void setGuigetype(String guigetype) {
+        this.guigetype = guigetype;
+    }
 
     public String getLeastjin() {
         return leastjin;

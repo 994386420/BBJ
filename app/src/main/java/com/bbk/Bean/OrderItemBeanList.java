@@ -13,6 +13,15 @@ public class OrderItemBeanList {
     private String subnumber;
     private String expressage;
     private String addrid;
+    private String kuaidiM;
+
+    public String getKuaidiM() {
+        return kuaidiM;
+    }
+
+    public void setKuaidiM(String kuaidiM) {
+        this.kuaidiM = kuaidiM;
+    }
 
     public String getAddrid() {
         return addrid;

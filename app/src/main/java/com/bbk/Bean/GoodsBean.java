@@ -13,6 +13,15 @@ public class GoodsBean {
     private String youhui;
     private String liuyan;//留言
     private String leastjin;//当前店铺至少需要金币个数
+    private String kuaidifei;
+
+    public String getKuaidifei() {
+        return kuaidifei;
+    }
+
+    public void setKuaidifei(String kuaidifei) {
+        this.kuaidifei = kuaidifei;
+    }
 
     public String getLeastjin() {
         return leastjin;

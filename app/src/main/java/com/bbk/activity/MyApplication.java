@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,16 +24,27 @@ import android.widget.Toast;
 
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
-import com.appkefu.lib.interfaces.KFAPIs;
-import com.bbk.chat.utils.Foreground;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.CrashHandler;
 import com.bbk.util.EventIdIntentUtil;
+import com.bbk.util.GlideImageLoaderQiYu;
+import com.bbk.util.QiYuCache;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
+import com.bytedesk.core.api.BDCoreApi;
+import com.bytedesk.core.api.BDMqttApi;
+import com.bytedesk.core.callback.LoginCallback;
 import com.kepler.jd.Listener.AsyncInitListener;
 import com.kepler.jd.login.KeplerApiManager;
 import com.logg.Logg;
 import com.logg.config.LoggConfiguration;
+import com.orhanobut.logger.Logger;
+import com.qiyukf.unicorn.api.OnBotEventListener;
+import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
+import com.qiyukf.unicorn.api.UICustomization;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.UnicornImageLoader;
+import com.qiyukf.unicorn.api.YSFOptions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -40,14 +53,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.tencent.imsdk.TIMGroupReceiveMessageOpt;
-import com.tencent.imsdk.TIMLogLevel;
-import com.tencent.imsdk.TIMManager;
-import com.tencent.imsdk.TIMOfflinePushListener;
-import com.tencent.imsdk.TIMOfflinePushNotification;
-import com.tencent.imsdk.TIMSdkConfig;
-import com.tencent.qalsdk.sdk.MsfSdkUtils;
-import com.tencent.qcloud.sdk.Constant;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
@@ -66,6 +71,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
 
+import static org.apache.http.client.methods.RequestBuilder.options;
+
 
 public class MyApplication extends Application {
 	/**
@@ -82,14 +89,14 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-		//默认关闭调试模式
-		KFAPIs.DEBUG = false;
-		//第一个参数默认设置为false, 即登录普通服务器, 如果设置为true, 则登录IP服务器,
-		//注意: 当第一个参数设置为true的时候, 客服端需要选择登录ip服务器 才能够会话
-		//正常情况下第一个参数请设置为false
-		KFAPIs.enableIPServerMode(false, this);
-		//第一种登录方式，推荐
-		KFAPIs.visitorLogin(this);
+//		//默认关闭调试模式
+//		KFAPIs.DEBUG = false;
+//		//第一个参数默认设置为false, 即登录普通服务器, 如果设置为true, 则登录IP服务器,
+//		//注意: 当第一个参数设置为true的时候, 客服端需要选择登录ip服务器 才能够会话
+//		//正常情况下第一个参数请设置为false
+//		KFAPIs.enableIPServerMode(false, this);
+//		//第一种登录方式，推荐
+//		KFAPIs.visitorLogin(this);
 
 		//解决android N（>=24）系统以上分享 路径为file://时的 android.os.FileUriExposedException异常
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -104,10 +111,17 @@ public class MyApplication extends Application {
 //                .setTag("test")// 自定义全局Tag
 				.build();
 		Logg.init(configuration);
+		/**
+		 * 网易七鱼客服
+		 */
+		// appKey 可以在七鱼管理系统->设置->APP接入 页面找到
+		Unicorn.init(this, "962881e667aea784220686d86d8630e9", options(), new GlideImageLoaderQiYu(this));
+		String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
+		QiYuCache.ysfOptions.uiCustomization = QiYuCache.ysfOptions.uiCustomization == null ? MyApplication.uiCustomization(img) : null;
 
 		initTXYun();
 		initX5();
-		Foreground.init(this);
+//		Foreground.init(this);
 		context = getApplicationContext();
 		//设置全局的Header构建器
 		SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
@@ -125,6 +139,11 @@ public class MyApplication extends Application {
 				return new ClassicsFooter(context).setDrawableSize(15).setTextSizeTitle(15);
 			}
 		});
+
+
+		/**
+		 * 京东开普勒
+		 */
 		KeplerApiManager.asyncInitSdk(this, "581b75d36bd0443cb50b68ae316c7e93", "6938c582f809437dacd59c286c3191a6",
 				new AsyncInitListener() {
 					@Override
@@ -148,17 +167,17 @@ public class MyApplication extends Application {
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
         UMConfigure.init(this, "59db08fcf29d985a31000021","bbj", UMConfigure.DEVICE_TYPE_PHONE, "2748cf7fcfa2f2cbb4c72943e9af435b");
         initUpush();
-		if(MsfSdkUtils.isMainProcess(this)) {
-			TIMManager.getInstance().setOfflinePushListener(new TIMOfflinePushListener() {
-				@Override
-				public void handleNotification(TIMOfflinePushNotification notification) {
-					if (notification.getGroupReceiveMsgOpt() == TIMGroupReceiveMessageOpt.ReceiveAndNotify){
-						//消息被设置为需要提醒
-						notification.doNotify(getApplicationContext(), R.mipmap.logo);
-					}
-				}
-			});
-		}
+//		if(MsfSdkUtils.isMainProcess(this)) {
+//			TIMManager.getInstance().setOfflinePushListener(new TIMOfflinePushListener() {
+//				@Override
+//				public void handleNotification(TIMOfflinePushNotification notification) {
+//					if (notification.getGroupReceiveMsgOpt() == TIMGroupReceiveMessageOpt.ReceiveAndNotify){
+//						//消息被设置为需要提醒
+//						notification.doNotify(getApplicationContext(), R.mipmap.logo);
+//					}
+//				}
+//			});
+//		}
 
 		//解决 Android 7.0 后
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -218,15 +237,15 @@ public class MyApplication extends Application {
 		});
 	}
 	public void initTXYun(){
-		//初始化SDK基本配置
-		TIMSdkConfig config = new TIMSdkConfig(Constant.SDK_APPID)
-				.enableCrashReport(false)
-        		.enableLogPrint(true)
-				.setLogLevel(TIMLogLevel.DEBUG)
-				.setLogPath(Environment.getExternalStorageDirectory().getPath() + "/justfortest/");
-
-		//初始化SDK
-		TIMManager.getInstance().init(getApplicationContext(), config);
+//		//初始化SDK基本配置
+//		TIMSdkConfig config = new TIMSdkConfig(Constant.SDK_APPID)
+//				.enableCrashReport(false)
+//        		.enableLogPrint(true)
+//				.setLogLevel(TIMLogLevel.DEBUG)
+//				.setLogPath(Environment.getExternalStorageDirectory().getPath() + "/justfortest/");
+//
+//		//初始化SDK
+//		TIMManager.getInstance().init(getApplicationContext(), config);
 	}
 
 	/**
@@ -487,5 +506,59 @@ public class MyApplication extends Application {
 			}
 		}
 		return false;
+	}
+
+	// 如果返回值为null，则全部使用默认参数。
+	private YSFOptions options() {
+		YSFOptions options = new YSFOptions();
+		options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+		options.statusBarNotificationConfig.notificationSmallIconId = R.drawable.new_app_icon;
+		options.onBotEventListener = new OnBotEventListener() {
+			@Override
+			public boolean onUrlClick(Context context, String url) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				context.startActivity(intent);
+				return true;
+			}
+		};
+		QiYuCache.ysfOptions = options;
+		return options;
+	}
+
+	public static UICustomization uiCustomization(String imgurl) {
+		// 以下示例的图片均无版权，请勿使用
+		UICustomization customization = new UICustomization();
+		customization.titleBarStyle = 1;
+		customization.titleBackgroundResId = R.drawable.my_ysf_title_bg;
+
+		customization.topTipBarBackgroundColor = 0xFFDCF2F5;
+		customization.topTipBarTextColor = 0xFF4E97D9;
+
+		// Glide
+//		customization.msgBackgroundUri = "file:///android_asset/msg_bg.png";
+		customization.leftAvatar = "android.resource://" + getContext().getPackageName() + "/" + R.drawable.new_app_icon;
+		if (imgurl != null && !imgurl.equals("")) {
+			customization.rightAvatar = imgurl;
+		}else {
+			customization.rightAvatar = "android.resource://" + getContext().getPackageName() + "/" + R.drawable.new_app_icon;
+		}
+		// Universal-Image-Loader
+		// customization.msgBackgroundUri = "assets://msg_bg.png";
+		// customization.leftAvatar = "drawable://" + R.drawable.my_avatar_staff;
+		// customization.rightAvatar = "drawable://" + R.drawable.my_avatar_user;
+
+//		customization.msgItemBackgroundLeft = R.drawable.my_message_item_left_selector;
+//		customization.msgItemBackgroundRight = R.drawable.my_message_item_right_selector;
+
+		customization.textMsgColorLeft = Color.BLACK;
+		customization.textMsgColorRight = Color.WHITE;
+
+//		customization.audioMsgAnimationLeft = R.drawable.my_audio_animation_list_left;
+//		customization.audioMsgAnimationRight = R.drawable.my_audio_animation_list_right;
+
+		customization.tipsTextColor = 0xFF76838F;
+
+//		customization.buttonBackgroundColorList = R.color.my_button_color_state_list;
+		return customization;
 	}
 }

@@ -518,8 +518,8 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                         String result = sharedPreferences.getString("action", null);
                         if (result != null && result.length() > 0) {
                             NewConstants.mMessageMap = NewConstants.getJsonObject(result);
-                            Logg.json("TAOBAO===>>>",NewConstants.mMessageMap.get(list));
-                            if (NewConstants.mMessageMap.get(list) != null) {
+                            Logg.json("TAOBAO===>>>",NewConstants.mMessageMap.size()+"===="+carNum);
+                            if (NewConstants.mMessageMap.get(taobaoCarListBean.getRowkey()) != null) {
                                 NewConstants.carnum = carNum - NewConstants.mMessageMap.size();
                                 if (CarFrament.tvWeiTz !=null) {
                                     CarFrament.tvWeiTz.setText("未跳转的" + NewConstants.carnum + "条不可得佣金");
@@ -527,7 +527,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                 if (CarActivity.tvWeiTz != null) {
                                     CarActivity.tvWeiTz.setText("未跳转的" +NewConstants.carnum + "条不可得佣金");
                                 }
-                                if (NewConstants.mMessageMap.get(list).equals(list)) {
+                                if (NewConstants.mMessageMap.get(taobaoCarListBean.getRowkey()).equals(taobaoCarListBean.getRowkey())) {
                                     viewHolder.tvClickStatu.setText("结算可得佣金");
                                     viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
                                     viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
@@ -592,7 +592,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                         }else {
                             sharedPreferences = context.getSharedPreferences("MyActionTaobao", MODE_PRIVATE);
                             editor = sharedPreferences.edit();
-                            NewConstants.mMessageMap.put(list,list);
+                            NewConstants.mMessageMap.put(taobaoCarListBean.getRowkey(),taobaoCarListBean.getRowkey());
                             editor.putString("action", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mMessageMap).toString());
                             editor.commit();
                         }

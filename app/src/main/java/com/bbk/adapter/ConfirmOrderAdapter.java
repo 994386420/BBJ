@@ -19,13 +19,8 @@ import com.bbk.Bean.GoodsBean;
 import com.bbk.activity.R;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.Utils.ShopDialog;
-import com.bbk.shopcar.entity.GoodsInfo;
-import com.bbk.shopcar.entity.StoreInfo;
-import com.bbk.util.StringUtil;
 import com.bbk.view.AdaptionSizeTextView;
-import com.logg.Logg;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -100,6 +95,8 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter {
         LinearLayout llYouhui;
         @BindView(R.id.tv_liuyan)
         EditText tvLiuyan;
+        @BindView(R.id.tv_yunfei)
+        AdaptionSizeTextView tvYunfei;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -137,9 +134,9 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (s.length() > 0) {
                         if (!NewConstants.liuyan.equals("2")) {
-                           goodsBean.setLiuyan(viewHolder.tvLiuyan.getText().toString());
+                            goodsBean.setLiuyan(viewHolder.tvLiuyan.getText().toString());
                         }
-                    }else {
+                    } else {
                         goodsBean.setLiuyan("0");
                     }
                 }
@@ -160,6 +157,7 @@ public class ConfirmOrderAdapter extends RecyclerView.Adapter {
                 viewHolder.llYouhui.setVisibility(View.GONE);
             }
             viewHolder.tvNum.setText("共" + goodsBean.getTotalnumber() + "件商品，小计");
+            viewHolder.tvYunfei.setText(" ( 含运费 ¥" + goodsBean.getKuaidifei() + " )");
             viewHolder.llFuwu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

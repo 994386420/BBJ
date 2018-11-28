@@ -1,14 +1,11 @@
 package com.bbk.shopcar.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-//import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.StrikethroughSpan;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -26,12 +23,9 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.resource.NewConstants;
-import com.bbk.shopcar.Utils.UtilTool;
-import com.bbk.shopcar.Utils.UtilsLog;
 import com.bbk.shopcar.entity.GoodsInfo;
 import com.bbk.shopcar.entity.StoreInfo;
 import com.bbk.util.SharedPreferencesUtil;
-import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.logg.Logg;
@@ -44,6 +38,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+//import android.support.v7.app.AlertDialog;
 
 /**
  * 购物车适配器
@@ -117,6 +113,12 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
         final StoreInfo group = (StoreInfo) getGroup(groupPosition);
+        if (group.getDianpuyouhui() != null && !group.getDianpuyouhui().equals("")) {
+            groupViewHolder.youhuiName.setVisibility(View.VISIBLE);
+            groupViewHolder.youhuiName.setText(group.getDianpuyouhui());
+        }else {
+            groupViewHolder.youhuiName.setVisibility(View.GONE);
+        }
         groupViewHolder.storeName.setText(group.getName());
         groupViewHolder.storeCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +237,7 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
                             if (s.length() > 0) {
                                 int num = Integer.parseInt(childViewHolder.dialogNum.getText().toString());
                                 if (!NewConstants.car.equals("2")) {
-                                    modifyCountInterface.Refresh(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child.getId(), num, child.getGuige(),childViewHolder.dialogNum.getText().toString());
+                                    modifyCountInterface.Refresh(groupPosition, childPosition, childViewHolder.goodsNum, childViewHolder.singleCheckBox.isChecked(), child.getId(), num, child.getGuige(), childViewHolder.dialogNum.getText().toString());
                                 }
                             }
                         }
@@ -471,6 +473,8 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
         TextView storeEdit;
         @BindView(R.id.rl_dianou)
         RelativeLayout rlDianou;
+        @BindView(R.id.youhui_name)
+        TextView youhuiName;
 
         public GroupViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -530,7 +534,7 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
 
         void Intent(String id);
 
-        void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige,String dialogNum);
+        void Refresh(int groupPosition, int childPosition, View showCountView, boolean isChecked, String id, int num, String guige, String dialogNum);
     }
 
     /**

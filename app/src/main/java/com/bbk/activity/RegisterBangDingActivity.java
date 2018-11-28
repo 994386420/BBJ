@@ -416,7 +416,22 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			    params.put("client", "android");
 			    params.put("unionid",openid);
 			    params.put("code",RSAEncryptorAndroid.getSendCode(addr+mesgCode));
-				final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
+//			try {
+//				JSONObject jsonObject = new JSONObject();
+//				jsonObject.put("phone", addr);
+//				jsonObject.put("invitcode", invitcode);
+//				jsonObject.put("username", username);
+//				jsonObject.put("openid", unionid);
+//				jsonObject.put("imgUrl", imgUrl);
+//				jsonObject.put("mesgCode", mesgCode);
+//				jsonObject.put("client", "android");
+//				jsonObject.put("unionid",openid);
+//				jsonObject.put("code",RSAEncryptorAndroid.getSendCode(addr+mesgCode));
+//				params.put("param",RSAEncryptorAndroid.getSendCode(jsonObject.toString()));
+//			} catch (JSONException e) {
+//				e.printStackTrace();
+//			}
+			final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
 				new Thread(new Runnable() {
 					
 					@Override

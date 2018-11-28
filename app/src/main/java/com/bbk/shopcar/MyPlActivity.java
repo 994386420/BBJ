@@ -204,6 +204,7 @@ public class MyPlActivity extends BaseActivity implements CommonLoadingView.Load
                 break;
             case R.id.img_car_black:
                 intent = new Intent(this, CarActivity.class);
+                intent.putExtra("ziying","yes");
                 startActivity(intent);
                 break;
             case R.id.ll_dianpu:

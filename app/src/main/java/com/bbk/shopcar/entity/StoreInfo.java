@@ -7,14 +7,24 @@ package com.bbk.shopcar.entity;
 public class StoreInfo {
     private String id;
     private String name;
+    private String dianpuyouhui;
     private boolean isChoosed;
     private boolean isEditor; //自己对该组的编辑状态
     private boolean ActionBarEditor;// 全局对该组的编辑状态
     private int flag;
 
-    public StoreInfo(String id, String name) {
+    public StoreInfo(String id, String name,String dianpuyouhui) {
         this.id = id;
         this.name = name;
+        this.dianpuyouhui = dianpuyouhui;
+    }
+
+    public String getDianpuyouhui() {
+        return dianpuyouhui;
+    }
+
+    public void setDianpuyouhui(String dianpuyouhui) {
+        this.dianpuyouhui = dianpuyouhui;
     }
 
     public String getId() {

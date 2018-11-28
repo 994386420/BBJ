@@ -92,7 +92,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/new_app_icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppThemeKefu"
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         tools:replace="android:allowBackup">
@@ -625,44 +625,68 @@
             android:name=".NewRankActivty"
             android:exported="true"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.bbk.model.DianpuSearchActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.bbk.model.ShopFenleiActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.bbk.model.ZiYingZeroBuyShopActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ZiYingZeroBuyDetailActivty"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <meta-data
             android:name="com.tencent.rdm.uuid"
             android:value="a2af72ec-a731-46eb-8501-0477e34702f3" />
 
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.SplashActivity"-->
+            <!--android:screenOrientation="portrait" />-->
+        <!--<activity android:name="com.bbk.chat.ui.HomeActivity" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.ChatActivity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:windowSoftInputMode="adjustResize" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.ChatNoActivity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:windowSoftInputMode="adjustResize" />-->
+        <!--<activity android:name="com.bbk.chat.ui.SearchFriendActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.AddFriendActivity" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.ProfileActivity"-->
+            <!--android:launchMode="singleTask" />-->
+        <!--<activity android:name="com.bbk.chat.ui.ManageFriendGroupActivity" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.VideoActivity"-->
+            <!--android:screenOrientation="portrait" />-->
+        <!--<activity android:name="com.bbk.chat.ui.CreateGroupActivity" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.TCVideoRecordActivity"-->
+            <!--android:screenOrientation="portrait" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.TCVideoPreviewActivity"-->
+            <!--android:screenOrientation="portrait" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.GroupProfileActivity"-->
+            <!--android:launchMode="singleTask" />-->
+        <!--萝卜丝bytedesk.com代码 开始-->
         <activity
-            android:name="com.bbk.chat.ui.SplashActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name="com.bbk.chat.ui.HomeActivity" />
-        <activity
-            android:name="com.bbk.chat.ui.ChatActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="com.bbk.chat.ui.ChatNoActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name="com.bbk.chat.ui.SearchFriendActivity" />
-        <activity android:name="com.bbk.chat.ui.AddFriendActivity" />
-        <activity
-            android:name="com.bbk.chat.ui.ProfileActivity"
-            android:launchMode="singleTask" />
-        <activity android:name="com.bbk.chat.ui.ManageFriendGroupActivity" />
-        <activity
-            android:name="com.bbk.chat.ui.VideoActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name="com.bbk.chat.ui.CreateGroupActivity" />
-        <activity
-            android:name="com.bbk.chat.ui.TCVideoRecordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.bbk.chat.ui.TCVideoPreviewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.bbk.chat.ui.GroupProfileActivity"
-            android:launchMode="singleTask" />
+            android:name="com.bytedesk.ui.activity.ChatActivity"
+            android:screenOrientation="portrait"/>
 
+        <service android:name="com.bytedesk.paho.android.service.MqttService"/>
+        <!--./萝卜丝bytedesk.com代码 结束-->
         <!-- 消息收发service -->
         <service
             android:name="com.tencent.qalsdk.service.QalService"
@@ -701,53 +725,53 @@
             </intent-filter>
         </receiver>
 
-        <!-- mipush -->
-        <service
-            android:name="com.xiaomi.push.service.XMJobService"
-            android:enabled="true"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":MiPushService" />
-        <service
-            android:name="com.xiaomi.push.service.XMPushService"
-            android:enabled="true"
-            android:process=":MiPushService" />
-        <service
-            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name="com.xiaomi.mipush.sdk.MessageHandleService"
-            android:enabled="true" />
+        <!--&lt;!&ndash; mipush &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="com.xiaomi.push.service.XMJobService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="false"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE"-->
+            <!--android:process=":MiPushService" />-->
+        <!--<service-->
+            <!--android:name="com.xiaomi.push.service.XMPushService"-->
+            <!--android:enabled="true"-->
+            <!--android:process=":MiPushService" />-->
+        <!--<service-->
+            <!--android:name="com.xiaomi.mipush.sdk.PushMessageHandler"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true" />-->
+        <!--<service-->
+            <!--android:name="com.xiaomi.mipush.sdk.MessageHandleService"-->
+            <!--android:enabled="true" />-->
 
-        <receiver
-            android:name="com.bbk.chat.utils.MiPushMessageReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.xiaomi.mipush.ERROR" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
-            android:exported="true">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.xiaomi.push.service.receivers.PingReceiver"
-            android:exported="false"
-            android:process=":MiPushService">
-            <intent-filter>
-                <action android:name="com.xiaomi.push.PING_TIMER" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+            <!--android:name="com.bbk.chat.utils.MiPushMessageReceiver"-->
+            <!--android:exported="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.xiaomi.mipush.ERROR" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--<receiver-->
+            <!--android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"-->
+            <!--android:exported="true">-->
+            <!--<intent-filter>-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--<receiver-->
+            <!--android:name="com.xiaomi.push.service.receivers.PingReceiver"-->
+            <!--android:exported="false"-->
+            <!--android:process=":MiPushService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.xiaomi.push.PING_TIMER" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
         <!-- mipush -->
 
 
@@ -822,24 +846,24 @@
         <!-- </service> -->
         <!-- firebase -->
 
-        <activity android:name="com.bbk.chat.ui.ImageViewActivity" />
-        <activity android:name="com.bbk.chat.ui.EditActivity" />
-        <activity android:name="com.bbk.chat.ui.SearchGroupActivity" />
-        <activity android:name="com.bbk.chat.ui.ApplyGroupActivity" />
-        <activity android:name="com.bbk.chat.ui.GroupManageMessageActivity" />
-        <activity android:name="com.bbk.chat.ui.FriendshipManageMessageActivity" />
-        <activity android:name="com.bbk.chat.ui.GroupListActivity" />
-        <activity android:name="com.bbk.chat.ui.ChooseFriendActivity" />
-        <activity android:name="com.bbk.chat.ui.GroupMemberActivity" />
-        <activity
-            android:name="com.bbk.chat.ui.customview.DialogActivity"
-            android:theme="@android:style/Theme.Dialog" />
-        <activity android:name="com.bbk.chat.ui.GroupMemberProfileActivity" />
-        <activity android:name="com.bbk.chat.ui.FriendshipHandleActivity" />
-        <activity android:name="com.bbk.chat.ui.AboutActivity" />
-        <activity android:name="com.bbk.chat.ui.BlackListActivity" />
-        <activity android:name="com.bbk.chat.ui.ImagePreviewActivity" />
-        <activity android:name="com.bbk.chat.ui.MessageNotifySettingActivity" />
+        <!--<activity android:name="com.bbk.chat.ui.ImageViewActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.EditActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.SearchGroupActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.ApplyGroupActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.GroupManageMessageActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.FriendshipManageMessageActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.GroupListActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.ChooseFriendActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.GroupMemberActivity" />-->
+        <!--<activity-->
+            <!--android:name="com.bbk.chat.ui.customview.DialogActivity"-->
+            <!--android:theme="@android:style/Theme.Dialog" />-->
+        <!--<activity android:name="com.bbk.chat.ui.GroupMemberProfileActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.FriendshipHandleActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.AboutActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.BlackListActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.ImagePreviewActivity" />-->
+        <!--<activity android:name="com.bbk.chat.ui.MessageNotifySettingActivity" />-->
 
         <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
         <activity
@@ -1013,115 +1037,6 @@
         <activity android:name=".BidAllHotActivity"></activity>
         <activity android:name=".BidMyListDetailActivity"></activity>
         <activity android:name=".BidMyBillDetailActivity"></activity>
-
-
-
-
-        <!-- 微客服 -->
-        <!-- 请到 http://admin.weikefu.net/AppKeFu/admin/ 申请appkey-->
-        <meta-data
-            android:name="com.appkefu.lib.appkey"
-            android:value="9b1c315d2377165cdb838f675e22c00e" />
-
-        <!-- 兼容android N 24相机访问权限 -->
-         <!--https://inthecheesefactory.com/blog/how-to-share-access-to-file-with-fileprovider-on-android-nougat/en -->
-         <!--注意: 替换自己的包名 -->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.bbk.activity.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/__picker_provider_paths"/>
-        </provider>
-
-        <!-- 聊天窗口, 可通过修改layout文件appkefu_activity_kfvip_chat.xml自定义窗口UI -->
-        <activity android:name="com.appkefu.lib.ui.activity.KFChatActivity"
-            android:theme="@style/appkefu_theme_no_titlebar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <!-- 设置页面，点击聊天窗口右上角按钮进入，可清空聊天记录 -->
-        <activity android:name="com.appkefu.lib.ui.activity.KFSettingsActivity"
-            android:theme="@style/appkefu_theme_no_titlebar" />
-        <!-- 常见问题类别页面，点击聊天页面输入框下方扩展面板:常见问题按钮进入 -->
-        <activity android:name="com.appkefu.lib.ui.activity.KFFAQActivity"
-            android:theme="@style/appkefu_theme_no_titlebar"/>
-        <!-- 常见问题详情页面， -->
-        <activity android:name="com.appkefu.lib.ui.activity.KFFAQDetailActivity"
-            android:theme="@style/appkefu_theme_no_titlebar"/>
-        <!-- 满意度评价页面 -->
-        <activity android:name="com.appkefu.lib.ui.activity.KFRateActivity"
-            android:theme="@style/appkefu_theme_no_titlebar"/>
-        <!-- 留言页面 -->
-        <activity android:name="com.appkefu.lib.ui.activity.KFLeaveMessageActivity"
-            android:theme="@style/appkefu_theme_no_titlebar"/>
-        <!-- 内嵌浏览器页面，打开网址 -->
-        <activity android:name="com.appkefu.lib.ui.activity.KFWebBrowserActivity"
-            android:theme="@style/appkefu_theme_no_titlebar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- 此处data的android:scheme请填写您App的包名,保持android:host, 如下所示： -->
-                <data android:scheme="com.bbk.activity" android:host="appkefu_url" />
-            </intent-filter>
-        </activity>
-        <!-- 发送语音辅助service -->
-        <service android:name="com.appkefu.lib.soundrecorder.KFRecorderService"/>
-        <service android:name="com.appkefu.lib.service.KFDownloadService"/>
-
-        <!-- im长连接 主service -->
-        <service android:name="com.appkefu.lib.service.KFMainService">
-            <intent-filter android:priority="1000">
-                <!-- 可选 android:priority = "1000"这个属性设置最高优先级，1000是最高值，如果数字越小则优先级越低 -->
-                <action android:name="com.appkefu.lib.action.kefu.LOGIN_WITH_OPENUDID"/>
-                <action android:name="com.appkefu.lib.action.DISCONNECT" />
-                <action android:name="com.appkefu.lib.action.TOGGLE" />
-                <action android:name="com.appkefu.lib.action.SEND" />
-                <action android:name="com.appkefu.lib.action.NETWORK_STATUS_CHANGED" />
-                <action android:name="com.appkefu.lib.action.XMPP.MESSAGE_RECEIVED" />
-            </intent-filter>
-        </service>
-
-        <!-- 可选：监听网络变化 -->
-        <receiver android:name="com.appkefu.lib.receivers.KFNetworkConnectivityReceiver" >
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-        <!-- 可选：监听手机重启，方便重连im服务器, 需要配合权限RECEIVE_BOOT_COMPLETED使用-->
-        <receiver android:name="com.appkefu.lib.receivers.KFBootReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <category android:name="android.intent.category.HOME" />
-            </intent-filter>
-        </receiver>
-        <!-- 可选：监听手机连接电源状态,如果已经连接电源自动尝试重连 -->
-        <receiver android:name="com.appkefu.lib.receivers.KFPowerReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-        <!-- 监听客服发送过来的消息 -->
-        <!--<receiver android:name="com.appkefu.lib.receivers.KFMessageReceiver">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.appkefu.lib.action.XMPP.MESSAGE_RECEIVED" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!-- 可选：检测屏幕是否解锁,以便重连服务器 -->
-        <receiver android:name="com.appkefu.lib.receivers.KFScreenReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" /><!-- 监听屏幕解锁 -->
-            </intent-filter>
-        </receiver>
-        <!-- 定时检测是否需要重连im服务器,以便重连服务器 -->
-        <receiver android:name="com.appkefu.lib.receivers.KFAlarmReceiver">
-            <intent-filter>
-                <action android:name="com.appkefu.lib.action.LOGIN_ALARM" />
-            </intent-filter>
-        </receiver>
-
 
     </application>
 

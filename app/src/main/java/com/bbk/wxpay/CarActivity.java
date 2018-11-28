@@ -243,7 +243,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         groups = new ArrayList<StoreInfo>();
         childs = new HashMap<String, List<GoodsInfo>>();
         for (int i = 0; i < 5; i++) {
-            groups.add(new StoreInfo(i + "", "小马的第" + (i + 1) + "号当铺"));
+//            groups.add(new StoreInfo(i + "", "小马的第" + (i + 1) + "号当铺"));
             List<GoodsInfo> goods = new ArrayList<>();
             for (int j = 0; j <= i; j++) {
                 int[] img = {R.mipmap.new_app_icon, R.mipmap.new_app_icon, R.mipmap.new_app_icon, R.mipmap.new_app_icon, R.mipmap.new_app_icon, R.mipmap.new_app_icon};
@@ -794,7 +794,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                     llBottomCar.setVisibility(View.VISIBLE);
                                     titleText2.setVisibility(View.VISIBLE);
                                     for (int i = 0; i < goods.size(); i++) {
-                                        groups.add(new StoreInfo(goods.get(i).getDianpuid(), goods.get(i).getDianpu()));
+                                        groups.add(new StoreInfo(goods.get(i).getDianpuid(), goods.get(i).getDianpu(),goods.get(i).getDianpuyouhui()));
                                         for (int j = 0; j <= i; j++) {
 //                                        Logg.json(goods.get(i).getList());
                                             List<GoodsInfo> goods1 = JSON.parseArray(goods.get(i).getList(), GoodsInfo.class);

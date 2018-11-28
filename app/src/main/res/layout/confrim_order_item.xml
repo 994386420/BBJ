@@ -344,6 +344,13 @@
             android:textColor="@color/tuiguang_color1"
             android:textSize="16dp"
             android:text="0.00" />
+        <com.bbk.view.AdaptionSizeTextView
+            android:id="@+id/tv_yunfei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tuiguang_color3"
+            android:textSize="13dp"
+            android:text="" />
     </LinearLayout>
     <View
         android:layout_width="match_parent"

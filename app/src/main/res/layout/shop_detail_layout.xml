@@ -170,7 +170,8 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="10dp" >
+                    android:paddingTop="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -194,11 +195,14 @@
                     <com.bbk.view.AdaptionSizeTextView
                         android:id="@+id/tv_youhui"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="18dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/tuiguang_color3"
-                        android:textSize="13dp"
+                        android:background="@mipmap/bg_youhui"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:gravity="center"
                         android:text="" />
                 </LinearLayout>
 
@@ -256,8 +260,7 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:visibility="gone">
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -537,6 +540,16 @@
                     android:textSize="13dp"/>
 
             </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/tuiguang_color3"
+                    android:layout_margin="@dimen/dp_10"
+                    android:lineSpacingMultiplier = "1.5"
+                    android:background="@color/white"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

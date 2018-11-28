@@ -24,7 +24,6 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.view.RushBuyCountDownTimerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.tencent.imsdk.protocol.im_open_common;
 
 import org.json.JSONException;
 import org.json.JSONObject;

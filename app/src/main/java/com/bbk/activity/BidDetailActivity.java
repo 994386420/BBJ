@@ -12,17 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.bbk.Bean.NewFxBean;
 import com.bbk.Bean.PubaDetailBean;
 import com.bbk.adapter.BidDetailListAdapter;
 import com.bbk.adapter.BidDetailListPLAdapter;
-import com.bbk.adapter.FindListAdapter;
-import com.bbk.chat.ui.ChatActivity;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.flow.DataFlow6;
-import com.bbk.flow.ResultEvent;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
@@ -30,11 +26,9 @@ import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.MyListView;
-import com.tencent.imsdk.TIMConversationType;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,10 +117,10 @@ public class BidDetailActivity extends BaseActivity implements CommonLoadingView
                     Intent intent4= new Intent(getApplicationContext(), UserLoginNewActivity.class);
                     startActivity(intent4);
                 }else {
-                    Intent intent = new Intent(BidDetailActivity.this,ChatActivity.class);
-                    intent.putExtra("identify","bbj"+userid);
-                    intent.putExtra("type", TIMConversationType.C2C);
-                    startActivity(intent);
+//                    Intent intent = new Intent(BidDetailActivity.this,ChatActivity.class);
+//                    intent.putExtra("identify","bbj"+userid);
+//                    intent.putExtra("type", TIMConversationType.C2C);
+//                    startActivity(intent);
                 }
             }
         });

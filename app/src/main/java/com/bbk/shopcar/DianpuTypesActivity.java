@@ -83,7 +83,9 @@ public class DianpuTypesActivity extends BaseActivity implements CommonLoadingVi
             Logg.json(jsonArray);
             for (int i = 0;i < jsonArray.length();i++){
                 titleText.setText(jsonArray.getJSONObject(Integer.parseInt(position)).optString("name"));
-                tablayout.addTab(tablayout.newTab().setText(jsonArray.getJSONObject(i).optString("name")));
+                if (!jsonArray.getJSONObject(i).optString("name").equals("全部分类")) {
+                    tablayout.addTab(tablayout.newTab().setText(jsonArray.getJSONObject(i).optString("name")));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

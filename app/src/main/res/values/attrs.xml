@@ -109,4 +109,13 @@
         <attr name="progressDesc" format="string"/>
         <attr name="isShowDesc" format="boolean"/>
     </declare-styleable>
+
+
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+    <attr name="app_primary_color" format="color"/> <!-- topbar -->
+    <attr name="app_content_bg_color" format="color"/> <!-- content-->
 </resources>
