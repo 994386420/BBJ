@@ -280,6 +280,36 @@
                     android:text="0.00" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_useryongjin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_seclecter"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:visibility="gone"
+                android:paddingTop="5dp">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/shop_color1"
+                    android:textSize="13dp"
+                    android:text="佣金抵扣" />
+
+                <TextView
+                    android:id="@+id/tv_useyongjin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/shop_color1"
+                    android:textSize="13dp"
+                    android:text="0.00" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_userjinbi"
                 android:layout_width="match_parent"
@@ -308,6 +338,36 @@
                     android:text="0.00" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_yingfukuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_seclecter"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:visibility="gone">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color4"
+                    android:textSize="13dp"
+                    android:text="应付款(含运费)" />
+
+                <TextView
+                    android:id="@+id/tv_yingfukuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color1"
+                    android:textSize="16dp"
+                    android:text="0.00" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_shifukuan"
                 android:layout_width="match_parent"

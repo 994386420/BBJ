@@ -85,6 +85,7 @@ import com.logg.Logg;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.ProductDetail;
 import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.YSFUserInfo;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -689,9 +690,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             Logg.json("分类", object.optString("chaozhigouTypes"));
             //分类
             if (object.has("chaozhigouTypes")) {
-                chaozhigouTypes = object.optJSONArray("chaozhigouTypes");
-                chaozhigouTypesBeans = JSON.parseArray(object.optString("chaozhigouTypes"), ChaozhigouTypesBean.class);
                 if (showTime == 0) {
+                    chaozhigouTypes = object.optJSONArray("chaozhigouTypes");
+                    chaozhigouTypesBeans = JSON.parseArray(object.optString("chaozhigouTypes"), ChaozhigouTypesBean.class);
                     showTime++;
                     typeGridAdapter = new TypeGridAdapter(getActivity(), chaozhigouTypesBeans);
                     typeGrid.setAdapter(typeGridAdapter);
@@ -1557,11 +1558,16 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 
     public static void consultService(final Context context, String uri, String title, ProductDetail productDetail) {
         String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         QiYuCache.ysfOptions.uiCustomization = MyApplication.uiCustomization(img);
         // 启动聊天界面
         ConsultSource source = new ConsultSource(uri, title, null);
         source.productDetail = productDetail;
         Unicorn.openServiceActivity(context, staffName(), source);
+        YSFUserInfo userInfo = new YSFUserInfo();
+        // APP 的用户 ID
+        userInfo.userId = userID;
+        Unicorn.setUserInfo(userInfo);
     }
 
     private static String staffName() {

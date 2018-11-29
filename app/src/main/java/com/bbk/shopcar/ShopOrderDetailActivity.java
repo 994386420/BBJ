@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.bbk.Bean.OrderItemBeanList;
 import com.bbk.Bean.OrderItembean;
 import com.bbk.Bean.ShopOrderDetailBean;
 import com.bbk.activity.BaseActivity;
@@ -142,6 +141,14 @@ public class ShopOrderDetailActivity extends BaseActivity {
     LinearLayout llYouhui;
     @BindView(R.id.img_more_black)
     ImageView imgMoreBlack;
+    @BindView(R.id.tv_useyongjin)
+    TextView tvUseyongjin;
+    @BindView(R.id.ll_useryongjin)
+    LinearLayout llUseryongjin;
+    @BindView(R.id.tv_yingfukuan)
+    TextView tvYingfukuan;
+    @BindView(R.id.ll_yingfukuan)
+    LinearLayout llYingfukuan;
     private PayReq mReq;
     private PayModel mPayModel;
     private IWXAPI msgApi = null;
@@ -311,7 +318,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                 .setPositiveButton("确认", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        receiptGoods(ordernum,dianpuid);
+                                        receiptGoods(ordernum, dianpuid);
                                     }
                                 }).setNegativeButton("取消", new View.OnClickListener() {
                             @Override
@@ -326,8 +333,8 @@ public class ShopOrderDetailActivity extends BaseActivity {
                         Intent intent = new Intent(ShopOrderDetailActivity.this, WuLiuActivity.class);
                         if (shopOrderDetailBean != null && shopOrderDetailBean.getExpressage() != null) {
                             intent.putExtra("expressnum", shopOrderDetailBean.getExpressage());
-                        }else {
-                            StringUtil.showToast(ShopOrderDetailActivity.this,"订单号不存在");
+                        } else {
+                            StringUtil.showToast(ShopOrderDetailActivity.this, "订单号不存在");
                         }
                         startActivity(intent);
                     }
@@ -391,7 +398,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                 tvDianpu.setText(shopOrderDetailBean.getDianpu());
                                 tvName.setText(shopOrderDetailBean.getReceiver());
                                 tvPhone.setText(shopOrderDetailBean.getPhone());
-                                tvYunfei.setText("¥"+shopOrderDetailBean.getKuaidiM());
+                                tvYunfei.setText("¥" + shopOrderDetailBean.getKuaidiM());
                                 if (shopOrderDetailBean.getYouhui() != null) {
                                     llYouhui.setVisibility(View.VISIBLE);
                                     tvYouhui.setText(shopOrderDetailBean.getYouhui());
@@ -399,10 +406,25 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                     llYouhui.setVisibility(View.GONE);
                                 }
                                 if (shopOrderDetailBean.getUsejinbi() != null && !shopOrderDetailBean.getUsejinbi().equals("")) {
-                                    tvUsejinbi.setText(shopOrderDetailBean.getUsejinbi());
+                                    tvUsejinbi.setText("¥" +shopOrderDetailBean.getUsejinbi());
                                 } else {
                                     tvUsejinbi.setText("0.00");
                                 }
+
+                                if (shopOrderDetailBean.getUseyongjin() != null && !shopOrderDetailBean.getUseyongjin().equals("")) {
+                                    llUseryongjin.setVisibility(View.VISIBLE);
+                                    tvUseyongjin.setText("¥" +shopOrderDetailBean.getUseyongjin());
+                                } else {
+                                    llUseryongjin.setVisibility(View.GONE);
+                                }
+
+                                if (shopOrderDetailBean.getTotalprice() != null && !shopOrderDetailBean.getTotalprice().equals("")) {
+                                    llYingfukuan.setVisibility(View.VISIBLE);
+                                    tvYingfukuan.setText("¥" +shopOrderDetailBean.getTotalprice());
+                                } else {
+                                    llYingfukuan.setVisibility(View.GONE);
+                                }
+
                                 tvWulitime.setText(shopOrderDetailBean.getWuliutime());
                                 tvWuliuMessage.setText(shopOrderDetailBean.getWuliu());
                                 ordernum = shopOrderDetailBean.getOrdernum();
@@ -413,11 +435,11 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                     tvPaytime.setVisibility(View.VISIBLE);
                                     tvPaytime.setText("支付时间： " + shopOrderDetailBean.getZftime());
                                     llShifukuan.setVisibility(View.VISIBLE);
-                                    tvShifukuan.setText("¥" + shopOrderDetailBean.getTotalprice());
+                                    tvShifukuan.setText("¥" + shopOrderDetailBean.getSjprice());
                                 } else {
                                     tvPaytime.setVisibility(View.GONE);
                                     llShifukuan.setVisibility(View.VISIBLE);
-                                    tvShifukuan.setText("¥" + shopOrderDetailBean.getTotalprice());
+                                    tvShifukuan.setText("¥" + shopOrderDetailBean.getSjprice());
                                 }
                                 if (shopOrderDetailBean.getUsejinbi2() != null) {
                                     if (shopOrderDetailBean.getUsejinbi2().equals("0")) {
@@ -501,7 +523,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 break;
             case R.id.ll_lx_maijia:
 //                HomeLoadUtil.startChat(this);
-                MainActivity.consultService(this, "", "鲸城订单详情",null);
+                MainActivity.consultService(this, "", "鲸城订单详情", null);
                 break;
             case R.id.ll_bohao:
                 break;
@@ -511,7 +533,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 StringUtil.showToast(this, "订单号复制成功");
                 break;
             case R.id.img_more_black:
-                HomeLoadUtil.showItemPop(this,imgMoreBlack);
+                HomeLoadUtil.showItemPop(this, imgMoreBlack);
                 break;
         }
     }
@@ -642,7 +664,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
     }
 
 
-//    private void startChat() {
+    //    private void startChat() {
 //        //
 //        KFAPIs.startChat(this,
 //                "bbjkfxz", // 1. 客服工作组ID(请务必保证大小写一致)，请在管理后台分配

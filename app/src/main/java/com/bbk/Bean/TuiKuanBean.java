@@ -16,6 +16,24 @@ public class TuiKuanBean {
     private String sdate2;
     private String reson;
     private String imgurl;
+    private String useyongjin;
+    private String usejinbi;
+
+    public String getUseyongjin() {
+        return useyongjin;
+    }
+
+    public void setUseyongjin(String useyongjin) {
+        this.useyongjin = useyongjin;
+    }
+
+    public String getUsejinbi() {
+        return usejinbi;
+    }
+
+    public void setUsejinbi(String usejinbi) {
+        this.usejinbi = usejinbi;
+    }
 
     public String getParam() {
         return param;

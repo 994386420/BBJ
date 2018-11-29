@@ -2,7 +2,6 @@ package com.bbk.shopcar;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +32,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 退款详情
@@ -110,6 +110,18 @@ public class TuiKuanDeatailActivity extends BaseActivity {
     View view6;
     @BindView(R.id.tv_time3)
     TextView tvTime3;
+    @BindView(R.id.ll_weixin)
+    LinearLayout llWeixin;
+    @BindView(R.id.tv_useyongjin)
+    TextView tvUseyongjin;
+    @BindView(R.id.ll_yongjin)
+    LinearLayout llYongjin;
+    @BindView(R.id.tv_usejingbi)
+    TextView tvUsejingbi;
+    @BindView(R.id.ll_jingbi)
+    LinearLayout llJingbi;
+    @BindView(R.id.tv_shouli)
+    TextView tvShouli;
     private String dianpuid, orderid, states;
 
     @Override
@@ -158,11 +170,31 @@ public class TuiKuanDeatailActivity extends BaseActivity {
                                         .placeholder(R.mipmap.zw_img_300)
                                         .into(itemImg);
                                 tvShopGuige.setText(tuiKuanBean.getParam());
-                                tvUsejinbi.setText("¥" + tuiKuanBean.getWxtotal());
+                                if (tuiKuanBean.getWxtotal().equals("0.00") || tuiKuanBean.getWxtotal().equals("0.0") || tuiKuanBean.getWxtotal().equals("0")) {
+                                    llWeixin.setVisibility(View.GONE);
+                                } else {
+                                    llWeixin.setVisibility(View.VISIBLE);
+                                    tvShouli.setText("微信受理");
+                                    tvUsejinbi.setText("¥" + tuiKuanBean.getWxtotal());
+                                }
                                 tvTotalMoney.setText("¥" + tuiKuanBean.getTotal());
                                 tvTime1.setText(tuiKuanBean.getSdate2());
                                 tvTime2.setText(tuiKuanBean.getSdate2());
                                 tvTime3.setText(tuiKuanBean.getSdate3());
+                                if (tuiKuanBean.getUsejinbi().equals("0.00") || tuiKuanBean.getUsejinbi().equals("0.0") || tuiKuanBean.getUsejinbi().equals("0")) {
+                                    llJingbi.setVisibility(View.GONE);
+                                } else {
+                                    llJingbi.setVisibility(View.VISIBLE);
+                                    tvShouli.setText("商家受理");
+                                    tvUsejingbi.setText("¥" + tuiKuanBean.getUsejinbi());
+                                }
+                                if (tuiKuanBean.getUseyongjin().equals("0.00") || tuiKuanBean.getUseyongjin().equals("0.0") || tuiKuanBean.getUseyongjin().equals("0")) {
+                                    llYongjin.setVisibility(View.GONE);
+                                } else {
+                                    llYongjin.setVisibility(View.VISIBLE);
+                                    tvShouli.setText("商家受理");
+                                    tvUseyongjin.setText("¥" + tuiKuanBean.getUseyongjin());
+                                }
                                 if (states.equals("-1")) {
                                     tvStatus.setText("商家同意退款，退款处理中");
                                     view4.setBackgroundColor(getResources().getColor(R.color.__picker_common_primary));
@@ -199,4 +231,8 @@ public class TuiKuanDeatailActivity extends BaseActivity {
     }
 
 
+    @OnClick(R.id.title_back_btn)
+    public void onViewClicked() {
+        finish();
+    }
 }

@@ -253,17 +253,38 @@
             android:gravity="center"
             android:paddingBottom="15dp"
             android:paddingTop="15dp" >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@mipmap/member_09"/>
+
+            <RelativeLayout
+                android:layout_width="40dp"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/member_09"/>
+                <com.bbk.view.AdaptionSizeTextView
+                    android:id="@+id/tv_s4"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:text="1"
+                    android:textSize="10dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:background="@drawable/bg_cicyle7"
+                    android:textColor="@color/tuiguang_color5"/>
+            </RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/shop_color1"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"
-                android:text="退货/售后"/>
+                android:text="退款"/>
 
         </LinearLayout>
     </LinearLayout>

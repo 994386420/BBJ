@@ -183,6 +183,7 @@
                 android:layout_height="1dp"
                 android:background="@color/__picker_common_primary"/>
             <LinearLayout
+                android:id="@+id/ll_weixin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -191,6 +192,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
+                android:visibility="gone"
                 android:paddingBottom="10dp">
                 <TextView
                     android:layout_weight="1"
@@ -202,6 +204,72 @@
 
                 <TextView
                     android:id="@+id/tv_usejinbi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color3"
+                    android:textSize="13dp"
+                    android:text="0.00" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/__picker_common_primary"/>
+            <LinearLayout
+                android:id="@+id/ll_yongjin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_seclecter"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone"
+                android:paddingBottom="10dp">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color3"
+                    android:textSize="13dp"
+                    android:text="退回佣金" />
+
+                <TextView
+                    android:id="@+id/tv_useyongjin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color3"
+                    android:textSize="13dp"
+                    android:text="0.00" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/__picker_common_primary"/>
+            <LinearLayout
+                android:id="@+id/ll_jingbi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_seclecter"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone"
+                android:paddingBottom="10dp">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color3"
+                    android:textSize="13dp"
+                    android:text="退回鲸币" />
+
+                <TextView
+                    android:id="@+id/tv_usejingbi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/tuiguang_color3"
@@ -325,10 +393,11 @@
                         android:background="@color/__picker_common_primary"/>
                 </LinearLayout>
                     <TextView
+                        android:id="@+id/tv_shouli"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="微信受理"
+                        android:text=""
                         android:textColor="@color/shop_color1"
                         android:textSize="12dp"/>
                     <com.bbk.view.AdaptionSizeTextView
@@ -571,6 +640,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:background="@color/white">
 

@@ -21,6 +21,7 @@ import com.bbk.adapter.ShopOrderWaiCengAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.HomeLoadUtil;
@@ -62,7 +63,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
     @BindView(R.id.title_text1)
     TextView titleText1;
     @BindView(R.id.tablayout)
-    TabLayout tablayout;
+    XTabLayout tablayout;
     @BindView(R.id.henggang213)
     View henggang213;
     @BindView(R.id.mlistview)
@@ -78,6 +79,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
     private ShopOrderWaiCengAdapter shopOrderAdapter;
     private HongbaoDialog hongbaoDialog;
     private String hongbaoMoney;
+    int width = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,20 +93,22 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
         initData();
     }
 
+    /**
+     * 根据字符个数计算偏移量
+     */
+    private int getOffsetWidth(String string,int index) {
+        return string.length() * 14 + index * 12;
+    }
+
     private void initVeiw() {
         imgMoreBlack.setVisibility(View.VISIBLE);
         progress.setLoadingHandler(this);
         titleText.setText("我的订单");
-        tablayout.addTab(tablayout.newTab().setText("全部"));
-        tablayout.addTab(tablayout.newTab().setText("待付款"));
-        tablayout.addTab(tablayout.newTab().setText("待发货"));
-        tablayout.addTab(tablayout.newTab().setText("待收货"));
-        tablayout.addTab(tablayout.newTab().setText("待评论"));
-        tablayout.setTabMode(TabLayout.MODE_FIXED);
         refreshAndloda();
-        tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tablayout.setxTabDisplayNum(5);
+        tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener()  {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
+            public void onTabSelected(XTabLayout.Tab tab) {
                 int j = tab.getPosition();
                 if (j == 0) {
                     option = 0;
@@ -121,6 +125,9 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
                 } else if (j == 4) {
                     option = 4;
                     NewConstants.option = 1;
+                } else if (j == 5){
+                    option = -3;
+                    NewConstants.option = 1;
                 }
                 page = 1;
                 x = 1;
@@ -128,23 +135,58 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+            public void onTabUnselected(XTabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onTabReselected(XTabLayout.Tab tab) {
 
             }
         });
-
+        tablayout.addTab(tablayout.newTab().setText("全部"));
+        tablayout.addTab(tablayout.newTab().setText("待付款"));
+        tablayout.addTab(tablayout.newTab().setText("待发货"));
+        tablayout.addTab(tablayout.newTab().setText("待收货"));
+        tablayout.addTab(tablayout.newTab().setText("待评论"));
+        tablayout.addTab(tablayout.newTab().setText("已退款"));
     }
 
     private void initData() {
         if (getIntent().getStringExtra("status") != null) {
             String status1 = getIntent().getStringExtra("status");
             int i = Integer.valueOf(status1);
-            TabLayout.Tab tabAt = tablayout.getTabAt(i);
+            if (i == 5) {
+
+            }
+            switch (i){
+                case 0:
+                    width = (int) (getOffsetWidth("",i) * getResources().getDisplayMetrics().density);
+                    break;
+                case 1:
+                    width = (int) (getOffsetWidth("全部",i) * getResources().getDisplayMetrics().density);
+                    break;
+                case 2:
+                    width = (int) (getOffsetWidth("全部待付款",i) * getResources().getDisplayMetrics().density);
+                    break;
+                case 3:
+                    width = (int) (getOffsetWidth("全部待付款待发货",i) * getResources().getDisplayMetrics().density);
+                    break;
+                case 4:
+                    width = (int) (getOffsetWidth("全部待付款待发货待收货",i) * getResources().getDisplayMetrics().density);
+                    break;
+                case 5:
+                    width = (int) (getOffsetWidth("全部待付款待发货待收货待评论",i) * getResources().getDisplayMetrics().density);
+                    break;
+            }
+            tablayout.post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            tablayout.scrollTo(width, 0);
+                        }
+                    });
+            XTabLayout.Tab tabAt = tablayout.getTabAt(i);
             tabAt.select();
         } else {
             page = 1;

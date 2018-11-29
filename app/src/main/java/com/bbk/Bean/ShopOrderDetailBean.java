@@ -29,6 +29,25 @@ public class ShopOrderDetailBean {
     private String youhui;
     private String leastjin;//至少使用多少个金币
     private String kuaidiM;
+    private String useyongjin;//佣金抵扣
+    private String sjprice;//实际付款
+
+
+    public String getSjprice() {
+        return sjprice;
+    }
+
+    public void setSjprice(String sjprice) {
+        this.sjprice = sjprice;
+    }
+
+    public String getUseyongjin() {
+        return useyongjin;
+    }
+
+    public void setUseyongjin(String useyongjin) {
+        this.useyongjin = useyongjin;
+    }
 
     public String getKuaidiM() {
         return kuaidiM;

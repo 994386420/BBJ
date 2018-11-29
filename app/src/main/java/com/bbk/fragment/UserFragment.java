@@ -83,9 +83,7 @@ import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
-import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.HongbaoDialog;
-import com.bbk.util.QiYuCache;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
@@ -210,6 +208,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     TextView hongbaoNum;
     @BindView(R.id.ll_hongbao)
     RelativeLayout llHongbao;
+    @BindView(R.id.tv_s4)
+    AdaptionSizeTextView tvS4;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -587,6 +587,14 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                             tvDshNum.setText(jsonObject2.optString("s2"));
                                         }
                                     }
+                                    if (jsonObject2.has("s4")) {
+                                        if (jsonObject2.optString("s4").equals("0")) {
+                                            tvS4.setVisibility(View.GONE);
+                                        } else {
+                                            tvS4.setVisibility(View.VISIBLE);
+                                            tvS4.setText(jsonObject2.optString("s4"));
+                                        }
+                                    }
                                 } else {
                                     user_name.setText("请登录");
                                     user_img.setImageResource(R.mipmap.logo_01);
@@ -600,6 +608,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     tvSo.setVisibility(View.GONE);
                                     tvSs.setVisibility(View.GONE);
                                     tvSl.setVisibility(View.GONE);
+                                    tvS4.setVisibility(View.GONE);
                                     tvCopy.setVisibility(View.GONE);
                                     tvDshNum.setVisibility(View.GONE);
                                     xrefresh.finishRefresh();
@@ -1581,15 +1590,17 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 mShopOrder(userID, "4");
                 break;
             case R.id.ll_shouhou:
-                if (TextUtils.isEmpty(userID)) {
-//                    JumpDetailActivty.Flag = "home";
-                    LogFlag = "11";
-                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
-//                    HomeLoadUtil.startChat(getActivity());
-                    MainActivity.consultService(getActivity(), "", "我的",null);
-                }
+                LogFlag = "20";
+                mShopOrder(userID, "5");
+//                if (TextUtils.isEmpty(userID)) {
+////                    JumpDetailActivty.Flag = "home";
+//                    LogFlag = "11";
+//                    intent = new Intent(getActivity(), UserLoginNewActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
+////                    HomeLoadUtil.startChat(getActivity());
+//                    MainActivity.consultService(getActivity(), "", "我的",null);
+//                }
                 break;
             case R.id.ll_car:
                 if (TextUtils.isEmpty(userID)) {
@@ -1939,7 +1950,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case "联系客服":
 //                HomeLoadUtil.startChat(getActivity());
-                MainActivity.consultService(getActivity(), "", "我的",null);
+                MainActivity.consultService(getActivity(), "", "我的", null);
                 break;
             case "关于比比鲸":
                 intent = new Intent(getActivity(), AboutUsActivity.class);
@@ -2031,7 +2042,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                             mShopOrder(userID, "4");
                             break;
                         case "11":
-                            MainActivity.consultService(getActivity(), "", "我的",null);
+                            MainActivity.consultService(getActivity(), "", "我的", null);
                             break;
                         case "12":
                             intent = new Intent(getActivity(), ShopOrderActivity.class);
@@ -2066,6 +2077,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                             intent = new Intent(getActivity(), MesageCenterActivity.class);
                             intent.putExtra("type", "0");
                             startActivity(intent);
+                            break;
+                        case "20":
+                            mShopOrder(userID, "5");
+                            break;
                     }
                 }
                 break;

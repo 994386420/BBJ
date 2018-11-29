@@ -18,6 +18,7 @@ import com.bbk.model.MainActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.MyWantPLActivity;
 import com.bbk.shopcar.ShopOrderDetailActivity;
+import com.bbk.shopcar.TuiKuanDeatailActivity;
 import com.bbk.util.HomeLoadUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -110,17 +111,31 @@ public class OrderItemAdapter extends RecyclerView.Adapter {
             vh.tvNum.setText("x" + orderItembean.getNumber());
             vh.tvShopPrice.setText("￥" + orderItembean.getPrice());
             vh.tvShopGuige.setText(orderItembean.getParam());
-            vh.itemOrder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NewConstants.refeshOrderFlag = "0";
-                    Intent intent = new Intent(context, ShopOrderDetailActivity.class);
-                    intent.putExtra("orderid", ordernum);
-                    intent.putExtra("state", state);
-                    intent.putExtra("dianpuid", dianpuid);
-                    context.startActivity(intent);
-                }
-            });
+            if (state.equals("-4")){
+                vh.itemOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NewConstants.refeshOrderFlag = "0";
+                        Intent intent = new Intent(context, TuiKuanDeatailActivity.class);
+                        intent.putExtra("dianpuid", dianpuid);
+                        intent.putExtra("orderid", orderItembean.getId());
+                        intent.putExtra("states", "-3");
+                        context.startActivity(intent);
+                    }
+                });
+            }else {
+                vh.itemOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NewConstants.refeshOrderFlag = "0";
+                        Intent intent = new Intent(context, ShopOrderDetailActivity.class);
+                        intent.putExtra("orderid", ordernum);
+                        intent.putExtra("state", state);
+                        intent.putExtra("dianpuid", dianpuid);
+                        context.startActivity(intent);
+                    }
+                });
+            }
             Glide.with(context)
                     .load(orderItembean.getImgurl())
                     .priority(Priority.HIGH)

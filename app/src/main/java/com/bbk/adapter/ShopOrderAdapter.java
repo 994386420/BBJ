@@ -29,6 +29,7 @@ import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.MyWantPLActivity;
 import com.bbk.shopcar.NewDianpuActivity;
 import com.bbk.shopcar.ShopOrderDetailActivity;
+import com.bbk.shopcar.TuiKuanDeatailActivity;
 import com.bbk.shopcar.WuLiuActivity;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
@@ -252,6 +253,17 @@ public class ShopOrderAdapter extends RecyclerView.Adapter {
 //                    .into(vh.itemImg);
 
             switch (shopOrderBean.getState()) {
+                case "-4":
+                    vh.mtypetext.setText("退款成功");
+                    vh.tvDelete.setVisibility(View.GONE);
+                    vh.tvPay.setVisibility(View.GONE);
+                    vh.tvQuxiao.setVisibility(View.GONE);
+                    vh.tvTixing.setVisibility(View.GONE);
+                    vh.tvWuliu.setVisibility(View.GONE);
+                    vh.tvYanchang.setVisibility(View.GONE);
+                    vh.tvQr.setVisibility(View.GONE);
+                    vh.tvPl.setVisibility(View.GONE);
+                    break;
                 case "-2":
                     vh.mtypetext.setText("交易关闭");
                     vh.tvDelete.setVisibility(View.VISIBLE);
@@ -398,17 +410,31 @@ public class ShopOrderAdapter extends RecyclerView.Adapter {
                     vh.tvPl.setVisibility(View.GONE);
                     break;
             }
-            vh.resultItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NewConstants.refeshOrderFlag = "0";
-                    Intent intent = new Intent(context, ShopOrderDetailActivity.class);
-                    intent.putExtra("orderid", ordernum);
-                    intent.putExtra("dianpuid",shopOrderBean.getDianpuid());
-                    intent.putExtra("state", shopOrderBean.getState());
-                    context.startActivity(intent);
-                }
-            });
+//            if (shopOrderBean.getState().equals("-4")){
+//                vh.resultItem.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        NewConstants.refeshOrderFlag = "0";
+//                        Intent intent = new Intent(context, TuiKuanDeatailActivity.class);
+//                        intent.putExtra("dianpuid", shopOrderBean.getDianpuid());
+//                        intent.putExtra("orderid", ordernum);
+//                        intent.putExtra("states", "-3");
+//                        context.startActivity(intent);
+//                    }
+//                });
+//            }else {
+                vh.resultItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NewConstants.refeshOrderFlag = "0";
+                        Intent intent = new Intent(context, ShopOrderDetailActivity.class);
+                        intent.putExtra("orderid", ordernum);
+                        intent.putExtra("dianpuid",shopOrderBean.getDianpuid());
+                        intent.putExtra("state", shopOrderBean.getState());
+                        context.startActivity(intent);
+                    }
+                });
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
