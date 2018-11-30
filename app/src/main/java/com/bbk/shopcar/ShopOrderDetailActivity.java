@@ -474,7 +474,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                                 ids = list.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
                                 nums = listNum.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "");
                                 guiges = listguiges.toString().replace("[", "").replace("]", "").replace(",", "|");
-                                recyclerviewOrderDetail.setAdapter(new OrderDetailItemAdapter(ShopOrderDetailActivity.this, orderItembeans, state, orderid, dianpuid));
+                                recyclerviewOrderDetail.setAdapter(new OrderDetailItemAdapter(ShopOrderDetailActivity.this, orderItembeans, state, orderid, dianpuid,ordernum));
                                 if (state != null) {
                                     setVisible(state);
                                 }
@@ -523,7 +523,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 break;
             case R.id.ll_lx_maijia:
 //                HomeLoadUtil.startChat(this);
-                MainActivity.consultService(this, "", "鲸城订单详情", null);
+                MainActivity.consultService(this, "", "鲸城订单号"+ordernum, null);
                 break;
             case R.id.ll_bohao:
                 break;

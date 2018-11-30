@@ -1556,6 +1556,13 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
         startActivityForResult(intent, 2);
     }
 
+    /**
+     * 网易七月客服
+     * @param context
+     * @param uri
+     * @param title
+     * @param productDetail
+     */
     public static void consultService(final Context context, String uri, String title, ProductDetail productDetail) {
         String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");

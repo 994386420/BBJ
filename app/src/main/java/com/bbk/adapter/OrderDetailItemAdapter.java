@@ -48,13 +48,15 @@ public class OrderDetailItemAdapter extends RecyclerView.Adapter {
     List<OrderItembean> orderItembeans;
     private String state;
     private String orderid,dianpuid;
+    private String ordernum;//订单号
 
-    public OrderDetailItemAdapter(Context context, List<OrderItembean> orderItembeans, String state,String orderid,String dianpuid) {
+    public OrderDetailItemAdapter(Context context, List<OrderItembean> orderItembeans, String state,String orderid,String dianpuid,String ordernum) {
         this.context = context;
         this.orderItembeans = orderItembeans;
         this.orderid = orderid;
         this.state = state;
         this.dianpuid = dianpuid;
+        this.ordernum = ordernum;
     }
 
     @Override
@@ -168,7 +170,7 @@ public class OrderDetailItemAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
 //                            HomeLoadUtil.startChat(context);
-                            MainActivity.consultService(context, "", "鲸城订单详情",null);
+                            MainActivity.consultService(context, "", "鲸城订单号"+ordernum,null);
 
                         }
                     });
