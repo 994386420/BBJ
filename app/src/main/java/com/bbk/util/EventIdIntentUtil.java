@@ -153,7 +153,9 @@ public class EventIdIntentUtil {
 		case "5":
 			String htmlUrl = jo.optString("htmlUrl");
 			Intent intent4;
+			Logg.json(htmlUrl);
 			if (htmlUrl.contains("@@")){
+				Logg.json(htmlUrl+"====");
 				if (htmlUrl.contains("user")){
 					if (TextUtils.isEmpty(userID)){
 						intent4= new Intent(context, UserLoginNewActivity.class);
@@ -177,6 +179,7 @@ public class EventIdIntentUtil {
 					context.startActivity(intent4);
 				}
 			}else {
+				Logg.json(htmlUrl+"===>>>");
 				intent4= new Intent(context, WebViewActivity.class);
 				intent4.putExtra("url", htmlUrl);
 				context.startActivity(intent4);

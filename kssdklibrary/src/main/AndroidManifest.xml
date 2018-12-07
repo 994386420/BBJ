@@ -1,0 +1,46 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.kuaishang.kssdk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <application>
+        <!--聊天界面-->
+        <activity
+            android:name="cn.kuaishang.kssdk.activity.KSConversationActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/KSTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:taskAffinity="android.task.kssdk"/>
+        <!--用户反馈-->
+        <activity
+            android:name="cn.kuaishang.kssdk.activity.KSFeedbackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/KSTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:taskAffinity="android.task.kssdk"/>
+        <activity
+            android:name="cn.kuaishang.kssdk.activity.KSShowPhotoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:taskAffinity="android.task.kssdk"/>
+
+        <activity
+            android:name="cn.kuaishang.kssdk.activity.AlbumBucketActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:taskAffinity="android.task.kssdk"/>
+
+        <activity android:name="cn.kuaishang.kssdk.activity.AlbumGridActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:taskAffinity="android.task.kssdk"/>
+
+        <service android:name="cn.kuaishang.core.KSService" />
+    </application>
+
+</manifest>

@@ -10,8 +10,8 @@ android {
         applicationId "com.bbk.activity"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 51
-        versionName '5.1.5'
+        versionCode 52
+        versionName '5.1.6'
         multiDexEnabled true
     }
     android {
@@ -277,6 +277,14 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.7'
     implementation project(':guideview')
     implementation project(':jdlmm')
+    //搜索流式布局
+    implementation project(':flowlayout-lib')
+    //规格筛选流式布局
+    implementation project(':library')
+    //快思通客服
+    compile 'com.zhy:okhttputils:2.6.2'
+    implementation project(':kssdklibrary')
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     //view注入框架
@@ -288,7 +296,6 @@ dependencies {
 //    compile 'com.github.jdsjlzx:LRecyclerView:1.5.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    implementation 'com.android.support:cardview-v7:23.1.1'
     implementation 'com.logg:Logg:1.5.1'
 //    compile 'com.zaaach:toprightmenu:1.1.2'
     //右上角全局弹窗
@@ -296,17 +303,18 @@ dependencies {
     //京东开普勒
     implementation project(':jdsdk_lib')
 
-    //  萝卜丝客服 加载核心库
-    implementation 'com.bytedesk:core:1.0.6'
-   // 萝卜丝客服UI
-    implementation project(':bytedesk-ui')
-
-    compile 'com.qiyukf.unicorn:unicorn:4.6.0'
+//    //  萝卜丝客服 加载核心库
+//    implementation 'com.bytedesk:core:1.0.6'
+//   // 萝卜丝客服UI
+//    implementation project(':bytedesk-ui')
+//
+//    compile 'com.qiyukf.unicorn:unicorn:4.6.0'
 
     implementation 'com.android.support:support-v4:' + rootProject.supportLibVersion
     implementation 'com.android.support:appcompat-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:design:' + rootProject.supportLibVersion
     implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
+    implementation 'com.android.support:cardview-v7:'+ rootProject.supportLibVersion
     testImplementation 'junit:junit:4.12'
 }
 

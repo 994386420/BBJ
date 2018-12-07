@@ -170,7 +170,7 @@ public class OrderDetailItemAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
 //                            HomeLoadUtil.startChat(context);
-                            MainActivity.consultService(context, "", "鲸城订单号"+ordernum,null);
+                            MainActivity.consultService(context);
 
                         }
                     });

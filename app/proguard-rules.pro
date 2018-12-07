@@ -236,19 +236,20 @@
 #-dontwarn com.appkefu.**
 #-keep class com.appkefu.** { *;}
 #网易七月客服
--dontwarn com.qiyukf.**
--keep class com.qiyukf.** {*;}
+#-dontwarn com.qiyukf.**
+#-keep class com.qiyukf.** {*;}
 
 
 # 萝卜丝
--dontwarn android.databinding.**
--keep class android.databinding.** { *; }
--dontwarn com.qmuiteam.qmui.**
--keep class com.qmuiteam.qmui.** { *; }
--dontwarn  okhttp3.**
--keep class  okhttp3.** { *; }
--dontwarn com.bytedesk.**
--keep class com.bytedesk.** { *;}
+#-dontwarn android.databinding.**
+#-keep class android.databinding.** { *; }
+#-dontwarn com.qmuiteam.qmui.**
+#-keep class com.qmuiteam.qmui.** { *; }
+#-dontwarn  okhttp3.**
+#-keep class  okhttp3.** { *; }
+#-dontwarn com.bytedesk.**
+#-keep class com.bytedesk.** { *;}
+
 #bug模式下都是可以的，打包需要加这一句
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
 #当EventBus注解的函数找不到时，可以加以下

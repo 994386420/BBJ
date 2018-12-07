@@ -18,7 +18,7 @@
         android:text="商品参数"
         android:textSize="15dp"
         android:textColor="@color/tuiguang_color4"/>
-    <com.bbk.view.AdaptionSizeTextView
+    <TextView
         android:id="@+id/tv_canshu2"
         android:layout_weight="1"
         android:layout_width="match_parent"

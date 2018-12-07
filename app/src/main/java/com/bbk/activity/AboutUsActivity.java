@@ -14,16 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bbk.dialog.ActionSheetDialog;
-import com.bbk.dialog.AlertDialog;
 import com.bbk.resource.Constants;
-import com.bbk.resource.NewConstants;
-import com.bbk.shopcar.CarActivity;
-import com.bbk.shopcar.ConfirmOrderActivity;
 import com.bbk.util.DataCleanManager;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.StringUtil;
-import com.qiyukf.unicorn.api.Unicorn;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -125,7 +119,7 @@ public class AboutUsActivity extends BaseActivity {
                              * 清除文件缓存，将删除SDK接收过的所有文件。<br>
                              * 建议在工作线程中执行该操作。
                              */
-                            Unicorn.clearCache();
+
                             tvAppData.setText(DataCleanManager.getTotalCacheSize(getApplicationContext()));
                             StringUtil.showToast(AboutUsActivity.this,"缓存清除成功");
                         } catch (Exception e) {

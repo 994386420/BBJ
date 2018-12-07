@@ -589,10 +589,13 @@ public class JumpDetailActivty extends BaseActivity {
 
     @Override
     protected void onActivityResult(int arg0, int arg1, Intent arg2) {
-        switch (arg0) {
-            case 1:
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (userID != null && !userID.equals("")) {
+            switch (arg0) {
+                case 1:
                     getJumpUrl();
-                break;
+                    break;
+            }
         }
         super.onActivityResult(arg0, arg1, arg2);
     }

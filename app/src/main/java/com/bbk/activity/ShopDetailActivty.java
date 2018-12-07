@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +41,7 @@ import com.bbk.Bean.TypesLevelBean;
 import com.bbk.adapter.DetailImageAdapter;
 import com.bbk.adapter.ShopCanshuAdapter;
 import com.bbk.adapter.SizeChooseAdapter;
+import com.bbk.adapter.TagAdapter;
 import com.bbk.adapter.TuijianGridAdapter;
 import com.bbk.adapter.TypeChooseAdapter;
 import com.bbk.adapter.TypeChooseLevelOneAdapter;
@@ -65,6 +67,8 @@ import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.CircleImageView1;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.hhl.library.FlowTagLayout;
+import com.hhl.library.OnTagSelectListener;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -231,13 +235,15 @@ public class ShopDetailActivty extends BaseActivity {
     private List<TypesChooseSizeBean> typesChooseSizeBeans;
     private List<TypesLevelBean> typesLevelBeans;
     private List<TypesChooseLevelOneBean> typesChooseLevelOneBeans;
-    private GridView gridViewName;
-    private GridView gridViewSize;
+    private FlowTagLayout gridViewName;
+    private FlowTagLayout gridViewSize;
     private TextView tvHasChoose;
     private TextView tvMoney,tvSize,tvColor;
     private String chooseGuigeColor, chooseGuigeSize;
     private boolean isChooseColor = false;//判断是否旋转过颜色
     private int countNum = 1;//购买商品数量
+    private TagAdapter<String> mSizeTagAdapter;
+    private TagAdapter<String> mColorTagAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -372,6 +378,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 Logg.json(jsonObject);
                                 shopDetailBean = JSON.parseObject(jsonObject.optString("content"), ShopDetailBean.class);
                                 shopAddress.setText(shopDetailBean.getFahuodi());
+                                shopKuaidi.setText("快递："+shopDetailBean.getKuaidi());
                                 Logg.json(shopDetailBean.getGuigetype() + "=====>>>" + shopDetailBean.getGuigepro() + "=====>>>" + shopDetailBean.getGuige()
                                         + "=====>>>" + shopDetailBean.getYouhui());
                                 if (shopDetailBean.getYouhui() != null && !shopDetailBean.getYouhui().equals("")) {
@@ -654,7 +661,7 @@ public class ShopDetailActivty extends BaseActivity {
                         startActivityForResult(intent, 1);
                     } else {
 //                        HomeLoadUtil.startChat(this);
-                        MainActivity.consultService(this, "", "商品详情",null);
+                        MainActivity.consultService(this);
                     }
                 }
                 break;
@@ -731,7 +738,7 @@ public class ShopDetailActivty extends BaseActivity {
                         case "5":
                             if (shopDetailBean != null) {
 //                                HomeLoadUtil.startChat(this);
-                                MainActivity.consultService(this, "", "我的",null);
+                                MainActivity.consultService(this);
                             }
                             break;
                         case "6":
@@ -903,8 +910,8 @@ public class ShopDetailActivty extends BaseActivity {
             shopDialog.show();
             shopDialog.setCanceledOnTouchOutside(true);
             LinearLayout ll_close = shopDialog.findViewById(R.id.ll_close);
-            gridViewName = shopDialog.findViewById(R.id.type_grid_name);
-            gridViewSize = shopDialog.findViewById(R.id.type_grid_size);
+            gridViewName = shopDialog.findViewById(R.id.size_flow_layout);
+            gridViewSize = shopDialog.findViewById(R.id.color_flow_layout);
             tvHasChoose = shopDialog.findViewById(R.id.tv_have_choose);
             tvMoney = shopDialog.findViewById(R.id.tv_money);
             tvColor = shopDialog.findViewById(R.id.tv_color);
@@ -916,10 +923,8 @@ public class ShopDetailActivty extends BaseActivity {
             LinearLayout llAddCar = shopDialog.findViewById(R.id.ll_add_car);
             LinearLayout llBuyNow = shopDialog.findViewById(R.id.ll_buy_now);
             tvMoney.setText("¥ " + shopDetailBean.getPrice());
-            ImageView imageView = shopDialog.findViewById(R.id.iv_image);
+            final ImageView imageView = shopDialog.findViewById(R.id.iv_image);
             Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
-            gridViewSize.setSelector(new ColorDrawable(Color.TRANSPARENT));
-            gridViewName.setSelector(new ColorDrawable(Color.TRANSPARENT));
             typesLevelBeans =  JSON.parseArray(shopDetailBean.getGuigepro(), TypesLevelBean.class);
 
             /**
@@ -932,15 +937,49 @@ public class ShopDetailActivty extends BaseActivity {
                     break;
                 case "1":
                     //一种规格
-                    //两种规格
                     tvColor.setText(typesLevelBeans.get(0).getName());
                     tvSize.setVisibility(View.GONE);
                     gridViewSize.setVisibility(View.GONE);
                     gridViewName.setVisibility(View.VISIBLE);
                     typesChooseLevelOneBeans = JSON.parseArray(shopDetailBean.getGuige(), TypesChooseLevelOneBean.class);
-                    typeChooseLevelOneAdapter = new TypeChooseLevelOneAdapter(context, typesChooseLevelOneBeans);
-                    gridViewName.setAdapter(typeChooseLevelOneAdapter);
-                    gridViewName.setOnItemClickListener(onItemClickLevelOneListener);
+                    mSizeTagAdapter = new TagAdapter<>(this);
+                    gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                    gridViewName.setAdapter(mSizeTagAdapter);
+                    gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
+                        @Override
+                        public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+                            if (selectedList != null && selectedList.size() > 0) {
+                                StringBuilder sb = new StringBuilder();
+                                StringBuffer sbb = new StringBuffer();
+                                for (int i : selectedList) {
+                                    sb.append(parent.getAdapter().getItem(i));
+                                    curposition = i;
+                                }
+                                isChooseColor = true;
+                                if (!typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
+                                    tvMoney.setText("¥ " + typesChooseLevelOneBeans.get(curposition).getPrice());
+                                }else {
+                                    tvMoney.setText("¥ " + shopDetailBean.getPrice());
+                                }
+                                chooseGuigeColor = sb.toString();
+                                tvHasChoose.setText(sbb.append("已选择:").append(sb.toString()).toString());
+                                if (typesChooseLevelOneBeans.get(curposition).getImg() != null && !typesChooseLevelOneBeans.get(curposition).getImg().equals("")) {
+                                    Glide.with(context).load(typesChooseLevelOneBeans.get(curposition).getImg()).into(imageView);
+                                    return;
+                                }
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }else{
+                                tvHasChoose.setText("请选择商品规格");
+                                chooseGuigeColor = null;
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }
+                        }
+                    });
+                    List<String> dataSource = new ArrayList<>();
+                    for (int i = 0;i<typesChooseLevelOneBeans.size();i++){
+                        dataSource.add(typesChooseLevelOneBeans.get(i).getName());
+                    }
+                    initSizeData(dataSource);
                     llAddCar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -955,15 +994,94 @@ public class ShopDetailActivty extends BaseActivity {
                     break;
                 case "2":
                     //两种规格
-                    tvColor.setText(typesLevelBeans.get(0).getName());
-                    tvSize.setText(typesLevelBeans.get(1).getName());
+                    /**
+                     * 按照level显示name
+                     */
+                    if (typesLevelBeans.get(0).getLevel().equals("1")){
+                        tvColor.setText(typesLevelBeans.get(0).getName());
+                    }
+                    if (typesLevelBeans.get(1).getLevel().equals("2")){
+                        tvSize.setText(typesLevelBeans.get(1).getName());
+                    }
+                    if (typesLevelBeans.get(0).getLevel().equals("2")){
+                        tvSize.setText(typesLevelBeans.get(0).getName());
+                    }
+                    if (typesLevelBeans.get(1).getLevel().equals("1")){
+                        tvColor.setText(typesLevelBeans.get(1).getName());
+                    }
                     gridViewSize.setVisibility(View.VISIBLE);
                     gridViewName.setVisibility(View.VISIBLE);
                     typesChooseBeans = JSON.parseArray(shopDetailBean.getGuige(), TypesChooseBean.class);
-                    typeGridAdapter = new TypeChooseAdapter(context, typesChooseBeans);
-                    gridViewName.setAdapter(typeGridAdapter);
-                    gridViewName.setOnItemClickListener(onItemClickListener);
-                    gridViewSize.setOnItemClickListener(onItemSizeClickListener);
+                    mSizeTagAdapter = new TagAdapter<>(this);
+                    gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                    gridViewName.setAdapter(mSizeTagAdapter);
+                    /**
+                     * 颜色分类tag选择
+                     */
+                    gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
+                        @Override
+                        public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+                            StringBuilder sb = new StringBuilder();
+                            StringBuffer sbb = new StringBuffer();
+                            if (selectedList != null && selectedList.size() > 0) {
+                                for (int i : selectedList) {
+                                    sb.append(parent.getAdapter().getItem(i));
+                                    curposition = i;
+                                }
+                                isChooseColor = true;
+                                chooseGuigeColor = null;
+                                chooseGuigeSize = null;
+                                tvMoney.setText("¥ " + shopDetailBean.getPrice());
+                                tvHasChoose.setText(sbb.append("已选择:").append(sb.toString()));
+                                List<String> list = new ArrayList<>();
+                                List<String> listSize = new ArrayList<>();
+                                List<String> listPrice = new ArrayList<>();
+                                /**
+                                 * 循环遍历取尺寸价格
+                                 */
+                                for (int i = 0; i < typesChooseBeans.size(); i++) {
+                                    typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(curposition).getList(), TypesChooseSizeBean.class);
+                                    for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
+                                        listSize.add(typesChooseSizeBeans.get(j).getSize());
+                                        list.add(typesChooseSizeBeans.get(j).getSize());
+                                        listPrice.add(typesChooseSizeBeans.get(j).getPrice());
+                                    }
+                                }
+                                chooseGuigeColor = sb.toString();
+                                mColorTagAdapter = new TagAdapter<>(ShopDetailActivty.this);
+                                //设置单选
+                                gridViewSize.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                                gridViewSize.setAdapter(mColorTagAdapter);
+                                /**
+                                 * 加载颜色分类数据
+                                 */
+                                initColorData(StringUtil.removeDuplicate(listSize));
+                                /**
+                                 * 点击图片跟随颜色变化
+                                 */
+                                if (typesChooseBeans.get(curposition).getImg() != null && !typesChooseBeans.get(curposition).getImg().equals("")) {
+                                    Glide.with(context).load(typesChooseBeans.get(curposition).getImg()).into(imageView);
+                                    return;
+                                }
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }else{
+                                tvHasChoose.setText("请选择商品规格");
+                                chooseGuigeColor = null;
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }
+                        }
+                    });
+                    List<String> dataSourceColor = new ArrayList<>();
+                    for (int i = 0;i<typesChooseBeans.size();i++){
+                        dataSourceColor.add(typesChooseBeans.get(i).getName());
+                    }
+                    /**
+                     * 加载尺寸分类数据
+                     */
+                    initSizeData(dataSourceColor);
+                    /**
+                     * 循环取出二级分类尺寸
+                     */
                     List<String> list = new ArrayList<>();
                     if (typesChooseBeans != null && typesChooseBeans.size() > 0) {
                         for (int i = 0; i < typesChooseBeans.size(); i++) {
@@ -974,8 +1092,59 @@ public class ShopDetailActivty extends BaseActivity {
                             }
                         }
                     }
-                    sizeChooseAdapter = new SizeChooseAdapter(context, StringUtil.removeDuplicate(list), StringUtil.removeDuplicate(list));
-                    gridViewSize.setAdapter(sizeChooseAdapter);
+                    mColorTagAdapter = new TagAdapter<>(this);
+                    gridViewSize.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                    gridViewSize.setAdapter(mColorTagAdapter);
+                    /**
+                     *尺寸tag选择
+                     */
+                    gridViewSize.setOnTagSelectListener(new OnTagSelectListener() {
+                        @Override
+                        public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+                            StringBuilder sb = new StringBuilder();
+                            StringBuffer sbSize = new StringBuffer();
+                            if (selectedList != null && selectedList.size() > 0) {
+                                for (int i : selectedList) {
+                                    sb.append(parent.getAdapter().getItem(i));
+                                    sizeCurposition = i;
+                                }
+                                /**
+                                 * 循环取出尺寸价格
+                                 */
+                                if (isChooseColor && chooseGuigeColor != null) {
+                                    StringBuffer sbMoney = new StringBuffer();
+                                    List<String> listSize = new ArrayList<>();
+                                    List<String> listPrice = new ArrayList<>();
+                                    for (int i = 0; i < typesChooseSizeBeans.size(); i++) {
+                                        listSize.add(typesChooseSizeBeans.get(i).getSize());
+                                        listPrice.add(typesChooseSizeBeans.get(i).getPrice());
+                                    }
+                                    if (!listPrice.get(sizeCurposition).equals("")) {
+                                        tvMoney.setText(sbMoney.append("¥ ").append(listPrice.get(sizeCurposition).toString()));
+                                    }else {
+                                        tvMoney.setText(sbMoney.append("¥ ").append(shopDetailBean.getPrice()));
+                                    }
+                                    tvHasChoose.setText(sbSize.append("已选择:").append(typesChooseBeans.get(curposition).getName()).append(" ").append(listSize.get(sizeCurposition).toString()).toString());
+                                    chooseGuigeColor = typesChooseBeans.get(curposition).getName();
+                                    chooseGuigeSize = listSize.get(sizeCurposition).toString();
+                                } else {
+                                    StringUtil.showToast(ShopDetailActivty.this, "请选择商品颜色");
+                                }
+//                                Snackbar.make(parent, "已选择:" + sb.toString(), Snackbar.LENGTH_LONG)
+//                                        .setAction("Action", null).show();
+                            }else{
+//                                Snackbar.make(parent, "未选择", Snackbar.LENGTH_LONG)
+//                                        .setAction("Action", null).show();
+                                chooseGuigeSize = null;
+                                if (chooseGuigeColor == null) {
+                                    tvHasChoose.setText("请选择商品规格");
+                                    return;
+                                }
+                                tvHasChoose.setText(sbSize.append("已选择:").append(chooseGuigeColor));
+                            }
+                        }
+                    });
+                    initColorData(StringUtil.removeDuplicate(list));
                     break;
             }
 
@@ -1137,95 +1306,19 @@ public class ShopDetailActivty extends BaseActivity {
         }
     }
 
-    /**
-     * 一级点击监听
-     */
-    AdapterView.OnItemClickListener onItemClickLevelOneListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            isChooseColor = true;
-            curposition = position;
-            typeChooseLevelOneAdapter.setSeclection(position);
-            typeChooseLevelOneAdapter.notifyDataSetChanged();
-            if (!typesChooseLevelOneBeans.get(position).getPrice().equals("")) {
-                tvMoney.setText("¥ " + typesChooseLevelOneBeans.get(position).getPrice());
-            }else {
-                tvMoney.setText("¥ " + shopDetailBean.getPrice());
-            }
-            StringBuffer sb = new StringBuffer();
-            chooseGuigeColor = typesChooseLevelOneBeans.get(position).getName();
-            tvHasChoose.setText(sb.append("已选择:").append(typesChooseLevelOneBeans.get(position).getName()).toString());
-        }
-    };
-
-    /**
-     * 二级点击监听
-     */
-    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            isChooseColor = true;
-            chooseGuigeColor = null;
-            chooseGuigeSize = null;
-            curposition = position;
-            typeGridAdapter.setSeclection(position);
-            typeGridAdapter.notifyDataSetChanged();
-            tvMoney.setText("¥ " + shopDetailBean.getPrice());
-            StringBuffer sb = new StringBuffer();
-            List<String> list = new ArrayList<>();
-            List<String> listSize = new ArrayList<>();
-            List<String> listPrice = new ArrayList<>();
-            for (int i = 0; i < typesChooseBeans.size(); i++) {
-                Logg.json(typesChooseBeans.get(position).getList());
-                typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(position).getList(), TypesChooseSizeBean.class);
-                for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
-                    listSize.add(typesChooseSizeBeans.get(j).getSize());
-                    list.add(typesChooseSizeBeans.get(j).getSize());
-                    listPrice.add(typesChooseSizeBeans.get(j).getPrice());
-                }
-            }
-            tvHasChoose.setText(sb.append("已选择:").append(typesChooseBeans.get(position).getName()).toString());
-            sizeChooseAdapter = new SizeChooseAdapter(ShopDetailActivty.this, StringUtil.removeDuplicate(listSize), StringUtil.removeDuplicate(listSize));
-            gridViewSize.setAdapter(sizeChooseAdapter);
-        }
-    };
-
-    /**
-     * 二级点击监听
-     */
-    AdapterView.OnItemClickListener onItemSizeClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (isChooseColor) {
-                sizeCurposition = position;
-                sizeChooseAdapter.setSeclection(position);
-                sizeChooseAdapter.notifyDataSetChanged();
-                StringBuffer sb = new StringBuffer();
-                StringBuffer sbMoney = new StringBuffer();
-                List<String> listSize = new ArrayList<>();
-                List<String> listPrice = new ArrayList<>();
-                for (int i = 0; i < typesChooseSizeBeans.size(); i++) {
-                    Logg.json(typesChooseSizeBeans.get(position).getPrice());
-//                    typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(position).getList(), TypesChooseSizeBean.class);
-//                    for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
-                        listSize.add(typesChooseSizeBeans.get(i).getSize());
-                        listPrice.add(typesChooseSizeBeans.get(i).getPrice());
-//                    }
-                }
-
-                if (!listPrice.get(position).equals("")) {
-                    tvMoney.setText(sbMoney.append("¥ ").append(listPrice.get(position).toString()));
-                }else {
-                    tvMoney.setText(sbMoney.append("¥ ").append(shopDetailBean.getPrice()));
-                }
-                tvHasChoose.setText(sb.append("已选择:").append(typesChooseBeans.get(curposition).getName()).append(" ").append(listSize.get(position).toString()).toString());
-                chooseGuigeColor = typesChooseBeans.get(curposition).getName();
-                chooseGuigeSize = listSize.get(position).toString();
-            } else {
-                StringUtil.showToast(ShopDetailActivty.this, "请选择商品颜色");
-            }
-        }
-    };
 //        //"<img border=\\\"0\" src=\"" + shopDetailBean.getImgurl() + "\" />   <p>商品名称：" + shopDetailBean.getTitle() + "</p> <p>\\"+shopDetailBean.getPrice()+"</p> "
 //        mKefuDescription = "<img border='0' src='" + shopDetailBean.getImgurl() + "' /> <p>商品名称：" + shopDetailBean.getTitle() + " </p>   <p>商品价格：" + shopDetailBean.getPrice() + "</p> ";
+    /**
+     * 初始化数据
+     */
+    private void initSizeData(List<String> list) {
+        mSizeTagAdapter.onlyAddAll(list);
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initColorData(List<String> list) {
+        mColorTagAdapter.onlyAddAll(list);
+    }
 }

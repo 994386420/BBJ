@@ -366,7 +366,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                     startActivityForResult(intent, 1);
                 } else {
 //                    HomeLoadUtil.startChat(NewDianpuActivity.this);
-                    MainActivity.consultService(this, "", "店铺",null);
+                    MainActivity.consultService(this);
                 }
                 break;
             case R.id.img_car:

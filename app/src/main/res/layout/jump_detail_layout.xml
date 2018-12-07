@@ -146,6 +146,48 @@
             android:textSize="13dp"
             android:background="@mipmap/tuiguang_07"/>
     </FrameLayout>
+
+            <View
+                android:id="@+id/sx_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f3f3f3" />
+            <LinearLayout
+                android:id="@+id/ll_shuxing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_seclecter"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color4"
+                    android:textSize="13dp"
+                    android:text="选择" />
+
+                <com.bbk.view.AdaptionSizeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color3"
+                    android:textSize="13dp"
+                    android:text="颜色.分类.尺码" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/enter01" />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_check"
                 android:layout_width="match_parent"

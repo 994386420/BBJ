@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="KSTheme" parent="@android:style/Theme.Light.NoTitleBar"></style>
+
+    <!--<style name="KSDialog">-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:background">@android:color/transparent</item>-->
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <!--<item name="android:windowFrame">@null</item>-->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="android:backgroundDimEnabled">true</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <!--<item name="android:windowIsFloating">true</item>-->
+    <!--</style>-->
+
+    <style name="KSWrapMatch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="KSMatchWrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="KSWrapWrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="KSMatchMatch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="KSMatchAuto">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="KSAutoMatch">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="KSWrapAuto">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="KSAutoWrap">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="KSWrapMatch.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSWrapMatch.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSMatchWrap.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSMatchWrap.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSWrapWrap.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSWrapWrap.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSMatchMatch.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSMatchMatch.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSMatchAuto.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSMatchAuto.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSAutoMatch.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSAutoMatch.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSWrapAuto.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSWrapAuto.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSAutoWrap.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="KSAutoWrap.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="KSHLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/ks_item_pressed</item>
+    </style>
+
+    <style name="KSVLine">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/ks_item_pressed</item>
+    </style>
+
+    <style name="KSDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:windowBackground">@null</item>
+        <!--<item name="android:backgroundDimEnabled">false</item>-->
+    </style>
+
+    <!--<style name="KSClickableItem" parent="KSMatchWrap">-->
+        <!--<item name="android:clickable">true</item>-->
+        <!--<item name="android:paddingLeft">@dimen/KS_size_level4</item>-->
+        <!--<item name="android:paddingRight">@dimen/KS_size_level4</item>-->
+        <!--<item name="android:paddingTop">@dimen/KS_size_level3</item>-->
+        <!--<item name="android:paddingBottom">@dimen/KS_size_level3</item>-->
+        <!--<item name="android:textSize">@dimen/KS_textSize_level2</item>-->
+        <!--<item name="android:textColor">@android:color/black</item>-->
+    <!--</style>-->
+
+    <!--<style name="KSClickableItem.Top">-->
+        <!--<item name="android:background">@drawable/KS_selector_item_top</item>-->
+    <!--</style>-->
+
+    <!--<style name="KSClickableItem.Center">-->
+        <!--<item name="android:background">@drawable/KS_selector_item_center</item>-->
+    <!--</style>-->
+
+    <!--<style name="KSClickableItem.Bottom">-->
+        <!--<item name="android:background">@drawable/KS_selector_item_bottom</item>-->
+    <!--</style>-->
+
+    <!--<style name="KSFormDeleteIv" parent="KSWrapWrap">-->
+        <!--<item name="android:layout_alignParentRight">true</item>-->
+        <!--<item name="android:clickable">true</item>-->
+        <!--<item name="android:src">@drawable/KS_ic_delete_icon</item>-->
+    <!--</style>-->
+
+    <!--<style name="KSFormImageSiv" parent="KSMatchWrap">-->
+        <!--<item name="android:layout_marginRight">@dimen/KS_size_level3</item>-->
+        <!--<item name="android:layout_marginTop">@dimen/KS_size_level3</item>-->
+        <!--<item name="android:clickable">true</item>-->
+        <!--<item name="android:scaleType">centerCrop</item>-->
+        <!--<item name="KS_iv_isSquare">true</item>-->
+    <!--</style>-->
+
+    <!--<style name="KSFormEditText">-->
+        <!--<item name="android:background">@drawable/KS_selector_input_bg</item>-->
+        <!--<item name="android:paddingBottom">@dimen/KS_size_level2</item>-->
+        <!--<item name="android:paddingTop">@dimen/KS_size_level4</item>-->
+    <!--</style>-->
+
+</resources>

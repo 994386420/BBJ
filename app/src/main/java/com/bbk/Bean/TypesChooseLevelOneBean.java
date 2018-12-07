@@ -7,6 +7,15 @@ package com.bbk.Bean;
 public class TypesChooseLevelOneBean {
     private String price;
     private String name;
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public String getPrice() {
         return price;

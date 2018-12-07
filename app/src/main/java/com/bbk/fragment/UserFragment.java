@@ -1950,7 +1950,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
             case "联系客服":
 //                HomeLoadUtil.startChat(getActivity());
-                MainActivity.consultService(getActivity(), "", "我的", null);
+                MainActivity.consultService(getActivity());
                 break;
             case "关于比比鲸":
                 intent = new Intent(getActivity(), AboutUsActivity.class);
@@ -2042,7 +2042,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                             mShopOrder(userID, "4");
                             break;
                         case "11":
-                            MainActivity.consultService(getActivity(), "", "我的", null);
+                            MainActivity.consultService(getActivity());
                             break;
                         case "12":
                             intent = new Intent(getActivity(), ShopOrderActivity.class);

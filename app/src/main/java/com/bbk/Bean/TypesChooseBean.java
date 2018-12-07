@@ -7,6 +7,15 @@ package com.bbk.Bean;
 public class TypesChooseBean {
     private String name;
     private String list;
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public String getList() {
         return list;

@@ -171,7 +171,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter {
                         public void onClick(View v) {
                             NewConstants.refeshOrderFlag = "0";
 //                            HomeLoadUtil.startChat(context);
-                            MainActivity.consultService(context, "", "鲸城订单号"+ordernum,null);
+                            MainActivity.consultService(context);
 
                         }
                     });

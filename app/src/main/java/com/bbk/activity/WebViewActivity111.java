@@ -1,5 +1,7 @@
 package com.bbk.activity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -10,7 +12,9 @@ import org.json.JSONObject;
 
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.model.DianpuSearchActivity;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.ShareUtil;
@@ -171,7 +175,52 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (!isintent) {
                     if (url.contains("bbjtech://")) {
-                        Uri uri = Uri.parse(url);
+                        String[] stringsIntent = url.replace("bbjtech://?", "").replace("@@", "=").split("=");
+                        switch (stringsIntent[1]) {
+                            case "12":
+                                Intent intent = new Intent(WebViewActivity111.this, SearchMainActivity.class);
+                                try {
+                                    intent.putExtra("keyword", URLDecoder.decode(stringsIntent[3], "utf-8"));
+                                    SharedPreferencesUtil.putSharedData(WebViewActivity111.this, "shaixuan", "shaixuan", "yes");
+                                    NewConstants.clickpositionFenlei = 5200;
+                                    NewConstants.clickpositionDianpu = 5200;
+                                    NewConstants.clickpositionMall = 5200;
+                                    startActivity(intent);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case "121":
+                                intent = new Intent(WebViewActivity111.this, MesageCenterActivity.class);
+                                intent.putExtra("type", "0");
+                                startActivity(intent);
+                                break;
+                            case "124":
+                                NewConstants.showdialogFlg = "1";
+                                Logg.json(stringsIntent[3] + stringsIntent[4]);
+                                intent = new Intent(WebViewActivity111.this, IntentActivity.class);
+                                intent.putExtra("url", stringsIntent[3] + "=" + stringsIntent[4]);
+                                startActivity(intent);
+                                break;
+                            case "a3":
+                                intent = new Intent(WebViewActivity111.this, ShopDetailActivty.class);
+                                intent.putExtra("id", stringsIntent[3]);
+                                startActivity(intent);
+                                break;
+                            case "a4":
+                                try {
+                                    intent = new Intent(WebViewActivity111.this, DianpuSearchActivity.class);
+                                    intent.putExtra("keyword", "");
+                                    intent.putExtra("dianpuid", "");
+                                    intent.putExtra("producttype", URLDecoder.decode(stringsIntent[3], "utf-8"));
+                                    intent.putExtra("plevel", "2");
+                                    startActivity(intent);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                        }
+                            Uri uri = Uri.parse(url);
                         try {
                             JSONObject jsonObject = new JSONObject();
                             // String host = uri.getHost();

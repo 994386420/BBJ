@@ -94,17 +94,21 @@
                     android:text="颜色"
                     android:textSize="15sp"
                     android:textColor="@color/tuiguang_color3"/>
-                <com.bbk.typeshaixuan.view.NoScrollGridview
-                    android:id="@+id/type_grid_name"
+                <!--<com.bbk.typeshaixuan.view.NoScrollGridview-->
+                    <!--android:id="@+id/type_grid_name"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:horizontalSpacing="0dp"-->
+                    <!--android:numColumns="auto_fit"-->
+                    <!--android:background="@color/white"-->
+                    <!--android:stretchMode="columnWidth"-->
+                    <!--android:verticalSpacing="0dp" />-->
+                <com.hhl.library.FlowTagLayout
+                    android:id="@+id/size_flow_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:columnWidth="80dp"
-                    android:horizontalSpacing="0dp"
-                    android:numColumns="auto_fit"
-                    android:background="@color/white"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="0dp" />
+                    android:layout_marginTop="5dp"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -122,17 +126,22 @@
                     android:text="尺寸"
                     android:textSize="15sp"
                     android:textColor="@color/tuiguang_color3"/>
-                <com.bbk.typeshaixuan.view.NoScrollGridview
-                    android:id="@+id/type_grid_size"
+                <!--<com.bbk.typeshaixuan.view.NoScrollGridview-->
+                    <!--android:id="@+id/type_grid_size"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:horizontalSpacing="0dp"-->
+                    <!--android:numColumns="auto_fit"-->
+                    <!--android:background="@color/white"-->
+                    <!--android:stretchMode="columnWidth"-->
+                    <!--android:verticalSpacing="0dp" />-->
+                <com.hhl.library.FlowTagLayout
+                    android:id="@+id/color_flow_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:columnWidth="80dp"
-                    android:horizontalSpacing="0dp"
-                    android:numColumns="auto_fit"
-                    android:background="@color/white"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="0dp" />
+                    android:layout_marginBottom="10dp"/>
             </LinearLayout>
 
             <View
@@ -141,6 +150,7 @@
                 android:background="@color/__picker_common_primary"/>
 
             <LinearLayout
+                android:id="@+id/ll_car_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -205,7 +215,33 @@
             android:scaleType="centerCrop"
             android:background="@color/windowBackground"/>
     </android.support.v7.widget.CardView>
+
     <LinearLayout
+        android:id="@+id/ll_zerobuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/tv_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新人0元购"
+            android:textSize="13dp"
+            android:background="@drawable/bg_tuiguang1"
+            android:textColor="@color/white"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="40dp"
+            android:paddingLeft="40dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_car"
         android:layout_gravity="bottom"
         android:gravity="center_vertical"
         android:layout_width="match_parent"

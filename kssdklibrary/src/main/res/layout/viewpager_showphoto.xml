@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/ks_black">
+
+    <View
+        android:id="@+id/viewPop"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="165dp" />
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+    
+    <!-- <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:padding="10dip"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"/> -->
+        
+     <LinearLayout 
+         android:id="@+id/msgContentView"
+         android:orientation="vertical"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:paddingLeft="10dp"
+         android:paddingRight="10dp"
+         android:paddingTop="5dp"
+         android:paddingBottom="5dp"
+         android:background="@color/ks_gray"
+         android:alpha="0.7"
+         android:visibility="gone">
+         <TextView 
+             android:id="@+id/name"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="3dp"
+             android:background="@android:color/transparent"
+             android:textColor="@color/ks_white"/>
+         <TextView 
+             android:id="@+id/time"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:background="@android:color/transparent"
+             android:textColor="@color/ks_white"/>
+     </LinearLayout>
+</RelativeLayout>

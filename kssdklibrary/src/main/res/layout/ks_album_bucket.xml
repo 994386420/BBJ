@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1eff5"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ks_title_height"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ks_bg_title">
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            style="@style/KSWrapMatch"
+            android:paddingLeft="@dimen/ks_size_level3"
+            android:paddingRight="@dimen/ks_size_level3">
+            <ImageView
+                style="@style/KSWrapMatch"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/ks_size_level1"
+                android:src="@drawable/ks_ic_back" />
+        </RelativeLayout>
+        <TextView
+            style="@style/KSWrapMatch"
+            android:layout_centerHorizontal="true"
+            android:drawablePadding="@dimen/ks_size_level1"
+            android:gravity="center"
+            android:maxWidth="175dp"
+            android:maxLines="1"
+            android:text="@string/ks_select_image"
+            android:textColor="@color/ks_activity_title_textColor"
+            android:textSize="@dimen/ks_titlebar_textSize"/>
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="1"
+        android:scrollbars="none"
+        android:listSelector="@color/ks_transparency">
+    </GridView>
+
+</LinearLayout>

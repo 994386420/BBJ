@@ -49,7 +49,6 @@ import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bytedesk.ui.api.BDUiApi;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KelperTask;
@@ -823,7 +822,7 @@ public class HomeLoadUtil {
                                 context.startActivity(intent);
                                 break;
                             case 2:
-                                MainActivity.consultService(context, "", "",null);
+                                MainActivity.consultService(context);
                                 break;
                             case 3:
                                 intent = new Intent(context, UserSuggestionActivity.class);

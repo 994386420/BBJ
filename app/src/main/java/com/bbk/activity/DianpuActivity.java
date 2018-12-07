@@ -431,7 +431,7 @@ public class DianpuActivity extends BaseActivity implements MyScrollViewNew.Scro
                 break;
             case R.id.ll_kefu:
 //                HomeLoadUtil.startChat(this);
-                MainActivity.consultService(this, "", "店铺",null);
+                MainActivity.consultService(this);
                 break;
             case R.id.img_car:
                 Intent intent = new Intent(this, CarActivity.class);

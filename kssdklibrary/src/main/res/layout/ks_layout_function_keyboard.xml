@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/KSMatchWrap">
+    <LinearLayout
+        android:id="@+id/ll_function"
+        style="@style/KSMatchWrap.Vertical">
+        <include layout="@layout/ks_line_horizontal"/>
+        <LinearLayout
+            style="@style/KSMatchWrap"
+            android:padding="@dimen/ks_size_level3">
+            <TextView
+                android:id="@+id/fun_photo_tv"
+                style="@style/KSAutoWrap"
+                android:drawableTop="@drawable/function_photo"
+                android:drawablePadding="@dimen/ks_size_level1"
+                android:padding="@dimen/ks_size_level3"
+                android:gravity="center_horizontal"
+                android:text="@string/ks_fun_photo"
+                android:textColor="@color/ks_gray"/>
+            <TextView
+                android:id="@+id/fun_camera_tv"
+                style="@style/KSAutoWrap"
+                android:drawableTop="@drawable/function_camera"
+                android:drawablePadding="@dimen/ks_size_level1"
+                android:padding="@dimen/ks_size_level3"
+                android:gravity="center_horizontal"
+                android:text="@string/ks_fun_camera"
+                android:textColor="@color/ks_gray"/>
+            <TextView
+                android:id="@+id/fun_evaluate_tv"
+                style="@style/KSAutoWrap"
+                android:drawableTop="@drawable/function_evaluate"
+                android:drawablePadding="@dimen/ks_size_level1"
+                android:padding="@dimen/ks_size_level3"
+                android:gravity="center_horizontal"
+                android:text="@string/ks_fun_evaluate"
+                android:textColor="@color/ks_gray"/>
+            <TextView
+                style="@style/KSAutoWrap"
+                android:visibility="invisible"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <shape android:shape="rectangle"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" />
+    <stroke android:width="0.5dip" android:color="#ffe0e0e0" />
+</shape> -->
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+ 	<item android:state_window_focused="false" android:drawable="@color/ks_white"/>
+    <item android:state_pressed="true" android:drawable="@color/ks_pressed"/>
+    <item android:drawable="@color/ks_white"></item>
+</selector>

@@ -37,6 +37,8 @@ import com.bbk.adapter.DianPuHoHotGridAdapter;
 import com.bbk.adapter.DianPuHomePinpaiGridAdapter;
 import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.model.DianpuSearchActivity;
+import com.bbk.model.MainActivity;
+import com.bbk.model.SearchZiyiShopActivity;
 import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.shopcar.presenter.DianpuHomePresenter;
 import com.bbk.shopcar.view.DianpuHomeView;
@@ -71,7 +73,7 @@ import butterknife.OnClick;
 /**
  * 商城首页
  */
-public class NewDianpuHomeActivity extends BaseActivity implements CommonLoadingView.LoadingHandler, View.OnKeyListener {
+public class NewDianpuHomeActivity extends BaseActivity implements CommonLoadingView.LoadingHandler {
     @BindView(R.id.lin)
     LinearLayout lin;
     @BindView(R.id.ll_top)
@@ -149,7 +151,7 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
     @BindView(R.id.img_more_black)
     ImageView imgMoreBlack;
     @BindView(R.id.topbar_search_input)
-    ClearableEditText topbarSearchInput;
+    TextView topbarSearchInput;
     @BindView(R.id.msearch)
     LinearLayout msearch;
     @BindView(R.id.mseach_tubiao)
@@ -195,7 +197,14 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
         dianpuHomePresenter.attachListView(dianpuListView);
         initView();
         setToolBar();
-        topbarSearchInput.setOnKeyListener(this);
+//        topbarSearchInput.setOnKeyListener(this);
+        topbarSearchInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NewDianpuHomeActivity.this,SearchZiyiShopActivity.class);
+                startActivity(intent);
+            }
+        });
         dianpuHomePresenter.queryIndexMain(refreshLayout, mrecyclerview, zLoadingView);
         tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
             @Override
@@ -543,33 +552,33 @@ public class NewDianpuHomeActivity extends BaseActivity implements CommonLoading
             }
         }
     }
-
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
-            InputMethodManager imm = (InputMethodManager) v.getContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm.isActive()) {
-                imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-            }
-            doSearch();
-            return true;
-        }
-        return false;
-    }
-
-    public void doSearch() {
-        String sarechword = topbarSearchInput.getText().toString();
-        if (sarechword == null || sarechword.equals("")) {
-            StringUtil.showToast(this, "搜索内容为空");
-            return;
-        }
-        Intent intent = new Intent(this, DianpuSearchActivity.class);
-        intent.putExtra("dianpuid", "");
-        intent.putExtra("producttype", "");
-        intent.putExtra("plevel", "");
-        intent.putExtra("keyword", sarechword);
-        startActivity(intent);
-    }
+//
+//    @Override
+//    public boolean onKey(View v, int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_ENTER
+//                && event.getAction() == KeyEvent.ACTION_DOWN) {
+//            InputMethodManager imm = (InputMethodManager) v.getContext()
+//                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+//            if (imm.isActive()) {
+//                imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+//            }
+//            doSearch();
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    public void doSearch() {
+//        String sarechword = topbarSearchInput.getText().toString();
+//        if (sarechword == null || sarechword.equals("")) {
+//            StringUtil.showToast(this, "搜索内容为空");
+//            return;
+//        }
+//        Intent intent = new Intent(this, DianpuSearchActivity.class);
+//        intent.putExtra("dianpuid", "");
+//        intent.putExtra("producttype", "");
+//        intent.putExtra("plevel", "");
+//        intent.putExtra("keyword", sarechword);
+//        startActivity(intent);
+//    }
 }

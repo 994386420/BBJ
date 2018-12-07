@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.alibaba.fastjson.JSON;
@@ -72,20 +73,13 @@ import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.HomeLoadUtil;
-import com.bbk.util.QiYuCache;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
 import com.bbk.view.CommonLoadingView;
 import com.bbk.view.RushBuyCountDownTimerHomeView;
 import com.bumptech.glide.Glide;
-import com.bytedesk.core.api.BDCoreApi;
-import com.bytedesk.core.callback.LoginCallback;
 import com.logg.Logg;
-import com.qiyukf.unicorn.api.ConsultSource;
-import com.qiyukf.unicorn.api.ProductDetail;
-import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.api.YSFUserInfo;
 import com.scwang.smartrefresh.header.BezierCircleHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -105,6 +99,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.kuaishang.kssdk.KSConfig;
+import cn.kuaishang.kssdk.util.KSIntentBuilder;
+import cn.kuaishang.listener.KsInitListener;
+
+import static com.ali.auth.third.core.context.KernelContext.context;
 
 
 /**
@@ -312,31 +311,32 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             imageMessage.setBackgroundResource(R.mipmap.praise);
             setToolBar();
             refresh();
+            doInit();
             /**
              * 萝卜丝客服
              */
-            BDCoreApi.visitorLogin(getActivity(), appkey, subdomain, new LoginCallback() {
-                @Override
-                public void onSuccess(JSONObject object) {
-                    //
-                    try {
-                        Logg.json("login success message===>>>>: " + object.get("message") + " status_code:" + object.get("status_code"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onError(JSONObject object) {
-                    try {
-                        Logg.json("login failed message: " + object.get("message")
-                                + " status_code:" + object.get("status_code")
-                                + " data:" + object.get("data"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+//            BDCoreApi.visitorLogin(getActivity(), appkey, subdomain, new LoginCallback() {
+//                @Override
+//                public void onSuccess(JSONObject object) {
+//                    //
+//                    try {
+//                        Logg.json("login success message===>>>>: " + object.get("message") + " status_code:" + object.get("status_code"));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                @Override
+//                public void onError(JSONObject object) {
+//                    try {
+//                        Logg.json("login failed message: " + object.get("message")
+//                                + " status_code:" + object.get("status_code")
+//                                + " data:" + object.get("data"));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
 
         }
 
@@ -344,6 +344,22 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
         return mView;
     }
 
+    /**
+     * 快商通客服
+     */
+    private void doInit() {
+        KSConfig.init(getActivity(), "rRi5YjdiEQrc53hld/AMWFfuqEIr5/Vm", new KsInitListener(){
+            @Override
+            public void onSuccess() {
+//                Toast.makeText(context,"sdk初始化成功", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(int code, String message) {
+//                Toast.makeText(context,"sdk初始化失败 code:"+code+"  message:"+message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     /**
      * 刷新事件
      */
@@ -503,31 +519,38 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     page = 1;
                     x = 1;
                     try {
-                        String[] sub = chaozhigouTypes.getJSONObject(curposition).optString("sub").split("\\|");
-                        Logg.json(chaozhigouTypes.getJSONObject(curposition).optString("sub") + sub[0] + sub[1] + "===" + sub.length);
-                        if (sub.length > 0) {
-                            llSub.setVisibility(View.VISIBLE);
-                            switch (sub.length) {
-                                case 1:
-                                    tvSub1.setText(sub[0]);
-                                    break;
-                                case 2:
-                                    tvSub1.setText(sub[0]);
-                                    tvSub2.setText(sub[1]);
-                                    break;
-                                case 3:
-                                    tvSub1.setText(sub[0]);
-                                    tvSub2.setText(sub[1]);
-                                    tvSub3.setText(sub[2]);
-                                    break;
-                                case 4:
-                                    tvSub1.setText(sub[0]);
-                                    tvSub2.setText(sub[1]);
-                                    tvSub3.setText(sub[2]);
-                                    tvSub4.setText(sub[3]);
-                                    break;
+                        if (chaozhigouTypes.getJSONObject(curposition).has("sub")) {
+                            String[] sub = chaozhigouTypes.getJSONObject(curposition).optString("sub").split("\\|");
+                            if (sub.length > 0) {
+                                llSub.setVisibility(View.VISIBLE);
+                                switch (sub.length) {
+                                    case 1:
+                                        tvSub1.setText(sub[0]);
+                                        tvSub2.setVisibility(View.GONE);
+                                        tvSub3.setVisibility(View.GONE);
+                                        tvSub4.setVisibility(View.GONE);
+                                        break;
+                                    case 2:
+                                        tvSub1.setText(sub[0]);
+                                        tvSub2.setText(sub[1]);
+                                        tvSub3.setVisibility(View.GONE);
+                                        tvSub4.setVisibility(View.GONE);
+                                        break;
+                                    case 3:
+                                        tvSub1.setText(sub[0]);
+                                        tvSub2.setText(sub[1]);
+                                        tvSub3.setText(sub[2]);
+                                        tvSub4.setVisibility(View.GONE);
+                                        break;
+                                    case 4:
+                                        tvSub1.setText(sub[0]);
+                                        tvSub2.setText(sub[1]);
+                                        tvSub3.setText(sub[2]);
+                                        tvSub4.setText(sub[3]);
+                                        break;
+                                }
                             }
-                        } else {
+                        }else {
                             llSub.setVisibility(View.GONE);
                         }
                     } catch (JSONException e) {
@@ -741,10 +764,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 } else {
                     llZerobuy.setVisibility(View.GONE);
                     viewZerobuy.setVisibility(View.GONE);
+                    zerobuyRecyclerview.setVisibility(View.GONE);
                 }
             } else {
                 llZerobuy.setVisibility(View.GONE);
                 viewZerobuy.setVisibility(View.GONE);
+                zerobuyRecyclerview.setVisibility(View.GONE);
             }
             //今日秒杀
             if (object.has("miaoshatime")) {
@@ -767,10 +792,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 } else {
                     llMiaosha.setVisibility(View.GONE);
                     viewMiaosha.setVisibility(View.GONE);
+                    hotRecyclerview.setVisibility(View.GONE);
                 }
             } else {
                 llMiaosha.setVisibility(View.GONE);
                 viewMiaosha.setVisibility(View.GONE);
+                hotRecyclerview.setVisibility(View.GONE);
             }
             //超值拼团
             if (object.has("pintuan")) {
@@ -789,10 +816,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 } else {
                     llPingtuan.setVisibility(View.GONE);
                     viewPingtuan.setVisibility(View.GONE);
+                    pingtuanRecyclerview.setVisibility(View.GONE);
                 }
             } else {
                 llPingtuan.setVisibility(View.GONE);
                 viewPingtuan.setVisibility(View.GONE);
+                pingtuanRecyclerview.setVisibility(View.GONE);
             }
             //超高赚
             if (object.has("chaojifan")) {
@@ -809,10 +838,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 } else {
                     llCzuan.setVisibility(View.GONE);
                     viewCzuan.setVisibility(View.GONE);
+                    czuanRecyclerview.setVisibility(View.GONE);
                 }
             } else {
                 llCzuan.setVisibility(View.GONE);
                 viewCzuan.setVisibility(View.GONE);
+                czuanRecyclerview.setVisibility(View.GONE);
             }
             Logg.json("=====>>>>>>>>>>", object.optString("hotlist"));
             //每日好货
@@ -830,10 +861,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 } else {
                     llGooddianpu.setVisibility(View.GONE);
                     viewEverydayGoodsshop.setVisibility(View.GONE);
+                    everydayGoodsshopRecyclerview.setVisibility(View.GONE);
                 }
             } else {
                 llEverydayGoodsshop.setVisibility(View.GONE);
                 viewEverydayGoodsshop.setVisibility(View.GONE);
+                everydayGoodsshopRecyclerview.setVisibility(View.GONE);
             }
             //精选好店
             if (object.has("activity")) {
@@ -850,10 +883,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 } else {
                     llGooddianpu.setVisibility(View.GONE);
                     viewZerobuy.setVisibility(View.GONE);
+                    gooddianpuRecyclerview.setVisibility(View.GONE);
                 }
             } else {
                 llGooddianpu.setVisibility(View.GONE);
                 viewZerobuy.setVisibility(View.GONE);
+                gooddianpuRecyclerview.setVisibility(View.GONE);
             }
             Logg.json(object.optString("zerobuynew"));
             //新0元购
@@ -872,10 +907,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 } else {
                     llZerobuyNew.setVisibility(View.GONE);
                     viewZerobuyNew.setVisibility(View.GONE);
+                    zerobuyNewRecyclerview.setVisibility(View.GONE);
                 }
             } else {
                 llZerobuyNew.setVisibility(View.GONE);
                 viewZerobuyNew.setVisibility(View.GONE);
+                zerobuyNewRecyclerview.setVisibility(View.GONE);
             }
             llHuodong.setVisibility(View.VISIBLE);
             //发镖滚动信息
@@ -1557,24 +1594,23 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     }
 
     /**
-     * 网易七月客服
+     * 客服
      * @param context
-     * @param uri
-     * @param title
-     * @param productDetail
      */
-    public static void consultService(final Context context, String uri, String title, ProductDetail productDetail) {
-        String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
-        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-        QiYuCache.ysfOptions.uiCustomization = MyApplication.uiCustomization(img);
-        // 启动聊天界面
-        ConsultSource source = new ConsultSource(uri, title, null);
-        source.productDetail = productDetail;
-        Unicorn.openServiceActivity(context, staffName(), source);
-        YSFUserInfo userInfo = new YSFUserInfo();
-        // APP 的用户 ID
-        userInfo.userId = userID;
-        Unicorn.setUserInfo(userInfo);
+    public static void consultService(final Context context) {
+//        String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
+//        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+//        QiYuCache.ysfOptions.uiCustomization = MyApplication.uiCustomization(img);
+//        // 启动聊天界面
+//        ConsultSource source = new ConsultSource(uri, title, null);
+//        source.productDetail = productDetail;
+//        Unicorn.openServiceActivity(context, staffName(), source);
+//        YSFUserInfo userInfo = new YSFUserInfo();
+//        // APP 的用户 ID
+//        userInfo.userId = userID;
+//        Unicorn.setUserInfo(userInfo);
+        Intent intent = new KSIntentBuilder(context).build();
+        context.startActivity(intent);
     }
 
     private static String staffName() {

@@ -523,7 +523,7 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 break;
             case R.id.ll_lx_maijia:
 //                HomeLoadUtil.startChat(this);
-                MainActivity.consultService(this, "", "鲸城订单号"+ordernum, null);
+                MainActivity.consultService(this);
                 break;
             case R.id.ll_bohao:
                 break;

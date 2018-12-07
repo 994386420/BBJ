@@ -70,7 +70,7 @@ public class ShopCanshuAdapter extends RecyclerView.Adapter {
         @BindView(R.id.tv_canshu1)
         TextView tvCanshu1;
         @BindView(R.id.tv_canshu2)
-        AdaptionSizeTextView tvCanshu2;
+        TextView tvCanshu2;
 
         public ViewHolder(View mView) {
             super(mView);

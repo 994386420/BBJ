@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ks_title_height"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ks_bg_title">
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            style="@style/KSWrapMatch"
+            android:paddingLeft="@dimen/ks_size_level3"
+            android:paddingRight="@dimen/ks_size_level3">
+            <ImageView
+                style="@style/KSWrapMatch"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/ks_size_level1"
+                android:src="@drawable/ks_ic_back" />
+        </RelativeLayout>
+        <TextView
+            style="@style/KSWrapMatch"
+            android:layout_centerHorizontal="true"
+            android:drawablePadding="@dimen/ks_size_level1"
+            android:gravity="center"
+            android:maxWidth="175dp"
+            android:maxLines="1"
+            android:text="@string/ks_select_image"
+            android:textColor="@color/ks_activity_title_textColor"
+            android:textSize="@dimen/ks_titlebar_textSize"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1.0"
+            android:horizontalSpacing="8dp"
+            android:numColumns="3"
+            android:scrollbars="none"
+            android:verticalSpacing="8dp" >
+        </GridView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#3fbca0" />
+
+            <Button
+                android:id="@+id/bt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+	            android:paddingTop="7dp"
+	            android:paddingBottom="7dp"
+                android:background="@drawable/bt_nobgd"
+                android:text="@string/ks_send"
+                android:textColor="#3fbca0"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

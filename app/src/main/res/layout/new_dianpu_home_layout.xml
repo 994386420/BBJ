@@ -451,7 +451,7 @@
                                     android:layout_gravity="center"
                                     android:layout_marginLeft="10dp"
                                     android:background="@mipmap/msearch_white"/>
-                                <com.bbk.view.ClearableEditText
+                                <TextView
                                     android:layout_weight="1"
                                     android:id="@+id/topbar_search_input"
                                     android:layout_width="match_parent"
@@ -460,7 +460,6 @@
                                     android:layout_marginLeft="2dp"
                                     android:layout_marginRight="5dp"
                                     android:background="@null"
-                                    android:drawableRight="@mipmap/icon_clean"
                                     android:ems="6"
                                     android:hint="搜索商品"
                                     android:imeOptions="actionSearch"

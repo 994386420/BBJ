@@ -1,7 +1,6 @@
 package com.bbk.activity;
 
 import android.animation.ObjectAnimator;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,48 +10,42 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.baichuan.android.trade.AlibcTrade;
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
-import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
-import com.alibaba.baichuan.android.trade.model.OpenType;
-import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.alibaba.fastjson.JSON;
-import com.bbk.Bean.DemoTradeCallback;
-import com.bbk.Bean.JumpBean;
-import com.bbk.Bean.NewHomeCzgBean;
-import com.bbk.Bean.ShareBean;
 import com.bbk.Bean.ShopDetailBean;
+import com.bbk.Bean.TypesChooseBean;
+import com.bbk.Bean.TypesChooseLevelOneBean;
+import com.bbk.Bean.TypesChooseSizeBean;
+import com.bbk.Bean.TypesLevelBean;
 import com.bbk.adapter.DetailImageAdapter;
+import com.bbk.adapter.TagAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.ConfirmOrderActivity;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageGuanggaoLoader;
 import com.bbk.util.ImmersedStatusbarUtils;
-import com.bbk.util.NoFastClickUtils;
-import com.bbk.util.RSAEncryptorAndroid;
-import com.bbk.util.ShareJumpUtil;
 import com.bbk.util.ShareZeroBuyUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
-import com.bbk.view.AdaptionSizeTextView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.kepler.jd.login.KeplerApiManager;
-import com.kepler.jd.sdk.bean.KeplerAttachParameter;
-import com.kepler.jd.sdk.exception.KeplerBufferOverflowException;
+import com.hhl.library.FlowTagLayout;
+import com.hhl.library.OnTagSelectListener;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -140,11 +133,15 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
     LinearLayout llShareorlingquan;
     @BindView(R.id.rl_guess_like)
     RelativeLayout rlGuessLike;
+    @BindView(R.id.sx_view)
+    View sxView;
+    @BindView(R.id.ll_shuxing)
+    LinearLayout llShuxing;
     private String content;
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
-    private String url, rowkey, domain, quans, jumpdomain, zuan, tljNumber, isOldUser, title, bPrice, id,gid;
+    private String url, rowkey, domain, quans, jumpdomain, zuan, tljNumber, isOldUser, title, bPrice, id, gid;
     public static String Flag = "";
     public static String flag = "", LogFlag = "";
     private UpdataDialog updataDialog;
@@ -153,6 +150,21 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
     public static TextView tvShare;
     public static TextView tvZeroBuy;
     private ShopDetailBean shopDetailBean;
+    private ShopDialog shopDialog;
+    private FlowTagLayout gridViewName;
+    private FlowTagLayout gridViewSize;
+    private TextView tvHasChoose;
+    private TextView tvMoney,tvSize,tvColor;
+    private String chooseGuigeColor, chooseGuigeSize;
+    private boolean isChooseColor = false;//判断是否旋转过颜色
+    private int countNum = 1;//购买商品数量
+    private TagAdapter<String> mSizeTagAdapter;
+    private TagAdapter<String> mColorTagAdapter;
+    private int curposition = 0, sizeCurposition = 0;
+    private List<TypesChooseBean> typesChooseBeans;
+    private List<TypesChooseSizeBean> typesChooseSizeBeans;
+    private List<TypesLevelBean> typesLevelBeans;
+    private List<TypesChooseLevelOneBean> typesChooseLevelOneBeans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +189,8 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
         rlGuessLike.setVisibility(View.GONE);
         guessLikeList.setVisibility(View.GONE);
         llCheck.setVisibility(View.GONE);
+        sxView.setVisibility(View.VISIBLE);
+        llShuxing.setVisibility(View.VISIBLE);
         queryProductDetailById();
     }
 
@@ -232,21 +246,23 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    showZeroBuyDiscountDialog(ZiYingZeroBuyDetailActivty.this);
+//                    showZeroBuyDiscountDialog(ZiYingZeroBuyDetailActivty.this);
+                    showChooseGuigeDialog(ZiYingZeroBuyDetailActivty.this);
                 }
                 break;
         }
     }
 
 
-
-
     @Override
     protected void onActivityResult(int arg0, int arg1, Intent arg2) {
-        switch (arg0) {
-            case 1:
-                queryProductDetailById1();
-                break;
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        if (userID != null && !userID.equals("")) {
+            switch (arg0) {
+                case 1:
+                    queryProductDetailById1();
+                    break;
+            }
         }
         super.onActivityResult(arg0, arg1, arg2);
     }
@@ -329,22 +345,22 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
             if (isOldUser != null && isOldUser.equals("0")) {
                 title.setText("抢单成功");
                 tv_update.setText("分享朋友圈立即0元购");
-                String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
-                //判断是否分享
-                if (TextUtils.isEmpty(isShare)) {
-                    tvShare.setBackgroundResource(R.drawable.bg_czg1);
-                    tvShare.setTextColor(getResources().getColor(R.color.white));
-                    tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
-                    tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
-                    tvZeroBuy.setClickable(false);
-                    tvZeroBuy.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            updataDialog.dismiss();
-                            StringUtil.showToast(context, "分享后才能下单哦");
-                        }
-                    });
-                } else {
+//                String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
+//                //判断是否分享
+//                if (TextUtils.isEmpty(isShare)) {
+//                    tvShare.setBackgroundResource(R.drawable.bg_czg1);
+//                    tvShare.setTextColor(getResources().getColor(R.color.white));
+//                    tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
+//                    tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
+//                    tvZeroBuy.setClickable(false);
+//                    tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            updataDialog.dismiss();
+//                            StringUtil.showToast(context, "分享后才能下单哦");
+//                        }
+//                    });
+//                } else {
                     tvShare.setBackgroundResource(R.drawable.bg_czg1);
                     tvShare.setTextColor(getResources().getColor(R.color.white));
                     tvZeroBuy.setBackgroundResource(R.drawable.bg_czg1);
@@ -354,12 +370,33 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                         @Override
                         public void onClick(View v) {
                             updataDialog.dismiss();
-                            getZeroBuyOrder();
+                            switch (shopDetailBean.getGuigetype()) {
+                                case "0":
+                                    //无规格选
+                                    getZeroBuyOrder("");
+                                    shopDialog.dismiss();
+                                    break;
+                                case "1":
+                                    if (chooseGuigeColor != null) {
+                                        getZeroBuyOrder(chooseGuigeColor);
+                                        shopDialog.dismiss();
+                                        return;
+                                    }
+                                    StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
+                                    break;
+                                case "2":
+                                    if (chooseGuigeColor != null && chooseGuigeSize != null) {
+                                        getZeroBuyOrder(chooseGuigeColor + " " + chooseGuigeSize);
+                                        shopDialog.dismiss();
+                                        return;
+                                    }
+                                    StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
+                                    break;
+                            }
                         }
                     });
-                }
-            }
-            else {
+//                }
+            } else {
                 tvShare.setBackgroundResource(R.drawable.bg_czg1);
                 tvShare.setTextColor(getResources().getColor(R.color.white));
                 tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
@@ -385,7 +422,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                 public void onClick(View v) {
                     updataDialog.dismiss();
 //                    shareCpsZeroBuyInfo();
-                    returnZeroBuyBitMap(shopDetailBean,shopDetailBean.getShareimg());
+                    returnZeroBuyBitMap(shopDetailBean, shopDetailBean.getShareimg());
                 }
             });
         }
@@ -522,8 +559,11 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                                     case "3":
                                         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
                                         if (!TextUtils.isEmpty(userID)) {
-                                            showZeroBuyDiscountDialog(ZiYingZeroBuyDetailActivty.this);
+                                            showChooseGuigeDialog(ZiYingZeroBuyDetailActivty.this);
                                         }
+                                        break;
+                                    case "1":
+                                        showChooseGuigeDialog(ZiYingZeroBuyDetailActivty.this);
                                         break;
                                 }
                             }
@@ -549,14 +589,16 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                     }
                 });
     }
+
     /**
      * 0元购支付接口
      */
-    private void getZeroBuyOrder() {
+    private void getZeroBuyOrder(String guige) {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid", userID);
         maps.put("id", id);
+        maps.put("guige",guige);
         RetrofitClient.getInstance(this).createBaseApi().getZeroBuyOrder(
                 maps, new BaseObserver<String>(this) {
                     @Override
@@ -564,11 +606,11 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("2")) {
-                               Logg.json(jsonObject);
-                               Intent intent = new Intent(ZiYingZeroBuyDetailActivty.this,ShopOrderActivity.class);
-                               intent.putExtra("status", "2");
-                               startActivity(intent);
-                               StringUtil.showToast(ZiYingZeroBuyDetailActivty.this,"购买成功");
+                                Logg.json(jsonObject);
+                                Intent intent = new Intent(ZiYingZeroBuyDetailActivty.this, ShopOrderActivity.class);
+                                intent.putExtra("status", "2");
+                                startActivity(intent);
+                                StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "购买成功");
                             } else {
                                 DialogSingleUtil.dismiss(0);
                                 StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, jsonObject.optString("errmsg"));
@@ -595,5 +637,268 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                     }
                 });
     }
+
+    @OnClick(R.id.ll_shuxing)
+    public void onViewClicked() {
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Intent intent;
+        if (shopDetailBean != null) {
+            if (TextUtils.isEmpty(userID)) {
+                LogFlag = "1";
+                intent = new Intent(this, UserLoginNewActivity.class);
+                startActivityForResult(intent, 1);
+            } else {
+                showChooseGuigeDialog(this);
+            }
+        }
+    }
+
+
+
+    /**
+     * 选择规格
+     *
+     * @param context
+     */
+    public void showChooseGuigeDialog(final Context context) {
+        if (shopDialog == null || !shopDialog.isShowing()) {
+            isChooseColor = false;
+            chooseGuigeColor = null;
+            chooseGuigeSize = null;
+            countNum = 1;
+            shopDialog = new ShopDialog(context, R.layout.shop_dialog,
+                    new int[]{R.id.ll_close});
+            shopDialog.show();
+            shopDialog.setCanceledOnTouchOutside(true);
+            LinearLayout ll_close = shopDialog.findViewById(R.id.ll_close);
+            LinearLayout llZeroBuy = shopDialog.findViewById(R.id.ll_zerobuy);
+            llZeroBuy.setVisibility(View.VISIBLE);
+            LinearLayout llCar = shopDialog.findViewById(R.id.ll_car);
+            llCar.setVisibility(View.GONE);
+            gridViewName = shopDialog.findViewById(R.id.size_flow_layout);
+            gridViewSize = shopDialog.findViewById(R.id.color_flow_layout);
+            tvHasChoose = shopDialog.findViewById(R.id.tv_have_choose);
+            tvMoney = shopDialog.findViewById(R.id.tv_money);
+            tvColor = shopDialog.findViewById(R.id.tv_color);
+            tvSize = shopDialog.findViewById(R.id.tv_size);
+            LinearLayout lltype = shopDialog.findViewById(R.id.ll_type);
+            LinearLayout llCarNum = shopDialog.findViewById(R.id.ll_car_num);
+            llCarNum.setVisibility(View.GONE);
+            tvMoney.setText("¥ " + shopDetailBean.getPrice());
+            final ImageView imageView = shopDialog.findViewById(R.id.iv_image);
+            Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+            typesLevelBeans =  JSON.parseArray(shopDetailBean.getGuigepro(), TypesLevelBean.class);
+
+            /**
+             * 0无规格选	1一种规格  2两种规格
+             */
+            switch (shopDetailBean.getGuigetype()) {
+                case "0":
+                    //无规格选
+                    lltype.setVisibility(View.GONE);
+                    break;
+                case "1":
+                    //一种规格
+                    tvColor.setText(typesLevelBeans.get(0).getName());
+                    tvSize.setVisibility(View.GONE);
+                    gridViewSize.setVisibility(View.GONE);
+                    gridViewName.setVisibility(View.VISIBLE);
+                    typesChooseLevelOneBeans = JSON.parseArray(shopDetailBean.getGuige(), TypesChooseLevelOneBean.class);
+                    mSizeTagAdapter = new TagAdapter<>(this);
+                    gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                    gridViewName.setAdapter(mSizeTagAdapter);
+                    gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
+                        @Override
+                        public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+                            if (selectedList != null && selectedList.size() > 0) {
+                                StringBuilder sb = new StringBuilder();
+                                StringBuffer sbb = new StringBuffer();
+                                for (int i : selectedList) {
+                                    sb.append(parent.getAdapter().getItem(i));
+                                    curposition = i;
+                                }
+                                isChooseColor = true;
+                                if (!typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
+                                    tvMoney.setText("¥ " + typesChooseLevelOneBeans.get(curposition).getPrice());
+                                }else {
+                                    tvMoney.setText("¥ " + shopDetailBean.getPrice());
+                                }
+                                chooseGuigeColor = sb.toString();
+                                tvHasChoose.setText(sbb.append("已选择:").append(sb.toString()).toString());
+                                if (typesChooseLevelOneBeans.get(curposition).getImg() != null && !typesChooseLevelOneBeans.get(curposition).getImg().equals("")) {
+                                    Glide.with(context).load(typesChooseLevelOneBeans.get(curposition).getImg()).into(imageView);
+                                    return;
+                                }
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }else{
+                                tvHasChoose.setText("请选择商品规格");
+                                chooseGuigeColor = null;
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }
+                        }
+                    });
+                    List<String> dataSource = new ArrayList<>();
+                    for (int i = 0;i<typesChooseLevelOneBeans.size();i++){
+                        dataSource.add(typesChooseLevelOneBeans.get(i).getName());
+                    }
+                    initSizeData(dataSource);
+                    break;
+                case "2":
+                    //两种规格
+                    if (typesLevelBeans.get(0).getLevel().equals("1")){
+                        tvColor.setText(typesLevelBeans.get(0).getName());
+                    }
+                    if (typesLevelBeans.get(1).getLevel().equals("2")){
+                        tvSize.setText(typesLevelBeans.get(1).getName());
+                    }
+                    if (typesLevelBeans.get(0).getLevel().equals("2")){
+                        tvSize.setText(typesLevelBeans.get(0).getName());
+                    }
+                    if (typesLevelBeans.get(1).getLevel().equals("1")){
+                        tvColor.setText(typesLevelBeans.get(1).getName());
+                    }
+                    gridViewSize.setVisibility(View.VISIBLE);
+                    gridViewName.setVisibility(View.VISIBLE);
+                    typesChooseBeans = JSON.parseArray(shopDetailBean.getGuige(), TypesChooseBean.class);
+                    mSizeTagAdapter = new TagAdapter<>(this);
+                    gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                    gridViewName.setAdapter(mSizeTagAdapter);
+                    gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
+                        @Override
+                        public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+                            StringBuilder sb = new StringBuilder();
+                            StringBuffer sbb = new StringBuffer();
+                            if (selectedList != null && selectedList.size() > 0) {
+                                for (int i : selectedList) {
+                                    sb.append(parent.getAdapter().getItem(i));
+                                    curposition = i;
+                                }
+                                isChooseColor = true;
+                                chooseGuigeColor = null;
+                                chooseGuigeSize = null;
+                                tvMoney.setText("¥ " + shopDetailBean.getPrice());
+                                tvHasChoose.setText(sbb.append("已选择:").append(sb.toString()));
+                                List<String> list = new ArrayList<>();
+                                List<String> listSize = new ArrayList<>();
+                                List<String> listPrice = new ArrayList<>();
+                                for (int i = 0; i < typesChooseBeans.size(); i++) {
+                                    typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(curposition).getList(), TypesChooseSizeBean.class);
+                                    for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
+                                        listSize.add(typesChooseSizeBeans.get(j).getSize());
+                                        list.add(typesChooseSizeBeans.get(j).getSize());
+                                        listPrice.add(typesChooseSizeBeans.get(j).getPrice());
+                                    }
+                                }
+                                chooseGuigeColor = sb.toString();
+                                mColorTagAdapter = new TagAdapter<>(ZiYingZeroBuyDetailActivty.this);
+                                gridViewSize.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                                gridViewSize.setAdapter(mColorTagAdapter);
+                                initColorData(StringUtil.removeDuplicate(listSize));
+                                if (typesChooseBeans.get(curposition).getImg() != null && !typesChooseBeans.get(curposition).getImg().equals("")) {
+                                    Glide.with(context).load(typesChooseBeans.get(curposition).getImg()).into(imageView);
+                                    return;
+                                }
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }else{
+                                tvHasChoose.setText("请选择商品规格");
+                                chooseGuigeColor = null;
+                                Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
+                            }
+                        }
+                    });
+                    List<String> dataSourceColor = new ArrayList<>();
+                    for (int i = 0;i<typesChooseBeans.size();i++){
+                        dataSourceColor.add(typesChooseBeans.get(i).getName());
+                    }
+                    initSizeData(dataSourceColor);
+                    List<String> list = new ArrayList<>();
+                    if (typesChooseBeans != null && typesChooseBeans.size() > 0) {
+                        for (int i = 0; i < typesChooseBeans.size(); i++) {
+                            typesChooseSizeBeans = JSON.parseArray(typesChooseBeans.get(i).getList(), TypesChooseSizeBean.class);
+                            for (int j = 0; j < typesChooseSizeBeans.size(); j++) {
+                                Logg.json(typesChooseSizeBeans.get(j).getSize());
+                                list.add(typesChooseSizeBeans.get(j).getSize());
+                            }
+                        }
+                    }
+                    mColorTagAdapter = new TagAdapter<>(this);
+                    gridViewSize.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
+                    gridViewSize.setAdapter(mColorTagAdapter);
+                    gridViewSize.setOnTagSelectListener(new OnTagSelectListener() {
+                        @Override
+                        public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
+                            StringBuilder sb = new StringBuilder();
+                            StringBuffer sbSize = new StringBuffer();
+                            if (selectedList != null && selectedList.size() > 0) {
+                                for (int i : selectedList) {
+                                    sb.append(parent.getAdapter().getItem(i));
+                                    sizeCurposition = i;
+                                }
+                                if (isChooseColor && chooseGuigeColor != null) {
+                                    StringBuffer sbMoney = new StringBuffer();
+                                    List<String> listSize = new ArrayList<>();
+                                    List<String> listPrice = new ArrayList<>();
+                                    for (int i = 0; i < typesChooseSizeBeans.size(); i++) {
+                                        Logg.json(typesChooseSizeBeans.get(sizeCurposition).getPrice());
+                                        listSize.add(typesChooseSizeBeans.get(i).getSize());
+                                        listPrice.add(typesChooseSizeBeans.get(i).getPrice());
+                                    }
+                                    if (!listPrice.get(sizeCurposition).equals("")) {
+                                        tvMoney.setText(sbMoney.append("¥ ").append(listPrice.get(sizeCurposition).toString()));
+                                    }else {
+                                        tvMoney.setText(sbMoney.append("¥ ").append(shopDetailBean.getPrice()));
+                                    }
+                                    tvHasChoose.setText(sbSize.append("已选择:").append(typesChooseBeans.get(curposition).getName()).append(" ").append(listSize.get(sizeCurposition).toString()).toString());
+                                    chooseGuigeColor = typesChooseBeans.get(curposition).getName();
+                                    chooseGuigeSize = listSize.get(sizeCurposition).toString();
+                                } else {
+                                    StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品颜色");
+                                }
+                            }else{
+                                chooseGuigeSize = null;
+                                if (chooseGuigeColor == null) {
+                                    tvHasChoose.setText("请选择商品规格");
+                                    return;
+                                }
+                                tvHasChoose.setText(sbSize.append("已选择:").append(chooseGuigeColor));
+                            }
+                        }
+                    });
+                    initColorData(StringUtil.removeDuplicate(list));
+                    break;
+            }
+
+            /**
+             * 关闭弹窗
+             */
+            ll_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+            llZeroBuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                    showZeroBuyDiscountDialog(ZiYingZeroBuyDetailActivty.this);
+                }
+            });
+        }
+    }
+    /**
+     * 初始化数据
+     */
+    private void initSizeData(List<String> list) {
+        mSizeTagAdapter.onlyAddAll(list);
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initColorData(List<String> list) {
+        mColorTagAdapter.onlyAddAll(list);
+    }
+
 
 }

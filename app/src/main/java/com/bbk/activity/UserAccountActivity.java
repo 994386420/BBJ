@@ -80,18 +80,14 @@ import com.bbk.util.TencentLoginUtil;
 import com.bbk.view.CircleImageView1;
 import com.bbk.view.CustomDatePicker;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.signature.StringSignature;
 import com.logg.Logg;
-import com.qiyukf.unicorn.api.Unicorn;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
-import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
+
+import cn.kuaishang.kssdk.KSConfig;
 
 public class UserAccountActivity extends BaseActivity implements OnClickListener, ResultEvent {
 
@@ -401,8 +397,7 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 //							mTencent.logout(getApplicationContext());
 							//退出腾讯云通讯
 //							TencentLoginUtil.Loginout(getApplicationContext());
-							//退出七月客服
-							Unicorn.logout();
+							KSConfig.closeDialog(UserAccountActivity.this);
 							//清除用户信息
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "userInfor");
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "isFirstClick");

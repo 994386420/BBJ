@@ -10,9 +10,12 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/bytedesk-ui" />
+            <option value="$PROJECT_DIR$/flowlayout-lib" />
             <option value="$PROJECT_DIR$/guideview" />
             <option value="$PROJECT_DIR$/jdlmm" />
             <option value="$PROJECT_DIR$/jdsdk_lib" />
+            <option value="$PROJECT_DIR$/kssdklibrary" />
+            <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/toprightmenu" />
           </set>
         </option>

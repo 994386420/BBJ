@@ -5,9 +5,12 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bibijing.iml" filepath="$PROJECT_DIR$/bibijing.iml" />
       <module fileurl="file://$PROJECT_DIR$/bytedesk-ui/bytedesk-ui.iml" filepath="$PROJECT_DIR$/bytedesk-ui/bytedesk-ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flowlayout-lib/flowlayout-lib.iml" filepath="$PROJECT_DIR$/flowlayout-lib/flowlayout-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/guideview/guideview.iml" filepath="$PROJECT_DIR$/guideview/guideview.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdlmm/jdlmm.iml" filepath="$PROJECT_DIR$/jdlmm/jdlmm.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdsdk_lib/jdsdk_lib.iml" filepath="$PROJECT_DIR$/jdsdk_lib/jdsdk_lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kssdklibrary/kssdklibrary.iml" filepath="$PROJECT_DIR$/kssdklibrary/kssdklibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/toprightmenu/toprightmenu.iml" filepath="$PROJECT_DIR$/toprightmenu/toprightmenu.iml" />
     </modules>
   </component>

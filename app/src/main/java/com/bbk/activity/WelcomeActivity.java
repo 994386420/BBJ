@@ -51,7 +51,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
-import com.qiyukf.nimlib.sdk.NimIntent;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushConfig;
@@ -240,11 +239,11 @@ public class WelcomeActivity extends BaseActivity2{
 
 	private void parseIntent() {
 		Intent intent = getIntent();
-		if (intent.hasExtra(NimIntent.EXTRA_NOTIFY_CONTENT)) {
-			consultService(this, null, null, null);
-			// 最好将intent清掉，以免从堆栈恢复时又打开客服窗口
-			setIntent(new Intent());
-		}
+//		if (intent.hasExtra(NimIntent.EXTRA_NOTIFY_CONTENT)) {
+//			consultService(this, null, null, null);
+//			// 最好将intent清掉，以免从堆栈恢复时又打开客服窗口
+//			setIntent(new Intent());
+//		}
 	}
 
 	private void init() {

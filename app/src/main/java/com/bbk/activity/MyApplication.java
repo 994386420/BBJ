@@ -19,32 +19,15 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Log;
-import android.widget.RemoteViews;
 import android.widget.Toast;
-
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
-import com.bbk.resource.NewConstants;
 import com.bbk.util.CrashHandler;
-import com.bbk.util.EventIdIntentUtil;
-import com.bbk.util.GlideImageLoaderQiYu;
-import com.bbk.util.QiYuCache;
 import com.bbk.util.SharedPreferencesUtil;
-import com.bbk.util.StringUtil;
-import com.bytedesk.core.api.BDCoreApi;
-import com.bytedesk.core.api.BDMqttApi;
-import com.bytedesk.core.callback.LoginCallback;
 import com.kepler.jd.Listener.AsyncInitListener;
 import com.kepler.jd.login.KeplerApiManager;
 import com.logg.Logg;
 import com.logg.config.LoggConfiguration;
-import com.orhanobut.logger.Logger;
-import com.qiyukf.unicorn.api.OnBotEventListener;
-import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
-import com.qiyukf.unicorn.api.UICustomization;
-import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.api.UnicornImageLoader;
-import com.qiyukf.unicorn.api.YSFOptions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -111,14 +94,6 @@ public class MyApplication extends Application {
 //                .setTag("test")// 自定义全局Tag
 				.build();
 		Logg.init(configuration);
-		/**
-		 * 网易七鱼客服
-		 */
-		// appKey 可以在七鱼管理系统->设置->APP接入 页面找到
-		Unicorn.init(this, "962881e667aea784220686d86d8630e9", options(), new GlideImageLoaderQiYu(this));
-		String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
-		QiYuCache.ysfOptions.uiCustomization = QiYuCache.ysfOptions.uiCustomization == null ? MyApplication.uiCustomization(img) : null;
-
 		initTXYun();
 		initX5();
 //		Foreground.init(this);
@@ -506,59 +481,5 @@ public class MyApplication extends Application {
 			}
 		}
 		return false;
-	}
-
-	// 如果返回值为null，则全部使用默认参数。
-	private YSFOptions options() {
-		YSFOptions options = new YSFOptions();
-		options.statusBarNotificationConfig = new StatusBarNotificationConfig();
-		options.statusBarNotificationConfig.notificationSmallIconId = R.drawable.new_app_icon;
-		options.onBotEventListener = new OnBotEventListener() {
-			@Override
-			public boolean onUrlClick(Context context, String url) {
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-				context.startActivity(intent);
-				return true;
-			}
-		};
-		QiYuCache.ysfOptions = options;
-		return options;
-	}
-
-	public static UICustomization uiCustomization(String imgurl) {
-		// 以下示例的图片均无版权，请勿使用
-		UICustomization customization = new UICustomization();
-		customization.titleBarStyle = 1;
-		customization.titleBackgroundResId = R.drawable.my_ysf_title_bg;
-
-		customization.topTipBarBackgroundColor = 0xFFDCF2F5;
-		customization.topTipBarTextColor = 0xFF4E97D9;
-
-		// Glide
-//		customization.msgBackgroundUri = "file:///android_asset/msg_bg.png";
-		customization.leftAvatar = "android.resource://" + getContext().getPackageName() + "/" + R.drawable.new_app_icon;
-		if (imgurl != null && !imgurl.equals("")) {
-			customization.rightAvatar = imgurl;
-		}else {
-			customization.rightAvatar = "android.resource://" + getContext().getPackageName() + "/" + R.drawable.new_app_icon;
-		}
-		// Universal-Image-Loader
-		// customization.msgBackgroundUri = "assets://msg_bg.png";
-		// customization.leftAvatar = "drawable://" + R.drawable.my_avatar_staff;
-		// customization.rightAvatar = "drawable://" + R.drawable.my_avatar_user;
-
-//		customization.msgItemBackgroundLeft = R.drawable.my_message_item_left_selector;
-//		customization.msgItemBackgroundRight = R.drawable.my_message_item_right_selector;
-
-		customization.textMsgColorLeft = Color.BLACK;
-		customization.textMsgColorRight = Color.WHITE;
-
-//		customization.audioMsgAnimationLeft = R.drawable.my_audio_animation_list_left;
-//		customization.audioMsgAnimationRight = R.drawable.my_audio_animation_list_right;
-
-		customization.tipsTextColor = 0xFF76838F;
-
-//		customization.buttonBackgroundColorList = R.color.my_button_color_state_list;
-		return customization;
 	}
 }
