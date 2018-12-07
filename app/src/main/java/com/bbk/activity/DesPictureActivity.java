@@ -117,55 +117,57 @@ public class DesPictureActivity extends BaseActivity {
 //                } else {
 //                    tv.setVisibility(View.GONE);
 //                }
-                if (list.get(position).contains(".mp4")){
-                    videoposition = position;
-                    mplay = (ImageView) view.findViewById(R.id.mplay);
-                    mvideoview = (VideoView) view.findViewById(R.id.mvideoview);
-                    mvideoview.setVisibility(View.VISIBLE);
-                    imageView.setVisibility(View.GONE);
+                if (list != null) {
+                    if (list.get(position).contains(".mp4")) {
+                        videoposition = position;
+                        mplay = (ImageView) view.findViewById(R.id.mplay);
+                        mvideoview = (VideoView) view.findViewById(R.id.mvideoview);
+                        mvideoview.setVisibility(View.VISIBLE);
+                        imageView.setVisibility(View.GONE);
 //                    Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(list.get(position), MediaStore.Video.Thumbnails.MINI_KIND);
 //                    mvideoview.setBackgroundDrawable(new BitmapDrawable(bitmap));
-                    mvideoview.setMediaController(new MediaController(DesPictureActivity.this));
-                    mplay.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mvideoview.start();
-                            mplay.setVisibility(View.GONE);
+                        mvideoview.setMediaController(new MediaController(DesPictureActivity.this));
+                        mplay.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mvideoview.start();
+                                mplay.setVisibility(View.GONE);
+                            }
+                        });
+                        if (list.get(position).contains("http")) {
+                            Uri uri = Uri.parse(list.get(position));
+                            mvideoview.setVideoURI(uri);
+                        } else {
+                            mvideoview.setVideoPath(list.get(position));
                         }
-                    });
-                    if (list.get(position).contains("http")){
-                        Uri uri = Uri.parse(list.get(position));
-                        mvideoview.setVideoURI(uri);
-                    }else {
-                        mvideoview.setVideoPath(list.get(position));
-                    }
-                    mvideoview.start();
-                    mvideoview.requestFocus();
-                    mvideoview.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            mplay.setVisibility(View.VISIBLE);
-                        }
-                    });
-                    mvideoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
+                        mvideoview.start();
+                        mvideoview.requestFocus();
+                        mvideoview.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                mplay.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        mvideoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(MediaPlayer mp) {
 
+                            }
+                        });
+                    } else {
+                        imageView.setVisibility(View.VISIBLE);
+                        if ("add".equals(list.get(position))) {
+                            Glide.with(DesPictureActivity.this).load(R.mipmap.icon_addpic_unfocused)
+                                    .into(imageView);
+                        } else {
+                            String s = list.get(position);
+                            Glide.with(DesPictureActivity.this).
+                                    load(list.get(position))
+                                    .into(imageView);
                         }
-                    });
-                }else {
-                    imageView.setVisibility(View.VISIBLE);
-                    if ("add".equals(list.get(position))){
-                        Glide.with(DesPictureActivity.this).load(R.mipmap.icon_addpic_unfocused)
-                                .into(imageView);
-                    }else {
-                        String s = list.get(position);
-                        Glide.with(DesPictureActivity.this).
-                                load(list.get(position))
-                                .into(imageView);
                     }
+
                 }
-
                 container.addView(view);
                 imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                     @Override

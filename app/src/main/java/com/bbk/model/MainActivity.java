@@ -348,7 +348,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      * 快商通客服
      */
     private void doInit() {
-        KSConfig.init(getActivity(), "rRi5YjdiEQrc53hld/AMWFfuqEIr5/Vm", new KsInitListener(){
+        KSConfig.init(getActivity(), "lRUfZ3l/ufCyYcN71F+kh1TMTJuOOgLW", new KsInitListener(){
             @Override
             public void onSuccess() {
 //                Toast.makeText(context,"sdk初始化成功", Toast.LENGTH_LONG).show();

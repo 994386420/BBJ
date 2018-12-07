@@ -230,7 +230,7 @@ public class ShopDetailActivty extends BaseActivity {
     private TypeChooseAdapter typeGridAdapter;
     private TypeChooseLevelOneAdapter typeChooseLevelOneAdapter;
     private SizeChooseAdapter sizeChooseAdapter;
-    private int curposition = 0, sizeCurposition = 0;
+    private int curposition = 0, sizeCurposition = 0,picturePostion0ne = 0,picturePostionTwo = 0;
     private List<TypesChooseBean> typesChooseBeans;
     private List<TypesChooseSizeBean> typesChooseSizeBeans;
     private List<TypesLevelBean> typesLevelBeans;
@@ -934,6 +934,20 @@ public class ShopDetailActivty extends BaseActivity {
                 case "0":
                     //无规格选
                     lltype.setVisibility(View.GONE);
+                    /**
+                     * 图片点击放大
+                     */
+                    final List<String> imgList = new ArrayList<>();
+                    imgList.add(shopDetailBean.getImgurl());
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent Intent = new Intent(context, DesPictureActivity.class);
+                            Intent.putStringArrayListExtra("list", (ArrayList<String>) imgList);
+                            Intent.putExtra("position", picturePostion0ne);
+                            context.startActivity(Intent);
+                        }
+                    });
                     break;
                 case "1":
                     //一种规格
@@ -945,6 +959,28 @@ public class ShopDetailActivty extends BaseActivity {
                     mSizeTagAdapter = new TagAdapter<>(this);
                     gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
                     gridViewName.setAdapter(mSizeTagAdapter);
+                    /**
+                     * 图片点击放大
+                     */
+                    final List<String> imgListOne = new ArrayList<>();
+                    imgListOne.add(shopDetailBean.getImgurl());
+                    for (int i=0;i<typesChooseLevelOneBeans.size();i++){
+                        if (typesChooseLevelOneBeans.get(i).getImg() != null && !typesChooseLevelOneBeans.get(i).getImg().equals("")) {
+                            imgListOne.add(typesChooseLevelOneBeans.get(i).getImg());
+                        }
+                    }
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent Intent = new Intent(context, DesPictureActivity.class);
+                            Intent.putStringArrayListExtra("list", (ArrayList<String>) imgListOne);
+                            Intent.putExtra("position", picturePostion0ne);
+                            context.startActivity(Intent);
+                        }
+                    });
+                    /**
+                     * 颜色分类tag选择
+                     */
                     gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
                         @Override
                         public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
@@ -954,6 +990,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 for (int i : selectedList) {
                                     sb.append(parent.getAdapter().getItem(i));
                                     curposition = i;
+                                    picturePostion0ne = i + 1;
                                 }
                                 isChooseColor = true;
                                 if (!typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
@@ -963,6 +1000,9 @@ public class ShopDetailActivty extends BaseActivity {
                                 }
                                 chooseGuigeColor = sb.toString();
                                 tvHasChoose.setText(sbb.append("已选择:").append(sb.toString()).toString());
+                                /**
+                                 * 点击图片跟随颜色变化
+                                 */
                                 if (typesChooseLevelOneBeans.get(curposition).getImg() != null && !typesChooseLevelOneBeans.get(curposition).getImg().equals("")) {
                                     Glide.with(context).load(typesChooseLevelOneBeans.get(curposition).getImg()).into(imageView);
                                     return;
@@ -975,6 +1015,9 @@ public class ShopDetailActivty extends BaseActivity {
                             }
                         }
                     });
+                    /**
+                     * 加载颜色分类数据
+                     */
                     List<String> dataSource = new ArrayList<>();
                     for (int i = 0;i<typesChooseLevelOneBeans.size();i++){
                         dataSource.add(typesChooseLevelOneBeans.get(i).getName());
@@ -1016,6 +1059,25 @@ public class ShopDetailActivty extends BaseActivity {
                     gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
                     gridViewName.setAdapter(mSizeTagAdapter);
                     /**
+                     * 图片点击放大
+                     */
+                    final List<String> imgListTwo = new ArrayList<>();
+                    imgListTwo.add(shopDetailBean.getImgurl());
+                    for (int i=0;i<typesChooseBeans.size();i++){
+                        if (typesChooseBeans.get(i).getImg() != null && !typesChooseBeans.get(i).getImg().equals("")) {
+                            imgListTwo.add(typesChooseBeans.get(i).getImg());
+                        }
+                    }
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent Intent = new Intent(context, DesPictureActivity.class);
+                            Intent.putStringArrayListExtra("list", (ArrayList<String>) imgListTwo);
+                            Intent.putExtra("position", picturePostionTwo);
+                            context.startActivity(Intent);
+                        }
+                    });
+                    /**
                      * 颜色分类tag选择
                      */
                     gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
@@ -1027,6 +1089,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 for (int i : selectedList) {
                                     sb.append(parent.getAdapter().getItem(i));
                                     curposition = i;
+                                    picturePostionTwo = i+1;
                                 }
                                 isChooseColor = true;
                                 chooseGuigeColor = null;

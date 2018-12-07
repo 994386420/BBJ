@@ -160,7 +160,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
     private int countNum = 1;//购买商品数量
     private TagAdapter<String> mSizeTagAdapter;
     private TagAdapter<String> mColorTagAdapter;
-    private int curposition = 0, sizeCurposition = 0;
+    private int curposition = 0, sizeCurposition = 0,picturePostion0ne = 0,picturePostionTwo = 0;
     private List<TypesChooseBean> typesChooseBeans;
     private List<TypesChooseSizeBean> typesChooseSizeBeans;
     private List<TypesLevelBean> typesLevelBeans;
@@ -696,6 +696,17 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                 case "0":
                     //无规格选
                     lltype.setVisibility(View.GONE);
+                    final List<String> imgList = new ArrayList<>();
+                    imgList.add(shopDetailBean.getImgurl());
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent Intent = new Intent(context, DesPictureActivity.class);
+                            Intent.putStringArrayListExtra("list", (ArrayList<String>) imgList);
+                            Intent.putExtra("position", "0");
+                            context.startActivity(Intent);
+                        }
+                    });
                     break;
                 case "1":
                     //一种规格
@@ -707,6 +718,22 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                     mSizeTagAdapter = new TagAdapter<>(this);
                     gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
                     gridViewName.setAdapter(mSizeTagAdapter);
+                    final List<String> imgListOne = new ArrayList<>();
+                    imgListOne.add(shopDetailBean.getImgurl());
+                    for (int i=0;i<typesChooseLevelOneBeans.size();i++){
+                        if (typesChooseLevelOneBeans.get(i).getImg() != null && !typesChooseLevelOneBeans.get(i).getImg().equals("")) {
+                            imgListOne.add(typesChooseLevelOneBeans.get(i).getImg());
+                        }
+                    }
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent Intent = new Intent(context, DesPictureActivity.class);
+                            Intent.putStringArrayListExtra("list", (ArrayList<String>) imgListOne);
+                            Intent.putExtra("position", picturePostion0ne);
+                            context.startActivity(Intent);
+                        }
+                    });
                     gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
                         @Override
                         public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
@@ -763,6 +790,22 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                     mSizeTagAdapter = new TagAdapter<>(this);
                     gridViewName.setTagCheckedMode(FlowTagLayout.FLOW_TAG_CHECKED_SINGLE);
                     gridViewName.setAdapter(mSizeTagAdapter);
+                    final List<String> imgListTwo = new ArrayList<>();
+                    imgListTwo.add(shopDetailBean.getImgurl());
+                    for (int i=0;i<typesChooseBeans.size();i++){
+                        if (typesChooseBeans.get(i).getImg() != null && !typesChooseBeans.get(i).getImg().equals("")) {
+                            imgListTwo.add(typesChooseBeans.get(i).getImg());
+                        }
+                    }
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent Intent = new Intent(context, DesPictureActivity.class);
+                            Intent.putStringArrayListExtra("list", (ArrayList<String>) imgListTwo);
+                            Intent.putExtra("position", picturePostionTwo);
+                            context.startActivity(Intent);
+                        }
+                    });
                     gridViewName.setOnTagSelectListener(new OnTagSelectListener() {
                         @Override
                         public void onItemSelect(FlowTagLayout parent, List<Integer> selectedList) {
