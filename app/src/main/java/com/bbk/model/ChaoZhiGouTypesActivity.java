@@ -121,7 +121,6 @@ public class ChaoZhiGouTypesActivity extends BaseActivity implements CommonLoadi
             public void onTabSelected(XTabLayout.Tab tab) {
                 int j = tab.getPosition();
                 curposition = j;
-//                titleText.setText(tab.getText().toString());
                 x = 1;
                 page = 1;
                 materialId = chaozhigouTypesBeans.get(j).getKeyword();
@@ -179,7 +178,7 @@ public class ChaoZhiGouTypesActivity extends BaseActivity implements CommonLoadi
     }
 
     /**
-     * 9.9，超级返 数据接口
+     * 9.9，超级返
      */
     private ChaoZhiView chaoZhiView = new ChaoZhiView() {
         @Override
@@ -406,7 +405,6 @@ public class ChaoZhiGouTypesActivity extends BaseActivity implements CommonLoadi
     AdapterView.OnItemClickListener onItemStatusClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            statusPosition = position;
             miaoShaStatusAdapter.setSeclection(position);
             miaoShaStatusAdapter.notifyDataSetChanged();
             XTabLayout.Tab tabAt = tablayout.getTabAt(position);

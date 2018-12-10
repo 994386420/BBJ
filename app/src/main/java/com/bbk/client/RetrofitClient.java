@@ -711,6 +711,19 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void queryZiyingZeroBuyForOld(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryZiyingZeroBuyForOld(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+    public  void getZeroBuyOrderOld(Map<String, String> parameters, Observer<?> observer) {
+        apiService.getZeroBuyOrderOld(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

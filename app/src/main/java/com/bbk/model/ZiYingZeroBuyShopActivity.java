@@ -17,6 +17,7 @@ import com.bbk.activity.BaseActivity;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
 import com.bbk.adapter.ZeroBuyAdapter;
+import com.bbk.adapter.ZeroBuyForOlderAdapter;
 import com.bbk.model.presenter.ChaoZhiPresenter;
 import com.bbk.model.tablayout.XTabLayout;
 import com.bbk.model.view.ZeroBuyView;
@@ -39,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 0元购
+ * 自营0元购
  */
 public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoadingView.LoadingHandler {
     @BindView(R.id.title_back_btn)
@@ -68,10 +69,14 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
     GridView miaoshaStatus;
     @BindView(R.id.img_tishi)
     ImageView imgTishi;
+    @BindView(R.id.fl_types)
+    FrameLayout flTypes;
     private int page = 1, x = 1;
     private String type = "0";
     ZeroBuyAdapter zeroBuyAdapter;
+    ZeroBuyForOlderAdapter zeroBuyForOlderAdapter;
     private ChaoZhiPresenter chaoZhiPresenter = new ChaoZhiPresenter(this);
+    private int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,34 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
         getType();
         chaoZhiPresenter.attachZeroBuyView(zeroBuyView);
         chaoZhiPresenter.queryCpsZeroBuyNew(page);
-        tablayout.setVisibility(View.GONE);
+        tablayout.setVisibility(View.VISIBLE);
+        flTypes.setBackgroundResource(R.color.color_line);
+        tablayout.setxTabDisplayNum(2);
+        tablayout.addTab(tablayout.newTab().setText("新用户专享"));
+        tablayout.addTab(tablayout.newTab().setText("老用户专享"));
+        tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(XTabLayout.Tab tab) {
+                page = 1;
+                x = 1;
+                position = tab.getPosition();
+                if (tab.getPosition() == 0) {
+                    chaoZhiPresenter.queryCpsZeroBuyNew(page);
+                    return;
+                }
+                chaoZhiPresenter.queryZiyingZeroBuyForOld(page);
+            }
+
+            @Override
+            public void onTabUnselected(XTabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(XTabLayout.Tab tab) {
+
+            }
+        });
         mrecycler.setLayoutManager(new LinearLayoutManager(this));
         mrecycler.setHasFixedSize(true);
         progress.setLoadingHandler(this);
@@ -104,7 +136,11 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
                 mPtrframe.setNoMoreData(false);
                 x = 1;
                 page = 1;
-                chaoZhiPresenter.queryCpsZeroBuyNew(page);
+                if (position == 0) {
+                    chaoZhiPresenter.queryCpsZeroBuyNew(page);
+                    return;
+                }
+                chaoZhiPresenter.queryZiyingZeroBuyForOld(page);
             }
         });
         mPtrframe.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -112,14 +148,18 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
             public void onLoadMore(RefreshLayout refreshLayout) {
                 x = 2;
                 page++;
-                chaoZhiPresenter.queryCpsZeroBuyNew(page);
+                if (position == 0) {
+                    chaoZhiPresenter.queryCpsZeroBuyNew(page);
+                    return;
+                }
+                chaoZhiPresenter.queryZiyingZeroBuyForOld(page);
             }
         });
 
     }
 
     /**
-     * 9.9，超级返 数据接口
+     * 自营0元购
      */
     private ZeroBuyView zeroBuyView = new ZeroBuyView() {
         @Override
@@ -136,22 +176,36 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
                 imgTishi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent= new Intent(ZiYingZeroBuyShopActivity.this, WebViewActivity.class);
+                        Intent intent = new Intent(ZiYingZeroBuyShopActivity.this, WebViewActivity.class);
                         intent.putExtra("url", bannerurl);
                         startActivity(intent);
                     }
                 });
                 if (zeroBuyBeans != null && zeroBuyBeans.size() > 0) {
-                    zeroBuyAdapter = new ZeroBuyAdapter(ZiYingZeroBuyShopActivity.this, zeroBuyBeans);
-                    mrecycler.setAdapter(zeroBuyAdapter);
+                    if (position == 0) {
+                        zeroBuyAdapter = new ZeroBuyAdapter(ZiYingZeroBuyShopActivity.this, zeroBuyBeans);
+                        mrecycler.setAdapter(zeroBuyAdapter);
+                        return;
+                    }
+                    zeroBuyForOlderAdapter = new ZeroBuyForOlderAdapter(ZiYingZeroBuyShopActivity.this, zeroBuyBeans);
+                    mrecycler.setAdapter(zeroBuyForOlderAdapter);
                 } else {
-                    mrecycler.setVisibility(View.GONE);
-                    progress.loadSuccess(true);
                     mPtrframe.setEnableLoadMore(false);
+                    mrecycler.setVisibility(View.GONE);
+                    progress.setVisibility(View.VISIBLE);
+                    if (position == 0) {
+                        progress.loadSuccess(true);
+                        return;
+                    }
+                    progress.loadNoOlder();
                 }
             } else {
                 if (zeroBuyBeans != null && zeroBuyBeans.size() > 0) {
-                    zeroBuyAdapter.notifyData(zeroBuyBeans);
+                    if (position == 0) {
+                        zeroBuyAdapter.notifyData(zeroBuyBeans);
+                        return;
+                    }
+                    zeroBuyForOlderAdapter.notifyData(zeroBuyBeans);
                 } else {
                     mPtrframe.finishLoadMoreWithNoMoreData();
                 }
@@ -218,7 +272,11 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
         progress.setVisibility(View.GONE);
         x = 1;
         page = 1;
-        chaoZhiPresenter.queryCpsZeroBuyNew(page);
+        if (position == 0) {
+            chaoZhiPresenter.queryCpsZeroBuyNew(page);
+            return;
+        }
+        chaoZhiPresenter.queryZiyingZeroBuyForOld(page);
     }
 
     @OnClick(R.id.img_tishi)

@@ -182,6 +182,7 @@ public class ZeroBuyHomeAdapter extends RecyclerView.Adapter {
                                 intent = new Intent(context, ZiYingZeroBuyDetailActivty.class);
                                 intent.putExtra("gid", miaoShaBean.getGid());
                                 intent.putExtra("id", miaoShaBean.getId());
+                                intent.putExtra("isOlder", "no");
                                 context.startActivity(intent);
                             }
                         }else {

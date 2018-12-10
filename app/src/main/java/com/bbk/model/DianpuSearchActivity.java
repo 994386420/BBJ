@@ -91,7 +91,7 @@ public class DianpuSearchActivity extends BaseActivity implements CommonLoadingV
     private String type = "0";
     DianPuGridAdapter dianPuGridAdapter;
     private ChaoZhiPresenter chaoZhiPresenter = new ChaoZhiPresenter(this);
-    private String dianpuid,producttype,plevel,keyword;
+    private String dianpuid,producttype,plevel,keyword,search;
     private int position;
 
     @Override
@@ -107,6 +107,7 @@ public class DianpuSearchActivity extends BaseActivity implements CommonLoadingV
         producttype = getIntent().getStringExtra("producttype");
         plevel = getIntent().getStringExtra("plevel");
         keyword = getIntent().getStringExtra("keyword");
+        search = getIntent().getStringExtra("search");
         chaoZhiPresenter.attachDianpuSearchView(dianpuSearchView);
         chaoZhiPresenter.queryZiyingListByKeyword(dianpuid,producttype,keyword,plevel,page);
         tablayout.setVisibility(View.VISIBLE);
@@ -117,11 +118,9 @@ public class DianpuSearchActivity extends BaseActivity implements CommonLoadingV
         imgTishi.setVisibility(View.GONE);
         topbarSearchInput.setVisibility(View.VISIBLE);
         topbarSearchInput.setOnKeyListener(this);
-//        if (keyword != null && !keyword.equals("")) {
-//            topbarSearchInput.setText(keyword);
-//        }else {
-//            topbarSearchInput.setText(producttype);
-//        }
+        if (search != null && !search.equals("")) {
+            topbarSearchInput.setText(keyword);
+        }
         imgMoreBlack.setVisibility(View.VISIBLE);
         tablayout.setOnClickListener(new View.OnClickListener() {
             @Override

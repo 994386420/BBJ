@@ -44,6 +44,8 @@ public class CommonLoadingView extends FrameLayout {
     private View loadingErrorView;
     //数据为空
     private View emptyView;
+
+    private View noOlderView;
     //数据为空提示文字
     private TextView emptyText;
     private TextView mallText;//去逛逛商城
@@ -95,9 +97,11 @@ public class CommonLoadingView extends FrameLayout {
         loadingView = inflate(mContext, R.layout.loading_dialog, null);
         loadingErrorView = inflate(mContext, R.layout.no_network_layout, null);
         emptyView = inflate(mContext, R.layout.activity_no_message_layout, null);
+        noOlderView = inflate(mContext,R.layout.no_older_layout,null);
         this.addView(loadingView);
         this.addView(loadingErrorView);
         this.addView(emptyView);
+        this.addView(noOlderView);
         loadingErrorView.setVisibility(GONE);
         emptyView.setVisibility(GONE);
         initView(this);
@@ -138,6 +142,7 @@ public class CommonLoadingView extends FrameLayout {
         loadingView.setVisibility(VISIBLE);
         loadingErrorView.setVisibility(GONE);
         emptyView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
     }
 
     public void load(String message){
@@ -146,12 +151,14 @@ public class CommonLoadingView extends FrameLayout {
         loadingView.setVisibility(VISIBLE);
         loadingErrorView.setVisibility(GONE);
         emptyView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
     }
 
     public void loadEmpty(String message){
         emptyText.setText(message);
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
         emptyView.setVisibility(VISIBLE);
     }
 
@@ -165,6 +172,7 @@ public class CommonLoadingView extends FrameLayout {
         mallText.setVisibility(GONE);
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
         carText.setVisibility(GONE);
         if (isEmpty) {
             emptyView.setVisibility(VISIBLE);
@@ -177,6 +185,7 @@ public class CommonLoadingView extends FrameLayout {
         mallText.setVisibility(GONE);
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
         carText.setVisibility(GONE);
         if (isEmpty) {
             emptyView.setVisibility(VISIBLE);
@@ -190,6 +199,7 @@ public class CommonLoadingView extends FrameLayout {
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
         carText.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
         if (isEmpty) {
             mallText.setVisibility(VISIBLE);
             mallText.setOnClickListener(new OnClickListener() {
@@ -212,6 +222,7 @@ public class CommonLoadingView extends FrameLayout {
         mallText.setVisibility(GONE);
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
         if (isEmpty) {
             carText.setVisibility(VISIBLE);
             carText.setOnClickListener(new OnClickListener() {
@@ -235,6 +246,7 @@ public class CommonLoadingView extends FrameLayout {
     public void loadMallSuccess(final Context context, boolean isEmpty){
         loadingView.setVisibility(GONE);
         loadingErrorView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
         if (isEmpty) {
             mallText.setVisibility(VISIBLE);
             mallText.setOnClickListener(new OnClickListener() {
@@ -253,9 +265,16 @@ public class CommonLoadingView extends FrameLayout {
     public void loadError(){
         loadingView.setVisibility(GONE);
         emptyView.setVisibility(GONE);
+        noOlderView.setVisibility(GONE);
         loadingErrorView.setVisibility(VISIBLE);
     }
 
+    public void loadNoOlder(){
+        loadingView.setVisibility(GONE);
+        emptyView.setVisibility(GONE);
+        loadingErrorView.setVisibility(GONE);
+        noOlderView.setVisibility(VISIBLE);
+    }
 
     public interface LoadingHandler{
         void doRequestData();

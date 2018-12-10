@@ -281,8 +281,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private HomeLoadUtil homeLoadUtil;
     private int showTime = 0, curposition = 0;
     private String url1, title1, domain1, type1, isczg1, bprice1, quan1, zuan1;
-    public static final String appkey = "201811081252322";
-    public static final String subdomain = "236461";
     JSONArray chaozhigouTypes;
 
     @Nullable
@@ -312,32 +310,6 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             setToolBar();
             refresh();
             doInit();
-            /**
-             * 萝卜丝客服
-             */
-//            BDCoreApi.visitorLogin(getActivity(), appkey, subdomain, new LoginCallback() {
-//                @Override
-//                public void onSuccess(JSONObject object) {
-//                    //
-//                    try {
-//                        Logg.json("login success message===>>>>: " + object.get("message") + " status_code:" + object.get("status_code"));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                @Override
-//                public void onError(JSONObject object) {
-//                    try {
-//                        Logg.json("login failed message: " + object.get("message")
-//                                + " status_code:" + object.get("status_code")
-//                                + " data:" + object.get("data"));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-
         }
 
         unbinder1 = ButterKnife.bind(this, mView);
@@ -351,12 +323,10 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
         KSConfig.init(getActivity(), "lRUfZ3l/ufCyYcN71F+kh1TMTJuOOgLW", new KsInitListener(){
             @Override
             public void onSuccess() {
-//                Toast.makeText(context,"sdk初始化成功", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(int code, String message) {
-//                Toast.makeText(context,"sdk初始化失败 code:"+code+"  message:"+message, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -1499,6 +1469,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
         }
     }
 
+    /**
+     * 异常重试
+     */
     @Override
     public void doRequestData() {
         DialogHomeUtil.show(getActivity());
@@ -1509,6 +1482,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
         initDataCzg(keyword);
     }
 
+    /**
+     * 登录回调
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1598,23 +1577,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      * @param context
      */
     public static void consultService(final Context context) {
-//        String img = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userImg", "img");
-//        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-//        QiYuCache.ysfOptions.uiCustomization = MyApplication.uiCustomization(img);
-//        // 启动聊天界面
-//        ConsultSource source = new ConsultSource(uri, title, null);
-//        source.productDetail = productDetail;
-//        Unicorn.openServiceActivity(context, staffName(), source);
-//        YSFUserInfo userInfo = new YSFUserInfo();
-//        // APP 的用户 ID
-//        userInfo.userId = userID;
-//        Unicorn.setUserInfo(userInfo);
         Intent intent = new KSIntentBuilder(context).build();
         context.startActivity(intent);
     }
-
-    private static String staffName() {
-        return "小鲸";
-    }
-
 }

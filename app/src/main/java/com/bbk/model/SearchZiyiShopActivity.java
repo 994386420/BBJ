@@ -160,6 +160,7 @@ public class SearchZiyiShopActivity extends BaseActivity implements View.OnKeyLi
                 intent.putExtra("dianpuid", "");
                 intent.putExtra("producttype", "");
                 intent.putExtra("plevel", "");
+                intent.putExtra("search","1");
                 intent.putExtra("keyword", strings.get(position).toString());
                 startActivity(intent);
                 return true;
@@ -259,6 +260,7 @@ public class SearchZiyiShopActivity extends BaseActivity implements View.OnKeyLi
         intent.putExtra("dianpuid", "");
         intent.putExtra("producttype", "");
         intent.putExtra("plevel", "");
+        intent.putExtra("search","1");
         intent.putExtra("keyword", sarechword);
         startActivity(intent);
     }

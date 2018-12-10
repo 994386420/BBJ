@@ -243,7 +243,51 @@ public class ChaoZhiPresenter implements Presenter {
                     }
                 });
     }
+    /**
+     *  老用户0元购
+     * @param page
+     */
+    public void queryZiyingZeroBuyForOld(int page) {
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("page", page + "");
+        RetrofitClient.getInstance(mContext).createBaseApi().queryZiyingZeroBuyForOld(
+                maps, new BaseObserver<String>(mContext) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            String content = jsonObject.optString("content");
+                            JSONObject jsonObject1 = new JSONObject(content);
+                            if (jsonObject.optString("status").equals("1")) {
+                                zeroBuyBeans =JSON.parseArray(jsonObject1.optString("arr"),ZeroBuyBean.class);
+                                zeroBuyView.onSuccess(zeroBuyBeans,jsonObject1.optString("banner"),jsonObject1.optString("rule"));
+                            } else {
+                                chaoZhiTypesView.onError(jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
+                    @Override
+                    protected void hideDialog() {
+                        zeroBuyView.onHide();
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(mContext);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        zeroBuyView.onFailed();
+                        StringUtil.showToast(mContext, e.message);
+                    }
+                });
+    }
     /**
      * o元购
      * @param type

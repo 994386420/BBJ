@@ -119,11 +119,12 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:background="#f1f1f1"
+        android:background="#F3F3F3"
         android:id="@+id/mPtrframe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
+            android:id="@+id/fl_types"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

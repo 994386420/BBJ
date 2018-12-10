@@ -19,6 +19,15 @@ public class ZeroBuyBean {
     private String bili;
     private String zeroBuyDomain;
     private String gid;
+    private String needfensi;
+
+    public String getNeedfensi() {
+        return needfensi;
+    }
+
+    public void setNeedfensi(String needfensi) {
+        this.needfensi = needfensi;
+    }
 
     public String getGid() {
         return gid;

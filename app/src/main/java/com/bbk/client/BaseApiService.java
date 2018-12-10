@@ -280,4 +280,10 @@ public interface BaseApiService<T> {
     //新0元购接口
     @POST("apiService/queryCpsZeroBuyNew")
     Observable<String> queryCpsZeroBuyNew(@QueryMap Map<String, String> map);
+    //老用户0元购
+    @POST("apiService/queryZiyingZeroBuyForOld")
+    Observable<String> queryZiyingZeroBuyForOld(@QueryMap Map<String, String> map);
+    //老用户0元购支付
+    @POST("appPayService/getZeroBuyOrderOld")
+    Observable<String> getZeroBuyOrderOld(@QueryMap Map<String, String> map);
 }

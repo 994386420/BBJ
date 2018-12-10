@@ -3,7 +3,6 @@ package com.bbk.adapter;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,12 +32,12 @@ import butterknife.ButterKnife;
  * Created by rtj on 2018/3/7.
  */
 
-public class ZeroBuyAdapter extends RecyclerView.Adapter {
+public class ZeroBuyForOlderAdapter extends RecyclerView.Adapter {
     private Context context;
     List<ZeroBuyBean> zeroBuyBeans;
 
 
-    public ZeroBuyAdapter(Context context, List<ZeroBuyBean> zeroBuyBeans) {
+    public ZeroBuyForOlderAdapter(Context context, List<ZeroBuyBean> zeroBuyBeans) {
         this.context = context;
         this.zeroBuyBeans = zeroBuyBeans;
     }
@@ -90,10 +89,10 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
         TextView quan;
         @BindView(R.id.zuan)
         TextView zuan;
-        @BindView(R.id.price)
-        TextView price;
-        @BindView(R.id.bprice)
-        TextView bprice;
+        @BindView(R.id.price1)
+        TextView price1;
+        @BindView(R.id.bprice1)
+        TextView bprice1;
         @BindView(R.id.tv_mall)
         TextView tvMall;
         @BindView(R.id.tv_sale)
@@ -114,6 +113,8 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
         TextView tvZerobuy;
         @BindView(R.id.tv_salebi)
         TextView tvSalebi;
+        @BindView(R.id.rmb1)
+        TextView rmb1;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -135,15 +136,17 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
             final ZeroBuyBean zeroBuyBean = zeroBuyBeans.get(position);
             String img = zeroBuyBean.getImg();
             final String title = zeroBuyBean.getTitle();
-            viewHolder.tvSale.setVisibility(View.GONE);
+            viewHolder.tvSale.setVisibility(View.VISIBLE);
             viewHolder.item_title.setText(title);
             viewHolder.tvMall.setVisibility(View.GONE);
-            viewHolder.price.setText(zeroBuyBean.getTlj());
-            if (zeroBuyBean.getBprice() != null && !zeroBuyBean.getBprice().equals("")) {
-                viewHolder.bprice.setText("原价¥" + zeroBuyBean.getBprice());
-            } else {
-                viewHolder.bprice.setVisibility(View.GONE);
-            }
+            viewHolder.rmb1.setText("原价 ¥");
+            viewHolder.price1.setText(zeroBuyBean.getBprice());
+            viewHolder.tvSalebi.setVisibility(View.GONE);
+            viewHolder.cpbProgresbar.setVisibility(View.GONE);
+            viewHolder.bprice1.setVisibility(View.GONE);
+            viewHolder.tvZerobuy.setTextColor(context.getResources().getColor(R.color.white));
+            viewHolder.tvZerobuy.setBackgroundResource(R.drawable.bg_czg5);
+            viewHolder.tvZerobuy.setText(zeroBuyBean.getNeedfensi() + "粉丝购买");
             if (zeroBuyBean.getQuan() != null && !zeroBuyBean.getQuan().equals("")) {
                 viewHolder.llQuan.setVisibility(View.GONE);
                 viewHolder.quan.setText(zeroBuyBean.getQuan());
@@ -156,79 +159,23 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
             } else {
                 viewHolder.zuan.setVisibility(View.GONE);
             }
-
-            if (zeroBuyBean.getBili() != null) {
-                viewHolder.cpbProgresbar.setMaxProgress(100);
-                viewHolder.cpbProgresbar.setProgressColor(Color.parseColor("#FF8A83"));
-                viewHolder.cpbProgresbar.setCurProgress(Integer.parseInt(zeroBuyBean.getBili()), 2000);
-                viewHolder.tvSalebi.setText("已售" + zeroBuyBean.getBili() + "%");
-            }
-            if (zeroBuyBean.getBili() != null) {
-                if (zeroBuyBean.getBili().equals("100")) {
-                    viewHolder.tvZerobuy.setBackgroundResource(R.drawable.bg_czg6);
-                    viewHolder.tvZerobuy.setText("抢完了");
-                    viewHolder.tvZerobuy.setTextColor(context.getResources().getColor(R.color.tuiguang_color4));
-                } else {
-                    viewHolder.tvZerobuy.setTextColor(context.getResources().getColor(R.color.white));
-                    viewHolder.tvZerobuy.setBackgroundResource(R.drawable.bg_czg5);
-                    viewHolder.tvZerobuy.setText("0元购");
-                }
-            }
             Glide.with(context)
                     .load(img)
                     .priority(Priority.HIGH)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.item_img);
-            viewHolder.llPrice1.setVisibility(View.GONE);
-            viewHolder.llPrice.setVisibility(View.VISIBLE);
-            viewHolder.tvPintuan.setText("剩余" + zeroBuyBean.getNumber());
+            viewHolder.llPrice1.setVisibility(View.VISIBLE);
+            viewHolder.llPrice.setVisibility(View.GONE);
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent;
-                    NewConstants.showdialogFlg = "1";
-                    if (zeroBuyBean.getBili().equals("100")) {
-                        StringUtil.showToast(context,"已经抢完了！");
-                    }else {
-                        if (zeroBuyBean.getZeroBuyDomain() != null){
-                            if (zeroBuyBean.getZeroBuyDomain().equals("taobao")){
-                                intent = new Intent(context, IntentActivity.class);
-                                if (zeroBuyBean.getTitle() != null) {
-                                    intent.putExtra("title", zeroBuyBean.getTitle());
-                                }
-                                if (zeroBuyBean.getRowkey() != null) {
-                                    intent.putExtra("groupRowKey", zeroBuyBean.getRowkey());
-                                }
-                                intent.putExtra("isczg", "0");
-                                intent.putExtra("tljid", zeroBuyBean.getId());
-                                if (zeroBuyBean.getBprice() != null) {
-                                    intent.putExtra("bprice", zeroBuyBean.getBprice());
-                                }
-                                context.startActivity(intent);
-                            }else {
-                                intent = new Intent(context, ZiYingZeroBuyDetailActivty.class);
-                                intent.putExtra("gid", zeroBuyBean.getGid());
-                                intent.putExtra("id", zeroBuyBean.getId());
-                                intent.putExtra("isOlder", "no");
-                                context.startActivity(intent);
-                            }
-                        }else {
-                            intent = new Intent(context, IntentActivity.class);
-                            if (zeroBuyBean.getTitle() != null) {
-                                intent.putExtra("title", zeroBuyBean.getTitle());
-                            }
-                            if (zeroBuyBean.getRowkey() != null) {
-                                intent.putExtra("groupRowKey", zeroBuyBean.getRowkey());
-                            }
-                            intent.putExtra("isczg", "0");
-                            intent.putExtra("tljid", zeroBuyBean.getId());
-                            if (zeroBuyBean.getBprice() != null) {
-                                intent.putExtra("bprice", zeroBuyBean.getBprice());
-                            }
-                            context.startActivity(intent);
-                        }
-                    }
+                    intent = new Intent(context, ZiYingZeroBuyDetailActivty.class);
+                    intent.putExtra("gid", zeroBuyBean.getGid());
+                    intent.putExtra("id", zeroBuyBean.getId());
+                    intent.putExtra("isOlder", "yes");
+                    context.startActivity(intent);
                 }
             });
             viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
