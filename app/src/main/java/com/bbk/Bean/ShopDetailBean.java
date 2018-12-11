@@ -32,7 +32,24 @@ public class ShopDetailBean {
     private String youhui3;
     private String isOldUser;
     private String shareimg ; // 分享的图片地址
+    private String canZeroBuy;
+    private String zeroBuyDesc;
 
+    public String getCanZeroBuy() {
+        return canZeroBuy;
+    }
+
+    public void setCanZeroBuy(String canZeroBuy) {
+        this.canZeroBuy = canZeroBuy;
+    }
+
+    public String getZeroBuyDesc() {
+        return zeroBuyDesc;
+    }
+
+    public void setZeroBuyDesc(String zeroBuyDesc) {
+        this.zeroBuyDesc = zeroBuyDesc;
+    }
 
     public String getShareimg() {
         return shareimg;

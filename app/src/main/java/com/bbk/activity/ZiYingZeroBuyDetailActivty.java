@@ -29,6 +29,7 @@ import com.bbk.adapter.TagAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.util.DialogSingleUtil;
@@ -170,6 +171,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
         setContentView(R.layout.jump_detail_layout);
         ImmersedStatusbarUtils.initAfterSetContentView(this, null);
         ButterKnife.bind(this);
+        NewConstants.address = "1";
         id = getIntent().getStringExtra("id");
         gid = getIntent().getStringExtra("gid");
         isOlder = getIntent().getStringExtra("isOlder");
@@ -352,86 +354,170 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
             tvShare.setText("分享");
             tvZeroBuy.setText("下单");
             ImageView img_close = updataDialog.findViewById(R.id.img_close);
-            if (isOldUser != null && isOldUser.equals("0")) {
-                title.setText("抢单成功");
-                tv_update.setText("分享朋友圈立即0元购");
-                String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
-                //判断是否分享
-                if (TextUtils.isEmpty(isShare)) {
+            if (isOlder.equals("yes")){
+                if (shopDetailBean.getCanZeroBuy() != null && shopDetailBean.getCanZeroBuy().equals("1")) {
+                    title.setText("抢单成功");
+                    tv_update.setText("分享朋友圈立即0元购");
+                    String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
+                    //判断是否分享
+                    if (TextUtils.isEmpty(isShare)) {
+                        tvShare.setBackgroundResource(R.drawable.bg_czg1);
+                        tvShare.setTextColor(getResources().getColor(R.color.white));
+                        tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
+                        tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
+                        tvZeroBuy.setClickable(false);
+                        tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updataDialog.dismiss();
+                                StringUtil.showToast(context, "分享后才能下单哦");
+                            }
+                        });
+                    } else {
+                        tvShare.setBackgroundResource(R.drawable.bg_czg1);
+                        tvShare.setTextColor(getResources().getColor(R.color.white));
+                        tvZeroBuy.setBackgroundResource(R.drawable.bg_czg1);
+                        tvZeroBuy.setTextColor(getResources().getColor(R.color.white));
+                        tvZeroBuy.setClickable(true);
+                        tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updataDialog.dismiss();
+                                switch (shopDetailBean.getGuigetype()) {
+                                    case "0":
+                                        //无规格选
+                                        if (isOlder.equals("yes")) {
+                                            getZeroBuyOrderOld("");
+                                            return;
+                                        }
+                                        getZeroBuyOrder("");
+                                        shopDialog.dismiss();
+                                        break;
+                                    case "1":
+                                        if (chooseGuigeColor != null) {
+                                            shopDialog.dismiss();
+                                            if (isOlder.equals("yes")) {
+                                                getZeroBuyOrderOld(chooseGuigeColor);
+                                                return;
+                                            }
+                                            getZeroBuyOrder(chooseGuigeColor);
+                                            return;
+                                        }
+                                        StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
+                                        break;
+                                    case "2":
+                                        if (chooseGuigeColor != null && chooseGuigeSize != null) {
+                                            shopDialog.dismiss();
+                                            if (isOlder.equals("yes")) {
+                                                getZeroBuyOrderOld(chooseGuigeColor + " " + chooseGuigeSize);
+                                                return;
+                                            }
+                                            getZeroBuyOrder(chooseGuigeColor + " " + chooseGuigeSize);
+                                            return;
+                                        }
+                                        StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
+                                        break;
+                                }
+                            }
+                        });
+                    }
+                } else {
                     tvShare.setBackgroundResource(R.drawable.bg_czg1);
                     tvShare.setTextColor(getResources().getColor(R.color.white));
                     tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
                     tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
-                    tvZeroBuy.setClickable(false);
+                    title.setText(shopDetailBean.getZeroBuyDesc());
+                    tv_update.setVisibility(View.GONE);
                     tvZeroBuy.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             updataDialog.dismiss();
-                            StringUtil.showToast(context, "分享后才能下单哦");
-                        }
-                    });
-                } else {
-                    tvShare.setBackgroundResource(R.drawable.bg_czg1);
-                    tvShare.setTextColor(getResources().getColor(R.color.white));
-                    tvZeroBuy.setBackgroundResource(R.drawable.bg_czg1);
-                    tvZeroBuy.setTextColor(getResources().getColor(R.color.white));
-                    tvZeroBuy.setClickable(true);
-                    tvZeroBuy.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            updataDialog.dismiss();
-                            switch (shopDetailBean.getGuigetype()) {
-                                case "0":
-                                    //无规格选
-                                    if (isOlder.equals("yes")) {
-                                        getZeroBuyOrderOld("");
-                                        return;
-                                    }
-                                    getZeroBuyOrder("");
-                                    shopDialog.dismiss();
-                                    break;
-                                case "1":
-                                    if (chooseGuigeColor != null) {
-                                        shopDialog.dismiss();
-                                        if (isOlder.equals("yes")) {
-                                            getZeroBuyOrderOld(chooseGuigeColor);
-                                            return;
-                                        }
-                                        getZeroBuyOrder(chooseGuigeColor);
-                                        return;
-                                    }
-                                    StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
-                                    break;
-                                case "2":
-                                    if (chooseGuigeColor != null && chooseGuigeSize != null) {
-                                        shopDialog.dismiss();
-                                        if (isOlder.equals("yes")) {
-                                            getZeroBuyOrderOld(chooseGuigeColor + " " + chooseGuigeSize);
-                                            return;
-                                        }
-                                        getZeroBuyOrder(chooseGuigeColor + " " + chooseGuigeSize);
-                                        return;
-                                    }
-                                    StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
-                                    break;
-                            }
+                            StringUtil.showToast(context, shopDetailBean.getZeroBuyDesc());
                         }
                     });
                 }
-            } else {
-                tvShare.setBackgroundResource(R.drawable.bg_czg1);
-                tvShare.setTextColor(getResources().getColor(R.color.white));
-                tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
-                tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
-                title.setText("新用户才能享受此特权哦\n分享给好友0元购吧");
-                tv_update.setVisibility(View.GONE);
-                tvZeroBuy.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        updataDialog.dismiss();
-                        StringUtil.showToast(context, "新用户才能享受此特权");
+            }else {
+                if (isOldUser != null && isOldUser.equals("0")) {
+                    title.setText("抢单成功");
+                    tv_update.setText("分享朋友圈立即0元购");
+                    String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
+                    //判断是否分享
+                    if (TextUtils.isEmpty(isShare)) {
+                        tvShare.setBackgroundResource(R.drawable.bg_czg1);
+                        tvShare.setTextColor(getResources().getColor(R.color.white));
+                        tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
+                        tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
+                        tvZeroBuy.setClickable(false);
+                        tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updataDialog.dismiss();
+                                StringUtil.showToast(context, "分享后才能下单哦");
+                            }
+                        });
+                    } else {
+                        tvShare.setBackgroundResource(R.drawable.bg_czg1);
+                        tvShare.setTextColor(getResources().getColor(R.color.white));
+                        tvZeroBuy.setBackgroundResource(R.drawable.bg_czg1);
+                        tvZeroBuy.setTextColor(getResources().getColor(R.color.white));
+                        tvZeroBuy.setClickable(true);
+                        tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updataDialog.dismiss();
+                                switch (shopDetailBean.getGuigetype()) {
+                                    case "0":
+                                        //无规格选
+                                        if (isOlder.equals("yes")) {
+                                            getZeroBuyOrderOld("");
+                                            return;
+                                        }
+                                        getZeroBuyOrder("");
+                                        shopDialog.dismiss();
+                                        break;
+                                    case "1":
+                                        if (chooseGuigeColor != null) {
+                                            shopDialog.dismiss();
+                                            if (isOlder.equals("yes")) {
+                                                getZeroBuyOrderOld(chooseGuigeColor);
+                                                return;
+                                            }
+                                            getZeroBuyOrder(chooseGuigeColor);
+                                            return;
+                                        }
+                                        StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
+                                        break;
+                                    case "2":
+                                        if (chooseGuigeColor != null && chooseGuigeSize != null) {
+                                            shopDialog.dismiss();
+                                            if (isOlder.equals("yes")) {
+                                                getZeroBuyOrderOld(chooseGuigeColor + " " + chooseGuigeSize);
+                                                return;
+                                            }
+                                            getZeroBuyOrder(chooseGuigeColor + " " + chooseGuigeSize);
+                                            return;
+                                        }
+                                        StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, "请选择商品规格");
+                                        break;
+                                }
+                            }
+                        });
                     }
-                });
+                } else {
+                    tvShare.setBackgroundResource(R.drawable.bg_czg1);
+                    tvShare.setTextColor(getResources().getColor(R.color.white));
+                    tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
+                    tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
+                    title.setText("新用户才能享受此特权哦\n分享给好友0元购吧");
+                    tv_update.setVisibility(View.GONE);
+                    tvZeroBuy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updataDialog.dismiss();
+                            StringUtil.showToast(context, "新用户才能享受此特权");
+                        }
+                    });
+                }
             }
             img_close.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -655,6 +741,10 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                             } else {
                                 DialogSingleUtil.dismiss(0);
                                 StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, jsonObject.optString("errmsg"));
+                                if (jsonObject.optString("errmsg").contains("收货地址")){
+                                    Intent intent = new Intent(ZiYingZeroBuyDetailActivty.this, AddressMangerActivity.class);
+                                    startActivity(intent);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -703,6 +793,10 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                             } else {
                                 DialogSingleUtil.dismiss(0);
                                 StringUtil.showToast(ZiYingZeroBuyDetailActivty.this, jsonObject.optString("errmsg"));
+                                if (jsonObject.optString("errmsg").contains("收货地址")){
+                                    Intent intent = new Intent(ZiYingZeroBuyDetailActivty.this, AddressMangerActivity.class);
+                                    startActivity(intent);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

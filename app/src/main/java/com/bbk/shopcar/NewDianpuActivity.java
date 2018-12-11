@@ -164,7 +164,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
                 }
                 x = 1;
                 page = 1;
-                dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
+                dianpuPresenter.queryProductListByKeyword(keywordType,"3",dianpuid, sortway, "", refresh, refreshLayout, progress, mrecycler, page);
             }
 
             @Override
@@ -180,7 +180,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         if (getIntent().getStringExtra("dianpuid") != null) {
             dianpuid = getIntent().getStringExtra("dianpuid");
             dianpuPresenter.queryDianpuMainInfo(dianpuid, refreshLayout);
-            dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
+            dianpuPresenter.queryProductListByKeyword(keywordType,"3",dianpuid, sortway, "", refresh, refreshLayout, progress, mrecycler, page);
         }
     }
 
@@ -264,7 +264,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
             public void onRefresh(RefreshLayout refreshLayoutt) {
                 x = 1;
                 page = 1;
-                dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
+                dianpuPresenter.queryProductListByKeyword(keywordType,"3",dianpuid, sortway, "", refresh, refreshLayout, progress, mrecycler, page);
                 dianpuPresenter.queryDianpuMainInfo(dianpuid, refreshLayout);
             }
         });
@@ -273,7 +273,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
             public void onLoadMore(RefreshLayout refreshLayoutt) {
                 x = 2;
                 page++;
-                dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
+                dianpuPresenter.queryProductListByKeyword(keywordType,"3",dianpuid, sortway, "", refresh, refreshLayout, progress, mrecycler, page);
             }
         });
 
@@ -499,7 +499,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
         keywordType = keyword;
         x = 1;
         page = 1;
-        dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
+        dianpuPresenter.queryProductListByKeyword(keywordType,"3",dianpuid, sortway, "", refresh, refreshLayout, progress, mrecycler, page);
     }
 
 //    private void startChat() {
@@ -525,7 +525,7 @@ public class NewDianpuActivity extends BaseActivity implements DianpuTypesAdapte
     @Override
     public void doRequestData() {
         progress.setVisibility(View.GONE);
-        dianpuPresenter.queryProductListByKeyword(dianpuid, sortway, keywordType, refresh, refreshLayout, progress, mrecycler, page);
+        dianpuPresenter.queryProductListByKeyword(keywordType,"3",dianpuid, sortway, "", refresh, refreshLayout, progress, mrecycler, page);
     }
 
 }

@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ShareZeroBuyUtil {
+public class ShareZeroBuyUtil{
     /** qq分享接口 */
     private Tencent mTencent;
     /** qq回调事件 **/
@@ -101,7 +101,7 @@ public class ShareZeroBuyUtil {
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (StringUtil.isWeixinAvilible(activity)) {// 判断是否安装微信客户端
+                        if (StringUtil.isQQAvilible(activity)) {// 判断是否安装qq客户端
                             DialogSingleUtil.show(activity);
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -123,10 +123,14 @@ public class ShareZeroBuyUtil {
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DialogSingleUtil.show(activity);
-                        share(activity,1,"");
-                        ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(wenan);
+                        if (StringUtil.isWeixinAvilible(activity)) {// 判断是否安装微信客户端
+                            DialogSingleUtil.show(activity);
+                            share(activity,1,"");
+                            ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                            cm.setText(wenan);
+                        } else {
+                            StringUtil.showToast(activity, "请安装微信客户端");
+                        }
                         popupWindow.dismiss();
                     }
                 });

@@ -90,14 +90,19 @@ public class DianpuPresenter implements Presenter {
     }
 
 
-    public void queryProductListByKeyword(String dianpuid, String sortWay, String keyword, final SmartRefreshLayout refresh, final SmartRefreshLayout refreshLayout, final CommonLoadingView progress, final RecyclerView mrecycler, int page) {
+    public void queryProductListByKeyword(String producttype,String plevel, String dianpuid, String sortWay, String keyword, final SmartRefreshLayout refresh, final SmartRefreshLayout refreshLayout, final CommonLoadingView progress, final RecyclerView mrecycler, int page) {
         refresh.setNoMoreData(false);
         Map<String, String> maps = new HashMap<String, String>();
+//        maps.put("dianpu", dianpuid);
+//        maps.put("keyword", keyword);
+        maps.put("sortWay", sortWay);
+//        maps.put("page", page + "");
         maps.put("dianpu", dianpuid);
         maps.put("keyword", keyword);
-        maps.put("sortWay", sortWay);
+        maps.put("producttype",producttype);
+        maps.put("plevel",plevel);
         maps.put("page", page + "");
-        RetrofitClient.getInstance(mContext).createBaseApi().queryProductListByKeyword(
+        RetrofitClient.getInstance(mContext).createBaseApi().queryZiyingListByKeyword(
                 maps, new BaseObserver<String>(mContext) {
                     @Override
                     public void onNext(String s) {
