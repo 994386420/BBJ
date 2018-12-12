@@ -38,6 +38,7 @@ import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
 import com.bbk.util.UpdataDialog;
+import com.logg.Logg;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,6 +120,7 @@ public class UpdateVersionService implements ResultEvent {
             switch (requestCode){
                 case 1:
                     try {
+                        Logg.json("更新信息"+dataJo+"========="+appVersion.getApkUrl());
                     int versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
                     if (appVersion.getApkCode() > versionCode) {
 //                        showUpdateVersionDialog();
@@ -377,7 +379,7 @@ public class UpdateVersionService implements ResultEvent {
             //判断是否是AndroidN以及更高的版本
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", new File(mFile, "bbj" + ".apk"));
+                Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", new File(mFile, "bbj" + ".apk"));
                 intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
             } else {
                 intent.setDataAndType(uri2, "application/vnd.android.package-archive");

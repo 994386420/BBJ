@@ -1443,9 +1443,6 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                     public void onSuccess() {
                         DialogSingleUtil.dismiss(0);
                         StringUtil.showToast(getActivity(), "登录成功 ");
-                        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        String date = sDateFormat.format(new Date());
-                        SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "taobao", "taobaodata", date);
                         getShoppingCartUrlByDomain("taobao");
 
                     }
@@ -1572,49 +1569,6 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         maps.put("client", "android");
         maps.put("content", content);
         dataFlow.requestData(1, "newService/synchroShoppingCart", maps, this, false);
-//        RetrofitClient.getInstance(getActivity()).createBaseApi().synchroShoppingCart(
-//                maps, new BaseObserver<String>(getActivity()) {
-//                    @Override
-//                    public void onNext(String s) {
-//                        try {
-//                            final JSONObject jsonObject = new JSONObject(s);
-//                            if (jsonObject.optString("status").equals("1")) {
-////                                Logg.json("=========>>>>",jsonObject);
-//                                taoBaoCarBeans = JSON.parseArray(jsonObject.optString("content"), TaoBaoCarBean.class);
-//                                if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
-//                                    recyclerView.setVisibility(View.VISIBLE);
-//                                    progress.setVisibility(View.GONE);
-//                                    TaoBaoAdapter taoBaoAdapter = new TaoBaoAdapter(getActivity(), taoBaoCarBeans);
-//                                    recyclerView.setAdapter(taoBaoAdapter);
-//                                } else {
-//                                    recyclerView.setVisibility(View.GONE);
-//                                    progress.setVisibility(View.VISIBLE);
-//                                    progress.loadSuccess(true);
-//                                }
-//                            } else {
-//                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    protected void hideDialog() {
-//                        DialogSingleUtil.dismiss(0);
-//                    }
-//
-//                    @Override
-//                    protected void showDialog() {
-//                        DialogSingleUtil.show(getActivity());
-//                    }
-//
-//                    @Override
-//                    public void onError(ExceptionHandle.ResponeThrowable e) {
-//                        DialogSingleUtil.dismiss(0);
-//                        StringUtil.showToast(getActivity(), e.message);
-//                    }
-//                });
     }
 
 //    /**
@@ -1834,10 +1788,12 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
         public void showSource(String html) {
             System.out.println("====>html=" + html);
             content = html;
-            if (curPosition == 2) {
-                synchroShoppingCart(content, "jd");
-            } else {
-                synchroShoppingCart(content, "taobao");
+            if (content != null && !content.equals("<head></head><body></body>")) {
+                if (curPosition == 2) {
+                    synchroShoppingCart(content, "jd");
+                } else {
+                    synchroShoppingCart(content, "taobao");
+                }
             }
         }
 

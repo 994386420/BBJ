@@ -75,10 +75,10 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
     private int carNum;
     private String domain;
     private   int num;
-    private String name;
+    private String name,postion;
     private String list;
 
-    public TaoBaoListAdapter(Context context, List<TaobaoCarListBean> taobaoCarListBeansn,int carNum,String domain,String name,String list) {
+    public TaoBaoListAdapter(Context context, List<TaobaoCarListBean> taobaoCarListBeansn,int carNum,String domain,String name,String list,String postion) {
 //        this.list = list;
         this.context = context;
         this.taobaoCarListBeans = taobaoCarListBeansn;
@@ -86,6 +86,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
         this.domain =domain;
         this.name = name;
         this.list = list;
+        this.postion = postion;
     }
 
     @Override
@@ -295,9 +296,9 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                     }
                                 }
                             } else {
-                                Logg.json("jd====>>>京东"+NewConstants.mJdMessageMap.get(list));
-                                if (NewConstants.mJdMessageMap.get(list) != null) {
-                                    if (NewConstants.mJdMessageMap.get(list).equals(list)) {
+                                Logg.json("jd====>>>京东"+NewConstants.mJdMessageMap.get(postion+""));
+                                if (NewConstants.mJdMessageMap.get(postion+"") != null) {
+                                    if (NewConstants.mJdMessageMap.get(postion+"").equals(postion+"")) {
                                         if (NewConstants.mJdzycsMessageMap.size() == 2) {
                                             if (NewConstants.mJdzycsMessageMap.get("1").equals("1") && NewConstants.mJdzycsMessageMap.get("0").equals("0")) {
                                                 num = carNum - NewConstants.mJdMessageMap.size() - NewConstants.jdzyNum - NewConstants.jdcsNum;
@@ -342,7 +343,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                         viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
                                     }
                                 } else {
-                                    Logg.json("jd====>>>京东1"+NewConstants.mJdMessageMap.get(list)+"==="+NewConstants.mJdzycsMessageMap.size());
+                                    Logg.json("jd====>>>京东1"+NewConstants.mJdMessageMap.get(postion+"")+"==="+NewConstants.mJdzycsMessageMap.size());
 //                                    viewHolder.tvClickStatu.setText("结算可得佣金");
 //                                    viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
 //                                    viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
@@ -379,9 +380,9 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                                 }
                                             }
                                         }else {
-                                            Logg.json("jd====>>>京东2"+NewConstants.mJdMessageMap.get(list));
+                                            Logg.json("jd====>>>京东2"+NewConstants.mJdMessageMap.get(postion+""));
 
-                                            if (NewConstants.mJdMessageMap.get(list) == null) {
+                                            if (NewConstants.mJdMessageMap.get(postion+"") == null) {
                                                 viewHolder.tvClickStatu.setText("点击跳转得佣金");
                                                 viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle12);
                                                 viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.white));
@@ -518,8 +519,8 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                         String result = sharedPreferences.getString("action", null);
                         if (result != null && result.length() > 0) {
                             NewConstants.mMessageMap = NewConstants.getJsonObject(result);
-                            Logg.json("TAOBAO===>>>",NewConstants.mMessageMap.size()+"===="+carNum);
-                            if (NewConstants.mMessageMap.get(taobaoCarListBean.getRowkey()) != null) {
+                            Logg.json(NewConstants.mMessageMap+"===="+carNum);
+                            if (NewConstants.mMessageMap.get(postion+"") != null) {
                                 NewConstants.carnum = carNum - NewConstants.mMessageMap.size();
                                 if (CarFrament.tvWeiTz !=null) {
                                     CarFrament.tvWeiTz.setText("未跳转的" + NewConstants.carnum + "条不可得佣金");
@@ -527,7 +528,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                                 if (CarActivity.tvWeiTz != null) {
                                     CarActivity.tvWeiTz.setText("未跳转的" +NewConstants.carnum + "条不可得佣金");
                                 }
-                                if (NewConstants.mMessageMap.get(taobaoCarListBean.getRowkey()).equals(taobaoCarListBean.getRowkey())) {
+                                if (NewConstants.mMessageMap.get(postion+"").equals(postion+"")) {
                                     viewHolder.tvClickStatu.setText("结算可得佣金");
                                     viewHolder.tvClickStatu.setBackgroundResource(R.drawable.bg_cicyle13);
                                     viewHolder.tvClickStatu.setTextColor(context.getResources().getColor(R.color.tuiguang_color11));
@@ -585,14 +586,14 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                             }else {
                                 sharedPreferences = context.getSharedPreferences("MyActionJd", MODE_PRIVATE);
                                 editor = sharedPreferences.edit();
-                                NewConstants.mJdMessageMap.put(list, list);
+                                NewConstants.mJdMessageMap.put(postion+"",postion+"");
                                 editor.putString("action", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mJdMessageMap).toString());
                                 editor.commit();
                             }
                         }else {
                             sharedPreferences = context.getSharedPreferences("MyActionTaobao", MODE_PRIVATE);
                             editor = sharedPreferences.edit();
-                            NewConstants.mMessageMap.put(taobaoCarListBean.getRowkey(),taobaoCarListBean.getRowkey());
+                            NewConstants.mMessageMap.put(postion+"",postion+"");
                             editor.putString("action", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mMessageMap).toString());
                             editor.commit();
                         }

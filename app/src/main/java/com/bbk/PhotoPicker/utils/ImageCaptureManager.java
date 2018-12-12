@@ -70,7 +70,7 @@ public class ImageCaptureManager {
           takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
           takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
           //清单文件配置com.bbk.activity.fileProvider，否则要报错
-          String authority = BuildConfig.APPLICATION_ID + ".provider";
+          String authority = BuildConfig.APPLICATION_ID + ".fileProvider";
           photoFile = FileProvider.getUriForFile(mContext, authority, file);
         } else {
           photoFile = Uri.fromFile(file);

@@ -127,7 +127,7 @@ public class TaoBaoAdapter extends RecyclerView.Adapter {
             taobaoCarListBeans = JSON.parseArray(taoBaoCarBean.getList(), TaobaoCarListBean.class);
 //            }
 //            Logg.e(taobaoCarListBeans.size()+"===============>>>");
-            viewHolder.recyclerviewTaobaoItem.setAdapter(new TaoBaoListAdapter(context, taobaoCarListBeans, allMun, domain, taoBaoCarBean.getName(), taoBaoCarBean.getList()));
+            viewHolder.recyclerviewTaobaoItem.setAdapter(new TaoBaoListAdapter(context, taobaoCarListBeans, allMun, domain, taoBaoCarBean.getName(), taoBaoCarBean.getList(),taoBaoCarBean.getDianpuurl()));
         } catch (Exception e) {
             e.printStackTrace();
         }
