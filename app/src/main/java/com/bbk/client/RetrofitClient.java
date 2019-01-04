@@ -10,6 +10,9 @@ import com.bbk.activity.MyApplication;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.SystemUtil;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import org.reactivestreams.Subscription;
+
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +20,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -779,5 +783,4 @@ public class RetrofitClient {
         }
         return retrofit.create(service);
     }
-
 }

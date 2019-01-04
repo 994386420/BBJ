@@ -32,10 +32,12 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -314,13 +316,26 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && mPbWebview.canGoBack()){
-            mPbWebview.goBack();
-            return true;
-        }else{
-            finish();
+        AudioManager am = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                am.adjustStreamVolume(AudioManager.STREAM_DTMF, AudioManager.ADJUST_RAISE, 0);
+                break;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                am.adjustStreamVolume(AudioManager.STREAM_DTMF, AudioManager.ADJUST_RAISE, 0);
+                break;
+            default:
+                if(keyCode == KeyEvent.KEYCODE_BACK && mPbWebview.canGoBack()){
+                    mPbWebview.goBack();
+                    return true;
+                }else{
+                    finish();
+                }
+                break;
         }
-        return true;
+        return super.onKeyDown(keyCode, event);
     }
 
 

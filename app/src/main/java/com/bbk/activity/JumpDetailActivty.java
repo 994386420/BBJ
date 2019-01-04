@@ -780,6 +780,7 @@ public class JumpDetailActivty extends BaseActivity {
             ImageView imageView = updataDialog.findViewById(R.id.img_app);
             AdaptionSizeTextView adaptionSizeTextViewQuan = updataDialog.findViewById(R.id.quan);
             AdaptionSizeTextView adaptionSizeTextViewQuan1 = updataDialog.findViewById(R.id.quan1);
+            AdaptionSizeTextView adaptionSizeTextViewTsMessage = updataDialog.findViewById(R.id.ts_message);
             if (domain.equals("jd")) {
                 jumpdomain = "jumpjd";
             } else if (domain.equals("tmall")) {
@@ -789,16 +790,20 @@ public class JumpDetailActivty extends BaseActivity {
             }
             if (quans != null && !quans.equals("") && !quans.equals("0")) {
                 adaptionSizeTextViewQuan1.setVisibility(View.VISIBLE);
+                adaptionSizeTextViewTsMessage.setVisibility(View.VISIBLE);
                 adaptionSizeTextViewQuan1.setText("领券减" + quans + "元");
             } else {
                 adaptionSizeTextViewQuan1.setVisibility(View.INVISIBLE);
+                adaptionSizeTextViewTsMessage.setVisibility(View.INVISIBLE);
             }
 
             if (zuan != null && !zuan.equals("") && !zuan.equals("0")) {
                 adaptionSizeTextViewQuan.setVisibility(View.VISIBLE);
+                adaptionSizeTextViewTsMessage.setVisibility(View.VISIBLE);
                 adaptionSizeTextViewQuan.setText("本商品赚" + zuan.replace("预估", "") + "元");
             } else {
                 adaptionSizeTextViewQuan.setVisibility(View.INVISIBLE);
+                adaptionSizeTextViewTsMessage.setVisibility(View.INVISIBLE);
             }
             int drawS = getResources().getIdentifier(jumpdomain, "mipmap", getPackageName());
             imageView.setImageResource(drawS);

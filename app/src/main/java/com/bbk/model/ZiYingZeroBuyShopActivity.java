@@ -72,7 +72,6 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
     @BindView(R.id.fl_types)
     FrameLayout flTypes;
     private int page = 1, x = 1;
-    private String type = "0";
     ZeroBuyAdapter zeroBuyAdapter;
     ZeroBuyForOlderAdapter zeroBuyForOlderAdapter;
     private ChaoZhiPresenter chaoZhiPresenter = new ChaoZhiPresenter(this);
@@ -98,6 +97,7 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
         tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(XTabLayout.Tab tab) {
+                mPtrframe.setNoMoreData(false);
                 page = 1;
                 x = 1;
                 position = tab.getPosition();
@@ -122,6 +122,19 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
         mrecycler.setHasFixedSize(true);
         progress.setLoadingHandler(this);
         imgTishi.setVisibility(View.VISIBLE);
+        if (getIntent().getStringExtra("isOlder") != null){
+            XTabLayout.Tab tabAt;
+            switch (getIntent().getStringExtra("isOlder")){
+                case "yes":
+                    tabAt = tablayout.getTabAt(1);
+                    tabAt.select();
+                    break;
+                case "no":
+                    tabAt = tablayout.getTabAt(0);
+                    tabAt.select();
+                    break;
+            }
+        }
     }
 
     private void getType() {

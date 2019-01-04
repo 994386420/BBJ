@@ -393,17 +393,12 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 							DialogSingleUtil.show(UserAccountActivity.this,"退出中...");
 							MobclickAgent.onProfileSignOff();
 							StatService.onEvent(UserAccountActivity.this, "loginout", "退出登录:个人设置页面");
-//							Tencent mTencent = Tencent.createInstance(Constants.QQ_APP_ID, UserAccountActivity.this);
-//							mTencent.logout(getApplicationContext());
-							//退出腾讯云通讯
-//							TencentLoginUtil.Loginout(getApplicationContext());
 							KSConfig.closeDialog(UserAccountActivity.this);
 							//清除用户信息
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "userInfor");
 							SharedPreferencesUtil.cleanShareData(getApplicationContext(), "isFirstClick");
 							Intent intent = new Intent();
 							setResult(2, intent);
-//							DataFragment.login_remind.setVisibility(View.VISIBLE);
 							PushAgent mPushAgent = PushAgent.getInstance(UserAccountActivity.this);
 							mPushAgent.deleteAlias(userID, "BBJ", new UTrack.ICallBack(){
 								@Override
@@ -412,18 +407,18 @@ public class UserAccountActivity extends BaseActivity implements OnClickListener
 								}
 							});
 
-							XGPushManager.unregisterPush(UserAccountActivity.this,new XGIOperateCallback() {
-
-								@Override
-								public void onSuccess(Object data, int arg1) {
-									Log.e("TPush", "注销成功，设备token为：" + data);
-								}
-
-								@Override
-								public void onFail(Object data, int errCode, String msg) {
-									Log.e("TPush", "注销失败，错误码：" + errCode + ",错误信息：" + msg);
-								}
-							});
+//							XGPushManager.unregisterPush(UserAccountActivity.this,new XGIOperateCallback() {
+//
+//								@Override
+//								public void onSuccess(Object data, int arg1) {
+//									Log.e("TPush", "注销成功，设备token为：" + data);
+//								}
+//
+//								@Override
+//								public void onFail(Object data, int errCode, String msg) {
+//									Log.e("TPush", "注销失败，错误码：" + errCode + ",错误信息：" + msg);
+//								}
+//							});
 							DialogSingleUtil.dismiss(0);
 							finish();
 						}

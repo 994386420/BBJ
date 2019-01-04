@@ -22,10 +22,12 @@ public class MyCoinAdapter extends BaseAdapter{
 	private List<Map<String, Object>> list;
 	private Context context;
 	public static int mPosition;
+	private String yaoqingma;
 	
-	public MyCoinAdapter(List<Map<String, Object>> list,Context context){
+	public MyCoinAdapter(List<Map<String, Object>> list,String yaoqingma,Context context){
 		this.list = list;
 		this.context =context;
+		this.yaoqingma = yaoqingma;
 	}
 	
 	@Override
@@ -83,12 +85,22 @@ public class MyCoinAdapter extends BaseAdapter{
 		if (position == 8) {
 			vh.mhenggong.setVisibility(View.GONE);
 		}
-		if (position == 3){
-			vh.mgo.setVisibility(View.GONE);
-			vh.mbiankuang.setVisibility(View.GONE);
+		if (yaoqingma != null && !yaoqingma.equals("")) {
+			if (position == 3) {
+				vh.mgo.setVisibility(View.GONE);
+				vh.mbiankuang.setVisibility(View.GONE);
+			} else {
+				vh.mgo.setVisibility(View.VISIBLE);
+				vh.mbiankuang.setVisibility(View.VISIBLE);
+			}
 		}else {
-			vh.mgo.setVisibility(View.VISIBLE);
-			vh.mbiankuang.setVisibility(View.VISIBLE);
+			if (position == 2) {
+				vh.mgo.setVisibility(View.GONE);
+				vh.mbiankuang.setVisibility(View.GONE);
+			} else {
+				vh.mgo.setVisibility(View.VISIBLE);
+				vh.mbiankuang.setVisibility(View.VISIBLE);
+			}
 		}
 		if (position == 0){
 			vh.mgo.setText("邀请好友");

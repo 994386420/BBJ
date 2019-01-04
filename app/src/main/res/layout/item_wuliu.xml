@@ -31,11 +31,9 @@
             android:layout_marginTop="3dp"/>
     </LinearLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:orientation="vertical">
         <!--时间轴的竖线-->
         <View
@@ -44,12 +42,18 @@
             android:layout_height="28dp"
             android:background="#eeeeee" />
         <ImageView
+            android:id="@+id/dot_iv_new"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:visibility="gone"
+            android:background="@mipmap/order_08"/>
+        <ImageView
             android:id="@+id/dot_iv"
             android:layout_width="5dp"
             android:layout_height="5dp"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
-            android:background="@mipmap/order_08"/>
+            android:background="@mipmap/dot_black"/>
 
         <!--时间轴的竖线-->
         <View

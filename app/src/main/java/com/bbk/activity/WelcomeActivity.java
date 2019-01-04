@@ -154,48 +154,27 @@ public class WelcomeActivity extends BaseActivity2{
 			token = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 		}
 
-//		 = TelephonyMgr.getDeviceId();
 		//启动后台服务
 		Intent service=new Intent(this, FloatingWindowService.class);
 		startService(service);
 		SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "token", token);
 		init();
 		NewConstants.yingdaoFlag = "0";
-		// 开启logcat输出，方便debug，发布时请关闭
-		// XGPushConfig.enableDebug(this, true);
-		// 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(),
-		// XGIOperateCallback)带callback版本
-		// 如果需要绑定账号，请使用registerPush(getApplicationContext(),account)版本
-		// 具体可参考详细的开发指南
-		// 传递的参数为ApplicationContext
-
 		Context context = getApplicationContext();
-		XGPushConfig.setAccessId(context, 2100196420);
-		XGPushConfig.setAccessKey(context, "AUTV25N58F3Z");
-		String userId=SharedPreferencesUtil.getSharedData(context, "userInfor", "userID");
+//		XGPushConfig.setAccessId(context, 2100196420);
+//		XGPushConfig.setAccessKey(context, "AUTV25N58F3Z");
 
-		XGPushManager.registerPush(context, userId, new XGIOperateCallback() {
 
-			@Override
-			public void onSuccess(Object data, int arg1) {
-				Log.e("TPush===", "注册成功，设备token为：" + data);
-			}
-
-			@Override
-			public void onFail(Object data, int errCode, String msg) {
-				Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-			}
-		});
-		XGPushManager.registerPush(this, new XGIOperateCallback() {
-			@Override
-			public void onSuccess(Object data, int flag) {
-				Log.e("TPush", "注册成功，设备token为：" + data);
-			}
-			@Override
-			public void onFail(Object data, int errCode, String msg) {
-				Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-			}
-		});
+//		XGPushManager.registerPush(this, new XGIOperateCallback() {
+//			@Override
+//			public void onSuccess(Object data, int flag) {
+//				Log.e("TPush", "注册成功，设备token为：" + data);
+//			}
+//			@Override
+//			public void onFail(Object data, int errCode, String msg) {
+//				Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+//			}
+//		});
 		//外部应用打开APP传递参数
 		Intent intent = getIntent();
 		String scheme = intent.getScheme();
@@ -393,7 +372,6 @@ public class WelcomeActivity extends BaseActivity2{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-//		XGPushManager.unregisterPush(this);
 	}
 
 
@@ -420,88 +398,9 @@ public class WelcomeActivity extends BaseActivity2{
 	 * 初始化分类数据和热度搜索词
 	 */
 	private void loadData() {
-		TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-		String token = TelephonyMgr.getDeviceId();
-//		queryIndexSeeByToken(token);
-//		queryIndexTuijianByToken(token);
 		loadhotKeyword("2");
 	}
-//	private void queryIndexSeeByToken(String token) {
-//		Map<String, String> params = new HashMap<String, String>();
-//		params.put("token", token);
-//		params.put("page", "1");
-//		RetrofitClient.getInstance(this).createBaseApi().queryIndexSeeByToken(
-//				params, new BaseObserver<String>(this) {
-//					@Override
-//					public void onNext(String s) {
-//						try {
-//							JSONObject jsonObject = new JSONObject(s);
-//							if (jsonObject.optString("status").equals("1")) {
-//								String content = jsonObject.optString("content");
-//								if (content!= null && !"".equals(content)) {
-//									SharedPreferencesUtil.putSharedData(
-//											getApplicationContext(), "homedata",
-//											"seelike", content);
-//								}
-//							}
-//						} catch (JSONException e) {
-//							e.printStackTrace();
-//						}
-//					}
-//					@Override
-//					protected void hideDialog() {
-//
-//					}
-//
-//					@Override
-//					protected void showDialog() {
-//
-//					}
-//
-//					@Override
-//					public void onError(ExceptionHandle.ResponeThrowable e) {
-//						StringUtil.showToast(WelcomeActivity.this, e.message);
-//					}
-//				});
-//	}
-//	private void queryIndexTuijianByToken(String token) {
-//		Map<String, String> params = new HashMap<String, String>();
-//		params.put("token", token);
-//		RetrofitClient.getInstance(this).createBaseApi().queryIndexTuijianByToken(
-//				params, new BaseObserver<String>(this) {
-//					@Override
-//					public void onNext(String s) {
-//						try {
-//							JSONObject jsonObject = new JSONObject(s);
-//							if (jsonObject.optString("status").equals("1")) {
-//								String content = jsonObject.optString("content");
-//								if (content!= null && !"".equals(content)) {
-//										SharedPreferencesUtil.putSharedData(
-//												getApplicationContext(), "homedata",
-//												"hometuijian", content);
-//								}
-//							}
-//						} catch (JSONException e) {
-//							e.printStackTrace();
-//						}
-//					}
-//					@Override
-//					protected void hideDialog() {
-//
-//					}
-//
-//					@Override
-//					protected void showDialog() {
-//
-//					}
-//
-//					@Override
-//					public void onError(ExceptionHandle.ResponeThrowable e) {
-//						StringUtil.showToast(WelcomeActivity.this, e.message);
-//					}
-//				});
-//
-//	}
+
 	/**
 	 * 搜索关键词加载
 	 * @param type
@@ -552,45 +451,4 @@ public class WelcomeActivity extends BaseActivity2{
 			});
 		}
 	}
-
-	private void checkExsistProduct(String text) {
-		Map<String, String> paramsMap = new HashMap<String, String>();
-		paramsMap.put("url", text);
-		RetrofitClient.getInstance(this).createBaseApi().checkExsistProduct(
-				paramsMap, new BaseObserver<String>(this) {
-					@Override
-					public void onNext(String s) {
-						try {
-							JSONObject jsonObject = new JSONObject(s);
-							if (jsonObject.optString("status").equals("1")) {
-								String content = jsonObject.optString("content");
-								JSONObject json = new JSONObject(content);
-//						Log.i("网络请求返回数据===dataflow：",jsonObject+"------------------------");
-								if (!json.optString("rowkey").isEmpty()) {
-									SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "1");
-									SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "object", content);
-								}
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-					@Override
-					protected void hideDialog() {
-
-					}
-
-					@Override
-					protected void showDialog() {
-
-					}
-
-					@Override
-					public void onError(ExceptionHandle.ResponeThrowable e) {
-						StringUtil.showToast(WelcomeActivity.this, e.message);
-					}
-				});
-
-	}
-
 }

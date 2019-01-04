@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:textColor="#f0390f"
             android:textSize="20dp"
-            android:text="标题已复制，分享可直接粘贴哦！"/>
+            android:text="@string/copy_remaind"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

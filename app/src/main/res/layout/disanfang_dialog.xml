@@ -74,10 +74,21 @@
         android:gravity="center"
         android:textSize="12dp"
         android:paddingTop="5dp"
-        android:paddingBottom="30dp"
+        android:paddingBottom="10dp"
         android:textColor="@color/color_line_top"
         android:text="既省钱，又赚钱"/>
 
+        <com.bbk.view.AdaptionSizeTextView
+            android:id="@+id/ts_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="14dp"
+            android:visibility="invisible"
+            android:textColor="@color/tuiguang_color4"
+            android:text="付款5-10分钟后可在个人中心查看收益"/>
     </LinearLayout>
 
     <LinearLayout

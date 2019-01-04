@@ -18,19 +18,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/item_img"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginLeft="10dp"
-            android:scaleType="centerCrop" />
+
+        <RelativeLayout
+            android:id="@+id/ll_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/item_img"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="10dp"
+                android:scaleType="centerCrop" />
+            <ImageView
+                android:id="@+id/item_img1"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="10dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                android:background="@mipmap/qiangwanle"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@id/item_img" >
+            android:layout_toRightOf="@id/ll_img" >
 
             <LinearLayout
                 android:layout_width="match_parent"

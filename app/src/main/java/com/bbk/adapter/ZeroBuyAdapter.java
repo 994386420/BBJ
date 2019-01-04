@@ -114,6 +114,8 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
         TextView tvZerobuy;
         @BindView(R.id.tv_salebi)
         TextView tvSalebi;
+        @BindView(R.id.item_img1)
+        ImageView itemImg1;
 
         public ViewHolder(View mView) {
             super(mView);
@@ -165,10 +167,12 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
             }
             if (zeroBuyBean.getBili() != null) {
                 if (zeroBuyBean.getBili().equals("100")) {
+                    viewHolder.itemImg1.setVisibility(View.VISIBLE);
                     viewHolder.tvZerobuy.setBackgroundResource(R.drawable.bg_czg6);
                     viewHolder.tvZerobuy.setText("抢完了");
                     viewHolder.tvZerobuy.setTextColor(context.getResources().getColor(R.color.tuiguang_color4));
                 } else {
+                    viewHolder.itemImg1.setVisibility(View.GONE);
                     viewHolder.tvZerobuy.setTextColor(context.getResources().getColor(R.color.white));
                     viewHolder.tvZerobuy.setBackgroundResource(R.drawable.bg_czg5);
                     viewHolder.tvZerobuy.setText("0元购");

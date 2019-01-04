@@ -104,7 +104,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     private String usejinbi = "0",useyongjin = "0";
     List<GoodsBean> goodsBeans;
     ConfirmOrderAdapter confirmOrderAdapter;
-    private double totalShopPrice = 0.00;
+    private double totalShopPrice = 0.00,yongjinDiscountPrice = 0.00;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +113,6 @@ public class ConfirmOrderActivity extends BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         ButterKnife.bind(this);
         View topView = findViewById(R.id.topbar_layout);
-        // 实现沉浸式状态栏
         ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
         mPayModel = BaseService.getPayModel(this);
         initVeiw();
@@ -124,6 +123,10 @@ public class ConfirmOrderActivity extends BaseActivity {
         if (ids != null && nums != null && guiges != null) {
             queryMyOrderToPay();
         }
+
+        /**
+         * 金币抵扣选择监听
+         */
         ckDikou.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -131,6 +134,15 @@ public class ConfirmOrderActivity extends BaseActivity {
                     usejinbi = "1";
                     if (cofirmOrderBean.getTotal() != null) {
                         if (ckYongjin.isChecked()) {
+                            //此时可抵扣佣金数
+                            yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney());
+                            if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
+                                tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
+                            }else {
+                                tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
+                            }
+
+
                             totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney())-Double.parseDouble(cofirmOrderBean.getYongjin());
                             if (totalShopPrice < 0) {
                                 totalPrice.setText("0.00");
@@ -139,6 +151,14 @@ public class ConfirmOrderActivity extends BaseActivity {
                             totalPrice.setText(doubleToString(totalShopPrice));
                             return;
                         }
+                        //此时可抵扣佣金数
+                        yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney());
+                        if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
+                            tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
+                        }else {
+                            tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
+                        }
+
                         totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney());
                         if (totalShopPrice < 0) {
                             totalPrice.setText("0.00");
@@ -150,6 +170,13 @@ public class ConfirmOrderActivity extends BaseActivity {
                     usejinbi = "0";
                     if (cofirmOrderBean.getTotal() != null) {
                         if (ckYongjin.isChecked()) {
+                            //此时可抵扣佣金数
+                            yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal());
+                            if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
+                                tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
+                            }else {
+                                tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
+                            }
                             totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal())-Double.parseDouble(cofirmOrderBean.getYongjin());
                             if (totalShopPrice < 0) {
                                 totalPrice.setText("0.00");
@@ -158,6 +185,15 @@ public class ConfirmOrderActivity extends BaseActivity {
                             totalPrice.setText(doubleToString(totalShopPrice));
                             return;
                         }
+
+                        //此时可抵扣佣金数
+                        yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal());
+                        if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
+                            tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
+                        }else {
+                            tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
+                        }
+
                         totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal());
                         if (totalShopPrice < 0) {
                             totalPrice.setText("0.00");
@@ -168,6 +204,10 @@ public class ConfirmOrderActivity extends BaseActivity {
                 }
             }
         });
+
+        /**
+         * 佣金抵扣选择监听
+         */
         ckYongjin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -183,6 +223,13 @@ public class ConfirmOrderActivity extends BaseActivity {
                             totalPrice.setText(doubleToString(totalShopPrice));
                             return;
                         }
+
+//                        if (Double.parseDouble(cofirmOrderBean.getYongjin()) > Double.parseDouble(cofirmOrderBean.getTotal())){
+//                            ckDikou.setClickable(false);
+//                        }else {
+//                            ckDikou.setClickable(true);
+//                        }
+
                         totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getYongjin());
                         if (totalShopPrice < 0) {
                             totalPrice.setText("0.00");
@@ -192,6 +239,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                     }
                 } else {
                     useyongjin = "0";
+//                    ckDikou.setClickable(true);
                     if (cofirmOrderBean.getTotal() != null) {
                         if (ckDikou.isChecked()) {
                             totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney());
@@ -218,6 +266,9 @@ public class ConfirmOrderActivity extends BaseActivity {
         titleText.setText("确认订单");
     }
 
+    /**
+     * 查询支付的订单
+     */
     private void queryMyOrderToPay() {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
@@ -273,7 +324,11 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     } else {
                                         llYongjin.setVisibility(View.VISIBLE);
                                         llYongjin.setBackgroundColor(getResources().getColor(R.color.white));
-                                        tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) * 1000 + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
+                                        if (Double.parseDouble(cofirmOrderBean.getYongjin()) > total){
+                                            tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + total + "元");
+                                        }else {
+                                            tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
+                                        }
                                     }
                                 }
                                 if (cofirmOrderBean.getTag() != null && !cofirmOrderBean.getTag().equals("")) {
@@ -352,15 +407,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                         }
                     }
                     liuyans = list.toString().replace("[", "").replace("]", "").replace(",", "|").replace(" ", "").replace("0", " ");
-//                    Logg.json(liuyans);
-//                    if (cofirmOrderBean != null) {
-//                        if (cofirmOrderBean.getTotaljin() != null)
-//                            if (cofirmOrderBean.getTotaljin().equals("0")) {
                     getOrderInfo();
-//                            }else {
-//                                getOrderInfoByJinbi();
-//                            }
-//                    }
+
                 } else {
                     StringUtil.showToast(this, "请选择收货地址");
                 }
@@ -412,7 +460,6 @@ public class ConfirmOrderActivity extends BaseActivity {
                                         public void onResult(PayReq req) {
                                             mReq = req;
                                             msgApi = WXAPIFactory.createWXAPI(ConfirmOrderActivity.this, Constants.APP_ID);
-//                            msgApi.registerApp(Constants.APP_ID);
                                             msgApi.sendReq(mReq);
                                             DialogSingleUtil.dismiss(0);
                                             finish();

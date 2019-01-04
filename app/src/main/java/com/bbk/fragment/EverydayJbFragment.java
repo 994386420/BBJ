@@ -2,6 +2,7 @@ package com.bbk.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.bbk.activity.MyApplication;
+import com.bbk.activity.MyCoinActivity;
 import com.bbk.activity.R;
 import com.bbk.adapter.CoinWithdrawListAdapter;
 import com.bbk.dialog.AlertDialog;
@@ -127,7 +129,8 @@ public class EverydayJbFragment extends Fragment implements ResultEvent {
                 .setPositiveButton("领更多鲸币", new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent intent = new Intent(getActivity(), MyCoinActivity.class);
+                        startActivity(intent);
                     }
                 }).setPositiveButtonColor("#ff7d41")
                 .show();

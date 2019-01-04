@@ -12,6 +12,15 @@ public class CheckBean {
     private String url;
     private String message1;
     private String message2;
+    private String findyouhuikey;
+
+    public String getFindyouhuikey() {
+        return findyouhuikey;
+    }
+
+    public void setFindyouhuikey(String findyouhuikey) {
+        this.findyouhuikey = findyouhuikey;
+    }
 
     public String getMessage1() {
         return message1;

@@ -5,6 +5,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
+
+import com.bbk.resource.NewConstants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,20 +68,5 @@ public class Tools {
         File storageDir = context.getExternalCacheDir();
         File image = new File(storageDir, imageFileName);
         return image;
-    }
-
-    //判断是否安装了微信
-    public static boolean isWeixinAvilible(Context context) {
-        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equals("com.tencent.mm")) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

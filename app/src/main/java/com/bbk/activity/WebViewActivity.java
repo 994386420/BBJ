@@ -16,6 +16,7 @@ import com.bbk.model.DianpuSearchActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.SoftHideKeyBoardUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.X5WebView;
 import com.logg.Logg;
@@ -23,9 +24,11 @@ import com.tamic.jswebview.view.NumberProgressBar;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebViewClient;
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,8 +38,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +47,7 @@ import com.tencent.smtt.sdk.WebView;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.bbk.util.StringUtil.getStatusBarHeight;
 
 public class WebViewActivity extends BaseActivity implements OnClickListener, ResultEvent{
 
@@ -67,16 +69,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 	private String reurl = "";
 	private String reurl1 = "";
 	private boolean ishis = true;
-//	private int rowkeynum = 0;
 	public static Activity instance = null;
-//	private AlibcShowParams alibcShowParams;//页面打开方式，默认，H5，Native
-//	private Map<String, String> exParams;//yhhpass参数
    private ProgressBar progressbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.web_view_activity);
+		SoftHideKeyBoardUtil.assistActivity(this,getStatusBarHeight(WebViewActivity.this));
 		dataFlow = new DataFlow4(this);
 		instance = this;
 		getWindow().setBackgroundDrawable(null);
@@ -90,36 +90,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			hrowkey = getIntent().getStringExtra("rowkey");
 		}
 		url = getIntent().getStringExtra("url");
-//		domain = getIntent().getStringExtra("domain");
-//		if (domain != null && url != null){
-//			if (domain.equals("jd")){
-//				// 通过url呼京东主站
-//                // url 通过url呼京东主站的地址
-//				// mKeplerAttachParameter 存储第三方传入参数
-//                // mOpenAppAction  呼京东主站回调
-//				KeplerApiManager.getWebViewService().openAppWebViewPage(this,
-//						url,
-//						mKeplerAttachParameter,
-//						mOpenAppAction);
-//			}else if (domain.equals("tmall") || domain.equals("taobao")){
-//				if(StringUtil.checkPackage(this,"com.taobao.taobao")) {
-//					showUrl();
-//				}else {
-//					StringUtil.showToast(WebViewActivity.this,"未安装淘宝app");
-//				}
-//			}
-//		}
-		// url = "https://pages.tmall.com/wow/rais/act/tmall-choice";
 		if (url != null){
 		if (url.contains("item.jd.com")) {// 京东
 			url = url.replace("item.jd.com", "item.m.jd.com/product");
-		} /*
-			 * else if(url.contains("product.suning.com")) {// 苏宁 String id =
-			 * url.replace("http://product.suning.com/", "").replace(".html",
-			 * ""); if(id.contains("-")) { id = id.substring(0,
-			 * id.indexOf("-")); } url = "http://m.suning.com/product/" + id +
-			 * ".html"; }
-			 */ else if (url.contains("item.yhd.com")) {// 一号店
+		}else if (url.contains("item.yhd.com")) {// 一号店
 			url = url.replace("item.yhd.com", "item.m.yhd.com");
 		} else if (url.contains("www.newegg.cn")) {// 新蛋
 			url = url.replace("www.newegg.cn", "m.newegg.cn");
@@ -131,7 +105,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		}
 		}
 		initView();
-
 		progressbar = new android.widget.ProgressBar(this, null,
 				android.R.attr.progressBarStyleHorizontal);
 		// 设置进度条的大小
@@ -142,10 +115,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 				Gravity.LEFT, ClipDrawable.HORIZONTAL);
 		progressbar.setProgressDrawable(d);
 		progressbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-
-		// progressbar.setProgressDrawable(context.getResources().getDrawable(
-		// R.drawable.barbgimg));
-
 		webViewLayout.addView(progressbar);
 		WebChromeClient wvcc = new WebChromeClient() {
 			@Override
@@ -199,17 +168,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		// 设置setWebChromeClient对象
 		webViewLayout.setWebChromeClient(wvcc);
 	}
-//	/**
-//	 * 打开指定链接
-//	 */
-//	public void showUrl() {
-//		String text = url;
-//		if(TextUtils.isEmpty(text)) {
-//			StringUtil.showToast(this, "URL为空");
-//			return;
-//		}
-//		AlibcTrade.show(this, new AlibcPage(text), alibcShowParams, null, exParams , new DemoTradeCallback());
-//	}
+
 	private void queryCompareByUrl() {
 		String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> params = new HashMap<>();
@@ -283,6 +242,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				if (!isintent) {
+					Logg.json("===>>>"+url);
 					if (url.contains("bbjtech://")) {
 						String [] stringsIntent =  url.replace("bbjtech://?","").replace("@@","=").split("=");
 						switch (stringsIntent [1]){
@@ -332,24 +292,20 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 
 						if (url.contains("goJump")){
 							String [] strings = url.split("=");
-//							Log.i("===",strings[2]);
 							Intent intent = new Intent(WebViewActivity.this, IntentActivity.class);
 							intent.putExtra("groupRowKey", strings[2]);
 							intent.putExtra("domain", domain);
 							startActivity(intent);
 						}
+						Logg.json(url);
 						//跳转到邀请好友页面
 						if (url.contains("yaoqing")){
-//						Intent intent = new Intent(WebViewActivity.this, CoinGoGoGoActivity.class);
-//						intent.putExtra("type", "1");
 						Intent intent = new Intent(WebViewActivity.this,YaoqingFriendsActivity.class);
 						startActivity(intent);
 					    }
 						Uri uri = Uri.parse(url);
 						try {
 							JSONObject jsonObject = new JSONObject();
-							// String host = uri.getHost();
-							// String dataString = intent.getDataString();
 							String eventId = uri.getQueryParameter("eventId");
 							jsonObject.put("eventId", eventId);
 							if (uri.getQueryParameter("htmlUrl") != null) {
@@ -531,16 +487,46 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		}
 	}
 
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		// TODO Auto-generated method stub
+//		if(keyCode == KeyEvent.KEYCODE_BACK && webViewLayout.canGoBack()){
+//			webViewLayout.goBack();
+//			return true;
+//		}else{
+//			finish();
+//		}
+//		return true;
+//	}
+
+	/**
+	 * 添加音量键监听防止点击退出
+	 * @param keyCode
+	 * @param event
+	 * @return
+	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if(keyCode == KeyEvent.KEYCODE_BACK && webViewLayout.canGoBack()){
-			webViewLayout.goBack();
-			return true;
-		}else{
-			finish();
+		AudioManager am = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_VOLUME_UP:
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+				am.adjustStreamVolume(AudioManager.STREAM_DTMF, AudioManager.ADJUST_RAISE, 0);
+				break;
+			case KeyEvent.KEYCODE_VOLUME_DOWN:
+				am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+				am.adjustStreamVolume(AudioManager.STREAM_DTMF, AudioManager.ADJUST_RAISE, 0);
+				break;
+			default:
+				if(keyCode == KeyEvent.KEYCODE_BACK && webViewLayout.canGoBack()){
+					webViewLayout.goBack();
+					return true;
+				}else{
+					finish();
+				}
+				break;
 		}
-		return true;
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override

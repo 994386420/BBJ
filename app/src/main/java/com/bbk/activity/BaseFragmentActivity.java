@@ -192,11 +192,8 @@ public class BaseFragmentActivity extends FragmentActivity {
 							if (jsonObject.optString("status").equals("1")) {
 								String content = jsonObject.optString("content");
 								JSONObject json = new JSONObject(content);
-//						Log.i("checkprice：",jsonObject+"------------------------");
-//								if (!json.optString("rowkey").isEmpty()) {
 								SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "clipchange", "1");
 								SharedPreferencesUtil.putSharedData(getApplicationContext(), "clipchange", "object", content);
-//								}
 								Logg.json(content);
 								checkBean = JSON.parseObject(content,CheckBean.class);
 								if (checkBean.getHasCps() != null) {
@@ -217,7 +214,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 									mHandler.postDelayed(new Runnable() {
 										@Override
 										public void run() {
-												showMessageDialog(BaseFragmentActivity.this, checkBean.getUrl());
+												showMessageDialog(BaseFragmentActivity.this,checkBean.getFindyouhuikey(), checkBean.getUrl());
 												;//耗时操作
 										}
 									}, 2000);
@@ -330,6 +327,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 			});
 			TextView tvZuan = updataDialog.findViewById(R.id.tv_zuan);
 			TextView tvQuan = updataDialog.findViewById(R.id.tv_update);
+			tvQuan.setVisibility(View.VISIBLE);
 			tvQuan.setTextColor(context.getResources().getColor(R.color.tuiguang_color2));
 			tvZuan.setText(checkBean.getMessage1());
 			tvQuan.setText(checkBean.getMessage2());
@@ -391,13 +389,32 @@ public class BaseFragmentActivity extends FragmentActivity {
 	 *
 	 * @param context
 	 */
-	public void showMessageDialog(final Context context, final String url) {
+	public void showMessageDialog(final Context context, final String findyouhuikey, final String url) {
 		if(updataDialog == null || !updataDialog.isShowing()) {
 			//初始化弹窗 布局 点击事件的id
 			updataDialog = new UpdataDialog(context, R.layout.check_nomessage_dialog_layout,
 					new int[]{R.id.tv_update_gengxin});
 			updataDialog.show();
 			updataDialog.setCanceledOnTouchOutside(true);
+			TextView tvYouhui = updataDialog.findViewById(R.id.tv_youhui);
+			if (findyouhuikey != null && !findyouhuikey.equals("")) {
+				tvYouhui.setVisibility(View.VISIBLE);
+				tvYouhui.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(context, SearchMainActivity.class);
+						intent.putExtra("keyword", findyouhuikey);
+						SharedPreferencesUtil.putSharedData(context, "shaixuan", "shaixuan", "yes");
+						NewConstants.clickpositionFenlei = 5200;
+						NewConstants.clickpositionDianpu = 5200;
+						NewConstants.clickpositionMall = 5200;
+						updataDialog.dismiss();
+						context.startActivity(intent);
+					}
+				});
+			}else {
+				tvYouhui.setVisibility(View.GONE);
+			}
 			TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
 			tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -418,22 +435,15 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 
 
-	public  void jumpThirdApp(String url){
-//			DialogSingleUtil.show(context);
+	public  void jumpThirdApp(String url){;
 		alibcShowParams = new AlibcShowParams(OpenType.Native, false);
 		alibcShowParams.setClientType("taobao_scheme");
 		exParams = new HashMap<>();
 		exParams.put("isv_code", "appisvcode");
 		exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
-//			if (domain != null) {
 		if (url.contains("tmall") || url.contains("taobao")) {
 			showUrl(url);
 		} else if (url.contains("jd")) {
-//			KeplerApiManager.getWebViewService().openAppWebViewPage(BaseFragmentActivity.this,
-//					url,
-//					mKeplerAttachParameter,
-//					mOpenAppAction);
-//					DialogSingleUtil.dismiss(100);
 			try {
 				KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter,BaseFragmentActivity.this, mOpenAppAction, 1500);
 			} catch (KeplerBufferOverflowException e) {
@@ -446,13 +456,8 @@ public class BaseFragmentActivity extends FragmentActivity {
 			if (url != null) {
 				intent.putExtra("url", url);
 			}
-//					if (rowkey != null) {
-//						intent.putExtra("rowkey", rowkey);
-//					}
 			startActivity(intent);
-//					DialogSingleUtil.dismiss(50);
 		}
-//			}
 	}
 
 	/**
@@ -465,7 +470,6 @@ public class BaseFragmentActivity extends FragmentActivity {
 			return;
 		}
 		AlibcTrade.show(BaseFragmentActivity.this, new AlibcPage(text), alibcShowParams, null, exParams, new DemoTradeCallback());
-//		DialogSingleUtil.dismiss(100);
 	}
 
 	private static KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
@@ -479,38 +483,4 @@ public class BaseFragmentActivity extends FragmentActivity {
 			}
 		}
 	};
-//	OpenAppAction mOpenAppAction = new OpenAppAction() {
-//		@Override
-//		public void onStatus(final int status, final String url) {
-//			Intent intent;
-//			if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
-////				DialogSingleUtil.show(context);
-//			} else {
-////				DialogSingleUtil.dismiss(0);
-//			}
-//			if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-//				StringUtil.showToast(BaseFragmentActivity.this, "未安装京东");
-//				intent = new Intent(BaseFragmentActivity.this, WebViewActivity.class);
-//				if (url != null) {
-//					intent.putExtra("url", url);
-//				}
-////				if (rowkey != null) {
-////					intent.putExtra("rowkey", rowkey);
-////				}
-//				startActivity(intent);
-//				//未安装京东
-//			} else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
-//				StringUtil.showToast(BaseFragmentActivity.this, "不在白名单");
-//				//不在白名单
-//			} else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
-//				StringUtil.showToast(BaseFragmentActivity.this, "协议错误");
-//				//协议错误
-//			} else if (status == OpenAppAction.OpenAppAction_result_APP) {
-//				//呼京东成功
-//			} else if (status == OpenAppAction.OpenAppAction_result_NetError) {
-//				StringUtil.showToast(BaseFragmentActivity.this, "网络异常");
-//				//网络异常
-//			}
-//		}
-//	};
 }

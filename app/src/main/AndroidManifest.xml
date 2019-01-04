@@ -321,13 +321,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MyCoinActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UserRegistActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".CoinGoGoGoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".QueryHistoryActivity"
             android:screenOrientation="portrait" />
@@ -685,49 +687,49 @@
             <!--android:name="com.bbk.chat.ui.GroupProfileActivity"-->
             <!--android:launchMode="singleTask" />-->
         <!--萝卜丝bytedesk.com代码 开始-->
-        <activity
-            android:name="com.bytedesk.ui.activity.ChatActivity"
-            android:screenOrientation="portrait"/>
+        <!--<activity-->
+            <!--android:name="com.bytedesk.ui.activity.ChatActivity"-->
+            <!--android:screenOrientation="portrait"/>-->
 
-        <service android:name="com.bytedesk.paho.android.service.MqttService"/>
-        <!--./萝卜丝bytedesk.com代码 结束-->
-        <!-- 消息收发service -->
-        <service
-            android:name="com.tencent.qalsdk.service.QalService"
-            android:exported="false"
-            android:process=":QALSERVICE" />
-        <service
-            android:name="com.tencent.qalsdk.service.QalAssistService"
-            android:exported="false"
-            android:process=":QALSERVICE" />
-        <!-- 离线消息广播接收器 -->
-        <receiver
-            android:name="com.tencent.qalsdk.QALBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.tencent.qalsdk.broadcast.qal" />
-            </intent-filter>
-        </receiver>
-        <!-- 系统消息广播接收器 -->
-        <receiver
-            android:name="com.tencent.qalsdk.core.NetConnInfoCenter"
-            android:process=":QALSERVICE">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.TIME_SET" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.tencent.qalsdk.service.TASK_REMOVED" />
-            </intent-filter>
-        </receiver>
+        <!--<service android:name="com.bytedesk.paho.android.service.MqttService"/>-->
+        <!--&lt;!&ndash;./萝卜丝bytedesk.com代码 结束&ndash;&gt;-->
+        <!--&lt;!&ndash; 消息收发service &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="com.tencent.qalsdk.service.QalService"-->
+            <!--android:exported="false"-->
+            <!--android:process=":QALSERVICE" />-->
+        <!--<service-->
+            <!--android:name="com.tencent.qalsdk.service.QalAssistService"-->
+            <!--android:exported="false"-->
+            <!--android:process=":QALSERVICE" />-->
+        <!--&lt;!&ndash; 离线消息广播接收器 &ndash;&gt;-->
+        <!--<receiver-->
+            <!--android:name="com.tencent.qalsdk.QALBroadcastReceiver"-->
+            <!--android:exported="false">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.tencent.qalsdk.broadcast.qal" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--&lt;!&ndash; 系统消息广播接收器 &ndash;&gt;-->
+        <!--<receiver-->
+            <!--android:name="com.tencent.qalsdk.core.NetConnInfoCenter"-->
+            <!--android:process=":QALSERVICE">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.TIME_SET" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.TIMEZONE_CHANGED" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.tencent.qalsdk.service.TASK_REMOVED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <!--&lt;!&ndash; mipush &ndash;&gt;-->
         <!--<service-->
@@ -911,56 +913,56 @@
             </intent-filter>
         </receiver>
         <!-- 【必须】 信鸽service -->
-        <service
-            android:name="com.tencent.android.tpush.service.XGPushServiceV3"
-            android:exported="true"
-            android:persistent="true"
-            android:process=":xg_service_v3" />
+        <!--<service-->
+            <!--android:name="com.tencent.android.tpush.service.XGPushServiceV3"-->
+            <!--android:exported="true"-->
+            <!--android:persistent="true"-->
+            <!--android:process=":xg_service_v3" />-->
 
         <!-- 【必须】 增强xg_service存活率 -->
-        <service
-            android:name="com.tencent.android.tpush.service.XGDaemonService"
-            android:process=":xg_service_v3" />
+        <!--<service-->
+            <!--android:name="com.tencent.android.tpush.service.XGDaemonService"-->
+            <!--android:process=":xg_service_v3" />-->
 
         <!-- 【可选】APP实现的Receiver，用于接收消息透传和操作结果的回调，请根据需要添加 -->
         <!-- YOUR_PACKAGE_PATH.CustomPushReceiver需要改为自己的Receiver： -->
-        <receiver
-            android:name="com.bbk.receiver.MessageReceiver"
-            android:exported="true">
-            <intent-filter>
+        <!--<receiver-->
+            <!--android:name="com.bbk.receiver.MessageReceiver"-->
+            <!--android:exported="true">-->
+            <!--<intent-filter>-->
 
-                <!-- 接收消息透传 -->
-                <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
-                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
-                <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
-            </intent-filter>
-        </receiver>
+                <!--&lt;!&ndash; 接收消息透传 &ndash;&gt;-->
+                <!--<action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />-->
+                <!--&lt;!&ndash; 监听注册、反注册、设置/删除标签、通知被点击等处理结果 &ndash;&gt;-->
+                <!--<action android:name="com.tencent.android.tpush.action.FEEDBACK" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <!-- 【必须】 【注意】authorities修改为 包名.AUTH_XGPUSH, 如demo的包名为：com.qq.xgdemo -->
-        <provider
-            android:name="com.tencent.android.tpush.XGPushProvider"
-            android:authorities="com.bbk.activity.AUTH_XGPUSH"
-            android:exported="true" />
+        <!--<provider-->
+            <!--android:name="com.tencent.android.tpush.XGPushProvider"-->
+            <!--android:authorities="com.bbk.activity.AUTH_XGPUSH"-->
+            <!--android:exported="true" />-->
 
         <!-- 【必须】 【注意】authorities修改为 包名.TPUSH_PROVIDER, 如demo的包名为：com.qq.xgdemo -->
-        <provider
-            android:name="com.tencent.android.tpush.SettingsContentProvider"
-            android:authorities="com.bbk.activity.TPUSH_PROVIDER"
-            android:exported="false" />
+        <!--<provider-->
+            <!--android:name="com.tencent.android.tpush.SettingsContentProvider"-->
+            <!--android:authorities="com.bbk.activity.TPUSH_PROVIDER"-->
+            <!--android:exported="false" />-->
 
         <!-- 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V3, 如demo的包名为：com.qq.xgdemo -->
-        <provider
-            android:name="com.tencent.mid.api.MidProvider"
-            android:authorities="com.bbk.activity.TENCENT.MID.V3"
-            android:exported="true" />
+        <!--<provider-->
+            <!--android:name="com.tencent.mid.api.MidProvider"-->
+            <!--android:authorities="com.bbk.activity.TENCENT.MID.V3"-->
+            <!--android:exported="true" />-->
         <!-- 【必须】 请修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
-        <meta-data
-            android:name="XG_V2_ACCESS_ID"
-            android:value="2100196420" />
+        <!--<meta-data-->
+            <!--android:name="XG_V2_ACCESS_ID"-->
+            <!--android:value="2100196420" />-->
         <!-- 【必须】 请修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
-        <meta-data
-            android:name="XG_V2_ACCESS_KEY"
-            android:value="AUTV25N58F3Z" />
+        <!--<meta-data-->
+            <!--android:name="XG_V2_ACCESS_KEY"-->
+            <!--android:value="AUTV25N58F3Z" />-->
 
         <!-- 微博登录 -->
         <activity

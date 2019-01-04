@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -320,7 +321,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      * 快商通客服
      */
     private void doInit() {
-        KSConfig.init(getActivity(), "lRUfZ3l/ufCyYcN71F+kh1TMTJuOOgLW", new KsInitListener(){
+        KSConfig.init(getActivity(), "lRUfZ3l/ufCyYcN71F+kh1TMTJuOOgLW", new KsInitListener() {
             @Override
             public void onSuccess() {
             }
@@ -330,6 +331,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             }
         });
     }
+
     /**
      * 刷新事件
      */
@@ -520,7 +522,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                         break;
                                 }
                             }
-                        }else {
+                        } else {
                             llSub.setVisibility(View.GONE);
                         }
                     } catch (JSONException e) {
@@ -571,12 +573,20 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private void queryAppIndexInfo() {
         Map<String, String> maps = new HashMap<String, String>();
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        int versionCode = 0;
+        try {
+            versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         maps.put("userid", userID);
+        maps.put("versioncode", versionCode + "");
         RetrofitClient.getInstance(getActivity()).createBaseApi().queryAppIndexInfo(
                 maps, new BaseObserver<String>(getActivity()) {
                     @Override
                     public void onNext(String s) {
                         try {
+                            recyclerView.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.VISIBLE);
                             refreshLayout.setVisibility(View.VISIBLE);
                             JSONObject jsonObject = new JSONObject(s);
@@ -584,6 +594,8 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 JSONObject object = jsonObject.optJSONObject("content");
                                 SharedPreferencesUtil.putSharedData(getActivity(), "homeContent", "homeContent", object.toString());
                                 LoadHomeData(object);
+                            } else {
+                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -611,9 +623,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 // //获得当前activity的名字
                                 if (!text.contains("标题:")) {
                                     SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-                                    if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
-                                            text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") || text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")
-                                            || text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") || text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
+                                    if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") ||
+                                            text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
+                                            text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") ||
+                                            text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")||
+                                            text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") ||
+                                            text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
                                         String cliptext = SharedPreferencesUtil.getSharedData(getActivity(), "copyText", "copyText");
                                         if (!text.equals(cliptext)) {
                                             checkExsistProduct(text);
@@ -964,22 +979,23 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                         isshowzhezhao = false;
                     }
                 }
-            } else {
-                if (object.has("guanggao")) {
-                    if (isshowzhezhao) {
-                        final JSONObject jo = object.optJSONObject("guanggao");
-                        new HomeAlertDialog(getActivity()).builder()
-                                .setimag(jo.optString("img"))
-                                .setonclick(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View arg0) {
-                                        EventIdIntentUtil.EventIdIntent(getActivity(), jo);
-                                    }
-                                }).show();
-                        isshowzhezhao = false;
-                    }
+            }
+
+            if (object.has("guanggao")) {
+                if (isshowzhezhao) {
+                    final JSONObject jo = object.optJSONObject("guanggao");
+                    new HomeAlertDialog(getActivity()).builder()
+                            .setimag(jo.optString("img"))
+                            .setonclick(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View arg0) {
+                                    EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                                }
+                            }).show();
+                    isshowzhezhao = false;
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1108,7 +1124,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                         mHandler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                showMessageDialog(getActivity(), checkBean.getUrl());
+                                                showMessageDialog(getActivity(), checkBean.getFindyouhuikey(), checkBean.getUrl());
                                                 ;//耗时操作
                                             }
                                         }, 2000);
@@ -1176,6 +1192,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             tvQuan.setTextColor(context.getResources().getColor(R.color.tuiguang_color2));
             tvZuan.setText(checkBean.getMessage1());
             tvQuan.setText(checkBean.getMessage2());
+            tvQuan.setVisibility(View.VISIBLE);
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
             tv_update_gengxin.setText("查看优惠");
             LinearLayout llYouhui = updataDialog.findViewById(R.id.ll_youhui);
@@ -1237,13 +1254,32 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      *
      * @param context
      */
-    public void showMessageDialog(final Context context, final String url) {
+    public void showMessageDialog(final Context context, final String findyouhuikey, final String url) {
         if (updataDialog == null || !updataDialog.isShowing()) {
             //初始化弹窗 布局 点击事件的id
             updataDialog = new UpdataDialog(context, R.layout.check_nomessage_dialog_layout,
                     new int[]{R.id.tv_update_gengxin});
             updataDialog.show();
             updataDialog.setCanceledOnTouchOutside(true);
+            TextView tvYouhui = updataDialog.findViewById(R.id.tv_youhui);
+            if (findyouhuikey != null && !findyouhuikey.equals("")) {
+                tvYouhui.setVisibility(View.VISIBLE);
+                tvYouhui.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, SearchMainActivity.class);
+                        intent.putExtra("keyword", findyouhuikey);
+                        SharedPreferencesUtil.putSharedData(context, "shaixuan", "shaixuan", "yes");
+                        NewConstants.clickpositionFenlei = 5200;
+                        NewConstants.clickpositionDianpu = 5200;
+                        NewConstants.clickpositionMall = 5200;
+                        updataDialog.dismiss();
+                        context.startActivity(intent);
+                    }
+                });
+            } else {
+                tvYouhui.setVisibility(View.GONE);
+            }
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
             tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1328,7 +1364,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      * @param view
      */
     @OnClick({R.id.msearch, R.id.msort, R.id.type_image, R.id.ll_shouqi, R.id.image_puba, R.id.to_top_btn, R.id.ll_miaosha, R.id.ll_pingtuan, R.id.ll_czuan, R.id.ll_zerobuy, R.id.ll_zerobuy_new,
-            R.id.ll_everyday_goodsshop, R.id.ll_gooddianpu,R.id.tv_sub1, R.id.tv_sub2, R.id.tv_sub3, R.id.tv_sub4})
+            R.id.ll_everyday_goodsshop, R.id.ll_gooddianpu, R.id.tv_sub1, R.id.tv_sub2, R.id.tv_sub3, R.id.tv_sub4})
     public void onViewClicked(View view) {
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Intent intent;
@@ -1416,7 +1452,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
                 tvSub4.setBackgroundResource(R.drawable.bg_sub);
                 tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword+""+tvSub1.getText().toString());
+                initDataCzg(keyword + "" + tvSub1.getText().toString());
                 break;
             case R.id.tv_sub2:
                 DialogHomeUtil.show(getActivity());
@@ -1432,7 +1468,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
                 tvSub4.setBackgroundResource(R.drawable.bg_sub);
                 tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword+""+tvSub2.getText().toString());
+                initDataCzg(keyword + "" + tvSub2.getText().toString());
                 break;
             case R.id.tv_sub3:
                 DialogHomeUtil.show(getActivity());
@@ -1448,7 +1484,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.color_line_top));
                 tvSub4.setBackgroundResource(R.drawable.bg_sub);
                 tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword+""+tvSub3.getText().toString());
+                initDataCzg(keyword + "" + tvSub3.getText().toString());
                 break;
             case R.id.tv_sub4:
                 DialogHomeUtil.show(getActivity());
@@ -1464,7 +1500,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
                 tvSub1.setBackgroundResource(R.drawable.bg_sub);
                 tvSub1.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword+""+tvSub4.getText().toString());
+                initDataCzg(keyword + "" + tvSub4.getText().toString());
                 break;
         }
     }
@@ -1484,6 +1520,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 
     /**
      * 登录回调
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -1574,6 +1611,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 
     /**
      * 客服
+     *
      * @param context
      */
     public static void consultService(final Context context) {

@@ -1,88 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topbar_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/topbar_layout"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/title_layout"/>
+    <include layout="@layout/title_layout" />
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/__picker_common_primary">
+
+        <com.bbk.view.MyScrollViewNew
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:background="@drawable/btn_seclecter"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp" >
-        <TextView
-            android:id="@+id/tv_dh"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/tuiguang_color3"
-            android:textSize="13dp"
-            android:text="运单号" />
+            android:background="@color/white"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_kefu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/shop_color1"
-            android:textSize="13dp"
-            android:visibility="gone"
-            android:text="物流客服" />
-
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tv_gs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/tuiguang_color3"
-        android:textSize="13dp"
-        android:text="承运公司"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="15dp"
-        android:paddingTop="5dp"/>
-    <TextView
-        android:id="@+id/tv_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/tuiguang_color3"
-        android:textSize="13dp"
-        android:text="承运电话"
-        android:visibility="gone"
-        android:paddingBottom="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="@color/__picker_common_primary"/>
-
-            <!--物流追踪的列表-->
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/listview_wuliu"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:background="#ffffff"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_seclecter"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_dh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="运单号"
+                    android:textColor="@color/tuiguang_color3"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/tv_kefu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="物流客服"
+                    android:textColor="@color/shop_color1"
+                    android:textSize="13dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_gs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="承运公司"
+                android:textColor="@color/tuiguang_color3"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="承运电话"
+                android:textColor="@color/tuiguang_color3"
+                android:textSize="13dp"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/__picker_common_primary" />
+
+
+            <FrameLayout
+                android:id="@+id/fl_wuliu"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!--物流追踪的列表-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/listview_wuliu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="#ffffff" />
+                <com.bbk.view.CommonLoadingView
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/__picker_common_primary"/>
+            <RelativeLayout
+                android:id="@+id/rl_guess_like"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+                <LinearLayout
+                    android:layout_toRightOf="@+id/tv_detail1"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:background="@mipmap/dot_black"/>
+                    <View
+                        android:layout_width="35dp"
+                        android:layout_height="1.5dp"
+                        android:background="@color/__picker_common_primary"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_toLeftOf="@+id/tv_detail1"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:layout_marginRight="8dp"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:layout_width="35dp"
+                        android:layout_height="1.5dp"
+                        android:background="@color/__picker_common_primary"/>
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:background="@mipmap/dot_black"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_detail1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/shop_color1"
+                    android:text="猜你喜欢"
+                    android:layout_centerInParent="true"
+                    android:textSize="14dp"/>
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/__picker_common_primary"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/guess_like_list"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"/>
+                android:background="@color/__picker_common_primary"
+                android:divider="@null"/>
         </LinearLayout>
+        </com.bbk.view.MyScrollViewNew>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

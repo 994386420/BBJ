@@ -25,14 +25,6 @@ public class GoodsInfo {
         this.id = id;
     }
 
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-
     public boolean isChoosed() {
         return isChoosed;
     }
@@ -41,22 +33,6 @@ public class GoodsInfo {
         isChoosed = choosed;
     }
 
-//    public String getImageUrl() {
-//        return imageUrl;
-//    }
-//
-//    public void setImageUrl(String imageUrl) {
-//        this.imageUrl = imageUrl;
-//    }
-//
-//    public String getDesc() {
-//        return desc;
-//    }
-//
-//    public void setDesc(String desc) {
-//        this.desc = desc;
-//    }
-
     public double getPrice() {
         return price;
     }
@@ -64,25 +40,6 @@ public class GoodsInfo {
     public void setPrice(double price) {
         this.price = price;
     }
-
-//    public double getPrime_price() {
-//        return prime_price;
-//    }
-//
-//    public void setPrime_price(double prime_price) {
-//        this.prime_price = prime_price;
-//    }
-
-
-
-//    public int getGoodsImg() {
-//        return goodsImg;
-//    }
-//
-//    public void setGoodsImg(int goodsImg) {
-//        this.goodsImg = goodsImg;
-//    }
-
 
     public String getImgurl() {
         return imgurl;

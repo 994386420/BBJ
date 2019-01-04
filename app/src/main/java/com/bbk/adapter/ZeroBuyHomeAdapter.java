@@ -98,6 +98,8 @@ public class ZeroBuyHomeAdapter extends RecyclerView.Adapter {
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_img)
         ImageView itemImg;
+        @BindView(R.id.item_img1)
+        ImageView itemImg1;
         @BindView(R.id.item_title)
         TextView itemTitle;
         @BindView(R.id.quan)
@@ -151,6 +153,7 @@ public class ZeroBuyHomeAdapter extends RecyclerView.Adapter {
                     .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.itemImg);
             if (miaoShaBean.getBili().equals("100")){
+                viewHolder.itemImg1.setVisibility(View.VISIBLE);
                 viewHolder.resultItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -158,6 +161,7 @@ public class ZeroBuyHomeAdapter extends RecyclerView.Adapter {
                     }
                 });
             }else {
+                viewHolder.itemImg1.setVisibility(View.GONE);
                 viewHolder.resultItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

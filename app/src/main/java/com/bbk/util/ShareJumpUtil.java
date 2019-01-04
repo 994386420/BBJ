@@ -128,18 +128,27 @@ public class ShareJumpUtil {
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        share2weixin(1,imageView);
-                        ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(wenan);
+                        if (StringUtil.isWeixinAvilible(activity)) {// 判断是否安装微信客户端
+                            DialogSingleUtil.show(activity);
+                            share2weixin(1,imageView);
+                            ClipboardManager cm = (ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                            cm.setText(wenan);
+                        } else {
+                            StringUtil.showToast(activity, "请安装微信客户端");
+                        }
                         popupWindow.dismiss();
-//                        StringUtil.showToast(activity,"文案复制成功");
                     }
                 });
         dialogView.findViewById(R.id.share_weixin1).setOnClickListener(
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        share2weixin(0,imageView);
+                        if (StringUtil.isWeixinAvilible(activity)) {// 判断是否安装微信客户端
+                            DialogSingleUtil.show(activity);
+                            share2weixin(0,imageView);
+                        } else {
+                            StringUtil.showToast(activity, "请安装微信客户端");
+                        }
                         popupWindow.dismiss();
                     }
                 });
@@ -249,6 +258,7 @@ public class ShareJumpUtil {
                 req.message = msg;
                 req.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
                 wxApi.sendReq(req);
+                DialogSingleUtil.dismiss(0);
                 loadData();
             }
         }

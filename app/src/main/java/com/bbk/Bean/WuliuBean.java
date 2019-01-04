@@ -9,6 +9,7 @@ public class WuliuBean {
     private String company;
     private String list;
     private String expressNum;
+    private String likelist;
 
     public String getPhone() {
         return phone;
@@ -40,6 +41,14 @@ public class WuliuBean {
 
     public void setExpressNum(String expressNum) {
         this.expressNum = expressNum;
+    }
+
+    public String getLikelist() {
+        return likelist;
+    }
+
+    public void setLikelist(String likelist) {
+        this.likelist = likelist;
     }
 
     @Override

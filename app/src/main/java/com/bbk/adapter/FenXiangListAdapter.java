@@ -168,19 +168,19 @@ public class FenXiangListAdapter extends RecyclerView.Adapter implements View.On
                     }
                 });
             }
-            viewHolder.llShare.post(new Runnable() {
-                //                    @Override
-                public void run() {
-                    //引导页只显示一次
-                    String isFirstResultUse = SharedPreferencesUtil.getSharedData(context, "isfenxiang", "isfenxiang");
-                    if (TextUtils.isEmpty(isFirstResultUse)) {
-                        isFirstResultUse = "yes";
-                    }
-                    if (isFirstResultUse.equals("yes") && position == 0) {
-                        showGuideView(viewHolder.llShare);
-                    }
-                }
-            });
+//            viewHolder.llShare.post(new Runnable() {
+//                //                    @Override
+//                public void run() {
+//                    //引导页只显示一次
+//                    String isFirstResultUse = SharedPreferencesUtil.getSharedData(context, "isfenxiang", "isfenxiang");
+//                    if (TextUtils.isEmpty(isFirstResultUse)) {
+//                        isFirstResultUse = "yes";
+//                    }
+//                    if (isFirstResultUse.equals("yes") && position == 0) {
+//                        showGuideView(viewHolder.llShare);
+//                    }
+//                }
+//            });
         } catch (Exception e) {
             e.printStackTrace();
         }

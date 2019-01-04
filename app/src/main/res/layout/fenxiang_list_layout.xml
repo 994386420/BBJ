@@ -52,6 +52,7 @@
             android:gravity="center"
             android:paddingTop="1dp"
             android:paddingBottom="1dp"
+            android:visibility="gone"
             android:background="@drawable/bg_cicyle5">
             <ImageView
                 android:layout_width="14dp"

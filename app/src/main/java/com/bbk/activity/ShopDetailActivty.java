@@ -993,7 +993,7 @@ public class ShopDetailActivty extends BaseActivity {
                                     picturePostion0ne = i + 1;
                                 }
                                 isChooseColor = true;
-                                if (!typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
+                                if (typesChooseLevelOneBeans.get(curposition).getPrice() != null && !typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
                                     tvMoney.setText("¥ " + typesChooseLevelOneBeans.get(curposition).getPrice());
                                 }else {
                                     tvMoney.setText("¥ " + shopDetailBean.getPrice());

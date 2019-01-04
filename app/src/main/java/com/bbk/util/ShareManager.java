@@ -6,24 +6,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
-import android.view.View;
-
 import com.bbk.activity.MyApplication;
 import com.bbk.client.BaseApiService;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import com.bbk.resource.Constants;
+import com.bbk.wxpay.Util;
+import com.logg.Logg;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXImageObject;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +31,8 @@ import java.util.Map;
  * 金刚圈分享类
  */
 public class ShareManager {
-
+    /** 微信分享接口 */
+    private IWXAPI wxApi;
     private Context mContext;
     private List<File> files = new ArrayList<>();
 
@@ -52,27 +51,33 @@ public class ShareManager {
                             File file = Tools.saveImageToSdCard(mContext, stringList.get(i));
                             files.add(file);
                         }
-                        Intent intent = new Intent();
-                        ComponentName comp;
+//                        Intent intent = new Intent();
+//                        ComponentName comp;
+//                        if (flag == 0) {
+//                            comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
+//                        } else {
+//                            comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
+//                            intent.putExtra("Kdescription", Kdescription);
+//                        }
+//                        intent.setComponent(comp);
+//                        intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+//                        intent.setType("image/*");
+//                        ArrayList<Uri> imageUris = new ArrayList<Uri>();
+//                        if (files != null){
+//                            for (File f : files) {
+//                                if(f != null) {
+//                                    imageUris.add(Uri.fromFile(f));
+//                                }
+//                            }
+//                        }
+//                        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+//                        mContext.startActivity(intent);
+                        File file = Tools.saveImageToSdCard(mContext, stringList.get(0));
                         if (flag == 0) {
-                            comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
+                            imageShare(file,false);
                         } else {
-                            comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
-                            intent.putExtra("Kdescription", Kdescription);
+                            imageShare(file,true);
                         }
-                        intent.setComponent(comp);
-                        intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                        intent.setType("image/*");
-                        ArrayList<Uri> imageUris = new ArrayList<Uri>();
-                        if (files != null){
-                            for (File f : files) {
-                                if(f != null) {
-                                    imageUris.add(Uri.fromFile(f));
-                                }
-                            }
-                        }
-                        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
-                        mContext.startActivity(intent);
                         DialogSingleUtil.dismiss(0);
                         SharedPreferencesUtil.putSharedData(mContext, "isShare", "isShare", "1");
                         loadData();
@@ -84,17 +89,7 @@ public class ShareManager {
             }
     }
 
-    /*
-    * 将布局转化为bitmap
-这里传入的是你要截的布局的根View
-    * */
-    public static Bitmap getBitmapByView(View headerView) {
-        int h = headerView.getHeight();
-        Bitmap bitmap = Bitmap.createBitmap(headerView.getWidth(), h, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        headerView.draw(canvas);
-        return bitmap;
-    }
+
 
     public static void sharedToQQ(Context context,Bitmap bitmap) {
         File file = bitMap2File(bitmap);
@@ -116,51 +111,6 @@ public class ShareManager {
 //            SharedPreferencesUtil.putSharedData(context, "isShare", "isShare", "1");
             context.startActivity(intent);
         }
-    }
-
-    /**
-     * 根据图片的url路径获得Bitmap对象 * @param url * @return
-     */
-    private static Bitmap returnBitmap(String url) {
-        URL fileUrl = null;
-        Bitmap bitmap = null;
-        try {
-            fileUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        try {
-            HttpURLConnection conn = (HttpURLConnection) fileUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
-
-
-
-    /**
-     * 压缩图片
-     * @param image
-     * @return
-     */
-    private static Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 10, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-        int options = 100;
-        while (baos.toByteArray().length / 1024 > 400) { //循环判断如果压缩后图片是否大于400kb,大于继续压缩（这里可以设置大些）
-            baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.PNG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-            options -= 10;//每次都减少10
-        }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
-        return bitmap;
     }
 
     /**
@@ -190,6 +140,46 @@ public class ShareManager {
         } finally {
             return f;
         }
+    }
+
+    /**
+     * 微信分享
+     * @param file 保存到本地的图片
+     * @param isShareToTimeline 分享到朋友圈（true）还是好友(false)
+     */
+    public void imageShare(File file,boolean isShareToTimeline){
+        wxApi = WXAPIFactory.createWXAPI(mContext, Constants.WX_APP_ID);
+        try {
+            if (!file.exists()) {
+
+            }
+            WXImageObject imgObj = new WXImageObject();
+            imgObj.setImagePath(file.getAbsolutePath());
+            WXMediaMessage msg = new WXMediaMessage();
+            msg.mediaObject = imgObj;
+            Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+            Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 120, 120, true);
+            bmp.recycle();
+            msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
+            SendMessageToWX.Req req = new SendMessageToWX.Req();
+            req.transaction = buildTransaction("img");
+            req.message = msg;
+            //要分享给好友还是分享到朋友圈
+            req.scene = isShareToTimeline ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
+            wxApi.sendReq(req);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 构建一个唯一标志
+     *
+     * @param type 分享的类型分字符串
+     * @return 返回唯一字符串
+     */
+    private static String buildTransaction(String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
     /**

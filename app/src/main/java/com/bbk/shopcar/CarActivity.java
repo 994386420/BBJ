@@ -42,6 +42,7 @@ import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.ShopDetailActivty;
 import com.bbk.adapter.TaoBaoAdapter;
+import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -77,6 +78,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,6 +92,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 购物车
@@ -258,9 +267,18 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
         /**
          * 从商城进入购物车跳自营
          */
-        if (getIntent().getStringExtra("ziying") != null){
-            XTabLayout.Tab tabAt = tablayout.getTabAt(2);
-            tabAt.select();
+        if (getIntent().getStringExtra("ziying") != null) {
+            XTabLayout.Tab tabAt;
+            switch (getIntent().getStringExtra("ziying")) {
+                case "yes":
+                    tabAt = tablayout.getTabAt(2);
+                    tabAt.select();
+                    break;
+                case "jd":
+                    tabAt = tablayout.getTabAt(1);
+                    tabAt.select();
+                    break;
+            }
         }
     }
 
@@ -918,7 +936,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                 setVisiable();
                 break;
             case R.id.ll_refresh_car:
-                RotateAnimation ra = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                RotateAnimation ra = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 ra.setDuration(1000);
                 imgRefresh.startAnimation(ra);
                 if (curPosition == 2) {
@@ -1054,7 +1072,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                     llBottomCar.setVisibility(View.VISIBLE);
                                     titleText2.setVisibility(View.VISIBLE);
                                     for (int i = 0; i < goods.size(); i++) {
-                                        groups.add(new StoreInfo(goods.get(i).getDianpuid(), goods.get(i).getDianpu(),goods.get(i).getDianpuyouhui()));
+                                        groups.add(new StoreInfo(goods.get(i).getDianpuid(), goods.get(i).getDianpu(), goods.get(i).getDianpuyouhui()));
                                         for (int j = 0; j <= i; j++) {
 //                                        Logg.json(goods.get(i).getList());
                                             List<GoodsInfo> goods1 = JSON.parseArray(goods.get(i).getList(), GoodsInfo.class);
@@ -1250,24 +1268,24 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                 String homeContent = SharedPreferencesUtil.getSharedData(CarActivity.this, "homeTbCarContent", "homeTbCarContent");
                 try {
                     if (homeContent != null && !homeContent.equals("")) {
-                    JSONObject object = new JSONObject(homeContent);
-                    if (object.length() > 0) {
-                        taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
-                        if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
-                            recyclerView.setVisibility(View.VISIBLE);
-                            progress.setVisibility(View.GONE);
-                            getAllNum();
-                            DialogSingleUtil.dismiss(0);
+                        JSONObject object = new JSONObject(homeContent);
+                        if (object.length() > 0) {
+                            taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
+                            if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+                                recyclerView.setVisibility(View.VISIBLE);
+                                progress.setVisibility(View.GONE);
+                                getAllNum();
+                                DialogSingleUtil.dismiss(0);
+                            } else {
+                                recyclerView.setVisibility(View.GONE);
+                                progress.setVisibility(View.VISIBLE);
+                                progress.loadSuccess(true);
+                                tishi.setVisibility(View.GONE);
+                                DialogSingleUtil.dismiss(0);
+                            }
                         } else {
-                            recyclerView.setVisibility(View.GONE);
-                            progress.setVisibility(View.VISIBLE);
-                            progress.loadSuccess(true);
-                            tishi.setVisibility(View.GONE);
                             DialogSingleUtil.dismiss(0);
                         }
-                    }else {
-                        DialogSingleUtil.dismiss(0);
-                    }
                     } else {
                         synchroShoppingCart(content, "taobao");
                     }
@@ -1304,24 +1322,24 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                             String homeJdContent = SharedPreferencesUtil.getSharedData(CarActivity.this, "homeJdCarContent", "homeJdCarContent");
                             try {
                                 if (homeJdContent != null && !homeJdContent.equals("")) {
-                                JSONObject object = new JSONObject(homeJdContent);
-                                if (object.length() > 0) {
-                                    taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
-                                    if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
-                                        recyclerView.setVisibility(View.VISIBLE);
-                                        progress.setVisibility(View.GONE);
-                                        getAllNum();
-                                        DialogSingleUtil.dismiss(0);
+                                    JSONObject object = new JSONObject(homeJdContent);
+                                    if (object.length() > 0) {
+                                        taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
+                                        if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+                                            recyclerView.setVisibility(View.VISIBLE);
+                                            progress.setVisibility(View.GONE);
+                                            getAllNum();
+                                            DialogSingleUtil.dismiss(0);
+                                        } else {
+                                            recyclerView.setVisibility(View.GONE);
+                                            progress.setVisibility(View.VISIBLE);
+                                            progress.loadSuccess(true);
+                                            tishi.setVisibility(View.GONE);
+                                            DialogSingleUtil.dismiss(0);
+                                        }
                                     } else {
-                                        recyclerView.setVisibility(View.GONE);
-                                        progress.setVisibility(View.VISIBLE);
-                                        progress.loadSuccess(true);
-                                        tishi.setVisibility(View.GONE);
                                         DialogSingleUtil.dismiss(0);
                                     }
-                                }else {
-                                    DialogSingleUtil.dismiss(0);
-                                }
                                 } else {
                                     DialogSingleUtil.dismiss(0);
                                     getShoppingCartUrlByDomain("jd");
@@ -1541,14 +1559,71 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
      * @param content
      */
     private void synchroShoppingCart(String content, String domain) {
-        Map<String, String> maps = new HashMap<String, String>();
+        final Map<String, String> maps = new HashMap<String, String>();
         Logg.json(content);
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         maps.put("userid", userID);
         maps.put("domain", domain);
         maps.put("client", "android");
         maps.put("content", content);
-        dataFlow.requestData(1, "newService/synchroShoppingCart", maps, this, false);
+//        dataFlow.requestData(1, "newService/synchroShoppingCart", maps, this, false);
+        RetrofitClient.getInstance(CarActivity.this).createBaseApi().synchroShoppingCart(
+                maps, new BaseObserver<String>(CarActivity.this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                mPtrframe.finishRefresh();
+                                Logg.json(jsonObject);
+                                if (cancelCheck) {
+                                    //缓存加载出来的购物车数据
+                                    if (curPosition == 2) {
+                                        SharedPreferencesUtil.putSharedData(CarActivity.this, "homeJdCarContent", "homeJdCarContent", jsonObject.toString());
+                                    } else {
+                                        SharedPreferencesUtil.putSharedData(CarActivity.this, "homeTbCarContent", "homeTbCarContent", jsonObject.toString());
+                                    }
+//                                    解析数据
+                                    taoBaoCarBeans = JSON.parseArray(jsonObject.optString("content"), TaoBaoCarBean.class);
+                                    if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        progress.setVisibility(View.GONE);
+                                        getAllNum();
+                                        StringUtil.showToast(CarActivity.this, "已同步最新宝贝数据");
+                                        llBottomTbCar.setVisibility(View.VISIBLE);
+                                        tishi.setVisibility(View.VISIBLE);
+                                    } else {
+                                        recyclerView.setVisibility(View.GONE);
+                                        progress.setVisibility(View.VISIBLE);
+                                        progress.loadSuccess(true);
+                                        tishi.setVisibility(View.GONE);
+                                    }
+                                }
+                            } else {
+                                StringUtil.showToast(CarActivity.this, jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogCheckYouhuiUtil.dismiss(0);
+//                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+//                        DialogCheckYouhuiUtil.show(CarActivity.this, "小鲸正在努力同步中，请您耐心等等哦！");
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogCheckYouhuiUtil.dismiss(0);
+                        StringUtil.showToast(CarActivity.this, e.message);
+                    }
+                });
     }
 
 

@@ -39,7 +39,7 @@ public class WuliuAdapter extends RecyclerView.Adapter<WuliuAdapter.TraceViewHol
     public int getItemCount() {
         if (mList != null && mList.size() > 0) {
             return mList.size();
-        }else {
+        } else {
             return 0;
         }
     }
@@ -56,9 +56,11 @@ public class WuliuAdapter extends RecyclerView.Adapter<WuliuAdapter.TraceViewHol
         if (type == TYPE_CURR) {
             holder.tvAddress.setTextColor(mContext.getResources().getColor(R.color.tuiguang_color4));
             holder.dotIv.setImageResource(R.mipmap.dot_black);
+            holder.dotIvNew.setVisibility(View.GONE);
         } else if (type == TYPE_NORMAL) {
             holder.tvAddress.setTextColor(mContext.getResources().getColor(R.color.tuiguang_color3));
-            holder.dotIv.setImageResource(R.mipmap.order_08);
+            holder.dotIv.setVisibility(View.GONE);
+            holder.dotIvNew.setVisibility(View.VISIBLE);
         }
         holder.tvTime.setText(trace.getStime());
         holder.tvAddress.setText(trace.getAddress());
@@ -67,7 +69,7 @@ public class WuliuAdapter extends RecyclerView.Adapter<WuliuAdapter.TraceViewHol
             //最后一条数据，隐藏时间轴的竖线和水平的分割线
             holder.timeLineView.setVisibility(View.INVISIBLE);
         }
-        if (position == 0){
+        if (position == 0) {
             holder.timeLineViewTop.setVisibility(View.INVISIBLE);
         }
     }
@@ -85,6 +87,8 @@ public class WuliuAdapter extends RecyclerView.Adapter<WuliuAdapter.TraceViewHol
         View timeLineViewTop;
         @BindView(R.id.time_line_view)
         View timeLineView;
+        @BindView(R.id.dot_iv_new)
+        ImageView dotIvNew;
 
         public TraceViewHolder(View view) {
             super(view);

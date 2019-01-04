@@ -34,6 +34,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     protected abstract void showDialog();
 
+
     @Override
     public void onComplete() {
         //可以取消Dialog 加载完毕

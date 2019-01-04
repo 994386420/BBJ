@@ -36,6 +36,8 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
@@ -72,14 +74,6 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		app = this;
-//		//默认关闭调试模式
-//		KFAPIs.DEBUG = false;
-//		//第一个参数默认设置为false, 即登录普通服务器, 如果设置为true, 则登录IP服务器,
-//		//注意: 当第一个参数设置为true的时候, 客服端需要选择登录ip服务器 才能够会话
-//		//正常情况下第一个参数请设置为false
-//		KFAPIs.enableIPServerMode(false, this);
-//		//第一种登录方式，推荐
-//		KFAPIs.visitorLogin(this);
 
 		//解决android N（>=24）系统以上分享 路径为file://时的 android.os.FileUriExposedException异常
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -96,7 +90,6 @@ public class MyApplication extends Application {
 		Logg.init(configuration);
 		initTXYun();
 		initX5();
-//		Foreground.init(this);
 		context = getApplicationContext();
 		//设置全局的Header构建器
 		SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
@@ -114,7 +107,19 @@ public class MyApplication extends Application {
 				return new ClassicsFooter(context).setDrawableSize(15).setTextSizeTitle(15);
 			}
 		});
-
+//		String userId=SharedPreferencesUtil.getSharedData(context, "userInfor", "userID");
+//		XGPushManager.registerPush(context, userId, new XGIOperateCallback() {
+//
+//			@Override
+//			public void onSuccess(Object data, int arg1) {
+//				Log.e("TPush===", "注册成功，设备token为：" + data);
+//			}
+//
+//			@Override
+//			public void onFail(Object data, int errCode, String msg) {
+//				Log.e("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+//			}
+//		});
 
 		/**
 		 * 京东开普勒
@@ -142,18 +147,6 @@ public class MyApplication extends Application {
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
         UMConfigure.init(this, "59db08fcf29d985a31000021","bbj", UMConfigure.DEVICE_TYPE_PHONE, "2748cf7fcfa2f2cbb4c72943e9af435b");
         initUpush();
-//		if(MsfSdkUtils.isMainProcess(this)) {
-//			TIMManager.getInstance().setOfflinePushListener(new TIMOfflinePushListener() {
-//				@Override
-//				public void handleNotification(TIMOfflinePushNotification notification) {
-//					if (notification.getGroupReceiveMsgOpt() == TIMGroupReceiveMessageOpt.ReceiveAndNotify){
-//						//消息被设置为需要提醒
-//						notification.doNotify(getApplicationContext(), R.mipmap.logo);
-//					}
-//				}
-//			});
-//		}
-
 		//解决 Android 7.0 后
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -397,9 +390,6 @@ public class MyApplication extends Application {
 
 			@Override
 			public void dealWithCustomAction(Context context, UMessage msg) {
-//				Logg.e("APP" + msg.custom);
-//				Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();
-//				StringUtil.showToast(context,"点击了"+msg.custom);
 				SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "custom", "custom", msg.custom);
 				if (isBackground(getApplicationContext())) {
 					Logg.e("APP在后台"+isBackground(getApplicationContext()));
@@ -410,6 +400,7 @@ public class MyApplication extends Application {
 				}else {
 					Logg.e("APP在前台"+isBackground(getApplicationContext()));
 					SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "custom", "custom", "");
+					Logg.json(msg.custom);
 					Intent intent = new Intent(context, EventIdIntentActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.putExtra("customContent", msg.custom);

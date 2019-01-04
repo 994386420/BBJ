@@ -96,7 +96,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
     /**
      * 根据字符个数计算偏移量
      */
-    private int getOffsetWidth(String string,int index) {
+    private int getOffsetWidth(String string, int index) {
         return string.length() * 14 + index * 12;
     }
 
@@ -106,7 +106,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
         titleText.setText("我的订单");
         refreshAndloda();
         tablayout.setxTabDisplayNum(5);
-        tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener()  {
+        tablayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(XTabLayout.Tab tab) {
                 int j = tab.getPosition();
@@ -125,7 +125,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
                 } else if (j == 4) {
                     option = 4;
                     NewConstants.option = 1;
-                } else if (j == 5){
+                } else if (j == 5) {
                     option = -3;
                     NewConstants.option = 1;
                 }
@@ -159,24 +159,24 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
             if (i == 5) {
 
             }
-            switch (i){
+            switch (i) {
                 case 0:
-                    width = (int) (getOffsetWidth("",i) * getResources().getDisplayMetrics().density);
+                    width = (int) (getOffsetWidth("", i) * getResources().getDisplayMetrics().density);
                     break;
                 case 1:
-                    width = (int) (getOffsetWidth("全部",i) * getResources().getDisplayMetrics().density);
+                    width = (int) (getOffsetWidth("全部", i) * getResources().getDisplayMetrics().density);
                     break;
                 case 2:
-                    width = (int) (getOffsetWidth("全部待付款",i) * getResources().getDisplayMetrics().density);
+                    width = (int) (getOffsetWidth("全部待付款", i) * getResources().getDisplayMetrics().density);
                     break;
                 case 3:
-                    width = (int) (getOffsetWidth("全部待付款待发货",i) * getResources().getDisplayMetrics().density);
+                    width = (int) (getOffsetWidth("全部待付款待发货", i) * getResources().getDisplayMetrics().density);
                     break;
                 case 4:
-                    width = (int) (getOffsetWidth("全部待付款待发货待收货",i) * getResources().getDisplayMetrics().density);
+                    width = (int) (getOffsetWidth("全部待付款待发货待收货", i) * getResources().getDisplayMetrics().density);
                     break;
                 case 5:
-                    width = (int) (getOffsetWidth("全部待付款待发货待收货待评论",i) * getResources().getDisplayMetrics().density);
+                    width = (int) (getOffsetWidth("全部待付款待发货待收货待评论", i) * getResources().getDisplayMetrics().density);
                     break;
             }
             tablayout.post(
@@ -239,7 +239,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
                                     } else {
                                         progress.setVisibility(View.VISIBLE);
                                         mlistview.setVisibility(View.GONE);
-                                        progress.loadMallSuccess(ShopOrderActivity.this,true);
+                                        progress.loadMallSuccess(ShopOrderActivity.this, true);
                                         xrefresh.setEnableLoadMore(false);
                                     }
                                 } else {
@@ -309,15 +309,6 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
     }
 
 
-    //    @Override
-//    public void doDeleteOrder(String orderid) {
-//        deleteMyOrder("1",orderid);
-//    }
-//
-//    @Override
-//    public void doQuXiaoOrder(String orderid) {
-//        deleteMyOrder("0",orderid);
-//    }
     public void showHongbaoDialog(final Context context) {
         if (hongbaoDialog == null || !hongbaoDialog.isShowing()) {
             hongbaoDialog = new HongbaoDialog(context, R.layout.hongbao_dialog_layout,
@@ -355,7 +346,7 @@ public class ShopOrderActivity extends BaseActivity implements CommonLoadingView
                 finish();
                 break;
             case R.id.img_more_black:
-                HomeLoadUtil.showItemPop(this,imgMoreBlack);
+                HomeLoadUtil.showItemPop(this, imgMoreBlack);
                 break;
         }
     }
