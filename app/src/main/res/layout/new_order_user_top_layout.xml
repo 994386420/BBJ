@@ -96,7 +96,30 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_yaoqing"
+        android:id="@+id/ll_yaoqing"
+        android:background="@drawable/btn_seclecter"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp" >
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@mipmap/member_04"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/shop_color1"
+            android:layout_marginTop="10dp"
+            android:textSize="14dp"
+            android:text="邀请"/>
+
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_discount"
             android:background="@drawable/btn_seclecter"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -108,16 +131,15 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@mipmap/member_04"/>
+                android:background="@mipmap/member_22"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/shop_color1"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"
-                android:text="邀请"/>
+                android:text="优惠券"/>
 
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

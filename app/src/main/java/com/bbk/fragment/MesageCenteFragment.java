@@ -1,7 +1,9 @@
 package com.bbk.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -28,6 +30,7 @@ import com.bbk.Bean.ReceiceMsgBean;
 import com.bbk.Bean.SendMsgBean;
 import com.bbk.Bean.SystemMessageBean;
 import com.bbk.activity.BaseActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.adapter.MesageCListReceiveAdapter;
@@ -91,6 +94,30 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 	private List<SendMsgBean> sendMsgBeans;
 	private List<ReceiceMsgBean> receiceMsgBeans;
 	private View mView;
+	private HomeActivity mActivity;
+
+
+	public Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+				case 1:
+					initsystemData();
+					break;
+			}
+		};
+	};
+
+	/**
+	 * 在Fragment中的回调函数onAttach（）中得到Fragment所在Activity，并调用setHandler方法，设置Handler。该Handler在Fragment中定义，用来接收消息与Fragment进行交互。
+	 * @param activity
+	 */
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = (HomeActivity) activity;
+		mActivity.setHandler(mHandler);
+	}
+
 
 	@Nullable
 	@Override
@@ -280,7 +307,7 @@ public class MesageCenteFragment extends BaseViewPagerFragment implements OnClic
 	/**
 	 * 系统消息
 	 */
-	private void initsystemData() {
+	public void initsystemData() {
 		xrefresh.setNoMoreData(false);
 		userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
 		Map<String, String> maps = new HashMap<String, String>();

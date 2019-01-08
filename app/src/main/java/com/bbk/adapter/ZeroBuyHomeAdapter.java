@@ -35,9 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by rtj on 2018/3/7.
- */
+
 
 public class ZeroBuyHomeAdapter extends RecyclerView.Adapter {
     //    private List<Map<String,String>> list;

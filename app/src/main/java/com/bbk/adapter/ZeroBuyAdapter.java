@@ -29,10 +29,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by rtj on 2018/3/7.
- */
-
 public class ZeroBuyAdapter extends RecyclerView.Adapter {
     private Context context;
     List<ZeroBuyBean> zeroBuyBeans;

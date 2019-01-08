@@ -17,9 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by rtj on 2018/3/7.
- */
 
 public class XjppAdapter extends BaseAdapter{
     private List<Map<String,String>> list;

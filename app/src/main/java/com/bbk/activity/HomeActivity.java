@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -14,10 +17,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,20 +31,18 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.entity.XGMessageEntity;
 import com.bbk.fragment.BaseViewPagerFragment;
 import com.bbk.fragment.CarFrament;
-import com.bbk.fragment.FenXiangFragment;
-import com.bbk.fragment.HomeMessageFragment;
 import com.bbk.fragment.MesageCenteFragment;
-import com.bbk.fragment.NewHomeFragment;
-import com.bbk.fragment.NewRankFragment;
 import com.bbk.fragment.SortFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.model.MainActivity;
 import com.bbk.resource.Constants;
 import com.bbk.update.UpdateVersionService;
 import com.bbk.util.BaseTools;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CustomViewPager;
+import com.bbk.view.DraggableFlagView;
 import com.bbk.view.NumImageView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -51,7 +52,6 @@ import com.sina.weibo.sdk.api.share.IWeiboHandler.Response;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
 import com.sina.weibo.sdk.api.share.WeiboShareSDK;
 import com.sina.weibo.sdk.constant.WBConstants;
-import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,26 +66,48 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class HomeActivity extends BaseFragmentActivity implements Response {
 
     private static final int TAB_SIZE = 5;
     private static CustomViewPager mViewPager;
-    //    @BindView(R.id.home_image)
-//    ImageView homeImage;
-    @BindView(R.id.home_img_btn)
-    ImageView homeImgBtn;
+    @BindView(R.id.rl_home)
+    LinearLayout rlHome;
+    @BindView(R.id.rl_sort)
+    LinearLayout rlSort;
+    @BindView(R.id.rl_message)
+    LinearLayout rlMessage;
+    @BindView(R.id.rl_car)
+    LinearLayout rlCar;
+    @BindView(R.id.rl_my)
+    LinearLayout rlMy;
+    @BindView(R.id.tab_layout)
+    LinearLayout tabLayout;
+    @BindView(R.id.img_home_btn)
+    ImageView imgHomeBtn;
+    @BindView(R.id.img_sort_btn)
+    ImageView imgSortBtn;
+    @BindView(R.id.img_message_btn)
+    NumImageView imgMessageBtn;
+    @BindView(R.id.img_car_btn)
+    ImageView imgCarBtn;
+    @BindView(R.id.img_user_btn)
+    ImageView imgUserBtn;
     @BindView(R.id.mtext)
     TextView mtext;
-    @BindView(R.id.search_img_btn)
-    ImageView searchImgBtn;
-    @BindView(R.id.rank_img_btn)
-    NumImageView rankImgBtn;
-    @BindView(R.id.data_img_btn)
-    ImageView dataImgBtn;
-    @BindView(R.id.user_img_btn)
-    ImageView userImgBtn;
+    @BindView(R.id.tv_sort)
+    TextView tvSort;
+    @BindView(R.id.tv_message)
+    TextView tvMessage;
+    @BindView(R.id.tv_car)
+    TextView tvCar;
+    @BindView(R.id.tv_my)
+    TextView tvMy;
+    public static DraggableFlagView draggableflagview;
+    @BindView(R.id.activity_home_layout)
+    RelativeLayout activityHomeLayout;
     private CustomFragmentPagerAdapter mPagerAdapter;
     private ArrayList<BaseViewPagerFragment> fragments = new ArrayList<BaseViewPagerFragment>();
     private LinearLayout tabParentLayout;
@@ -107,11 +129,9 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     private UpdateVersionService updateVersionService;
     private final String mPageName = "HomeActivity";
     public static String Flag = "";
-    public static NumImageView mNumImageView;
     public static ImageView mHomeGudieImage;//第一次安装首页新人引导
     public static int position = 5;
-
-
+    private Handler mHandler;
 
 
     @Override
@@ -122,11 +142,17 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         instance = this;
         mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, Constants.WEIBO_APP_KEY);
         mWeiboShareAPI.registerApp();
-//        ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
-//        params.height = StringUtil.dip2px(this, 42);
-//        params.width = StringUtil.dip2px(this, 42);
-//        homeImgBtn.setLayoutParams(params);
-//        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
+        draggableflagview = findViewById(R.id.draggableflagview);
+        /**
+         * 拖拽监听
+         */
+        draggableflagview.setOnDraggableFlagViewListener(new DraggableFlagView.OnDraggableFlagViewListener() {
+            @Override
+            public void onFlagDismiss(DraggableFlagView view, float x, float y) {
+                playImageDismissAnim(x, y);
+                insertMessageReadOneKey();
+            }
+        });
         initView();
         initData();
     }
@@ -186,6 +212,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     };
 
     public void initView() {
+        activityHomeLayout = (RelativeLayout) findViewById(R.id.activity_home_layout);
         mHomeGudieImage = findViewById(R.id.new_gudie_image_home);
         TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         String token = TelephonyMgr.getDeviceId();
@@ -194,9 +221,64 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         mViewPager.setScanScroll(false);
         tabParentLayout = $(R.id.tab_layout);
         mzhezhao = $(R.id.mzhezhao);
-        mNumImageView = findViewById(R.id.rank_img_btn);
     }
 
+
+    /**
+     * 在Activity中定义一个方法用来设置Handler对象
+     */
+    public void setHandler(Handler handler) {
+        mHandler = handler;
+    }
+
+    /**
+     * 一键读取消息
+     */
+    private void insertMessageReadOneKey(){
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("userid", userID);
+        RetrofitClient.getInstance(this).createBaseApi().insertMessageReadOneKey(
+                maps, new BaseObserver<String>(this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            Logg.json(jsonObject);
+                            if (jsonObject.optString("status").equals("1")) {
+                                /**
+                                 * Activity中发送消息给Fragment中的Hanlder进行交互。
+                                 */
+                                Message msg = new Message();
+                                msg.what = 1;
+                                mHandler.sendMessage(msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(HomeActivity.this);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(HomeActivity.this, e.message);
+                    }
+                });
+    }
+
+    /**
+     * 初始化数据并从接口获取底部Tag
+     */
     public void initData() {
         initViewPager();
         initViewPagerData();
@@ -210,6 +292,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                     public void onNext(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
+                            Logg.json(jsonObject);
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
                                 JSONObject object = new JSONObject(content);
@@ -226,21 +309,34 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                                     bcolor = object.optString("bcolor");
                                     tabParentLayout.setBackgroundColor(Color.parseColor(bcolor));
                                     for (int i = 0; i < 5; i++) {
-                                        LinearLayout nextLayout = ((LinearLayout) tabParentLayout.getChildAt(i));
-                                        ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
+//                                        LinearLayout nextLayout = ((LinearLayout) tabParentLayout.getChildAt(i));
+//                                        ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
                                         if (isshow) {
-                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(i)).placeholder(tabImgGray[i]).into(nextIV);
+                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(0)).placeholder(tabImgGray[0]).into(imgHomeBtn);
+                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(1)).placeholder(tabImgGray[1]).into(imgSortBtn);
+                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(2)).placeholder(tabImgGray[2]).into(imgMessageBtn);
+                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(3)).placeholder(tabImgGray[3]).into(imgCarBtn);
+                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(4)).placeholder(tabImgGray[4]).into(imgUserBtn);
                                         } else {
-                                            Logg.e("=========================>>>>",i);
-                                            nextIV.setImageResource(tabImgGray[i]);
+                                            Logg.e("=========================>>>>", i);
+                                            imgHomeBtn.setImageResource(tabImgGray[0]);
+                                            imgSortBtn.setImageResource(tabImgGray[1]);
+                                            imgMessageBtn.setImageResource(tabImgGray[2]);
+                                            imgCarBtn.setImageResource(tabImgGray[3]);
+                                            imgUserBtn.setImageResource(tabImgGray[4]);
                                         }
-                                        TextView nextTV = (TextView) nextLayout.getChildAt(1);
-                                        nextTV.setTextColor(Color.parseColor(tcolor));
+//                                        TextView nextTV = (TextView) nextLayout.getChildAt(1);
+//                                        nextTV.setTextColor(Color.parseColor(tcolor));
+                                        mtext.setTextColor(Color.parseColor(tcolor));
+                                        tvSort.setTextColor(Color.parseColor(tcolor));
+                                        tvMessage.setTextColor(Color.parseColor(tcolor));
+                                        tvCar.setTextColor(Color.parseColor(tcolor));
+                                        tvMy.setTextColor(Color.parseColor(tcolor));
                                     }
                                     LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
                                     ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
                                     if (isshow) {
-                                        Log.e("==================", "" + tabImgGray2.get(currentIndex));
+                                        Log.e("==================", "" + currentIndex);
                                         Glide.with(HomeActivity.this).
                                                 load(tabImgBlue2.get(currentIndex))
                                                 .placeholder(tabImgBlue[0]).
@@ -275,6 +371,9 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                 });
     }
 
+    /**
+     * 初始化viewpager
+     */
     public void initViewPager() {
         fragments.clear();
         mPagerAdapter = new CustomFragmentPagerAdapter(getSupportFragmentManager(), fragments);
@@ -282,7 +381,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int arg0) {
-                switchTab(arg0);
+//                switchTab(arg0);
             }
 
             @Override
@@ -295,18 +394,16 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
         });
     }
 
+    /**
+     * 初始化viewpager
+     */
     public void initViewPagerData() {
         MainActivity homeFragment = new MainActivity();
-        NewRankFragment rankFragment = new NewRankFragment();
-//        HomeMessageFragment bidMessageFragment = new HomeMessageFragment();
-//		GossipPiazzaFragment gossipPiazzaFragment = new GossipPiazzaFragment();
         MesageCenteFragment mesageCenteFragment = new MesageCenteFragment();
         SortFragment sortFragment = new SortFragment();
-        FenXiangFragment fenXiangFragment = new FenXiangFragment();
         UserFragment userFragment = new UserFragment();
         CarFrament carFrament = new CarFrament();
         fragments.add(homeFragment);//首页
-//		fragments.add(gossipPiazzaFragment);//爆料
         fragments.add(sortFragment);
         fragments.add(mesageCenteFragment);//消息
         fragments.add(carFrament);//发现
@@ -329,7 +426,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
             }
             TextView currentTV = (TextView) currentLayout.getChildAt(1);
             currentTV.setTextColor(Color.parseColor(tcolor));
-
             LinearLayout nextLayout = ((LinearLayout) tabParentLayout.getChildAt(index));
             ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
             int select = BaseTools.getPixelsFromDp(this, 35);
@@ -372,57 +468,57 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
             Logg.e(HomeActivity.position);
             if (HomeActivity.position == 0) {
 //                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
-                StringUtil.setScalse(homeImgBtn);//设置缩放动画
-                homeImgBtn.setVisibility(View.VISIBLE);
+                StringUtil.setScalse(imgHomeBtn);//设置缩放动画
+                imgHomeBtn.setVisibility(View.VISIBLE);
                 mtext.setVisibility(View.GONE);
-                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                ViewGroup.LayoutParams params = imgHomeBtn.getLayoutParams();
                 params.height = StringUtil.dip2px(HomeActivity.this, 42);
                 params.width = StringUtil.dip2px(HomeActivity.this, 42);
-                homeImgBtn.setLayoutParams(params);
+                imgHomeBtn.setLayoutParams(params);
             } else {
 //                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
-                homeImgBtn.setVisibility(View.VISIBLE);
+                imgHomeBtn.setVisibility(View.VISIBLE);
                 mtext.setVisibility(View.VISIBLE);
-                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                ViewGroup.LayoutParams params = imgHomeBtn.getLayoutParams();
                 params.height = StringUtil.dip2px(HomeActivity.this, 25);
                 params.width = StringUtil.dip2px(HomeActivity.this, 25);
-                homeImgBtn.setLayoutParams(params);
+                imgHomeBtn.setLayoutParams(params);
             }
-            tabLayout.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (index == 0) {
-//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
-                        StringUtil.setScalse(homeImgBtn);//设置缩放动画
-                        homeImgBtn.setVisibility(View.VISIBLE);
-                        mtext.setVisibility(View.GONE);
-                        ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
-                        params.height = StringUtil.dip2px(HomeActivity.this, 42);
-                        params.width = StringUtil.dip2px(HomeActivity.this, 42);
-                        homeImgBtn.setLayoutParams(params);
-                    } else {
-//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
-                        homeImgBtn.setVisibility(View.VISIBLE);
-                        mtext.setVisibility(View.VISIBLE);
-                        ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
-                        params.height = StringUtil.dip2px(HomeActivity.this, 25);
-                        params.width = StringUtil.dip2px(HomeActivity.this, 25);
-                        homeImgBtn.setLayoutParams(params);
-                        switch (index){
-                            case 1:
-                                StringUtil.setScalse(searchImgBtn);//设置缩放动画
-                                break;
-                            case 2:
-                                StringUtil.setScalse(rankImgBtn);//设置缩放动画
-                                break;
-                            case 3:
-                                StringUtil.setScalse(dataImgBtn);//设置缩放动画
-                                break;
-                            case 4:
-                                StringUtil.setScalse(userImgBtn);//设置缩放动画
-                                break;
-                        }
-                    }
+//            tabLayout.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (index == 0) {
+////                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
+//                        StringUtil.setScalse(imgHomeBtn);//设置缩放动画
+//                        imgHomeBtn.setVisibility(View.VISIBLE);
+//                        mtext.setVisibility(View.GONE);
+//                        ViewGroup.LayoutParams params = imgHomeBtn.getLayoutParams();
+//                        params.height = StringUtil.dip2px(HomeActivity.this, 42);
+//                        params.width = StringUtil.dip2px(HomeActivity.this, 42);
+//                        imgHomeBtn.setLayoutParams(params);
+//                    } else {
+////                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
+//                        imgHomeBtn.setVisibility(View.VISIBLE);
+//                        mtext.setVisibility(View.VISIBLE);
+//                        ViewGroup.LayoutParams params = imgHomeBtn.getLayoutParams();
+//                        params.height = StringUtil.dip2px(HomeActivity.this, 25);
+//                        params.width = StringUtil.dip2px(HomeActivity.this, 25);
+//                        imgHomeBtn.setLayoutParams(params);
+//                        switch (index) {
+//                            case 1:
+//                                StringUtil.setScalse(imgSortBtn);//设置缩放动画
+//                                break;
+//                            case 2:
+//                                StringUtil.setScalse(imgMessageBtn);//设置缩放动画
+//                                break;
+//                            case 3:
+//                                StringUtil.setScalse(imgCarBtn);//设置缩放动画
+//                                break;
+//                            case 4:
+//                                StringUtil.setScalse(imgUserBtn);//设置缩放动画
+//                                break;
+//                        }
+//                    }
 //                    if (index == 2) {
 //                        Flag = "home";
 //                        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
@@ -431,9 +527,9 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
 //                            startActivityForResult(intent4, 1);
 //                        }
 //                    }
-                    mViewPager.setCurrentItem(index);
-                }
-            });
+//                    mViewPager.setCurrentItem(index);
+//                }
+//            });
 
         }
     }
@@ -516,29 +612,25 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     @Override
     protected void onResume() {
         super.onResume();
-//        MobclickAgent.onPageStart(mPageName);
         String type = SharedPreferencesUtil.getSharedData(getApplicationContext(), "homeactivty", "type");
         if (!TextUtils.isEmpty(type)) {
             SharedPreferencesUtil.cleanShareData(getApplicationContext(), "homeactivty");
             mViewPager.setCurrentItem(Integer.valueOf(type));
-//            homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
             if (HomeActivity.position == 0) {
-//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_01);
-                StringUtil.setScalse(homeImgBtn);//设置缩放动画
-                homeImgBtn.setVisibility(View.VISIBLE);
+                StringUtil.setScalse(imgHomeBtn);//设置缩放动画
+                imgHomeBtn.setVisibility(View.VISIBLE);
                 mtext.setVisibility(View.GONE);
-                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                ViewGroup.LayoutParams params = imgHomeBtn.getLayoutParams();
                 params.height = StringUtil.dip2px(HomeActivity.this, 42);
                 params.width = StringUtil.dip2px(HomeActivity.this, 42);
-                homeImgBtn.setLayoutParams(params);
+                imgHomeBtn.setLayoutParams(params);
             } else {
-//                        homeImgBtn.setBackgroundResource(R.mipmap.bottom_11);
-                homeImgBtn.setVisibility(View.VISIBLE);
+                imgHomeBtn.setVisibility(View.VISIBLE);
                 mtext.setVisibility(View.VISIBLE);
-                ViewGroup.LayoutParams params = homeImgBtn.getLayoutParams();
+                ViewGroup.LayoutParams params = imgHomeBtn.getLayoutParams();
                 params.height = StringUtil.dip2px(HomeActivity.this, 25);
                 params.width = StringUtil.dip2px(HomeActivity.this, 25);
-                homeImgBtn.setLayoutParams(params);
+                imgHomeBtn.setLayoutParams(params);
             }
         }
     }
@@ -546,7 +638,6 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     @Override
     protected void onPause() {
         super.onPause();
-//        MobclickAgent.onPageEnd(mPageName);
     }
 
     public static void initone() {
@@ -564,6 +655,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     public static void initfour() {
         mViewPager.setCurrentItem(4);
     }
+
 
     public interface MyTouchListener {
         public void onTouchEvent(MotionEvent event);
@@ -608,4 +700,139 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     protected void onStart() {
         super.onStart();
     }
+
+
+    /**
+     * 点击事件
+     * @param view
+     */
+    @OnClick({R.id.rl_home, R.id.rl_sort, R.id.rl_message, R.id.rl_car, R.id.rl_my})
+    public void onViewClicked(View view) {
+        ViewGroup.LayoutParams params = imgHomeBtn.getLayoutParams();
+        switch (view.getId()) {
+            case R.id.rl_home:
+                StringUtil.setScalse(imgHomeBtn);//设置缩放动画
+                imgHomeBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.GONE);
+                params.height = StringUtil.dip2px(HomeActivity.this, 42);
+                params.width = StringUtil.dip2px(HomeActivity.this, 42);
+                imgHomeBtn.setLayoutParams(params);
+                mViewPager.setCurrentItem(0);
+                colorChange(imgHomeBtn, mtext, 0);
+                colorChange2(imgSortBtn, tvSort, 1);
+                colorChange2(imgMessageBtn, tvMessage, 2);
+                colorChange2(imgCarBtn, tvCar, 3);
+                colorChange2(imgUserBtn, tvMy, 4);
+                break;
+            case R.id.rl_sort:
+                imgHomeBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.VISIBLE);
+                params.height = StringUtil.dip2px(HomeActivity.this, 25);
+                params.width = StringUtil.dip2px(HomeActivity.this, 25);
+                imgHomeBtn.setLayoutParams(params);
+                StringUtil.setScalse(imgSortBtn);//设置缩放动画
+                mViewPager.setCurrentItem(1);
+                colorChange2(imgHomeBtn, mtext, 0);
+                colorChange(imgSortBtn, tvSort, 1);
+                colorChange2(imgMessageBtn, tvMessage, 2);
+                colorChange2(imgCarBtn, tvCar, 3);
+                colorChange2(imgUserBtn, tvMy, 4);
+                break;
+            case R.id.rl_message:
+                imgHomeBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.VISIBLE);
+                params.height = StringUtil.dip2px(HomeActivity.this, 25);
+                params.width = StringUtil.dip2px(HomeActivity.this, 25);
+                imgHomeBtn.setLayoutParams(params);
+                StringUtil.setScalse(imgMessageBtn);
+                mViewPager.setCurrentItem(2);
+                colorChange2(imgHomeBtn, mtext, 0);
+                colorChange2(imgSortBtn, tvSort, 1);
+                colorChange(imgMessageBtn, tvMessage, 2);
+                colorChange2(imgCarBtn, tvCar, 3);
+                colorChange2(imgUserBtn, tvMy, 4);
+                break;
+            case R.id.rl_car:
+                imgHomeBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.VISIBLE);
+                params.height = StringUtil.dip2px(HomeActivity.this, 25);
+                params.width = StringUtil.dip2px(HomeActivity.this, 25);
+                imgHomeBtn.setLayoutParams(params);
+                StringUtil.setScalse(imgCarBtn);
+                mViewPager.setCurrentItem(3);
+                colorChange2(imgHomeBtn, mtext, 0);
+                colorChange2(imgSortBtn, tvSort, 1);
+                colorChange2(imgMessageBtn, tvMessage, 2);
+                colorChange(imgCarBtn, tvCar, 3);
+                colorChange2(imgUserBtn, tvMy, 4);
+                break;
+            case R.id.rl_my:
+                imgHomeBtn.setVisibility(View.VISIBLE);
+                mtext.setVisibility(View.VISIBLE);
+                params.height = StringUtil.dip2px(HomeActivity.this, 25);
+                params.width = StringUtil.dip2px(HomeActivity.this, 25);
+                imgHomeBtn.setLayoutParams(params);
+                StringUtil.setScalse(imgUserBtn);
+                mViewPager.setCurrentItem(4);
+                colorChange2(imgHomeBtn, mtext, 0);
+                colorChange2(imgSortBtn, tvSort, 1);
+                colorChange2(imgMessageBtn, tvMessage, 2);
+                colorChange2(imgCarBtn, tvCar, 3);
+                colorChange(imgUserBtn, tvMy, 4);
+                break;
+        }
+    }
+
+    /**
+     * 选中的颜色变化
+     * @param imageView
+     * @param textView
+     * @param i
+     */
+    private void colorChange(ImageView imageView, TextView textView, int i) {
+        if (isshow) {
+            Glide.with(this).
+                    load(tabImgBlue2.get(i)).
+                    into(imageView);
+        } else {
+            imageView.setImageResource(tabImgBlue[i]);
+        }
+        textView.setTextColor(Color.parseColor(ctcolor));
+    }
+
+    /**
+     * 未选中的颜色变化
+     * @param imageView
+     * @param textView
+     * @param i
+     */
+    private void colorChange2(ImageView imageView, TextView textView, int i) {
+
+        textView.setTextColor(Color.parseColor(ctcolor));
+        if (isshow) {
+            Glide.with(this).load(tabImgGray2.get(i)).into(imageView);
+        } else {
+            imageView.setImageResource(tabImgGray[i]);
+        }
+        textView.setTextColor(Color.parseColor(tcolor));
+    }
+
+    /**
+     * 播放气泡消失动画
+     *
+     * @param x 气泡的x坐标
+     * @param y 气泡的y坐标
+     */
+    private void playImageDismissAnim(float x, float y) {
+        ImageView img_dismiss = new ImageView(HomeActivity.this);
+        img_dismiss.setImageResource(R.drawable.tip_anim);
+        img_dismiss.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
+        img_dismiss.setX(x);
+        img_dismiss.setY(y);
+        activityHomeLayout.addView(img_dismiss);
+        //播放气泡消失动画
+        ((AnimationDrawable) img_dismiss.getDrawable()).start();
+    }
+
 }

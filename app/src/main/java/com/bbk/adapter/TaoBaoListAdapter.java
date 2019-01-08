@@ -52,9 +52,7 @@ import butterknife.ButterKnife;
 
 import static android.content.Context.MODE_PRIVATE;
 
-/**
- * Created by rtj on 2018/3/7.
- */
+
 
 public class TaoBaoListAdapter extends RecyclerView.Adapter {
     //    private List<Map<String,String>> list;

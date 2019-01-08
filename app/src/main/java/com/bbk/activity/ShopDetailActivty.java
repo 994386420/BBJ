@@ -6,11 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +16,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +27,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.CanshuBean;
+import com.bbk.Bean.DiscountBean;
 import com.bbk.Bean.PlBean;
 import com.bbk.Bean.ShopDetailBean;
 import com.bbk.Bean.ShopTuijianBean;
@@ -39,6 +36,7 @@ import com.bbk.Bean.TypesChooseLevelOneBean;
 import com.bbk.Bean.TypesChooseSizeBean;
 import com.bbk.Bean.TypesLevelBean;
 import com.bbk.adapter.DetailImageAdapter;
+import com.bbk.adapter.DiscountAdapter;
 import com.bbk.adapter.ShopCanshuAdapter;
 import com.bbk.adapter.SizeChooseAdapter;
 import com.bbk.adapter.TagAdapter;
@@ -195,6 +193,8 @@ public class ShopDetailActivty extends BaseActivity {
     ImageView imgMoreBlack;
     @BindView(R.id.tv_des)
     TextView tvDes;
+    @BindView(R.id.ll_quan)
+    LinearLayout llQuan;
     private String id;
     private DetailImageAdapter detailImageAdapter;
     private ShopDetailBean shopDetailBean;
@@ -230,7 +230,7 @@ public class ShopDetailActivty extends BaseActivity {
     private TypeChooseAdapter typeGridAdapter;
     private TypeChooseLevelOneAdapter typeChooseLevelOneAdapter;
     private SizeChooseAdapter sizeChooseAdapter;
-    private int curposition = 0, sizeCurposition = 0,picturePostion0ne = 0,picturePostionTwo = 0;
+    private int curposition = 0, sizeCurposition = 0, picturePostion0ne = 0, picturePostionTwo = 0;
     private List<TypesChooseBean> typesChooseBeans;
     private List<TypesChooseSizeBean> typesChooseSizeBeans;
     private List<TypesLevelBean> typesLevelBeans;
@@ -238,7 +238,7 @@ public class ShopDetailActivty extends BaseActivity {
     private FlowTagLayout gridViewName;
     private FlowTagLayout gridViewSize;
     private TextView tvHasChoose;
-    private TextView tvMoney,tvSize,tvColor;
+    private TextView tvMoney, tvSize, tvColor;
     private String chooseGuigeColor, chooseGuigeSize;
     private boolean isChooseColor = false;//判断是否旋转过颜色
     private int countNum = 1;//购买商品数量
@@ -375,11 +375,11 @@ public class ShopDetailActivty extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
-                                Logg.json(jsonObject);
+//                                Logg.json(jsonObject);
                                 shopDetailBean = JSON.parseObject(jsonObject.optString("content"), ShopDetailBean.class);
                                 shopAddress.setText(shopDetailBean.getFahuodi());
-                                shopKuaidi.setText("快递："+shopDetailBean.getKuaidi());
-                                Logg.json(shopDetailBean.getGuigetype() + "=====>>>" + shopDetailBean.getGuigepro() + "=====>>>" + shopDetailBean.getGuige()
+                                shopKuaidi.setText("快递：" + shopDetailBean.getKuaidi());
+                                Logg.json(shopDetailBean.getQuanList() + "=====>>>" + shopDetailBean.getGuigetype() + "=====>>>" + shopDetailBean.getGuigepro() + "=====>>>" + shopDetailBean.getGuige()
                                         + "=====>>>" + shopDetailBean.getYouhui());
                                 if (shopDetailBean.getYouhui() != null && !shopDetailBean.getYouhui().equals("")) {
                                     llYouhui.setVisibility(View.VISIBLE);
@@ -389,7 +389,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 }
                                 if (shopDetailBean.getDescrible() != null && !shopDetailBean.getDescrible().equals("")) {
                                     tvDes.setText(shopDetailBean.getDescrible());
-                                }else {
+                                } else {
                                     tvDes.setVisibility(View.GONE);
                                 }
                                 if (shopDetailBean != null) {
@@ -633,7 +633,7 @@ public class ShopDetailActivty extends BaseActivity {
                     startActivityForResult(intent, 1);
                 } else {
                     intent = new Intent(this, CarActivity.class);
-                    intent.putExtra("ziying","yes");
+                    intent.putExtra("ziying", "yes");
                     startActivity(intent);
                 }
                 break;
@@ -690,7 +690,7 @@ public class ShopDetailActivty extends BaseActivity {
                     startActivityForResult(intent, 1);
                 } else {
                     intent = new Intent(this, CarActivity.class);
-                    intent.putExtra("ziying","yes");
+                    intent.putExtra("ziying", "yes");
                     startActivity(intent);
                 }
                 break;
@@ -722,7 +722,7 @@ public class ShopDetailActivty extends BaseActivity {
                             break;
                         case "3":
                             intent = new Intent(this, CarActivity.class);
-                            intent.putExtra("ziying","yes");
+                            intent.putExtra("ziying", "yes");
                             startActivity(intent);
                             break;
                         case "4":
@@ -749,7 +749,7 @@ public class ShopDetailActivty extends BaseActivity {
                             break;
                         case "8":
                             intent = new Intent(this, CarActivity.class);
-                            intent.putExtra("ziying","yes");
+                            intent.putExtra("ziying", "yes");
                             startActivity(intent);
                             break;
                         case "9":
@@ -925,7 +925,7 @@ public class ShopDetailActivty extends BaseActivity {
             tvMoney.setText("¥ " + shopDetailBean.getPrice());
             final ImageView imageView = shopDialog.findViewById(R.id.iv_image);
             Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
-            typesLevelBeans =  JSON.parseArray(shopDetailBean.getGuigepro(), TypesLevelBean.class);
+            typesLevelBeans = JSON.parseArray(shopDetailBean.getGuigepro(), TypesLevelBean.class);
 
             /**
              * 0无规格选	1一种规格  2两种规格
@@ -964,7 +964,7 @@ public class ShopDetailActivty extends BaseActivity {
                      */
                     final List<String> imgListOne = new ArrayList<>();
                     imgListOne.add(shopDetailBean.getImgurl());
-                    for (int i=0;i<typesChooseLevelOneBeans.size();i++){
+                    for (int i = 0; i < typesChooseLevelOneBeans.size(); i++) {
                         if (typesChooseLevelOneBeans.get(i).getImg() != null && !typesChooseLevelOneBeans.get(i).getImg().equals("")) {
                             imgListOne.add(typesChooseLevelOneBeans.get(i).getImg());
                         }
@@ -995,7 +995,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 isChooseColor = true;
                                 if (typesChooseLevelOneBeans.get(curposition).getPrice() != null && !typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
                                     tvMoney.setText("¥ " + typesChooseLevelOneBeans.get(curposition).getPrice());
-                                }else {
+                                } else {
                                     tvMoney.setText("¥ " + shopDetailBean.getPrice());
                                 }
                                 chooseGuigeColor = sb.toString();
@@ -1008,7 +1008,7 @@ public class ShopDetailActivty extends BaseActivity {
                                     return;
                                 }
                                 Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
-                            }else{
+                            } else {
                                 tvHasChoose.setText("请选择商品规格");
                                 chooseGuigeColor = null;
                                 Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
@@ -1019,7 +1019,7 @@ public class ShopDetailActivty extends BaseActivity {
                      * 加载颜色分类数据
                      */
                     List<String> dataSource = new ArrayList<>();
-                    for (int i = 0;i<typesChooseLevelOneBeans.size();i++){
+                    for (int i = 0; i < typesChooseLevelOneBeans.size(); i++) {
                         dataSource.add(typesChooseLevelOneBeans.get(i).getName());
                     }
                     initSizeData(dataSource);
@@ -1040,16 +1040,16 @@ public class ShopDetailActivty extends BaseActivity {
                     /**
                      * 按照level显示name
                      */
-                    if (typesLevelBeans.get(0).getLevel().equals("1")){
+                    if (typesLevelBeans.get(0).getLevel().equals("1")) {
                         tvColor.setText(typesLevelBeans.get(0).getName());
                     }
-                    if (typesLevelBeans.get(1).getLevel().equals("2")){
+                    if (typesLevelBeans.get(1).getLevel().equals("2")) {
                         tvSize.setText(typesLevelBeans.get(1).getName());
                     }
-                    if (typesLevelBeans.get(0).getLevel().equals("2")){
+                    if (typesLevelBeans.get(0).getLevel().equals("2")) {
                         tvSize.setText(typesLevelBeans.get(0).getName());
                     }
-                    if (typesLevelBeans.get(1).getLevel().equals("1")){
+                    if (typesLevelBeans.get(1).getLevel().equals("1")) {
                         tvColor.setText(typesLevelBeans.get(1).getName());
                     }
                     gridViewSize.setVisibility(View.VISIBLE);
@@ -1063,7 +1063,7 @@ public class ShopDetailActivty extends BaseActivity {
                      */
                     final List<String> imgListTwo = new ArrayList<>();
                     imgListTwo.add(shopDetailBean.getImgurl());
-                    for (int i=0;i<typesChooseBeans.size();i++){
+                    for (int i = 0; i < typesChooseBeans.size(); i++) {
                         if (typesChooseBeans.get(i).getImg() != null && !typesChooseBeans.get(i).getImg().equals("")) {
                             imgListTwo.add(typesChooseBeans.get(i).getImg());
                         }
@@ -1089,7 +1089,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 for (int i : selectedList) {
                                     sb.append(parent.getAdapter().getItem(i));
                                     curposition = i;
-                                    picturePostionTwo = i+1;
+                                    picturePostionTwo = i + 1;
                                 }
                                 isChooseColor = true;
                                 chooseGuigeColor = null;
@@ -1127,7 +1127,7 @@ public class ShopDetailActivty extends BaseActivity {
                                     return;
                                 }
                                 Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
-                            }else{
+                            } else {
                                 tvHasChoose.setText("请选择商品规格");
                                 chooseGuigeColor = null;
                                 Glide.with(context).load(shopDetailBean.getImgurl()).into(imageView);
@@ -1135,7 +1135,7 @@ public class ShopDetailActivty extends BaseActivity {
                         }
                     });
                     List<String> dataSourceColor = new ArrayList<>();
-                    for (int i = 0;i<typesChooseBeans.size();i++){
+                    for (int i = 0; i < typesChooseBeans.size(); i++) {
                         dataSourceColor.add(typesChooseBeans.get(i).getName());
                     }
                     /**
@@ -1184,7 +1184,7 @@ public class ShopDetailActivty extends BaseActivity {
                                     }
                                     if (!listPrice.get(sizeCurposition).equals("")) {
                                         tvMoney.setText(sbMoney.append("¥ ").append(listPrice.get(sizeCurposition).toString()));
-                                    }else {
+                                    } else {
                                         tvMoney.setText(sbMoney.append("¥ ").append(shopDetailBean.getPrice()));
                                     }
                                     tvHasChoose.setText(sbSize.append("已选择:").append(typesChooseBeans.get(curposition).getName()).append(" ").append(listSize.get(sizeCurposition).toString()).toString());
@@ -1195,7 +1195,7 @@ public class ShopDetailActivty extends BaseActivity {
                                 }
 //                                Snackbar.make(parent, "已选择:" + sb.toString(), Snackbar.LENGTH_LONG)
 //                                        .setAction("Action", null).show();
-                            }else{
+                            } else {
 //                                Snackbar.make(parent, "未选择", Snackbar.LENGTH_LONG)
 //                                        .setAction("Action", null).show();
                                 chooseGuigeSize = null;
@@ -1221,7 +1221,7 @@ public class ShopDetailActivty extends BaseActivity {
                     switch (shopDetailBean.getGuigetype()) {
                         case "0":
                             //无规格选
-                            doShoppingCart(shopDetailBean.getId(), "1", etGoodNum.getText().toString(),  "");
+                            doShoppingCart(shopDetailBean.getId(), "1", etGoodNum.getText().toString(), "");
                             shopDialog.dismiss();
                             break;
                         case "1":
@@ -1371,6 +1371,7 @@ public class ShopDetailActivty extends BaseActivity {
 
 //        //"<img border=\\\"0\" src=\"" + shopDetailBean.getImgurl() + "\" />   <p>商品名称：" + shopDetailBean.getTitle() + "</p> <p>\\"+shopDetailBean.getPrice()+"</p> "
 //        mKefuDescription = "<img border='0' src='" + shopDetailBean.getImgurl() + "' /> <p>商品名称：" + shopDetailBean.getTitle() + " </p>   <p>商品价格：" + shopDetailBean.getPrice() + "</p> ";
+
     /**
      * 初始化数据
      */
@@ -1383,5 +1384,95 @@ public class ShopDetailActivty extends BaseActivity {
      */
     private void initColorData(List<String> list) {
         mColorTagAdapter.onlyAddAll(list);
+    }
+
+    /**
+     * 优惠券
+     */
+    @OnClick(R.id.ll_quan)
+    public void onViewClicked() {
+        queryCouponListByGoodsId();
+    }
+
+    /**
+     * 查询三级页面领劵列表
+     */
+    private void queryCouponListByGoodsId() {
+        Map<String, String> maps = new HashMap<String, String>();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        maps.put("userid", userID);
+        maps.put("gid",id);
+        RetrofitClient.getInstance(ShopDetailActivty.this).createBaseApi().queryCouponListByGoodsId(
+                maps, new BaseObserver<String>(ShopDetailActivty.this) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            Logg.json(jsonObject);
+                            if (jsonObject.optString("status").equals("1")) {
+                                showYouhuiQuanDialog(ShopDetailActivty.this,jsonObject.optString("content"));
+                            } else {
+                                StringUtil.showToast(ShopDetailActivty.this, jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(ShopDetailActivty.this);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(ShopDetailActivty.this, e.message);
+                    }
+                });
+    }
+
+    /**
+     * 优惠券弹窗
+     * @param context
+     */
+    public void showYouhuiQuanDialog(final Context context,String quanlist) {
+        if (shopDialog == null || !shopDialog.isShowing()) {
+            shopDialog = new ShopDialog(context, R.layout.shop_dialog_layout,
+                    new int[]{R.id.tv_ok});
+            shopDialog.show();
+            shopDialog.setCanceledOnTouchOutside(true);
+            TextView tvConfirm = shopDialog.findViewById(R.id.tv_ok);
+            TextView tvTitle = shopDialog.findViewById(R.id.tv_title);
+            tvTitle.setText("优惠券");
+            RecyclerView recyclerView = shopDialog.findViewById(R.id.recyclerview_shop_dialog);
+            LinearLayout linearLayout = shopDialog.findViewById(R.id.ll_baozhang);
+            ImageView img_close = shopDialog.findViewById(R.id.img_close);
+            linearLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            if (quanlist != null) {
+                List<DiscountBean> discountBeans = JSON.parseArray(quanlist, DiscountBean.class);
+                recyclerView.setAdapter(new DiscountAdapter(context, discountBeans));
+            }
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+            tvConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+        }
     }
 }

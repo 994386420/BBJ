@@ -49,6 +49,7 @@ import com.bbk.Bean.TagBean;
 import com.bbk.Bean.ZeroBuyBean;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BrowseActivity;
+import com.bbk.activity.HomeActivity;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
@@ -928,6 +929,19 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             //未读消息
             if (object.has("messages")) {
                 NewConstants.messages = object.optInt("messages");
+                if (HomeActivity.draggableflagview != null){
+                    if (NewConstants.messages == 0){
+                        HomeActivity.draggableflagview.setVisibility(View.GONE);
+                    }else {
+                        HomeActivity.draggableflagview.setVisibility(View.VISIBLE);
+                        HomeActivity.draggableflagview.setText(NewConstants.messages+"");
+                    }
+                }
+                if (NewConstants.messages != 0) {
+                    mnewmsg.setVisibility(View.VISIBLE);
+                } else {
+                    mnewmsg.setVisibility(View.GONE);
+                }
             }
 
             //引导页

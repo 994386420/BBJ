@@ -14,8 +14,8 @@ public interface BaseApiService<T> {
 
 //    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
 //    public static final String Base_URL = "http://125.64.92.222:8097/APIService/";//正式测试接口
-//    public static final String Base_URL = "http://192.168.20.165/APIService/";//内网测试接口
-    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
+    public static final String Base_URL = "http://192.168.20.165/APIService/";//内网测试接口
+//    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
     //新版首页超值购等分类模块
     @FormUrlEncoded
     @POST("newService/queryAppIndexByType")
@@ -317,7 +317,7 @@ public interface BaseApiService<T> {
     Observable<String> queryIndexMain(@FieldMap Map<String, String> map);
 
     //
-    @POST("mallService/queryMyOrderToPay3")
+    @POST("mallService/queryMyOrderToPay4")
     @FormUrlEncoded
     Observable<String> queryMyOrderToPay(@FieldMap Map<String, String> map);
 
@@ -453,4 +453,34 @@ public interface BaseApiService<T> {
     @POST("appPayService/getZeroBuyOrderOld")
     @FormUrlEncoded
     Observable<String> getZeroBuyOrderOld(@FieldMap Map<String, String> map);
+
+    //查询三级页面领劵列表
+    @POST("mallService/queryCouponListByGoodsId")
+    @FormUrlEncoded
+    Observable<String> queryCouponListByGoodsId(@FieldMap Map<String, String> map);
+
+    //领取优惠券
+    @POST("mallService/insertCouponsByUserid")
+    @FormUrlEncoded
+    Observable<String> insertCouponsByUserid(@FieldMap Map<String, String> map);
+
+    //查询个人的优惠券情况
+    @POST("mallService/queryCouponsListByUserid")
+    @FormUrlEncoded
+    Observable<String> queryCouponsListByUserid(@FieldMap Map<String, String> map);
+
+    //查询领劵中心导航
+    @POST("mallService/queryCouponsCenterMenu")
+    @FormUrlEncoded
+    Observable<String> queryCouponsCenterMenu(@FieldMap Map<String, String> map);
+
+    //查询领劵中心列表
+    @POST("mallService/queryCouponsCenterList")
+    @FormUrlEncoded
+    Observable<String> queryCouponsCenterList(@FieldMap Map<String, String> map);
+
+    //一键读取消息
+    @POST("newService/insertMessageReadOneKey")
+    @FormUrlEncoded
+    Observable<String> insertMessageReadOneKey(@FieldMap Map<String, String> map);
 }

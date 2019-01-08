@@ -207,6 +207,60 @@
                     android:checked="false"
                     android:background="@drawable/checkbox_order"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/__picker_common_primary"/>
+            <LinearLayout
+                android:id="@+id/ll_quan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_seclecter"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/tuiguang_color4"
+                    android:textSize="13dp"
+                    android:text="优惠" />
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <com.bbk.view.AdaptionSizeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@mipmap/bg_youhui"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:gravity="center"
+                        android:text="" />
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tuiguang_color4"
+                    android:textSize="13dp"
+                    android:text="领券" />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@mipmap/enter01" />
+            </LinearLayout>
         </LinearLayout>
         </com.bbk.view.MyScrollViewNew>
     <!--分割线-->

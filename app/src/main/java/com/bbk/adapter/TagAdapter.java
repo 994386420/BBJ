@@ -13,9 +13,7 @@ import com.hhl.library.OnInitSelectedPosition;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by HanHailong on 15/10/19.
- */
+
 public class TagAdapter<T> extends BaseAdapter implements OnInitSelectedPosition {
 
     private final Context mContext;

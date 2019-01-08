@@ -728,6 +728,48 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void queryCouponListByGoodsId(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCouponListByGoodsId(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void insertCouponsByUserid(Map<String, String> parameters, Observer<?> observer) {
+        apiService.insertCouponsByUserid(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryCouponsListByUserid(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCouponsListByUserid(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryCouponsCenterMenu(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCouponsCenterMenu(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryCouponsCenterList(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryCouponsCenterList(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void insertMessageReadOneKey(Map<String, String> parameters, Observer<?> observer) {
+        apiService.insertMessageReadOneKey(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

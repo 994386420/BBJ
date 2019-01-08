@@ -12,18 +12,21 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.CofirmOrderBean;
+import com.bbk.Bean.DiscountBean;
 import com.bbk.Bean.GoodsBean;
 import com.bbk.activity.AddressMangerActivity;
 import com.bbk.activity.BaseActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
-import com.bbk.activity.ZiYingZeroBuyDetailActivty;
 import com.bbk.adapter.ConfirmOrderAdapter;
+import com.bbk.adapter.DiscountAdapter;
+import com.bbk.adapter.DiscountOrderAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -31,6 +34,7 @@ import com.bbk.model.BaseService;
 import com.bbk.model.PayModel;
 import com.bbk.resource.Constants;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -95,16 +99,19 @@ public class ConfirmOrderActivity extends BaseActivity {
     CheckBox ckYongjin;
     @BindView(R.id.ll_yongjin)
     LinearLayout llYongjin;
+    @BindView(R.id.ll_quan)
+    LinearLayout llQuan;
     private String ids, nums, guiges, liuyans, type = "0";
     private PayReq mReq;
     private PayModel mPayModel;
     private IWXAPI msgApi = null;
     private String addrid = "";
     CofirmOrderBean cofirmOrderBean;
-    private String usejinbi = "0",useyongjin = "0";
+    private String usejinbi = "0", useyongjin = "0";
     List<GoodsBean> goodsBeans;
     ConfirmOrderAdapter confirmOrderAdapter;
-    private double totalShopPrice = 0.00,yongjinDiscountPrice = 0.00;;
+    private double totalShopPrice = 0.00, yongjinDiscountPrice = 0.00;
+    private ShopDialog shopDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,12 +145,12 @@ public class ConfirmOrderActivity extends BaseActivity {
                             yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney());
                             if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
                                 tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
-                            }else {
+                            } else {
                                 tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
                             }
 
 
-                            totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney())-Double.parseDouble(cofirmOrderBean.getYongjin());
+                            totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney()) - Double.parseDouble(cofirmOrderBean.getYongjin());
                             if (totalShopPrice < 0) {
                                 totalPrice.setText("0.00");
                                 return;
@@ -155,7 +162,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                         yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getJinbimoney());
                         if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
                             tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
-                        }else {
+                        } else {
                             tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
                         }
 
@@ -174,10 +181,10 @@ public class ConfirmOrderActivity extends BaseActivity {
                             yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal());
                             if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
                                 tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
-                            }else {
+                            } else {
                                 tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
                             }
-                            totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal())-Double.parseDouble(cofirmOrderBean.getYongjin());
+                            totalShopPrice = Double.parseDouble(cofirmOrderBean.getTotal()) - Double.parseDouble(cofirmOrderBean.getYongjin());
                             if (totalShopPrice < 0) {
                                 totalPrice.setText("0.00");
                                 return;
@@ -190,7 +197,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                         yongjinDiscountPrice = Double.parseDouble(cofirmOrderBean.getTotal());
                         if (Double.parseDouble(cofirmOrderBean.getYongjin()) > yongjinDiscountPrice) {
                             tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + yongjinDiscountPrice + "元");
-                        }else {
+                        } else {
                             tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
                         }
 
@@ -287,8 +294,8 @@ public class ConfirmOrderActivity extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
-                                Logg.json(jsonObject);
                                 cofirmOrderBean = JSON.parseObject(content, CofirmOrderBean.class);
+                                Logg.json(cofirmOrderBean.getYoulist());
                                 addrid = cofirmOrderBean.getAddrid();
                                 if (addrid != null) {
                                     llAddress.setVisibility(View.VISIBLE);
@@ -324,9 +331,9 @@ public class ConfirmOrderActivity extends BaseActivity {
                                     } else {
                                         llYongjin.setVisibility(View.VISIBLE);
                                         llYongjin.setBackgroundColor(getResources().getColor(R.color.white));
-                                        if (Double.parseDouble(cofirmOrderBean.getYongjin()) > total){
+                                        if (Double.parseDouble(cofirmOrderBean.getYongjin()) > total) {
                                             tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + total + "元");
-                                        }else {
+                                        } else {
                                             tvYongjin.setText("可用" + Double.parseDouble(cofirmOrderBean.getYongjin()) + "佣金抵" + cofirmOrderBean.getYongjin() + "元");
                                         }
                                     }
@@ -387,7 +394,7 @@ public class ConfirmOrderActivity extends BaseActivity {
         return new DecimalFormat("0.00").format(num);
     }
 
-    @OnClick({R.id.title_back_btn, R.id.go_pay, R.id.ll_add_address})
+    @OnClick({R.id.title_back_btn, R.id.go_pay, R.id.ll_add_address,R.id.ll_quan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_back_btn:
@@ -418,9 +425,52 @@ public class ConfirmOrderActivity extends BaseActivity {
                 Intent intent = new Intent(this, AddressMangerActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.ll_quan:
+                if (cofirmOrderBean.getYoulist() != null) {
+                    showYouhuiQuanDialog(this, cofirmOrderBean.getYoulist());
+                }
+                break;
         }
     }
 
+    /**
+     * 优惠券弹窗
+     * @param context
+     */
+    public void showYouhuiQuanDialog(final Context context,String quanlist) {
+        if (shopDialog == null || !shopDialog.isShowing()) {
+            shopDialog = new ShopDialog(context, R.layout.shop_dialog_layout,
+                    new int[]{R.id.tv_ok});
+            shopDialog.show();
+            shopDialog.setCanceledOnTouchOutside(true);
+            TextView tvConfirm = shopDialog.findViewById(R.id.tv_ok);
+            TextView tvTitle = shopDialog.findViewById(R.id.tv_title);
+            tvTitle.setText("店铺优惠");
+            RecyclerView recyclerView = shopDialog.findViewById(R.id.recyclerview_shop_dialog);
+            LinearLayout linearLayout = shopDialog.findViewById(R.id.ll_baozhang);
+            ImageView img_close = shopDialog.findViewById(R.id.img_close);
+            linearLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            if (quanlist != null) {
+                List<DiscountBean> discountBeans = JSON.parseArray(quanlist, DiscountBean.class);
+                recyclerView.setAdapter(new DiscountOrderAdapter(context, discountBeans));
+            }
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+            tvConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+        }
+    }
     /**
      * 调起支付订单
      */
@@ -468,12 +518,12 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            }else if (jsonObject.optString("status").equals("2")){
-                                Intent intent = new Intent(ConfirmOrderActivity.this,ShopOrderActivity.class);
+                            } else if (jsonObject.optString("status").equals("2")) {
+                                Intent intent = new Intent(ConfirmOrderActivity.this, ShopOrderActivity.class);
                                 intent.putExtra("status", "2");
                                 startActivity(intent);
-                                StringUtil.showToast(ConfirmOrderActivity.this,"购买成功");
-                            }else {
+                                StringUtil.showToast(ConfirmOrderActivity.this, "购买成功");
+                            } else {
                                 StringUtil.showToast(ConfirmOrderActivity.this, jsonObject.optString("errmsg"));
                             }
                         } catch (JSONException e) {

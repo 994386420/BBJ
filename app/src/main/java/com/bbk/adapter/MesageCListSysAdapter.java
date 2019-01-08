@@ -120,9 +120,14 @@ public class MesageCListSysAdapter extends BaseAdapter{
 						try {
 							JSONObject jsonObject = new JSONObject(s);
 							NewConstants.messages = jsonObject.optInt("content");
-							if (HomeActivity.mNumImageView != null){
-								HomeActivity.mNumImageView.setNum(NewConstants.messages);
-							}
+							if (HomeActivity.draggableflagview != null){
+								if (NewConstants.messages == 0){
+									HomeActivity.draggableflagview.setVisibility(View.GONE);
+								}else {
+									HomeActivity.draggableflagview.setVisibility(View.VISIBLE);
+									HomeActivity.draggableflagview.setText(NewConstants.messages+"");
+								}
+						}
 
 						} catch (JSONException e) {
 							e.printStackTrace();

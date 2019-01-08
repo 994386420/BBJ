@@ -34,6 +34,16 @@ public class ShopDetailBean {
     private String shareimg ; // 分享的图片地址
     private String canZeroBuy;
     private String zeroBuyDesc;
+    private String quanList;//商品详情优惠券
+
+
+    public String getQuanList() {
+        return quanList;
+    }
+
+    public void setQuanList(String quanList) {
+        this.quanList = quanList;
+    }
 
     public String getCanZeroBuy() {
         return canZeroBuy;

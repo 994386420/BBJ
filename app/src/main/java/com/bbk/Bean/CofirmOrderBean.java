@@ -20,6 +20,15 @@ public class CofirmOrderBean {
     private String totaljin;//总共需要使用的金币个数
     private String yongjin;
     private String useyongjin;
+    private String youlist;
+
+    public String getYoulist() {
+        return youlist;
+    }
+
+    public void setYoulist(String youlist) {
+        this.youlist = youlist;
+    }
 
     public String getYongjin() {
         return yongjin;

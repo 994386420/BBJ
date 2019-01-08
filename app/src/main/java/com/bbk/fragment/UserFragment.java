@@ -76,6 +76,7 @@ import com.bbk.component.JingbiComponent;
 import com.bbk.component.QiandaoComponent;
 import com.bbk.component.ShouyiComponent;
 import com.bbk.flow.DataFlow;
+import com.bbk.model.DiscountActivity;
 import com.bbk.model.MainActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
@@ -210,6 +211,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     RelativeLayout llHongbao;
     @BindView(R.id.tv_s4)
     AdaptionSizeTextView tvS4;
+    @BindView(R.id.ll_discount)
+    LinearLayout llDiscount;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -427,8 +430,13 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 if (messages != null) {
                                     NewConstants.messages = Integer.parseInt(messages);
                                     mnewmsg.setText(NewConstants.messages + "");
-                                    if (HomeActivity.mNumImageView != null) {
-                                        HomeActivity.mNumImageView.setNum(NewConstants.messages);
+                                    if (HomeActivity.draggableflagview != null) {
+                                        if (NewConstants.messages == 0){
+                                            HomeActivity.draggableflagview.setVisibility(View.GONE);
+                                        }else {
+                                            HomeActivity.draggableflagview.setVisibility(View.VISIBLE);
+                                            HomeActivity.draggableflagview.setText(NewConstants.messages+"");
+                                        }
                                     }
                                     if (NewHomeFragment.mnewmsg != null) {
                                         NewHomeFragment.mnewmsg.setText(NewConstants.messages + "");
@@ -538,8 +546,13 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     if (messages != null) {
                                         NewConstants.messages = Integer.parseInt(messages);
                                         mnewmsg.setText(NewConstants.messages + "");
-                                        if (HomeActivity.mNumImageView != null) {
-                                            HomeActivity.mNumImageView.setNum(NewConstants.messages);
+                                        if (HomeActivity.draggableflagview != null) {
+                                            if (NewConstants.messages == 0){
+                                                HomeActivity.draggableflagview.setVisibility(View.GONE);
+                                            }else {
+                                                HomeActivity.draggableflagview.setVisibility(View.VISIBLE);
+                                                HomeActivity.draggableflagview.setText(NewConstants.messages+"");
+                                            }
                                         }
                                         if (MainActivity.mnewmsg != null) {
                                             MainActivity.mnewmsg.setText(NewConstants.messages + "");
@@ -613,7 +626,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     tvDshNum.setVisibility(View.GONE);
                                     xrefresh.finishRefresh();
                                     MainActivity.mnewmsg.setVisibility(View.GONE);
-                                    HomeActivity.mNumImageView.setNum(0);
+                                    HomeActivity.draggableflagview.setVisibility(View.GONE);
                                     mnewmsg.setVisibility(View.GONE);
                                 }
 
@@ -1431,53 +1444,18 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         AlibcTrade.show(getActivity(), alibcBasePage, alibcShowParams, null, exParams, new DemoTradeCallback());
     }
 
-    private KeplerAttachParameter mKeplerAttachParameter = new KeplerAttachParameter();
-
-//    OpenAppAction mOpenAppAction = new OpenAppAction() {
-//        @Override
-//        public void onStatus(final int status, final String url) {
-////			mHandler.post(new Runnable() {
-////				@Override
-////				public void run() {
-//            Intent intent;
-//            if (status == OpenAppAction.OpenAppAction_start) {//开始状态未必一定执行，
-//                DialogSingleUtil.show(getActivity());
-//            } else {
-////						mKelperTask = null;
-//                DialogSingleUtil.dismiss(0);
-//            }
-//            if (status == OpenAppAction.OpenAppAction_result_NoJDAPP) {
-//                StringUtil.showToast(getContext(), "未安装京东");
-//                intent = new Intent(getActivity(), WebViewActivity.class);
-//                if (url != null) {
-//                    intent.putExtra("url", url);
-//                }
-//                startActivity(intent);
-//                //未安装京东
-//            } else if (status == OpenAppAction.OpenAppAction_result_BlackUrl) {
-//                StringUtil.showToast(getActivity(), "不在白名单");
-//                //不在白名单
-//            } else if (status == OpenAppAction.OpenAppAction_result_ErrorScheme) {
-//                StringUtil.showToast(getActivity(), "协议错误");
-//                //协议错误
-//            } else if (status == OpenAppAction.OpenAppAction_result_APP) {
-//                //呼京东成功
-//            } else if (status == OpenAppAction.OpenAppAction_result_NetError) {
-//                StringUtil.showToast(getActivity(), "网络异常");
-//                //网络异常
-//            }
-////				}
-////			});
-//        }
-//    };
-
-    @OnClick({R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
+    @OnClick({R.id.ll_discount,R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
             R.id.ll_pl, R.id.ll_address, R.id.ll_tq, R.id.ll_xs, R.id.ll_cjwt, R.id.ll_yjfk, R.id.ll_woyao, R.id.ll_pudao, R.id.ll_kefu, R.id.ll_adoutbbj, R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.mjdshopcart,
             R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu, R.id.huodongimg, R.id.img_hongbao})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
+            //优惠券
+            case R.id.ll_discount:
+                intent = new Intent(getActivity(), DiscountActivity.class);
+                startActivity(intent);
+                break;
             case R.id.tv_tuiguang_tule:
                 //推广规则跳转链接
 //                String url = BaseApiService.Base_URL + "mobile/user/generalize";
@@ -2086,4 +2064,6 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
         }
     }
+
+
 }

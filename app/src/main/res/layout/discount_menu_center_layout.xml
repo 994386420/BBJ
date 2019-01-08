@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/topbar_layout"
+    tools:context="com.bbk.activity.BidListDetailActivity"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/title_layout"/>
+
+    <LinearLayout
+        android:id="@+id/ll_tablayout"
+        android:layout_below="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.bbk.model.tablayout.XTabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:xTabMode="scrollable"
+            app:xTabIndicatorWidth="40dp"
+            app:xTabTextColor="@color/shop_color1"
+            app:xTabSelectedTextColor="@color/tuiguang_color5"
+            app:xTabIndicatorColor="@color/tuiguang_color5"
+            app:xTabIndicatorHeight="1dp"
+            app:xTabTextSize="14sp"
+            app:xTabSelectedTextSize="14sp"
+            app:xTabDividerWidth="0dp"
+            app:xTabDividerHeight="0dp"
+            app:xTabDividerColor="#000"
+            />
+    </LinearLayout>
+    <View
+        android:layout_below="@+id/ll_tablayout"
+        android:id="@+id/henggang213"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/__picker_common_primary" />
+        <RelativeLayout
+            android:layout_below="@+id/henggang213"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/xrefresh"
+            android:background="#f3f3f3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mlistview"
+                    android:layout_width="match_parent"
+                    android:descendantFocusability="afterDescendants"
+                    android:layout_height="match_parent"/>
+                <com.bbk.view.CommonLoadingView
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </RelativeLayout>
+
+</RelativeLayout>

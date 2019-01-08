@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll_discount"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@mipmap/discount_03">
+
+        <LinearLayout
+            android:layout_weight="2.1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">dp
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥"
+                    android:textSize="13dp"
+                    android:textColor="@color/tuiguang_color5"/>
+                <com.bbk.view.AdaptionSizeTextView
+                    android:id="@+id/tv_discount_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="30dp"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/tuiguang_color5"/>
+            </LinearLayout>
+
+            <com.bbk.view.AdaptionSizeTextView
+                android:id="@+id/tv_discount_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="13dp"
+                android:textColor="@color/tuiguang_color5"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_quan_msg"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="12dp"
+                    android:textColor="@color/shop_color1"/>
+                <com.bbk.view.AdaptionSizeTextView
+                    android:id="@+id/tv_ch2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:visibility="gone"
+                    android:textSize="10dp"
+                    android:textColor="@color/tuiguang_color4"/>
+                <com.bbk.view.AdaptionSizeTextView
+                    android:id="@+id/tv_discount_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="10dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/tuiguang_color4"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_weight="1.5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_has_lingqu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight= "10dp"
+                    android:visibility="gone"
+                    android:background="@mipmap/discount_06"/>
+                <ImageView
+                    android:id="@+id/img_kuaiguoqi"
+                    android:layout_width="55dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    android:background="@mipmap/discount_05"/>
+                <TextView
+                    android:id="@+id/tv_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="立即领取"
+                    android:textSize="12dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_cicyle1"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
