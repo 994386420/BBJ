@@ -105,6 +105,10 @@
     <color name="shop_color2">#FAFAFA</color>
     <color name="search_color">#ffdc78</color>
 
+    <color name="jifen_color">#FE8F33</color>
+    <color name="jifen_color2">#EA3D05</color>
+    <color name="jifen_color3">#FBE62A</color>
+
     <color name="ic_taobao">#ea8010</color>
     <color name="ic_yellow">#f4c600</color>
     <color name="ic_red">#eb4f38</color>

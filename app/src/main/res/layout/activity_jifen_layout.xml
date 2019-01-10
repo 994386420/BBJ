@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">//用户收益
+
+    <include layout="@layout/title_layout" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/__picker_common_primary">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/brokerage_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_jifen2"
+                        android:paddingBottom="20dp"
+                        android:paddingTop="20dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="剩余积分"
+                                android:textColor="@color/jifen_color3" />
+
+                            <TextView
+                                android:id="@+id/tv_jifen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="0"
+                                android:textColor="@color/white"
+                                android:textSize="45dp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:background="@drawable/bg_jifen4"
+                                android:layout_marginTop="10dp">
+                                <TextView
+                                    android:layout_toRightOf="@+id/tv_jifen_guoqi"
+                                    android:id="@+id/tv_duihuan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_user_jlz"
+                                    android:gravity="center"
+                                    android:paddingBottom="3dp"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="20dp"
+                                    android:paddingTop="3dp"
+                                    android:text="兑换"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="15dp" />
+                                <TextView
+                                    android:id="@+id/tv_jifen_guoqi"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:paddingBottom="4dp"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="10dp"
+                                    android:paddingTop="4dp"
+                                    android:text=""
+                                    android:visibility="gone"
+                                    android:textColor="@color/white"
+                                    android:textSize="13dp" />
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_rule"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:background="@drawable/bg_jifen3"
+                            android:gravity="center"
+                            android:paddingBottom="3dp"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="10dp"
+                            android:paddingTop="3dp"
+                            android:text="兑换规则"
+                            android:textColor="@color/white"
+                            android:textSize="12dp" />
+                    </FrameLayout>
+
+                    <com.bbk.model.tablayout.XTabLayout
+                        android:id="@+id/tablayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        app:xTabMode="scrollable"
+                        app:xTabIndicatorWidth="90dp"
+                        app:xTabTextColor="@color/shop_color1"
+                        app:xTabSelectedTextColor="@color/color_line_top"
+                        app:xTabIndicatorColor="@color/color_line_top"
+                        app:xTabIndicatorHeight="1dp"
+                        app:xTabTextSize="16sp"
+                        app:xTabSelectedTextSize="16sp"
+                        app:xTabDividerWidth="0dp"
+                        app:xTabDividerHeight="0dp"
+                        app:xTabDividerColor="#000"
+                        />
+                    <View
+                        android:id="@+id/henggang213"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_line" />
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:orientation="vertical">-->
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recyc_jifen"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:descendantFocusability="afterDescendants">
+
+                            </android.support.v7.widget.RecyclerView>
+
+                            <com.bbk.view.CommonLoadingView
+                                android:id="@+id/progress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:visibility="gone" />
+                        </FrameLayout>
+                    <!--</LinearLayout>-->
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

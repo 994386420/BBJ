@@ -32,8 +32,8 @@ public class ShopDetailBean {
     private String youhui3;
     private String isOldUser;
     private String shareimg ; // 分享的图片地址
-    private String canZeroBuy;
-    private String zeroBuyDesc;
+    private String canZeroBuyJifen;
+    private String zeroBuyDescJifen;
     private String quanList;//商品详情优惠券
 
 
@@ -45,20 +45,21 @@ public class ShopDetailBean {
         this.quanList = quanList;
     }
 
-    public String getCanZeroBuy() {
-        return canZeroBuy;
+
+    public String getCanZeroBuyJifen() {
+        return canZeroBuyJifen;
     }
 
-    public void setCanZeroBuy(String canZeroBuy) {
-        this.canZeroBuy = canZeroBuy;
+    public void setCanZeroBuyJifen(String canZeroBuyJifen) {
+        this.canZeroBuyJifen = canZeroBuyJifen;
     }
 
-    public String getZeroBuyDesc() {
-        return zeroBuyDesc;
+    public String getZeroBuyDescJifen() {
+        return zeroBuyDescJifen;
     }
 
-    public void setZeroBuyDesc(String zeroBuyDesc) {
-        this.zeroBuyDesc = zeroBuyDesc;
+    public void setZeroBuyDescJifen(String zeroBuyDescJifen) {
+        this.zeroBuyDescJifen = zeroBuyDescJifen;
     }
 
     public String getShareimg() {

@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <include layout="@layout/title_layout"/>
+    <include layout="@layout/title_layout"
+        android:visibility="gone"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/__picker_common_primary"/>
+
     <LinearLayout
         android:id="@+id/ll_tixian"
         android:layout_width="match_parent"
@@ -20,6 +22,7 @@
         android:background="@color/__picker_common_primary">
 
         <TextView
+            android:id="@+id/tv_tixian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="您已经通过微信累积提现金额 "
@@ -40,22 +43,22 @@
         android:layout_height="match_parent"
         android:background="@color/__picker_common_primary">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/brokerage_detail_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:descendantFocusability="afterDescendants"
+                android:layout_height="match_parent">
 
             </android.support.v7.widget.RecyclerView>
             <com.bbk.view.CommonLoadingView
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:visibility="gone"
-                android:layout_centerHorizontal="true"/>
-        </RelativeLayout>
+                android:layout_gravity="center" />
+        </FrameLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

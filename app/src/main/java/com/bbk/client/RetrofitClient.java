@@ -770,6 +770,20 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void queryIntegralCenterByUserid(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryIntegralCenterByUserid(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
+
+    public  void queryBrokerageDetailInfo(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryBrokerageDetailInfo(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

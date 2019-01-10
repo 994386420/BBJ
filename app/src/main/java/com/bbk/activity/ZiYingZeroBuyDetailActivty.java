@@ -355,7 +355,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
             tvZeroBuy.setText("下单");
             ImageView img_close = updataDialog.findViewById(R.id.img_close);
             if (isOlder.equals("yes")){
-                if (shopDetailBean.getCanZeroBuy() != null && shopDetailBean.getCanZeroBuy().equals("1")) {
+                if (shopDetailBean.getCanZeroBuyJifen() != null && shopDetailBean.getCanZeroBuyJifen().equals("1")) {
                     title.setText("抢单成功");
                     tv_update.setText("分享朋友圈立即0元购");
                     String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
@@ -426,13 +426,13 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                     tvShare.setTextColor(getResources().getColor(R.color.white));
                     tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
                     tvZeroBuy.setTextColor(getResources().getColor(R.color.tuiguang_color4));
-                    title.setText(shopDetailBean.getZeroBuyDesc());
+                    title.setText(shopDetailBean.getZeroBuyDescJifen());
                     tv_update.setVisibility(View.GONE);
                     tvZeroBuy.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             updataDialog.dismiss();
-                            StringUtil.showToast(context, shopDetailBean.getZeroBuyDesc());
+                            StringUtil.showToast(context, shopDetailBean.getZeroBuyDescJifen());
                         }
                     });
                 }

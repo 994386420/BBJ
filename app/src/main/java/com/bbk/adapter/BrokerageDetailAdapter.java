@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bbk.Bean.BrokerageDetailBean;
+import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.activity.R;
 
 import java.util.List;
@@ -44,7 +45,10 @@ public class BrokerageDetailAdapter extends RecyclerView.Adapter {
             e.printStackTrace();
         }
     }
-
+    public void notifyData(List<BrokerageDetailBean> beans) {
+        this.brokerageDetailBeans.addAll(beans);
+        notifyDataSetChanged();
+    }
     @Override
     public long getItemId(int position) {
         return position;

@@ -77,6 +77,7 @@ import com.bbk.component.QiandaoComponent;
 import com.bbk.component.ShouyiComponent;
 import com.bbk.flow.DataFlow;
 import com.bbk.model.DiscountActivity;
+import com.bbk.model.JiFenActivity;
 import com.bbk.model.MainActivity;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
@@ -94,7 +95,6 @@ import com.bbk.view.MyScrollViewNew;
 import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
-import com.kepler.jd.sdk.bean.KeplerAttachParameter;
 import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -213,6 +213,8 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     AdaptionSizeTextView tvS4;
     @BindView(R.id.ll_discount)
     LinearLayout llDiscount;
+    @BindView(R.id.ll_jifen)
+    LinearLayout llJifen;
     private View mView;
     private RelativeLayout newpinglun;
     private TextView sign, mjb, mcollectnum, mfootnum, mnewmsg, mJlzText;
@@ -386,8 +388,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                                        } else {
 //                                            tvHongbao.setText("0");
 //                                        }
-                                        tvLevel.setVisibility(View.VISIBLE);
+                                        tvLevel.setVisibility(View.GONE);
                                         mJlzText.setVisibility(View.VISIBLE);
+                                        llJifen.setVisibility(View.VISIBLE);
                                         if (type.equals("0")) {
                                             llTuiguang.setVisibility(View.GONE);
                                             llTuiguang_user.setVisibility(View.GONE);
@@ -414,7 +417,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 mcollectnum.setText(collect);
                                 mfootnum.setText(footprint);
                                 user_name.setText(username);
-                                mJlzText.setText("鲸力值" + exp);
+                                mJlzText.setText("积分 " + exp);
                                 CircleImageView1.getImg(getActivity(), imgurl, user_img);
                                 SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "imgUrl",
                                         imgurl);
@@ -431,11 +434,11 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     NewConstants.messages = Integer.parseInt(messages);
                                     mnewmsg.setText(NewConstants.messages + "");
                                     if (HomeActivity.draggableflagview != null) {
-                                        if (NewConstants.messages == 0){
+                                        if (NewConstants.messages == 0) {
                                             HomeActivity.draggableflagview.setVisibility(View.GONE);
-                                        }else {
+                                        } else {
                                             HomeActivity.draggableflagview.setVisibility(View.VISIBLE);
-                                            HomeActivity.draggableflagview.setText(NewConstants.messages+"");
+                                            HomeActivity.draggableflagview.setText(NewConstants.messages + "");
                                         }
                                     }
                                     if (NewHomeFragment.mnewmsg != null) {
@@ -499,8 +502,9 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                 }
                                 if (!TextUtils.isEmpty(userID)) {
                                     tvCopy.setVisibility(View.VISIBLE);
-                                    tvLevel.setVisibility(View.VISIBLE);
+                                    tvLevel.setVisibility(View.GONE);
                                     mJlzText.setVisibility(View.VISIBLE);
+                                    llJifen.setVisibility(View.VISIBLE);
                                     tvYaoqingma.setVisibility(View.VISIBLE);
 
                                     if (userBean.getSingleMoney() != null && !userBean.getSingleMoney().equals("")) {
@@ -530,7 +534,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                         tvLevel.setText("超级伙伴");
                                     }
                                     user_name.setText(username);
-                                    mJlzText.setText("鲸力值" + exp);
+                                    mJlzText.setText("积分 " + exp);
                                     CircleImageView1.getImg(getActivity(), imgurl, user_img);
                                     SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "userInfor", "imgUrl",
                                             imgurl);
@@ -547,11 +551,11 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                         NewConstants.messages = Integer.parseInt(messages);
                                         mnewmsg.setText(NewConstants.messages + "");
                                         if (HomeActivity.draggableflagview != null) {
-                                            if (NewConstants.messages == 0){
+                                            if (NewConstants.messages == 0) {
                                                 HomeActivity.draggableflagview.setVisibility(View.GONE);
-                                            }else {
+                                            } else {
                                                 HomeActivity.draggableflagview.setVisibility(View.VISIBLE);
-                                                HomeActivity.draggableflagview.setText(NewConstants.messages+"");
+                                                HomeActivity.draggableflagview.setText(NewConstants.messages + "");
                                             }
                                         }
                                         if (MainActivity.mnewmsg != null) {
@@ -617,6 +621,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     llTuiguang.setVisibility(View.GONE);
                                     tvLevel.setVisibility(View.GONE);
                                     mJlzText.setVisibility(View.GONE);
+                                    llJifen.setVisibility(View.GONE);
                                     tvYaoqingma.setVisibility(View.GONE);
                                     tvSo.setVisibility(View.GONE);
                                     tvSs.setVisibility(View.GONE);
@@ -1444,13 +1449,18 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
         AlibcTrade.show(getActivity(), alibcBasePage, alibcShowParams, null, exParams, new DemoTradeCallback());
     }
 
-    @OnClick({R.id.ll_discount,R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
+    @OnClick({R.id.ll_jifen,R.id.ll_discount, R.id.ll_sign, R.id.ll_jingbi, R.id.ll_fensi, R.id.ll_yaoqing, R.id.ll_all_order, R.id.ll_daifukuan, R.id.ll_daifahuo, R.id.ll_daishouhuo, R.id.ll_daipl, R.id.ll_shouhou, R.id.ll_car, R.id.ll_foot,
             R.id.ll_pl, R.id.ll_address, R.id.ll_tq, R.id.ll_xs, R.id.ll_cjwt, R.id.ll_yjfk, R.id.ll_woyao, R.id.ll_pudao, R.id.ll_kefu, R.id.ll_adoutbbj, R.id.tv_tuiguang_tule, R.id.ll_brokerage, R.id.mjdshopcart,
             R.id.mTaobaoshopcart, R.id.ll_fanli_order, R.id.ll_benyueyugu, R.id.huodongimg, R.id.img_hongbao})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
+            //积分
+            case R.id.ll_jifen:
+                intent = new Intent(getActivity(), JiFenActivity.class);
+                startActivity(intent);
+                break;
             //优惠券
             case R.id.ll_discount:
                 intent = new Intent(getActivity(), DiscountActivity.class);
@@ -2064,6 +2074,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 break;
         }
     }
+
 
 
 }

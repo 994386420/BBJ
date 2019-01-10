@@ -1,24 +1,28 @@
-package com.bbk.activity;
+package com.bbk.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.bbk.Bean.TiXianDetailBean;
-import com.bbk.adapter.TiXianDetailAdapter;
+import com.bbk.Bean.BrokerageDetailBean;
+import com.bbk.activity.MyApplication;
+import com.bbk.activity.R;
+import com.bbk.adapter.BrokerageDetailAdapter;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.util.DialogSingleUtil;
-import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CommonLoadingView;
+import com.logg.Logg;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -32,54 +36,78 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 
 /**
- * 提现明细
+ * 收益fragment,展示数据
  */
-public class TiXianDetailActivity extends BaseActivity implements CommonLoadingView.LoadingHandler {
-
-    String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-    @BindView(R.id.title_back_btn)
-    ImageButton titleBackBtn;
-    @BindView(R.id.title_text)
-    TextView titleText;
+public class ShouyiFragment extends BaseViewPagerFragment implements CommonLoadingView.LoadingHandler {
     @BindView(R.id.brokerage_detail_list)
     RecyclerView brokerageDetailList;
-    @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
     @BindView(R.id.progress)
     CommonLoadingView progress;
-    int page = 1, x = 1;
-    List<TiXianDetailBean> tiXianDetailBeans;
-    TiXianDetailAdapter tiXianDetailAdapter;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
+    @BindView(R.id.tv_tixian)
+    TextView tvTixian;
     @BindView(R.id.tv_jinbi)
     TextView tvJinbi;
     @BindView(R.id.ll_tixian)
     LinearLayout llTixian;
+    private String type = "", level = "",money = "";
+    private int page = 1, x = 1;
+    private BrokerageDetailAdapter brokerageDetailAdapter;
+    private View mView;
+
+    public static ShouyiFragment newInstance(String type, String level,String money) {
+        Bundle bundle = new Bundle();
+        ShouyiFragment fragment = new ShouyiFragment();
+        bundle.putString("type", type);
+        bundle.putString("level", level);
+        bundle.putString("money", money);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.brokerage_detail_layout);
-        ButterKnife.bind(this);
-        View topView = findViewById(R.id.topbar_layout);
-        topView.setVisibility(View.VISIBLE);
-        ImmersedStatusbarUtils.initAfterSetContentView(this, topView);
+        type = getArguments().getString("type");
+        level = getArguments().getString("level");
+        money = getArguments().getString("money");
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        /***
+         * 判断Fragment是否已经添加了contentView（第一次加载时，可以将view保存下 来，再  次加载时，判断保存下来的view是否为null），
+         * 如果保存的view为null，返回新的view ，否则，先将 保存的view从父view中移除，然后将该view返回出去
+         */
+        if (mView != null) {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (parent != null) {
+                parent.removeView(mView);
+            }
+            return mView;
+        }
+        mView = inflater.inflate(R.layout.brokerage_detail_layout, null);
+        ButterKnife.bind(this, mView);
+        brokerageDetailList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        brokerageDetailList.setHasFixedSize(true);
         progress.setLoadingHandler(this);
         refreshAndloda();
-        titleText.setText("提现明细");
-        llTixian.setVisibility(View.VISIBLE);
-        queryYongjinListByUserid();
+        return mView;
     }
 
     private void refreshAndloda() {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                x = 1;
                 page = 1;
-                queryYongjinListByUserid();
+                x = 1;
+                queryUserBrokerage();
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -87,44 +115,38 @@ public class TiXianDetailActivity extends BaseActivity implements CommonLoadingV
             public void onLoadMore(RefreshLayout refreshLayout) {
                 x = 2;
                 page++;
-                queryYongjinListByUserid();
+                queryUserBrokerage();
             }
         });
     }
 
-
     /**
-     * 查询提现明细
+     * 查询报表明细
      */
-    private void queryYongjinListByUserid() {
-        refreshLayout.setNoMoreData(false);
+    private void queryUserBrokerage() {
+        if (refreshLayout != null) {
+            refreshLayout.setNoMoreData(false);
+        }
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         Map<String, String> maps = new HashMap<String, String>();
         maps.put("userid", userID);
+        maps.put("type", type);
         maps.put("page", page + "");
-        RetrofitClient.getInstance(this).createBaseApi().queryYongjinListByUserid(
-                maps, new BaseObserver<String>(this) {
+        maps.put("level", level);
+        RetrofitClient.getInstance(getActivity()).createBaseApi().queryBrokerageDetail(
+                maps, new BaseObserver<String>(getActivity()) {
                     @Override
                     public void onNext(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             String content = jsonObject.optString("content");
-                            JSONObject jsonObject1 = new JSONObject(content);
                             if (jsonObject.optString("status").equals("1")) {
-                                brokerageDetailList.setLayoutManager(new LinearLayoutManager(TiXianDetailActivity.this));
-                                brokerageDetailList.setHasFixedSize(true);
-                                if (jsonObject1.has("total")) {
-                                    if (jsonObject1.optString("total") != null && !jsonObject1.optString("total").equals("")) {
-                                        tvJinbi.setText(" ¥" + jsonObject1.optString("total") + "元");
-                                    }else {
-                                        tvJinbi.setText(" ¥" + "0.0" + "元");
-                                    }
-                                }
-                                tiXianDetailBeans = JSON.parseArray(jsonObject1.optString("list"), TiXianDetailBean.class);
+                                List<BrokerageDetailBean> brokerageDetailBean = JSON.parseArray(content, BrokerageDetailBean.class);
                                 if (x == 1) {
-                                    if (tiXianDetailBeans != null && tiXianDetailBeans.size() > 0) {
+                                    if (brokerageDetailBean != null && brokerageDetailBean.size() > 0) {
                                         refreshLayout.setEnableLoadMore(true);
-                                        tiXianDetailAdapter = new TiXianDetailAdapter(TiXianDetailActivity.this, tiXianDetailBeans);
-                                        brokerageDetailList.setAdapter(tiXianDetailAdapter);
+                                        brokerageDetailAdapter = new BrokerageDetailAdapter(getActivity(), brokerageDetailBean);
+                                        brokerageDetailList.setAdapter(brokerageDetailAdapter);
                                         brokerageDetailList.setVisibility(View.VISIBLE);
                                         progress.loadSuccess();
                                     } else {
@@ -133,17 +155,15 @@ public class TiXianDetailActivity extends BaseActivity implements CommonLoadingV
                                         brokerageDetailList.setVisibility(View.GONE);
                                         refreshLayout.setEnableLoadMore(false);
                                     }
-                                }else {
-                                    brokerageDetailList.setVisibility(View.VISIBLE);
-                                    progress.loadSuccess();
-                                    if (tiXianDetailBeans != null && tiXianDetailBeans.size() > 0) {
-                                        tiXianDetailAdapter.notifyData(tiXianDetailBeans);
+                                } else {
+                                    if (brokerageDetailBean != null && brokerageDetailBean.size() > 0) {
+                                        brokerageDetailAdapter.notifyData(brokerageDetailBean);
                                     } else {
                                         refreshLayout.finishLoadMoreWithNoMoreData();
                                     }
                                 }
                             } else {
-                                StringUtil.showToast(TiXianDetailActivity.this, jsonObject.optString("errmsg"));
+                                StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -159,7 +179,7 @@ public class TiXianDetailActivity extends BaseActivity implements CommonLoadingV
 
                     @Override
                     protected void showDialog() {
-                        DialogSingleUtil.show(TiXianDetailActivity.this);
+                        DialogSingleUtil.show(getActivity());
                     }
 
                     @Override
@@ -170,23 +190,28 @@ public class TiXianDetailActivity extends BaseActivity implements CommonLoadingV
                         brokerageDetailList.setVisibility(View.GONE);
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadMore();
-                        StringUtil.showToast(TiXianDetailActivity.this, e.message);
+                        StringUtil.showToast(getActivity(), e.message);
                     }
                 });
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @OnClick(R.id.title_back_btn)
-    public void onViewClicked() {
-        finish();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override
     public void doRequestData() {
         progress.setVisibility(View.GONE);
-        queryYongjinListByUserid();
+        queryUserBrokerage();
+    }
+
+    @Override
+    protected void loadLazyData() {
+        Logg.json(type + level);
+        llTixian.setVisibility(View.VISIBLE);
+        tvTixian.setText("全部合计 ");
+        tvJinbi.setText(money+"元");
+        queryUserBrokerage();
     }
 }

@@ -195,8 +195,8 @@ public interface BaseApiService<T> {
     @FormUrlEncoded
     Observable<String> getJumpUrl(@FieldMap Map<String, String> map);
 
-    //收益报表详情
-    @POST("newService/queryBrokerageDetail")
+    //收益报表详情newService/queryBrokerageDetail
+    @POST("newService/queryBrokerageDetailNew")
     @FormUrlEncoded
     Observable<String> queryBrokerageDetail(@FieldMap Map<String, String> map);
 
@@ -444,8 +444,8 @@ public interface BaseApiService<T> {
     @FormUrlEncoded
     Observable<String> queryCpsZeroBuyNew(@FieldMap Map<String, String> map);
 
-    //老用户0元购
-    @POST("apiService/queryZiyingZeroBuyForOld")
+    //老用户0元购apiService/queryZiyingZeroBuyForOld
+    @POST("apiService/queryZiyingZeroBuyForOldJifen")
     @FormUrlEncoded
     Observable<String> queryZiyingZeroBuyForOld(@FieldMap Map<String, String> map);
 
@@ -483,4 +483,14 @@ public interface BaseApiService<T> {
     @POST("newService/insertMessageReadOneKey")
     @FormUrlEncoded
     Observable<String> insertMessageReadOneKey(@FieldMap Map<String, String> map);
+
+    //查询个人积分中心
+    @POST("mallService/queryIntegralCenterByUserid")
+    @FormUrlEncoded
+    Observable<String> queryIntegralCenterByUserid(@FieldMap Map<String, String> map);
+
+    //佣金明细页面主要信息
+    @POST("newService/queryBrokerageDetailInfo")
+    @FormUrlEncoded
+    Observable<String> queryBrokerageDetailInfo(@FieldMap Map<String, String> map);
 }

@@ -143,7 +143,7 @@ public class ZeroBuyForOlderAdapter extends RecyclerView.Adapter {
             viewHolder.bprice1.setVisibility(View.GONE);
             viewHolder.tvZerobuy.setTextColor(context.getResources().getColor(R.color.white));
             viewHolder.tvZerobuy.setBackgroundResource(R.drawable.bg_czg5);
-            viewHolder.tvZerobuy.setText(zeroBuyBean.getNeedfensi() + "粉丝购买");
+            viewHolder.tvZerobuy.setText(zeroBuyBean.getNeedfensi() + "积分购买");
             if (zeroBuyBean.getQuan() != null && !zeroBuyBean.getQuan().equals("")) {
                 viewHolder.llQuan.setVisibility(View.GONE);
                 viewHolder.quan.setText(zeroBuyBean.getQuan());

@@ -15,6 +15,7 @@ import com.bbk.Bean.BrokerageBean;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.fragment.ShouyiActivity;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
@@ -252,7 +253,7 @@ public class BrokerageActivity extends BaseActivity {
             case R.id.tablayout:
                 break;
             case R.id.ll_one:
-                intent = new Intent(this, BrokerageDetailActivity.class);
+                intent = new Intent(this, ShouyiActivity.class);
                 if (type.equals("1")) {
                     intent.putExtra("type", "t1");
                 } else {
@@ -261,7 +262,7 @@ public class BrokerageActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_two:
-                intent = new Intent(this, BrokerageDetailActivity.class);
+                intent = new Intent(this, ShouyiActivity.class);
                 if (type.equals("1")) {
                     intent.putExtra("type", "t2");
                 } else {
@@ -270,7 +271,7 @@ public class BrokerageActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_three:
-                intent = new Intent(this, BrokerageDetailActivity.class);
+                intent = new Intent(this, ShouyiActivity.class);
                 if (type.equals("1")) {
                     intent.putExtra("type", "t3");
                 } else {
@@ -279,7 +280,7 @@ public class BrokerageActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_four:
-                intent = new Intent(this, BrokerageDetailActivity.class);
+                intent = new Intent(this, ShouyiActivity.class);
                 if (type.equals("1")) {
                     intent.putExtra("type", "t4");
                 } else {
