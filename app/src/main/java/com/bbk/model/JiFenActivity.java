@@ -156,7 +156,11 @@ public class JiFenActivity extends BaseActivity implements CommonLoadingView.Loa
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(final RefreshLayout refreshlayout) {
-                queryIntegralCenterByUserid(type);
+                if (position == 0) {
+                    queryIntegralCenterByUserid(type);
+                    return;
+                }
+                queryIntegralCenterByUserid(typeSelect);
             }
         });
     }
