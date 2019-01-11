@@ -1,7 +1,6 @@
 package com.bbk.model;
 
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -33,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.alibaba.fastjson.JSON;
@@ -260,6 +258,8 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     @BindView(R.id.ll_sub)
     LinearLayout llSub;
     Unbinder unbinder1;
+    @BindView(R.id.tv_serach_title)
+    TextView tvSerachTitle;
     private View mView;
     private boolean isshowzhezhao = true;
     private int page = 1, x = 1;
@@ -309,6 +309,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             mnewmsg = mView.findViewById(R.id.mnewmsg);
             homeLoadUtil = new HomeLoadUtil(getActivity());
             imageMessage.setBackgroundResource(R.mipmap.praise);
+            tvSerachTitle.setText("复制商品链接"+"/"+"口令"+"/"+"标题查找优惠信息");
             setToolBar();
             refresh();
             doInit();
@@ -627,7 +628,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                     if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") ||
                                             text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||
                                             text.contains("http") && text.contains("zmnxbc") || text.contains("http") && text.contains("淘") ||
-                                            text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao")||
+                                            text.contains("http") && text.contains("喵口令") || text.contains("https") && text.contains("taobao") ||
                                             text.contains("https") && text.contains("tmall") || text.contains("https") && text.contains("zmnxbc") ||
                                             text.contains("https") && text.contains("淘") || text.contains("https") && text.contains("喵口令")) {
                                         String cliptext = SharedPreferencesUtil.getSharedData(getActivity(), "copyText", "copyText");
@@ -929,12 +930,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             //未读消息
             if (object.has("messages")) {
                 NewConstants.messages = object.optInt("messages");
-                if (HomeActivity.draggableflagview != null){
-                    if (NewConstants.messages == 0){
+                if (HomeActivity.draggableflagview != null) {
+                    if (NewConstants.messages == 0) {
                         HomeActivity.draggableflagview.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         HomeActivity.draggableflagview.setVisibility(View.VISIBLE);
-                        HomeActivity.draggableflagview.setText(NewConstants.messages+"");
+                        HomeActivity.draggableflagview.setText(NewConstants.messages + "");
                     }
                 }
                 if (NewConstants.messages != 0) {

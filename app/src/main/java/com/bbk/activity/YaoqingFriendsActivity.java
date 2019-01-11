@@ -47,6 +47,7 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
     @BindView(R.id.tv_share)
     TextView tvShare;
     private List<String> imgUrlList = new ArrayList<>();
+    private List<String> wenansList = new ArrayList<>();
     private Adapter adapter;
     private String wenan;
     private ShareHaiBaoUtil shareHaiBaoUtil;
@@ -89,7 +90,11 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
                             if (jsonObject.optString("status").equals("1")) {
                                 String content = jsonObject.optString("content");
                                 JSONObject jsonObject1 = new JSONObject(content);
-                                wenan = jsonObject1.optString("wenan").replace("|","\n");
+//                                wenan = jsonObject1.optString("wenan").replace("|","\n");
+                                JSONArray wenansArray = new JSONArray(jsonObject1.optString("wenans"));
+                                for (int i = 0;i < wenansArray.length();i ++ ){
+                                    wenansList.add(wenansArray.getString(i));
+                                }
                                 JSONArray detailImags = new JSONArray(jsonObject1.optString("imgs"));
                                 for (int i = 0; i < detailImags.length(); i++) {
                                     String imgUrl = detailImags.getString(i);
@@ -136,9 +141,12 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
                 finish();
                 break;
             case R.id.tv_copy:
-                ClipboardManager cm = (ClipboardManager)YaoqingFriendsActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                if (wenansList != null){
+                wenan = wenansList.get(pageIndex).toString().replace("|", "\n");
+                ClipboardManager cm = (ClipboardManager) YaoqingFriendsActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setText(wenan);
-                StringUtil.showToast(YaoqingFriendsActivity.this,"复制成功");
+                StringUtil.showToast(YaoqingFriendsActivity.this, "复制成功");
+               }
                 break;
             case R.id.tv_share:
                 DialogSingleUtil.show(YaoqingFriendsActivity.this);

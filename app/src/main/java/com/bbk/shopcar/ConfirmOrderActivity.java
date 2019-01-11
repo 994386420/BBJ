@@ -112,6 +112,7 @@ public class ConfirmOrderActivity extends BaseActivity {
     ConfirmOrderAdapter confirmOrderAdapter;
     private double totalShopPrice = 0.00, yongjinDiscountPrice = 0.00;
     private ShopDialog shopDialog;
+    private double total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,7 +296,7 @@ public class ConfirmOrderActivity extends BaseActivity {
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
                                 cofirmOrderBean = JSON.parseObject(content, CofirmOrderBean.class);
-                                Logg.json(cofirmOrderBean.getYoulist());
+//                                Logg.json(cofirmOrderBean.getYoulist());
                                 addrid = cofirmOrderBean.getAddrid();
                                 if (addrid != null) {
                                     llAddress.setVisibility(View.VISIBLE);
@@ -307,8 +308,11 @@ public class ConfirmOrderActivity extends BaseActivity {
                                 tvAddress.setText(cofirmOrderBean.getAddr());
                                 tvName.setText(cofirmOrderBean.getReceiver());
                                 tvPhone.setText(cofirmOrderBean.getPhone());
-                                double total = Double.parseDouble(cofirmOrderBean.getTotal());
-                                totalPrice.setText("¥" + doubleToString(total));
+
+                                if (cofirmOrderBean.getTotal() != null) {
+                                    total = Double.parseDouble(cofirmOrderBean.getTotal());
+                                    totalPrice.setText("¥" + doubleToString(total));
+                                }
 
                                 if (cofirmOrderBean.getUsejinbi() != null) {
                                     if (cofirmOrderBean.getUsejinbi().equals("0")) {

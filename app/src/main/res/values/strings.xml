@@ -347,6 +347,5 @@
     <string name="all">全选</string>
     <string name="order_total">合计 :</string>
     <string name="copy_remaind">标题已复制</string>
-
     <string name="behavior">com.bbk.shopcar.CustomBehavior</string>
 </resources>

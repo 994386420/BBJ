@@ -127,7 +127,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:paddingBottom="15dp"
-            android:paddingTop="15dp" >
+            android:paddingTop="15dp"
+            android:visibility="gone">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"

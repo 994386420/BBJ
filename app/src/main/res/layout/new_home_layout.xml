@@ -773,9 +773,9 @@
                                     android:paddingTop="7dp" >
 
                                     <TextView
+                                        android:id="@+id/tv_serach_title"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="粘贴宝贝标题，购物省钱又赚钱"
                                         android:textColor="#999999"
                                         android:textSize="14dp" />
                                 </LinearLayout>

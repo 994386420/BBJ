@@ -78,4 +78,18 @@ public class BrokerageDetailInfoBean {
     public void setLevel3money(String level3money) {
         this.level3money = level3money;
     }
+
+    @Override
+    public String toString() {
+        return "BrokerageDetailInfoBean{" +
+                "level2='" + level2 + '\'' +
+                ", level3='" + level3 + '\'' +
+                ", level2money='" + level2money + '\'' +
+                ", level1='" + level1 + '\'' +
+                ", level1money='" + level1money + '\'' +
+                ", allmoney='" + allmoney + '\'' +
+                ", all='" + all + '\'' +
+                ", level3money='" + level3money + '\'' +
+                '}';
+    }
 }

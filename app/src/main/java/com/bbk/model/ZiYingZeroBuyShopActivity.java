@@ -128,6 +128,7 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
                 case "yes":
                     tabAt = tablayout.getTabAt(1);
                     tabAt.select();
+                    chaoZhiPresenter.queryZiyingZeroBuyForOld(page);
                     break;
                 case "no":
                     tabAt = tablayout.getTabAt(0);

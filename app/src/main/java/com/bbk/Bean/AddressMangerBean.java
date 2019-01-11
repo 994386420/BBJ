@@ -80,6 +80,15 @@ public class AddressMangerBean {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "AddressMangerBean{" +
+                "id='" + id + '\'' +
+                ", phone='" + phone + '\'' +
+                ", area='" + area + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", tag='" + tag + '\'' +
+                ", street='" + street + '\'' +
+                ", original='" + original + '\'' +
+                ", userid='" + userid + '\'' +
+                '}';
     }
 }

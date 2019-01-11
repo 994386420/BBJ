@@ -12,9 +12,9 @@ import retrofit2.http.QueryMap;
 
 public interface BaseApiService<T> {
 
-//    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
+    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
 //    public static final String Base_URL = "http://125.64.92.222:8097/APIService/";//正式测试接口
-    public static final String Base_URL = "http://192.168.20.165/APIService/";//内网测试接口
+//    public static final String Base_URL = "http://192.168.20.165/APIService/";//内网测试接口
 //    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
     //新版首页超值购等分类模块
     @FormUrlEncoded
@@ -317,7 +317,7 @@ public interface BaseApiService<T> {
     Observable<String> queryIndexMain(@FieldMap Map<String, String> map);
 
     //
-    @POST("mallService/queryMyOrderToPay4")
+    @POST("mallService/queryMyOrderToPay3")
     @FormUrlEncoded
     Observable<String> queryMyOrderToPay(@FieldMap Map<String, String> map);
 
@@ -450,7 +450,7 @@ public interface BaseApiService<T> {
     Observable<String> queryZiyingZeroBuyForOld(@FieldMap Map<String, String> map);
 
     //老用户0元购支付
-    @POST("appPayService/getZeroBuyOrderOld")
+    @POST("appPayService/getZeroBuyOrderOldJifen")
     @FormUrlEncoded
     Observable<String> getZeroBuyOrderOld(@FieldMap Map<String, String> map);
 

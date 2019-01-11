@@ -172,6 +172,7 @@ public class ZeroBuyForOlderAdapter extends RecyclerView.Adapter {
                     intent.putExtra("gid", zeroBuyBean.getGid());
                     intent.putExtra("id", zeroBuyBean.getId());
                     intent.putExtra("isOlder", "yes");
+                    intent.putExtra("jifen",zeroBuyBean.getNeedfensi());
                     context.startActivity(intent);
                 }
             });

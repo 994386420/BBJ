@@ -70,11 +70,11 @@ public class JiFenDetailAdapter extends RecyclerView.Adapter {
             viewHolder.tvYuefen.setText(jiFenListBean.getKey());
             JiFenOlistBean jiFenOlistBean = JSON.parseObject(jiFenListBean.getList(), JiFenOlistBean.class);
             if (jiFenOlistBean.getGetMsg() != null && jiFenOlistBean.getGetNum() != null){
-                viewHolder.llGetJifen.setVisibility(View.VISIBLE);
+                    viewHolder.llGetJifen.setVisibility(View.VISIBLE);
             }else {
                 viewHolder.llGetJifen.setVisibility(View.GONE);
             }
-            if (jiFenOlistBean.getUseMsg() != null && jiFenOlistBean.getUseNum() != null){
+            if (jiFenOlistBean.getUseMsg() != null && jiFenOlistBean.getUseNum() != null && !jiFenOlistBean.getUseNum().equals("0")){
                 viewHolder.llUseJifen.setVisibility(View.VISIBLE);
             }else {
                 viewHolder.llUseJifen.setVisibility(View.GONE);

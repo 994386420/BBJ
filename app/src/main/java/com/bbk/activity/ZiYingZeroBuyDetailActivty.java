@@ -163,7 +163,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
     private List<TypesChooseSizeBean> typesChooseSizeBeans;
     private List<TypesLevelBean> typesLevelBeans;
     private List<TypesChooseLevelOneBean> typesChooseLevelOneBeans;
-    private String isOlder;
+    private String isOlder,jifen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,8 +175,9 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
         id = getIntent().getStringExtra("id");
         gid = getIntent().getStringExtra("gid");
         isOlder = getIntent().getStringExtra("isOlder");
+        jifen = getIntent().getStringExtra("jifen");
         if (isOlder.equals("yes")){
-            tvCar.setText("0元购");
+            tvCar.setText(jifen+"积分兑换");
         }else {
             tvCar.setText("新人0元购");
         }
@@ -357,7 +358,11 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
             if (isOlder.equals("yes")){
                 if (shopDetailBean.getCanZeroBuyJifen() != null && shopDetailBean.getCanZeroBuyJifen().equals("1")) {
                     title.setText("抢单成功");
-                    tv_update.setText("分享朋友圈立即0元购");
+                    if (isOlder.equals("yes")){
+                        tv_update.setText("分享朋友圈立即兑换");
+                    }else {
+                        tv_update.setText("分享朋友圈立即0元购");
+                    }
                     String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
                     //判断是否分享
                     if (TextUtils.isEmpty(isShare)) {
@@ -439,7 +444,11 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
             }else {
                 if (isOldUser != null && isOldUser.equals("0")) {
                     title.setText("抢单成功");
-                    tv_update.setText("分享朋友圈立即0元购");
+                    if (isOlder.equals("yes")){
+                        tv_update.setText("分享朋友圈立即兑换");
+                    }else {
+                        tv_update.setText("分享朋友圈立即0元购");
+                    }
                     String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
                     //判断是否分享
                     if (TextUtils.isEmpty(isShare)) {
@@ -871,7 +880,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
             tvSize = shopDialog.findViewById(R.id.tv_size);
             TextView tvCar = shopDialog.findViewById(R.id.tv_car);
             if (isOlder.equals("yes")){
-                tvCar.setText("0元购");
+                tvCar.setText(jifen+"积分兑换");
             }else {
                 tvCar.setText("新人0元购");
             }
@@ -939,7 +948,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                                     curposition = i;
                                 }
                                 isChooseColor = true;
-                                if (!typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
+                                if (typesChooseLevelOneBeans.get(curposition).getPrice() != null && !typesChooseLevelOneBeans.get(curposition).getPrice().equals("")) {
                                     tvMoney.setText("¥ " + typesChooseLevelOneBeans.get(curposition).getPrice());
                                 } else {
                                     tvMoney.setText("¥ " + shopDetailBean.getPrice());

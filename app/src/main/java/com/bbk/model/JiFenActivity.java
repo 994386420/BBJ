@@ -19,8 +19,10 @@ import com.bbk.Bean.JiFenListBean;
 import com.bbk.activity.BaseActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.activity.WebViewActivity;
 import com.bbk.adapter.JiFenDetailAdapter;
 import com.bbk.adapter.JiFenJlistDetailAdapter;
+import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -373,6 +375,10 @@ public class JiFenActivity extends BaseActivity implements CommonLoadingView.Loa
                 startActivity(intent);
                 break;
             case R.id.tv_rule:
+                String url = BaseApiService.Base_URL + "mobile/html/jifen_rule.jsp";
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
                 break;
         }
     }

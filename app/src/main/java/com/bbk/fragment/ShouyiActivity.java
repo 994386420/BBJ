@@ -105,13 +105,7 @@ public class ShouyiActivity extends BaseFragmentActivity {
     private void initView() {
         imgMoreBlack.setVisibility(View.VISIBLE);
         mTablayout.setxTabDisplayNum(4);
-        setupViewPager(viewpager);
     }
-
-    private void setupViewPager(ViewPager viewpager) {
-
-    }
-
 
     /**
      * 查询报表明细
