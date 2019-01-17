@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.MessageQueue.IdleHandler;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.util.ClipDialogUtil;
 import com.bbk.util.DensityUtils;
 import com.bbk.util.DialogCheckYouhuiUtil;
@@ -73,6 +76,8 @@ public class BaseActivity extends Activity {
     private String copytext;
     KelperTask mKelperTask;
     private String url;
+    private ShopDialog shopDialog;
+    private HashMap<String, Object> mEventMap,mEventMap2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -440,7 +445,38 @@ public class BaseActivity extends Activity {
                 if (text.contains("bbj")) {
                     NewConstants.copyText = text;
                 }
-                // //获得当前activity的名字
+
+                /**
+                 * 根据鲸口令跳转
+                 */
+                if (text.contains("eventId")&& text.contains("鲸口令")){
+                    //获得保存的复制文字
+                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+                    String [] strings = text.replace("【","@@").replace("】","@@").split("@@");
+                    mEventMap = new HashMap<>();
+                    String[] strs = strings[1].split("&");
+                    mEventMap2 = new HashMap<String, Object>();
+                    for (String s : strs) {
+                        String[] str = s.split("=");
+                        mEventMap2.put(str[0], str[1]);
+                    }
+                    JSONObject jsonObject = new JSONObject(mEventMap2);
+                    //取出保存的复制文字
+                    String cliptext = SharedPreferencesUtil.getSharedData(BaseActivity.this, "copyText", "copyText");
+                    /**
+                     * 如果缓存的跟剪切板不一致则跳转
+                     */
+                    if (!text.equals(cliptext)) {
+                        EventIdIntentUtil.EventIdIntent(BaseActivity.this, jsonObject);
+                        //跳转成功之后保存从剪切板获取的文字信息
+                        SharedPreferencesUtil.putSharedData(BaseActivity.this, "copyText", "copyText", copytext);
+                    }
+                }
+
+                /**
+                 * 淘宝京东链接获取优惠
+                 */
+
                 if (!text.contains("标题:")) {
                     SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
                     Logg.e("======>>>", text);
@@ -457,6 +493,40 @@ public class BaseActivity extends Activity {
         }
     }
 
+    /**
+     * 商品基础保障
+     *
+     * @param context
+     */
+    public void showBaozhangeDialog(final Context context) {
+        if (shopDialog == null || !shopDialog.isShowing()) {
+            //初始化弹窗 布局 点击事件的id
+            shopDialog = new ShopDialog(context, R.layout.shop_dialog_layout,
+                    new int[]{R.id.tv_ok});
+            shopDialog.show();
+            shopDialog.setCanceledOnTouchOutside(true);
+            TextView tv_update_gengxin = shopDialog.findViewById(R.id.tv_ok);
+            TextView tv_title = shopDialog.findViewById(R.id.tv_title);
+            tv_title.setText("基础保障");
+            RecyclerView recyclerView = shopDialog.findViewById(R.id.recyclerview_shop_dialog);
+            LinearLayout linearLayout = shopDialog.findViewById(R.id.ll_baozhang);
+            linearLayout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            ImageView img_close = shopDialog.findViewById(R.id.img_close);
+            img_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shopDialog.dismiss();
+                }
+            });
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

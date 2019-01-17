@@ -2,6 +2,8 @@ package com.bbk.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PathMeasure;
@@ -29,6 +31,7 @@ import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.CanshuBean;
 import com.bbk.Bean.DiscountBean;
 import com.bbk.Bean.PlBean;
+import com.bbk.Bean.ShareBean;
 import com.bbk.Bean.ShopDetailBean;
 import com.bbk.Bean.ShopTuijianBean;
 import com.bbk.Bean.TypesChooseBean;
@@ -59,6 +62,8 @@ import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.GlideImageGuanggaoLoader;
 import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
+import com.bbk.util.ShareJumpUtil;
+import com.bbk.util.ShareShopDetailUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.AdaptionSizeTextView;
@@ -79,6 +84,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -195,6 +205,8 @@ public class ShopDetailActivty extends BaseActivity {
     TextView tvDes;
     @BindView(R.id.ll_quan)
     LinearLayout llQuan;
+    @BindView(R.id.tv_share)
+    LinearLayout tvShare;
     private String id;
     private DetailImageAdapter detailImageAdapter;
     private ShopDetailBean shopDetailBean;
@@ -244,6 +256,7 @@ public class ShopDetailActivty extends BaseActivity {
     private int countNum = 1;//购买商品数量
     private TagAdapter<String> mSizeTagAdapter;
     private TagAdapter<String> mColorTagAdapter;
+    private Bitmap bitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -538,15 +551,72 @@ public class ShopDetailActivty extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.ll_add_car, R.id.ll_buy_now, R.id.ll_fuwu, R.id.ll_shuxing, R.id.ll_canshu, R.id.tv_dianpu, R.id.back_image, R.id.tv_all_mall,
+
+    /**
+     * 获取当前分享图片的bitmap
+     *
+     * @param url
+     * @return
+     */
+    public Bitmap returnBitMap(final String url) {
+        DialogSingleUtil.show(ShopDetailActivty.this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageurl = null;
+                try {
+                    imageurl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection) imageurl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                    is.close();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            /**
+                             * 调起分享dialog
+                             */
+                            DialogSingleUtil.dismiss(0);
+                            List<String> UrlList = new ArrayList<>();
+                            UrlList.add(shopDetailBean.getImgurl());
+                            if (UrlList != null && UrlList.size() > 0) {
+                                DialogSingleUtil.dismiss(0);
+                                new ShareShopDetailUtil(ShopDetailActivty.this,UrlList, tvShare, shopDetailBean.getJingkouling()
+                                        , shopDetailBean.getImgurl(), shopDetailBean.getPrice(), shopDetailBean.getTitle(),bitmap);
+                            }
+                        }
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        return bitmap;
+    }
+    @OnClick({R.id.tv_share,R.id.title_back_btn, R.id.ll_add_car, R.id.ll_buy_now, R.id.ll_fuwu, R.id.ll_shuxing, R.id.ll_canshu, R.id.tv_dianpu, R.id.back_image, R.id.tv_all_mall,
             R.id.ll_dianpu, R.id.ll_car, R.id.ll_pl, R.id.ll_kefu, R.id.ll_more, R.id.img_more_black, R.id.img_car_black})
     public void onViewClicked(View view) {
         Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (view.getId()) {
+
+            case R.id.tv_share:
+                if (shopDetailBean.getImgurl() != null) {
+                    returnBitMap(shopDetailBean.getImgurl());
+                }
+                break;
+
             case R.id.title_back_btn:
                 finish();
                 break;
+
             case R.id.ll_add_car:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
@@ -554,7 +624,6 @@ public class ShopDetailActivty extends BaseActivity {
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
-//                        doShoppingCart(shopDetailBean.getId(), "1", "1", " ");
                         showChooseGuigeDialog(this);
                     }
                 }
@@ -566,11 +635,6 @@ public class ShopDetailActivty extends BaseActivity {
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
-//                        intent = new Intent(ShopDetailActivty.this, ConfirmOrderActivity.class);
-//                        intent.putExtra("ids", shopDetailBean.getId());
-//                        intent.putExtra("nums", "1");
-//                        intent.putExtra("guiges", " ");
-//                        startActivity(intent);
                         showChooseGuigeDialog(this);
                     }
                 }
@@ -660,7 +724,6 @@ public class ShopDetailActivty extends BaseActivity {
                         intent = new Intent(this, UserLoginNewActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
-//                        HomeLoadUtil.startChat(this);
                         MainActivity.consultService(this);
                     }
                 }
@@ -1401,7 +1464,7 @@ public class ShopDetailActivty extends BaseActivity {
         Map<String, String> maps = new HashMap<String, String>();
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         maps.put("userid", userID);
-        maps.put("gid",id);
+        maps.put("gid", id);
         RetrofitClient.getInstance(ShopDetailActivty.this).createBaseApi().queryCouponListByGoodsId(
                 maps, new BaseObserver<String>(ShopDetailActivty.this) {
                     @Override
@@ -1410,7 +1473,7 @@ public class ShopDetailActivty extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             Logg.json(jsonObject);
                             if (jsonObject.optString("status").equals("1")) {
-                                showYouhuiQuanDialog(ShopDetailActivty.this,jsonObject.optString("content"));
+                                showYouhuiQuanDialog(ShopDetailActivty.this, jsonObject.optString("content"));
                             } else {
                                 StringUtil.showToast(ShopDetailActivty.this, jsonObject.optString("errmsg"));
                             }
@@ -1439,9 +1502,10 @@ public class ShopDetailActivty extends BaseActivity {
 
     /**
      * 优惠券弹窗
+     *
      * @param context
      */
-    public void showYouhuiQuanDialog(final Context context,String quanlist) {
+    public void showYouhuiQuanDialog(final Context context, String quanlist) {
         if (shopDialog == null || !shopDialog.isShowing()) {
             shopDialog = new ShopDialog(context, R.layout.shop_dialog_layout,
                     new int[]{R.id.tv_ok});
@@ -1475,4 +1539,6 @@ public class ShopDetailActivty extends BaseActivity {
             });
         }
     }
+
+
 }

@@ -51,6 +51,7 @@ import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.model.ChaoZhiGouTypesActivity;
 import com.bbk.model.DianpuSearchActivity;
+import com.bbk.model.JiFenActivity;
 import com.bbk.model.ShopFenleiActivity;
 import com.bbk.model.ZiYingZeroBuyShopActivity;
 import com.bbk.resource.NewConstants;

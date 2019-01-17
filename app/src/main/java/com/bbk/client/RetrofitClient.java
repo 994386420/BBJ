@@ -784,6 +784,13 @@ public class RetrofitClient {
 //                .compose(transformer)
                 .subscribe(observer);
     }
+
+    public  void queryAddrSingle(Map<String, String> parameters, Observer<?> observer) {
+        apiService.queryAddrSingle(getMap(parameters))
+                .compose(schedulersTransformer)
+//                .compose(transformer)
+                .subscribe(observer);
+    }
     //处理线程调度的变换
     ObservableTransformer schedulersTransformer = new ObservableTransformer() {
         @Override

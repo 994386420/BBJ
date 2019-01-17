@@ -2,7 +2,10 @@ package com.bbk.activity;
 
 
 import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -36,8 +39,10 @@ import com.bbk.fragment.SortFragment;
 import com.bbk.fragment.UserFragment;
 import com.bbk.model.MainActivity;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.update.UpdateVersionService;
 import com.bbk.util.BaseTools;
+import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -45,6 +50,7 @@ import com.bbk.view.CustomViewPager;
 import com.bbk.view.DraggableFlagView;
 import com.bbk.view.NumImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.logg.Logg;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -67,6 +73,8 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.ali.auth.third.core.context.KernelContext.context;
 
 
 public class HomeActivity extends BaseFragmentActivity implements Response {
@@ -154,7 +162,8 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
             }
         });
         initView();
-        initData();
+//        initData();
+        queryAppIndexInfo();
     }
 
     @Override
@@ -276,57 +285,125 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                 });
     }
 
+
+
+
     /**
-     * 初始化数据并从接口获取底部Tag
+     * 首页数据请求
      */
-    public void initData() {
+    private void queryAppIndexInfo() {
         initViewPager();
         initViewPagerData();
         clickTab();
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.setCurrentItem(0);
-        Map<String, String> paramsMap = new HashMap<>();
-        RetrofitClient.getInstance(this).createBaseApi().queryIndexMenu(
-                paramsMap, new BaseObserver<String>(this) {
+        Map<String, String> maps = new HashMap<String, String>();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        int versionCode = 0;
+        try {
+            versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        maps.put("userid", userID);
+        maps.put("versioncode", versionCode + "");
+        RetrofitClient.getInstance(this).createBaseApi().queryAppIndexInfo(
+                maps, new BaseObserver<String>(this) {
                     @Override
                     public void onNext(String s) {
                         try {
                             JSONObject jsonObject = new JSONObject(s);
-                            Logg.json(jsonObject);
-                            String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
-                                JSONObject object = new JSONObject(content);
-                                if ("1".equals(object.optString("isshow"))) {
+                                JSONObject jsonObject1 = jsonObject.optJSONObject("content");
+                                if (jsonObject1.has("zhuanti")) {
+                                    JSONObject object = new JSONObject(jsonObject1.optString("zhuanti"));
+                                    Logg.json(object);
                                     isshow = true;
-                                    JSONArray img = object.optJSONArray("img");
-                                    JSONArray imgs = object.optJSONArray("imgs");
-                                    for (int i = 0; i < 5; i++) {
-                                        tabImgBlue2.add(imgs.optString(i));
-                                        tabImgGray2.add(img.optString(i));
+                                    //底部按钮图片选中
+                                    if (object.has("button1s")) {
+                                        tabImgBlue2.add(object.optString("button1s"));
                                     }
-                                    ctcolor = object.optString("ccolors");
-                                    tcolor = object.optString("ccolor");
-                                    bcolor = object.optString("bcolor");
+                                    if (object.has("button2s")) {
+                                        tabImgBlue2.add(object.optString("button2s"));
+                                    }
+                                    if (object.has("button3s")) {
+                                        tabImgBlue2.add(object.optString("button3s"));
+                                    }
+                                    if (object.has("button4s")) {
+                                        tabImgBlue2.add(object.optString("button4s"));
+                                    }
+                                    if (object.has("button5s")) {
+                                        tabImgBlue2.add(object.optString("button5s"));
+                                    }
+                                    //底部按钮图片
+                                    if (object.has("button1")) {
+                                        tabImgGray2.add(object.optString("button1"));
+                                    }
+                                    if (object.has("button2")) {
+                                        tabImgGray2.add(object.optString("button2"));
+                                    }
+                                    if (object.has("button3")) {
+                                        tabImgGray2.add(object.optString("button3"));
+                                    }
+                                    if (object.has("button4")) {
+                                        tabImgGray2.add(object.optString("button4"));
+                                    }
+                                    if (object.has("button5")) {
+                                        tabImgGray2.add(object.optString("button5"));
+                                    }
+                                    if (object.has("colord2")) {
+                                        ctcolor = object.optString("colord2");//底部字的颜色（选中）
+                                    }
+                                    if (object.has("colord1")) {
+                                        tcolor = object.optString("colord1");//底部字的颜色
+                                    }
+                                    if (object.has("colordb")) {
+                                        bcolor = object.optString("colordb");//底部背景
+                                    }
                                     tabParentLayout.setBackgroundColor(Color.parseColor(bcolor));
+                                    //加载底部图片
                                     for (int i = 0; i < 5; i++) {
-//                                        LinearLayout nextLayout = ((LinearLayout) tabParentLayout.getChildAt(i));
-//                                        ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
                                         if (isshow) {
-                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(0)).placeholder(tabImgGray[0]).into(imgHomeBtn);
-                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(1)).placeholder(tabImgGray[1]).into(imgSortBtn);
-                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(2)).placeholder(tabImgGray[2]).into(imgMessageBtn);
-                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(3)).placeholder(tabImgGray[3]).into(imgCarBtn);
-                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(4)).placeholder(tabImgGray[4]).into(imgUserBtn);
+                                            if (tabImgGray2.size() > 0) {
+                                                Glide.with(HomeActivity.this)
+                                                        .load(tabImgGray2.get(0))
+                                                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                                        .placeholder(tabImgGray[0])
+                                                        .into(imgHomeBtn);
+                                                Glide.with(HomeActivity.this)
+                                                        .load(tabImgGray2.get(1))
+                                                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                                        .placeholder(tabImgGray[1])
+                                                        .into(imgSortBtn);
+                                                Glide.with(HomeActivity.this)
+                                                        .load(tabImgGray2.get(2))
+                                                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                                        .placeholder(tabImgGray[2])
+                                                        .into(imgMessageBtn);
+                                                Glide.with(HomeActivity.this)
+                                                        .load(tabImgGray2.get(3))
+                                                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                                        .placeholder(tabImgGray[3])
+                                                        .into(imgCarBtn);
+                                                Glide.with(HomeActivity.this)
+                                                        .load(tabImgGray2.get(4))
+                                                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                                        .placeholder(tabImgGray[4])
+                                                        .into(imgUserBtn);
+                                            }else {
+                                                imgHomeBtn.setImageResource(tabImgGray[0]);
+                                                imgSortBtn.setImageResource(tabImgGray[1]);
+                                                imgMessageBtn.setImageResource(tabImgGray[2]);
+                                                imgCarBtn.setImageResource(tabImgGray[3]);
+                                                imgUserBtn.setImageResource(tabImgGray[4]);
+                                            }
                                         } else {
-                                            Logg.e("=========================>>>>", i);
                                             imgHomeBtn.setImageResource(tabImgGray[0]);
                                             imgSortBtn.setImageResource(tabImgGray[1]);
                                             imgMessageBtn.setImageResource(tabImgGray[2]);
                                             imgCarBtn.setImageResource(tabImgGray[3]);
                                             imgUserBtn.setImageResource(tabImgGray[4]);
                                         }
-//                                        TextView nextTV = (TextView) nextLayout.getChildAt(1);
-//                                        nextTV.setTextColor(Color.parseColor(tcolor));
                                         mtext.setTextColor(Color.parseColor(tcolor));
                                         tvSort.setTextColor(Color.parseColor(tcolor));
                                         tvMessage.setTextColor(Color.parseColor(tcolor));
@@ -336,11 +413,14 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                                     LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
                                     ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
                                     if (isshow) {
-                                        Log.e("==================", "" + currentIndex);
-                                        Glide.with(HomeActivity.this).
-                                                load(tabImgBlue2.get(currentIndex))
-                                                .placeholder(tabImgBlue[0]).
-                                                into(currentIV);
+                                        if (tabImgBlue2.size() > 0) {
+                                            Glide.with(HomeActivity.this).
+                                                    load(tabImgBlue2.get(currentIndex))
+                                                    .placeholder(tabImgBlue[0]).
+                                                    into(currentIV);
+                                        }else {
+                                            currentIV.setImageResource(tabImgBlue[currentIndex]);
+                                        }
                                     } else {
                                         currentIV.setImageResource(tabImgBlue[currentIndex]);
                                     }
@@ -351,7 +431,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
                                     switchTab(currentIndex);
                                 }
                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -366,10 +446,104 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
 
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
-                        StringUtil.showToast(HomeActivity.this, e.message);
+
                     }
                 });
     }
+//    /**
+//     * 初始化数据并从接口获取底部Tag
+//     */
+//    public void initData() {
+//        initViewPager();
+//        initViewPagerData();
+//        clickTab();
+//        mViewPager.setOffscreenPageLimit(4);
+//        mViewPager.setCurrentItem(0);
+//        Map<String, String> paramsMap = new HashMap<>();
+//        RetrofitClient.getInstance(this).createBaseApi().queryIndexMenu(
+//                paramsMap, new BaseObserver<String>(this) {
+//                    @Override
+//                    public void onNext(String s) {
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(s);
+//                            Logg.json(jsonObject);
+//                            String content = jsonObject.optString("content");
+//                            if (jsonObject.optString("status").equals("1")) {
+//                                JSONObject object = new JSONObject(content);
+//                                if ("1".equals(object.optString("isshow"))) {
+//                                    isshow = true;
+//                                    JSONArray img = object.optJSONArray("img");
+//                                    JSONArray imgs = object.optJSONArray("imgs");
+//                                    for (int i = 0; i < 5; i++) {
+//                                        tabImgBlue2.add(imgs.optString(i));
+//                                        tabImgGray2.add(img.optString(i));
+//                                    }
+//                                    ctcolor = object.optString("ccolors");
+//                                    tcolor = object.optString("ccolor");
+//                                    bcolor = object.optString("bcolor");
+//                                    tabParentLayout.setBackgroundColor(Color.parseColor(bcolor));
+//                                    for (int i = 0; i < 5; i++) {
+////                                        LinearLayout nextLayout = ((LinearLayout) tabParentLayout.getChildAt(i));
+////                                        ImageView nextIV = (ImageView) nextLayout.getChildAt(0);
+//                                        if (isshow) {
+//                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(0)).placeholder(tabImgGray[0]).into(imgHomeBtn);
+//                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(1)).placeholder(tabImgGray[1]).into(imgSortBtn);
+//                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(2)).placeholder(tabImgGray[2]).into(imgMessageBtn);
+//                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(3)).placeholder(tabImgGray[3]).into(imgCarBtn);
+//                                            Glide.with(HomeActivity.this).load(tabImgGray2.get(4)).placeholder(tabImgGray[4]).into(imgUserBtn);
+//                                        } else {
+//                                            Logg.e("=========================>>>>", i);
+//                                            imgHomeBtn.setImageResource(tabImgGray[0]);
+//                                            imgSortBtn.setImageResource(tabImgGray[1]);
+//                                            imgMessageBtn.setImageResource(tabImgGray[2]);
+//                                            imgCarBtn.setImageResource(tabImgGray[3]);
+//                                            imgUserBtn.setImageResource(tabImgGray[4]);
+//                                        }
+////                                        TextView nextTV = (TextView) nextLayout.getChildAt(1);
+////                                        nextTV.setTextColor(Color.parseColor(tcolor));
+//                                        mtext.setTextColor(Color.parseColor(tcolor));
+//                                        tvSort.setTextColor(Color.parseColor(tcolor));
+//                                        tvMessage.setTextColor(Color.parseColor(tcolor));
+//                                        tvCar.setTextColor(Color.parseColor(tcolor));
+//                                        tvMy.setTextColor(Color.parseColor(tcolor));
+//                                    }
+//                                    LinearLayout currentLayout = ((LinearLayout) tabParentLayout.getChildAt(currentIndex));
+//                                    ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
+//                                    if (isshow) {
+//                                        Log.e("==================", "" + currentIndex);
+//                                        Glide.with(HomeActivity.this).
+//                                                load(tabImgBlue2.get(currentIndex))
+//                                                .placeholder(tabImgBlue[0]).
+//                                                into(currentIV);
+//                                    } else {
+//                                        currentIV.setImageResource(tabImgBlue[currentIndex]);
+//                                    }
+//                                    TextView currentTV = (TextView) currentLayout.getChildAt(1);
+//                                    currentTV.setTextColor(Color.parseColor(ctcolor));
+//                                } else {
+//                                    isshow = false;
+//                                    switchTab(currentIndex);
+//                                }
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected void hideDialog() {
+//                    }
+//
+//                    @Override
+//                    protected void showDialog() {
+//                    }
+//
+//                    @Override
+//                    public void onError(ExceptionHandle.ResponeThrowable e) {
+//                        StringUtil.showToast(HomeActivity.this, e.message);
+//                    }
+//                });
+//    }
 
     /**
      * 初始化viewpager
@@ -419,7 +593,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
             ImageView currentIV = (ImageView) currentLayout.getChildAt(0);
             if (isshow) {
                 Glide.with(this).
-                        load(tabImgGray2.get(currentIndex)).
+                        load(tabImgGray2.get(currentIndex)).diskCacheStrategy(DiskCacheStrategy.RESULT).
                         into(currentIV);
             } else {
                 currentIV.setImageResource(tabImgGray[currentIndex]);
@@ -791,9 +965,13 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
      */
     private void colorChange(ImageView imageView, TextView textView, int i) {
         if (isshow) {
-            Glide.with(this).
-                    load(tabImgBlue2.get(i)).
-                    into(imageView);
+            if (tabImgBlue2.size() > 0) {
+                Glide.with(this).
+                        load(tabImgBlue2.get(i)).
+                        into(imageView);
+            }else {
+                imageView.setImageResource(tabImgBlue[i]);
+            }
         } else {
             imageView.setImageResource(tabImgBlue[i]);
         }
@@ -810,7 +988,11 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
 
         textView.setTextColor(Color.parseColor(ctcolor));
         if (isshow) {
-            Glide.with(this).load(tabImgGray2.get(i)).into(imageView);
+            if (tabImgGray2.size() > 0) {
+                Glide.with(this).load(tabImgGray2.get(i)).into(imageView);
+            }else {
+                imageView.setImageResource(tabImgGray[i]);
+            }
         } else {
             imageView.setImageResource(tabImgGray[i]);
         }

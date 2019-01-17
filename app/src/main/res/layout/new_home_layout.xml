@@ -343,13 +343,13 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
                                 android:paddingBottom="15dp"
-                                android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="15dp" >
 
                                 <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="25dp"
+                                    android:id="@+id/img_zerybuynew"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
                                     android:background="@mipmap/home_title_04"/>
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -399,13 +399,13 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
                                 android:paddingBottom="15dp"
-                                android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="15dp" >
 
                                 <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="25dp"
+                                    android:id="@+id/img_hot"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
                                     android:background="@mipmap/home_title_06"/>
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -455,13 +455,12 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
                                 android:paddingBottom="15dp"
-                                android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="15dp" >
 
                                 <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="25dp"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
                                     android:background="@mipmap/home_title_05"/>
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -511,14 +510,13 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
                                 android:paddingBottom="15dp"
-                                android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="15dp" >
 
 
                                 <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="25dp"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
                                     android:background="@mipmap/home_title_04"/>
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -568,7 +566,6 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
                                 android:paddingBottom="15dp"
-                                android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="15dp" >
 
@@ -631,14 +628,13 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
                                 android:paddingBottom="15dp"
-                                android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="15dp" >
 
 
                                 <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="25dp"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
                                     android:background="@mipmap/home_title_02"/>
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -688,13 +684,13 @@
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
                                 android:paddingBottom="15dp"
-                                android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="15dp" >
 
                                 <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="25dp"
+                                    android:id="@+id/img_czuan"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
                                     android:background="@mipmap/home_title_03"/>
                                 <TextView
                                     android:layout_width="wrap_content"

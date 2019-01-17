@@ -23,6 +23,7 @@ import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.logg.Logg;
 
 import java.util.List;
 
@@ -137,6 +138,7 @@ public class ZeroBuyAdapter extends RecyclerView.Adapter {
             viewHolder.item_title.setText(title);
             viewHolder.tvMall.setVisibility(View.GONE);
             viewHolder.price.setText(zeroBuyBean.getTlj());
+
             if (zeroBuyBean.getBprice() != null && !zeroBuyBean.getBprice().equals("")) {
                 viewHolder.bprice.setText("原价¥" + zeroBuyBean.getBprice());
             } else {

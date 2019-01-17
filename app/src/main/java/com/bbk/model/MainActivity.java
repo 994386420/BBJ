@@ -260,6 +260,12 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     Unbinder unbinder1;
     @BindView(R.id.tv_serach_title)
     TextView tvSerachTitle;
+    @BindView(R.id.img_zerybuynew)
+    ImageView imgZerybuynew;
+    @BindView(R.id.img_hot)
+    ImageView imgHot;
+    @BindView(R.id.img_czuan)
+    ImageView imgCzuan;
     private View mView;
     private boolean isshowzhezhao = true;
     private int page = 1, x = 1;
@@ -283,7 +289,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private HomeLoadUtil homeLoadUtil;
     private int showTime = 0, curposition = 0;
     private String url1, title1, domain1, type1, isczg1, bprice1, quan1, zuan1;
-    JSONArray chaozhigouTypes;
+    private JSONArray chaozhigouTypes;
+    private String colorz,colorb;
+    private  HashMap<String, Object>  mEventMap, mEventMap2;
 
     @Nullable
     @Override
@@ -309,7 +317,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             mnewmsg = mView.findViewById(R.id.mnewmsg);
             homeLoadUtil = new HomeLoadUtil(getActivity());
             imageMessage.setBackgroundResource(R.mipmap.praise);
-            tvSerachTitle.setText("复制商品链接"+"/"+"口令"+"/"+"标题查找优惠信息");
+            tvSerachTitle.setText("复制商品链接" + "/" + "口令" + "/" + "标题查找优惠信息");
             setToolBar();
             refresh();
             doInit();
@@ -594,7 +602,18 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 JSONObject object = jsonObject.optJSONObject("content");
+                                Logg.json(object.optString("chaojifanimg"));
                                 SharedPreferencesUtil.putSharedData(getActivity(), "homeContent", "homeContent", object.toString());
+                                //动态设置板块图片
+                                if (object.has("zerobuynewimg")) {
+                                    Glide.with(getActivity()).load(object.optString("zerobuynewimg")).into(imgZerybuynew);
+                                }
+                                if (object.has("hotlistimg")) {
+                                    Glide.with(getActivity()).load(object.optString("hotlistimg")).into(imgHot);
+                                }
+                                if (object.has("chaojifanimg")) {
+                                    Glide.with(getActivity()).load(object.optString("chaojifanimg")).into(imgCzuan);
+                                }
                                 LoadHomeData(object);
                             } else {
                                 StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
@@ -622,7 +641,37 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 if (text.contains("bbj")) {
                                     NewConstants.copyText = text;
                                 }
-                                // //获得当前activity的名字
+
+                                /**
+                                 * 根据鲸口令跳转
+                                 */
+                                if (text.contains("eventId")&& text.contains("鲸口令")){
+                                    //获得保存的复制文字
+                                    SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+                                    String [] strings = text.replace("【","@@").replace("】","@@").split("@@");
+                                    mEventMap = new HashMap<>();
+                                    String[] strs = strings[1].split("&");
+                                    mEventMap2 = new HashMap<String, Object>();
+                                    for (String s : strs) {
+                                        String[] str = s.split("=");
+                                        mEventMap2.put(str[0], str[1]);
+                                    }
+                                    JSONObject jsonObject = new JSONObject(mEventMap2);
+                                    //取出保存的复制文字
+                                    String cliptext = SharedPreferencesUtil.getSharedData(getActivity(), "copyText", "copyText");
+                                    /**
+                                     * 如果缓存的跟剪切板不一致则跳转
+                                     */
+                                    if (!text.equals(cliptext)) {
+                                        EventIdIntentUtil.EventIdIntent(getActivity(), jsonObject);
+                                        //跳转成功之后保存从剪切板获取的文字信息
+                                        SharedPreferencesUtil.putSharedData(getActivity(), "copyText", "copyText", copytext);
+                                    }
+                                }
+
+                                /**
+                                 * 淘宝京东链接获取优惠
+                                 */
                                 if (!text.contains("标题:")) {
                                     SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
                                     if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") ||
@@ -677,6 +726,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      */
     private void LoadHomeData(JSONObject object) {
         try {
+
             //活动图标
             if (object.has("fubiao")) {
                 huodongimg.setVisibility(View.VISIBLE);
@@ -730,11 +780,19 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 JSONArray tag = object.optJSONArray("tag");
                 if (tagBeans != null && tagBeans.size() > 0) {
                     tagList.setVisibility(View.VISIBLE);
-                    MyHomeTagAdapter myHomeTagAdapter = new MyHomeTagAdapter(getActivity(), tagBeans, tag);
+                    if (object.has("zhuanti")) {
+                        JSONObject jsonObject = new JSONObject(object.optString("zhuanti"));
+                        if (jsonObject.has("colorz")) {
+                            colorz = jsonObject.optString("colorz");
+                        }
+                        if (jsonObject.has("colorb")) {
+                            colorb = jsonObject.optString("colorb");
+                        }
+                    }
+                    MyHomeTagAdapter myHomeTagAdapter = new MyHomeTagAdapter(getActivity(), tagBeans, tag, colorz, colorb);
                     tagList.setAdapter(myHomeTagAdapter);
                 }
             }
-            Logg.json("0元购" + object.optString("zerobuy"));
             //0元购
             if (object.has("zerobuy")) {
                 List<ZeroBuyBean> zeroBuyBeans = JSON.parseArray(object.optString("zerobuy"), ZeroBuyBean.class);

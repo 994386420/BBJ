@@ -95,6 +95,8 @@ public class BrokerageActivity extends BaseActivity {
     TextView shensuJilu;
     @BindView(R.id.ll_mingxi)
     LinearLayout llMingxi;
+    @BindView(R.id.ll_shensu)
+    LinearLayout llShensu;
     private UpdataDialog updataDialog;
 
     @Override
@@ -227,10 +229,14 @@ public class BrokerageActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four, R.id.title_text1, R.id.tv_tixian_detail, R.id.shensu_jilu})
+    @OnClick({R.id.ll_shensu,R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four, R.id.title_text1, R.id.tv_tixian_detail, R.id.shensu_jilu})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.ll_shensu:
+                intent = new Intent(this, UserShenSuActivity.class);
+                startActivity(intent);
+                break;
             case R.id.title_back_btn:
                 finish();
                 break;
@@ -334,4 +340,5 @@ public class BrokerageActivity extends BaseActivity {
         Intent intent = new Intent(this, FanLiOrderActivity.class);
         startActivity(intent);
     }
+
 }

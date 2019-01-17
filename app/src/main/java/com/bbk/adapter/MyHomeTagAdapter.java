@@ -1,6 +1,7 @@
 package com.bbk.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,11 +38,14 @@ public class MyHomeTagAdapter extends RecyclerView.Adapter {
     private Context context;
     private userInterface userInterface;
     private JSONArray array;
+    private String colorz,colorb;//10个tag字颜色
 
-    public MyHomeTagAdapter(Context context, List<TagBean> tagBeans, JSONArray tagarray) {
+    public MyHomeTagAdapter(Context context, List<TagBean> tagBeans, JSONArray tagarray,String colorz,String colorb) {
         this.tagBeans = tagBeans;
         this.context = context;
         this.array = tagarray;
+        this.colorz = colorz;
+        this.colorb = colorb;
     }
 
     public MyHomeTagAdapter.userInterface getUserInterface() {
@@ -119,6 +123,13 @@ public class MyHomeTagAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+//            Logg.json(colorz+"===="+colorb);
+            if (colorz != null) {
+                viewHolder.tvTag.setTextColor(Color.parseColor(colorz));
+            }
+            if (colorb != null) {
+                viewHolder.llTag.setBackgroundColor(Color.parseColor(colorb));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

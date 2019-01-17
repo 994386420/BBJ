@@ -275,13 +275,34 @@
                 android:textSize="16dp"
                 android:textColor="@color/tuiguang_color3"
                 android:text="¥0.0" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/shop_color1"
                     android:textSize="14dp"
-                    android:layout_marginTop="10dp"
                     android:text="上月结算"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="查看"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:paddingBottom="1dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="7dp"
+                    android:paddingLeft="7dp"
+                    android:textColor="@color/tuiguang_color2"
+                    android:background="@drawable/bg_tuiguang5" />
+            </LinearLayout>
+
         </LinearLayout>
         <View
             android:layout_width="1dp"
@@ -306,13 +327,33 @@
                 android:textSize="16dp"
                 android:textColor="@color/tuiguang_color3"
                 android:text="¥0.0" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/shop_color1"
                     android:textSize="14dp"
-                    android:layout_marginTop="10dp"
                     android:text="本月结算"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="查看"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:paddingBottom="1dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="7dp"
+                    android:paddingLeft="7dp"
+                    android:textColor="@color/tuiguang_color2"
+                    android:background="@drawable/bg_tuiguang5" />
+            </LinearLayout>
+
         </LinearLayout>
         <View
             android:layout_width="1dp"
@@ -338,13 +379,34 @@
                 android:textColor="@color/tuiguang_color3"
                 android:text="¥0.0" />
 
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/shop_color1"
                     android:textSize="14dp"
-                    android:layout_marginTop="10dp"
+
                     android:text="本月预估"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="查看"
+                    android:gravity="center"
+                    android:textSize="11dp"
+                    android:paddingBottom="1dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="7dp"
+                    android:paddingLeft="7dp"
+                    android:textColor="@color/tuiguang_color2"
+                    android:background="@drawable/bg_tuiguang5" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>

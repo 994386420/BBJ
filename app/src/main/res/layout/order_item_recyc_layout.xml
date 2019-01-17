@@ -1,179 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_order"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/shop_color2"
-    android:id="@+id/item_order">
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-        android:orientation="horizontal">
-
-    <ImageView
-    android:id="@+id/item_img"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-        android:scaleType="centerCrop"
-    android:layout_marginLeft="10dp" />
-
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="10dp"
-    android:layout_toRightOf="@id/item_img"
     android:orientation="vertical">
 
-
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
-    <TextView
-    android:layout_weight="1"
-    android:id="@+id/item_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:gravity="center_vertical"
-    android:maxLines="2"
-    android:text=" "
-        android:textIsSelectable="true"
-    android:textColor="@color/tuiguang_color3"
-    android:textSize="13dp" />
+        <ImageView
+            android:id="@+id/item_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop" />
 
-    <LinearLayout
-        android:id="@+id/ll_price1"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:gravity="right"
-    android:orientation="vertical">
-    <TextView
-    android:id="@+id/tv_shop_price"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text=""
-    android:textSize="13dp"
-    android:textColor="@color/tuiguang_color3"/>
-
-    <TextView
-    android:id="@+id/tv_num"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text=""
-    android:textSize="13dp" />
-    </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <TextView
-    android:id="@+id/tv_shop_guige"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginRight="5dp"
-        android:layout_marginTop="4dp"
-    android:text=""
-        android:textColor="@color/tuiguang_color4"
-    android:textSize="11dp" />
-    </LinearLayout>
-        <RelativeLayout
-            android:id="@+id/ll_tuikuan"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/item_img"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_pl"
-                android:textColor="@color/tuiguang_color1"
-                android:background="@drawable/bg_tuiguang6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="3dp"
-                android:paddingTop="2dp"
-                android:text="评论"
-                android:visibility="gone"
-                android:textSize="12dp"
-             />
-            <TextView
-                android:id="@+id/tv_tuikuan"
-                android:background="@drawable/bg_tuiguang7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="3dp"
-                android:paddingTop="2dp"
-                android:text="退款"
-                android:textSize="12dp"
-                android:visibility="gone"
-                android:textColor="@color/shop_color1"/>
-            <TextView
-                android:id="@+id/tv_tuikuan_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="3dp"
-                android:paddingTop="2dp"
-                android:text=""
-                android:textSize="12dp"
-                android:textColor="@color/color_line_top"/>
-        </RelativeLayout>
-        <LinearLayout
-            android:id="@+id/ll_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="bottom"
-            android:visibility="gone"
-            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:text="¥"
-                android:textColor="@color/tuiguang_color1"
-                android:textSize="12dp" />
-            <TextView
-                android:id="@+id/tv_money"
-                android:layout_width="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:text=" "
+                    android:textColor="@color/tuiguang_color3"
+                    android:textIsSelectable="true"
+                    android:textSize="13dp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_price1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_shop_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/tuiguang_color3"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/tv_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="13dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="12"
-                android:textColor="@color/tuiguang_color1"
-                android:textSize="16dp" />
-            <TextView
-                android:id="@+id/tv_number"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_shop_guige"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="4dp"
+                    android:text=""
+                    android:textColor="@color/tuiguang_color4"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/ll_tuikuan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_pl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/bg_tuiguang6"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:text="评论"
+                    android:textColor="@color/tuiguang_color1"
+                    android:textSize="12dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_tuikuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/bg_tuiguang7"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:text="退款"
+                    android:textColor="@color/shop_color1"
+                    android:textSize="12dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_tuikuan_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:text=""
+                    android:textColor="@color/color_line_top"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_price"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="13dp" />
+                android:layout_marginTop="4dp"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2dp"
+                    android:text="¥"
+                    android:textColor="@color/tuiguang_color1"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="12"
+                    android:textColor="@color/tuiguang_color1"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="1"
+                    android:textSize="13dp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/white"/>
+        android:background="@color/white" />
 </LinearLayout>

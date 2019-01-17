@@ -35,7 +35,16 @@ public class ShopDetailBean {
     private String canZeroBuyJifen;
     private String zeroBuyDescJifen;
     private String quanList;//商品详情优惠券
+    private String jingkouling;
 
+
+    public String getJingkouling() {
+        return jingkouling;
+    }
+
+    public void setJingkouling(String jingkouling) {
+        this.jingkouling = jingkouling;
+    }
 
     public String getQuanList() {
         return quanList;

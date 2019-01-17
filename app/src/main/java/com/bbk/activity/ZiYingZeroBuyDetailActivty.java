@@ -30,6 +30,7 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.resource.NewConstants;
+import com.bbk.shopcar.ConfirmOrderZeroBuyActivity;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.shopcar.Utils.ShopDialog;
 import com.bbk.util.DialogSingleUtil;
@@ -366,6 +367,9 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                     String isShare = SharedPreferencesUtil.getSharedData(context, "isShare", "isShare");
                     //判断是否分享
                     if (TextUtils.isEmpty(isShare)) {
+                        /**
+                         * 未分享提示分享
+                         */
                         tvShare.setBackgroundResource(R.drawable.bg_czg1);
                         tvShare.setTextColor(getResources().getColor(R.color.white));
                         tvZeroBuy.setBackgroundResource(R.drawable.bg_update1);
@@ -379,6 +383,9 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                             }
                         });
                     } else {
+                        /**
+                         * 分享后的操作
+                         */
                         tvShare.setBackgroundResource(R.drawable.bg_czg1);
                         tvShare.setTextColor(getResources().getColor(R.color.white));
                         tvZeroBuy.setBackgroundResource(R.drawable.bg_czg1);
@@ -388,21 +395,25 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 updataDialog.dismiss();
+                                Intent intent;
                                 switch (shopDetailBean.getGuigetype()) {
                                     case "0":
                                         //无规格选
                                         if (isOlder.equals("yes")) {
-                                            getZeroBuyOrderOld("");
+                                            //直接支付改为跳转订单页面
+//                                            getZeroBuyOrderOld("");
+                                            shopDialog.dismiss();
+                                            setIntent(id,"",shopDetailBean.getImgurl(),shopDetailBean.getTitle(),shopDetailBean.getPrice());
                                             return;
                                         }
                                         getZeroBuyOrder("");
-                                        shopDialog.dismiss();
                                         break;
                                     case "1":
                                         if (chooseGuigeColor != null) {
                                             shopDialog.dismiss();
                                             if (isOlder.equals("yes")) {
-                                                getZeroBuyOrderOld(chooseGuigeColor);
+//                                                getZeroBuyOrderOld(chooseGuigeColor);
+                                                setIntent(id,chooseGuigeColor,shopDetailBean.getImgurl(),shopDetailBean.getTitle(),shopDetailBean.getPrice());
                                                 return;
                                             }
                                             getZeroBuyOrder(chooseGuigeColor);
@@ -414,7 +425,7 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                                         if (chooseGuigeColor != null && chooseGuigeSize != null) {
                                             shopDialog.dismiss();
                                             if (isOlder.equals("yes")) {
-                                                getZeroBuyOrderOld(chooseGuigeColor + " " + chooseGuigeSize);
+                                                setIntent(id,chooseGuigeColor + " " + chooseGuigeSize,shopDetailBean.getImgurl(),shopDetailBean.getTitle(),shopDetailBean.getPrice());
                                                 return;
                                             }
                                             getZeroBuyOrder(chooseGuigeColor + " " + chooseGuigeSize);
@@ -478,17 +489,19 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                                     case "0":
                                         //无规格选
                                         if (isOlder.equals("yes")) {
-                                            getZeroBuyOrderOld("");
+//                                            getZeroBuyOrderOld("");
+                                            shopDialog.dismiss();
+                                            setIntent(id,"",shopDetailBean.getImgurl(),shopDetailBean.getTitle(),shopDetailBean.getPrice());
                                             return;
                                         }
                                         getZeroBuyOrder("");
-                                        shopDialog.dismiss();
                                         break;
                                     case "1":
                                         if (chooseGuigeColor != null) {
                                             shopDialog.dismiss();
                                             if (isOlder.equals("yes")) {
-                                                getZeroBuyOrderOld(chooseGuigeColor);
+//                                                getZeroBuyOrderOld(chooseGuigeColor);
+                                                setIntent(id,chooseGuigeColor,shopDetailBean.getImgurl(),shopDetailBean.getTitle(),shopDetailBean.getPrice());
                                                 return;
                                             }
                                             getZeroBuyOrder(chooseGuigeColor);
@@ -500,7 +513,8 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                                         if (chooseGuigeColor != null && chooseGuigeSize != null) {
                                             shopDialog.dismiss();
                                             if (isOlder.equals("yes")) {
-                                                getZeroBuyOrderOld(chooseGuigeColor + " " + chooseGuigeSize);
+//                                                getZeroBuyOrderOld(chooseGuigeColor + " " + chooseGuigeSize);
+                                                setIntent(id,chooseGuigeColor + " " + chooseGuigeSize,shopDetailBean.getImgurl(),shopDetailBean.getTitle(),shopDetailBean.getPrice());
                                                 return;
                                             }
                                             getZeroBuyOrder(chooseGuigeColor + " " + chooseGuigeSize);
@@ -543,6 +557,24 @@ public class ZiYingZeroBuyDetailActivty extends BaseActivity {
                 }
             });
         }
+    }
+
+    private void setIntent(String id, String s, String imgurl, String title, String price) {
+        Intent intent;
+        intent = new Intent(ZiYingZeroBuyDetailActivty.this, ConfirmOrderZeroBuyActivity.class);
+        intent.putExtra("id",id);
+        intent.putExtra("guige",s);
+        intent.putExtra("imgurl",imgurl);
+        intent.putExtra("title",title);
+        intent.putExtra("price",price);
+        if (shopDetailBean.getDianpu() != null) {
+            intent.putExtra("dianpu", shopDetailBean.getDianpu());
+        }
+        intent.putExtra("jifen",jifen);
+        if (shopDetailBean.getKuaidi() != null) {
+            intent.putExtra("yunfei", shopDetailBean.getKuaidi());
+        }
+        startActivity(intent);
     }
 
     /**

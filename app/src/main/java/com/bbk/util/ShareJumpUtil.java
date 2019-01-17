@@ -103,11 +103,7 @@ public class ShareJumpUtil {
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        ShareJumpUtil.this.qqShare(qqListener);
-//                        Logg.e(imageurl);
-//                        StringUtil.showToast(activity,imageurl);
-
-                        if (StringUtil.isWeixinAvilible(activity)) {// 判断是否安装微信客户端
+                        if (StringUtil.isQQAvilible(activity)) {
                             DialogSingleUtil.show(activity);
                             handler.postDelayed(new Runnable() {
                                 @Override

@@ -12,10 +12,10 @@ import retrofit2.http.QueryMap;
 
 public interface BaseApiService<T> {
 
-    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
+//    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
 //    public static final String Base_URL = "http://125.64.92.222:8097/APIService/";//正式测试接口
 //    public static final String Base_URL = "http://192.168.20.165/APIService/";//内网测试接口
-//    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
+    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
     //新版首页超值购等分类模块
     @FormUrlEncoded
     @POST("newService/queryAppIndexByType")
@@ -35,7 +35,7 @@ public interface BaseApiService<T> {
     @POST("apiService/getPageList")
     @FormUrlEncoded
     Observable<String> getPageList(@FieldMap Map<String, String> map);
-
+      abstract
     //获取爆料
     @POST("newService/queryBaoliaoMessage")
     @FormUrlEncoded
@@ -493,4 +493,9 @@ public interface BaseApiService<T> {
     @POST("newService/queryBrokerageDetailInfo")
     @FormUrlEncoded
     Observable<String> queryBrokerageDetailInfo(@FieldMap Map<String, String> map);
+
+    // 查询个人的默认地址
+    @POST("mallService/queryAddrSingle")
+    @FormUrlEncoded
+    Observable<String> queryAddrSingle(@FieldMap Map<String, String> map);
 }

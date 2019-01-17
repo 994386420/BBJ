@@ -554,6 +554,42 @@
             android:layout_marginLeft="10dp"
             android:src="@mipmap/enter01" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/__picker_common_primary"/>
+    <LinearLayout
+        android:id="@+id/ll_shensu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:background="@drawable/btn_seclecter">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/tuiguang_shensu" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="订单申诉"
+            android:textColor="@color/tuiguang_color3"/>
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/enter01" />
+    </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

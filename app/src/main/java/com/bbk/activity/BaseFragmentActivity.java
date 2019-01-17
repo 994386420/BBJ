@@ -70,6 +70,8 @@ public class BaseFragmentActivity extends FragmentActivity {
 	public static boolean cancelCheck = true;// 是否取消查询
 	private String copytext;
 	KelperTask mKelperTask;
+	private HashMap<String, Object> mEventMap,mEventMap2;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,6 @@ public class BaseFragmentActivity extends FragmentActivity {
 	protected void onStart() {
 		super.onStart();
 		String custom = SharedPreferencesUtil.getSharedData(this, "custom", "custom");
-//		Logg.e(custom+"===================>>>>>>");
 		if (custom != null && !custom.equals("")){
 			try {
 				JSONObject obj = new JSONObject(custom);
@@ -112,18 +113,46 @@ public class BaseFragmentActivity extends FragmentActivity {
 		NewConstants.showdialogFlg = "0";
 		cancelCheck = true;
 		clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-//		Logg.e(clipboardManager.getPrimaryClip());
-				Logg.e(MainActivity.isShowCheck+"===================>>>>>>");
+		Logg.e(MainActivity.isShowCheck+"===================>>>>>>");
 		if ( clipboardManager.getText() != null){
 			if (MainActivity.isShowCheck == false){
-//				Logg.e(NewHomeFragment.isShowCheck);
 		String text =clipboardManager.getText().toString();
 		if (text != null && !text.equals("") && !text.equals("null")) {
 			copytext = text;
 			if (text.contains("bbj")) {
 				NewConstants.copyText = text;
 			}
-			// //获得当前activity的名字
+
+			/**
+			 * 根据鲸口令跳转
+			 */
+			if (text.contains("eventId")&& text.contains("鲸口令")){
+				//获得保存的复制文字
+				SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
+				String [] strings = text.replace("【","@@").replace("】","@@").split("@@");
+				mEventMap = new HashMap<>();
+				String[] strs = strings[1].split("&");
+				mEventMap2 = new HashMap<String, Object>();
+				for (String s : strs) {
+					String[] str = s.split("=");
+					mEventMap2.put(str[0], str[1]);
+				}
+				JSONObject jsonObject = new JSONObject(mEventMap2);
+				//取出保存的复制文字
+				String cliptext = SharedPreferencesUtil.getSharedData(BaseFragmentActivity.this, "copyText", "copyText");
+				/**
+				 * 如果缓存的跟剪切板不一致则跳转
+				 */
+				if (!text.equals(cliptext)) {
+					EventIdIntentUtil.EventIdIntent(BaseFragmentActivity.this, jsonObject);
+					//跳转成功之后保存从剪切板获取的文字信息
+					SharedPreferencesUtil.putSharedData(BaseFragmentActivity.this, "copyText", "copyText", copytext);
+				}
+			}
+
+			/**
+			 * 淘宝京东链接获取优惠
+			 */
 			if (!text.contains("标题:")) {//https://item.taobao.com/item.htm?id=552530797708
 				SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
 				if (text.contains("http") && text.contains("jd") || text.contains("https") && text.contains("jd") || text.contains("http") && text.contains("taobao") || text.contains("http") && text.contains("tmall") ||

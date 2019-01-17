@@ -110,18 +110,32 @@
                         android:textColor="@color/tuiguang_color3"
                         android:textSize="16dp"/>
 
-                    <TextView
+
+                    <LinearLayout
+                        android:id="@+id/tv_share"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="8dp"
+                        android:gravity="center"
+                        android:background="@drawable/bg_cicyle9"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@mipmap/fenxiang"/>
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="分享"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="5dp"
                         android:gravity="center"
                         android:textSize="13dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/tuiguang_color4"
-                        android:background="@drawable/bg_cicyle9"
-                        android:visibility="gone"/>
+
+                        android:visibility="visible"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

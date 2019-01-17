@@ -434,7 +434,6 @@ public class JumpDetailActivty extends BaseActivity {
             case R.id.ll_share:
                 flag = "share";
                 if (TextUtils.isEmpty(userID)) {
-//                    Flag = "home";
                     LogFlag = "1";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
@@ -451,7 +450,6 @@ public class JumpDetailActivty extends BaseActivity {
             case R.id.ll_lingquan:
                 flag = "lingquan";
                 if (TextUtils.isEmpty(userID)) {
-//                    Flag = "home";
                     LogFlag = "2";
                     intent = new Intent(this, UserLoginNewActivity.class);
                     startActivityForResult(intent, 1);
@@ -459,9 +457,7 @@ public class JumpDetailActivty extends BaseActivity {
                     if (NoFastClickUtils.isFastClick()) {
                         StringUtil.showToast(this, "对不起，您的点击太快了，请休息一下");
                     } else {
-//                        llLingquan.setClickable(false);
                         cancleJump = true;
-//                        shareCpsInfo();
                         alibcShowParams = new AlibcShowParams(OpenType.Native, false);
                         alibcShowParams.setClientType("taobao_scheme");
                         exParams = new HashMap<>();
@@ -478,10 +474,6 @@ public class JumpDetailActivty extends BaseActivity {
                                     public void run() {
                                         if (cancleJump) {
                                             updataDialog.dismiss();
-//                                            KeplerApiManager.getWebViewService().openAppWebViewPage(JumpDetailActivty.this,
-//                                                    url,
-//                                                    mKeplerAttachParameter,
-//                                                    mOpenAppAction);
                                             try {
                                                 KeplerApiManager.getWebViewService().openJDUrlPage(url, mKeplerAttachParameter, JumpDetailActivty.this, mOpenAppAction, 1500);
                                             } catch (KeplerBufferOverflowException e) {
@@ -501,7 +493,6 @@ public class JumpDetailActivty extends BaseActivity {
                                     intent.putExtra("rowkey", rowkey);
                                 }
                                 startActivity(intent);
-//                    updataDialog.dismiss();
                             }
                         }
                     }
@@ -780,7 +771,7 @@ public class JumpDetailActivty extends BaseActivity {
             ImageView imageView = updataDialog.findViewById(R.id.img_app);
             AdaptionSizeTextView adaptionSizeTextViewQuan = updataDialog.findViewById(R.id.quan);
             AdaptionSizeTextView adaptionSizeTextViewQuan1 = updataDialog.findViewById(R.id.quan1);
-            AdaptionSizeTextView adaptionSizeTextViewTsMessage = updataDialog.findViewById(R.id.ts_message);
+            LinearLayout llTsMessage = updataDialog.findViewById(R.id.ll_ts_message);
             if (domain.equals("jd")) {
                 jumpdomain = "jumpjd";
             } else if (domain.equals("tmall")) {
@@ -790,20 +781,20 @@ public class JumpDetailActivty extends BaseActivity {
             }
             if (quans != null && !quans.equals("") && !quans.equals("0")) {
                 adaptionSizeTextViewQuan1.setVisibility(View.VISIBLE);
-                adaptionSizeTextViewTsMessage.setVisibility(View.VISIBLE);
+                llTsMessage.setVisibility(View.VISIBLE);
                 adaptionSizeTextViewQuan1.setText("领券减" + quans + "元");
             } else {
                 adaptionSizeTextViewQuan1.setVisibility(View.INVISIBLE);
-                adaptionSizeTextViewTsMessage.setVisibility(View.INVISIBLE);
+                llTsMessage.setVisibility(View.INVISIBLE);
             }
 
             if (zuan != null && !zuan.equals("") && !zuan.equals("0")) {
                 adaptionSizeTextViewQuan.setVisibility(View.VISIBLE);
-                adaptionSizeTextViewTsMessage.setVisibility(View.VISIBLE);
+                llTsMessage.setVisibility(View.VISIBLE);
                 adaptionSizeTextViewQuan.setText("本商品赚" + zuan.replace("预估", "") + "元");
             } else {
                 adaptionSizeTextViewQuan.setVisibility(View.INVISIBLE);
-                adaptionSizeTextViewTsMessage.setVisibility(View.INVISIBLE);
+                llTsMessage.setVisibility(View.INVISIBLE);
             }
             int drawS = getResources().getIdentifier(jumpdomain, "mipmap", getPackageName());
             imageView.setImageResource(drawS);
@@ -909,7 +900,12 @@ public class JumpDetailActivty extends BaseActivity {
                             DialogSingleUtil.dismiss(0);
                             List<String> DetailimgUrlList = new ArrayList<>();
                             DetailimgUrlList.add(shareBean.getImgUrl());
-                            ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan, bitmap);
+                            ShareJumpUtil.showShareDialog(llShare, JumpDetailActivty.this
+                                    , shareBean.getTitle(),
+                                    ""
+                                    , shareBean.getShareUrl()
+                                    , shareBean.getImgUrl(), ""
+                                    , imageFenxiang, wenan, bitmap);
                         }
                     });
 
@@ -956,7 +952,11 @@ public class JumpDetailActivty extends BaseActivity {
                             DialogSingleUtil.dismiss(0);
                             List<String> DetailimgUrlList = new ArrayList<>();
                             DetailimgUrlList.add(shareBean.getImgUrl());
-                            ShareZeroBuyUtil.showShareDialog(llShare, JumpDetailActivty.this, shareBean.getTitle(), "", shareBean.getShareUrl(), shareBean.getImgUrl(), "", imageFenxiang, wenan, bitmap,DetailimgUrlList);
+                            ShareZeroBuyUtil.showShareDialog(llShare,
+                                    JumpDetailActivty.this
+                                    , shareBean.getTitle(), ""
+                                    , shareBean.getShareUrl(), shareBean.getImgUrl(), ""
+                                    , imageFenxiang, wenan, bitmap,DetailimgUrlList);
                         }
                     });
 
