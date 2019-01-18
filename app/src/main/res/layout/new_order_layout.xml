@@ -25,7 +25,7 @@
             android:layout_marginLeft="5dp"
             android:textSize="16dp"
             android:textColor="@color/tuiguang_color3"
-            android:text="鲸城订单"
+            android:text="自营订单"
             android:textStyle="bold"/>
 
         <TextView

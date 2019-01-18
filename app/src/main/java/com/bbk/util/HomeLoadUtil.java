@@ -23,14 +23,18 @@ import com.alibaba.baichuan.android.trade.page.AlibcPage;
 import com.bbk.Bean.DemoTradeCallback;
 import com.bbk.activity.BidBillDetailActivity;
 import com.bbk.activity.BidDetailActivity;
+import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.HomeActivity;
 import com.bbk.activity.MesageCenterActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.UserSuggestionActivity;
 import com.bbk.activity.WebViewActivity;
+import com.bbk.component.BidHomeComponent;
+import com.bbk.component.CarComponent;
 import com.bbk.component.HomeAllComponent;
 import com.bbk.component.HomeAllComponent1;
+import com.bbk.component.HomeAllComponent4;
 import com.bbk.component.HomeAllComponent7;
 import com.bbk.component.HomeBijiaComponent;
 import com.bbk.component.SimpleComponent;
@@ -616,7 +620,6 @@ public class HomeLoadUtil {
     public static void showGuideView(final Context context, View targetView, final View targetView1) {
         GuideBuilder builder = new GuideBuilder();
         builder.setTargetView(targetView)
-//                .setFullingViewId(R.id.ll_view_group)
                 .setAlpha(150)
                 .setHighTargetCorner(20)
                 .setHighTargetPaddingBottom(70)
@@ -641,16 +644,14 @@ public class HomeLoadUtil {
         guide.show((Activity) context);
     }
 
-    public static void showGuideViewBijia(final Context context, View targetView) {
+    public static void showGuideViewBijia(final Context context, final View targetView) {
         GuideBuilder builder = new GuideBuilder();
         builder.setTargetView(targetView)
-//                .setFullingViewId(R.id.ll_view_group)
                 .setAlpha(150)
                 .setHighTargetCorner(20)
                 .setHighTargetPaddingBottom(70)
                 .setHighTargetPaddingRight(10)
                 .setHighTargetPaddingLeft(10)
-                .setExitAnimationId(android.R.anim.fade_out)
                 .setOverlayTarget(false)
                 .setOutsideTouchable(false);
         builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
@@ -660,7 +661,7 @@ public class HomeLoadUtil {
 
             @Override
             public void onDismiss() {
-                SharedPreferencesUtil.putSharedData(context, "isFirstHomeUse", "isFirstHomeUserUse", "no");
+                showCarGuideView(context,HomeActivity.imgCarBtn);
             }
         });
 
@@ -669,10 +670,41 @@ public class HomeLoadUtil {
         guide.setShouldCheckLocInWindow(true);
         guide.show((Activity) context);
     }
+
+    /**
+     * 购物车引导
+     */
+    public static void showCarGuideView(final Context context, final View view) {
+        GuideBuilder builder = new GuideBuilder();
+        builder.setTargetView(view)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPaddingLeft(10)
+                .setHighTargetPaddingRight(10)
+                .setHighTargetPaddingBottom(70)
+                .setExitAnimationId(android.R.anim.fade_out)
+                .setOverlayTarget(false)
+                .setOutsideTouchable(false);
+        builder.setOnVisibilityChangedListener(new GuideBuilder.OnVisibilityChangedListener() {
+            @Override public void onShown() {
+            }
+
+            @Override public void onDismiss() {
+                SharedPreferencesUtil.putSharedData(context, "isFirstHomeUse", "isFirstHomeUserUse", "no");
+            }
+        });
+
+        builder.addComponent(new CarComponent()).addComponent(new HomeAllComponent4());
+        Guide guide = builder.createGuide();
+        guide.setShouldCheckLocInWindow(true);
+        guide.show((Activity) context);
+    }
+
+
+
     public static void showGuideViewZiying(final Context context, final View targetView3, final View targetView4, View targetView6) {
         GuideBuilder builder = new GuideBuilder();
         builder.setTargetView(targetView6)
-//                .setFullingViewId(R.id.ll_view_group)
                 .setAlpha(150)
                 .setHighTargetCorner(20)
                 .setHighTargetPaddingBottom(70)
@@ -834,13 +866,4 @@ public class HomeLoadUtil {
                 .showAsDropDown(view, -315, 0);
     }
 
-    /**
-     * 联系客服
-     */
-//    public static void startChat(final Context context){
-//        String uId = "201811081303171";
-//        String wId = "201811081302381";
-//        String mTitle = "小鲸";
-//        BDUiApi.visitorStartChatActivity(context, uId, wId, mTitle);
-//    }
 }

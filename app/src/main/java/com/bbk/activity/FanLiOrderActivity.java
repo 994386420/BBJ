@@ -88,7 +88,7 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
         StringUtil.setIndicator(tablayout, 30, 30);
         tablayoutStatus.addTab(tablayoutStatus.newTab().setText("全部"));
         tablayoutStatus.addTab(tablayoutStatus.newTab().setText("跟踪中"));
-        tablayoutStatus.addTab(tablayoutStatus.newTab().setText("待发放"));
+//        tablayoutStatus.addTab(tablayoutStatus.newTab().setText("待发放"));
         tablayoutStatus.addTab(tablayoutStatus.newTab().setText("已发放"));
         tablayoutStatus.addTab(tablayoutStatus.newTab().setText("失效"));
         tablayoutStatus.setTabMode(TabLayout.MODE_FIXED);
@@ -152,11 +152,13 @@ public class FanLiOrderActivity extends BaseActivity implements CommonLoadingVie
                 type = "";
             } else if (j == 1) {
                 type = "1";
-            } else if (j == 2) {
-                type = "2";
-            } else if (j == 3) {
+            }
+//            else if (j == 2) {
+//                type = "2";
+//            }
+            else if (j == 2) {
                 type = "3";
-            } else if (j == 4) {
+            } else if (j == 3) {
                 type = "4";
             }
             x = 1;

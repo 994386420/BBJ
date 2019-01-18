@@ -80,10 +80,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="left"
             android:text="成功付款了，没有看到订单？"
             android:textSize="12dp"
             android:layout_marginRight="15dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="立即申诉"
+            android:textSize="12dp"
+            android:layout_marginRight="10dp"
             android:textColor="@color/white"/>
         <ImageView
             android:layout_width="6dp"

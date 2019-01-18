@@ -498,4 +498,9 @@ public interface BaseApiService<T> {
     @POST("mallService/queryAddrSingle")
     @FormUrlEncoded
     Observable<String> queryAddrSingle(@FieldMap Map<String, String> map);
+
+    //newService/yongjintixian
+    @POST("newService/yongjintixian")
+    @FormUrlEncoded
+    Observable<String> yongjintixian (@FieldMap Map<String, String> map);
 }

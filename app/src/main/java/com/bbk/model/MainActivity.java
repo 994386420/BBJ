@@ -45,6 +45,7 @@ import com.bbk.Bean.PinpaiBean;
 import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.Bean.TagBean;
 import com.bbk.Bean.ZeroBuyBean;
+import com.bbk.activity.BaseActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.HomeActivity;
@@ -415,7 +416,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     float scale = (float) Offset / appBarLayout.getTotalScrollRange();
                     float alpha = (255 * scale);
 //                    toolbaretail.setAlpha();
-                    toolbaretail.setBackgroundColor(Color.argb((int) alpha, 255, 100, 60));
+                    if (colorb != null){
+                        toolbaretail.setBackgroundColor(Color.argb((int) alpha, 208, 0, 0));
+                    }else {
+                        toolbaretail.setBackgroundColor(Color.argb((int) alpha, 255, 100, 60));
+                    }
                     tvMessage.setTextColor(Color.argb((int) alpha, 255, 255, 255));
 //                    imageMessage.setAlpha((appBarLayout.getTotalScrollRange() / 2 - Offset * 1.0f) / appBarLayout.getTotalScrollRange());
 //                    imageMessage.setBackgroundResource(R.mipmap.order_09);
@@ -435,7 +440,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
 //                    toolbaretail.setAlpha(floate);
                     float scale = (float) Offset / appBarLayout.getTotalScrollRange();
                     float alpha = (255 * scale);
-                    toolbaretail.setBackgroundResource(R.color.tuiguang_color5);
+                    if (colorb != null) {
+                        toolbaretail.setBackgroundColor(Color.parseColor(colorb));
+                    }else {
+                        toolbaretail.setBackgroundResource(R.color.tuiguang_color5);
+                    }
                     tvMessage.setTextColor(Color.argb((int) alpha, 255, 255, 255));
                     if (Offset == appBarLayout.getTotalScrollRange()) {
                         typeImage.setVisibility(View.VISIBLE);
@@ -645,17 +654,27 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 /**
                                  * 根据鲸口令跳转
                                  */
-                                if (text.contains("eventId")&& text.contains("鲸口令")){
+                                if (text.contains("e=")&& text.contains("鲸口令")){
                                     //获得保存的复制文字
                                     SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
                                     String [] strings = text.replace("【","@@").replace("】","@@").split("@@");
                                     mEventMap = new HashMap<>();
                                     String[] strs = strings[1].split("&");
                                     mEventMap2 = new HashMap<String, Object>();
+                                    if (strs.length > 1)
                                     for (String s : strs) {
                                         String[] str = s.split("=");
-                                        mEventMap2.put(str[0], str[1]);
+                                        if (str[0].equals("e")){
+                                            mEventMap2.put("eventId", str[1]);
+                                        }else if (str[0].equals("k")){
+                                            mEventMap2.put("keyword", str[1]);
+                                        } else if (str[0].equals("u")){
+                                            mEventMap2.put("htmlUrl", str[1]);
+                                        }else {
+                                            mEventMap2.put(str[0], str[1]);
+                                        }
                                     }
+
                                     JSONObject jsonObject = new JSONObject(mEventMap2);
                                     //取出保存的复制文字
                                     String cliptext = SharedPreferencesUtil.getSharedData(getActivity(), "copyText", "copyText");
@@ -663,9 +682,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                      * 如果缓存的跟剪切板不一致则跳转
                                      */
                                     if (!text.equals(cliptext)) {
-                                        EventIdIntentUtil.EventIdIntent(getActivity(), jsonObject);
-                                        //跳转成功之后保存从剪切板获取的文字信息
-                                        SharedPreferencesUtil.putSharedData(getActivity(), "copyText", "copyText", copytext);
+                                        if (  NewConstants.isjinkouling  != null &&  NewConstants.isjinkouling .equals("1")) {
+                                            EventIdIntentUtil.EventIdIntent(getActivity(), jsonObject);
+                                            //跳转成功之后保存从剪切板获取的文字信息
+                                            SharedPreferencesUtil.putSharedData(getActivity(), "copyText", "copyText", copytext);
+                                        }
                                     }
                                 }
 

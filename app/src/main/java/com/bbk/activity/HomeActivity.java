@@ -44,6 +44,7 @@ import com.bbk.update.UpdateVersionService;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogHomeUtil;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.view.CustomViewPager;
@@ -99,8 +100,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     ImageView imgSortBtn;
     @BindView(R.id.img_message_btn)
     NumImageView imgMessageBtn;
-    @BindView(R.id.img_car_btn)
-    ImageView imgCarBtn;
+    public static ImageView imgCarBtn;
     @BindView(R.id.img_user_btn)
     ImageView imgUserBtn;
     @BindView(R.id.mtext)
@@ -140,6 +140,11 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     public static ImageView mHomeGudieImage;//第一次安装首页新人引导
     public static int position = 5;
     private Handler mHandler;
+
+
+    public HomeActivity() {
+
+    }
 
 
     @Override
@@ -221,6 +226,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     };
 
     public void initView() {
+        imgCarBtn = findViewById(R.id.img_car_btn);
         activityHomeLayout = (RelativeLayout) findViewById(R.id.activity_home_layout);
         mHomeGudieImage = findViewById(R.id.new_gudie_image_home);
         TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
@@ -829,6 +835,7 @@ public class HomeActivity extends BaseFragmentActivity implements Response {
     public static void initfour() {
         mViewPager.setCurrentItem(4);
     }
+
 
 
     public interface MyTouchListener {

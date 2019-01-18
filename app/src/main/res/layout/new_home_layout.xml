@@ -342,9 +342,9 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
-                                android:paddingBottom="15dp"
+                                android:paddingBottom="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="15dp" >
+                                android:paddingTop="10dp" >
 
                                 <ImageView
                                     android:id="@+id/img_zerybuynew"
@@ -398,9 +398,9 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
-                                android:paddingBottom="15dp"
+                                android:paddingBottom="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="15dp" >
+                                android:paddingTop="10dp" >
 
                                 <ImageView
                                     android:id="@+id/img_hot"
@@ -454,9 +454,9 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
-                                android:paddingBottom="15dp"
+                                android:paddingBottom="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="15dp" >
+                                android:paddingTop="10dp" >
 
                                 <ImageView
                                     android:layout_width="160dp"
@@ -509,9 +509,9 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
-                                android:paddingBottom="15dp"
+                                android:paddingBottom="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="15dp" >
+                                android:paddingTop="10dp" >
 
 
                                 <ImageView
@@ -565,9 +565,9 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
-                                android:paddingBottom="15dp"
+                                android:paddingBottom="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="15dp" >
+                                android:paddingTop="10dp" >
 
 
                                 <ImageView
@@ -627,9 +627,9 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
-                                android:paddingBottom="15dp"
+                                android:paddingBottom="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="15dp" >
+                                android:paddingTop="10dp" >
 
 
                                 <ImageView
@@ -683,9 +683,9 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:background="@drawable/btn_seclecter"
-                                android:paddingBottom="15dp"
+                                android:paddingBottom="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="15dp" >
+                                android:paddingTop="10dp" >
 
                                 <ImageView
                                     android:id="@+id/img_czuan"

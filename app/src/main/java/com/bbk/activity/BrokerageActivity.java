@@ -1,5 +1,6 @@
 package com.bbk.activity;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.BrokerageBean;
@@ -16,17 +18,22 @@ import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
 import com.bbk.fragment.ShouyiActivity;
+import com.bbk.model.MainActivity;
+import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
-import com.bbk.view.AdaptionSizeTextView;
 import com.bbk.view.CommonLoadingView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -254,7 +261,8 @@ public class BrokerageActivity extends BaseActivity {
 //
 //                            }
 //                        }).setPositiveButtonColor("#ffffff").setPositiveBackgroundColor("#ff7d41").show();
-                showMessageDialog(BrokerageActivity.this);
+//                showMessageDialog(BrokerageActivity.this);
+                yongjintixian();
                 break;
             case R.id.tablayout:
                 break;
@@ -309,7 +317,13 @@ public class BrokerageActivity extends BaseActivity {
         }
     }
 
-    public void showMessageDialog(final Context context) {
+    /**
+     * 提现弹窗
+     * @param context
+     * @param content
+     * @param status
+     */
+    public void showTiXianMessageDialog(final Context context, String content, String status,String errmsg) {
         if (updataDialog == null || !updataDialog.isShowing()) {
             //初始化弹窗 布局 点击事件的id
             updataDialog = new UpdataDialog(context, R.layout.tixian_dialog_layout,
@@ -317,21 +331,107 @@ public class BrokerageActivity extends BaseActivity {
             updataDialog.show();
             updataDialog.setCanceledOnTouchOutside(true);
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
-            AdaptionSizeTextView tv_tixian = updataDialog.findViewById(R.id.tv_tixian);
-            tv_tixian.setText("发送“佣金提现”领取现金");
+            TextView mTitle = updataDialog.findViewById(R.id.tv_title);
+            TextView tv_tixian = updataDialog.findViewById(R.id.tv_tixian);
+            tv_tixian.setText("发送“bd+注册手机号”即可提现");
             ImageView img_close = updataDialog.findViewById(R.id.img_close);
+            LinearLayout llWeiguanzhu = updataDialog.findViewById(R.id.ll_weiguanzhu);//未关注微信布局
+            TextView mTianxianMoney = updataDialog.findViewById(R.id.tv_tianxian_money);//已关注有金额布局
+            TextView mTianxianMessage = updataDialog.findViewById(R.id.tv_tianxian_message);
+            TextView mTianxianFailed = updataDialog.findViewById(R.id.tv_failed_message);
             img_close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updataDialog.dismiss();
                 }
             });
-            tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updataDialog.dismiss();
+            /**
+             * 已经关注微信
+             */
+            if (NewConstants.isGuanzhuweixin!= null && NewConstants.isGuanzhuweixin.equals("1")){
+                llWeiguanzhu.setVisibility(View.GONE);
+                /**
+                 * content为提现的金额 content为“”提现失败
+                 */
+                if (status.equals("1")) {
+                    if (content != null && !content.equals("")) {
+                        mTianxianMoney.setVisibility(View.VISIBLE);
+                        mTianxianMessage.setVisibility(View.VISIBLE);
+                        mTianxianMoney.setText(content + "元");
+                        mTianxianMessage.setText("已发放至您绑定的微信用户");
+                        mTitle.setText("提现成功");
+                        tv_update_gengxin.setText("立即查看");
+                        tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                IWXAPI api = WXAPIFactory.createWXAPI(BrokerageActivity.this, Constants.APP_ID, false);
+                                if (api.isWXAppInstalled()) {
+                                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                                    ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setComponent(cmp);
+                                    startActivity(intent);
+                                } else {
+                                    StringUtil.showToast(BrokerageActivity.this, "微信未安装");
+                                }
+                                updataDialog.dismiss();
+                            }
+                        });
+                    }
+                    /**
+                     * 提现失败
+                     */
+                    else {
+                        mTianxianFailed.setVisibility(View.VISIBLE);
+                        mTianxianFailed.setText("请立即联系客服申诉处理");
+                        mTitle.setText("提现失败");
+                        tv_update_gengxin.setText("联系客服");
+                        tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updataDialog.dismiss();
+                                MainActivity.consultService(context);
+                            }
+                        });
+                    }
                 }
-            });
+                /**
+                 * 余额不足
+                 */
+                else {
+                    mTitle.setVisibility(View.GONE);
+                    mTianxianFailed.setVisibility(View.VISIBLE);
+                    mTianxianFailed.setText(errmsg);
+                    tv_update_gengxin.setVisibility(View.GONE);
+                }
+            }
+            /**
+             * 未关注微信
+             */
+            else {
+                llWeiguanzhu.setVisibility(View.VISIBLE);
+                mTitle.setText("提现攻略");
+                tv_update_gengxin.setText("立即去绑定");
+                tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IWXAPI api = WXAPIFactory.createWXAPI(BrokerageActivity.this,Constants.APP_ID, false);
+                        if (api.isWXAppInstalled()) {
+                            Intent intent = new Intent(Intent.ACTION_MAIN);
+                            ComponentName cmp = new ComponentName("com.tencent.mm","com.tencent.mm.ui.LauncherUI");
+                            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setComponent(cmp);
+                            startActivity(intent);
+                        }else{
+                            StringUtil.showToast(BrokerageActivity.this, "微信未安装");
+                        }
+                        updataDialog.dismiss();
+                    }
+                });
+            }
+
         }
     }
 
@@ -341,4 +441,55 @@ public class BrokerageActivity extends BaseActivity {
         startActivity(intent);
     }
 
+
+    /**
+     * 获取提现金额
+     */
+    public void yongjintixian(){
+        String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
+        Map<String,String> params = new HashMap<>();
+        params.put("mid",mid);
+        RetrofitClient.getInstance(BrokerageActivity.this).createBaseApi()
+                .yongjintixian(params, new BaseObserver<String>(BrokerageActivity.this) {
+                    @Override
+                    public void onNext(String s) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(s);
+                            if (jsonObject.optString("status").equals("1")) {
+                                showTiXianMessageDialog(BrokerageActivity.this
+                                        ,jsonObject.optString("content")
+                                        ,jsonObject.optString("status")
+                                        ,jsonObject.optString("errmsg"));
+                            }else if (jsonObject.optString("status").equals("2")){
+                                showTiXianMessageDialog(BrokerageActivity.this
+                                        ,jsonObject.optString("content")
+                                        ,jsonObject.optString("status")
+                                        ,jsonObject.optString("errmsg"));
+                            }else {
+                                StringUtil.showToast(BrokerageActivity.this
+                                        ,jsonObject.optString("errmsg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                        DialogSingleUtil.show(BrokerageActivity.this);
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                        DialogSingleUtil.dismiss(0);
+                        StringUtil.showToast(BrokerageActivity.this, e.message);
+                    }
+                });
+    }
 }

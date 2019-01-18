@@ -28,17 +28,22 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="提现攻略"
             android:textSize="16dp"
-            android:textColor="@color/tuiguang_color3"/>
+            android:textStyle="bold"
+            android:textColor="@color/shop_color1"/>
 
+        //未关注
        <LinearLayout
+           android:id="@+id/ll_weiguanzhu"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="20dp"
-           android:orientation="horizontal">
+           android:orientation="horizontal"
+           android:visibility="gone">
            <LinearLayout
                android:layout_weight="4"
                android:layout_width="match_parent"
@@ -82,11 +87,11 @@
                    android:textSize="13dp"
                    android:textColor="@color/tuiguang_color4"/>
 
-               <com.bbk.view.AdaptionSizeTextView
+               <TextView
                    android:id="@+id/tv_tixian"
                    android:layout_width="wrap_content"
                    android:layout_height="match_parent"
-                   android:text="发送“提现”领取现金"
+                   android:text="发送“bd+注册手机号”即可体现"
                    android:gravity="bottom"
                    android:layout_gravity="bottom"
                    android:layout_marginBottom="1dp"
@@ -94,6 +99,40 @@
                    android:textColor="@color/tuiguang_color4"/>
            </LinearLayout>
        </LinearLayout>
+
+
+
+        //已关注微信
+        <TextView
+            android:id="@+id/tv_tianxian_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="30dp"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            android:textColor="@color/tuiguang_color1"/>
+        <TextView
+            android:id="@+id/tv_tianxian_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已发放至您绑定的微信用户"
+            android:textSize="13dp"
+            android:visibility="gone"
+            android:textColor="@color/tuiguang_color4"/>
+
+        <TextView
+            android:id="@+id/tv_failed_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请立即联系客服申诉处理"
+            android:textSize="13dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            android:textColor="@color/tuiguang_color4"/>
+
+
 
         <LinearLayout
             android:gravity="center"
@@ -107,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="OK,去微信提现"
+                android:text=""
                 android:textSize="15dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"

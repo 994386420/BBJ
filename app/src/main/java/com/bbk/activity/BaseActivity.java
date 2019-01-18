@@ -449,17 +449,28 @@ public class BaseActivity extends Activity {
                 /**
                  * 根据鲸口令跳转
                  */
-                if (text.contains("eventId")&& text.contains("鲸口令")){
+                if (text.contains("e=")&& text.contains("鲸口令")){
                     //获得保存的复制文字
                     SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
                     String [] strings = text.replace("【","@@").replace("】","@@").split("@@");
                     mEventMap = new HashMap<>();
                     String[] strs = strings[1].split("&");
                     mEventMap2 = new HashMap<String, Object>();
+                    if (strs.length > 1)
                     for (String s : strs) {
                         String[] str = s.split("=");
-                        mEventMap2.put(str[0], str[1]);
+                        Logg.json(str);
+                        if (str[0].equals("e")){
+                            mEventMap2.put("eventId", str[1]);
+                        }else if (str[0].equals("k")){
+                            mEventMap2.put("keyword", str[1]);
+                        } else if (str[0].equals("u")){
+                            mEventMap2.put("htmlUrl", str[1]);
+                        }else {
+                            mEventMap2.put(str[0], str[1]);
+                        }
                     }
+                    Logg.json(mEventMap2);
                     JSONObject jsonObject = new JSONObject(mEventMap2);
                     //取出保存的复制文字
                     String cliptext = SharedPreferencesUtil.getSharedData(BaseActivity.this, "copyText", "copyText");
@@ -467,9 +478,11 @@ public class BaseActivity extends Activity {
                      * 如果缓存的跟剪切板不一致则跳转
                      */
                     if (!text.equals(cliptext)) {
-                        EventIdIntentUtil.EventIdIntent(BaseActivity.this, jsonObject);
-                        //跳转成功之后保存从剪切板获取的文字信息
-                        SharedPreferencesUtil.putSharedData(BaseActivity.this, "copyText", "copyText", copytext);
+                        if (  NewConstants.isjinkouling  != null &&  NewConstants.isjinkouling .equals("1")) {
+                            EventIdIntentUtil.EventIdIntent(BaseActivity.this, jsonObject);
+                            //跳转成功之后保存从剪切板获取的文字信息
+                            SharedPreferencesUtil.putSharedData(BaseActivity.this, "copyText", "copyText", copytext);
+                        }
                     }
                 }
 

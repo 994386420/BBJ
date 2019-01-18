@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.wxpay.Util;
 import com.logg.Logg;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -95,7 +96,8 @@ public class ShareHaiBaoManager {
             req.message = msg;
             //要分享给好友还是分享到朋友圈
             req.scene = isShareToTimeline ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
-            Logg.json(req);
+//            Logg.json(req);
+            NewConstants.isjinkouling = "0";
             wxApi.sendReq(req);
         } catch (Exception e) {
             e.printStackTrace();

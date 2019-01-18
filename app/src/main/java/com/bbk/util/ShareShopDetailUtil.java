@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bbk.activity.R;
 import com.bbk.activity.ShopDetailActivty;
 import com.bbk.activity.YaoqingFriendsActivity;
+import com.bbk.resource.NewConstants;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -74,9 +75,12 @@ public class ShareShopDetailUtil {
                     public void onClick(View v) {
                         if (StringUtil.isWeixinAvilible(context)) {// 判断是否安装微信客户端
                             DialogSingleUtil.show(context);
-                            ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                            cm.setText(jingkouling);
-                            mJinkouling.setVisibility(View.VISIBLE);
+                            if (jingkouling != null) {
+                                ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                                cm.setText(jingkouling);
+                                mJinkouling.setVisibility(View.VISIBLE);
+                            }
+                            NewConstants.isjinkouling = "0";
                             share(0,content);
                         } else {
                             StringUtil.showToast(context, "请安装微信客户端");
@@ -94,9 +98,11 @@ public class ShareShopDetailUtil {
                                 @Override
                                 public void run() {
                                     if (bitmap != null) {
-                                        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                                        cm.setText(jingkouling);
-                                        mJinkouling.setVisibility(View.VISIBLE);
+                                        if (jingkouling != null) {
+                                            ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                                            cm.setText(jingkouling);
+                                            mJinkouling.setVisibility(View.VISIBLE);
+                                        }
                                         ShareManager.sharedToQQ(context, bitmap);
                                     }
                                 }
@@ -111,9 +117,17 @@ public class ShareShopDetailUtil {
         dialogView.findViewById(R.id.share_bbj).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setText(jingkouling);
-                mJinkouling.setVisibility(View.VISIBLE);
+                if (jingkouling != null) {
+                    ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(jingkouling);
+                    mJinkouling.setVisibility(View.VISIBLE);
+                }
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        NewConstants.isjinkouling = "0";
+                    }
+                },1000);
             }
         });
         dialogView.findViewById(R.id.ll_close).setOnClickListener(
@@ -148,8 +162,6 @@ public class ShareShopDetailUtil {
         shareManager = new ShareHaiBaoManager(context);
         shareManager.setShareImage(i,DetailimgUrlList,s);
     }
-
-
 
 }
 

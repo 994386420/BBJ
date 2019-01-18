@@ -40,6 +40,7 @@ public class FloatingWindowService extends Service implements ResultEvent {
 					previousTime = now;
 					String text = clipboardManager.getText().toString();
 					Logg.e(text);
+					NewConstants.isjinkouling = "1";
 					if (text != null && !text.equals("") && !text.equals("null")) {
 									if (text.contains("bbj")) {
 										NewConstants.copyText = text;

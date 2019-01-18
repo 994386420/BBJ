@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
 import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
+import com.bbk.resource.NewConstants;
 import com.bbk.util.CrashHandler;
 import com.bbk.util.SharedPreferencesUtil;
 import com.kepler.jd.Listener.AsyncInitListener;

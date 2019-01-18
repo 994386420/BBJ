@@ -288,8 +288,6 @@ public class ShopDetailActivty extends BaseActivity {
         };
         detailImageList.setHasFixedSize(true);
         detailImageList.setLayoutManager(linearLayoutManager);
-
-
         Rect rectangle = new Rect();
         getWindow().getDecorView().getWindowVisibleDisplayFrame(rectangle);
         ideaScrollView.setViewPager(banner, getMeasureHeight(headerParent) - rectangle.top);
@@ -297,7 +295,6 @@ public class ShopDetailActivty extends BaseActivity {
         icon.setVisibility(View.GONE);
         radioGroup.setAlpha(0);
         radioGroup.check(radioGroup.getChildAt(0).getId());
-
         View one = findViewById(R.id.one);
         View two = findViewById(R.id.two);
         View four = findViewById(R.id.four);
@@ -308,9 +305,7 @@ public class ShopDetailActivty extends BaseActivity {
         araryDistance.add(getMeasureHeight(one) - getMeasureHeight(headerParent));
         araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) - getMeasureHeight(headerParent));
         araryDistance.add(getMeasureHeight(one) + getMeasureHeight(two) + getMeasureHeight(three) + getMeasureHeight(one) - getMeasureHeight(headerParent));
-
         ideaScrollView.setArrayDistance(araryDistance);
-
         ideaScrollView.setOnScrollChangedColorListener(new IdeaScrollView.OnScrollChangedColorListener() {
             @Override
             public void onChanged(float percentage) {
@@ -584,7 +579,7 @@ public class ShopDetailActivty extends BaseActivity {
                              */
                             DialogSingleUtil.dismiss(0);
                             List<String> UrlList = new ArrayList<>();
-                            UrlList.add(shopDetailBean.getImgurl());
+                            UrlList.add(shopDetailBean.getShareZiyingimg());
                             if (UrlList != null && UrlList.size() > 0) {
                                 DialogSingleUtil.dismiss(0);
                                 new ShareShopDetailUtil(ShopDetailActivty.this,UrlList, tvShare, shopDetailBean.getJingkouling()
@@ -608,8 +603,10 @@ public class ShopDetailActivty extends BaseActivity {
         switch (view.getId()) {
 
             case R.id.tv_share:
-                if (shopDetailBean.getImgurl() != null) {
-                    returnBitMap(shopDetailBean.getImgurl());
+                if (shopDetailBean != null ){
+                if (shopDetailBean.getShareZiyingimg() != null) {
+                    returnBitMap(shopDetailBean.getShareZiyingimg());
+                  }
                 }
                 break;
 
@@ -628,6 +625,7 @@ public class ShopDetailActivty extends BaseActivity {
                     }
                 }
                 break;
+
             case R.id.ll_buy_now:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
@@ -639,11 +637,13 @@ public class ShopDetailActivty extends BaseActivity {
                     }
                 }
                 break;
+
             case R.id.ll_fuwu:
                 if (shopDetailBean != null) {
                     showBaozhangeDialog(this);
                 }
                 break;
+
             case R.id.ll_shuxing:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
@@ -655,11 +655,13 @@ public class ShopDetailActivty extends BaseActivity {
                     }
                 }
                 break;
+
             case R.id.ll_canshu:
                 if (shopDetailBean != null) {
                     showMessageDialog(this);
                 }
                 break;
+
             case R.id.tv_all_mall:
                 intent = new Intent(this, NewDianpuHomeActivity.class);
                 if (shopDetailBean != null) {
@@ -669,6 +671,7 @@ public class ShopDetailActivty extends BaseActivity {
                 }
                 startActivity(intent);
                 break;
+
             case R.id.tv_dianpu:
                 intent = new Intent(this, NewDianpuActivity.class);
                 if (shopDetailBean != null) {
@@ -678,9 +681,11 @@ public class ShopDetailActivty extends BaseActivity {
                 }
                 startActivity(intent);
                 break;
+
             case R.id.back_image:
                 finish();
                 break;
+
             case R.id.ll_dianpu:
                 intent = new Intent(this, NewDianpuActivity.class);
                 if (shopDetailBean != null) {
@@ -690,6 +695,7 @@ public class ShopDetailActivty extends BaseActivity {
                 }
                 startActivity(intent);
                 break;
+
             case R.id.ll_car:
                 if (TextUtils.isEmpty(userID)) {
                     LogFlag = "3";
@@ -701,6 +707,7 @@ public class ShopDetailActivty extends BaseActivity {
                     startActivity(intent);
                 }
                 break;
+
             case R.id.ll_pl:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {
@@ -717,6 +724,7 @@ public class ShopDetailActivty extends BaseActivity {
                     }
                 }
                 break;
+
             case R.id.ll_kefu:
                 if (shopDetailBean != null) {
                     if (TextUtils.isEmpty(userID)) {

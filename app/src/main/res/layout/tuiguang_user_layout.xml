@@ -236,7 +236,7 @@
             android:id="@+id/tv_tuiguang_tule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
             android:text="立即提现"
             android:gravity="center"
             android:textSize="12dp"
@@ -246,6 +246,7 @@
             android:paddingLeft="10dp"
             android:textColor="@color/tuiguang_color2"
             android:background="@drawable/bg_tuiguang" />
+
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -281,7 +282,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -291,16 +292,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:text="查看"
                     android:gravity="center"
                     android:textSize="11dp"
-                    android:paddingBottom="1dp"
-                    android:paddingTop="1dp"
-                    android:paddingRight="7dp"
-                    android:paddingLeft="7dp"
-                    android:textColor="@color/tuiguang_color2"
-                    android:background="@drawable/bg_tuiguang5" />
+
+                    android:textColor="@color/tuiguang_color12" />
             </LinearLayout>
 
         </LinearLayout>
@@ -332,7 +328,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -342,16 +338,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:text="查看"
                     android:gravity="center"
                     android:textSize="11dp"
-                    android:paddingBottom="1dp"
-                    android:paddingTop="1dp"
-                    android:paddingRight="7dp"
-                    android:paddingLeft="7dp"
-                    android:textColor="@color/tuiguang_color2"
-                    android:background="@drawable/bg_tuiguang5" />
+                    android:textColor="@color/tuiguang_color12" />
             </LinearLayout>
 
         </LinearLayout>
@@ -385,7 +375,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -396,19 +386,46 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:text="查看"
                     android:gravity="center"
                     android:textSize="11dp"
-                    android:paddingBottom="1dp"
-                    android:paddingTop="1dp"
-                    android:paddingRight="7dp"
-                    android:paddingLeft="7dp"
-                    android:textColor="@color/tuiguang_color2"
-                    android:background="@drawable/bg_tuiguang5" />
+                    android:textColor="@color/tuiguang_color12" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/__picker_common_primary"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/tv_cps_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="查看收益订单"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="4dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_cicyle1" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

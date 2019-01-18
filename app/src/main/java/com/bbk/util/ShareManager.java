@@ -8,9 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+
 import com.bbk.activity.MyApplication;
 import com.bbk.client.BaseApiService;
 import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
 import com.bbk.wxpay.Util;
 import com.logg.Logg;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -35,6 +38,7 @@ public class ShareManager {
     private IWXAPI wxApi;
     private Context mContext;
     private List<File> files = new ArrayList<>();
+    private static Handler handler = new Handler();
 
     public ShareManager(Context mContext) {
         this.mContext = mContext;
@@ -109,6 +113,12 @@ public class ShareManager {
             intent.setClassName("com.tencent.mobileqq", "com.tencent.mobileqq.activity.JumpActivity");//QQ
             DialogSingleUtil.dismiss(0);
 //            SharedPreferencesUtil.putSharedData(context, "isShare", "isShare", "1");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    NewConstants.isjinkouling = "0";
+                }
+            },1000);
             context.startActivity(intent);
         }
     }

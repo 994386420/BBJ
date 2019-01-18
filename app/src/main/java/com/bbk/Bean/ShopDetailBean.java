@@ -36,7 +36,16 @@ public class ShopDetailBean {
     private String zeroBuyDescJifen;
     private String quanList;//商品详情优惠券
     private String jingkouling;
+    private String shareZiyingimg;  //（自营商品分享除去的图片）
 
+
+    public String getShareZiyingimg() {
+        return shareZiyingimg;
+    }
+
+    public void setShareZiyingimg(String shareZiyingimg) {
+        this.shareZiyingimg = shareZiyingimg;
+    }
 
     public String getJingkouling() {
         return jingkouling;

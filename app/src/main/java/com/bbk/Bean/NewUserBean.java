@@ -19,6 +19,16 @@ public class NewUserBean {
     private String award;
     private String singleMoney;//空不显示红包，有值显示红包
     private String singleMoneyNumber;//总共红包个数
+    private String guanzhuweixin;//1表示已经关注公众号  0或者该字段没有表示没有关注
+
+
+    public String getGuanzhuweixin() {
+        return guanzhuweixin;
+    }
+
+    public void setGuanzhuweixin(String guanzhuweixin) {
+        this.guanzhuweixin = guanzhuweixin;
+    }
 
     public String getSingleMoneyNumber() {
         return singleMoneyNumber;
