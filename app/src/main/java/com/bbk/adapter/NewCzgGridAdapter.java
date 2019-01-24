@@ -14,8 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
+
 import com.bbk.Bean.NewHomeCzgBean;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MyApplication;
@@ -252,28 +251,5 @@ public class NewCzgGridAdapter extends RecyclerView.Adapter {
         }
     }
 
-    /**
-     * 淘宝授权登录
-     */
-    private void TaoBaoLoginandLogout() {
-        DialogSingleUtil.show(context, "授权中...");
-        final AlibcLogin alibcLogin = AlibcLogin.getInstance();
-        alibcLogin.showLogin((Activity) context, new AlibcLoginCallback() {
 
-            @Override
-            public void onSuccess() {
-                DialogSingleUtil.dismiss(0);
-                StringUtil.showToast(context, "登录成功 ");
-                SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String date = sDateFormat.format(new Date());
-                SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "taobao", "taobaodata", date);
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                DialogSingleUtil.dismiss(0);
-                StringUtil.showToast(context, "登录失败 ");
-            }
-        });
-    }
 }

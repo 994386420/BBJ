@@ -23,6 +23,7 @@ import com.bbk.activity.ShopDetailActivty;
 import com.bbk.activity.YaoqingFriendsActivity;
 import com.bbk.resource.NewConstants;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -66,7 +67,11 @@ public class ShareShopDetailUtil {
 
         mPrice.setText(price);
         mTitle.setText(title);
-        Glide.with(context).load(imgurl).into(imageView);
+        Glide.with(context).load(imgurl)
+                .asBitmap()
+                .placeholder(R.mipmap.zw_img_300)
+                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.RESULT).into(imageView);
         //防止虚拟软键盘被弹出菜单遮住
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dialogView.findViewById(R.id.share_weixin).setOnClickListener(

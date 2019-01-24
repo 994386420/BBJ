@@ -126,9 +126,9 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
             XTabLayout.Tab tabAt;
             switch (getIntent().getStringExtra("isOlder")){
                 case "yes":
+                    chaoZhiPresenter.queryZiyingZeroBuyForOld(page);
                     tabAt = tablayout.getTabAt(1);
                     tabAt.select();
-                    chaoZhiPresenter.queryZiyingZeroBuyForOld(page);
                     break;
                 case "no":
                     tabAt = tablayout.getTabAt(0);
@@ -207,10 +207,10 @@ public class ZiYingZeroBuyShopActivity extends BaseActivity implements CommonLoa
                     mPtrframe.setEnableLoadMore(false);
                     mrecycler.setVisibility(View.GONE);
                     progress.setVisibility(View.VISIBLE);
-                    if (position == 0) {
-                        progress.loadSuccess(true);
-                        return;
-                    }
+//                    if (position == 0) {
+//                        progress.loadSuccess(true);
+//                        return;
+//                    }
                     progress.loadNoOlder();
                 }
             } else {

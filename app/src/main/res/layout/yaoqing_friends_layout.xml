@@ -19,16 +19,32 @@
         android:layout_below="@+id/title_layout"
         android:background="@color/__picker_common_primary"/>
 
-    <com.bbk.view.AdaptionSizeTextView
+
+    <LinearLayout
         android:id="@+id/text"
         android:layout_below="@+id/view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="分享专属海报，新用户填写邀请码注册，关系自动绑定"
-        android:textColor="#636363"
-        android:textSize="14.5dp"
         android:padding="10dp"
-        android:layout_centerHorizontal="true"/>
+        android:gravity="center"
+        android:orientation="horizontal">
+        <com.bbk.view.AdaptionSizeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分享专属海报，邀请好友填写邀请码注册,"
+            android:textColor="#636363"
+            android:textSize="13dp"
+            android:layout_centerHorizontal="true"/>
+        <com.bbk.view.AdaptionSizeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 双方都有红包拿"
+            android:textColor="@color/tuiguang_color1"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+    </LinearLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_below="@+id/text"

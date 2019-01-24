@@ -222,6 +222,18 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
                                 }
                                 break;
                         }
+
+                        //跳转到邀请好友页面
+                        if (url.contains("yaoqing")){
+                            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+                            if (TextUtils.isEmpty(userID)) {
+                                Intent intent = new Intent(WebViewActivity111.this,UserLoginNewActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(WebViewActivity111.this,YaoqingFriendsActivity.class);
+                                startActivity(intent);
+                            }
+                        }
                             Uri uri = Uri.parse(url);
                         try {
                             JSONObject jsonObject = new JSONObject();

@@ -130,9 +130,13 @@ public class OrderDetailItemAdapter extends RecyclerView.Adapter {
             vh.itemOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ShopDetailActivty.class);
-                    intent.putExtra("id", orderItembean.getGoodsid());
-                    context.startActivity(intent);
+                    if (orderItembean.getProductstate().equals("1")) {
+                        Intent intent = new Intent(context, ShopDetailActivty.class);
+                        intent.putExtra("id", orderItembean.getGoodsid());
+                        context.startActivity(intent);
+                        return;
+                    }
+                    StringUtil.showToast(context,"该商品已下架！");
                 }
             });
             Glide.with(context)
@@ -177,9 +181,13 @@ public class OrderDetailItemAdapter extends RecyclerView.Adapter {
                     vh.itemOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(context, ShopDetailActivty.class);
-                            intent.putExtra("id", orderItembean.getGoodsid());
-                            context.startActivity(intent);
+                            if (orderItembean.getProductstate().equals("1")) {
+                                Intent intent = new Intent(context, ShopDetailActivty.class);
+                                intent.putExtra("id", orderItembean.getGoodsid());
+                                context.startActivity(intent);
+                                return;
+                            }
+                            StringUtil.showToast(context,"该商品已下架！");
                         }
                     });
                 }
@@ -219,9 +227,13 @@ public class OrderDetailItemAdapter extends RecyclerView.Adapter {
                     vh.itemOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(context, ShopDetailActivty.class);
-                            intent.putExtra("id", orderItembean.getGoodsid());
-                            context.startActivity(intent);
+                            if (orderItembean.getProductstate().equals("1")) {
+                                Intent intent = new Intent(context, ShopDetailActivty.class);
+                                intent.putExtra("id", orderItembean.getGoodsid());
+                                context.startActivity(intent);
+                                return;
+                            }
+                            StringUtil.showToast(context,"该商品已下架！");
                         }
                     });
                 }

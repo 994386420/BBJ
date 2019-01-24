@@ -14,6 +14,7 @@ public class OrderItembean {
     private String substate;//-1退款中 -3退款完成
     private String plstate;
     private String goodsid;
+    private String productstate;//1表示正常，不为1表示下架
 
     public String getGoodsid() {
         return goodsid;
@@ -85,5 +86,13 @@ public class OrderItembean {
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
+    }
+
+    public String getProductstate() {
+        return productstate;
+    }
+
+    public void setProductstate(String productstate) {
+        this.productstate = productstate;
     }
 }

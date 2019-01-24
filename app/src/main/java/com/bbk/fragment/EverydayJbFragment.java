@@ -1,6 +1,7 @@
 package com.bbk.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,24 +12,37 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.bbk.activity.BrokerageActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.MyCoinActivity;
 import com.bbk.activity.R;
+import com.bbk.activity.WebViewActivity;
 import com.bbk.adapter.CoinWithdrawListAdapter;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.dialog.AlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.flow.ResultEvent;
+import com.bbk.model.MainActivity;
+import com.bbk.resource.Constants;
+import com.bbk.resource.NewConstants;
+import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
 import com.bbk.view.CircleImageView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +56,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.bbk.fragment.UserFragment.ketiMoney;
 
 public class EverydayJbFragment extends Fragment implements ResultEvent {
     @BindView(R.id.tv_txmoney)
@@ -244,7 +260,7 @@ public class EverydayJbFragment extends Fragment implements ResultEvent {
     public void showMessageDialog(final Context context) {
         if (updataDialog == null || !updataDialog.isShowing()) {
             //初始化弹窗 布局 点击事件的id
-            updataDialog = new UpdataDialog(context, R.layout.tixian_dialog_layout,
+            updataDialog = new UpdataDialog(context, R.layout.jinbitixian_dialog_layout,
                     new int[]{R.id.tv_update_gengxin});
             updataDialog.show();
             updataDialog.setCanceledOnTouchOutside(true);
@@ -260,6 +276,17 @@ public class EverydayJbFragment extends Fragment implements ResultEvent {
             tv_update_gengxin.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    IWXAPI api = WXAPIFactory.createWXAPI(getActivity(), Constants.APP_ID, false);
+                    if (api.isWXAppInstalled()) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
+                        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setComponent(cmp);
+                        startActivity(intent);
+                    } else {
+                        StringUtil.showToast(getActivity(), "微信未安装");
+                    }
                     updataDialog.dismiss();
                 }
             });

@@ -511,8 +511,10 @@ public class ShopOrderDetailActivity extends BaseActivity {
                 break;
             case R.id.ll_wuliu:
                 intent = new Intent(this, WuLiuActivity.class);
-                if (shopOrderDetailBean.getExpressage() != null) {
-                    intent.putExtra("expressnum", shopOrderDetailBean.getExpressage());
+                if (shopOrderDetailBean != null) {
+                    if (shopOrderDetailBean.getExpressage() != null) {
+                        intent.putExtra("expressnum", shopOrderDetailBean.getExpressage());
+                    }
                 }
                 startActivity(intent);
                 break;

@@ -35,7 +35,7 @@
                 android:textColor="@color/shop_color1"
                 android:layout_marginTop="10dp"
                 android:textSize="14dp"
-                android:text="签到"/>
+                android:text="任务"/>
 
         </LinearLayout>
         <View

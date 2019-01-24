@@ -128,6 +128,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 	private RelativeLayout inflater;
 	StringUtil stringUtil;
 	private ImageView imageView;
+	public static String openid,access_token;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -873,9 +874,9 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 					JSONObject jsonObject = new JSONObject(result);
 					Logg.json("Openid",jsonObject);
 					if (null != jsonObject) {
-						String openid = jsonObject.getString("openid")
+						openid = jsonObject.getString("openid")
 								.toString().trim();
-						String access_token = jsonObject
+						access_token = jsonObject
 								.getString("access_token").toString().trim();
 
 						getUID(openid,access_token);
@@ -943,6 +944,7 @@ public class UserLoginNewActivity extends BaseActivity implements OnClickListene
 		paramsMap.put("imgurl", imgUrl);
 		paramsMap.put("unionid",openid);
 		paramsMap.put("client","android");
+//		paramsMap.put("token",access_token);
 		dataFlow.requestData(3, "apiService/checkIsThirdBand" , paramsMap, this, false);
 		
 	}

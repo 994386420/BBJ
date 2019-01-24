@@ -19,13 +19,20 @@ import com.alibaba.baichuan.android.trade.AlibcTrade;
 import com.alibaba.baichuan.android.trade.model.AlibcShowParams;
 import com.alibaba.baichuan.android.trade.model.OpenType;
 import com.alibaba.baichuan.android.trade.page.AlibcPage;
+import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.DemoTradeCallback;
+import com.bbk.Bean.QuanZuanBean;
 import com.bbk.Bean.TaobaoCarListBean;
+import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.SearchMainActivity;
+import com.bbk.client.BaseObserver;
+import com.bbk.client.ExceptionHandle;
+import com.bbk.client.RetrofitClient;
 import com.bbk.fragment.CarFrament;
 import com.bbk.resource.NewConstants;
 import com.bbk.shopcar.CarActivity;
+import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
@@ -42,6 +49,7 @@ import com.logg.Logg;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -199,37 +207,35 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
 
 
             viewHolder.price.setText(price);
-            if (taobaoCarListBean.getQuan1() != null && !taobaoCarListBean.getQuan1().equals("") && !taobaoCarListBean.getQuan1().equals("0")) {
-                viewHolder.llQuan.setVisibility(View.VISIBLE);
-                viewHolder.quan.setText(taobaoCarListBean.getQuan1());
-            } else {
-                viewHolder.llQuan.setVisibility(View.GONE);
-            }
-            if (taobaoCarListBean.getZuan() != null) {
-                viewHolder.zuan.setVisibility(View.VISIBLE);
-                viewHolder.zuan.setText(taobaoCarListBean.getZuan());
-            } else {
-                viewHolder.zuan.setVisibility(View.GONE);
-            }
-            if (taobaoCarListBean.getZuan() == null
-                    && taobaoCarListBean.getQuan1() == null) {
-                viewHolder.tvClickStatu.setVisibility(View.GONE);
-                viewHolder.tvYouhui.setVisibility(View.VISIBLE);
-                viewHolder.tvYouhui.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, SearchMainActivity.class);
-                        intent.putExtra("keyword", taobaoCarListBean.getTitle());
-                        SharedPreferencesUtil.putSharedData(context, "shaixuan", "shaixuan", "yes");
-                        NewConstants.clickpositionFenlei = 5200;
-                        NewConstants.clickpositionDianpu = 5200;
-                        NewConstants.clickpositionMall = 5200;
-                        context.startActivity(intent);
-                    }
-                });
-            } else {
-                viewHolder.tvYouhui.setVisibility(View.GONE);
-                viewHolder.tvClickStatu.setVisibility(View.VISIBLE);
+            /**
+             * 开启子线程加载优惠信息
+             */
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getZuanAndQuanByRowkey(viewHolder,taobaoCarListBean.getRowkey(),taobaoCarListBean.getUrl(),taobaoCarListBean.getTitle(),taobaoCarListBean);
+                }
+            }).start();
+
+//            if (taobaoCarListBean.getZuan() == null
+//                    && taobaoCarListBean.getQuan1() == null) {
+//                viewHolder.tvClickStatu.setVisibility(View.GONE);
+//                viewHolder.tvYouhui.setVisibility(View.VISIBLE);
+//                viewHolder.tvYouhui.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent = new Intent(context, SearchMainActivity.class);
+//                        intent.putExtra("keyword", taobaoCarListBean.getTitle());
+//                        SharedPreferencesUtil.putSharedData(context, "shaixuan", "shaixuan", "yes");
+//                        NewConstants.clickpositionFenlei = 5200;
+//                        NewConstants.clickpositionDianpu = 5200;
+//                        NewConstants.clickpositionMall = 5200;
+//                        context.startActivity(intent);
+//                    }
+//                });
+//            } else {
+//                viewHolder.tvYouhui.setVisibility(View.GONE);
+//                viewHolder.tvClickStatu.setVisibility(View.VISIBLE);
                 //获取点击缓存判断item是否点击过
                 if (domain.equals("jd")) {
                     sharedPreferences = context.getSharedPreferences("MyActionJd", Context.MODE_PRIVATE);
@@ -518,6 +524,13 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                         if (result != null && result.length() > 0) {
                             NewConstants.mMessageMap = NewConstants.getJsonObject(result);
                             Logg.json(NewConstants.mMessageMap+"===="+carNum);
+                            NewConstants.carnum = carNum - NewConstants.mMessageMap.size();
+                            if (CarFrament.tvWeiTz !=null) {
+                                CarFrament.tvWeiTz.setText("未跳转的" + NewConstants.carnum + "条不可得佣金");
+                            }
+                            if (CarActivity.tvWeiTz != null) {
+                                CarActivity.tvWeiTz.setText("未跳转的" +NewConstants.carnum + "条不可得佣金");
+                            }
                             if (NewConstants.mMessageMap.get(postion+"") != null) {
                                 NewConstants.carnum = carNum - NewConstants.mMessageMap.size();
                                 if (CarFrament.tvWeiTz !=null) {
@@ -545,7 +558,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
                             CarActivity.tvWeiTz.setText("未跳转的" + carNum + "条不可得佣金");
                         }
                     }
-                }
+//                }
             }
 //            if (domain.equals("jd")){
 //                num = carNum-NewConstants.mJdMessageMap.size();
@@ -565,47 +578,6 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
 
 
 
-            viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        NewConstants.refeshFlag = "0";
-                        taobaoCarListBean.setClick(true);
-//                        Logg.json("==============>>"+taobaoCarListBean.getRowkey(),name);
-                        //保存item点击数据
-                        if (domain.equals("jd")) {
-                            if (name.equals("京东自营")){
-//                                Logg.e("==============>>"+name,name);
-                                sharedPreferencesJd = context.getSharedPreferences("MyActionJdzy", MODE_PRIVATE);
-                                editorJd = sharedPreferencesJd.edit();
-                                NewConstants.mJdzycsMessageMap.put(taobaoCarListBean.getIsJDMarket(), taobaoCarListBean.getIsJDMarket());
-                                editorJd.putString("actionjdzy", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mJdzycsMessageMap).toString());
-                                editorJd.commit();
-                            }else {
-                                sharedPreferences = context.getSharedPreferences("MyActionJd", MODE_PRIVATE);
-                                editor = sharedPreferences.edit();
-                                NewConstants.mJdMessageMap.put(postion+"",postion+"");
-                                editor.putString("action", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mJdMessageMap).toString());
-                                editor.commit();
-                            }
-                        }else {
-                            sharedPreferences = context.getSharedPreferences("MyActionTaobao", MODE_PRIVATE);
-                            editor = sharedPreferences.edit();
-                            NewConstants.mMessageMap.put(postion+"",postion+"");
-                            editor.putString("action", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mMessageMap).toString());
-                            editor.commit();
-                        }
-                        if (taobaoCarListBean.getZuan() == null
-                                && taobaoCarListBean.getQuan1() == null) {
-                            showLoadingDialog(context, "taobao", taobaoCarListBean.getQuan1(), taobaoCarListBean.getZuan(), taobaoCarListBean.getUrl());
-                        }else {
-                            showLoadingDialog(context, "taobao", taobaoCarListBean.getQuan1(), taobaoCarListBean.getZuan(), taobaoCarListBean.getJumpurl());
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
             viewHolder.itemlayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -660,6 +632,7 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
             ImageView imageView = updataDialog.findViewById(R.id.img_app);
             AdaptionSizeTextView adaptionSizeTextViewQuan = updataDialog.findViewById(R.id.quan);
             AdaptionSizeTextView adaptionSizeTextViewQuan1 = updataDialog.findViewById(R.id.quan1);
+            LinearLayout llTsMessage = updataDialog.findViewById(R.id.ll_ts_message);
             if (jumpUrl.contains("tmall")) {
                 jumpdomain = "jumptmall";
             } else if (jumpUrl.contains("taobao")) {
@@ -669,16 +642,20 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
             }
             if (quans != null && !quans.equals("") && !quans.equals("0")) {
                 adaptionSizeTextViewQuan1.setVisibility(View.VISIBLE);
+                llTsMessage.setVisibility(View.VISIBLE);
                 adaptionSizeTextViewQuan1.setText("领券减" + quans + "元");
             } else {
                 adaptionSizeTextViewQuan1.setVisibility(View.VISIBLE);
+                llTsMessage.setVisibility(View.INVISIBLE);
             }
 
             if (zuan != null && !zuan.equals("") && !zuan.equals("0")) {
                 adaptionSizeTextViewQuan.setVisibility(View.VISIBLE);
+                llTsMessage.setVisibility(View.VISIBLE);
                 adaptionSizeTextViewQuan.setText("本商品" + zuan.replace("预估", "") + "元");
             } else {
                 adaptionSizeTextViewQuan.setVisibility(View.VISIBLE);
+                llTsMessage.setVisibility(View.INVISIBLE);
             }
             int drawS = context.getResources().getIdentifier(jumpdomain, "mipmap", context.getPackageName());
             imageView.setImageResource(drawS);
@@ -751,4 +728,138 @@ public class TaoBaoListAdapter extends RecyclerView.Adapter {
             }
         }, 2000);
     }
+
+
+    private void getZuanAndQuanByRowkey(final ViewHolder viewHolder, String rowkey, String url, final String title, final TaobaoCarListBean taobaoCarListBean) {
+        Map<String, String> maps = new HashMap<String, String>();
+        String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+        maps.put("rowkey", rowkey);
+        maps.put("url", url);
+        maps.put("userid",userID);
+        RetrofitClient.getInstance(context).createBaseApi().getZuanAndQuanByRowkey(
+                maps, new BaseObserver<String>(context) {
+                    @Override
+                    public void onNext(String s) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            Logg.json("jdurl" + jsonObject);
+                            if (jsonObject.optString("status").equals("1")) {
+                                Logg.json(jsonObject.optString("content"));
+                                final QuanZuanBean quanZuanBean = JSON.parseObject(jsonObject.optString("content"),QuanZuanBean.class);
+                                if (quanZuanBean != null) {
+                                    if (quanZuanBean.getQuan1() != null && !quanZuanBean.getQuan1().equals("") && !quanZuanBean.getQuan1().equals("0")) {
+                                        viewHolder.llQuan.setVisibility(View.VISIBLE);
+                                        viewHolder.quan.setText(quanZuanBean.getQuan1());
+                                    } else {
+                                        viewHolder.llQuan.setVisibility(View.GONE);
+                                    }
+                                    if (quanZuanBean.getZuan() != null) {
+                                        viewHolder.zuan.setVisibility(View.VISIBLE);
+                                        viewHolder.zuan.setText(quanZuanBean.getZuan());
+                                    } else {
+                                        viewHolder.zuan.setVisibility(View.GONE);
+                                    }
+                                    if (quanZuanBean.getZuan() == null
+                                            && quanZuanBean.getQuan1() == null) {
+                                        viewHolder.tvClickStatu.setVisibility(View.GONE);
+                                        viewHolder.tvYouhui.setVisibility(View.VISIBLE);
+                                        viewHolder.tvYouhui.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = new Intent(context, SearchMainActivity.class);
+                                                intent.putExtra("keyword", title);
+                                                SharedPreferencesUtil.putSharedData(context, "shaixuan", "shaixuan", "yes");
+                                                NewConstants.clickpositionFenlei = 5200;
+                                                NewConstants.clickpositionDianpu = 5200;
+                                                NewConstants.clickpositionMall = 5200;
+                                                context.startActivity(intent);
+                                            }
+                                        });
+                                    } else {
+                                        viewHolder.tvYouhui.setVisibility(View.GONE);
+                                        viewHolder.tvClickStatu.setVisibility(View.VISIBLE);
+                                    }
+                                }else {
+                                    viewHolder.llQuan.setVisibility(View.GONE);
+                                    viewHolder.zuan.setVisibility(View.GONE);
+                                    viewHolder.tvYouhui.setVisibility(View.VISIBLE);
+                                    viewHolder.tvClickStatu.setVisibility(View.GONE);
+                                    viewHolder.tvYouhui.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(context, SearchMainActivity.class);
+                                            intent.putExtra("keyword", title);
+                                            SharedPreferencesUtil.putSharedData(context, "shaixuan", "shaixuan", "yes");
+                                            NewConstants.clickpositionFenlei = 5200;
+                                            NewConstants.clickpositionDianpu = 5200;
+                                            NewConstants.clickpositionMall = 5200;
+                                            context.startActivity(intent);
+                                        }
+                                    });
+                                }
+
+
+                                viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        try {
+                                            NewConstants.refeshFlag = "0";
+                                            taobaoCarListBean.setClick(true);
+//                        Logg.json("==============>>"+taobaoCarListBean.getRowkey(),name);
+                                            //保存item点击数据
+                                            if (domain.equals("jd")) {
+                                                if (name.equals("京东自营")){
+//                                Logg.e("==============>>"+name,name);
+                                                    sharedPreferencesJd = context.getSharedPreferences("MyActionJdzy", MODE_PRIVATE);
+                                                    editorJd = sharedPreferencesJd.edit();
+                                                    NewConstants.mJdzycsMessageMap.put(taobaoCarListBean.getIsJDMarket(), taobaoCarListBean.getIsJDMarket());
+                                                    editorJd.putString("actionjdzy", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mJdzycsMessageMap).toString());
+                                                    editorJd.commit();
+                                                }else {
+                                                    sharedPreferences = context.getSharedPreferences("MyActionJd", MODE_PRIVATE);
+                                                    editor = sharedPreferences.edit();
+                                                    NewConstants.mJdMessageMap.put(postion+"",postion+"");
+                                                    editor.putString("action", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mJdMessageMap).toString());
+                                                    editor.commit();
+                                                }
+                                            }else {
+                                                sharedPreferences = context.getSharedPreferences("MyActionTaobao", MODE_PRIVATE);
+                                                editor = sharedPreferences.edit();
+                                                NewConstants.mMessageMap.put(postion+"",postion+"");
+                                                editor.putString("action", com.alibaba.fastjson.JSONObject.toJSON(NewConstants.mMessageMap).toString());
+                                                editor.commit();
+                                            }
+                                            if (quanZuanBean == null) {
+                                                showLoadingDialog(context, "taobao", "", "", taobaoCarListBean.getUrl());
+                                            }else {
+                                                showLoadingDialog(context, "taobao", quanZuanBean.getQuan1(), quanZuanBean.getZuan(), quanZuanBean.getJumpurl());
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            } else {
+                                StringUtil.showToast(context, jsonObject.optString("errmsg"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void hideDialog() {
+//                        DialogSingleUtil.dismiss(0);
+                    }
+
+                    @Override
+                    protected void showDialog() {
+                    }
+
+                    @Override
+                    public void onError(ExceptionHandle.ResponeThrowable e) {
+                    }
+                });
+    }
+
 }

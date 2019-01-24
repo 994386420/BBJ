@@ -12,10 +12,10 @@ import retrofit2.http.QueryMap;
 
 public interface BaseApiService<T> {
 
-//    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
+    public static final String Base_URL = "http://www.bibijing.com/";//正式接口
 //    public static final String Base_URL = "http://125.64.92.222:8097/APIService/";//正式测试接口
 //    public static final String Base_URL = "http://192.168.20.165/APIService/";//内网测试接口
-    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
+//    public static final String Base_URL = "http://192.168.20.129/APIService/";//内网测试接口
     //新版首页超值购等分类模块
     @FormUrlEncoded
     @POST("newService/queryAppIndexByType")
@@ -401,7 +401,7 @@ public interface BaseApiService<T> {
 
     //获取淘宝购物车
     @FormUrlEncoded
-    @POST("newService/synchroShoppingCart")
+    @POST("newService/synchroShoppingCartNew")
     Observable<String> synchroShoppingCart(@FieldMap Map<String, String> map);
 
     //获取电商网站的购物车h5页面url
@@ -503,4 +503,29 @@ public interface BaseApiService<T> {
     @POST("newService/yongjintixian")
     @FormUrlEncoded
     Observable<String> yongjintixian (@FieldMap Map<String, String> map);
+
+    //购物车显示方式
+    @POST("newService/getShoppingCartShowList")
+    @FormUrlEncoded
+    Observable<String> getShoppingCartShowList (@FieldMap Map<String, String> map);
+
+    //newService/getZuanAndQuanByRowkey
+    @POST("newService/getZuanAndQuanByRowkey")
+    @FormUrlEncoded
+    Observable<String> getZuanAndQuanByRowkey (@FieldMap Map<String, String> map);
+
+    // 查询提醒好友购买详情列表
+    @POST("newService/queryMyFansToBuyState")
+    @FormUrlEncoded
+    Observable<String> queryMyFansToBuyState (@FieldMap Map<String, String> map);
+
+    //提醒单个好友购买
+    @POST("newService/noticeInvitedUserToBuy")
+    @FormUrlEncoded
+    Observable<String> noticeInvitedUserToBuy (@FieldMap Map<String, String> map);
+
+    //一键提醒好友签到    参数userid
+    @POST("newService/remindFriendSign")
+    @FormUrlEncoded
+    Observable<String> remindFriendSign (@FieldMap Map<String, String> map);
 }

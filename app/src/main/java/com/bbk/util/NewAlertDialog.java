@@ -64,7 +64,7 @@ public class NewAlertDialog extends Dialog {
 			WindowManager.LayoutParams params = window.getAttributes();
 			params.gravity = Gravity.CENTER;
 			//设置浮动窗口不可聚焦（实现操作除浮动窗口外的其他可见窗口的操作）
-			params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+//			params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 			window.setAttributes(params);
 		    window.setWindowAnimations(R.style.dialog_style);
         // 按返回键是否取消

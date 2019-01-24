@@ -121,7 +121,7 @@ public class DetailImageAdapter extends RecyclerView.Adapter{
                     .asBitmap()
                     .placeholder(R.mipmap.zw_img_300)
 		            .dontAnimate()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
@@ -135,8 +135,8 @@ public class DetailImageAdapter extends RecyclerView.Adapter{
                                     Glide.with(context)
                                             .load(url)
                                             .dontAnimate()
-                                            .centerCrop()
-                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                            .fitCenter()
+                                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                             .into(viewHolder.item_img);
                                 }
                                 else {
@@ -144,7 +144,8 @@ public class DetailImageAdapter extends RecyclerView.Adapter{
                                             .load(url)
                                             .placeholder(R.mipmap.zw_img_300)
 							                .dontAnimate()
-                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                            .fitCenter()
+                                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                             .into(viewHolder.item_img);
                                 }
                             }

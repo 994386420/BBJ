@@ -416,6 +416,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 			    params.put("client", "android");
 			    params.put("unionid",openid);
 			    params.put("code",RSAEncryptorAndroid.getSendCode(addr+mesgCode));
+			    params.put("token",UserLoginNewActivity.access_token);
 //			try {
 //				JSONObject jsonObject = new JSONObject();
 //				jsonObject.put("phone", addr);
@@ -431,7 +432,7 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 //			} catch (JSONException e) {
 //				e.printStackTrace();
 //			}
-			final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenid";
+			final String url1 = BaseApiService.Base_URL + "apiService/registBandOpenidNew";
 				new Thread(new Runnable() {
 					
 					@Override

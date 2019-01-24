@@ -9,6 +9,18 @@ public class JiFenJlistBean {
     private String sdt;
     private String jifen;
     private String imgurl;
+    private String state;
+    private String ordernum;
+    private String dianpuid;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
 
     public String getTitle() {
         return title;
@@ -40,5 +52,21 @@ public class JiFenJlistBean {
 
     public void setSdt(String sdt) {
         this.sdt = sdt;
+    }
+
+    public String getOrdernum() {
+        return ordernum;
+    }
+
+    public void setOrdernum(String ordernum) {
+        this.ordernum = ordernum;
+    }
+
+    public String getDianpuid() {
+        return dianpuid;
+    }
+
+    public void setDianpuid(String dianpuid) {
+        this.dianpuid = dianpuid;
     }
 }

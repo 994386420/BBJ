@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -30,18 +31,23 @@
     android:orientation="vertical"
     android:background="@color/__picker_common_primary">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@mipmap/tuiguang_38">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:gravity="center">-->
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/img_fensi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <!--</LinearLayout>-->
     <LinearLayout
         android:id="@+id/ll_yaoqing"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
         <TextView
             android:id="@+id/tv_hehuo_person"
             android:layout_width="match_parent"
@@ -52,11 +58,32 @@
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:textSize="18dp"
-            android:text="邀请好友"
+            android:text="邀请粉丝"
             android:textColor="@color/white"
             android:background="@drawable/bg_tuiguang1" />
     </LinearLayout>
-
+    <com.bbk.model.tablayout.XTabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:xTabMode="scrollable"
+        app:xTabIndicatorWidth="90dp"
+        app:xTabTextColor="@color/shop_color1"
+        app:xTabSelectedTextColor="@color/color_line_top"
+        app:xTabIndicatorColor="@color/white"
+        app:xTabIndicatorHeight="1dp"
+        app:xTabTextSize="16sp"
+        app:xTabSelectedTextSize="16sp"
+        app:xTabDividerWidth="0dp"
+        app:xTabDividerHeight="0dp"
+        app:xTabDividerColor="#000"
+        android:background="@color/white"
+        />
+    <View
+        android:id="@+id/henggang213"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_line" />
     <TextView
         android:id="@+id/friends_num"
         android:layout_width="match_parent"
@@ -122,6 +149,21 @@
         android:textSize="15dp"
         android:text="一键提醒下单"
         android:textColor="@color/white"
+        android:visibility="gone"
         android:background="@drawable/bg_czg1" />
+        <TextView
+            android:id="@+id/tv_tixing_sign"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:text="一键提醒签到"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:background="@drawable/bg_czg1" />
     </LinearLayout>
 </RelativeLayout>

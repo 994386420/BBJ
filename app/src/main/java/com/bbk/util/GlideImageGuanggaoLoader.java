@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.bbk.activity.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.youth.banner.loader.ImageLoader;
 
 
@@ -16,6 +17,7 @@ public class GlideImageGuanggaoLoader extends ImageLoader {
         Glide.with(context.getApplicationContext())
                 .load(path)
                 .priority(Priority.NORMAL)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(imageView);
     }
 }

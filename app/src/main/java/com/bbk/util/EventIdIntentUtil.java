@@ -335,8 +335,13 @@ public class EventIdIntentUtil {
                 context.startActivity(intent);
                 break;
             case "116":
-                intent = new Intent(context, FensiActivity.class);
-                context.startActivity(intent);
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(context, UserLoginNewActivity.class);
+                    context.startActivity(intent);
+                } else {
+                    intent = new Intent(context, FensiActivity.class);
+                    context.startActivity(intent);
+                }
                 break;
             case "117":
                 intent = new Intent(context, BrokerageDetailActivity.class);
@@ -884,6 +889,7 @@ public class EventIdIntentUtil {
                 break;
             case "116":
                 intent = new Intent(context, FensiActivity.class);
+                intent.putExtra("isQiandao","1");
                 context.startActivity(intent);
                 break;
             case "117":

@@ -25,6 +25,7 @@ import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.bbk.resource.NewConstants;
 import com.bbk.util.CrashHandler;
 import com.bbk.util.SharedPreferencesUtil;
+import com.bumptech.glide.Glide;
 import com.kepler.jd.Listener.AsyncInitListener;
 import com.kepler.jd.login.KeplerApiManager;
 import com.logg.Logg;
@@ -474,4 +475,20 @@ public class MyApplication extends Application {
 		}
 		return false;
 	}
+
+//	@Override
+//	public void onTrimMemory(int level) {
+//		super.onTrimMemory(level);
+//		if (level == TRIM_MEMORY_UI_HIDDEN){
+//			Glide.get(this).clearMemory();
+//		}
+//		Glide.get(this).trimMemory(level);
+//	}
+//
+//	@Override
+//	public void onLowMemory() {
+//		super.onLowMemory();
+//		//内存低时清理缓存
+//		Glide.get(this).clearMemory();
+//	}
 }

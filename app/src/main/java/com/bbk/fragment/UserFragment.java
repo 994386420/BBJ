@@ -271,6 +271,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     private String hongbaoMoney, hongbaoMoney1;
     public static String LogFlag = "0";
     private String isGuanzhuweixin;
+    public static String ketiMoney;
 
 
     @Override
@@ -578,6 +579,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     }
 
                                     tvKetimoney.setText("可提现金额 ¥" + userBean.getKeti());
+                                    ketiMoney = userBean.getKeti();
                                     JSONObject jsonObject1 = new JSONObject(userBean.getEarn());
                                     tvLastmonth.setText("¥" + jsonObject1.optString("lastMonth"));
                                     tvThismonth.setText("¥" + jsonObject1.optString("thisMonth"));
@@ -1739,6 +1741,18 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             TextView mTianxianMoney = updataDialog.findViewById(R.id.tv_tianxian_money);//已关注有金额布局
             TextView mTianxianMessage = updataDialog.findViewById(R.id.tv_tianxian_message);
             TextView mTianxianFailed = updataDialog.findViewById(R.id.tv_failed_message);
+
+            TextView mOneMoney = updataDialog.findViewById(R.id.tv_one_money);
+
+            /**
+             * 提现金额小于一元提示
+             */
+            double money = Double.parseDouble(ketiMoney);
+
+            if (money<1){
+                mOneMoney.setVisibility(View.VISIBLE);
+            }
+
             img_close.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1802,7 +1816,17 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                     mTitle.setText(strings[0]);
                     mTianxianFailed.setVisibility(View.VISIBLE);
                     mTianxianFailed.setText(strings[1]);
-                    tv_update_gengxin.setVisibility(View.GONE);
+                    tv_update_gengxin.setText("查看赚钱攻略");
+                    tv_update_gengxin.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updataDialog.dismiss();
+                            String url = "http://www.51biaohuo.com/mobile/html/introduce.jsp?site=1";
+                            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                            intent.putExtra("url", url);
+                            startActivity(intent);
+                        }
+                    });
                 }
             }
             /**
@@ -1810,6 +1834,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
              */
             else {
                 llWeiguanzhu.setVisibility(View.VISIBLE);
+                mOneMoney.setVisibility(View.GONE);
                 mTitle.setText("提现攻略");
                 tv_update_gengxin.setText("立即去绑定");
                 tv_update_gengxin.setOnClickListener(new OnClickListener() {
@@ -2237,6 +2262,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
             }
         });
     }
+
 
 
 }

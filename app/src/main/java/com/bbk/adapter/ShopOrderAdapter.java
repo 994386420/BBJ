@@ -382,7 +382,9 @@ public class ShopOrderAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(context, WuLiuActivity.class);
-                            intent.putExtra("expressnum",shopOrderBean.getExpressage());
+                            if (shopOrderBean.getExpressage() != null) {
+                                intent.putExtra("expressnum", shopOrderBean.getExpressage());
+                            }
                             context.startActivity(intent);
                         }
                     });

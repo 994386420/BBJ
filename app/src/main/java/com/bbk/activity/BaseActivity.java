@@ -46,6 +46,7 @@ import com.bbk.util.SchemeIntentUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bbk.util.UpdataDialog;
+import com.bumptech.glide.Glide;
 import com.kepler.jd.Listener.OpenAppAction;
 import com.kepler.jd.login.KeplerApiManager;
 import com.kepler.jd.sdk.bean.KelperTask;
@@ -545,5 +546,22 @@ public class BaseActivity extends Activity {
         super.onDestroy();
         DialogCheckYouhuiUtil.dismiss(0);
     }
+
+
+//    @Override
+//    public void onTrimMemory(int level) {
+//        super.onTrimMemory(level);
+//        if (level == TRIM_MEMORY_UI_HIDDEN){
+//            Glide.get(this).clearMemory();
+//        }
+//        Glide.get(this).trimMemory(level);
+//    }
+//
+//    @Override
+//    public void onLowMemory() {
+//        super.onLowMemory();
+//        //内存低时清理缓存
+//        Glide.get(this).clearMemory();
+//    }
 
 }

@@ -1,18 +1,19 @@
 package com.bbk.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.JiFenJlistBean;
-import com.bbk.Bean.JiFenListBean;
-import com.bbk.Bean.JiFenOlistBean;
 import com.bbk.activity.R;
+import com.bbk.shopcar.ShopOrderActivity;
+import com.bbk.shopcar.ShopOrderDetailActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -70,13 +71,23 @@ public class JiFenJlistDetailAdapter extends RecyclerView.Adapter {
 
     private void initTop(final ViewHolder viewHolder, final int position) {
         try {
-            JiFenJlistBean jiFenJlistBean = jiFenJlistBeans.get(position);
+            final JiFenJlistBean jiFenJlistBean = jiFenJlistBeans.get(position);
             viewHolder.tvShopName.setText(jiFenJlistBean.getTitle());
             viewHolder.tvTime.setText(jiFenJlistBean.getSdt());
             viewHolder.tvUseJifen.setText(jiFenJlistBean.getJifen());
-            Glide.with(context).load(jiFenJlistBean.getImgurl()) .priority(Priority.HIGH)
+            Glide.with(context).load(jiFenJlistBean.getImgurl()).priority(Priority.HIGH)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .placeholder(R.mipmap.zw_img_300).into(viewHolder.imgUseJifen);
+            viewHolder.llItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ShopOrderDetailActivity.class);
+                    intent.putExtra("orderid", jiFenJlistBean.getOrdernum());
+                    intent.putExtra("dianpuid",jiFenJlistBean.getDianpuid());
+                    intent.putExtra("state", jiFenJlistBean.getState());
+                    context.startActivity(intent);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,6 +102,8 @@ public class JiFenJlistDetailAdapter extends RecyclerView.Adapter {
         TextView tvTime;
         @BindView(R.id.tv_use_jifen)
         TextView tvUseJifen;
+        @BindView(R.id.ll_item)
+        LinearLayout llItem;
 
         ViewHolder(View view) {
             super(view);

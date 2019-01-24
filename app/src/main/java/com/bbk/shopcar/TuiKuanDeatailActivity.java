@@ -1,5 +1,6 @@
 package com.bbk.shopcar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,6 +14,7 @@ import com.bbk.Bean.TuiKuanBean;
 import com.bbk.activity.BaseActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
+import com.bbk.activity.ShopDetailActivty;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
@@ -80,8 +82,6 @@ public class TuiKuanDeatailActivity extends BaseActivity {
     LinearLayout llPrice1;
     @BindView(R.id.tv_shop_guige)
     TextView tvShopGuige;
-    @BindView(R.id.item_order)
-    LinearLayout itemOrder;
     @BindView(R.id.tv_reason)
     TextView tvReason;
     @BindView(R.id.tv_money)
@@ -122,7 +122,10 @@ public class TuiKuanDeatailActivity extends BaseActivity {
     LinearLayout llJingbi;
     @BindView(R.id.tv_shouli)
     TextView tvShouli;
+    @BindView(R.id.item_order)
+    LinearLayout itemOrder;
     private String dianpuid, orderid, states;
+    TuiKuanBean tuiKuanBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,13 +160,14 @@ public class TuiKuanDeatailActivity extends BaseActivity {
                             String content = jsonObject.optString("content");
                             if (jsonObject.optString("status").equals("1")) {
                                 Logg.json(jsonObject);
-                                TuiKuanBean tuiKuanBean = JSON.parseObject(content, TuiKuanBean.class);
+                                tuiKuanBean = JSON.parseObject(content, TuiKuanBean.class);
                                 tvReason.setText("退款原因： " + tuiKuanBean.getReson());
                                 tvMoney.setText("退款金额： " + tuiKuanBean.getTotal());
                                 tvJianshu.setText("申请件事： " + tuiKuanBean.getNumber());
                                 tvTime.setText("申请时间： " + tuiKuanBean.getSdate1());
                                 tvBianhao.setText("退款编号： " + tuiKuanBean.getRefundnum());
                                 itemTitle.setText(tuiKuanBean.getTitle());
+
                                 Glide.with(TuiKuanDeatailActivity.this)
                                         .load(tuiKuanBean.getImgurl())
                                         .priority(Priority.HIGH)
@@ -231,8 +235,24 @@ public class TuiKuanDeatailActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.title_back_btn)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.title_back_btn,R.id.item_order})
+    public void onViewClicked(View view) {
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.title_back_btn:
+                finish();
+                break;
+            case R.id.item_order:
+                if (tuiKuanBean != null) {
+                    if (tuiKuanBean.getProductstate().equals("1")) {
+                        intent = new Intent(this, ShopDetailActivty.class);
+                        intent.putExtra("id", tuiKuanBean.getId());
+                        startActivity(intent);
+                        return;
+                    }
+                }
+                StringUtil.showToast(this, "该商品已下架！");
+                break;
+        }
     }
 }

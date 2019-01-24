@@ -120,7 +120,12 @@ public class WuLiuActivity extends BaseActivity {
                                 Logg.json(jsonObject);
                                 WuliuBean wuliuBean = JSON.parseObject(content, WuliuBean.class);
                                 tvDh.setText("运单号：" + wuliuBean.getExpressNum());
-                                tvGs.setText("承运公司：" + wuliuBean.getCompany());
+                                if ( wuliuBean.getCompany() != null && !wuliuBean.getCompany().equals("")) {
+                                    tvGs.setText("承运公司：" + wuliuBean.getCompany());
+                                    tvGs.setVisibility(View.VISIBLE);
+                                }else {
+                                    tvGs.setVisibility(View.GONE);
+                                }
                                 tvPhone.setText("承运电话：" + wuliuBean.getPhone());
                                 if (wuliuBean.getList() != null) {
                                     List<WuliuItemBean> wuliuItemBeans = JSON.parseArray(wuliuBean.getList(), WuliuItemBean.class);
@@ -136,6 +141,11 @@ public class WuLiuActivity extends BaseActivity {
                                         progress.loadSuccess(true, "暂无物流信息~");
                                         refresh.setEnableLoadMore(false);
                                     }
+                                }else {
+                                    listviewWuliu.setVisibility(View.GONE);
+                                    progress.setVisibility(View.VISIBLE);
+                                    progress.loadSuccess(true, "暂无物流信息~");
+                                    refresh.setEnableLoadMore(false);
                                 }
                                 if (wuliuBean.getLikelist() != null && !wuliuBean.getLikelist().equals("")){
                                     czgBeans = JSON.parseArray(wuliuBean.getLikelist(), NewHomeCzgBean.class);

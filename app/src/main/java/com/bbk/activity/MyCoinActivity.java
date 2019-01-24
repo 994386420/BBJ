@@ -348,16 +348,16 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
                     mbackground.setFocusableInTouchMode(true);
                     mbackground.requestFocus();
                     if (yaoqingma != null && !yaoqingma.equals("")) {
-                        str1 = new String[]{"邀请好友下载APP", "填写邀请码", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享鲸港圈", "分享文章", "评论文章"};
-                        str2 = new String[]{"+" + invitedReward + "鲸币", "+500鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币", "+20鲸币", "+10鲸币", "+10鲸币"};
-                        str3 = new String[]{"成功邀请一个好友使用微信登录", "和好友一起赚佣金", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日）", "分享一条鲸港圈的商品（限10次/日）",
+                        str1 = new String[]{"邀请好友下载APP", "填写邀请码", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享文章", "评论文章"};
+                        str2 = new String[]{"+" + invitedReward + "鲸币", "+500鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币", "+10鲸币", "+10鲸币"};
+                        str3 = new String[]{"成功邀请一个好友使用微信登录", "和好友一起赚佣金", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日）",
                                 "对“数据”文章进行分享（限10次/日）", "对“数据”文章进行评论"};
                         drawable = new int[]{R.mipmap.rw_1, R.mipmap.jingbi_img14, R.mipmap.rw_7, R.mipmap.coin_weixin, R.mipmap.rw_4,
                                 R.mipmap.rw_10, R.mipmap.jinbi_clsj, R.mipmap.jingbi_img15, R.mipmap.jingbi_img16, R.mipmap.rw_8};
                     }else {
-                        str1 = new String[]{"邀请好友下载APP", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享鲸港圈", "分享文章", "评论文章"};
-                        str2 = new String[]{"+" + invitedReward + "鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币", "+20鲸币", "+10鲸币", "+10鲸币"};
-                        str3 = new String[]{"成功邀请一个好友使用微信登录", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日）", "分享一条鲸港圈的商品（限10次/日）",
+                        str1 = new String[]{"邀请好友下载APP", "签到打卡", "微信公众号签到", "完善资料", "意见反馈", "查历史价", "分享文章", "评论文章"};
+                        str2 = new String[]{"+" + invitedReward + "鲸币", "+5至50鲸币", "+5鲸币", "+5鲸币", "+50鲸币", "+15鲸币",  "+10鲸币", "+10鲸币"};
+                        str3 = new String[]{"成功邀请一个好友使用微信登录", "连续签到7天+50鲸币，每轮7天", "关注“比比鲸大数据”每日签到", "完善个人资料", "反馈有效意见或建议", "查询商品历史价格一次（限10次/日）",
                                 "对“数据”文章进行分享（限10次/日）", "对“数据”文章进行评论"};
                         drawable = new int[]{R.mipmap.rw_1, R.mipmap.rw_7, R.mipmap.coin_weixin, R.mipmap.rw_4,
                                 R.mipmap.rw_10, R.mipmap.jinbi_clsj, R.mipmap.jingbi_img15, R.mipmap.jingbi_img16, R.mipmap.rw_8};
@@ -452,13 +452,13 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
             case 6:
                 map.put("isgo", object.optString("10"));
                 break;
+//            case 7:
+//                map.put("isgo", object.optString("13"));
+//                break;
             case 7:
-                map.put("isgo", object.optString("13"));
-                break;
-            case 8:
                 map.put("isgo", object.optString("4"));
                 break;
-            case 9:
+            case 8:
                 map.put("isgo", object.optString("7"));
                 break;
         }
@@ -489,13 +489,13 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
             case 5:
                 map.put("isgo", object.optString("10"));
                 break;
+//            case 6:
+//                map.put("isgo", object.optString("13"));
+//                break;
             case 6:
-                map.put("isgo", object.optString("13"));
-                break;
-            case 7:
                 map.put("isgo", object.optString("4"));
                 break;
-            case 8:
+            case 7:
                 map.put("isgo", object.optString("7"));
                 break;
         }
@@ -738,16 +738,16 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
                         intent = new Intent(MyCoinActivity.this, QueryHistoryActivity.class);
                         startActivity(intent);
                         break;
+//                    case 6:
+//                        intent = new Intent(MyCoinActivity.this, FenXiangActivty.class);
+//                        startActivity(intent);
+//                        break;
                     case 6:
-                        intent = new Intent(MyCoinActivity.this, FenXiangActivty.class);
-                        startActivity(intent);
-                        break;
-                    case 7:;
                         //分享文章
                         intent = new Intent(MyCoinActivity.this, NewRankActivty.class);
                         startActivity(intent);
                         break;
-                    case 8:
+                    case 7:
                         //评论文章
                         intent = new Intent(MyCoinActivity.this, NewRankActivty.class);
                         startActivity(intent);
@@ -772,6 +772,7 @@ public class MyCoinActivity extends BaseActivity implements ResultEvent, OnClick
     @OnClick(R.id.ll_hongbao)
     public void onViewClicked() {
         Intent intent = new Intent(this, FensiActivity.class);
+        intent.putExtra("isQiandao","1");
         startActivity(intent);
     }
 }

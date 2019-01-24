@@ -18,6 +18,8 @@ public class TuiKuanBean {
     private String imgurl;
     private String useyongjin;
     private String usejinbi;
+    private String id;
+    private String productstate;
 
     public String getUseyongjin() {
         return useyongjin;
@@ -126,5 +128,21 @@ public class TuiKuanBean {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getProductstate() {
+        return productstate;
+    }
+
+    public void setProductstate(String productstate) {
+        this.productstate = productstate;
     }
 }

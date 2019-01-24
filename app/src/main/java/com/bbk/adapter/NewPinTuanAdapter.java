@@ -1,6 +1,5 @@
 package com.bbk.adapter;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -15,27 +14,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.alibaba.baichuan.android.trade.adapter.login.AlibcLogin;
-import com.alibaba.baichuan.android.trade.callback.AlibcLoginCallback;
 import com.bbk.Bean.PinTuanBean;
 import com.bbk.activity.IntentActivity;
 import com.bbk.activity.MyApplication;
 import com.bbk.activity.R;
 import com.bbk.activity.WebViewActivity;
-import com.bbk.model.HomeGridPinTuanAdapter;
 import com.bbk.model.view.CustomProgressBar;
-import com.bbk.util.DialogSingleUtil;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

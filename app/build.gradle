@@ -199,6 +199,8 @@ dependencies {
     implementation 'com.logg:Logg:1.5.1'
     //右上角全局弹窗
     implementation project(':toprightmenu')
+
+    compile 'org.jsoup:jsoup:1.9.2'
     //京东开普勒
     implementation project(':jdsdk_lib')
     implementation 'com.android.support:support-v4:' + rootProject.supportLibVersion

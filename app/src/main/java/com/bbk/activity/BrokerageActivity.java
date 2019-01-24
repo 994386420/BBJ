@@ -43,6 +43,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bbk.fragment.UserFragment.ketiMoney;
+
 /**
  * 收益报表
  */
@@ -345,6 +347,17 @@ public class BrokerageActivity extends BaseActivity {
                     updataDialog.dismiss();
                 }
             });
+            TextView mOneMoney = updataDialog.findViewById(R.id.tv_one_money);
+
+            /**
+             * 提现金额小于一元提示
+             */
+            double money = Double.parseDouble(ketiMoney);
+
+            if (money<1){
+                mOneMoney.setVisibility(View.VISIBLE);
+            }
+
             /**
              * 已经关注微信
              */
@@ -400,10 +413,21 @@ public class BrokerageActivity extends BaseActivity {
                  * 余额不足
                  */
                 else {
-                    mTitle.setVisibility(View.GONE);
+                    String[] strings = errmsg.split("\\|");
+                    mTitle.setText(strings[0]);
                     mTianxianFailed.setVisibility(View.VISIBLE);
-                    mTianxianFailed.setText(errmsg);
-                    tv_update_gengxin.setVisibility(View.GONE);
+                    mTianxianFailed.setText(strings[1]);
+                    tv_update_gengxin.setText("查看赚钱攻略");
+                    tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updataDialog.dismiss();
+                            String url = "http://www.51biaohuo.com/mobile/html/introduce.jsp?site=1";
+                            Intent intent = new Intent(BrokerageActivity.this, WebViewActivity.class);
+                            intent.putExtra("url", url);
+                            startActivity(intent);
+                        }
+                    });
                 }
             }
             /**
@@ -412,6 +436,7 @@ public class BrokerageActivity extends BaseActivity {
             else {
                 llWeiguanzhu.setVisibility(View.VISIBLE);
                 mTitle.setText("提现攻略");
+                mOneMoney.setVisibility(View.GONE);
                 tv_update_gengxin.setText("立即去绑定");
                 tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
                     @Override

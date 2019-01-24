@@ -97,9 +97,9 @@ public class UserFindPasswordActivity extends BaseActivity implements
 					getCodeBtn
 							.setBackgroundResource(R.drawable.bg_user_btn_unable);
 
-					nextBtn.setEnabled(false);
-					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
-					nextBtn.setBackgroundResource(R.drawable.bg_user_btn_unable);
+//					nextBtn.setEnabled(false);
+//					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
+//					nextBtn.setBackgroundResource(R.drawable.bg_user_btn_unable);
 				}
 
 			}
@@ -120,16 +120,16 @@ public class UserFindPasswordActivity extends BaseActivity implements
 					int after) {
 				String userEmail = userPhoneEditText.getText().toString();
 				String userCode = userCodeEditText.getText().toString();
-				if (!TextUtils.isEmpty(userEmail)
-						&& !TextUtils.isEmpty(userCode)) {
-					nextBtn.setEnabled(true);
-					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
-					nextBtn.setBackgroundResource(R.drawable.bg_user_btn);
-				} else {
-					nextBtn.setEnabled(false);
-					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
-					nextBtn.setBackgroundResource(R.drawable.bg_user_btn_unable);
-				}
+//				if (!TextUtils.isEmpty(userEmail)
+//						&& !TextUtils.isEmpty(userCode)) {
+//					nextBtn.setEnabled(true);
+//					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
+//					nextBtn.setBackgroundResource(R.drawable.bg_user_btn);
+//				} else {
+//					nextBtn.setEnabled(false);
+//					nextBtn.setTextColor(Color.parseColor("#FFFFFF"));
+//					nextBtn.setBackgroundResource(R.drawable.bg_user_btn_unable);
+//				}
 			}
 
 			@Override
@@ -145,14 +145,14 @@ public class UserFindPasswordActivity extends BaseActivity implements
 			addr = userPhoneEditText.getText().toString();
 			userCodeStr = userCodeEditText.getText().toString();
 			String password = mNewPassword.getText().toString();
-			if (password != null && !password.equals("")){
+			if (!TextUtils.isEmpty(addr) && !TextUtils.isEmpty(userCodeStr) && !TextUtils.isEmpty(password)){
 				Map<String, String> paramsMap = new HashMap<String, String>();
 				paramsMap.put("phone", addr);
 				paramsMap.put("password", password);
 				paramsMap.put("mesgCode", userCodeStr);
 				dataFlow.requestData(2, Constants.findPwdByPhone,paramsMap, this,true,"找回中...");
 			}else {
-				StringUtil.showToast(UserFindPasswordActivity.this,"请输入密码");
+				StringUtil.showToast(UserFindPasswordActivity.this,"手机号、验证码或新密码不能为空");
 			}
 			break;
 		case R.id.get_code_btn:

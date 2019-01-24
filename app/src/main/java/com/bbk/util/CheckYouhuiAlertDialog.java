@@ -24,6 +24,7 @@ import com.bbk.adapter.FenXiangListAdapter;
 import com.bbk.fragment.CarFrament;
 import com.bbk.fragment.NewHomeFragment;
 import com.bbk.model.MainActivity;
+import com.bbk.shopcar.CarActivity;
 
 /**
  * Created by Administrator on 2018/7/06/006.
@@ -71,6 +72,12 @@ public class CheckYouhuiAlertDialog extends Dialog {
                 MainActivity.cancelCheck =false;
                 FenXiangListAdapter.cancelCheck = false;
                 CarFrament.cancelCheck = false;
+                if ( CarFrament.mPtrframe != null) {
+                    CarFrament.mPtrframe.finishRefresh();
+                }
+                if ( CarActivity.mPtrframe != null) {
+                    CarActivity.mPtrframe.finishRefresh();
+                }
             }
         });
 			final RotateAnimation animation =new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

@@ -8,6 +8,6 @@
         android:id="@+id/detail_image"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:adjustViewBounds="true"/>
 </LinearLayout>

@@ -150,6 +150,12 @@ public class YaoqingFriendsActivity extends AppCompatActivity implements ViewPag
                 break;
             case R.id.tv_share:
                 DialogSingleUtil.show(YaoqingFriendsActivity.this);
+                if (wenansList != null){
+                    wenan = wenansList.get(pageIndex).toString().replace("|", "\n");
+                    ClipboardManager cm = (ClipboardManager) YaoqingFriendsActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(wenan);
+                    StringUtil.showToast(YaoqingFriendsActivity.this, "复制成功");
+                }
                 List<String> UrlList = new ArrayList<>();
                 UrlList.add(imgUrlList.get(pageIndex).toString());
                 if (UrlList != null && UrlList.size() > 0) {

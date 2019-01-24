@@ -17,6 +17,7 @@ import com.bbk.activity.R;
 import com.bbk.activity.ShopDetailActivty;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 import java.util.logging.Handler;
@@ -129,6 +130,7 @@ public class DianPuGridAdapter extends RecyclerView.Adapter {
             Glide.with(context)
                     .load(shopTuijianBean.getImgurl())
                     .priority(Priority.HIGH)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .placeholder(R.mipmap.zw_img_300)
                     .into(viewHolder.item_img);
             viewHolder.itemlayout.setOnClickListener(new View.OnClickListener() {

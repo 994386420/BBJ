@@ -269,11 +269,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     ImageView imgCzuan;
     private View mView;
     private boolean isshowzhezhao = true;
-    private int page = 1, x = 1;
+    private int page = 1, x = 1 , type = 0;
     List<NewHomeCzgBean> czgBeans;//超值购数据
     private String chaozhigou;
     NewCzgAdapter newCzgAdapter;
-    private String keyword = "";
+    private String keyword = "",longkeyword;
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
@@ -377,7 +377,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             public void onLoadMore(RefreshLayout refreshLayout) {
                 page++;
                 x = 2;
-                initDataCzg(keyword);
+                if (type == 0){
+                    initDataCzg(keyword);
+                    return;
+                }
+                initDataCzg(longkeyword);
             }
         });
     }
@@ -1102,6 +1106,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
      */
     private void initDataCzg(String keyword) {
         refresh.setNoMoreData(false);
+        Logg.json(keyword);
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("keyword", keyword);
         paramsMap.put("sortWay", "5");
@@ -1546,7 +1551,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
                 tvSub4.setBackgroundResource(R.drawable.bg_sub);
                 tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword + "" + tvSub1.getText().toString());
+                page = 1;
+                x = 1;
+                type = 1;
+                longkeyword = keyword + "" + tvSub1.getText().toString();
+                initDataCzg(longkeyword);
                 break;
             case R.id.tv_sub2:
                 DialogHomeUtil.show(getActivity());
@@ -1562,7 +1571,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
                 tvSub4.setBackgroundResource(R.drawable.bg_sub);
                 tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword + "" + tvSub2.getText().toString());
+                page = 1;
+                x = 1;
+                type = 1;
+                longkeyword = keyword + "" + tvSub2.getText().toString();
+                initDataCzg(longkeyword);
                 break;
             case R.id.tv_sub3:
                 DialogHomeUtil.show(getActivity());
@@ -1578,7 +1591,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.color_line_top));
                 tvSub4.setBackgroundResource(R.drawable.bg_sub);
                 tvSub4.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword + "" + tvSub3.getText().toString());
+                page = 1;
+                x = 1;
+                type = 1;
+                longkeyword = keyword + "" + tvSub3.getText().toString();
+                initDataCzg(longkeyword);
                 break;
             case R.id.tv_sub4:
                 DialogHomeUtil.show(getActivity());
@@ -1594,7 +1611,11 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                 tvSub3.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
                 tvSub1.setBackgroundResource(R.drawable.bg_sub);
                 tvSub1.setTextColor(getActivity().getResources().getColor(R.color.shop_color1));
-                initDataCzg(keyword + "" + tvSub4.getText().toString());
+                page = 1;
+                x = 1;
+                type = 1;
+                longkeyword = keyword + "" + tvSub4.getText().toString();
+                initDataCzg(longkeyword);
                 break;
         }
     }

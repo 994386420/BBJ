@@ -554,7 +554,7 @@ public class ShopDetailActivty extends BaseActivity {
      * @return
      */
     public Bitmap returnBitMap(final String url) {
-        DialogSingleUtil.show(ShopDetailActivty.this);
+        DialogSingleUtil.show(this);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -580,16 +580,17 @@ public class ShopDetailActivty extends BaseActivity {
                             DialogSingleUtil.dismiss(0);
                             List<String> UrlList = new ArrayList<>();
                             UrlList.add(shopDetailBean.getShareZiyingimg());
-                            if (UrlList != null && UrlList.size() > 0) {
-                                DialogSingleUtil.dismiss(0);
-                                new ShareShopDetailUtil(ShopDetailActivty.this,UrlList, tvShare, shopDetailBean.getJingkouling()
-                                        , shopDetailBean.getImgurl(), shopDetailBean.getPrice(), shopDetailBean.getTitle(),bitmap);
+                            if (UrlList != null && UrlList.size() > 0 && bitmap != null) {
+                                new ShareShopDetailUtil(ShopDetailActivty.this, UrlList, tvShare, shopDetailBean.getJingkouling()
+                                        , shopDetailBean.getImgurl(), shopDetailBean.getPrice(), shopDetailBean.getTitle(), bitmap);
                             }
                         }
                     });
-
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (NullPointerException n){
+                    StringUtil.showToast(ShopDetailActivty.this,"商品已下架");
+                    n.printStackTrace();
                 }
             }
         }).start();
@@ -603,10 +604,14 @@ public class ShopDetailActivty extends BaseActivity {
         switch (view.getId()) {
 
             case R.id.tv_share:
-                if (shopDetailBean != null ){
-                if (shopDetailBean.getShareZiyingimg() != null) {
-                    returnBitMap(shopDetailBean.getShareZiyingimg());
-                  }
+                try {
+                    if (shopDetailBean != null ){
+                        if (shopDetailBean.getShareZiyingimg() != null) {
+                            returnBitMap(shopDetailBean.getShareZiyingimg());
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
                 break;
 
@@ -1547,6 +1552,4 @@ public class ShopDetailActivty extends BaseActivity {
             });
         }
     }
-
-
 }
