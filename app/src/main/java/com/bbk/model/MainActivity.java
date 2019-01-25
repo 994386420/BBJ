@@ -723,6 +723,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     @Override
                     public void onError(ExceptionHandle.ResponeThrowable e) {
                         DialogHomeUtil.dismiss(0);
+                        refreshLayout.finishRefresh();
                         String homeContent = SharedPreferencesUtil.getSharedData(getActivity(), "homeContent", "homeContent");
                         try {
                             JSONObject object = new JSONObject(homeContent);

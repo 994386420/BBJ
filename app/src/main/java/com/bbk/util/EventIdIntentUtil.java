@@ -74,6 +74,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -97,6 +98,7 @@ public class EventIdIntentUtil {
     private static String jumpdomain;
     private static boolean cancleJump = true;
     static KelperTask mKelperTask;
+    private static Handler mHandler = new Handler();
 
     public static void main(String[] args) {
 
@@ -162,6 +164,19 @@ public class EventIdIntentUtil {
                 context.startActivity(intentxh);
                 break;
                 //  5html活动页面(htmlUrl)
+            case "4":
+                String htmlUrlweizhu = jo.optString("htmlUrl");
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(context, UserLoginNewActivity.class);
+//                    intent.putExtra("url", htmlUrlweizhu);
+                    context.startActivity(intent);
+                } else {
+                    String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
+                    intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra("url", htmlUrlweizhu+"&mid="+mid);
+                    context.startActivity(intent);
+                }
+                break;
             case "5":
                 String htmlUrl = jo.optString("htmlUrl");
                 Intent intent4;
@@ -586,7 +601,12 @@ public class EventIdIntentUtil {
                             if (jsonObject.optString("status").equals("1")) {
                                 String content = jsonObject.optString("content");
                                 final JSONObject jsonObject1 = new JSONObject(content);
-                                jumpUrl(domain, jsonObject1, context);
+                                mHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        jumpUrl(domain, jsonObject1, context);
+                                    }
+                                },1500);
                             } else {
                                 StringUtil.showToast(context, jsonObject.optString("errmsg"));
                             }
@@ -597,7 +617,6 @@ public class EventIdIntentUtil {
 
                     @Override
                     protected void hideDialog() {
-                        updataDialog.dismiss();
                     }
 
                     @Override
@@ -626,7 +645,12 @@ public class EventIdIntentUtil {
                             if (jsonObject.optString("status").equals("1")) {
                                 String content = jsonObject.optString("content");
                                 final JSONObject jsonObject1 = new JSONObject(content);
-                                jumpUrl(domain, jsonObject1, context);
+                                mHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        jumpUrl(domain, jsonObject1, context);
+                                    }
+                                },1500);
                             } else {
                                 StringUtil.showToast(context, jsonObject.optString("errmsg"));
                             }
@@ -781,6 +805,7 @@ public class EventIdIntentUtil {
         exParams = new HashMap<>();
         exParams.put("isv_code", "appisvcode");
         exParams.put("alibaba", "阿里巴巴");//自定义参数部分，可任意增删改
+        updataDialog.dismiss();
         if (domain != null) {
             if (domain.equals("taobao")) {
                 showUrl(context, jsonObject1.optString("url"));

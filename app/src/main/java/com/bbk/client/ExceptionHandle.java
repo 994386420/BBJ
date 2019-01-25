@@ -132,7 +132,7 @@ public class ExceptionHandle {
                     case BAD_GATEWAY:
                     case SERVICE_UNAVAILABLE:
                     default:
-                        message = "网络错误,请检查网络连接";
+                        message = "小鲸蒙圈啦  试试看刷新页面～";
                         break;
                 }
                 return;
@@ -143,23 +143,23 @@ public class ExceptionHandle {
             } else if (e instanceof JsonParseException
                     || e instanceof JSONException
                     || e instanceof ParseException) {
-                message = "解析错误";
+                message = "小鲸蒙圈啦  试试看刷新页面～";
                 return;
             } else if (e instanceof ConnectException) {
-                message = "连接失败";
+                message = "小鲸蒙圈啦  试试看刷新页面～";
                 return;
             } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
-                message = "证书验证失败";
+                message = "小鲸蒙圈啦  试试看刷新页面～";
                 return;
             } else if (e instanceof ConnectTimeoutException){
-                message = "连接超时";
+                message = "小鲸蒙圈啦  试试看刷新页面～";
                 return;
             } else if (e instanceof java.net.SocketTimeoutException) {
-                message = "连接超时";
+                message = "小鲸蒙圈啦  试试看刷新页面～";
                 return;
             }
             else {
-                message = "未知错误";
+                message = "小鲸蒙圈啦  试试看刷新页面～";
                 return ;
             }
         }

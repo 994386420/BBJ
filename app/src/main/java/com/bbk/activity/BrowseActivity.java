@@ -238,7 +238,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 				domainlistview.setVisibility(View.GONE);
 //				if (topiccount.isEmpty() || topiccount.equals("")) {
 //					topiclistview.setVisibility(View.GONE);
-					mtext1.setText("发现");
+					mtext1.setText("数据");
 //				}else{
 					topiclistview.setVisibility(View.VISIBLE);
 //					mtext1.setText("鲸话题("+topiccount+")");
@@ -261,7 +261,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 					domainlistview.setVisibility(View.VISIBLE);
 //					mtext2.setText("商品("+domaincount+")");
 //				}
-				mtext1.setText("发现");
+				mtext1.setText("数据");
 				curclick = 1;
 //				if (domainadapter == null) {
 					isclear = true;
@@ -393,7 +393,7 @@ public class BrowseActivity extends BaseFragmentActivity implements ResultEvent,
 					topiclist.clear();
 					topiccount = object.optString("count");
 //					if (topiccount.isEmpty() || topiccount.equals("")) {
-						mtext1.setText("发现");
+						mtext1.setText("数据");
 //					}else{
 //						mtext1.setText("鲸话题("+topiccount+")");
 //					}

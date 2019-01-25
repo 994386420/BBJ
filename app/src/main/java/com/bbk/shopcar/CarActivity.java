@@ -1436,7 +1436,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                     }
                 });
             } else {
-                StringUtil.showToast(CarActivity.this, "已经登陆过了");
+                StringUtil.showToast(CarActivity.this, "已经登陆过了,请下拉刷新");
             }
         }
     }
@@ -1593,19 +1593,21 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                 System.out.println("======> onPageStarted 开始加载");
                 mTimer = new Timer();
                 if (tbWebview.getProgress() < 100) {
-                    TimerTask tt = new TimerTask() {
-                        @Override
-                        public void run() {
-                            Message m = new Message();
-                            m.what = TIMEOUT_ERROR;
-                            mHandlerWebView.sendMessage(m);
-                            if (mTimer != null) {
-                                mTimer.cancel();
-                                mTimer.purge();
-                            }
-                        }
-                    };
-                    mTimer.schedule(tt, TIMEOUT);
+//                    TimerTask tt = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            Message m = new Message();
+//                            m.what = TIMEOUT_ERROR;
+//                            mHandlerWebView.sendMessage(m);
+//                            if (mTimer != null) {
+//                                mTimer.cancel();
+//                                mTimer.purge();
+//                            }
+//                        }
+//                    };
+//                    mTimer.schedule(tt, TIMEOUT);
+                    DialogCheckYouhuiUtil.dismiss(3000);
+                    mPtrframe.finishRefresh();
                 }else {
                     if (mTimer != null) {
                         mTimer.cancel();

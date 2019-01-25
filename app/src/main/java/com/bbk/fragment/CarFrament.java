@@ -235,11 +235,11 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                     reSet();
                 } else if (curPosition == 2) {
                     sum = 0;
-//                    showJdCar();
+                    showJdCar();
                     getShoppingCartUrlByDomain("jd");
                 } else {
                     sum = 0;
-//                    showTaoBaoCar();
+                    showTaoBaoCar();
                     getShoppingCartUrlByDomain("taobao");
                 }
             }
@@ -1310,7 +1310,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                     }
                 });
             } else {
-                StringUtil.showToast(getActivity(), "已经登陆过了");
+                StringUtil.showToast(getActivity(), "已经登陆过了,请下拉刷新");
             }
         }
     }
@@ -1519,20 +1519,24 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                 System.out.println("======> onPageStarted 开始加载");
                 mTimer = new Timer();
                 if (tbWebview.getProgress() < 100) {
-                    TimerTask tt = new TimerTask() {
-                        @Override
-                        public void run() {
-                            Message m = new Message();
-                            m.what = TIMEOUT_ERROR;
-                            mHandlerWebView.sendMessage(m);
-                            if (mTimer != null) {
-                                mTimer.cancel();
-                                mTimer.purge();
-                            }
-                        }
-                    };
-                    mTimer.schedule(tt, TIMEOUT);
+                    Logg.json("===>>>超时了");
+//                    TimerTask tt = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            Message m = new Message();
+//                            m.what = TIMEOUT_ERROR;
+//                            mHandlerWebView.sendMessage(m);
+//                            if (mTimer != null) {
+//                                mTimer.cancel();
+//                                mTimer.purge();
+//                            }
+//                        }
+//                    };
+//                    mTimer.schedule(tt, TIMEOUT);
+                    DialogCheckYouhuiUtil.dismiss(3000);
+                    mPtrframe.finishRefresh();
                 }else {
+                    Logg.json("===>>>没超时了");
                     if (mTimer != null) {
                         mTimer.cancel();
                         mTimer.purge();

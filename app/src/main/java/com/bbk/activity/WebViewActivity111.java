@@ -76,6 +76,7 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
     private String type = "";
     private String shareurl = "";
     private ProgressBar progressbar;
+    private HashMap<String, Object> mEventMap,mEventMap2;
 
 
     @Override
@@ -177,92 +178,126 @@ public class WebViewActivity111 extends BaseActivity implements OnClickListener,
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (!isintent) {
                     if (url.contains("bbjtech://")) {
-                        String[] stringsIntent = url.replace("bbjtech://?", "").replace("@@", "=").split("=");
-                        switch (stringsIntent[1]) {
-                            case "12":
-                                Intent intent = new Intent(WebViewActivity111.this, SearchMainActivity.class);
-                                try {
-                                    intent.putExtra("keyword", URLDecoder.decode(stringsIntent[3], "utf-8"));
-                                    SharedPreferencesUtil.putSharedData(WebViewActivity111.this, "shaixuan", "shaixuan", "yes");
-                                    NewConstants.clickpositionFenlei = 5200;
-                                    NewConstants.clickpositionDianpu = 5200;
-                                    NewConstants.clickpositionMall = 5200;
+                        String  strings = url.replace("bbjtech://?","");
+                        mEventMap = new HashMap<>();
+                        String[] strs = strings.split("@@");
+                        Logg.json(strs);
+                        mEventMap2 = new HashMap<String, Object>();
+                        if (strs.length >= 1)
+                            for (String s : strs) {
+                                String[] str = s.split("=");
+                                Logg.json(str);
+                                if (str.length > 1) {
+                                    mEventMap2.put(str[0], str[1]);
+                                }else {
+                                    HomeActivity.position = 0;
+                                    SharedPreferencesUtil.putSharedData(WebViewActivity111.this, "homeactivty", "type","0");
+                                    Intent intent = new Intent(WebViewActivity111.this, HomeActivity.class);
                                     startActivity(intent);
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
                                 }
-                                break;
-                            case "121":
-                                intent = new Intent(WebViewActivity111.this, MesageCenterActivity.class);
-                                intent.putExtra("type", "0");
-                                startActivity(intent);
-                                break;
-                            case "124":
-                                NewConstants.showdialogFlg = "1";
-                                Logg.json(stringsIntent[3] + stringsIntent[4]);
-                                intent = new Intent(WebViewActivity111.this, IntentActivity.class);
-                                intent.putExtra("url", stringsIntent[3] + "=" + stringsIntent[4]);
-                                startActivity(intent);
-                                break;
-                            case "a3":
-                                intent = new Intent(WebViewActivity111.this, ShopDetailActivty.class);
-                                intent.putExtra("id", stringsIntent[3]);
-                                startActivity(intent);
-                                break;
-                            case "a4":
-                                try {
-                                    intent = new Intent(WebViewActivity111.this, DianpuSearchActivity.class);
-                                    intent.putExtra("keyword", "");
-                                    intent.putExtra("dianpuid", "");
-                                    intent.putExtra("producttype", URLDecoder.decode(stringsIntent[3], "utf-8"));
-                                    intent.putExtra("plevel", "2");
-                                    startActivity(intent);
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-                        }
-
-                        //跳转到邀请好友页面
-                        if (url.contains("yaoqing")){
-                            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
-                            if (TextUtils.isEmpty(userID)) {
-                                Intent intent = new Intent(WebViewActivity111.this,UserLoginNewActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Intent intent = new Intent(WebViewActivity111.this,YaoqingFriendsActivity.class);
-                                startActivity(intent);
                             }
-                        }
+                        Logg.json(mEventMap2.toString());
+                        JSONObject jsonObject = new JSONObject(mEventMap2);
+                        EventIdIntentUtil.EventIdIntent(WebViewActivity111.this,jsonObject);
+//                        String[] stringsIntent = url.replace("bbjtech://?", "").replace("@@", "=").split("=");
+//                        switch (stringsIntent[1]) {
+//                            case "12":
+//                                Intent intent = new Intent(WebViewActivity111.this, SearchMainActivity.class);
+//                                try {
+//                                    intent.putExtra("keyword", URLDecoder.decode(stringsIntent[3], "utf-8"));
+//                                    SharedPreferencesUtil.putSharedData(WebViewActivity111.this, "shaixuan", "shaixuan", "yes");
+//                                    NewConstants.clickpositionFenlei = 5200;
+//                                    NewConstants.clickpositionDianpu = 5200;
+//                                    NewConstants.clickpositionMall = 5200;
+//                                    startActivity(intent);
+//                                } catch (UnsupportedEncodingException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                break;
+//                            case "121":
+//                                intent = new Intent(WebViewActivity111.this, MesageCenterActivity.class);
+//                                intent.putExtra("type", "0");
+//                                startActivity(intent);
+//                                break;
+////                            case "124":
+////                                NewConstants.showdialogFlg = "1";
+////                                Logg.json(stringsIntent[3] + stringsIntent[4]);
+////                                intent = new Intent(WebViewActivity111.this, IntentActivity.class);
+////                                intent.putExtra("url", stringsIntent[3] + "=" + stringsIntent[4]);
+////                                startActivity(intent);
+////                                break;
+//                            case "a3":
+//                                intent = new Intent(WebViewActivity111.this, ShopDetailActivty.class);
+//                                intent.putExtra("id", stringsIntent[3]);
+//                                startActivity(intent);
+//                                break;
+//                            case "a4":
+//                                try {
+//                                    intent = new Intent(WebViewActivity111.this, DianpuSearchActivity.class);
+//                                    intent.putExtra("keyword", "");
+//                                    intent.putExtra("dianpuid", "");
+//                                    intent.putExtra("producttype", URLDecoder.decode(stringsIntent[3], "utf-8"));
+//                                    intent.putExtra("plevel", "2");
+//                                    startActivity(intent);
+//                                } catch (UnsupportedEncodingException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                break;
+//                        }
+//
+//                        if (url.contains("bbjtech://?eventId=124")) {
+//                            String[] stringsIntent1 = url.replace("bbjtech://?", "").split("@@");
+//
+//                            Logg.json(stringsIntent1[1].replace("htmlUrl=",""));
+//                            NewConstants.showdialogFlg = "1";
+//                            Logg.json(stringsIntent1[1].replace("htmlUrl=",""));
+//                            Intent intent = new Intent(WebViewActivity111.this, IntentActivity.class);
+//                            intent.putExtra("url",  stringsIntent1[1].replace("htmlUrl=",""));
+//                            startActivity(intent);
+//
+//                        }
+//
+//
+//                        //跳转到邀请好友页面
+//                        if (url.contains("yaoqing")){
+//                            String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
+//                            if (TextUtils.isEmpty(userID)) {
+//                                Intent intent = new Intent(WebViewActivity111.this,UserLoginNewActivity.class);
+//                                startActivity(intent);
+//                            } else {
+//                                Intent intent = new Intent(WebViewActivity111.this,YaoqingFriendsActivity.class);
+//                                startActivity(intent);
+//                            }
+//                        }
                             Uri uri = Uri.parse(url);
                         try {
-                            JSONObject jsonObject = new JSONObject();
+                            JSONObject jsonObject1 = new JSONObject();
                             // String host = uri.getHost();
                             // String dataString = intent.getDataString();
                             String eventId = uri.getQueryParameter("eventId");
-                            jsonObject.put("eventId", eventId);
+                            jsonObject1.put("eventId", eventId);
                             if (uri.getQueryParameter("htmlUrl") != null) {
                                 String htmlUrl = uri.getQueryParameter("htmlUrl");
-                                jsonObject.put("htmlUrl", htmlUrl);
+                                jsonObject1.put("htmlUrl", htmlUrl);
                             }
                             if (uri.getQueryParameter("groupRowkey") != null) {
                                 String groupRowkey = uri.getQueryParameter("groupRowkey");
-                                jsonObject.put("groupRowkey", groupRowkey);
+                                jsonObject1.put("groupRowkey", groupRowkey);
                             }
                             if (uri.getQueryParameter("rankType") != null) {
                                 String rankType = uri.getQueryParameter("rankType");
-                                jsonObject.put("rankType", rankType);
+                                jsonObject1.put("rankType", rankType);
                             }
                             if (uri.getQueryParameter("keyword") != null) {
                                 String keyword = uri.getQueryParameter("keyword");
-                                jsonObject.put("keyword", keyword);
+                                jsonObject1.put("keyword", keyword);
                             }
                             if (uri.getQueryParameter("url")!=null) {
                                 String url2 = uri.getQueryParameter("url");
-                                jsonObject.put("url", url2);
+                                jsonObject1.put("url", url2);
 
                             }
-                            EventIdIntentUtil.EventIdIntent(WebViewActivity111.this,jsonObject);
+                            EventIdIntentUtil.EventIdIntent(WebViewActivity111.this,jsonObject1);
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
