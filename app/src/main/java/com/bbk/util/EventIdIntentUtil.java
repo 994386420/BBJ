@@ -83,6 +83,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -231,9 +233,13 @@ public class EventIdIntentUtil {
                 break;
             case "12":
                 String keyword = jo.optString("keyword");
-                Intent intent11 = new Intent(context, SearchMainActivity.class);
-                intent11.putExtra("keyword", keyword);
-                context.startActivity(intent11);
+                try {
+                    Intent intent11 = new Intent(context, SearchMainActivity.class);
+                    intent11.putExtra("keyword", URLDecoder.decode(keyword , "utf-8"));
+                    context.startActivity(intent11);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "13":
                 String htmlUrl13 = jo.optString("htmlUrl");
@@ -824,8 +830,20 @@ public class EventIdIntentUtil {
 
 
     public static void EventIdIntent(Context context, String eventId, String htmlUrl) {
+        Intent intent;
         String userID = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "userID");
         switch (eventId) {
+            case "4":
+                if (TextUtils.isEmpty(userID)) {
+                    intent = new Intent(context, UserLoginNewActivity.class);
+                    context.startActivity(intent);
+                } else {
+                    String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
+                    intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra("url", htmlUrl+"&mid="+mid);
+                    context.startActivity(intent);
+                }
+                break;
             case "5":
                 Intent intent4;
                 if (htmlUrl.contains("@@")) {
@@ -863,7 +881,6 @@ public class EventIdIntentUtil {
                 context.startActivity(intent102);
                 break;
             case "103":
-//			HomeActivity.initfour();
                 Intent intent103 = new Intent(context, MyCoinActivity.class);
                 context.startActivity(intent103);
                 break;
@@ -882,7 +899,7 @@ public class EventIdIntentUtil {
                 context.startActivity(intent107);
                 break;
             case "108":
-                Intent intent = new Intent(context, UserLoginNewActivity.class);
+                intent = new Intent(context, UserLoginNewActivity.class);
                 context.startActivity(intent);
                 break;
             case "111":
