@@ -26,6 +26,7 @@ public class NewConstants {
     public static String isjinkouling = "1";//全局变量控制鲸口令是否弹出
     public static String isGuanzhuweixin;
 
+
     public static HashMap<String, Object> getJsonObject(String json) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         try {

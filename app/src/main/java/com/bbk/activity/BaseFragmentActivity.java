@@ -134,17 +134,17 @@ public class BaseFragmentActivity extends FragmentActivity {
 				mEventMap = new HashMap<>();
 				String[] strs = strings[1].split("&");
 				mEventMap2 = new HashMap<String, Object>();
-				if (strs.length > 1) {
+				if (strs.length > 0) {
 					for (String s : strs) {
-						String[] str = s.split("=");
-						if (str[0].equals("e")) {
-							mEventMap2.put("eventId", str[1]);
-						} else if (str[0].equals("k")) {
-							mEventMap2.put("keyword", str[1]);
-						} else if (str[0].equals("u")) {
-							mEventMap2.put("htmlUrl", str[1]);
-						} else {
-							mEventMap2.put(str[0], str[1]);
+//						String[] str = s.split("=");
+						if (s.contains("e=")){
+							mEventMap2.put("eventId", s.replace("e=",""));
+						}
+						else if (s.contains("k=")){
+							mEventMap2.put("keyword", s.replace("k=",""));
+						}
+						else if (s.contains("u=")){
+							mEventMap2.put("htmlUrl", s.replace("u=",""));
 						}
 					}
 				}

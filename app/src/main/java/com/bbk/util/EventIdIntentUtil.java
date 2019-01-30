@@ -175,7 +175,7 @@ public class EventIdIntentUtil {
                 } else {
                     String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
                     intent = new Intent(context, WebViewActivity.class);
-                    intent.putExtra("url", htmlUrlweizhu+"&mid="+mid);
+                    intent.putExtra("url", htmlUrlweizhu + "&mid=" + mid);
                     context.startActivity(intent);
                 }
                 break;

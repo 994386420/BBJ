@@ -92,6 +92,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 			hrowkey = getIntent().getStringExtra("rowkey");
 		}
 		url = getIntent().getStringExtra("url");
+		Logg.json(url);
 		if (url != null){
 		if (url.contains("item.jd.com")) {// 京东
 			url = url.replace("item.jd.com", "item.m.jd.com/product");
