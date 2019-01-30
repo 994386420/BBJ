@@ -84,6 +84,8 @@ public class X5WebView extends WebView {
 		// webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
 		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
+		webSetting.setMediaPlaybackRequiresUserGesture(false);//是否需要用户手势播放媒体
+
 		// this.getSettingsExtension().setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);//extension
 		// settings 的设计
 	}

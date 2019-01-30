@@ -240,6 +240,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 		if (pageUrl != null){
 			webViewLayout.loadUrl(pageUrl);
 		}
+		webViewLayout.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		webViewLayout.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -384,6 +385,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener, Re
 
 			@Override
 			public void onPageFinished(WebView view, String url) {
+				view.loadUrl("javascript:(function() { " +
+						"var videos = document.getElementsByTagName('video');" +
+						" for(var i=0;i<videos.length;i++){videos[i].play();}})()");
 				weburl = url;
 				if (!url.equals(reurl)) {
 					if (url.contains("home.m.jd.com/newAllOrders/newAllOrders.action")) {

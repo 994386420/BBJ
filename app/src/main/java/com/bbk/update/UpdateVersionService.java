@@ -192,19 +192,12 @@ public class UpdateVersionService implements ResultEvent {
             TextView tv_update_refuse = updataDialog.findViewById(R.id.tv_update_refuse);
             TextView tv_update_gengxin = updataDialog.findViewById(R.id.tv_update_gengxin);
             tv_update.setText(appVersion.getUpdateMessage().replace("。", "\n"));
-            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updataDialog.dismiss();
-//                    System.exit(0);
-                }
-            });
 //            builder.setCancelable(false);
             tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     updataDialog.dismiss();
-                    showDownloadDialog();
+                    showDownloadDialog(appVersion.getForceupdate());
                 }
             });
 //        }
@@ -249,20 +242,24 @@ public class UpdateVersionService implements ResultEvent {
 //                showDownloadDialog();
 //            }
 //        });
-//        if ("1".equals(appVersion.getForceupdate())){
-//            builder.setCancelable(false);
-//            builder.setNegativeButton("关闭APP", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int whichButton) {
-//                    System.exit(0);
-//                }
-//            });
-//        }else {
-//            builder.setNegativeButton("忽略", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int whichButton) {
-//                }
-//            });
+        if ("1".equals(appVersion.getForceupdate())){
+            updataDialog.setCancelable(false);
+            tv_update_refuse.setText("关闭APP");
+            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.exit(0);
+                }
+            });
+        }else {
+            tv_update_refuse.setText("残忍拒绝");
+            tv_update_refuse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updataDialog.dismiss();
+                }
+            });
+        }
         }
 //        builder.show();
     }
@@ -274,7 +271,7 @@ public class UpdateVersionService implements ResultEvent {
                 if (mUpdatePopup != null && mUpdatePopup.isShowing()) {
                     mUpdatePopup.dismiss();
                 }
-                showDownloadDialog();
+//                showDownloadDialog();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -301,7 +298,7 @@ public class UpdateVersionService implements ResultEvent {
     /**
      * 下载的提示框
      */
-    protected void showDownloadDialog() {
+    protected void showDownloadDialog(String forceupdate) {
         {
             // 构造软件下载对话框
             Builder builder = new Builder(context);
@@ -311,14 +308,20 @@ public class UpdateVersionService implements ResultEvent {
             View v = inflater.inflate(R.layout.downloaddialog, null);
             progressBar = (ProgressBar) v.findViewById(R.id.updateProgress);
             TextView tv_update_cancle = v.findViewById(R.id.tv_update_cancle);
-            tv_update_cancle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    downLoadDialog.dismiss();
-                   // 设置取消状态
-                    cancelUpdate = true;
-                }
-            });
+            if (forceupdate.equals("1")) {
+                tv_update_cancle.setVisibility(View.INVISIBLE);
+            }else {
+                tv_update_cancle.setVisibility(View.VISIBLE);
+                tv_update_cancle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        downLoadDialog.dismiss();
+                        // 设置取消状态
+                        cancelUpdate = true;
+                    }
+                });
+            }
+
             builder.setView(v);
 //            // 取消更新
 //            builder.setNegativeButton("取消", new OnClickListener() {

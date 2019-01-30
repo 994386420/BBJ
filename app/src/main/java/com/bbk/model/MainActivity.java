@@ -45,7 +45,6 @@ import com.bbk.Bean.PinpaiBean;
 import com.bbk.Bean.ShopDianpuBean;
 import com.bbk.Bean.TagBean;
 import com.bbk.Bean.ZeroBuyBean;
-import com.bbk.activity.BaseActivity;
 import com.bbk.activity.BidHomeActivity;
 import com.bbk.activity.BrowseActivity;
 import com.bbk.activity.HomeActivity;
@@ -267,13 +266,15 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     ImageView imgHot;
     @BindView(R.id.img_czuan)
     ImageView imgCzuan;
+    @BindView(R.id.view_line)
+    View viewLine;
     private View mView;
     private boolean isshowzhezhao = true;
-    private int page = 1, x = 1 , type = 0;
+    private int page = 1, x = 1, type = 0;
     List<NewHomeCzgBean> czgBeans;//超值购数据
     private String chaozhigou;
     NewCzgAdapter newCzgAdapter;
-    private String keyword = "",longkeyword;
+    private String keyword = "", longkeyword;
     private int durationRotate = 700;// 旋转动画时间
     private int durationAlpha = 500;// 透明度动画时间
     private boolean isGlobalMenuShow = true;
@@ -291,8 +292,8 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
     private int showTime = 0, curposition = 0;
     private String url1, title1, domain1, type1, isczg1, bprice1, quan1, zuan1;
     private JSONArray chaozhigouTypes;
-    private String colorz,colorb;
-    private  HashMap<String, Object>  mEventMap, mEventMap2;
+    private String colorz, colorb;
+    private HashMap<String, Object> mEventMap, mEventMap2;
 
     @Nullable
     @Override
@@ -377,7 +378,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             public void onLoadMore(RefreshLayout refreshLayout) {
                 page++;
                 x = 2;
-                if (type == 0){
+                if (type == 0) {
                     initDataCzg(keyword);
                     return;
                 }
@@ -420,9 +421,9 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     float scale = (float) Offset / appBarLayout.getTotalScrollRange();
                     float alpha = (255 * scale);
 //                    toolbaretail.setAlpha();
-                    if (colorb != null){
+                    if (colorb != null) {
                         toolbaretail.setBackgroundColor(Color.argb((int) alpha, 208, 0, 0));
-                    }else {
+                    } else {
                         toolbaretail.setBackgroundColor(Color.argb((int) alpha, 255, 100, 60));
                     }
                     tvMessage.setTextColor(Color.argb((int) alpha, 255, 255, 255));
@@ -446,7 +447,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                     float alpha = (255 * scale);
                     if (colorb != null) {
                         toolbaretail.setBackgroundColor(Color.parseColor(colorb));
-                    }else {
+                    } else {
                         toolbaretail.setBackgroundResource(R.color.tuiguang_color5);
                     }
                     tvMessage.setTextColor(Color.argb((int) alpha, 255, 255, 255));
@@ -658,26 +659,26 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                 /**
                                  * 根据鲸口令跳转
                                  */
-                                if (text.contains("e=")&& text.contains("鲸口令")){
+                                if (text.contains("e=") && text.contains("鲸口令")) {
                                     //获得保存的复制文字
                                     SharedPreferencesUtil.putSharedData(MyApplication.getApplication(), "clipchange", "cm", text);
-                                    String [] strings = text.replace("【","@@").replace("】","@@").split("@@");
+                                    String[] strings = text.replace("【", "@@").replace("】", "@@").split("@@");
                                     mEventMap = new HashMap<>();
                                     String[] strs = strings[1].split("&");
                                     mEventMap2 = new HashMap<String, Object>();
                                     if (strs.length > 1)
-                                    for (String s : strs) {
-                                        String[] str = s.split("=");
-                                        if (str[0].equals("e")){
-                                            mEventMap2.put("eventId", str[1]);
-                                        }else if (str[0].equals("k")){
-                                            mEventMap2.put("keyword", str[1]);
-                                        } else if (str[0].equals("u")){
-                                            mEventMap2.put("htmlUrl", str[1]);
-                                        }else {
-                                            mEventMap2.put(str[0], str[1]);
+                                        for (String s : strs) {
+                                            String[] str = s.split("=");
+                                            if (str[0].equals("e")) {
+                                                mEventMap2.put("eventId", str[1]);
+                                            } else if (str[0].equals("k")) {
+                                                mEventMap2.put("keyword", str[1]);
+                                            } else if (str[0].equals("u")) {
+                                                mEventMap2.put("htmlUrl", str[1]);
+                                            } else {
+                                                mEventMap2.put(str[0], str[1]);
+                                            }
                                         }
-                                    }
 
                                     JSONObject jsonObject = new JSONObject(mEventMap2);
                                     //取出保存的复制文字
@@ -686,7 +687,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
                                      * 如果缓存的跟剪切板不一致则跳转
                                      */
                                     if (!text.equals(cliptext)) {
-                                        if (  NewConstants.isjinkouling  != null &&  NewConstants.isjinkouling .equals("1")) {
+                                        if (NewConstants.isjinkouling != null && NewConstants.isjinkouling.equals("1")) {
                                             EventIdIntentUtil.EventIdIntent(getActivity(), jsonObject);
                                             //跳转成功之后保存从剪切板获取的文字信息
                                             SharedPreferencesUtil.putSharedData(getActivity(), "copyText", "copyText", copytext);
@@ -997,6 +998,13 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             //通栏广告
             if (object.has("tonglanguanggaoandroid")) {
                 guanggaoLayout.setVisibility(View.VISIBLE);
+                if (colorb != null) {
+                    guanggaoLayout.setBackgroundColor(Color.parseColor(colorb));
+                    viewLine.setBackgroundColor(Color.parseColor(colorb));
+                } else {
+                    guanggaoLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                    viewLine.setBackgroundColor(Color.parseColor("#f3f3f3"));
+                }
                 JSONObject guanggaobanner = object.optJSONObject("tonglanguanggaoandroid");
                 DisplayMetrics dm = new DisplayMetrics();
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
