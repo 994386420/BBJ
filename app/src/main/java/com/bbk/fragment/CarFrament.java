@@ -1460,6 +1460,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                                         progress.setVisibility(View.VISIBLE);
                                         progress.loadSuccess(true);
                                         tishi.setVisibility(View.GONE);
+                                        StringUtil.showToast(getActivity(), "同步完成，购物车无商品！");
                                     }
 
 

@@ -1536,6 +1536,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                         progress.setVisibility(View.VISIBLE);
                                         progress.loadSuccess(true);
                                         tishi.setVisibility(View.GONE);
+                                        StringUtil.showToast(CarActivity.this, "同步完成，购物车无商品！");
                                     }
                                     if (jsonObject1.has("eventJson")) {
                                         if (isshowzhezhao) {

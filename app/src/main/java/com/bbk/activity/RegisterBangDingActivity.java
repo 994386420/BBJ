@@ -171,7 +171,6 @@ public class RegisterBangDingActivity extends BaseActivity implements OnClickLis
 									"userInfor", "login_STATE","1");
 							NewConstants.logFlag = "2";
 							NewConstants.yingdaoFlag = "1";
-							Logg.json(inforJsonObj.optString("eventJson"));
 							NewConstants.eventJson = inforJsonObj.optString("eventJson");
 							TencentLoginUtil.Login(RegisterBangDingActivity.this);
 							String userId=SharedPreferencesUtil.getSharedData(RegisterBangDingActivity.this, "userInfor", "userID");
