@@ -489,6 +489,7 @@ public class MainActivity extends BaseViewPagerFragment implements CommonLoading
             @Override
             public void onTabSelected(XTabLayout.Tab tab) {
                 Logg.e(tab.getText());
+                type = 0;
                 int j = tab.getPosition();
                 if (j == 0) {
                     llSub.setVisibility(View.GONE);

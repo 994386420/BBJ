@@ -71,6 +71,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2018/6/06/006.
+ * 自营零元购详情
  */
 
 public class ZiYingZeroBuyDetailActivty extends BaseActivity {

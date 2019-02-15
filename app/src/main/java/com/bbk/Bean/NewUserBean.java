@@ -20,6 +20,7 @@ public class NewUserBean {
     private String singleMoney;//空不显示红包，有值显示红包
     private String singleMoneyNumber;//总共红包个数
     private String guanzhuweixin;//1表示已经关注公众号  0或者该字段没有表示没有关注
+    private String eventJson;
 
 
     public String getGuanzhuweixin() {
@@ -145,5 +146,13 @@ public class NewUserBean {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public String getEventJson() {
+        return eventJson;
+    }
+
+    public void setEventJson(String eventJson) {
+        this.eventJson = eventJson;
     }
 }

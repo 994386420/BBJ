@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.bbk.Bean.BrokerageBean;
@@ -106,6 +105,8 @@ public class BrokerageActivity extends BaseActivity {
     LinearLayout llMingxi;
     @BindView(R.id.ll_shensu)
     LinearLayout llShensu;
+    @BindView(R.id.tv_tixian_money)
+    TextView tvTixianMoney;
     private UpdataDialog updataDialog;
 
     @Override
@@ -183,6 +184,7 @@ public class BrokerageActivity extends BaseActivity {
                                 } else {
                                     tvMoney.setText("¥ 0.0");
                                 }
+                                tvTixianMoney.setText("累计提现："+brokerageBean.getTotaltixian()+"元");
                                 tvMoney1.setText(brokerageBean.getOne());
                                 tvMoney2.setText(brokerageBean.getTwo());
                                 tvMoney3.setText(brokerageBean.getThree());
@@ -238,7 +240,7 @@ public class BrokerageActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.ll_shensu,R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four, R.id.title_text1, R.id.tv_tixian_detail, R.id.shensu_jilu})
+    @OnClick({R.id.ll_shensu, R.id.title_back_btn, R.id.tv_tixian, R.id.tablayout, R.id.ll_one, R.id.ll_two, R.id.ll_three, R.id.ll_four, R.id.title_text1, R.id.tv_tixian_detail, R.id.shensu_jilu})
     public void onViewClicked(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -321,11 +323,12 @@ public class BrokerageActivity extends BaseActivity {
 
     /**
      * 提现弹窗
+     *
      * @param context
      * @param content
      * @param status
      */
-    public void showTiXianMessageDialog(final Context context, String content, String status,String errmsg) {
+    public void showTiXianMessageDialog(final Context context, String content, String status, String errmsg) {
         if (updataDialog == null || !updataDialog.isShowing()) {
             //初始化弹窗 布局 点击事件的id
             updataDialog = new UpdataDialog(context, R.layout.tixian_dialog_layout,
@@ -354,14 +357,14 @@ public class BrokerageActivity extends BaseActivity {
              */
             double money = Double.parseDouble(ketiMoney);
 
-            if (money<1){
+            if (money < 1) {
                 mOneMoney.setVisibility(View.VISIBLE);
             }
 
             /**
              * 已经关注微信
              */
-            if (NewConstants.isGuanzhuweixin!= null && NewConstants.isGuanzhuweixin.equals("1")){
+            if (NewConstants.isGuanzhuweixin != null && NewConstants.isGuanzhuweixin.equals("1")) {
                 llWeiguanzhu.setVisibility(View.GONE);
                 /**
                  * content为提现的金额 content为“”提现失败
@@ -441,15 +444,15 @@ public class BrokerageActivity extends BaseActivity {
                 tv_update_gengxin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        IWXAPI api = WXAPIFactory.createWXAPI(BrokerageActivity.this,Constants.APP_ID, false);
+                        IWXAPI api = WXAPIFactory.createWXAPI(BrokerageActivity.this, Constants.APP_ID, false);
                         if (api.isWXAppInstalled()) {
                             Intent intent = new Intent(Intent.ACTION_MAIN);
-                            ComponentName cmp = new ComponentName("com.tencent.mm","com.tencent.mm.ui.LauncherUI");
+                            ComponentName cmp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI");
                             intent.addCategory(Intent.CATEGORY_LAUNCHER);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setComponent(cmp);
                             startActivity(intent);
-                        }else{
+                        } else {
                             StringUtil.showToast(BrokerageActivity.this, "微信未安装");
                         }
                         updataDialog.dismiss();
@@ -470,10 +473,10 @@ public class BrokerageActivity extends BaseActivity {
     /**
      * 获取提现金额
      */
-    public void yongjintixian(){
+    public void yongjintixian() {
         String mid = SharedPreferencesUtil.getSharedData(MyApplication.getApplication(), "userInfor", "mid");
-        Map<String,String> params = new HashMap<>();
-        params.put("mid",mid);
+        Map<String, String> params = new HashMap<>();
+        params.put("mid", mid);
         RetrofitClient.getInstance(BrokerageActivity.this).createBaseApi()
                 .yongjintixian(params, new BaseObserver<String>(BrokerageActivity.this) {
                     @Override
@@ -483,17 +486,17 @@ public class BrokerageActivity extends BaseActivity {
                             jsonObject = new JSONObject(s);
                             if (jsonObject.optString("status").equals("1")) {
                                 showTiXianMessageDialog(BrokerageActivity.this
-                                        ,jsonObject.optString("content")
-                                        ,jsonObject.optString("status")
-                                        ,jsonObject.optString("errmsg"));
-                            }else if (jsonObject.optString("status").equals("2")){
+                                        , jsonObject.optString("content")
+                                        , jsonObject.optString("status")
+                                        , jsonObject.optString("errmsg"));
+                            } else if (jsonObject.optString("status").equals("2")) {
                                 showTiXianMessageDialog(BrokerageActivity.this
-                                        ,jsonObject.optString("content")
-                                        ,jsonObject.optString("status")
-                                        ,jsonObject.optString("errmsg"));
-                            }else {
+                                        , jsonObject.optString("content")
+                                        , jsonObject.optString("status")
+                                        , jsonObject.optString("errmsg"));
+                            } else {
                                 StringUtil.showToast(BrokerageActivity.this
-                                        ,jsonObject.optString("errmsg"));
+                                        , jsonObject.optString("errmsg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

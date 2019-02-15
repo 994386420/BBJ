@@ -30,9 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by rtj on 2018/3/7.
- */
+
 
 public class HomeGridPinTuanAdapter extends RecyclerView.Adapter {
     //    private List<Map<String,String>> list;

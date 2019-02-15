@@ -79,6 +79,7 @@ import com.bbk.component.HomeAllComponent7;
 import com.bbk.component.JingbiComponent;
 import com.bbk.component.QiandaoComponent;
 import com.bbk.component.ShouyiComponent;
+import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlow;
 import com.bbk.model.DiscountActivity;
 import com.bbk.model.JiFenActivity;
@@ -90,6 +91,7 @@ import com.bbk.shopcar.NewDianpuHomeActivity;
 import com.bbk.shopcar.ShopOrderActivity;
 import com.bbk.util.BaseTools;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.HomeLoadUtil;
 import com.bbk.util.HongbaoDialog;
 import com.bbk.util.SharedPreferencesUtil;
@@ -102,6 +104,7 @@ import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.logg.Logg;
+import com.pdd.pop.sdk.http.PopAccessTokenClient;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -112,7 +115,13 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -249,6 +258,10 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     private boolean isTaoBaoLogin = false;
     private boolean isuserzhezhao = false;
     private int showTimes = 0;
+    String clientId = "bf56af3f63144330b7426e4ccb1fa7a1";
+    String clientSecret = "eabde3a4bd1fe5e1680c1b6e6eaa6159474200fd";
+    private String result_url="http://www.bibijing.com";
+
 
     /**
      * 推广合伙人
@@ -272,7 +285,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
     public static String LogFlag = "0";
     private String isGuanzhuweixin;
     public static String ketiMoney;
-
+    private boolean isshowzhezhao = true;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -665,6 +678,23 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                     }
                                 }
 //                                scrollView.scrollTo(0, 0);
+                                /**
+                                 * 弹窗 写在懒加载里面
+                                 */
+//                                if (userBean.getEventJson() != null) {
+//                                    if (isshowzhezhao) {
+//                                        final JSONObject jo = new JSONObject(userBean.getEventJson());
+//                                        new HomeAlertDialog(getActivity()).builder()
+//                                                .setimag(jo.optString("img"))
+//                                                .setonclick(new View.OnClickListener() {
+//                                                    @Override
+//                                                    public void onClick(View arg0) {
+//                                                        EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+//                                                    }
+//                                                }).show();
+//                                        isshowzhezhao = false;
+//                                    }
+//                                }
                             } else {
                                 StringUtil.showToast(getActivity(), jsonObject.optString("errmsg"));
                             }
@@ -1954,6 +1984,74 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                 });
     }
 
+    //打开指定页面， 获取授权值，（返回的页面是，你填写的回调地址）
+
+    public String CodeUrl(){
+        String url="http://jinbao.pinduoduo.com/open.html";
+        //client_id
+        url+="?client_id="+clientId;
+        //授权类型为CODE
+        url+="&response_type=code";
+        //授权回调地址
+        url+="&redirect_uri="+result_url;
+        return url;
+    }
+    /**
+     * 获取访问令牌（access_token）
+     * 正式环境：http://open-api.pinduoduo.com/oauth/token
+     *  参考    http://open.pinduoduo.com/#/document
+     */
+    public String  Codeaccess_token(String code){
+        String url="http://open-api.pinduoduo.com/oauth/token";
+        JSONObject json=new JSONObject();
+        try {
+            json.put("client_id",clientId);
+            json.put("client_secret",clientSecret);
+            json.put("grant_type","authorization_code");
+            json.put("code",code);
+            json.put("redirect_uri",result_url);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String json1 = loadJSON(url, json.toString());
+        Logg.json(json1.toString());
+        return  json1.toString();
+    }
+
+    public String loadJSON (String url,String param) {
+        StringBuilder json = new StringBuilder();
+        PrintWriter out = null;
+        try {
+            // Post请求的url，与get不同的是不需要带参数
+            URL oracle = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) oracle.openConnection();
+            // 发送POST请求必须设置如下两行
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(true);
+            connection.setRequestMethod("POST"); // 设置请求方式
+            connection.setRequestProperty("Content-Type", "application/json"); // 设置接收数据的格式
+            connection.connect();
+
+            out = new PrintWriter(connection.getOutputStream());
+            out.print(param);
+            // flush输出流的缓冲
+            out.flush();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream(),"utf-8"));
+
+            String inputLine = null;
+            while ( (inputLine = in.readLine()) != null) {
+                json.append(inputLine);
+            }
+            in.close();
+        } catch (IOException e) {
+            System.out.println("发送 POST 请求出现异常！" + e);
+            return "-1";
+        }
+        return json.toString();
+    }
 
     @Override
     public void Intent(String name) {
@@ -2038,6 +2136,7 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
 //                    startActivityForResult(intent, 1);
 //                } else {
                 String url1 = BaseApiService.Base_URL + "mobile/user/question";
+//                String url1 = "https://mms.pinduoduo.com/open.html?response_type=code&client_id=bf56af3f63144330b7426e4ccb1fa7a1&redirect_uri=http://www.bibijing.com&&state=1212&view=h5";
                 intent = new Intent(getActivity(), WebViewActivity.class);
                 intent.putExtra("url", url1);
                 startActivity(intent);

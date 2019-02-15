@@ -14,6 +14,7 @@ public class BrokerageBean {
     private String yesYongjinSum;  //昨日获得佣金
     private String jinpayCount;  //今日购买数量
     private String jinYongjinSum;  //今日获得佣金
+    private String totaltixian;
 
 
     public String getJinpayCount() {
@@ -91,5 +92,13 @@ public class BrokerageBean {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public String getTotaltixian() {
+        return totaltixian;
+    }
+
+    public void setTotaltixian(String totaltixian) {
+        this.totaltixian = totaltixian;
     }
 }
