@@ -47,6 +47,7 @@ import com.bbk.client.BaseApiService;
 import com.bbk.client.BaseObserver;
 import com.bbk.client.ExceptionHandle;
 import com.bbk.client.RetrofitClient;
+import com.bbk.dialog.HomeAlertDialog;
 import com.bbk.flow.DataFlowTaobao;
 import com.bbk.flow.ResultEvent;
 import com.bbk.fragment.CarFrament;
@@ -59,6 +60,7 @@ import com.bbk.shopcar.entity.GoodsInfo1;
 import com.bbk.shopcar.entity.StoreInfo;
 import com.bbk.util.DialogCheckYouhuiUtil;
 import com.bbk.util.DialogSingleUtil;
+import com.bbk.util.EventIdIntentUtil;
 import com.bbk.util.ImmersedStatusbarUtils;
 import com.bbk.util.SharedPreferencesUtil;
 import com.bbk.util.StringUtil;
@@ -183,6 +185,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
     private TimerTask mTimerTask;
     private final int TIMEOUT = 10000;
     private final int TIMEOUT_ERROR = 9527;
+    private boolean isshowzhezhao = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1512,14 +1515,15 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                 mPtrframe.finishRefresh();
                                 Logg.json(jsonObject);
                                 if (cancelCheck) {
+                                    //解析数据
+                                    JSONObject jsonObject1 = new JSONObject(jsonObject.optString("content"));
                                     //缓存加载出来的购物车数据
                                     if (curPosition == 2) {
-                                        SharedPreferencesUtil.putSharedData(CarActivity.this, "homeJdCarContent", "homeJdCarContent", jsonObject.toString());
+                                        SharedPreferencesUtil.putSharedData(CarActivity.this, "homeJdCarContent", "homeJdCarContent", jsonObject1.toString());
                                     } else {
-                                        SharedPreferencesUtil.putSharedData(CarActivity.this, "homeTbCarContent", "homeTbCarContent", jsonObject.toString());
+                                        SharedPreferencesUtil.putSharedData(CarActivity.this, "homeTbCarContent", "homeTbCarContent", jsonObject1.toString());
                                     }
-//                                    解析数据
-                                    taoBaoCarBeans = JSON.parseArray(jsonObject.optString("content"), TaoBaoCarBean.class);
+                                    taoBaoCarBeans = JSON.parseArray(jsonObject1.optString("list"), TaoBaoCarBean.class);
                                     if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
                                         recyclerView.setVisibility(View.VISIBLE);
                                         progress.setVisibility(View.GONE);
@@ -1532,6 +1536,20 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                         progress.setVisibility(View.VISIBLE);
                                         progress.loadSuccess(true);
                                         tishi.setVisibility(View.GONE);
+                                    }
+                                    if (jsonObject1.has("eventJson")) {
+                                        if (isshowzhezhao) {
+                                            final JSONObject jo = new JSONObject(jsonObject1.optString("eventJson"));
+                                            new HomeAlertDialog(CarActivity.this).builder()
+                                                    .setimag(jo.optString("img"))
+                                                    .setonclick(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View arg0) {
+                                                            EventIdIntentUtil.EventIdIntent(CarActivity.this, jo);
+                                                        }
+                                                    }).show();
+                                            isshowzhezhao = false;
+                                        }
                                     }
                                 }
                             } else {

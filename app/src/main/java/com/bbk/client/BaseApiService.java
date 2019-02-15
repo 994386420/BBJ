@@ -401,7 +401,7 @@ public interface BaseApiService<T> {
 
     //获取淘宝购物车
     @FormUrlEncoded
-    @POST("newService/synchroShoppingCartNew")
+    @POST("newService/synchroShoppingCartNew20190215")
     Observable<String> synchroShoppingCart(@FieldMap Map<String, String> map);
 
     //获取电商网站的购物车h5页面url

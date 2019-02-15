@@ -641,6 +641,22 @@ public class UserFragment extends BaseViewPagerFragment implements OnClickListen
                                             tvS4.setText(jsonObject2.optString("s4"));
                                         }
                                     }
+
+                                    if (NewConstants.eventJson != null) {
+                                        if (isshowzhezhao) {
+                                            final JSONObject jo = new JSONObject(NewConstants.eventJson);
+                                            new HomeAlertDialog(getActivity()).builder()
+                                                    .setimag(jo.optString("img"))
+                                                    .setonclick(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View arg0) {
+                                                            EventIdIntentUtil.EventIdIntent(getActivity(), jo);
+                                                        }
+                                                    }).show();
+                                            isshowzhezhao = false;
+                                        }
+                                    }
+
                                 } else {
                                     user_name.setText("请登录");
                                     user_img.setImageResource(R.mipmap.logo_01);

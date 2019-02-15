@@ -556,6 +556,13 @@ public class EventIdIntentUtil {
                     context.startActivity(intent);
                 }
                 break;
+                //个人中心
+            case "146":
+                HomeActivity.position = 1;
+                SharedPreferencesUtil.putSharedData(context, "homeactivty", "type", "4");
+                intent = new Intent(context, HomeActivity.class);
+                context.startActivity(intent);
+                break;
             case "666":
                 String url = jo.optString("url");
                 Intent intent666 = new Intent(context, WebViewActivity_copy.class);

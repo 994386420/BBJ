@@ -167,6 +167,8 @@ public class RegisterByPhoneActivity extends BaseActivity implements OnClickList
 							MobclickAgent.onProfileSignIn("Wx",bangding_account.getText().toString());
 							TencentLoginUtil.Login(RegisterByPhoneActivity.this);
 							NewConstants.yingdaoFlag = "1";
+							Logg.json(inforJsonObj.optString("eventJson"));
+							NewConstants.eventJson = inforJsonObj.optString("eventJson");
 							String userId=SharedPreferencesUtil.getSharedData(RegisterByPhoneActivity.this, "userInfor", "userID");
 							Context context = getApplicationContext();
 //							XGPushConfig.setAccessId(context, 2100196420);
