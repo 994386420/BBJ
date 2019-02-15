@@ -10,8 +10,8 @@ android {
         applicationId "com.bbk.activity"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 57
-        versionName '5.2.1'
+        versionCode 58
+        versionName '5.2.2'
         multiDexEnabled true
     }
     android {
@@ -186,7 +186,7 @@ dependencies {
     implementation project(':flowlayout-lib')
     //规格筛选流式布局
     implementation project(':library')
-    //快思通客服
+    //快商通客服
     compile 'com.zhy:okhttputils:2.6.2'
     implementation project(':kssdklibrary')
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'

@@ -1216,7 +1216,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                             } else {
                                 recyclerView.setVisibility(View.GONE);
                                 progress.setVisibility(View.VISIBLE);
-                                progress.loadSuccess(true);
+                                progress.loadSuccess(true,"同步完成，购物车无商品！");
                                 tishi.setVisibility(View.GONE);
                                 DialogSingleUtil.dismiss(0);
                             }
@@ -1270,7 +1270,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                         } else {
                                             recyclerView.setVisibility(View.GONE);
                                             progress.setVisibility(View.VISIBLE);
-                                            progress.loadSuccess(true);
+                                            progress.loadSuccess(true,"同步完成，购物车无商品！");
                                             tishi.setVisibility(View.GONE);
                                             DialogSingleUtil.dismiss(0);
                                         }
@@ -1534,7 +1534,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                     } else {
                                         recyclerView.setVisibility(View.GONE);
                                         progress.setVisibility(View.VISIBLE);
-                                        progress.loadSuccess(true);
+                                        progress.loadSuccess(true,"同步完成，购物车无商品！");
                                         tishi.setVisibility(View.GONE);
                                         StringUtil.showToast(CarActivity.this, "同步完成，购物车无商品！");
                                     }

@@ -1084,7 +1084,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                             } else {
                                 recyclerView.setVisibility(View.GONE);
                                 progress.setVisibility(View.VISIBLE);
-                                progress.loadSuccess(true);
+                                progress.loadSuccess(true,"同步完成，购物车无商品！");
                                 tishi.setVisibility(View.GONE);
                                 imgTishi.setVisibility(View.GONE);
                                 DialogSingleUtil.dismiss(0);
@@ -1143,7 +1143,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                                         } else {
                                             recyclerView.setVisibility(View.GONE);
                                             progress.setVisibility(View.VISIBLE);
-                                            progress.loadSuccess(true);
+                                            progress.loadSuccess(true,"同步完成，购物车无商品！");
                                             tishi.setVisibility(View.GONE);
                                             imgTishi.setVisibility(View.GONE);
                                             DialogSingleUtil.dismiss(0);
@@ -1458,7 +1458,7 @@ public class CarFrament extends BaseViewPagerFragment implements View.OnClickLis
                                     } else {
                                         recyclerView.setVisibility(View.GONE);
                                         progress.setVisibility(View.VISIBLE);
-                                        progress.loadSuccess(true);
+                                        progress.loadSuccess(true,"同步完成，购物车无商品！");
                                         tishi.setVisibility(View.GONE);
                                         StringUtil.showToast(getActivity(), "同步完成，购物车无商品！");
                                     }
