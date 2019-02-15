@@ -1,5 +1,0 @@
-com.jd.jdsdk.test
-int raw safe 0x7f020000
-int string Illegal_info 0x7f030000
-int string app_name 0x7f030001
-int string kepler_check_net 0x7f030002

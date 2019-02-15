@@ -1207,7 +1207,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                     if (homeContent != null && !homeContent.equals("")) {
                         JSONObject object = new JSONObject(homeContent);
                         if (object.length() > 0) {
-                            taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
+                            taoBaoCarBeans = JSON.parseArray(object.optString("list"), TaoBaoCarBean.class);
                             if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
                                 recyclerView.setVisibility(View.VISIBLE);
                                 progress.setVisibility(View.GONE);
@@ -1261,7 +1261,7 @@ public class CarActivity extends BaseActivity implements View.OnClickListener, S
                                 if (homeJdContent != null && !homeJdContent.equals("")) {
                                     JSONObject object = new JSONObject(homeJdContent);
                                     if (object.length() > 0) {
-                                        taoBaoCarBeans = JSON.parseArray(object.optString("content"), TaoBaoCarBean.class);
+                                        taoBaoCarBeans = JSON.parseArray(object.optString("list"), TaoBaoCarBean.class);
                                         if (taoBaoCarBeans != null && taoBaoCarBeans.size() > 0) {
                                             recyclerView.setVisibility(View.VISIBLE);
                                             progress.setVisibility(View.GONE);

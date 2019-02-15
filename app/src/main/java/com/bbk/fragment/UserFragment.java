@@ -104,7 +104,6 @@ import com.blog.www.guideview.Guide;
 import com.blog.www.guideview.GuideBuilder;
 import com.bumptech.glide.Glide;
 import com.logg.Logg;
-import com.pdd.pop.sdk.http.PopAccessTokenClient;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
